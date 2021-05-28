@@ -253,7 +253,7 @@ print and (orientation: landscape) and (width: 1024px) { /* iPhone/iPad, chrome/
 <script type="module">
 import * as srvc1 from "../../a00/-app-calcjs/cjs-srvc1.mjs";
 import * as srvc2 from "../../a00/-app-calcjs/cjs-srvc2.mjs";
-let _, $_, cfoc, q2Bcopy, obj, rnge, reslts, rslt, seln, xprsns,
+let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, xprsns,
   dinput = document.querySelector('#cmain>#dinput'),
   btncnew = document.querySelector('#cmain>#btncnew'),
   preresp = document.querySelector('#cmain>#preresp'),
@@ -305,10 +305,10 @@ let _, $_, cfoc, q2Bcopy, obj, rnge, reslts, rslt, seln, xprsns,
     xprsns = dinp2.value.replace(/&Tab;/g, "\t").replace(/\$(?=[a-z])/gi, "$$_.").split("\n");
     reslts = xprsns.map(xpr => {
       try {
-        xpr = xpr && xpr.replace(/\/\/.*/, "")
-          .replace( /([ ([!,/*+-]|^)(?!Math\.|Number\.|(?:new |)Date\()([A-Za-z]\w*)( *)(?!=)/g,
-            (m, c1, c2, c3) => !Object.keys(_).some(k => k === c2) ? m : c1 + "_." + c2 + c3 )
-          .replace(/(?: |^)(?=[a-z]\w* *=)/gi, "$&_.");
+        xpr = xpr && ( /^ *{/.test(xpr) ? xpr : xpr.replace(/\/\/.*/, "")
+          .replace( /([ <>=([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([A-Za-z]\w*)(?! *=)/g,
+            (m, c1, c2) => window[c2] || !Object.keys(_).some(k => k === c2) ? m : c1 + "_." + c2 )
+          .replace(/(?: |^)(?=[a-z]\w* *=)/gi, "$&_.") );
         //xpr = xpr && xpr.replace(/\/\/.*/, "").replace(/(?=(?: |^)[a-z]\w* *=)/gi, "window.");
         rslt = eval(xpr);
         return rslt == null ? ""
@@ -359,6 +359,7 @@ let _, $_, cfoc, q2Bcopy, obj, rnge, reslts, rslt, seln, xprsns,
       .replace(/<\/?\b(?:[ \w,:;"#=-]+)>|\n+$|^\n+/g, "")
       .replace(/&amp;(?=\w+;)/g, "&")
       .replace(/ &amp;&amp; /g, " && ")
+      .replace(/&gt;/g, ">").replace(/&lt;/g, "<")
       .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/^\\t/g, "\t"));
       reEval();
     }
