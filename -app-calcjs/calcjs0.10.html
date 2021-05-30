@@ -311,7 +311,7 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, xprsns,
     xprsns = dinp2.value.replace(/&Tab;/g, "\t").replace(/\$(?=[a-z])/gi, "$$_.").split("\n");
     reslts = xprsns.map(xpr => {
       try {
-        xpr = xpr && ( /^ *(?:[ \w=(),]+=> *|function\b[ \w=(),]+|){/.test(xpr) ? xpr
+        xpr = xpr && ( /^ *(?:[ \w=(),]+=> *|\( *function\b[ \w=(),]+|){/.test(xpr) ? xpr
           : xpr.replace(/\/\/.*/, "")
           .replace( /([ <>=([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([A-Za-z]\w*)(?! *=)/g,
             (m, c1, c2) => window[c2] || !Object.keys(_).some(k => k === c2) ? m : c1 + "_." + c2 )
