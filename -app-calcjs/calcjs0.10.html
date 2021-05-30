@@ -363,7 +363,7 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, xprsns,
       .replace(/<\/?strong>/g, "__")
       .replace(/<span class="dvar">(\w+)<\/span>/g, "$$$1")
       .replace(/<span class="dnote">(.+)<\/span> */g, "// $1")
-      .replace(/<\/?\b(?:[ \w,:;"#=-]+)>|\n+$|^\n+/g, "")
+      .replace(/<\/?\b[ \w,:;"#=-]+>|\n+$|^\n+/g, "")
       .replace(/&gt;/g, ">").replace(/&lt;/g, "<")
       .replace(/&amp;(?=\w+;)/g, "&")
       .replace(/&amp;&amp;/g, "&&")
