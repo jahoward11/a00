@@ -319,7 +319,7 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, xprsns,
         //xpr = xpr && xpr.replace(/\/\/.*/, "").replace(/(?=(?: |^)[a-z]\w* *=)/gi, "window.");
         rslt = eval(xpr);
         return rslt == null ? ""
-          : typeof rslt === 'string' ? rslt.replace(/\n/g, "")
+          : typeof rslt === 'string' ? rslt.replace(/\n/g, "\\n")
           : rslt.toString().replace(/\s+/g, " ");
       } catch (err) { respShow(err); return err; }
     });
