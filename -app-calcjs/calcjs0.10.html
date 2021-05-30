@@ -249,6 +249,12 @@ print and (orientation: landscape) and (width: 1024px) { /* iPhone/iPad, chrome/
   </datalist>
 </div>
 </main>
+<script type="text/javascript">
+!window.navigator.serviceWorker
+|| window.navigator.serviceWorker.register("../-app-calcjs/app-sw.js") //, { scope: "../" })
+  .then(reg => window.console.log("SW registration succeeded. Scope: " + reg.scope))
+  .catch(err => window.console.log("SW registration failed: " + err));
+</script>
 <script src="../../a00/-res-js/localforage.nopromises.min.js" type="text/javascript"></script>
 <script type="module">
 import * as srvc1 from "../../a00/-app-calcjs/cjs-srvc1.mjs";
@@ -305,15 +311,16 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, xprsns,
     xprsns = dinp2.value.replace(/&Tab;/g, "\t").replace(/\$(?=[a-z])/gi, "$$_.").split("\n");
     reslts = xprsns.map(xpr => {
       try {
-        xpr = xpr && ( /^ *{/.test(xpr) ? xpr : xpr.replace(/\/\/.*/, "")
+        xpr = xpr && ( /^ *(?:[ \w=(),]+=> *|function\b[ \w=(),]+|){/.test(xpr) ? xpr
+          : xpr.replace(/\/\/.*/, "")
           .replace( /([ <>=([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([A-Za-z]\w*)(?! *=)/g,
             (m, c1, c2) => window[c2] || !Object.keys(_).some(k => k === c2) ? m : c1 + "_." + c2 )
           .replace(/(?: |^)(?=[a-z]\w* *=)/gi, "$&_.") );
         //xpr = xpr && xpr.replace(/\/\/.*/, "").replace(/(?=(?: |^)[a-z]\w* *=)/gi, "window.");
         rslt = eval(xpr);
         return rslt == null ? ""
-        : typeof rslt === 'string' ? rslt
-        : rslt.toString().replace(/\s+/g, " ");
+          : typeof rslt === 'string' ? rslt
+          : rslt.toString().replace(/\s+/g, " ");
       } catch (err) { respShow(err); return err; }
     });
     quad1A.innerHTML = Object.values($_).join("\n").replace(/\n$/, "\n&nbsp;")
@@ -357,9 +364,9 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, xprsns,
       .replace(/<span class="dvar">(\w+)<\/span>/g, "$$$1")
       .replace(/<span class="dnote">(.+)<\/span> */g, "// $1")
       .replace(/<\/?\b(?:[ \w,:;"#=-]+)>|\n+$|^\n+/g, "")
-      .replace(/&amp;(?=\w+;)/g, "&")
-      .replace(/ &amp;&amp; /g, " && ")
       .replace(/&gt;/g, ">").replace(/&lt;/g, "<")
+      .replace(/&amp;(?=\w+;)/g, "&")
+      .replace(/&amp;&amp;/g, "&&")
       .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/^\\t/g, "\t"));
       reEval();
     }
