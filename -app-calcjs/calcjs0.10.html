@@ -257,7 +257,7 @@ print and (orientation: landscape) and (width: 1024px) { /* iPhone/iPad, chrome/
 </script>
 <script src="../../a00/-res-js/localforage.nopromises.min.js" type="text/javascript"></script>
 <script type="module">
-let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, srvc1, srvc2, xprsns,
+let _, $_, cfoc, obj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
   dinput = document.querySelector('#cmain>#dinput'),
   btncnew = document.querySelector('#cmain>#btncnew'),
   preresp = document.querySelector('#cmain>#preresp'),
@@ -266,6 +266,8 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, srvc1, srvc2, xpr
   quad2A = document.querySelector('#cgrid>#quad2A'),
   quad2B = document.querySelector('#cgrid>#quad2B'),
   plist = document.querySelector('#cgrid>#plist'),
+  xstor = [],
+  mfiles = ["cjs-srvc1.mjs", "cjs-srvc2.mjs"],
   xsetinp = document.querySelector('#cmain #xsetinp'),
   xsetlist = document.querySelector('#cmain #xsetlist'),
   btnsave = document.querySelector('#cmain #btnsave'),
@@ -280,15 +282,13 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, srvc1, srvc2, xpr
     let anew = document.createElement('a'),
       chtml = '<!DOCTYPE html>\n<html lang="en">\n'
       + (document.querySelector('#ecorender') || document.documentElement).innerHTML
-        .replace(/^\n|^#cmain \.cfield button,\n[^]+?\n(?=@media print {\n)|^  xsetinp = [^]+?\n(?=  dinp2 = )|^  },\n  slistRegen = [^]+?\n(?=  };\nplist\.innerHTML = )|^if \(\/\^http\/\.test\([^]+?{ slistRegen\(\); }\n/gm, "")
+        .replace(/^\n|^#cmain \.cfield button,\n[^]+?\n(?=@media print {\n)|^  xstor = \[\],[^]+?\n(?=  dinp2 = )|^  },\n  slistRegen = [^]+?\n(?=  };\nif \(\/\^https)|^if \(\/\^https[^]+?{ slistRegen\(\); }\n/gm, "")
         .replace(/^(<xmp id="dinput".*?>)[^]*?(?=<\/xmp>)/m, (m, c1) => c1 + "\n" + dinp2.value + "\n")
         .replace(/^(<pre id="preresp">)[^]*?(?=<\/pre>)/m, "$1")
         .replace( /^(<div id="cgrid".*?>\n)[^]+?(?=\n<\/div>)/m,
-          "$1" + `  <pre id="quad1A"></pre><pre id="quad1B"></pre>
-  <pre id="quad2A"></pre><pre id="quad2B" contenteditable=true></pre>
-  <ul id="plist" class="is-hidden"></ul>` )
+          '$1  <pre id="quad1A"></pre><pre id="quad1B"></pre>\n  <pre id="quad2A"></pre><pre id="quad2B" contenteditable=true></pre>\n  <ul id="plist" class="is-hidden"></ul>' )
         .replace(/^<div class="cfield">[^]+?\n(?=let _,)/m, "</main>\n<script type=\"text/javascript\">\n(function () {\n'use strict';\n")
-        .replace(/^xsetinp\.addEventListener\([^]+?\n(?=<\/script>)/m, "reEval();\n})();\n")
+        .replace(/^xsetinp\.addEventListener\([^]+?\n(?=<\/script>)/m, "xprsEval();\n})();\n")
       + "\n</html>\n";
     anew.setAttribute('download', "calcjs-draft02.html");
     anew.setAttribute('href', "data:text/html;charset=utf-8," + encodeURIComponent(chtml));
@@ -302,17 +302,17 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, srvc1, srvc2, xpr
     seln.getRangeAt(0).insertNode(document.createTextNode(pste));
     evt.preventDefault();
   },
-  reEval = () => {
+  xprsEval = () => {
     _ = {};
     $_ = {};
     !preresp.innerHTML || (preresp.innerHTML = null);
     xprsns = dinp2.value.replace(/&Tab;/g, "\t").replace(/\$(?=[a-z])/gi, "$$_.").split("\n");
     reslts = xprsns.map(xpr => {
       try {
-        xpr = xpr && ( /^ *(?:[ \w=(),]+=> *|\( *function\b[ \w=(),]+|){/.test(xpr) ? xpr
-          : xpr.replace(/\/\/.*/, "")
-          .replace( /([ =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([A-Za-z]\w*)(?! *=)/g,
-            (m, c1, c2) => window[c2] || !Object.keys(_).some(k => k === c2) ? m : c1 + "_." + c2 )
+        xpr = xpr && xpr
+        .replace( /^(?= *{)|^.*?(?=\(? *function\b[ \w=(),]+{|\(? *(?:\w+|\([ \w=,]*\)) *=>|\/\/|$)/gm,
+          m0 => m0.replace( /([ =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([A-Za-z]\w*)(?! *=)/g,
+            (m1, c1, c2) => window[c2] || !Object.keys(_).some(k => k === c2) ? m1 : c1 + "_." + c2 )
           .replace(/(?: |^)(?=[a-z]\w* *=)/gi, "$&_.") );
         rslt = eval(xpr);
         return rslt == null ? ""
@@ -336,7 +336,7 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, srvc1, srvc2, xpr
     .replace(/\$_\.(\w+)/g, '<span class="dvar">$1</span>');
     q2Bcopy = quad2B.textContent;
   },
-  inpRegen = evt => {
+  dinpRegen = evt => {
     if ( (obj = (evt || {}).target) && ( cfoc = [null, "parentElement", "parentElement", "parentElement"]
       .some(k => /quad2B|plist/.test((obj = obj[k] || obj).id || "")) )
     || quad2B.textContent === q2Bcopy && !/<(?:br|div)>/.test(quad2B.innerHTML) ) {
@@ -366,7 +366,7 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, srvc1, srvc2, xpr
       .replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, "\"")
       .replace(/&amp;&amp;/g, "&&").replace(/&amp;(?:amp;(?!Tab;)|)(?=#?\w+;)/g, "&")
       .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/^\\t/g, "\t"));
-      reEval();
+      xprsEval();
     }
   },
   slistRegen = seln => !window.localforage
@@ -374,26 +374,25 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, srvc1, srvc2, xpr
     if (err) { respShow(err);
     } else {
       xsetlist.innerHTML = "\n      <option></option>"
-      + [keys, srvc1, srvc2].map( (grp, i) => !grp
-        || "\n      <optgroup label=\""
-        + (grp.groupname || "USERdata") + "/\">\n        "
-        + (!i ? grp : Object.keys(grp)).filter(e => e !== "groupname")
-          .map(e => "<option>" + e + "</option>").join("\n        ")
-        + "\n      </optgroup>" ).join("") + "\n";
+      + [["USERdata", ""]].concat(xstor).map( (oe, i) => i && !oe[1] ? ""
+        : "\n      <optgroup label=\"" + oe[0] + "/\">\n        "
+          + (Object.keys(oe[1]) || keys)
+            .map(e => "<option>" + e + "</option>").join("\n        ")
+          + "\n      </optgroup>" ).join("") + "\n";
       if (0) xsetspl.innerHTML = "\n      "
-      + [keys, srvc1, srvc2].map( (grp, i) => !grp
-        || (!i ? grp : Object.keys(grp)).filter(e => e !== "groupname")
-        .map(e => "<option>" + (!i ? "" : grp.groupname + "/") + e + "</option>")
-        .join("\n      ") + "\n" );
+      + [["USERdata", ""]].concat(xstor).map( (oe, i) => i && !oe[1] ? ""
+        : (Object.keys(oe[1]) || keys)
+          .map(e => "<option>" + (!i ? "" : oe[0] + "/") + e + "</option>")
+          .join("\n      ") + "\n" );
       xsetlist.value = seln || "";
-      reEval();
+      xprsEval();
     }
   }),
   xsetLoad = evt => {
     if ( evt.target.id === "xsetlist" && !xsetlist.value
     || evt.target.id === "xsetinp" && !xsetinp.value ) {
       xsetlist.value = xsetinp.value = dinp2.value = "";
-      return reEval();
+      return xprsEval();
     } else if (evt.target.id === "xsetinp" && dinp2.value) {
       return xsetlist.value === xsetinp.value.replace(/.+\//, "")
       || xsetlist.value === xsetinp.value
@@ -405,12 +404,12 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, srvc1, srvc2, xpr
     xsetinp.value && xsetlist.value === xsetinp.value.replace(/.+\//, "")
     || (xsetinp.value = (optg === "USERdata/" ? "" : optg) + xsetlist.value);
     optg && optg !== "USERdata/"
-    ? ( dinp2.value
-      = (( [srvc1, srvc2].find(grp => grp.groupname === optg.replace(/\/$/, ""))
-      || {} )[xsetlist.value] || "").replace(/\n+$|^\n+/g, "") ) && reEval()
+    ? (( dinp2.value
+      = ((xstor.find(oe => oe[0] === optg.replace(/\/$/, "")) || ["", {}])[1][xsetlist.value] || "")
+      .replace(/\n+$|^\n+/g, "") ), xprsEval() )
     : !window.localforage || window.localforage.getItem(xsetinp.value)
       .then(val => dinp2.value = val || "")
-      .then(reEval);
+      .then(xprsEval);
   },
   xsetSave = () => {
     !xsetinp.value || !window.localforage
@@ -422,6 +421,13 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, srvc1, srvc2, xpr
     !optg || optg !== "USERdata/" || !window.localforage
     || window.localforage.removeItem(xsetlist.value, slistRegen);
   };
+if (/^https/.test(window.location.protocol)) {
+  Promise.all(mfiles.map(fnm => import("../../a00/-app-calcjs/" + fnm)))
+  .then( rslts => rslts.forEach( (r, i) =>
+    xstor.push([r.groupname || (1 + i), Object.assign({ "groupname": undefined }, r)]) ))
+  .then(slistRegen)
+  .catch(slistRegen);
+} else { slistRegen(); }
 plist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
   .map((e, i) => `<li>Math.${e}${/^[A-Z]/.test(e) ? "" : "()"}</li>`).join("\n    ")
   + "\n    " + Object.getOwnPropertyNames(Number)
@@ -430,23 +436,15 @@ plist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
   .map((e, i) => `<li>n.${e}${/^constructor/.test(e) ? "" : "()"}</li>`).join("\n    ")
   + "\n    " + ["", ".toLocaleString()", ".toUTCString()", ".toISOString()", ".getTime()"]
   .map(e => `<li>new Date()${e}</li>`).join("\n    ") + "\n  ";
-if (/^http/.test(window.location.protocol)) {
-  import("../../a00/-app-calcjs/cjs-srvc1.mjs")
-  .then(rslt => srvc1 = rslt)
-  .then(() => import("../../a00/-app-calcjs/cjs-srvc2.mjs"))
-  .then(rslt => srvc2 = rslt)
-  .then(slistRegen)
-  .catch(slistRegen);
-} else { slistRegen(); }
 (document.querySelector('#ecorender') || document.body)
-.addEventListener('click', inpRegen);
+.addEventListener('click', dinpRegen);
 btncnew.addEventListener('click', calcNew);
 quad2B.addEventListener('paste', txtPste);
 xsetinp.addEventListener('blur', xsetLoad);
 xsetlist.addEventListener('change', xsetLoad);
 btnsave.addEventListener('click', xsetSave);
 btndel.addEventListener('click', xsetDel);
-reEval();
+xprsEval();
 </script>
 </body>
 </html>
