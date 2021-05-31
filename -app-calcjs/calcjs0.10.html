@@ -314,7 +314,6 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, srvc1, srvc2, xpr
           .replace( /([ <>=([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([A-Za-z]\w*)(?! *=)/g,
             (m, c1, c2) => window[c2] || !Object.keys(_).some(k => k === c2) ? m : c1 + "_." + c2 )
           .replace(/(?: |^)(?=[a-z]\w* *=)/gi, "$&_.") );
-        //xpr = xpr && xpr.replace(/\/\/.*/, "").replace(/(?=(?: |^)[a-z]\w* *=)/gi, "window.");
         rslt = eval(xpr);
         return rslt == null ? ""
           : typeof rslt === 'string' ? rslt.replace(/\n/g, "\\n")
@@ -326,8 +325,7 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, srvc1, srvc2, xpr
     quad1B.innerHTML = Object.keys($_).join("\n");
     quad2A.innerHTML = reslts.join('\n').replace(/\n$/, "\n&nbsp;")
       + '<span id="dinitl">Line-<br />expression<br />RESULTS</span>';
-    quad2B.innerHTML = xprsns.map( xpr => xpr //.replace(/&(?=#?\w+;)/g, "&amp;")
-      .replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    quad2B.innerHTML = xprsns.map( xpr => xpr.replace(/<(?=\/?\w)/g, "&lt;")
       .replace( /\/\/ *(.*?) *$/, (m, c1) =>
       '<span class="dnote">' + c1
         .replace(/(\W|^)_([0-9a-z]+)_(?=$|\W)/gi, "$1<strong><em>$2</em></strong>")
@@ -342,7 +340,6 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, srvc1, srvc2, xpr
       .some(k => /quad2B|plist/.test((obj = obj[k] || obj).id || "")) )
     || quad2B.textContent === q2Bcopy && !/<(?:br|div)>/.test(quad2B.innerHTML) ) {
       if (evt && /plist/.test((evt.target.parentElement || {}).id || "")) {
-      //if (evt && /plist/.test(evt.path[1].id)) {
         seln = window.getSelection();
         seln.removeAllRanges();
         rnge = document.createRange();
@@ -351,9 +348,7 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, srvc1, srvc2, xpr
       }
       !cfoc || !plist.className
       || ( quad2B.innerHTML = dinp2.value
-        .replace(/&(?=#?\w+;)/g, "&amp;").replace(/&&/g, "&amp;&amp;")
-        .replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;") );
-      //quad2B.textContent === q2Bcopy || (quad2A.innerHTML = null);
+        .replace(/&(?=#?\w+;)/g, "&amp;").replace(/<(?=\/?\w)/g, "&lt;") );
       plist.className = cfoc ? "" : "is-hidden";
     } else {
       plist.className = "is-hidden";
