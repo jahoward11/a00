@@ -350,7 +350,8 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, srvc1, srvc2, xpr
         seln.addRange(rnge);
       }
       !cfoc || !plist.className
-      || ( quad2B.innerHTML = dinp2.value.replace(/&(?=#?\w+;)/g, "&amp;")
+      || ( quad2B.innerHTML = dinp2.value
+        .replace(/&(?=#?\w+;)/g, "&amp;").replace(/&&/g, "&amp;&amp;")
         .replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;") );
       //quad2B.textContent === q2Bcopy || (quad2A.innerHTML = null);
       plist.className = cfoc ? "" : "is-hidden";
@@ -365,9 +366,8 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, srvc1, srvc2, xpr
       .replace(/<span class="dvar">(\w+)<\/span>/g, "$$$1")
       .replace(/<span class="dnote">(.+)<\/span> */g, "// $1")
       .replace(/<\/?\b[ \w,:;"#=-]+>|\n+$|^\n+/g, "")
-      .replace(/&gt;/g, ">").replace(/&lt;/g, "<")
-      .replace(/&amp;(?=\w+;)/g, "&")
-      .replace(/&amp;&amp;/g, "&&")
+      .replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, "\"")
+      .replace(/&amp;&amp;/g, "&&").replace(/&amp;(?=#?\w+;)/g, "&")
       .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/^\\t/g, "\t"));
       reEval();
     }
