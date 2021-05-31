@@ -350,7 +350,7 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, srvc1, srvc2, xpr
         seln.addRange(rnge);
       }
       !cfoc || !plist.className
-      || ( quad2B.innerHTML = dinp2.value //.replace(/&(?=\w+;)/g, "&amp;")
+      || ( quad2B.innerHTML = dinp2.value.replace(/&(?=#?\w+;)/g, "&amp;")
         .replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;") );
       //quad2B.textContent === q2Bcopy || (quad2A.innerHTML = null);
       plist.className = cfoc ? "" : "is-hidden";
