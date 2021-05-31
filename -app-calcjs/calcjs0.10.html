@@ -424,7 +424,7 @@ let _, $_, cfoc, obj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
 if (/^https/.test(window.location.protocol)) {
   Promise.all(mfiles.map(fnm => import("../../a00/-app-calcjs/" + fnm)))
   .then( rslts => rslts.forEach( (r, i) =>
-    xstor.push([r.groupname || (1 + i), (() => delete r.groupname, r)()]) ))
+    xstor.push([r.groupname || (1 + i), (() => (delete r.groupname, r))()]) ))
   .then(slistRegen)
   .catch(slistRegen);
 } else { slistRegen(); }
