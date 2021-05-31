@@ -257,8 +257,6 @@ print and (orientation: landscape) and (width: 1024px) { /* iPhone/iPad, chrome/
 </script>
 <script src="../../a00/-res-js/localforage.nopromises.min.js" type="text/javascript"></script>
 <script type="module">
-import * as srvc1 from "../../a00/-app-calcjs/cjs-srvc1.mjs";
-import * as srvc2 from "../../a00/-app-calcjs/cjs-srvc2.mjs";
 let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, xprsns,
   dinput = document.querySelector('#cmain>#dinput'),
   btncnew = document.querySelector('#cmain>#btncnew'),
@@ -282,7 +280,7 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, xprsns,
     let anew = document.createElement('a'),
       chtml = '<!DOCTYPE html>\n<html lang="en">\n'
       + (document.querySelector('#ecorender') || document.documentElement).innerHTML
-        .replace(/^\n|^#cmain \.cfield button,\n[^]+?\n(?=@media print {\n)|^  xsetinp = [^]+?\n(?=  dinp2 = )|^  },\n  slistRegen = [^]+?\n(?=  };\nplist\.innerHTML = )|^slistRegen\(\);\n/gm, "")
+        .replace(/^\n|^#cmain \.cfield button,\n[^]+?\n(?=@media print {\n)|^  xsetinp = [^]+?\n(?=  dinp2 = )|^  },\n  slistRegen = [^]+?\n(?=  };\nplist\.innerHTML = )|^if \(\/\^http\/\.test\([^]+?{ slistRegen\(\); }\n/gm, "")
         .replace(/^(<xmp id="dinput".*?>)[^]*?(?=<\/xmp>)/m, (m, c1) => c1 + "\n" + dinp2.value + "\n")
         .replace(/^(<pre id="preresp">)[^]*?(?=<\/pre>)/m, "$1")
         .replace( /^(<div id="cgrid".*?>\n)[^]+?(?=\n<\/div>)/m,
@@ -328,7 +326,10 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, xprsns,
     quad1B.innerHTML = Object.keys($_).join("\n");
     quad2A.innerHTML = reslts.join('\n').replace(/\n$/, "\n&nbsp;")
       + '<span id="dinitl">Line-<br />expression<br />RESULTS</span>';
-    quad2B.innerHTML = xprsns.map( xpr => xpr.replace( /\/\/ *(.*?) *$/, (m, c1) =>
+    quad2B.innerHTML = xprsns.map( xpr => xpr
+      .replace(/&(?=#?\w+;)/g, "&amp;").replace(/"/g, "&quot;")
+      .replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace( /\/\/ *(.*?) *$/, (m, c1) =>
       '<span class="dnote">' + c1
         .replace(/(\W|^)_([0-9a-z]+)_(?=$|\W)/gi, "$1<strong><em>$2</em></strong>")
         .replace(/(\W|__|^)\*(?=\S)(.*\S)\*(?=$|\W|\1)/g, "$1<em>$2</em>")
@@ -350,7 +351,9 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, xprsns,
         seln.addRange(rnge);
       }
       !cfoc || !plist.className
-      || (quad2B.innerHTML = dinp2.value.replace(/&(?=\w+;)/g, "&amp;"));
+      || ( quad2B.innerHTML = dinp2.value
+        .replace(/&(?=\w+;)/g, "&amp;").replace(/"/g, "&quot;")
+        .replace(/</g, "&lt;").replace(/>/g, "&gt;") );
       //quad2B.textContent === q2Bcopy || (quad2A.innerHTML = null);
       plist.className = cfoc ? "" : "is-hidden";
     } else {
@@ -376,15 +379,15 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, xprsns,
     if (err) { respShow(err);
     } else {
       xsetlist.innerHTML = "\n      <option></option>"
-      + [keys, srvc1, srvc2].map( (grp, i) =>
-        "\n      <optgroup label=\""
+      + [keys, srvc1, srvc2].map( (grp, i) => !grp
+        || "\n      <optgroup label=\""
         + (grp.groupname || "USERdata") + "/\">\n        "
         + (!i ? grp : Object.keys(grp)).filter(e => e !== "groupname")
           .map(e => "<option>" + e + "</option>").join("\n        ")
         + "\n      </optgroup>" ).join("") + "\n";
       if (0) xsetspl.innerHTML = "\n      "
-      + [keys, srvc1, srvc2].map( (grp, i) =>
-        (!i ? grp : Object.keys(grp)).filter(e => e !== "groupname")
+      + [keys, srvc1, srvc2].map( (grp, i) => !grp
+        || (!i ? grp : Object.keys(grp)).filter(e => e !== "groupname")
         .map(e => "<option>" + (!i ? "" : grp.groupname + "/") + e + "</option>")
         .join("\n      ") + "\n" );
       xsetlist.value = seln || "";
@@ -432,7 +435,14 @@ plist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
   .map((e, i) => `<li>n.${e}${/^constructor/.test(e) ? "" : "()"}</li>`).join("\n    ")
   + "\n    " + ["", ".toLocaleString()", ".toUTCString()", ".toISOString()", ".getTime()"]
   .map(e => `<li>new Date()${e}</li>`).join("\n    ") + "\n  ";
-slistRegen();
+if (/^http/.test(window.location.protocol)) {
+  import("../../a00/-app-calcjs/cjs-srvc1.mjs")
+  .then(rslt => srvc1 = rslt)
+  .then(() => import("../../a00/-app-calcjs/cjs-srvc2.mjs"))
+  .then(rslt => srvc2 = rslt)
+  .then(slistRegen)
+  .catch(slistRegen);
+} else { slistRegen(); }
 //document.execCommand("defaultParagraphSeparator", false, null);
 (document.querySelector('#ecorender') || document.body)
 .addEventListener('click', inpRegen);
