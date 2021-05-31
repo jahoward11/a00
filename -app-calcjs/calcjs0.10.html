@@ -326,9 +326,8 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, srvc1, srvc2, xpr
     quad1B.innerHTML = Object.keys($_).join("\n");
     quad2A.innerHTML = reslts.join('\n').replace(/\n$/, "\n&nbsp;")
       + '<span id="dinitl">Line-<br />expression<br />RESULTS</span>';
-    quad2B.innerHTML = xprsns.map( xpr => xpr
-      .replace(/&(?=#?\w+;)/g, "&amp;").replace(/"/g, "&quot;")
-      .replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    quad2B.innerHTML = xprsns.map( xpr => xpr //.replace(/&(?=#?\w+;)/g, "&amp;")
+      .replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
       .replace( /\/\/ *(.*?) *$/, (m, c1) =>
       '<span class="dnote">' + c1
         .replace(/(\W|^)_([0-9a-z]+)_(?=$|\W)/gi, "$1<strong><em>$2</em></strong>")
@@ -351,9 +350,8 @@ let _, $_, cfoc, obj, pste, q2Bcopy, rnge, reslts, rslt, seln, srvc1, srvc2, xpr
         seln.addRange(rnge);
       }
       !cfoc || !plist.className
-      || ( quad2B.innerHTML = dinp2.value
-        .replace(/&(?=\w+;)/g, "&amp;").replace(/"/g, "&quot;")
-        .replace(/</g, "&lt;").replace(/>/g, "&gt;") );
+      || ( quad2B.innerHTML = dinp2.value //.replace(/&(?=\w+;)/g, "&amp;")
+        .replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;") );
       //quad2B.textContent === q2Bcopy || (quad2A.innerHTML = null);
       plist.className = cfoc ? "" : "is-hidden";
     } else {
