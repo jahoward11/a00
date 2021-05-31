@@ -438,7 +438,6 @@ if (/^http/.test(window.location.protocol)) {
   .then(slistRegen)
   .catch(slistRegen);
 } else { slistRegen(); }
-//document.execCommand("defaultParagraphSeparator", false, null);
 (document.querySelector('#ecorender') || document.body)
 .addEventListener('click', inpRegen);
 btncnew.addEventListener('click', calcNew);
