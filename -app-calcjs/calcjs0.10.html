@@ -257,7 +257,7 @@ print and (orientation: landscape) and (width: 1024px) { /* iPhone/iPad, chrome/
 </script>
 <script src="../../a00/-res-js/localforage.nopromises.min.js" type="text/javascript"></script>
 <script type="module">
-let _, $_, cfoc, obj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
+let _, $_, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
   dinput = document.querySelector('#cmain>#dinput'),
   btncnew = document.querySelector('#cmain>#btncnew'),
   preresp = document.querySelector('#cmain>#preresp'),
@@ -328,17 +328,17 @@ let _, $_, cfoc, obj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
     quad2B.innerHTML = xprsns.map( xpr => xpr
       .replace(/&(?=[gl]t;)/g, "&amp;").replace(/<(?=\/?\w)/g, "&lt;")
       .replace( /\/\/ *(.*?) *$/, (m, c1) =>
-      '<span class="dnote">' + c1
+        '<span class="dnote">' + c1
         .replace(/(\W|^)_([0-9a-z]+)_(?=$|\W)/gi, "$1<strong><em>$2</em></strong>")
         .replace(/(\W|__|^)\*(?=\S)(.*\S)\*(?=$|\W|\1)/g, "$1<em>$2</em>")
         .replace(/\b__(.+?)__(?!_)/g, "<strong>$1</strong>")
-      + "</span> " )).join("\n")
+        + "</span> " )).join("\n")
     .replace(/\$_\.(\w+)/g, '<span class="dvar">$1</span>');
     q2Bcopy = quad2B.textContent;
   },
   dinpRegen = evt => {
-    if ( (obj = (evt || {}).target) && ( cfoc = [null, "parentElement", "parentElement", "parentElement"]
-      .some(k => /quad2B|plist/.test((obj = obj[k] || obj).id || "")) )
+    if ( (eobj = (evt || {}).target) && ( cfoc = [null, "parentElement", "parentElement", "parentElement"]
+      .some(k => /quad2B|plist/.test((eobj = eobj[k] || eobj).id || "")) )
     || quad2B.textContent === q2Bcopy && !/<(?:br|div)>/.test(quad2B.innerHTML) ) {
       if (evt && /plist/.test((evt.target.parentElement || {}).id || "")) {
         seln = window.getSelection();
@@ -409,7 +409,8 @@ let _, $_, cfoc, obj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
       .replace(/\n+$|^\n+/g, "") ), xprsEval() )
     : !window.localforage || window.localforage.getItem(xsetinp.value)
       .then(val => dinp2.value = val || "")
-      .then(xprsEval);
+      .then(xprsEval)
+      .catch(respShow);
   },
   xsetSave = () => {
     !xsetinp.value || !window.localforage
@@ -425,7 +426,7 @@ if (/^http/.test(window.location.protocol)) {
   Promise.all(mfiles.map(fnm => import("../../a00/-app-calcjs/" + fnm)))
   .then(rslts => rslts.forEach((r, i) => xstor.push([r.groupname || (1 + i), r])))
   .then(slistRegen)
-  .catch(slistRegen);
+  .catch(respShow);
 } else { slistRegen(); }
 plist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
   .map((e, i) => `<li>Math.${e}${/^[A-Z]/.test(e) ? "" : "()"}</li>`).join("\n    ")
