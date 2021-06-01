@@ -250,7 +250,7 @@ print and (orientation: landscape) and (width: 1024px) { /* iPhone/iPad, chrome/
 </div>
 </main>
 <script type="text/javascript">
-!window.navigator.serviceWorker
+!/^http/.test(window.location.protocol) || !window.navigator.serviceWorker
 || window.navigator.serviceWorker.register("../-app-calcjs/app-sw.js") //, { scope: "../" })
   .then(reg => window.console.log("SW registration succeeded. Scope: " + reg.scope))
   .catch(err => window.console.log("SW registration failed: " + err));
@@ -282,7 +282,7 @@ let _, $_, cfoc, obj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
     let anew = document.createElement('a'),
       chtml = '<!DOCTYPE html>\n<html lang="en">\n'
       + (document.querySelector('#ecorender') || document.documentElement).innerHTML
-        .replace(/^\n|^#cmain \.cfield button,\n[^]+?\n(?=@media print {\n)|^  xstor = \[\],[^]+?\n(?=  dinp2 = )|^  },\n  slistRegen = [^]+?\n(?=  };\nif \(\/\^https)|^if \(\/\^https[^]+?{ slistRegen\(\); }\n/gm, "")
+        .replace(/^\n|^#cmain \.cfield button,\n[^]+?\n(?=@media print {\n)|^  xstor = \[\],[^]+?\n(?=  dinp2 = )|^  },\n  slistRegen = [^]+?\n(?=  };\nif \(\/\^http)|^if \(\/\^http[^]+?{ slistRegen\(\); }\n/gm, "")
         .replace(/^(<xmp id="dinput".*?>)[^]*?(?=<\/xmp>)/m, (m, c1) => c1 + "\n" + dinp2.value + "\n")
         .replace(/^(<pre id="preresp">)[^]*?(?=<\/pre>)/m, "$1")
         .replace( /^(<div id="cgrid".*?>\n)[^]+?(?=\n<\/div>)/m,
@@ -421,7 +421,7 @@ let _, $_, cfoc, obj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
     !optg || optg !== "USERdata/" || !window.localforage
     || window.localforage.removeItem(xsetlist.value, slistRegen);
   };
-if (/^https/.test(window.location.protocol)) {
+if (/^http/.test(window.location.protocol)) {
   Promise.all(mfiles.map(fnm => import("../../a00/-app-calcjs/" + fnm)))
   .then(rslts => rslts.forEach((r, i) => xstor.push([r.groupname || (1 + i), r])))
   .then(slistRegen)
