@@ -22,7 +22,7 @@ z = z0 = -250
  // - Interactive: rerun a trial -- giving new initial values
  // - Reusable: copy and paste a custom expression or whole block
  // - Printable: make clean print-outs on standard, letter-size paper
- // - Lightweight: leverage minimal, shared code across major browsers
+ // - Lightweight: minimally leverage shared code across major browsers
  // - Conventional: reinforce standards in notation/methods of science
 
 // *How?*
@@ -32,7 +32,7 @@ z = z0 = -250
    // a standalone, interactive document (web app) -- to be kept and/or
    // shared -- by tapping the *down-bar* icon at the top right corner.
  // - Alternatively, if the calculator is generated within *__E__collabs*,
-   // manipulate data within the *SOURCE2* field of the __*File Edit UI*__
+   // manipulate data within the *SOURCE2* field of the __*File Edit*__
    // screen. Note that when saving any changes made to calc data,
    // using (or, just focusing) the *SOURCE2* field is necessary.
  // - When the *ENTRY* field is focused, JavaScript math functions
