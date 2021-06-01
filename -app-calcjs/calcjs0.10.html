@@ -376,12 +376,12 @@ let _, $_, cfoc, obj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
       xsetlist.innerHTML = "\n      <option></option>"
       + [["USERdata", ""]].concat(xstor).map( (oe, i) => i && !oe[1] ? ""
         : "\n      <optgroup label=\"" + oe[0] + "/\">\n        "
-          + (Object.keys(oe[1]) || keys).filter(e => e !== "groupname")
+          + (!i ? keys : Object.keys(oe[1])).filter(e => e !== "groupname")
             .map(e => "<option>" + e + "</option>").join("\n        ")
           + "\n      </optgroup>" ).join("") + "\n";
       if (0) xsetspl.innerHTML = "\n      "
       + [["USERdata", ""]].concat(xstor).map( (oe, i) => i && !oe[1] ? ""
-        : (Object.keys(oe[1]) || keys).filter(e => e !== "groupname")
+        : (!i ? keys : Object.keys(oe[1])).filter(e => e !== "groupname")
           .map(e => "<option>" + (!i ? "" : oe[0] + "/") + e + "</option>")
           .join("\n      ") + "\n" );
       xsetlist.value = seln || "";
