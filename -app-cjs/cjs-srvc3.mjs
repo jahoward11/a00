@@ -20,7 +20,7 @@ const homeloan1 = `
  // dend | ending date
 
 // __GIVEN VALUES (key0)__
- rate0 = .035 / 12  //&Tab;yearly interest rate / 12 mos/yr
+ rate0 = 0.035 / 12  //&Tab;yearly interest rate / 12 mos/yr
  ppmt0 = 0
 
  pval0 = 250000
