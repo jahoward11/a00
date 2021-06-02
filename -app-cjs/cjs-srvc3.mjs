@@ -1,6 +1,6 @@
 /* JavaScript module */
 
-const groupname = "finances"
+const groupname = "finance"
 
 const homeloan1 = `
 // __*Home Loan Scenarios*__
