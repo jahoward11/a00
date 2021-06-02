@@ -3,9 +3,12 @@
 const cacheName = "calcjs-v00.10",
   cacheKeeplist = [cacheName],
   appShellFiles = [
-    //"../-app-calcjs/calcjs0.10.html",
-    "../-app-calcjs/cjs-srvc1.mjs",
-    "../-app-calcjs/cjs-srvc2.mjs",
+    "../-app-cjs/calcjs0.html",
+    "../-app-cjs/cjs-srvc1.mjs",
+    "../-app-cjs/cjs-srvc2.mjs",
+    "../-app-cjs/cjs-srvc3.mjs",
+    "../-app-cjs/cjs-srvc4.mjs",
+    "../-app-cjs/cjs-srvc5.mjs",
     "../-res-js/localforage.nopromises.min.js"
   ],
   contentToCache = [],
