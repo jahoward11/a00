@@ -31,7 +31,7 @@ self.addEventListener('fetch', e => {
     : caches.match(e.request).then(rsp1 => {
       let tsfetch = Date.now();
       if ( rsp1 && ( !navigator.onLine
-      || !/\/a00\/-app-calcjs\/[\w.-]+\??$/.test(e.request.url) )) {
+      || !/\/a00\/-app-cjs\/[\w.-]+\??$/.test(e.request.url) )) {
         return rsp1;
       } else {
         return fetch(e.request).then(rsp2 =>
