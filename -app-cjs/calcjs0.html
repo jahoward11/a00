@@ -251,7 +251,7 @@ print and (orientation: landscape) and (width: 1024px) { /* iPhone/iPad, chrome/
 </main>
 <script type="text/javascript">
 !/^http/.test(window.location.protocol) || !window.navigator.serviceWorker
-|| window.navigator.serviceWorker.register("../-app-calcjs/app-sw.js") //, { scope: "../" })
+|| window.navigator.serviceWorker.register("../-app-cjs/app-sw.js") //, { scope: "../" })
   .then(reg => window.console.log("SW registration succeeded. Scope: " + reg.scope))
   .catch(err => window.console.log("SW registration failed: " + err));
 </script>
@@ -423,7 +423,7 @@ let _, $_, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
     || window.localforage.removeItem(xsetlist.value, slistRegen);
   };
 if (/^http/.test(window.location.protocol)) {
-  Promise.all(mfiles.map(fnm => import("../../a00/-app-calcjs/" + fnm)))
+  Promise.all(mfiles.map(fnm => import("../../a00/-app-cjs/" + fnm)))
   .then(rslts => rslts.forEach((r, i) => xstor.push([r.groupname || (1 + i), r])))
   .then(slistRegen)
   .catch(respShow);
