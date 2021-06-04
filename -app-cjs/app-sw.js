@@ -30,14 +30,14 @@ self.addEventListener('fetch', e => {
     !caches ? fetch(e.request)
     : caches.match(e.request).then(rsp1 => {
       let tsfetch = Date.now();
-      if ( rsp1 && ( !navigator.onLine
+      if ( rsp1.ok && ( !navigator.onLine
       || !/\/a00\/-app-cjs\/[\w.-]+\??$/.test(e.request.url) )) {
         return rsp1;
       } else {
         return fetch(e.request).then(rsp2 =>
           !rsp2.ok || e.request.method !== 'GET' || /\?rev=/.test(e.request.url)
           || !/\/a00\/[\w/.-]+\??$/.test(e.request.url)
-          ? rsp2
+          ? rsp1.ok && rsp1 || rsp2
           : caches.open(cacheName).then(cache => {
               console.log( "[Service Worker] Caching new resource: " + e.request.url
                 + "\n  (Time elapsed since SW install: "
