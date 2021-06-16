@@ -1,9 +1,4 @@
-/* JavaScript module */
-
-const groupname = "finance"
-
-const homeloan1 = `
-// __*Home Loan Scenarios*__
+// __Home Loan Scenarios__
 
 // __KEY__
  // rate | monthly (periodic) interest rate
@@ -68,8 +63,3 @@ const homeloan1 = `
    // - the given monthly payment (_ppmt0_)
    // - the given, beginning loan value (_pval0_)
 // &nbsp;
-`;
-
-export {
-  groupname, homeloan1
-};
