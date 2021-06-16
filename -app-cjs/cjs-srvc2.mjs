@@ -1,31 +1,26 @@
-/* JavaScript module */
-
-const groupname = "engineering"
-
-const dimensions = `
 // __Common Dimensions of Interest__
 // - _length_ of a side, distance or boundary
-// - _perimeter_ of any shape
-  // (e.g., _circumference_ of a circle)
-// - surface _area_ (e.g., of a carpeted floor)
-// - _volume_ of space or an object
+// - _Perimeter_ of any shape (a length)
+// - _Circumference_ of a circle (a length &amp; a perimeter)
+// - surface _Area_ (e.g., of a carpeted floor or painted wall)
+// - _Volume_ of space or object
 
 // __Related Formulas__
-// *Pythagorean theorem (for a right-triangle)*
+// *Pythagorean theorem (for a right triangle)*
  // Math.pow(a, 2) + Math.pow(b, 2) = Math.pow(c, 2)
 
-// *trigonometric ratios (for a right-triangle)*
+// *trigonometric ratios (for a right triangle)*
  // Math.sin(g1) = b / c
  // Math.cos(g1) = a / c
  // Math.tan(g1) = b / a
 
 // __Note__
-// - *Units must all be the same (e.g., all in inches, or all in km, etc.)*
+// - Length units must all be the same (e.g., all in inches, or all in km, etc.)
 
 // __KEY__
  // l  | rectangle length
- // w  | rectangle width
- // h  | rectangular solid height
+ // w  | rectangle width (a length)
+ // h  | rectangular solid height (a length)
 
  // a  | right-triangle adjacent-side length
  // b  | right-triangle opposite-side length
@@ -48,17 +43,17 @@ const dimensions = `
  // rn | cylinder/cone radius length
  // hn | cylinder/cone height length
 
- // Pr | perimeter of a rectangle
+ // Pr | perimeter of a rectangle (a length)
  // Ar | area of a rectangle
 
- // Pt | perimeter of a triangle
+ // Pt | perimeter of a triangle (a length)
  // At | area of a triangle
 
  // Ap | area of a parallelogram
 
  // Az | area of a trapezoid
 
- // C  | circumference of a circle
+ // C  | circumference of a circle (a length)
  // Ac | area of a circle
 
  // As | surface area of a rectangular solid
@@ -104,8 +99,9 @@ const dimensions = `
 
  $Az = 0.5 * hz * (b1 + b2) // sq-ft
 
- $d = 2 * r // ft
  $C = 2 * Math.PI * r // ft
+ d = 2 * r // ft
+ $C = Math.PI * d // ft
  $Ac = Math.PI * Math.pow(r, 2) // sq-ft
 
  $As = 2 * l * w + 2 * l * h + 2 * h * w // sq-ft
@@ -114,9 +110,4 @@ const dimensions = `
  $Vy = 2 * Math.PI * Math.pow(rn, 2) * hn // cu-ft
 
  $Vo = (1 / 3) * Math.PI * Math.pow(rn, 2) * hn // cu-ft
-
-`;
-
-export {
-  groupname, dimensions
-};
+// &nbsp;
