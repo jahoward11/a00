@@ -1,3 +1,8 @@
+/* JavaScript module */
+
+const groupname = "engineering"
+
+const dimensions = `
 // __Common Dimensions of Interest__
 // - _length_ of a side, distance or boundary
 // - _Perimeter_ of any shape (a length)
@@ -111,3 +116,8 @@
 
  $Vo = (1 / 3) * Math.PI * Math.pow(rn, 2) * hn // cu-ft
 // &nbsp;
+`;
+
+export {
+  groupname, dimensions
+};
