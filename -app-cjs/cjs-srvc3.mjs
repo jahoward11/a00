@@ -5,7 +5,7 @@ const groupname = "finance"
 const homeloan1 = `
 // __*Home Loan Scenarios*__
 
-// __KEYS__
+// __KEY__
  // rate | monthly (periodic) interest rate
  // ppmt | monthly (periodic) payment amount
 
@@ -19,7 +19,7 @@ const homeloan1 = `
  // dbeg | beginning date
  // dend | ending date
 
-// __GIVEN VALUES (key0)__
+// __GIVEN VALUE (key0)__
  rate0 = 0.035 / 12  //&Tab;yearly interest rate / 12 mos/yr
  ppmt0 = 0
 
@@ -30,7 +30,7 @@ const homeloan1 = `
  nper0 = 30 * 12   //&Tab;number of years * 12 mos/yr
  dbeg0 = new Date("2021-07-01")
 
-// __CALCULATED VALUES (key1)__
+// __CALCULATED VALUE (key1)__
  ppmt1 = rate0 * pval0 / [1 - Math.pow(1 + rate0, -nper0)]
  $ppmt1 = !nper0 ? "" : (Math.round(ppmt1 * 100) / 100).toFixed(2)
 
