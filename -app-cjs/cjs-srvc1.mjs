@@ -1,3 +1,8 @@
+/* JavaScript module */
+
+const groupname = "APPguide"
+
+const calcdemo1 = `
  p = 5
  q = 32
  r = Math.random()
@@ -143,3 +148,8 @@
  z.toString(2)	// Converts a number to a string; _z_.toString(radix), radix: 2, 8, 16
  z.valueOf()	// Returns the primitive value of a number
 // &nbsp;
+`;
+
+export {
+  groupname, calcdemo1
+};
