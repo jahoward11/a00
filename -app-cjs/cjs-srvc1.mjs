@@ -1,15 +1,10 @@
-/* JavaScript module */
+ p = 5
+ q = 32
+ r = Math.random()
 
-const groupname = "APPguide"
-
-const calcdemo1 = `
-p = 5
-q = 32
-r = Math.random()
-
-x = x0 = 0.5
-y = y0 = 3
-z = z0 = -250
+ x = x0 = 0.5
+ y = y0 = 3
+ z = z0 = -250
 
 
 // __Demo and Use Description__
@@ -19,49 +14,49 @@ z = z0 = -250
 // and to display/share such in a portable, HTML file (web app).
 
 // *Why?*
- // - Interactive: rerun a trial -- giving new initial values
- // - Reusable: copy and paste a custom expression or whole block
- // - Printable: make clean print-outs on standard, letter-size paper
- // - Lightweight: minimally leverage shared code across major browsers
- // - Conventional: reinforce standards in notation/methods of science
+// - Interactive: rerun a trial -- giving new initial values
+// - Reusable: copy and paste a custom expression or whole block
+// - Printable: make clean print-outs on standard, letter-size paper
+// - Lightweight: minimally leverage shared code across major browsers
+// - Conventional: reinforce standards in notation/methods of science
 
 // *How?*
- // - Enter data (like, mathematical expressions) into the large,
-   // light-colored quadrant only -- the *ENTRY* field.
- // - After composing a complete expression set, generate and download
-   // a standalone, interactive document (web app) -- to be kept and/or
-   // shared -- by tapping the *down-bar* icon at the top right corner.
- // - Alternatively, if the calculator is generated within *__E__collabs*,
-   // manipulate data within the *SOURCE2* field of the __*File Edit*__
-   // screen. Note that when saving any changes made to calc data,
-   // using (or, just focusing) the *SOURCE2* field is necessary.
- // - When the *ENTRY* field is focused, JavaScript math functions
-   // appear and are listed in the left column -- for conveniently
-   // copy-pasting into the *ENTRY* field. (See use descriptions below.)
- // - When the *ENTRY* field is de-focused, line-item results appear
-   // automatically in the *RESULTS* column -- to the left of each
-   // line that contains a valid expression.
- // - Create a comment, like this one, by prepending the text
-   // with a double slash (e.g., //comment).
+// - Enter data (like, mathematical expressions) into the large,
+  // light-colored quadrant only -- the *ENTRY* field.
+// - After composing a complete expression set, generate and download
+  // a standalone, interactive document (web app) -- to be kept and/or
+  // shared -- by tapping the *down-bar* icon at the top right corner.
+// - Alternatively, if the calculator is generated within *__E__collabs*,
+  // manipulate data within the *SOURCE2* field of the __*File Edit*__
+  // screen. Note that when saving any changes made to calc data,
+  // using (or, just focusing) the *SOURCE2* field is necessary.
+// - When the *ENTRY* field is focused, JavaScript math functions
+  // appear and are listed in the left column -- for conveniently
+  // copy-pasting into the *ENTRY* field. (See use descriptions below.)
+// - When the *ENTRY* field is de-focused, line-item results appear
+  // automatically in the *RESULTS* column -- to the left of each
+  // line that contains a valid expression.
+// - Create a comment, like this one, by prepending the text
+  // with a double slash (e.g., //comment).
 &Tab;// Indent, like this, with "*&amp;Tab;*"
 &Tab;  // ... and/or like this, with ordinary spaces.
- // - Make commented text __bold__ by wrapping it
-   // in double underscores (e.g., _&zwj;_bolded text_&zwj;_).
- // - Make commented text *italicized* by wrapping it
-   // in single asterisks (e.g., &lowast;italicized text&lowast;).
- // - Make a commented variable _pop_ by wrapping it alone
-   // in single underscores (e.g., _&zwj;pop&zwj;_).
+// - Make commented text __bold__ by wrapping it
+  // in double underscores (e.g., _&zwj;_bolded text_&zwj;_).
+// - Make commented text *italicized* by wrapping it
+  // in single asterisks (e.g., &lowast;italicized text&lowast;).
+// - Make a commented variable _pop_ by wrapping it alone
+  // in single underscores (e.g., _&zwj;pop&zwj;_).
 
-$RndmExpn = Math.ceil(r * 10)
+ $RndmExpn = Math.ceil(r * 10)
 
- // - Create a __$-variable__ by prepending an ordinary variable
-   // with a dollar symbol (e.g., "$&zwj;x1", "$&zwj;RndmExpn").
-   // Use: Every __$-variable__ will automatically be bolded --
-   // and will also appear in the *FINAL VALUES* row, at the top.
+// - Create a __$-variable__ by prepending an ordinary variable
+  // with a dollar symbol (e.g., "$&zwj;x1", "$&zwj;RndmExpn").
+  // Use: Every __$-variable__ will automatically be bolded --
+  // and will also appear in the *FINAL VALUES* row, at the top.
 
-$x1 = Math.pow(x0, $RndmExpn)
-$y1 = Math.pow(y0, $RndmExpn)
-$z1 = Math.pow(z0, $RndmExpn)
+ $x1 = Math.pow(x0, $RndmExpn)
+ $y1 = Math.pow(y0, $RndmExpn)
+ $z1 = Math.pow(z0, $RndmExpn)
 
 
 
@@ -147,8 +142,4 @@ $z1 = Math.pow(z0, $RndmExpn)
 		// Formats a number to _p_ length
  z.toString(2)	// Converts a number to a string; _z_.toString(radix), radix: 2, 8, 16
  z.valueOf()	// Returns the primitive value of a number
-`;
-
-export {
-  groupname, calcdemo1
-};
+// &nbsp;
