@@ -257,7 +257,7 @@ print and (orientation: landscape) and (width: 1024px) { /* iPhone/iPad, chrome/
 </script>
 <script src="../../a00/-res-js/localforage.nopromises.min.js" type="text/javascript"></script>
 <script type="module">
-let _, $_, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
+let $, _, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
   dinput = document.querySelector('#cmain>#dinput'),
   btncnew = document.querySelector('#cmain>#btncnew'),
   preresp = document.querySelector('#cmain>#preresp'),
@@ -273,7 +273,7 @@ let _, $_, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
   btnsave = document.querySelector('#cmain #btnsave'),
   btndel = document.querySelector('#cmain #btndel'),
   xsetspl = document.querySelector('#cmain #xsetspl'),
-  dinp2 = document.querySelector('#ecoesp0 #jdvdft>#srcpanes>.textarea:nth-of-type(2)')
+  dinp2 = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
     || { value: dinput.innerHTML.replace(/\n+$|^\n+/g, "") },
   respShow = resp => preresp.innerHTML
     += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor
@@ -303,43 +303,43 @@ let _, $_, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
     evt.preventDefault();
   },
   xprsEval = () => {
+    $ = {};
     _ = {};
-    $_ = {};
     !preresp.innerHTML || (preresp.innerHTML = null);
-    xprsns = dinp2.value.replace(/&Tab;/g, "\t").replace(/\$(?=[a-z])/gi, "$$_.").split("\n");
+    xprsns = dinp2.value.replace(/&Tab;/g, "\t").replace(/\$(?=[a-zΑ-ω])/gi, "$$.").split("\n");
     reslts = xprsns.map(xpr => {
       try {
         xpr = xpr && xpr
-        .replace( /^(?= *{)|^.*?(?=\(? *function\b[ \w=(),]+{|\(? *(?:\w+|\([ \w=,]*\)) *=>|\/\/|$)/gm,
-          m0 => m0.replace( /([ =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([A-Za-z]\w*)(?! *=)/g,
+        .replace( /^(?= *{)|^.*?(?=\(? *function\b[ \w=(),Α-ω]+{|\(? *(?:[\wΑ-ω]+|\([ \w=,Α-ω]*\)) *=>|\/\/|$)/gm,
+          m0 => m0.replace( /([ =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([A-Za-zΑ-ω]\w*)(?! *=)/g,
             (m1, c1, c2) => window[c2] || !Object.keys(_).some(k => k === c2) ? m1 : c1 + "_." + c2 )
-          .replace(/(?: |^)(?=[a-z]\w* *=)/gi, "$&_.") );
+          .replace(/(?: |^)(?=[a-zΑ-ω]\w* *=)/gi, "$&_.") );
         rslt = eval(xpr);
         return rslt == null ? ""
           : typeof rslt === 'string' ? rslt.replace(/\n/g, "\\n")
           : rslt.toString().replace(/\s+/g, " ");
       } catch (err) { respShow(err); return err; }
     });
-    quad1A.innerHTML = Object.values($_).join("\n").replace(/\n$/, "\n&nbsp;")
+    quad1A.innerHTML = Object.values($).join("\n").replace(/\n$/, "\n&nbsp;")
       + '<span id="dfinal">$-variables<br />FINAL<br />VALUES</span>';
-    quad1B.innerHTML = Object.keys($_).join("\n");
+    quad1B.innerHTML = Object.keys($).join("\n");
     quad2A.innerHTML = reslts.join('\n').replace(/\n$/, "\n&nbsp;")
       + '<span id="dinitl">Line-<br />expression<br />RESULTS</span>';
     quad2B.innerHTML = xprsns.map( xpr => xpr
-      .replace(/&(?=[gl]t;)/g, "&amp;").replace(/<(?=\/?\w)/g, "&lt;")
+      .replace(/&(?=[gl]t;)/gi, "&amp;").replace(/<(?=\/?\w)/g, "&lt;")
       .replace( /\/\/ *(.*?) *$/, (m, c1) =>
         '<span class="dnote">' + c1
-        .replace(/(\W|^)_([0-9a-z]+)_(?=$|\W)/gi, "$1<strong><em>$2</em></strong>")
+        .replace(/(\W|^)_([0-9a-zΑ-ω]+)_(?=$|\W)/gi, "$1<strong><em>$2</em></strong>")
         .replace(/(\W|__|^)\*(?=\S)(.*\S)\*(?=$|\W|\1)/g, "$1<em>$2</em>")
         .replace(/\b__(.+?)__(?!_)/g, "<strong>$1</strong>")
         + "</span> " )).join("\n")
-    .replace(/\$_\.(\w+)/g, '<span class="dvar">$1</span>');
+    .replace(/\$\.([\wΑ-ω]+)/g, '<span class="dvar">$1</span>');
     q2Bcopy = quad2B.textContent;
   },
   dinpRegen = evt => {
     if ( (eobj = (evt || {}).target) && ( cfoc = [null, "parentElement", "parentElement", "parentElement"]
       .some(k => /quad2B|plist/.test((eobj = eobj[k] || eobj).id || "")) )
-    || quad2B.textContent === q2Bcopy && !/<(?:br|div)>/.test(quad2B.innerHTML) ) {
+    || quad2B.textContent === q2Bcopy && !/<(?:br|div)>/i.test(quad2B.innerHTML) ) {
       if (evt && /plist/.test((evt.target.parentElement || {}).id || "")) {
         seln = window.getSelection();
         seln.removeAllRanges();
@@ -349,22 +349,22 @@ let _, $_, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
       }
       !cfoc || !plist.className
       || ( quad2B.innerHTML = dinp2.value
-        .replace(/&(?=#?\w+;)/g, "&amp;").replace(/&(?=amp;[gl]t;)/g, "&amp;")
+        .replace(/&(?=#?\w+;)/g, "&amp;").replace(/&(?=amp;[gl]t;)/gi, "&amp;")
         .replace(/<(?=\/?\w)/g, "&lt;") );
       plist.className = cfoc ? "" : "is-hidden";
     } else {
       plist.className = "is-hidden";
       dinp2.value = quad2B.innerHTML
       .replace(/<(\w+)>\s*<\/\1>/g, "")
-      .replace(/(?:(?:<br>|)<\/div>|<br>|)<div><br><\/div>|(?:(?:<br>|)<\/div>|<br>|\n|)<div>|<br>/g, "\n")
-      .replace(/<strong><em>(\w+)<\/em><\/strong>/g, "_$1_")
-      .replace(/<\/?em>/g, "*")
-      .replace(/<\/?strong>/g, "__")
-      .replace(/<span class="dvar">(\w+)<\/span>/g, "$$$1")
-      .replace(/<span class="dnote">(.+)<\/span> */g, "// $1")
+      .replace(/(?:(?:<br>|)<\/div>|<br>|)<div><br><\/div>|(?:(?:<br>|)<\/div>|<br>|\n|)<div>|<br>/gi, "\n")
+      .replace(/<strong><em>([\wΑ-ω]+)<\/em><\/strong>/gi, "_$1_")
+      .replace(/<\/?em>/gi, "*")
+      .replace(/<\/?strong>/gi, "__")
+      .replace(/<span class="dvar">([\wΑ-ω]+)<\/span>/gi, "$$$1")
+      .replace(/<span class="dnote">(.+)<\/span> */gi, "// $1")
       .replace(/<\/?\b[ \w,:;"#=-]+>|\n+$|^\n+/g, "")
-      .replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, "\"")
-      .replace(/&amp;&amp;/g, "&&").replace(/&amp;(?:amp;(?!Tab;)|)(?=#?\w+;)/g, "&")
+      .replace(/&gt;/gi, ">").replace(/&lt;/gi, "<").replace(/&quot;/gi, "\"")
+      .replace(/&amp;&amp;/gi, "&&").replace(/&amp;(?:amp;(?!Tab;)|)(?=#?\w+;)/gi, "&")
       .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/^\\t/g, "\t"));
       xprsEval();
     }
