@@ -2,7 +2,7 @@
 
 const groupname = "engineering"
 
-const dimensions = `
+const dimensions1 = `
 // __Common Dimensions of Interest__
 // - _length_ of a side, distance or boundary
 // - _Perimeter_ of any shape (a length)
@@ -118,6 +118,42 @@ const dimensions = `
 // &nbsp;
 `;
 
+const triangles1 = `
+// __Right Triangle, Basic Metrics__
+ //_θ_ | theta (reference angle, in radians)
+ //_a_ | adjacent side (to theta)
+ //_b_ | opposite side (to theta)
+ //_c_ | hypotenuse
+
+ //sin(_θ_) = _b_ / _c_
+ //cos(_θ_) = _a_ / _c_
+ //tan(_θ_) = _b_ / _a_ = sin(_θ_) / cos(_θ_)
+
+θ1 = Math.PI / 6
+θ2 = Math.PI / 4
+θ3 = Math.PI / 3
+
+c = 1
+
+b1 = Math.sin(θ1) * c
+a1 = Math.cos(θ1) * c
+Math.sqrt(3) / 2
+
+b2 = Math.sin(θ2) * c
+a2 = Math.cos(θ2) * c
+Math.sqrt(2) / 2
+
+Math.sqrt(3) / 2
+b3 = Math.sin(θ3) * c
+a3 = Math.cos(θ3) * c
+
+$θ = Math.round(θ3 * 1000) / 1000
+$a = Math.round(a3 * 1000) / 1000
+$b = Math.round(b3 * 1000) / 1000
+$c = c
+// &nbsp;
+`;
+
 export {
-  groupname, dimensions
+  groupname, dimensions1, triangles1
 };
