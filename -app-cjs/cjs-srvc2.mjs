@@ -1,3 +1,8 @@
+/* JavaScript module */
+
+const groupname = "engineering"
+
+const dimensions1 = `
 // __Common Dimensions of Interest__
 // - _length_ of a side, distance or boundary
 // - _Perimeter_ of any shape (a length)
@@ -115,3 +120,45 @@
  
  $Vo = (1 / 3) * Math.PI * Math.pow(rn, 2) * hn // cu-ft
 // &nbsp;
+`;
+
+const triangles1 = `
+// __Right Triangle, Basic Metrics__
+ // _θ_ | theta (reference angle, in radians)
+ // _a_ | adjacent side (to theta)
+ // _b_ | opposite side (to theta)
+ // _c_ | hypotenuse
+
+ // sin _θ_ = _b_ / _c_
+ // cos _θ_ = _a_ / _c_
+ // tan _θ_ = _b_ / _a_ = sin _θ_ / cos _θ_
+ // _a_&sup2; + _b_&sup2; = _c_&sup2;
+
+θ1 = Math.PI / 6 &Tab;// triangle 1 theta
+θ2 = Math.PI / 4 &Tab;// triangle 2 theta
+θ3 = Math.PI / 3 &Tab;// triangle 3 theta
+
+c = 1
+
+b1 = Math.sin(θ1) * c
+a1 = Math.cos(θ1) * c
+Math.sqrt(3) / 2 &Tab;// (note: same value as _a1_)
+
+b2 = Math.sin(θ2) * c
+a2 = Math.cos(θ2) * c
+Math.sqrt(2) / 2 &Tab;// (note: same value as _a2_ & _b2_)
+
+b3 = Math.sin(θ3) * c
+a3 = Math.cos(θ3) * c
+Math.sqrt(1) / 2 &Tab;// (note: same value as _a3_)
+
+ $θ3 = Math.round(θ3 * 1000) / 1000
+ $a3 = Math.round(a3 * 1000) / 1000
+ $b3 = Math.round(b3 * 1000) / 1000
+ $c3 = c
+// &nbsp;
+`;
+
+export {
+  groupname, dimensions1, triangles1
+};
