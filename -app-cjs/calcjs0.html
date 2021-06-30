@@ -335,7 +335,7 @@ let $, _, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
         .replace(/\b__(.+?)__(?!_)/g, "<strong>$1</strong>")
         + "</span> " )).join("\n")
     .replace(/\$\.([\wΑ-ω]+)/g, '<span class="dvar">$1</span>')
-    .replace( /(\.|)([a-zΑ-ω]+)(\d)(?![\wΑ-ω])/gi,
+    .replace( /([.&]|)([a-zΑ-ω]+)(\d)(?![0-9a-zΑ-ω])/gi,
       (m, c1, c2, c3) => c1 ? m : c2 + String.fromCodePoint(8320 + +c3) );
     q2Bcopy = quad2B.textContent;
   },
