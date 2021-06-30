@@ -23,7 +23,7 @@ const dimensions1 = `
 
 // __Note__
 // - Length units of a formula must all be the same
-//   (e.g., all in inches, or all in km, etc.)
+  // (e.g., all in inches, or all in km, etc.).
 
 // __KEY__
  // _l_  | rectangle length
@@ -96,11 +96,10 @@ const dimensions1 = `
  hn = 5 // ft
 
 // __CALCULATED VALUE__
- θ = Math.asin(b / c) // rad
- 
  $Pr = 2 * l + 2 * w // ft
  $Ar = l * w // sq-ft
  
+ θ = Math.asin(b / c) // rad
  $Pt = a + b + c // ft
  $At = 0.5 * bt * ht // sq-ft
  
