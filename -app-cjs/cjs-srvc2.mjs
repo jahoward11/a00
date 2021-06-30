@@ -12,145 +12,122 @@ const dimensions1 = `
 
 // __Related Formulas__
 // *Pythagorean theorem (for a right triangle)*
- // Math.pow(a, 2) + Math.pow(b, 2) = Math.pow(c, 2)
+ // _a_&sup2; + _b_&sup2; = _c_&sup2;
+ // _a_&ast;&ast;2 + _b_&ast;&ast;2 == _c_&ast;&ast;2 [recomposed with JS exponentiation operator]
+ // Math.pow(_a_, 2) + Math.pow(_b_, 2) == Math.pow(_c_, 2)
 
-// *trigonometric ratios (for a right triangle)*
- // Math.sin(g1) = b / c
- // Math.cos(g1) = a / c
- // Math.tan(g1) = b / a
+// *Trigonometric ratios (for a right triangle)*
+ // sin _θ_ = _b_ / _c_
+ // cos _θ_ = _a_ / _c_
+ // tan _θ_ = _b_ / _a_ = sin _θ_ / cos _θ_
 
 // __Note__
-// - Length units must all be the same (e.g., all in inches, or all in km, etc.)
+// - Length units of a formula must all be the same
+//   (e.g., all in inches, or all in km, etc.)
 
 // __KEY__
- // l  | rectangle length
- // w  | rectangle width (a length)
- // h  | rectangular solid height (a length)
-
- // a  | right-triangle adjacent-side length
- // b  | right-triangle opposite-side length
- // c  | right-triangle hypotenuse-side length
- // g1 | right-triangle reference angle (in radians)
-
- // bt | triangle base length
- // ht | triangle height length
-
- // bp | parallelogram base length
- // hp | parallelogram height length
-
- // b1 | trapezoid base1 length
- // b2 | trapezoid base2 length
- // hz | trapezoid height length
-
- // r  | circle radius length
- // d  | circle diameter length
-
- // rn | cylinder/cone radius length
- // hn | cylinder/cone height length
-
- // Pr | perimeter of a rectangle (a length)
- // Ar | area of a rectangle
-
- // Pt | perimeter of a triangle (a length)
- // At | area of a triangle
-
- // Ap | area of a parallelogram
-
- // Az | area of a trapezoid
-
- // C  | circumference of a circle (a length)
- // Ac | area of a circle
-
- // As | surface area of a rectangular solid
- // Vs | volume of a rectangular solid
-
- // Vy | volume of a cylinder
-
- // Vo | volume of a cone
+ // _l_  | rectangle length
+ // _w_  | rectangle width (a length)
+ // _h_  | rectangular solid height (a length)
+ // _a_  | right-triangle adjacent-side length
+ // _b_  | right-triangle opposite-side length
+ // _c_  | right-triangle hypotenuse-side length
+ // _θ_  | right-triangle reference angle, theta (in radians)
+ // _bt_ | triangle base length
+ // _ht_ | triangle height length
+ // _bp_ | parallelogram base length
+ // _hp_ | parallelogram height length
+ // _bu_ | trapezoid base-upper length
+ // _bl_ | trapezoid base-lower length
+ // _hz_ | trapezoid height length
+ // _r_  | circle radius length
+ // _d_  | circle diameter length
+ // _rn_ | cylinder/cone radius length
+ // _hn_ | cylinder/cone height length
+ // _Pr_ | perimeter of a rectangle (a length)
+ // _Ar_ | area of a rectangle
+ // _Pt_ | perimeter of a triangle (a length)
+ // _At_ | area of a triangle
+ // _Ap_ | area of a parallelogram
+ // _Az_ | area of a trapezoid
+ // _C_  | circumference of a circle (a length)
+ // _Ac_ | area of a circle
+ // _As_ | surface area of a rectangular solid
+ // _Vs_ | volume of a rectangular solid
+ // _Vy_ | volume of a cylinder
+ // _Vo_ | volume of a cone
 
 // __GIVEN VALUE__
  l = 25 // ft
  w = 15 // ft
  h = 10 // ft
-
- a = 20 // ft
- b = 30 // ft
- c = 40 // ft
- g1 = 0.5 // rad
-
+ a = 30 // ft
+ b = 40 // ft
+ c = 50 // ft
  bt = b // ft
  ht = a // ft
-
  bp = b // ft
  hp = a // ft
-
- b1 = 2 // ft
- b2 = 4 // ft
+ bu = 6 // ft
+ bl = 7 // ft
  hz = 1 // ft
-
  r = 8 // ft
-
  rn = 5 // ft
  hn = 5 // ft
 
 // __CALCULATED VALUE__
+ θ = Math.asin(b / c) // rad
  $Pr = 2 * l + 2 * w // ft
  $Ar = l * w // sq-ft
-
  $Pt = a + b + c // ft
  $At = 0.5 * bt * ht // sq-ft
-
  $Ap = bp * hp // sq-ft
-
- $Az = 0.5 * hz * (b1 + b2) // sq-ft
-
- $C = 2 * Math.PI * r // ft
+ $Az = 0.5 * hz * (bu + bl) // sq-ft
+ C = 2 * Math.PI * r // ft
  d = 2 * r // ft
  $C = Math.PI * d // ft
  $Ac = Math.PI * Math.pow(r, 2) // sq-ft
-
  $As = 2 * l * w + 2 * l * h + 2 * h * w // sq-ft
  $Vs = l * w * h // cu-ft
-
  $Vy = 2 * Math.PI * Math.pow(rn, 2) * hn // cu-ft
-
  $Vo = (1 / 3) * Math.PI * Math.pow(rn, 2) * hn // cu-ft
 // &nbsp;
 `;
 
 const triangles1 = `
 // __Right Triangle, Basic Metrics__
- //_θ_ | theta (reference angle, in radians)
- //_a_ | adjacent side (to theta)
- //_b_ | opposite side (to theta)
- //_c_ | hypotenuse
+ // _θ_ | theta (reference angle, in radians)
+ // _a_ | adjacent side (to theta)
+ // _b_ | opposite side (to theta)
+ // _c_ | hypotenuse
 
- //sin(_θ_) = _b_ / _c_
- //cos(_θ_) = _a_ / _c_
- //tan(_θ_) = _b_ / _a_ = sin(_θ_) / cos(_θ_)
+ // sin _θ_ = _b_ / _c_
+ // cos _θ_ = _a_ / _c_
+ // tan _θ_ = _b_ / _a_ = sin _θ_ / cos _θ_
+ // _a_&sup2; + _b_&sup2; = _c_&sup2;
 
-θ1 = Math.PI / 6
-θ2 = Math.PI / 4
-θ3 = Math.PI / 3
+θ1 = Math.PI / 6 &Tab;// triangle 1 theta
+θ2 = Math.PI / 4 &Tab;// triangle 2 theta
+θ3 = Math.PI / 3 &Tab;// triangle 3 theta
 
 c = 1
 
 b1 = Math.sin(θ1) * c
 a1 = Math.cos(θ1) * c
-Math.sqrt(3) / 2
+Math.sqrt(3) / 2 &Tab;// (note: same value as _a1_)
 
 b2 = Math.sin(θ2) * c
 a2 = Math.cos(θ2) * c
-Math.sqrt(2) / 2
+Math.sqrt(2) / 2 &Tab;// (note: same value as _a2_ & _b2_)
 
-Math.sqrt(3) / 2
 b3 = Math.sin(θ3) * c
 a3 = Math.cos(θ3) * c
+Math.sqrt(1) / 2 &Tab;// (note: same value as _a3_)
 
-$θ = Math.round(θ3 * 1000) / 1000
-$a = Math.round(a3 * 1000) / 1000
-$b = Math.round(b3 * 1000) / 1000
-$c = c
+ $θ3 = Math.round(θ3 * 1000) / 1000
+ $a3 = Math.round(a3 * 1000) / 1000
+ $b3 = Math.round(b3 * 1000) / 1000
+ $c3 = c
 // &nbsp;
 `;
 
