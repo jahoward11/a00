@@ -31,10 +31,6 @@ const calcdemo1 = `
 // - After composing a complete expression set, generate and download
   // a standalone, interactive document (web app) -- to be kept and/or
   // shared -- by tapping the *down-bar* icon at the top right corner.
-// - Alternatively, if the calculator is generated within *__E__collabs*,
-  // manipulate data within the *SOURCE2* field of the __*File Edit*__
-  // screen. Note that when saving any changes made to calc data,
-  // using (or, just focusing) the *SOURCE2* field is necessary.
 // - When the *ENTRY* field is focused, JavaScript math functions
   // appear and are listed in the left column -- for conveniently
   // copy-pasting into the *ENTRY* field. (See use descriptions below.)
@@ -46,16 +42,16 @@ const calcdemo1 = `
 &Tab;// Indent, like this, with "*&amp;Tab;*"
 &Tab;  // ... and/or like this, with ordinary spaces.
 // - Make commented text __bold__ by wrapping it
-  // in double underscores (e.g., _&zwj;_bolded text_&zwj;_).
+  // in double underscores (e.g., &lowbar;&lowbar;bolded text&lowbar;&lowbar;).
 // - Make commented text *italicized* by wrapping it
-  // in single asterisks (e.g., &lowast;italicized text&lowast;).
+  // in single asterisks (e.g., &ast;italicized text&ast;).
 // - Make a commented variable _pop_ by wrapping it alone
-  // in single underscores (e.g., _&zwj;pop&zwj;_).
+  // in single underscores (e.g., &lowbar;pop&lowbar;).
 
  $RndmExpn = Math.ceil(r * 10)
 
 // - Create a __$-variable__ by prepending an ordinary variable
-  // with a dollar symbol (e.g., "$&zwj;x&zwj;1", "$&zwj;RndmExpn").
+  // with a dollar symbol (e.g., "&dollar;x&zwj;1", "&dollar;RndmExpn").
   // Use: Every __$-variable__ will automatically be bolded --
   // and will also appear in the *FINAL VALUES* row, at the top.
 
