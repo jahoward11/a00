@@ -321,8 +321,9 @@ let $, _, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
       } catch (err) { respShow(err); return err; }
     });
     quad1A.innerHTML = Object.values($).join("\n").replace(/\n$/, "\n&nbsp;")
-      + '<span id="dfinal">$-variables<br />FINAL<br />VALUES</span>';
-    quad1B.innerHTML = Object.keys($).join("\n");
+      + '<span id="dfinal">$-variable<br />FINAL<br />VALUES</span>';
+    quad1B.innerHTML = Object.keys($).join("\n")
+      .replace(/([a-zΑ-ω]+)(\d)$/gim, (m, c1, c2) => c1 + String.fromCodePoint(8320 + +c2));
     quad2A.innerHTML = reslts.join('\n').replace(/\n$/, "\n&nbsp;")
       + '<span id="dinitl">Line-<br />expression<br />RESULTS</span>';
     quad2B.innerHTML = xprsns.map( xpr => xpr
@@ -333,7 +334,9 @@ let $, _, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
         .replace(/(\W|__|^)\*(?=\S)(.*\S)\*(?=$|\W|\1)/g, "$1<em>$2</em>")
         .replace(/\b__(.+?)__(?!_)/g, "<strong>$1</strong>")
         + "</span> " )).join("\n")
-    .replace(/\$\.([\wΑ-ω]+)/g, '<span class="dvar">$1</span>');
+    .replace(/\$\.([\wΑ-ω]+)/g, '<span class="dvar">$1</span>')
+    .replace( /(\.|)([a-zΑ-ω]+)(\d)(?![\wΑ-ω])/gi,
+      (m, c1, c2, c3) => c1 ? m : c2 + String.fromCodePoint(8320 + +c3) );
     q2Bcopy = quad2B.textContent;
   },
   dinpRegen = evt => {
@@ -357,6 +360,7 @@ let $, _, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
       dinp2.value = quad2B.innerHTML
       .replace(/<(\w+)>\s*<\/\1>/g, "")
       .replace(/(?:(?:<br>|)<\/div>|<br>|)<div><br><\/div>|(?:(?:<br>|)<\/div>|<br>|\n|)<div>|<br>/gi, "\n")
+      .replace(/([a-zΑ-ω]+)([₀-₉])/gi, (m, c1, c2) => c1 + (c2.charCodeAt() - 8320))
       .replace(/<strong><em>([\wΑ-ω]+)<\/em><\/strong>/gi, "_$1_")
       .replace(/<\/?em>/gi, "*")
       .replace(/<\/?strong>/gi, "__")
