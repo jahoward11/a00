@@ -55,7 +55,7 @@ const calcdemo1 = `
  $RndmExpn = Math.ceil(r * 10)
 
 // - Create a __$-variable__ by prepending an ordinary variable
-  // with a dollar symbol (e.g., "$&zwj;x1", "$&zwj;RndmExpn").
+  // with a dollar symbol (e.g., "$&zwj;x&zwj;1", "$&zwj;RndmExpn").
   // Use: Every __$-variable__ will automatically be bolded --
   // and will also appear in the *FINAL VALUES* row, at the top.
 
