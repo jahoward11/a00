@@ -15,7 +15,7 @@ const calcdemo1 = `
 
  // Use this calculator to develop instructional algorithms
 // (like, a mathematical solution to a real-world problem) --
-// and to display/share such in a portable, HTML file (web app).
+// and to display/share such in a portable, HTML file (web doc).
 
 // *Why?*
 // - Interactive: rerun a trial -- giving new initial values
@@ -27,9 +27,8 @@ const calcdemo1 = `
 // *How?*
 // - Enter data (like, mathematical expressions) into the large,
   // light-colored quadrant only -- the *ENTRY* field.
-// - After composing a complete expression set, generate and download
-  // a standalone, interactive document (web app) -- to be kept and/or
-  // shared -- by tapping the *down-bar* icon at the top right corner.
+// - After composing a complete expression set, generate a standalone
+  // copy by tapping the *down-bar* icon at the top right corner.
 // - When the *ENTRY* field is focused, JavaScript math functions
   // appear and are listed in the left column -- for conveniently
   // copy-pasting into the *ENTRY* field. (See use descriptions below.)
@@ -38,19 +37,21 @@ const calcdemo1 = `
   // line that contains a valid expression.
 // - Create a comment, like this one, by prepending the text
   // with a double slash (e.g., //comment).
-&Tab;// Indent, like this, with "*&amp;Tab;*"
-&Tab;  // ... and/or like this, with ordinary spaces.
+&Tab;// Indent, like this, with *&amp;Tab;*
 // - Make commented text __bold__ by wrapping it
   // in double underscores (e.g., &lowbar;&lowbar;bolded text&lowbar;&lowbar;).
 // - Make commented text *italicized* by wrapping it
   // in single asterisks (e.g., &ast;italicized text&ast;).
 // - Make a commented variable _pop_ by wrapping it alone
   // in single underscores (e.g., &lowbar;pop&lowbar;).
+// - Make a ^super^script or ~sub~script by wrapping commented text
+  // in single hatcheks or tildes, respectively (e.g., &Hat;super&Hat;, &sim;sub&sim;).
+  // Note: A single digit at the end of a variable becomes a subscript.
 
  $RndmExpn = Math.ceil(r * 10)
 
 // - Create a __$-variable__ by prepending an ordinary variable
-  // with a dollar symbol (e.g., "&dollar;x&zwj;1", "&dollar;RndmExpn").
+  // with a dollar symbol (e.g., &dollar;x&zwj;1, &dollar;RndmExpn).
   // Use: Every __$-variable__ will automatically be bolded --
   // and will also appear in the *FINAL VALUES* row, at the top.
 

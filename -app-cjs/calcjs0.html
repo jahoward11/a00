@@ -41,8 +41,7 @@ body {
   overflow-wrap: normal;
   overflow-x: hidden;
 }
-#cmain sub,
-#cmain sup {
+#cmain sub, #cmain sup {
   font-size: 75%;
   line-height: 0;
   position: relative;
@@ -242,6 +241,7 @@ print and (orientation: landscape) and (width: 1024px) { /* iPhone/iPad, chrome/
 <body>
 <main id="cmain">
 <xmp id="dinput" class="is-hidden">
+
 </xmp>
 <h4 id="cheadg">JavaScript Calculator</h4>
 <pre id="preresp"></pre>
@@ -345,6 +345,8 @@ let $, _, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
         .replace(/(\W|^)_([0-9a-zΑ-ω]+)_(?=$|\W)/gi, "$1<strong><em>$2</em></strong>")
         .replace(/(\W|__|^)\*(?=\S)(.*\S)\*(?=$|\W|\1)/g, "$1<em>$2</em>")
         .replace(/\b__(.+?)__(?!_)/g, "<strong>$1</strong>")
+        .replace(/\^(?=\S)(.*?\S)\^/g, "<sup>$1</sup>")
+        .replace(/~(?=\S)(.*?\S)~/g, "<sub>$1</sub>")
         + "</span> " )).join("\n")
     .replace(/\$\.([\wΑ-ω]+)/g, '<span class="dvar">$1</span>')
     .replace( /([.&]|)([a-zΑ-ω]+)(\d)(?![0-9a-zΑ-ω])/gi,
@@ -373,6 +375,8 @@ let $, _, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
       .replace(/<(\w+)>\s*<\/\1>/g, "")
       .replace(/(?:(?:<br>|)<\/div>|<br>|)<div><br><\/div>|(?:(?:<br>|)<\/div>|<br>|\n|)<div>|<br>/gi, "\n")
       .replace(/([a-zΑ-ω]+)<sub>(\d)<\/sub>/gi, "$1$2")
+      .replace(/<sub>(.+)<\/sub>/gi, "~$1~")
+      .replace(/<sup>(.+)<\/sup>/gi, "^$1^")
       .replace(/<strong><em>([\wΑ-ω]+)<\/em><\/strong>/gi, "_$1_")
       .replace(/<\/?em>/gi, "*")
       .replace(/<\/?strong>/gi, "__")
