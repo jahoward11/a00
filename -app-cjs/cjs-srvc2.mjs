@@ -4,6 +4,7 @@ const groupname = "engineering"
 
 const dimensions1 = `
 // __Common Dimensions of Interest__
+// - _angle_ of a slope or incline
 // - _length_ of a side, distance or boundary
 // - _Perimeter_ of any shape (a length)
 // - _Circumference_ of a circle (a length &amp; a perimeter)
@@ -12,7 +13,7 @@ const dimensions1 = `
 
 // __Related Formulas__
 // *Pythagorean theorem (for a right triangle)*
- // _a_&sup2; + _b_&sup2; = _c_&sup2;
+ // _a_<sup>2</sup> + _b_<sup>2</sup> = _c_<sup>2</sup>
  // _a_&ast;&ast;2 + _b_&ast;&ast;2 == _c_&ast;&ast;2 [recomposed with JS exponentiation operator]
  // Math.pow(_a_, 2) + Math.pow(_b_, 2) == Math.pow(_c_, 2)
 
@@ -131,7 +132,7 @@ const triangles1 = `
  // sin _θ_ = _b_ / _c_
  // cos _θ_ = _a_ / _c_
  // tan _θ_ = _b_ / _a_ = sin _θ_ / cos _θ_
- // _a_&sup2; + _b_&sup2; = _c_&sup2;
+ // _a_<sup>2</sup> + _b_<sup>2</sup> = _c_<sup>2</sup>
 
 θ1 = Math.PI / 6 &Tab;// triangle 1 theta
 θ2 = Math.PI / 4 &Tab;// triangle 2 theta
