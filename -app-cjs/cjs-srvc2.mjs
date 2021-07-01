@@ -51,25 +51,25 @@ const dimensions1 = `
  // _rn_ | cylinder/cone radius length
  // _hn_ | cylinder/cone height length
  
- // _Pr_ | perimeter of a rectangle (a length)
- // _Ar_ | area of a rectangle
+ // _Pr_ | Perimeter of a rectangle (a length)
+ // _Ar_ | Area of a rectangle
  
- // _Pt_ | perimeter of a triangle (a length)
- // _At_ | area of a triangle
+ // _Pt_ | Perimeter of a triangle (a length)
+ // _At_ | Area of a triangle
  
- // _Ap_ | area of a parallelogram
+ // _Ap_ | Area of a parallelogram
  
- // _Az_ | area of a trapezoid
+ // _Az_ | Area of a trapezoid
  
- // _C_  | circumference of a circle (a length)
- // _Ac_ | area of a circle
+ // _C_  | Circumference of a circle (a length)
+ // _Ac_ | Area of a circle
  
- // _As_ | surface area of a rectangular solid
- // _Vs_ | volume of a rectangular solid
+ // _As_ | surface Area of a rectangular solid
+ // _Vs_ | Volume of a rectangular solid
  
- // _Vy_ | volume of a cylinder
+ // _Vy_ | Volume of a cylinder
  
- // _Vo_ | volume of a cone
+ // _Vo_ | Volume of a cone
 
 // __GIVEN VALUE__
  l = 25 // ft
