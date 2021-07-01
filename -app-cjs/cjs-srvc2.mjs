@@ -32,50 +32,51 @@ const dimensions1 = `
   // (e.g., all in inches, or all in km, etc.).
 
 // __KEY__
- // _θ_  | right-triangle reference angle, theta (in radians)
- // _a_  | right-triangle adjacent-side length
- // _b_  | right-triangle opposite-side length
- // _c_  | right-triangle hypotenuse-side length
+ // _θ_   | right-triangle reference angle, theta (in radians)
+ // _a_   | right-triangle adjacent-side length
+ // _b_   | right-triangle opposite-side length
+ // _c_   | right-triangle hypotenuse-side length
  
- // _bt_ | triangle base length
- // _ht_ | triangle height length
+ // _bt_  | triangle base length
+ // _ht_  | triangle height length
  
- // _l_  | rectangle length
- // _w_  | rectangle width (a length)
- // _h_  | rectangular-solid height (a length)
+ // _l_   | rectangle length
+ // _w_   | rectangle width (a length)
+ // _h_   | rectangular-solid height (a length)
  
- // _bp_ | parallelogram base length
- // _hp_ | parallelogram height length
+ // _bp_  | parallelogram base length
+ // _hp_  | parallelogram height length
  
- // _bu_ | trapezoid upper base length
- // _bl_ | trapezoid lower base length
- // _hz_ | trapezoid height length
+ // _bu_  | trapezoid upper base length
+ // _bl_  | trapezoid lower base length
+ // _hz_  | trapezoid height length
  
- // _r_  | circle radius length
- // _d_  | circle diameter length
+ // _r_   | circle radius length
+ // _d_   | circle diameter length
  
- // _rn_ | cylinder/cone radius length
- // _hn_ | cylinder/cone height length
+ // _rn_  | cylinder/cone radius length
+ // _hn_  | cylinder/cone height length
  
- // _Pt_ | Perimeter of a triangle (a length)
- // _At_ | Area of a triangle
+ // _Ptr_ | Perimeter of a triangle (a length)
+ // _Atr_ | Area of a triangle
  
- // _Pr_ | Perimeter of a rectangle (a length)
- // _Ar_ | Area of a rectangle
+ // _Pre_ | Perimeter of a rectangle (a length)
+ // _Are_ | Area of a rectangle
  
- // _Ap_ | Area of a parallelogram
+ // _Apa_ | Area of a parallelogram
  
- // _Az_ | Area of a trapezoid
+ // _Atz_ | Area of a trapezoid
  
- // _C_  | Circumference of a circle (a length)
- // _Ac_ | Area of a circle
+ // _C_   | Circumference of a circle (a length)
+ // _Aci_ | Area of a circle
+ // _Vsp_ | Volume of a sphere
  
- // _As_ | surface Area of a rectangular solid
- // _Vs_ | Volume of a rectangular solid
+ // _Ars_ | surface Area of a rectangular solid
+ // _Vrs_ | Volume of a rectangular solid
+ // _Vrp_ | Volume of a rectangular pyramid
  
- // _Vy_ | Volume of a cylinder
- 
- // _Vo_ | Volume of a cone
+ // _Vcy_ | Volume of a cylinder
+ // _Vco_ | Volume of a cone
 
 // __GIVEN VALUE__
  a = 30 // ft
@@ -103,27 +104,28 @@ const dimensions1 = `
 
 // __CALCULATED VALUE__
  $θ = Math.asin(b / c) // rad
- $Pt = a + b + c // ft
- $At = 0.5 * bt * ht // sq-ft
+ $Ptr = a + b + c // ft
+ $Atr = 0.5 * bt * ht // sq-ft
  
- $Pr = (2 * l) + (2 * w) // ft
- $Ar = l * w // sq-ft
+ $Pre = (2 * l) + (2 * w) // ft
+ $Are = l * w // sq-ft
  
- $Ap = bp * hp // sq-ft
+ $Apa = bp * hp // sq-ft
  
- $Az = 0.5 * hz * (bu + bl) // sq-ft
+ $Atz = 0.5 * hz * (bu + bl) // sq-ft
  
  C = 2 * Math.PI * r // ft
  d = 2 * r // ft
  $C = Math.PI * d // ft
- $Ac = Math.PI * Math.pow(r, 2) // sq-ft
+ $Aci = Math.PI * Math.pow(r, 2) // sq-ft
+ $Vsp = (4 / 3) * Math.PI * Math.pow(r, 3) // cu-ft
  
- $As = (2 * l * w) + (2 * l * h) + (2 * h * w) // sq-ft
- $Vs = l * w * h // cu-ft
+ $Ars = (2 * l * w) + (2 * l * h) + (2 * h * w) // sq-ft
+ $Vrs = l * w * h // cu-ft
+ $Vrp = (1 / 3) * l * w * h // cu-ft
  
- $Vy = 2 * Math.PI * Math.pow(rn, 2) * hn // cu-ft
- 
- $Vo = (1 / 3) * Math.PI * Math.pow(rn, 2) * hn // cu-ft
+ $Vcy = Math.PI * Math.pow(rn, 2) * hn // cu-ft
+ $Vco = (1 / 3) * Math.PI * Math.pow(rn, 2) * hn // cu-ft
 // &nbsp;
 `;
 
