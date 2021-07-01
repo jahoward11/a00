@@ -31,12 +31,12 @@ const dimensions1 = `
  // _c_  | right-triangle hypotenuse-side length
  // _θ_  | right-triangle reference angle, theta (in radians)
  
+ // _bt_ | triangle base length
+ // _ht_ | triangle height length
+ 
  // _l_  | rectangle length
  // _w_  | rectangle width (a length)
  // _h_  | rectangular solid height (a length)
- 
- // _bt_ | triangle base length
- // _ht_ | triangle height length
  
  // _bp_ | parallelogram base length
  // _hp_ | parallelogram height length
@@ -51,11 +51,11 @@ const dimensions1 = `
  // _rn_ | cylinder/cone radius length
  // _hn_ | cylinder/cone height length
  
- // _Pr_ | Perimeter of a rectangle (a length)
- // _Ar_ | Area of a rectangle
- 
  // _Pt_ | Perimeter of a triangle (a length)
  // _At_ | Area of a triangle
+ 
+ // _Pr_ | Perimeter of a rectangle (a length)
+ // _Ar_ | Area of a rectangle
  
  // _Ap_ | Area of a parallelogram
  
@@ -76,12 +76,12 @@ const dimensions1 = `
  b = 40 // ft
  c = 50 // ft
  
+ bt = b // ft
+ ht = a // ft
+ 
  l = 25 // ft
  w = 15 // ft
  h = 10 // ft
- 
- bt = b // ft
- ht = a // ft
  
  bp = b // ft
  hp = a // ft
