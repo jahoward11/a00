@@ -26,14 +26,14 @@ const dimensions1 = `
   // (e.g., all in inches, or all in km, etc.).
 
 // __KEY__
- // _l_  | rectangle length
- // _w_  | rectangle width (a length)
- // _h_  | rectangular solid height (a length)
- 
  // _a_  | right-triangle adjacent-side length
  // _b_  | right-triangle opposite-side length
  // _c_  | right-triangle hypotenuse-side length
  // _θ_  | right-triangle reference angle, theta (in radians)
+ 
+ // _l_  | rectangle length
+ // _w_  | rectangle width (a length)
+ // _h_  | rectangular solid height (a length)
  
  // _bt_ | triangle base length
  // _ht_ | triangle height length
@@ -72,13 +72,13 @@ const dimensions1 = `
  // _Vo_ | Volume of a cone
 
 // __GIVEN VALUE__
- l = 25 // ft
- w = 15 // ft
- h = 10 // ft
- 
  a = 30 // ft
  b = 40 // ft
  c = 50 // ft
+ 
+ l = 25 // ft
+ w = 15 // ft
+ h = 10 // ft
  
  bt = b // ft
  ht = a // ft
@@ -96,12 +96,12 @@ const dimensions1 = `
  hn = 5 // ft
 
 // __CALCULATED VALUE__
- $Pr = 2 * l + 2 * w // ft
- $Ar = l * w // sq-ft
- 
  θ = Math.asin(b / c) // rad
  $Pt = a + b + c // ft
  $At = 0.5 * bt * ht // sq-ft
+ 
+ $Pr = 2 * l + 2 * w // ft
+ $Ar = l * w // sq-ft
  
  $Ap = bp * hp // sq-ft
  
