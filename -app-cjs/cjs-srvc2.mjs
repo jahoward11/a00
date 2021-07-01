@@ -67,13 +67,13 @@ const dimensions1 = `
  
  // _Atz_ | Area of a trapezoid
  
- // _C_   | Circumference of a circle (a length)
- // _Aci_ | Area of a circle
- // _Vsp_ | Volume of a sphere
- 
  // _Ars_ | surface Area of a rectangular solid
  // _Vrs_ | Volume of a rectangular solid
  // _Vrp_ | Volume of a rectangular pyramid
+ 
+ // _C_   | Circumference of a circle (a length)
+ // _Aci_ | Area of a circle
+ // _Vsp_ | Volume of a sphere
  
  // _Vcy_ | Volume of a cylinder
  // _Vco_ | Volume of a cone
@@ -114,15 +114,15 @@ const dimensions1 = `
  
  $Atz = 0.5 * hz * (bu + bl) // sq-ft
  
+ $Ars = (2 * l * w) + (2 * l * h) + (2 * h * w) // sq-ft
+ $Vrs = l * w * h // cu-ft
+ $Vrp = (1 / 3) * l * w * h // cu-ft
+ 
  C = 2 * Math.PI * r // ft
  d = 2 * r // ft
  $C = Math.PI * d // ft
  $Aci = Math.PI * Math.pow(r, 2) // sq-ft
  $Vsp = (4 / 3) * Math.PI * Math.pow(r, 3) // cu-ft
- 
- $Ars = (2 * l * w) + (2 * l * h) + (2 * h * w) // sq-ft
- $Vrs = l * w * h // cu-ft
- $Vrp = (1 / 3) * l * w * h // cu-ft
  
  $Vcy = Math.PI * Math.pow(rn, 2) * hn // cu-ft
  $Vco = (1 / 3) * Math.PI * Math.pow(rn, 2) * hn // cu-ft
