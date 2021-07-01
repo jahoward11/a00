@@ -14,8 +14,8 @@ const dimensions1 = `
 // __Reference Formulas__
 // *Pythagorean theorem (for a right triangle)*
  // _a_^2^ + _b_^2^ = _c_^2^
- // _a_&ast;&ast;2 + _b_&ast;&ast;2 == _c_&ast;&ast;2 [recomposed with JS exponentiation operator]
- // Math.pow(_a_, 2) + Math.pow(_b_, 2) == Math.pow(_c_, 2)
+ // _a_&ast;&ast;2 + _b_&ast;&ast;2 == _c_&ast;&ast;2  [recomposed with JS exponentiation operator]
+ // Math.pow(_a_, 2) + Math.pow(_b_, 2) == Math.pow(_c_, 2)  [JS alternate]
 
 // *Trigonometric ratios (for a right triangle)*
  // sin _θ_ = _b_ / _c_
@@ -63,13 +63,13 @@ const dimensions1 = `
  // _Pre_ | Perimeter of a rectangle (a length)
  // _Are_ | Area of a rectangle
  
- // _Apa_ | Area of a parallelogram
+ // _Apg_ | Area of a parallelogram
  
  // _Atz_ | Area of a trapezoid
  
  // _Ars_ | surface Area of a rectangular solid
  // _Vrs_ | Volume of a rectangular solid
- // _Vrp_ | Volume of a rectangular pyramid
+ // _Vpy_ | Volume of a rectangular pyramid
  
  // _C_   | Circumference of a circle (a length)
  // _Aci_ | Area of a circle
@@ -110,13 +110,13 @@ const dimensions1 = `
  $Pre = (2 * l) + (2 * w) // ft
  $Are = l * w // sq-ft
  
- $Apa = bp * hp // sq-ft
+ $Apg = bp * hp // sq-ft
  
  $Atz = 0.5 * hz * (bu + bl) // sq-ft
  
  $Ars = (2 * l * w) + (2 * l * h) + (2 * h * w) // sq-ft
  $Vrs = l * w * h // cu-ft
- $Vrp = (1 / 3) * l * w * h // cu-ft
+ $Vpy = (1 / 3) * l * w * h // cu-ft
  
  C = 2 * Math.PI * r // ft
  d = 2 * r // ft
