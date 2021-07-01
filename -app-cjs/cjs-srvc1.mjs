@@ -11,7 +11,6 @@ const calcdemo1 = `
  y = y0 = 3
  z = z0 = -250
 
-
 // __Demo and Use Description__
 
  // Use this calculator to develop instructional algorithms
@@ -60,7 +59,6 @@ const calcdemo1 = `
  $z1 = Math.pow(z0, $RndmExpn)
 
 
-
 // __JavaScript Math Object__
 
 // __Property	Description__
@@ -102,7 +100,6 @@ const calcdemo1 = `
  Math.max(x,y,z)// Returns the number with the highest value *(x, y, z, ... n)*
 
  Math.random()	// Returns a random number between 0 and 1
-
 
 
 // __JavaScript Number Object__
