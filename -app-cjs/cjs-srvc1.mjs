@@ -46,7 +46,7 @@ const calcdemo1 = `
   // in single underscores (e.g., &lowbar;pop&lowbar;).
 // - Make a ^super^script or ~sub~script by wrapping commented text
   // in single hatcheks or tildes, respectively (e.g., &Hat;super&Hat;, &sim;sub&sim;).
-  // Note: A single digit at the end of a variable becomes a subscript.
+  // Note: Digits added to the end of a variable also become a subscript.
 
  $RndmExpn = Math.ceil(r * 10)
 

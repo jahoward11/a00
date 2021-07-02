@@ -294,12 +294,12 @@ let $, _, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
     let anew = document.createElement('a'),
       chtml = '<!DOCTYPE html>\n<html lang="en">\n'
       + (document.querySelector('#ecorender') || document.documentElement).innerHTML
-        .replace(/^\n|^#cmain \.cfield button,\n[^]+?\n(?=@media print {\n)|^  xstor = \[\],[^]+?\n(?=  dinp2 = )|^  },\n  slistRegen = [^]+?\n(?=  };\nif \(\/\^http)|^if \(\/\^http[^]+?{ slistRegen\(\); }\n/gm, "")
+        .replace(/^\n|^#cmain \.cfield button,\n[^]+?\n(?=@media print {\n)|^ *xstor = \[\],[^]+?\n(?=  dinp2 = )|^ *!xsetlist .+\n|^ *},\n *slistRegen = [^]+?\n(?= *};\nif \(\/\^http)|^if \(\/\^http[^]+?{ slistRegen\(\); }\n/gm, "")
         .replace(/^(<xmp id="dinput".*?>)[^]*?(?=<\/xmp>)/m, (m, c1) => c1 + "\n" + dinp2.value + "\n")
         .replace(/^(<pre id="preresp">)[^]*?(?=<\/pre>)/m, "$1")
         .replace( /^(<div id="cgrid".*?>\n)[^]+?(?=\n<\/div>)/m,
           '$1  <pre id="quad1A"></pre><pre id="quad1B"></pre>\n  <pre id="quad2A"></pre><pre id="quad2B" contenteditable=true></pre>\n  <ul id="plist" class="is-hidden"></ul>' )
-        .replace(/^<div class="cfield">[^]+?\n(?=let _,)/m, "</main>\n<script type=\"text/javascript\">\n(function () {\n'use strict';\n")
+        .replace(/^<div class="cfield">[^]+?\n(?=let \$,)/m, "</main>\n<script type=\"text/javascript\">\n(function () {\n'use strict';\n")
         .replace(/^xsetinp\.addEventListener\([^]+?\n(?=<\/script>)/m, "xprsEval();\n})();\n")
       + "\n</html>\n";
     anew.setAttribute('download', "calcjs-draft02.html");
@@ -333,11 +333,11 @@ let $, _, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
       } catch (err) { respShow(err); return err; }
     });
     quad1A.innerHTML = Object.values($).join("\n").replace(/\n$/, "\n&nbsp;")
-      + '<span id="dfinal">$-variable<br />FINAL<br />VALUES</span>';
+      + '<span id="dfinal">$-variable<br />FINAL VALUES</span>';
     quad1B.innerHTML = Object.keys($).join("\n")
-      .replace(/([a-zΑ-ω]+)(\d)$/gim, "$1<sub>$2</sub>");
+      .replace(/([a-zΑ-ω]+)(\d+)$/gim, "$1<sub>$2</sub>");
     quad2A.innerHTML = reslts.join('\n').replace(/\n$/, "\n&nbsp;")
-      + '<span id="dinitl">Line-<br />expression<br />RESULTS</span>';
+      + '<span id="dinitl">Line-expression<br />RESULTS</span>';
     quad2B.innerHTML = xprsns.map( xpr => xpr
       .replace(/&(?=[gl]t;)/gi, "&amp;").replace(/<(?=\/?\w)/g, "&lt;")
       .replace( /\/\/ *(.*?) *$/, (m, c1) =>
@@ -349,7 +349,7 @@ let $, _, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
         .replace(/~(?=\S)(.*?\S)~/g, "<sub>$1</sub>")
         + "</span> " )).join("\n")
     .replace(/\$\.([\wΑ-ω]+)/g, '<span class="dvar">$1</span>')
-    .replace( /([.&]|)([a-zΑ-ω]+)(\d)(?![0-9a-zΑ-ω])/gi,
+    .replace( /([.&]|)([a-zΑ-ω]+)(\d+)(?![0-9a-zΑ-ω])/gi,
       (m, c1, c2, c3) => c1 ? m : c2 + "<sub>" + c3 + "</sub>" );
     q2Bcopy = quad2B.textContent;
   },
@@ -370,11 +370,12 @@ let $, _, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
         .replace(/<(?=\/?\w)/g, "&lt;") );
       plist.className = cfoc ? "" : "is-hidden";
     } else {
+      !xsetlist || (xsetlist.value = "");
       plist.className = "is-hidden";
       dinp2.value = quad2B.innerHTML
       .replace(/<(\w+)>\s*<\/\1>/g, "")
       .replace(/(?:(?:<br>|)<\/div>|<br>|)<div><br><\/div>|(?:(?:<br>|)<\/div>|<br>|\n|)<div>|<br>/gi, "\n")
-      .replace(/([a-zΑ-ω]+)<sub>(\d)<\/sub>/gi, "$1$2")
+      .replace(/([a-zΑ-ω]+)<sub>(\d+)<\/sub>/gi, "$1$2")
       .replace(/<sub>(.+)<\/sub>/gi, "~$1~")
       .replace(/<sup>(.+)<\/sup>/gi, "^$1^")
       .replace(/<strong><em>([\wΑ-ω]+)<\/em><\/strong>/gi, "_$1_")
@@ -409,8 +410,8 @@ let $, _, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
     }
   }),
   xsetLoad = evt => {
-    if ( evt.target.id === "xsetlist" && !xsetlist.value
-    || evt.target.id === "xsetinp" && !xsetinp.value ) {
+    //if ( evt.target.id === "xsetinp" && !xsetinp.value
+    if (evt.target.id === "xsetlist" && !xsetlist.value) {
       xsetlist.value = xsetinp.value = dinp2.value = "";
       return xprsEval();
     } else if (evt.target.id === "xsetinp" && dinp2.value) {
@@ -418,7 +419,7 @@ let $, _, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
       || xsetlist.value === xsetinp.value
       || (xsetlist.value = "");
     }
-    evt.target.id === "xsetlist" && xsetlist.value
+    xsetlist.value && evt.target.id === "xsetlist"
     || (xsetlist.value = xsetinp.value || xsetinp.value.replace(/.+\//, ""));
     let optg = xsetlist.value && xsetlist.selectedOptions[0].parentElement.label;
     xsetinp.value && xsetlist.value === xsetinp.value.replace(/.+\//, "")
@@ -455,7 +456,13 @@ plist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
   + "\n    " + Object.getOwnPropertyNames(Number.prototype)
   .map((e, i) => `<li>n.${e}${/^constructor/.test(e) ? "" : "()"}</li>`).join("\n    ")
   + "\n    " + ["", ".toLocaleString()", ".toUTCString()", ".toISOString()", ".getTime()"]
-  .map(e => `<li>new Date()${e}</li>`).join("\n    ") + "\n  ";
+  .map(e => `<li>new Date()${e}</li>`).join("\n    ")
+  + "\n    " + [ "- - -", "&Tab;", "&nbsp;", "&zwj;",
+    "- - -", "Α &Alpha;", "α &alpha;", "Β &Beta;", "β &beta;", "Γ &Gamma;", "γ &gamma;", "Δ &Delta;", "δ &delta;", "Ε &Epsilon;", "ε &epsiv;", "Ζ &Zeta;", "ζ &zeta;", "Η &Eta;", "η &eta;", "Θ &Theta;", "θ &theta;", "Ι &Iota;", "ι &iota;", "Κ &Kappa;", "κ &kappa;", "Λ &Lambda;", "λ &lambda;", "Μ &Mu;", "μ &mu;", "Ν &Nu;", "ν &nu;", "Ξ &Xi;", "ξ &xi;", "Ο &Omicron;", "ο &omicron;", "Π &Pi;", "π &pi;", "Ρ &Rho;", "ρ &rho;", "ς &sigmav;", "Σ &Sigma;", "σ &sigma;", "Τ &Tau;", "τ &tau;", "Υ &Upsilon;", "υ &upsi;", "Φ &Phi;", "φ &phi;", "Χ &Chi;", "χ &chi;", "Ψ &Psi;", "ψ &psi;", "Ω &Omega;", "ω &omega;",
+    "- - -", "$ &dollar;", "% &percnt;", "& &amp;", "( &lpar;", ") &rpar;", "* &ast;", "+ &plus;", "- (hyphen-minus)", "/ &sol;", "< &lt;", "= &equals;", "> &gt;", "[ &lsqb;", "\\ &bsol;", "] &rsqb;", "^ &Hat;", "_ &lowbar;", "{ &lcub;", "} &rcub;", "~ (tilde)",
+    "- - -", "° &deg;", "± &pm;", "µ &micro;", "¼ &frac14;", "½ &frac12;", "¾ &frac34;", "× &times;", "÷ &divide;", "ƒ &fnof;", "• &bull;", "‣ (triangular bullet)", "… &hellip;", "‰ &permil;", "‱ &pertenk;", "′ &prime;", "″ &Prime;", "‴ &tprime;", "‵ &backprime;", "‾ &oline;", "⁄ &frasl;", "⁗ &qprime;", "№ &numero;", "⅓ &frac13;", "⅔ &frac23;", "⅛ &frac18;", "⅜ &frac38;", "⅝ &frac58;", "⅞ &frac78;", "← &larr;", "↑ &uarr;", "→ &rarr;", "↓ &darr;", "↔ &harr;", "✓ &check;", "✗ &cross;",
+    "- - -", "∀ &forall;", "∂ &part;", "∃ &exist;", "∄ &nexist;", "∅ &empty;", "∇ &nabla;", "∈ &in;", "∉ &notin;", "∋ &ni;", "∌ &notni;", "∏ &prod;", "∑ &sum;", "− &minus;", "∕ (division slash)", "∗ &lowast;", "√ &radic;", "∝ &prop;", "∞ &infin;", "∟ &angrt;", "∠ &ang;", "∧ &and;", "∨ &or;", "∩ &cap;", "∪ &cup;", "∫ &int;", "∴ &there4;", "∼ &sim;", "≅ &cong;", "≈ &ap;", "≠ &ne;", "≡ &equiv;", "≤ &le;", "≥ &ge;", "≪ &ll;", "≫ &gg;", "⊂ &sub;", "⊃ &sup;", "⊄ &nsub;", "⊅ &nsup;", "⊆ &sube;", "⊇ &supe;", "⊕ &oplus;", "⊖ &ominus;", "⊗ &otimes;", "⊘ &osol;", "⊙ &odot;", "⊚ &ocir;", "⊛ &oast;", "⊝ &odash;", "⊞ &plusb;", "⊟ &minusb;", "⊠ &timesb;", "⊡ &sdotb;", "⊥ &bot;", "⋅ &sdot;", "⟨ &lang;", "⟩ &rang;", "⟪ &Lang;", "⟫ &Rang;", "⨁ &xoplus;", "⨂ &xotime;" ]
+  .map(e => `<li>${e.replace(/&(?=#?\w+;)/, "&amp;")}</li>`).join("\n    ") + "\n  ";
 (document.querySelector('#ecorender') || document.body)
 .addEventListener('click', dinpRegen);
 btncnew.addEventListener('click', calcNew);
