@@ -141,6 +141,14 @@ const calcdemo1 = `
 		// Formats a number to _p_ length
  z.toString(2)	// Converts a number to a string; _z_.toString(radix), radix: 2, 8, 16
  z.valueOf()	// Returns the primitive value of a number
+
+
+// __Online JS Reference__
+
+// *Visit these webpages for more JavaScript syntax and expressions:*
+// - developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
+// - developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators
+// - developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Numbers_and_dates
 // &nbsp;
 `;
 
