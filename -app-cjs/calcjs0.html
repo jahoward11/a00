@@ -91,7 +91,7 @@ body {
 //font: normal small/1.25 Helvetica, Arial, sans-serif;
 }
 #cgrid .frasl {
-  margin: 0 -6px;
+  margin: 0 -5px;
 }
 #cgrid>#quad1A, #cgrid>#quad1B {
   min-height: 56px;
@@ -380,8 +380,10 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
     } else if (!plist.className && quad2B.innerHTML === di2html) {
       plist.className = "is-hidden";
       quad2B.innerHTML = q2Bcopy;
+      q2Bcopy = di2html = null;
     } else if (!plist.className) {
       !xsetlist || (xsetlist.value = "");
+      q2Bcopy = di2html = null;
       plist.className = "is-hidden";
       dinp2.value = quad2B.innerHTML
       .replace(/<(\w+)>\s*<\/\1>/g, "")
