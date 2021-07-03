@@ -343,13 +343,13 @@ let $, _, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
       .replace( /\/\/ *(.*?) *$/, (m, c1) =>
         '<span class="dnote">' + c1
         .replace(/(\W|^)_([0-9a-zΑ-ω]+)_(?=$|\W)/gi, "$1<strong><em>$2</em></strong>")
-        .replace(/(\W|__|^)\*(?=\S)(.*\S)\*(?=$|\W|\1)/g, "$1<em>$2</em>")
+        .replace(/(\W|__|^)\*(?=\S)(.*?\S)\*(?=$|\W|\1)/g, "$1<em>$2</em>")
         .replace(/\b__(.+?)__(?!_)/g, "<strong>$1</strong>")
         .replace(/\^(?=\S)(.*?\S)\^/g, "<sup>$1</sup>")
         .replace(/~(?=\S)(.*?\S)~/g, "<sub>$1</sub>")
         + "</span> " )).join("\n")
     .replace(/\$\.([\wΑ-ω]+)/g, '<span class="dvar">$1</span>')
-    .replace( /([.&]|)([a-zΑ-ω]+)(\d+)(?![0-9a-zΑ-ω])/gi,
+    .replace( /(\.|&#?|)([a-zΑ-ω]+)(\d+)(?![0-9a-zΑ-ω])/gi,
       (m, c1, c2, c3) => c1 ? m : c2 + "<sub>" + c3 + "</sub>" );
     q2Bcopy = quad2B.textContent;
   },

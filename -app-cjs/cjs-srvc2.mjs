@@ -22,12 +22,20 @@ const dimensions1 = `
  // cos _θ_ = _a_ / _c_
  // tan _θ_ = _b_ / _a_ &Tab;= sin _θ_ / cos _θ_
 
-// *Some Areas*
+// *Some areas*
  // Area~tri~ = &frac12;_bh_ &Tab;= 0.5 &times; base &times; height
  // Area~rec~ = _lw_ &Tab;= length &times; width
  // Area~cir~ = &pi;_r_^2^ &Tab;= PI &times; radius squared
- // Area~con~ = A~c~ + &pi;_rh_~sl~
+ // Area~sph~ = 4&pi;_r_^2^ &Tab;= 4 &times; PI &times; radius squared
+ // Area~con~ = _A_~*ci*~ + &pi;_rh_~*sl*~
  // &Tab;&Tab;= Area~cir~ + (PI &times; radius &times; slant height)
+
+// *Some volumes*
+ // Vol~cub~ = _lwh_ &Tab;= length &times; width &times; height
+ // Vol~pyr~ = &frac13;_lwh_ &Tab;= 0.33 &times; length &times; width &times; height
+ // Vol~sph~ = &#x2074;&frasl;&#x2083;&pi;_r_^3^ = 1.33 &times; PI &times; radius cubed
+ // Vol~cyl~ = &pi;_r_^2^_h_ &Tab;= PI &times; radius squared &times; height
+ // Vol~con~ = &frac13;&pi;_r_^2^_h_ &Tab;= 0.33 &times; PI &times; radius squared &times; height
 
 // *Note*
 // - Length units of a formula must all be the same
@@ -131,7 +139,7 @@ const dimensions1 = `
  $Asp = 4 * Math.PI * Math.pow(r, 2) // sq-ft
  $Vsp = (4 / 3) * Math.PI * Math.pow(r, 3) // cu-ft
  
- $Acy = (2 * Math.PI * Math.pow(rn, 2)) + (2 * Math.PI * r * hn) // sq-ft
+ $Acy = (2 * Math.PI * Math.pow(rn, 2)) + (2 * Math.PI * rn * hn) // sq-ft
  $Vcy = Math.PI * Math.pow(rn, 2) * hn // cu-ft
  hsl = Math.pow(Math.pow(rn, 2) + Math.pow(hn, 2), 0.5) // ft
  $Aco = (Math.PI * Math.pow(rn, 2)) + (Math.PI * rn * hsl) // sq-ft
