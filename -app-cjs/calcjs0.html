@@ -47,11 +47,11 @@ body {
   position: relative;
   vertical-align: baseline;
 }
-#cmain sup {
-  top: -0.5em;
-}
 #cmain sub {
   bottom: -0.25em;
+}
+#cmain sup {
+  top: -0.5em;
 }
 #cmain>#preresp {
   color: Orange;
@@ -86,6 +86,12 @@ body {
 }
 #cgrid .dnote {
   color: LightSteelBlue;
+}
+#cgrid .fracv {
+//font: normal small/1.25 Helvetica, Arial, sans-serif;
+}
+#cgrid .frasl {
+  margin: 0 -6px;
 }
 #cgrid>#quad1A, #cgrid>#quad1B {
   min-height: 56px;
@@ -269,7 +275,7 @@ print and (orientation: landscape) and (width: 1024px) { /* iPhone/iPad, chrome/
 </script>
 <script src="../../a00/-res-js/localforage.nopromises.min.js" type="text/javascript"></script>
 <script type="module">
-let $, _, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
+let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
   dinput = document.querySelector('#cmain>#dinput'),
   btncnew = document.querySelector('#cmain>#btncnew'),
   preresp = document.querySelector('#cmain>#preresp'),
@@ -342,7 +348,7 @@ let $, _, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
       .replace(/&(?=[gl]t;)/gi, "&amp;").replace(/<(?=\/?\w)/g, "&lt;")
       .replace( /\/\/ *(.*?) *$/, (m, c1) =>
         '<span class="dnote">' + c1
-        .replace(/(\W|^)_([0-9a-zΑ-ω]+)_(?=$|\W)/gi, "$1<strong><em>$2</em></strong>")
+        .replace(/([^\n_]|^)_([0-9a-zΑ-ω]+)_(?=$|[^\n_])/gi, "$1<strong><em>$2</em></strong>")
         .replace(/(\W|__|^)\*(?=\S)(.*?\S)\*(?=$|\W|\1)/g, "$1<em>$2</em>")
         .replace(/\b__(.+?)__(?!_)/g, "<strong>$1</strong>")
         .replace(/\^(?=\S)(.*?\S)\^/g, "<sup>$1</sup>")
@@ -350,13 +356,13 @@ let $, _, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
         + "</span> " )).join("\n")
     .replace(/\$\.([\wΑ-ω]+)/g, '<span class="dvar">$1</span>')
     .replace( /(\.|&#?|)([a-zΑ-ω]+)(\d+)(?![0-9a-zΑ-ω])/gi,
-      (m, c1, c2, c3) => c1 ? m : c2 + "<sub>" + c3 + "</sub>" );
-    q2Bcopy = quad2B.textContent;
+      (m, c1, c2, c3) => c1 ? m : c2 + "<sub>" + c3 + "</sub>" )
+    .replace(/\u2044|&frasl;/g, "<span class=frasl>$&</span>")
+    .replace(/[\u2050-\u205a]|&frac\d[35679];/g, "<span class=fracv>$&</span>");
   },
   dinpRegen = evt => {
     if ( (eobj = (evt || {}).target) && ( cfoc = [null, "parentElement", "parentElement", "parentElement"]
-      .some(k => /quad2B|plist/.test((eobj = eobj[k] || eobj).id || "")) )
-    || quad2B.textContent === q2Bcopy && !/<(?:br|div)>/i.test(quad2B.innerHTML) ) {
+      .some(k => /quad2B|plist/.test((eobj = eobj[k] || eobj).id || "")) )) {
       if (evt && /plist/.test((evt.target.parentElement || {}).id || "")) {
         seln = window.getSelection();
         seln.removeAllRanges();
@@ -364,12 +370,17 @@ let $, _, cfoc, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
         rnge.selectNodeContents(evt.target);
         seln.addRange(rnge);
       }
-      !cfoc || !plist.className
-      || ( quad2B.innerHTML = dinp2.value
+      if (plist.className) {
+        q2Bcopy = quad2B.innerHTML;
+        quad2B.innerHTML = di2html = dinp2.value
         .replace(/&(?=#?\w+;)/g, "&amp;").replace(/&(?=amp;[gl]t;)/gi, "&amp;")
-        .replace(/<(?=\/?\w)/g, "&lt;") );
-      plist.className = cfoc ? "" : "is-hidden";
-    } else {
+        .replace(/<(?=\/?\w)/g, "&lt;");
+        plist.className = "";
+      }
+    } else if (!plist.className && quad2B.innerHTML === di2html) {
+      plist.className = "is-hidden";
+      quad2B.innerHTML = q2Bcopy;
+    } else if (!plist.className) {
       !xsetlist || (xsetlist.value = "");
       plist.className = "is-hidden";
       dinp2.value = quad2B.innerHTML

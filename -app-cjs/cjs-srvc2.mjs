@@ -26,16 +26,19 @@ const dimensions1 = `
  // Area~tri~ = &frac12;_bh_ &Tab;= 0.5 &times; base &times; height
  // Area~rec~ = _lw_ &Tab;= length &times; width
  // Area~cir~ = &pi;_r_^2^ &Tab;= PI &times; radius squared
+
  // Area~sph~ = 4&pi;_r_^2^ &Tab;= 4 &times; PI &times; radius squared
- // Area~con~ = _A_~*ci*~ + &pi;_rh_~*sl*~
+ // Area~cyl~ = 2_A_~*cir*~ + _Ch_
+ // &Tab;&Tab;= (2 &times; Area~cir~) + (Circumference &times; height)
+ // Area~con~ = _A_~*cir*~ + &pi;_rh_~*sl*~
  // &Tab;&Tab;= Area~cir~ + (PI &times; radius &times; slant height)
 
 // *Some volumes*
  // Vol~cub~ = _lwh_ &Tab;= length &times; width &times; height
- // Vol~pyr~ = &frac13;_lwh_ &Tab;= 0.33 &times; length &times; width &times; height
- // Vol~sph~ = &#x2074;&frasl;&#x2083;&pi;_r_^3^ = 1.33 &times; PI &times; radius cubed
+ // Vol~pyr~ = ^1^&frasl;~3~_lwh_ &Tab;= 0.33 &times; length &times; width &times; height
+ // Vol~sph~ = ^4^&frasl;~3~&pi;_r_^3^ &Tab;= 1.33 &times; PI &times; radius cubed
  // Vol~cyl~ = &pi;_r_^2^_h_ &Tab;= PI &times; radius squared &times; height
- // Vol~con~ = &frac13;&pi;_r_^2^_h_ &Tab;= 0.33 &times; PI &times; radius squared &times; height
+ // Vol~con~ = ^1^&frasl;~3~&pi;_r_^2^_h_ &Tab;= 0.33 &times; PI &times; radius squared &times; height
 
 // *Note*
 // - Length units of a formula must all be the same
