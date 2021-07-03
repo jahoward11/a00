@@ -26,6 +26,8 @@ const dimensions1 = `
  // Area~tri~ = &frac12;_bh_ &Tab;= 0.5 &times; base &times; height
  // Area~rec~ = _lw_ &Tab;= length &times; width
  // Area~cir~ = &pi;_r_^2^ &Tab;= PI &times; radius squared
+ // Area~con~ = A~c~ + &pi;_rh_~2~
+ // &Tab;&Tab;= Area~cir~ + (PI &times; radius &times; slant height)
 
 // *Note*
 // - Length units of a formula must all be the same
@@ -56,6 +58,7 @@ const dimensions1 = `
  
  // _rn_  | cylinder/cone radius length
  // _hn_  | cylinder/cone height length
+ // _hl_  | cone slant height length
  
  // _Ptr_ | Perimeter of a triangle (a length)
  // _Atr_ | Area of a triangle
@@ -67,15 +70,18 @@ const dimensions1 = `
  
  // _Atz_ | Area of a trapezoid
  
- // _Ars_ | surface Area of a rectangular solid
- // _Vrs_ | Volume of a rectangular solid
+ // _Acu_ | surface Area of a rectangular solid (cuboid)
+ // _Vcu_ | Volume of a rectangular solid (cuboid)
  // _Vpy_ | Volume of a rectangular pyramid
  
  // _C_   | Circumference of a circle (a length)
  // _Aci_ | Area of a circle
+ // _Asp_ | surface Area of a sphere
  // _Vsp_ | Volume of a sphere
  
+ // _Acy_ | surface Area of a cylinder
  // _Vcy_ | Volume of a cylinder
+ // _Aco_ | surface Area of a cone
  // _Vco_ | Volume of a cone
 
 // __GIVEN VALUE__
@@ -90,8 +96,8 @@ const dimensions1 = `
  w = 15 // ft
  h = 10 // ft
  
- bp = b // ft
- hp = a // ft
+ bp = 20 // ft
+ hp = 12 // ft
  
  bu = 6 // ft
  bl = 7 // ft
@@ -114,17 +120,21 @@ const dimensions1 = `
  
  $Atz = 0.5 * hz * (bu + bl) // sq-ft
  
- $Ars = (2 * l * w) + (2 * l * h) + (2 * h * w) // sq-ft
- $Vrs = l * w * h // cu-ft
+ $Acu = (2 * l * w) + (2 * l * h) + (2 * h * w) // sq-ft
+ $Vcu = l * w * h // cu-ft
  $Vpy = (1 / 3) * l * w * h // cu-ft
  
- C = 2 * Math.PI * r // ft
  d = 2 * r // ft
- $C = Math.PI * d // ft
+ C = Math.PI * d // ft
+ $C = 2 * Math.PI * r // ft
  $Aci = Math.PI * Math.pow(r, 2) // sq-ft
+ $Asp = 4 * Math.PI * Math.pow(r, 2) // sq-ft
  $Vsp = (4 / 3) * Math.PI * Math.pow(r, 3) // cu-ft
  
+ $Acy = (2 * Math.PI * Math.pow(rn, 2)) + (2 * Math.PI * r * hn) // sq-ft
  $Vcy = Math.PI * Math.pow(rn, 2) * hn // cu-ft
+ hl = Math.pow(Math.pow(rn, 2) + Math.pow(hn, 2), 0.5) // ft
+ $Aco = (Math.PI * Math.pow(rn, 2)) + (Math.PI * rn * hl) // sq-ft
  $Vco = (1 / 3) * Math.PI * Math.pow(rn, 2) * hn // cu-ft
 // &nbsp;
 `;
@@ -141,23 +151,23 @@ const triangles1 = `
  // tan _θ_ = _b_ / _a_ = sin _θ_ / cos _θ_
  // _a_^2^ + _b_^2^ = _c_^2^
 
-θ1 = Math.PI / 6 &Tab;// triangle 1 theta
-θ2 = Math.PI / 4 &Tab;// triangle 2 theta
-θ3 = Math.PI / 3 &Tab;// triangle 3 theta
+θ1 = Math.PI / 6 //&Tab;triangle 1 theta
+θ2 = Math.PI / 4 //&Tab;triangle 2 theta
+θ3 = Math.PI / 3 //&Tab;triangle 3 theta
 
 c = 1
 
 b1 = Math.sin(θ1) * c
 a1 = Math.cos(θ1) * c
- Math.sqrt(3) / 2 &Tab;// (note: same value as _a1_)
+ Math.sqrt(3) / 2 //&Tab;(note: same value as _a1_)
 
 b2 = Math.sin(θ2) * c
 a2 = Math.cos(θ2) * c
- Math.sqrt(2) / 2 &Tab;// (note: same value as _a2_ & _b2_)
+ Math.sqrt(2) / 2 //&Tab;(note: same value as _a2_ & _b2_)
 
 b3 = Math.sin(θ3) * c
 a3 = Math.cos(θ3) * c
- Math.sqrt(1) / 2 &Tab;// (note: same value as _a3_)
+ Math.sqrt(1) / 2 //&Tab;(note: same value as _a3_)
 
  $θ3 = Math.round(θ3 * 1000) / 1000
  $a3 = Math.round(a3 * 1000) / 1000
