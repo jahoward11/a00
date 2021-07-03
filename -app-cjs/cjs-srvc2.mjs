@@ -134,7 +134,7 @@ const dimensions1 = `
  $Acy = (2 * Math.PI * Math.pow(rn, 2)) + (2 * Math.PI * r * hn) // sq-ft
  $Vcy = Math.PI * Math.pow(rn, 2) * hn // cu-ft
  hsl = Math.pow(Math.pow(rn, 2) + Math.pow(hn, 2), 0.5) // ft
- $Aco = (Math.PI * Math.pow(rn, 2)) + (Math.PI * rn * hl) // sq-ft
+ $Aco = (Math.PI * Math.pow(rn, 2)) + (Math.PI * rn * hsl) // sq-ft
  $Vco = (1 / 3) * Math.PI * Math.pow(rn, 2) * hn // cu-ft
 // &nbsp;
 `;
