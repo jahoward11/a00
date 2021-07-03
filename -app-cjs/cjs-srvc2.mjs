@@ -26,7 +26,7 @@ const dimensions1 = `
  // Area~tri~ = &frac12;_bh_ &Tab;= 0.5 &times; base &times; height
  // Area~rec~ = _lw_ &Tab;= length &times; width
  // Area~cir~ = &pi;_r_^2^ &Tab;= PI &times; radius squared
- // Area~con~ = A~c~ + &pi;_rh_~2~
+ // Area~con~ = A~c~ + &pi;_rh_~sl~
  // &Tab;&Tab;= Area~cir~ + (PI &times; radius &times; slant height)
 
 // *Note*
@@ -58,7 +58,7 @@ const dimensions1 = `
  
  // _rn_  | cylinder/cone radius length
  // _hn_  | cylinder/cone height length
- // _hl_  | cone slant height length
+ // _hsl_ | cone slant height length
  
  // _Ptr_ | Perimeter of a triangle (a length)
  // _Atr_ | Area of a triangle
@@ -99,14 +99,14 @@ const dimensions1 = `
  bp = 20 // ft
  hp = 12 // ft
  
- bu = 6 // ft
- bl = 7 // ft
- hz = 1 // ft
+ bu = 16 // ft
+ bl = 14 // ft
+ hz = 11 // ft
  
  r = 8 // ft
  
  rn = 5 // ft
- hn = 5 // ft
+ hn = 9 // ft
 
 // __CALCULATED VALUE__
  $θ = Math.asin(b / c) // rad
@@ -133,7 +133,7 @@ const dimensions1 = `
  
  $Acy = (2 * Math.PI * Math.pow(rn, 2)) + (2 * Math.PI * r * hn) // sq-ft
  $Vcy = Math.PI * Math.pow(rn, 2) * hn // cu-ft
- hl = Math.pow(Math.pow(rn, 2) + Math.pow(hn, 2), 0.5) // ft
+ hsl = Math.pow(Math.pow(rn, 2) + Math.pow(hn, 2), 0.5) // ft
  $Aco = (Math.PI * Math.pow(rn, 2)) + (Math.PI * rn * hl) // sq-ft
  $Vco = (1 / 3) * Math.PI * Math.pow(rn, 2) * hn // cu-ft
 // &nbsp;
