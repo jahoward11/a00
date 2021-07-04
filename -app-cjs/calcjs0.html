@@ -448,9 +448,10 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
       .catch(respShow);
   },
   xsetSave = () => {
-    !xsetinp.value.trim() || !window.localforage
-    || window.localforage.setItem( xsetinp.value.trim(), dinp2.value,
-      (err, _val) => err ? respShow(err) : slistRegen(xsetinp.value.trim()) );
+    xsetinp.value = xsetinp.value.trim();
+    !xsetinp.value || !window.localforage
+    || window.localforage.setItem( xsetinp.value, dinp2.value,
+      (err, _val) => err ? respShow(err) : slistRegen(xsetinp.value) );
   },
   xsetDel = () => {
     let optg = xsetlist.value && xsetlist.selectedOptions[0].parentElement.label;
