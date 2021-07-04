@@ -372,9 +372,10 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
       }
       if (plist.className) {
         q2Bcopy = quad2B.innerHTML;
-        di2html = quad2B.innerHTML = dinp2.value
+        quad2B.innerHTML = dinp2.value
         .replace(/&(?=#?\w+;)/g, "&amp;").replace(/&(?=amp;[gl]t;)/gi, "&amp;")
         .replace(/<(?=\/?\w)/g, "&lt;");
+        di2html = quad2B.innerHTML;
         plist.className = "";
       }
     } else if (!plist.className && quad2B.innerHTML === di2html) {
@@ -447,8 +448,8 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
       .catch(respShow);
   },
   xsetSave = () => {
-    !xsetinp.value || !window.localforage
-    || window.localforage.setItem( xsetinp.value, dinp2.value,
+    !xsetinp.value.trim() || !window.localforage
+    || window.localforage.setItem( xsetinp.value.trim(), dinp2.value,
       (err, _val) => err ? respShow(err) : slistRegen(xsetinp.value) );
   },
   xsetDel = () => {
