@@ -372,7 +372,7 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
       }
       if (plist.className) {
         q2Bcopy = quad2B.innerHTML;
-        quad2B.innerHTML = di2html = dinp2.value
+        di2html = quad2B.innerHTML = dinp2.value
         .replace(/&(?=#?\w+;)/g, "&amp;").replace(/&(?=amp;[gl]t;)/gi, "&amp;")
         .replace(/<(?=\/?\w)/g, "&lt;");
         plist.className = "";

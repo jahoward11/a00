@@ -174,7 +174,7 @@ a1 = Math.cos(θ1) * c
 
 b2 = Math.sin(θ2) * c
 a2 = Math.cos(θ2) * c
- Math.sqrt(2) / 2 //&Tab;(note: same value as _a2_ & _b2_)
+ Math.sqrt(2) / 2 //&Tab;(note: same value as _a2_ &amp; _b2_)
 
 b3 = Math.sin(θ3) * c
 a3 = Math.cos(θ3) * c
