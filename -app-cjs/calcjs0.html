@@ -450,7 +450,7 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
   xsetSave = () => {
     !xsetinp.value.trim() || !window.localforage
     || window.localforage.setItem( xsetinp.value.trim(), dinp2.value,
-      (err, _val) => err ? respShow(err) : slistRegen(xsetinp.value) );
+      (err, _val) => err ? respShow(err) : slistRegen(xsetinp.value.trim()) );
   },
   xsetDel = () => {
     let optg = xsetlist.value && xsetlist.selectedOptions[0].parentElement.label;
