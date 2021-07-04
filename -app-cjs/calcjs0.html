@@ -348,7 +348,7 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
       .replace(/&(?=[gl]t;)/gi, "&amp;").replace(/<(?=\/?\w)/g, "&lt;")
       .replace( /\/\/ *(.*?) *$/, (m, c1) =>
         '<span class="dnote">' + c1
-        .replace(/([^\n_]|^)_([0-9a-zΑ-ω]+)_(?=$|[^\n_])/gi, "$1<strong><em>$2</em></strong>")
+        .replace(/(\W|\d|^)_([0-9a-zΑ-ω]+)_(?=$|\W|\d)/gi, "$1<strong><em>$2</em></strong>")
         .replace(/(\W|__|^)\*(?=\S)(.*?\S)\*(?=$|\W|\1)/g, "$1<em>$2</em>")
         .replace(/\b__(.+?)__(?!_)/g, "<strong>$1</strong>")
         .replace(/\^(?=\S)(.*?\S)\^/g, "<sup>$1</sup>")
