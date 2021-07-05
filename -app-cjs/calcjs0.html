@@ -259,12 +259,10 @@ print and (orientation: landscape) and (width: 1024px) { /* iPhone/iPad, chrome/
 </div>
 <div class="cfield">
   <span class="addns ccntr"><span class="ccntr">
-    <input type="text" id="xsetinp" placeholder="Load expression set&hellip;" list="xsetspl" /></span><span class="ccntr slist"><select id="xsetlist">
+    <input type="text" id="xsetinp" placeholder="Load expression set&hellip;" /></span><span class="ccntr slist"><select id="xsetlist">
     </select></span></span><span class="ccntr"><button id="btnsave">
     <span class="isucc">&#x267a;</span> SAVE</button></span><span class="ccntr"><button id="btndel">
     <span class="iwarn">&#x2715;</span> DEL</button></span>
-  <datalist id="xsetspl">
-  </datalist>
 </div>
 </main>
 <script type="text/javascript">
@@ -290,7 +288,6 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
   xsetlist = document.querySelector('#cmain #xsetlist'),
   btnsave = document.querySelector('#cmain #btnsave'),
   btndel = document.querySelector('#cmain #btndel'),
-  xsetspl = document.querySelector('#cmain #xsetspl'),
   dinp2 = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
     || { value: dinput.innerHTML.replace(/\n+$|^\n+/g, "") },
   respShow = resp => preresp.innerHTML
@@ -300,7 +297,7 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
     let anew = document.createElement('a'),
       chtml = '<!DOCTYPE html>\n<html lang="en">\n'
       + (document.querySelector('#ecorender') || document.documentElement).innerHTML
-        .replace(/^\n|^#cmain \.cfield button,\n[^]+?\n(?=@media print {\n)|^ *xstor = \[\],[^]+?\n(?=  dinp2 = )|^ *!xsetlist .+\n|^ *},\n *slistRegen = [^]+?\n(?= *};\nif \(\/\^http)|^if \(\/\^http[^]+?{ slistRegen\(\); }\n/gm, "")
+        .replace(/^\n|^#cmain \.cfield button,\n[^]+?\n(?=@media print {\n)|^ *xstor = \[\],[^]+?\n(?= *dinp2 = )|^ *!xsetlist .+\n|^ *},\n *slistRegen = [^]+?\n(?= *};\nif \(\/\^http)|^if \(\/\^http[^]+?{ slistRegen\(\); }\n/gm, "")
         .replace(/^(<xmp id="dinput".*?>)[^]*?(?=<\/xmp>)/m, (m, c1) => c1 + "\n" + dinp2.value + "\n")
         .replace(/^(<pre id="preresp">)[^]*?(?=<\/pre>)/m, "$1")
         .replace( /^(<div id="cgrid".*?>\n)[^]+?(?=\n<\/div>)/m,
@@ -361,22 +358,22 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
     .replace(/[\u2050-\u205a]|&frac\d[35679];/g, "<span class=fracv>$&</span>");
   },
   dinpRegen = evt => {
-    if ( (eobj = (evt || {}).target) && ( cfoc = [null, "parentElement", "parentElement", "parentElement"]
-      .some(k => /quad2B|plist/.test((eobj = eobj[k] || eobj).id || "")) )) {
-      if (evt && /plist/.test((evt.target.parentElement || {}).id || "")) {
+    if ( (eobj = (evt || {}).target)
+    && ( cfoc = [null, "parentElement", "parentElement", "parentElement"]
+    .some(k => /quad2B|plist/.test((eobj = eobj[k] || eobj).id || "")) )) {
+      if (/plist/.test((evt.target.parentElement || {}).id || "")) {
         seln = window.getSelection();
         seln.removeAllRanges();
         rnge = document.createRange();
         rnge.selectNodeContents(evt.target);
         seln.addRange(rnge);
-      }
-      if (plist.className) {
+      } else if (plist.className) {
+        plist.className = "";
         q2Bcopy = quad2B.innerHTML;
         quad2B.innerHTML = dinp2.value
         .replace(/&(?=#?\w+;)/g, "&amp;").replace(/&(?=amp;[gl]t;)/gi, "&amp;")
         .replace(/<(?=\/?\w)/g, "&lt;");
         di2html = quad2B.innerHTML;
-        plist.className = "";
       }
     } else if (!plist.className && quad2B.innerHTML === di2html) {
       plist.className = "is-hidden";
@@ -384,8 +381,8 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
       q2Bcopy = di2html = null;
     } else if (!plist.className) {
       !xsetlist || (xsetlist.value = "");
-      q2Bcopy = di2html = null;
       plist.className = "is-hidden";
+      q2Bcopy = di2html = null;
       dinp2.value = quad2B.innerHTML
       .replace(/<(\w+)>\s*<\/\1>/g, "")
       .replace(/(?:(?:<br>|)<\/div>|<br>|)<div><br><\/div>|(?:(?:<br>|)<\/div>|<br>|\n|)<div>|<br>/gi, "\n")
@@ -405,26 +402,20 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
     }
   },
   slistRegen = seln => !window.localforage
-  || window.localforage.keys((err, keys) => {
+  || window.localforage.keys((err, lfkeys) => {
     if (err) { respShow(err);
     } else {
       xsetlist.innerHTML = "\n      <option></option>"
-      + [["USERdata", ""]].concat(xstor).map( (oe, i) => i && !oe[1] ? ""
+      + [["USERdata", lfkeys]].concat(xstor).map( (oe, i) => i && !oe[1] ? ""
         : "\n      <optgroup label=\"" + oe[0] + "/\">\n        "
-          + (!i ? keys : Object.keys(oe[1])).filter(e => e !== "groupname")
+          + (!i ? oe[1] : Object.keys(oe[1]).filter(e => e !== "groupname"))
             .map(e => "<option>" + e + "</option>").join("\n        ")
           + "\n      </optgroup>" ).join("") + "\n";
-      if (0) xsetspl.innerHTML = "\n      "
-      + [["USERdata", ""]].concat(xstor).map( (oe, i) => i && !oe[1] ? ""
-        : (!i ? keys : Object.keys(oe[1])).filter(e => e !== "groupname")
-          .map(e => "<option>" + (!i ? "" : oe[0] + "/") + e + "</option>")
-          .join("\n      ") + "\n" );
       xsetlist.value = seln || "";
       xprsEval();
     }
   }),
   xsetLoad = evt => {
-    //if ( evt.target.id === "xsetinp" && !xsetinp.value
     if (evt.target.id === "xsetlist" && !xsetlist.value) {
       xsetlist.value = xsetinp.value = dinp2.value = "";
       return xprsEval();
