@@ -46,7 +46,7 @@ const calcdemo1 = `
   // in single underscores (e.g., &lowbar;pop&lowbar;).
 // - Make a ^super^script or ~sub~script by wrapping commented text
   // in single hatcheks or tildes, respectively (e.g., &Hat;super&Hat;, &sim;sub&sim;).
-  // Note: Digits added to the end of a variable also become a subscript.
+  // Note: Digits at the end of a variable also becomes a subscript.
 
  $RndmExpn = Math.ceil(r * 10)
 
@@ -145,7 +145,7 @@ const calcdemo1 = `
 
 // __Online JS Reference__
 
-// *Visit these webpages for more JavaScript syntax and expressions:*
+// *Visit these webpages for more on JavaScript expressions and syntax:*
 // - developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
 // - developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators
 // - developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Numbers_and_dates
