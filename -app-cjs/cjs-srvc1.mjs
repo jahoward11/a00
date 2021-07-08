@@ -27,14 +27,12 @@ const calcdemo1 = `
 // *How?*
 // - Enter data (like, mathematical expressions) into the large,
   // light-colored quadrant only -- the *ENTRY* field.
-// - After composing a complete expression set, generate a standalone
-  // copy by tapping the *down-bar* icon at the top right corner.
-// - When the *ENTRY* field is focused, JavaScript math functions
-  // appear and are listed in the left column -- for conveniently
-  // copy-pasting into the *ENTRY* field. (See use descriptions below.)
 // - When the *ENTRY* field is de-focused, line-item results appear
   // automatically in the *RESULTS* column -- to the left of each
   // line that contains a valid expression.
+// - When the *ENTRY* field is focused, JavaScript math functions
+  // appear and are listed in the left column -- for conveniently
+  // copy-pasting into the *ENTRY* field. (See use descriptions below.)
 // - Create a comment, like this one, by prepending the text
   // with a double slash (e.g., //comment).
 &Tab;// Indent, like this, with *&amp;Tab;*
@@ -47,6 +45,8 @@ const calcdemo1 = `
 // - Make a ^super^script or ~sub~script by wrapping commented text
   // in single hatcheks or tildes, respectively (e.g., &Hat;super&Hat;, &sim;sub&sim;).
   // Note: Digits at the end of a variable also becomes a subscript.
+// - After composing a complete expression set, generate a standalone
+  // copy by tapping the *down-bar* icon at the top right corner.
 
  $RndmExpn = Math.ceil(r * 10)
 

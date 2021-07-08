@@ -3,7 +3,7 @@
 const groupname = "engineering"
 
 const dimensions1 = `
-// __Dimensions of Common Objects__
+// __Dimensions of Common Use__
 // - _angle_ of a slope or incline
 // - _length_ of a side, distance or boundary
 // - _Perimeter_ of any shape (a length)
@@ -162,23 +162,23 @@ const triangles1 = `
  // tan _θ_ = _b_ / _a_&Tab;= sin _θ_ / cos _θ_
  // _a_^2^ + _b_^2^ = _c_^2^
 
-θ1 = Math.PI / 6 //&Tab;triangle 1 theta
-θ2 = Math.PI / 4 //&Tab;triangle 2 theta
-θ3 = Math.PI / 3 //&Tab;triangle 3 theta
+θ1 = Math.PI / 6&Tab;//triangle 1 theta
+θ2 = Math.PI / 4&Tab;//triangle 2 theta
+θ3 = Math.PI / 3&Tab;//triangle 3 theta
 
 c = 1
 
 b1 = Math.sin(θ1) * c
 a1 = Math.cos(θ1) * c
- Math.sqrt(3) / 2 //&Tab;(note: same value as _a1_ &amp; _b3_)
+ Math.sqrt(3) / 2&Tab;//(note: same value as _a1_ &amp; _b3_)
 
 b2 = Math.sin(θ2) * c
 a2 = Math.cos(θ2) * c
- Math.sqrt(2) / 2 //&Tab;(note: same value as _a2_ &amp; _b2_)
+ Math.sqrt(2) / 2&Tab;//(note: same value as _a2_ &amp; _b2_)
 
 b3 = Math.sin(θ3) * c
 a3 = Math.cos(θ3) * c
- Math.sqrt(1) / 2 //&Tab;(note: same value as _a3_ &amp; _b1_)
+ Math.sqrt(1) / 2&Tab;//(note: same value as _a3_ &amp; _b1_)
 
  $θ3 = Math.round(θ3 * 1000) / 1000
  $a3 = Math.round(a3 * 1000) / 1000
