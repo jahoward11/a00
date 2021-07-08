@@ -33,6 +33,8 @@ const calcdemo1 = `
 // - When the *ENTRY* field is focused, JavaScript math functions
   // appear and are listed in the left column -- for conveniently
   // copy-pasting into the *ENTRY* field. (See use descriptions below.)
+// - After composing a complete expression set, generate a standalone
+  // copy by tapping the *down-bar* icon at the top right corner.
 // - Create a comment, like this one, by prepending the text
   // with a double slash (e.g., //comment).
 &Tab;// Indent, like this, with *&amp;Tab;*
@@ -45,8 +47,6 @@ const calcdemo1 = `
 // - Make a ^super^script or ~sub~script by wrapping commented text
   // in single hatcheks or tildes, respectively (e.g., &Hat;super&Hat;, &sim;sub&sim;).
   // Note: Digits at the end of a variable also becomes a subscript.
-// - After composing a complete expression set, generate a standalone
-  // copy by tapping the *down-bar* icon at the top right corner.
 
  $RndmExpn = Math.ceil(r * 10)
 
