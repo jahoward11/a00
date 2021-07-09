@@ -147,7 +147,7 @@ const dimensions1 = `
  hsl = Math.pow(Math.pow(rn, 2) + Math.pow(hn, 2), 0.5) // ft
  $Aco = (Math.PI * Math.pow(rn, 2)) + (Math.PI * rn * hsl) // sq-ft
  $Vco = (1 / 3) * Math.PI * Math.pow(rn, 2) * hn // cu-ft
-// &nbsp;
+//
 `;
 
 const triangles1 = `
@@ -184,7 +184,7 @@ a3 = Math.cos(θ3) * c
  $a3 = Math.round(a3 * 1000) / 1000
  $b3 = Math.round(b3 * 1000) / 1000
  $c3 = c
-// &nbsp;
+//
 `;
 
 export {

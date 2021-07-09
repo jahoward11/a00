@@ -67,7 +67,7 @@ const homeloan1 = `
    // - the given interest rate (_rate0_)
    // - the given monthly payment (_ppmt0_)
    // - the given, beginning loan value (_pval0_)
-// &nbsp;
+//
 `;
 
 export {
