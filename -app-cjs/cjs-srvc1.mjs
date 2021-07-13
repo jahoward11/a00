@@ -37,7 +37,7 @@ const calcdemo1 = `
   // copy by tapping the *down-bar* icon at the top right corner.
 // - Create a comment, like this one, by prepending the text
   // with a double slash (e.g., //comment).
-&Tab;// Indent, like this, with *&amp;Tab;*
+&Tab;// Indent, like this, with *&amp;Tab;* (HTML name code).
 // - Make commented text __bold__ by wrapping it
   // in double underscores (e.g., &lowbar;&lowbar;bolded text&lowbar;&lowbar;).
 // - Make commented text *italicized* by wrapping it

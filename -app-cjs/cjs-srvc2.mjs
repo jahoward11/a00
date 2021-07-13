@@ -13,32 +13,32 @@ const dimensions1 = `
 
 // __Reference Formulas__
 // *Pythagorean theorem (for a right triangle)*
- // _a_^2^ + _b_^2^ = _c_^2^
+ // _a_² + _b_² = _c_²
  // _a_&ast;&ast;2 + _b_&ast;&ast;2 == _c_&ast;&ast;2  [recomposed with JS exponentiation operator]
  // Math.pow(_a_, 2) + Math.pow(_b_, 2) == Math.pow(_c_, 2)  [JS alternate]
 
 // *Trigonometric ratios (for a right triangle)*
  // sin _θ_ = _b_ / _c_
  // cos _θ_ = _a_ / _c_
- // tan _θ_ = _b_ / _a_&Tab;= sin _θ_ / cos _θ_
+ // tan _θ_ = _b_ / _a_	= sin _θ_ / cos _θ_
 
 // *Some areas*
- // Area~tri~ = &frac12;_bh_&Tab;= 0.5 &times; base &times; height
- // Area~rec~ = _lw_&Tab;= length &times; width
- // Area~cir~ = &pi;_r_^2^&Tab;= PI &times; radius squared
+ // Area~tri~ = ½_bh_	= 0.5 × base × height
+ // Area~rec~ = _lw_	= length × width
+ // Area~cir~ = π_r_²	= PI × radius squared
 
- // Area~sph~ = 4&pi;_r_^2^&Tab;= 4 &times; PI &times; radius squared
+ // Area~sph~ = 4π_r_²	= 4 × PI × radius squared
  // Area~cyl~ = 2_A_~*cir*~ + _Ch_
- // &Tab;&Tab;= (2 &times; Area~cir~) + (Circumference &times; height)
- // Area~con~ = _A_~*cir*~ + &pi;_rh_~*sl*~
- // &Tab;&Tab;= Area~cir~ + (PI &times; radius &times; slant height)
+ // 		= (2 × Area~cir~) + (Circumference × height)
+ // Area~con~ = _A_~*cir*~ + π_rh_~*sl*~
+ // 		= Area~cir~ + (PI × radius × slant height)
 
 // *Some volumes*
- // Vol~cub~ = _lwh_&Tab;= length &times; width &times; height
- // Vol~pyr~ = ^1^&frasl;~3~_lwh_&Tab;= 0.33 &times; length &times; width &times; height
- // Vol~sph~ = ^4^&frasl;~3~&pi;_r_^3^&Tab;= 1.33 &times; PI &times; radius cubed
- // Vol~cyl~ = &pi;_r_^2^_h_&Tab;= PI &times; radius squared &times; height
- // Vol~con~ = ^1^&frasl;~3~&pi;_r_^2^_h_&Tab;= 0.33 &times; PI &times; radius squared &times; height
+ // Vol~cub~ = _lwh_	= length × width × height
+ // Vol~pyr~ = ^1^⁄~3~_lwh_	= 0.33 × length × width × height
+ // Vol~sph~ = ^4^⁄~3~π_r_³	= 1.33 × PI × radius cubed
+ // Vol~cyl~ = π_r_²_h_	= PI × radius squared × height
+ // Vol~con~ = ^1^⁄~3~π_r_²_h_	= 0.33 × PI × radius squared × height
 
 // *Note*
 // - Length units of a formula must all be the same
@@ -138,15 +138,15 @@ const dimensions1 = `
  d = 2 * r // ft
  C = Math.PI * d // ft
  $C = 2 * Math.PI * r // ft
- $Aci = Math.PI * Math.pow(r, 2) // sq-ft
- $Asp = 4 * Math.PI * Math.pow(r, 2) // sq-ft
- $Vsp = (4 / 3) * Math.PI * Math.pow(r, 3) // cu-ft
+ $Aci = Math.PI * r**2 // sq-ft
+ $Asp = 4 * Math.PI * r**2 // sq-ft
+ $Vsp = (4 / 3) * Math.PI * r**3 // cu-ft
  
- $Acy = (2 * Math.PI * Math.pow(rn, 2)) + (2 * Math.PI * rn * hn) // sq-ft
- $Vcy = Math.PI * Math.pow(rn, 2) * hn // cu-ft
- hsl = Math.pow(Math.pow(rn, 2) + Math.pow(hn, 2), 0.5) // ft
- $Aco = (Math.PI * Math.pow(rn, 2)) + (Math.PI * rn * hsl) // sq-ft
- $Vco = (1 / 3) * Math.PI * Math.pow(rn, 2) * hn // cu-ft
+ $Acy = (2 * Math.PI * rn**2) + (2 * Math.PI * rn * hn) // sq-ft
+ $Vcy = Math.PI * rn**2 * hn // cu-ft
+ hsl = Math.pow(rn**2 + hn**2, 0.5) // ft
+ $Aco = (Math.PI * rn**2) + (Math.PI * rn * hsl) // sq-ft
+ $Vco = (1 / 3) * Math.PI * rn**2 * hn // cu-ft
 //
 `;
 
@@ -159,31 +159,31 @@ const triangles1 = `
 
  // sin _θ_ = _b_ / _c_
  // cos _θ_ = _a_ / _c_
- // tan _θ_ = _b_ / _a_&Tab;= sin _θ_ / cos _θ_
- // _a_^2^ + _b_^2^ = _c_^2^
+ // tan _θ_ = _b_ / _a_	= sin _θ_ / cos _θ_
+ // _a_² + _b_² = _c_²
 
-θ1 = Math.PI / 6&Tab;//triangle 1 theta
-θ2 = Math.PI / 4&Tab;//triangle 2 theta
-θ3 = Math.PI / 3&Tab;//triangle 3 theta
+θ1 = Math.PI / 6	//triangle 1 theta
+θ2 = Math.PI / 4	//triangle 2 theta
+θ3 = Math.PI / 3	//triangle 3 theta
 
 c = 1
 
 b1 = Math.sin(θ1) * c
 a1 = Math.cos(θ1) * c
- Math.sqrt(3) / 2&Tab;//(note: same value as _a1_ &amp; _b3_)
+ Math.sqrt(3) / 2	//(note: same value as _a1_ &amp; _b3_)
 
 b2 = Math.sin(θ2) * c
 a2 = Math.cos(θ2) * c
- Math.sqrt(2) / 2&Tab;//(note: same value as _a2_ &amp; _b2_)
+ Math.sqrt(2) / 2	//(note: same value as _a2_ &amp; _b2_)
 
 b3 = Math.sin(θ3) * c
 a3 = Math.cos(θ3) * c
- Math.sqrt(1) / 2&Tab;//(note: same value as _a3_ &amp; _b1_)
+ Math.sqrt(1) / 2	//(note: same value as _a3_ &amp; _b1_)
 
- $θ3 = Math.round(θ3 * 1000) / 1000
- $a3 = Math.round(a3 * 1000) / 1000
- $b3 = Math.round(b3 * 1000) / 1000
- $c3 = c
+$θ3 = Math.round(θ3 * 1000) / 1000
+$a3 = Math.round(a3 * 1000) / 1000
+$b3 = Math.round(b3 * 1000) / 1000
+$c3 = c
 //
 `;
 
