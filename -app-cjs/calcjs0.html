@@ -87,11 +87,17 @@ body {
 #cgrid .dnote {
   color: LightSteelBlue;
 }
-#cgrid .fracv {
-//font: normal small/1.25 Helvetica, Arial, sans-serif;
-}
 #cgrid .frasl {
   margin: 0 -5px;
+}
+#cgrid .fhelv {
+  display: inline-block;
+  font-style: inherit;
+  font-size: 13.5px;
+  font-family: Helvetica, Arial, sans-serif;
+  line-height: 1.25;
+  width: 8px;
+  text-align: center;
 }
 #cgrid .dvsr {
   position: absolute;
@@ -365,19 +371,20 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
         .replace(/~(?=\S)(.*?\S)~/g, "<sub>$1</sub>")
         + "</span> " )).join("\n")
     .replace(/\$\.([\wΑ-ω]+)/g, '<span class=dvar>$1</span>')
+    //.replace(/[\u2050-\u205a]|&frac\d[35679];/g, "<span class=fracv>$&</span>")
+    .replace( /^[\t ]*(<span class=dnote>)(<\/span>)( *\n[\t ]*)\1(.*)(?=\2 *\n[\t ]*\1\2 *$)/gim,
+      (m, c1, c2, c3, c4) => c1 + c2 + c3 + c1 + c4
+      .replace( /(?! )((?:[^\x09&=[⇐⇒⇔∏∑√∫]|[[⇐⇒⇔∏∑√∫](?!  )|&(?!Tab;|equals;|hArr;  |int;  |lArr;  |lsqb;  |prod;  |rArr;  |radic;  |sum;  ))*?) +(?:\xf7|\u27cb|&divide;|&#x0?0?[Ff]7;|&#x27[Cc][Bb];) +(.*?)(?= *\x09| *=| *\[  |  +\]| *&Tab;| *&equals;| *&lsqb;  |  +&rsqb;| *(?:[⇐⇒⇔∏∑√∫]|&hArr;|&int;|&lArr;|&prod;|&rArr;|&radic;|&sum;)(\[|&lsqb;|)  | *$)/g,
+        "<span class=dvsr>$1</span><span class=dvnd>$2</span>" ))
+    .replace( /([∏∑√∫]|&int;|&prod;|&radic;|&sum;|(?=\[|&lsqb;))(\[|&lsqb;|) ( +)|  (\]|&rsqb;)((?! ).*?(?=$|<span class=dvsr>)| ?)/g,
+      (m, c1, c2, c3, c4, c5) => (!c4 ? "" : "  ")
+      + "<span class=fbig>" + (c4 || c1 + c2) + "</span>"
+      + (c4 ? " " : c3 + (!c1 || !c2 ? "" : " "))
+      + (!c5 ? "" : "<span class=dvsr>" + c5 + "</span>") )
     .replace( /(\.\w*|&#?\w*|)([a-zΑ-ω]+)(\d+)(?![0-9a-zΑ-ω])/gi,
       (m, c1, c2, c3) => c1 ? m : c2 + "<sub>" + c3 + "</sub>" )
     .replace(/\u2044|&frasl;/g, "<span class=frasl>$&</span>")
-    .replace(/[\u2050-\u205a]|&frac\d[35679];/g, "<span class=fracv>$&</span>")
-    .replace( /^[\t ]*(<span class=dnote>)(<\/span>)( *\n[\t ]*)\1(.*)(?=\2 *\n[\t ]*\1\2 *$)/gim,
-      (m, c1, c2, c3, c4) => c1 + c2 + c3 + c1
-      + c4.replace( /(?! )((?:[^\x09&=[⇐⇒⇔∏∑√∫]|[[⇐⇒⇔∏∑√∫](?!  )|&(?!Tab;|equals;|hArr;  |int;  |lArr;  |lsqb;  |prod;  |rArr;  |radic;  |sum;  ))*?) +(?:\xf7|\u27cb|&divide;|&#x0?0?[Ff]7;|&#x27[Cc][Bb];) +(.*?)(?= *\x09| *=| *\[  |  +\]| *&Tab;| *&equals;| *&lsqb;  |  +&rsqb;| *(?:[⇐⇒⇔∏∑√∫]|&hArr;|&int;|&lArr;|&prod;|&rArr;|&radic;|&sum;)(\[|&lsqb;|)  | *$)/g,
-        "<span class=dvsr>$1</span><span class=dvnd>$2</span>" )
-      .replace( /([∏∑√∫]|&int;|&prod;|&radic;|&sum;|(?=\[|&lsqb;))(\[|&lsqb;|) ( +)|  (\]|&rsqb;)((?! ).*?(?=$|<span )| ?)/g,
-        (m3, c31, c32, c33, c34, c35) => (!c34 ? "" : "  ")
-        + "<span class=fbig>" + (c34 || c31 + c32) + "</span>"
-        + (c34 ? " " : c33 + (!c31 || !c32 ? "" : " "))
-        + (!c35 ? "" : "<span class=dvsr>" + c35 + "</span>") ));
+    .replace(/.[\u0300-\u036f]|[\u2075-\u207e\u2150-\u215a]|.&#x0?3[0-6][\da-f];|&#x207[5-9a-e];|&#x215[\da-e];|&frac\d[356];/g, "<span class=fhelv>$&</span>");
   },
   dinpRegen = evt => {
     if ( (eobj = (evt || {}).target)
