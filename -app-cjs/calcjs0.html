@@ -102,6 +102,10 @@ body {
   margin: 8px 0 0 0;
   border-top: 1px solid;
 }
+#cgrid .fbig {
+  position: absolute;
+  transform: scaleY(2.5);
+}
 #cgrid>#quad1A, #cgrid>#quad1B {
   min-height: 56px;
 }
@@ -367,8 +371,13 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
     .replace(/[\u2050-\u205a]|&frac\d[35679];/g, "<span class=fracv>$&</span>")
     .replace( /^[\t ]*(<span class=dnote>)(<\/span>)( *\n[\t ]*)\1(.*)(?=\2 *\n[\t ]*\1\2 *$)/gim,
       (m, c1, c2, c3, c4) => c1 + c2 + c3 + c1
-      + c4.replace( /(?! )((?:[^\x09&=]|&(?!equals;|Tab;))*?) +(?:\xf7|\u27cb|&divide;|&#x0?0?[Ff]7;|&#x27[Cc][Bb];) +(.*?)(?= *\x09| *=| *&equals;| *&Tab;| *$)/g,
-        "<span class=dvsr>$1</span><span class=dvnd>$2</span>" ));
+      + c4.replace( /(?! )((?:[^\x09&=[⇐⇒⇔∏∑√∫]|[[⇐⇒⇔∏∑√∫](?!  )|&(?!Tab;|equals;|hArr;  |int;  |lArr;  |lsqb;  |prod;  |rArr;  |radic;  |sum;  ))*?) +(?:\xf7|\u27cb|&divide;|&#x0?0?[Ff]7;|&#x27[Cc][Bb];) +(.*?)(?= *\x09| *=| *\[  |  +\]| *&Tab;| *&equals;| *&lsqb;  |  +&rsqb;| *(?:[⇐⇒⇔∏∑√∫]|&hArr;|&int;|&lArr;|&prod;|&rArr;|&radic;|&sum;)(\[|&lsqb;|)  | *$)/g,
+        "<span class=dvsr>$1</span><span class=dvnd>$2</span>" )
+      .replace( /([∏∑√∫]|&int;|&prod;|&radic;|&sum;|(?=\[|&lsqb;))(\[|&lsqb;|) ( +)|  (\]|&rsqb;)((?! ).*?(?=$|<span )| ?)/g,
+        (m3, c31, c32, c33, c34, c35) => (!c34 ? "" : "  ")
+        + "<span class=fbig>" + (c34 || c31 + c32) + "</span>"
+        + (c34 ? " " : c33 + (!c31 || !c32 ? "" : " "))
+        + (!c35 ? "" : "<span class=dvsr>" + c35 + "</span>") ));
   },
   dinpRegen = evt => {
     if ( (eobj = (evt || {}).target)
