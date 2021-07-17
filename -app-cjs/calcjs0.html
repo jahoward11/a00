@@ -92,10 +92,8 @@ body {
 }
 #cgrid :not(sub):not(sup)>.fhlv1, #cgrid .fhlv2 {
   display: inline-block;
-  line-height: 1;
   width: 7.8px;
   text-align: center;
-  vertical-align: bottom;
 }
 #cgrid .fhlv1 {
   font-family: Helvetica, Arial, sans-serif;
@@ -103,7 +101,9 @@ body {
 }
 #cgrid .fhlv2 {
   font-family: Helvetica, Arial, sans-serif;
-  font-size: 93.75%; /* 13px */
+  font-size: 93.75%; /* 15px */
+  line-height: 1;
+  vertical-align: bottom;
 }
 #cgrid .dvsr {
   position: absolute;
@@ -346,7 +346,9 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
     $ = {};
     _ = {};
     !preresp.innerHTML || (preresp.innerHTML = null);
-    xprsns = dinp2.value.replace(/&Tab;/g, "\t").replace(/\$(?=[a-zΑ-ω])/gi, "$$.").split("\n");
+    xprsns = dinp2.value.replace(/&Tab;/g, "\t").replace(/\$(?=[a-zΑ-ω])/gi, "$$.")
+      .replace(/^\/\*\n([^]*?)\n\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
+      .split("\n");
     reslts = xprsns.map(xpr => {
       try {
         xpr = xpr && xpr
@@ -367,7 +369,7 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
     quad2A.innerHTML = reslts.join('\n').replace(/\n$/, "\n&nbsp;")
       + '<span id="dinitl">Line-expression<br />RESULTS</span>';
     quad2B.innerHTML = xprsns.map( xpr => xpr
-      .replace(/&(?=[gl]t;)/gi, "&amp;").replace(/<(?=\/?\w)/g, "&lt;")
+      .replace(/&(?=[gl]t;|#x0*[ad];|NewLine;)/gi, "&amp;").replace(/<(?=\/?\w)/g, "&lt;")
       .replace( /\/\/ *(.*?) *$/, (m, c1) =>
         '<span class=dnote>' + c1
         .replace(/(\W|\d|^)_([0-9a-zΑ-ω]+)_(?=$|\W|\d)/gi, "$1<strong><em>$2</em></strong>")
@@ -380,7 +382,7 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
         + "</span> " )).join("\n")
     .replace( /^[\t ]*(<span class=dnote>)(<\/span>)( *\n[\t ]*)\1(.*)(?=\2 *\n[\t ]*\1\2 *$)/gim,
       (m, c1, c2, c3, c4) => c1 + c2 + c3 + c1 + c4
-      .replace( /(?! )((?:[^\x09&=[⇐⇒⇔∏∑√∫]|[[⇐⇒⇔∏∑√∫](?!  )|&(?!Tab;|equals;|hArr;  |int;  |lArr;  |lsqb;  |prod;  |rArr;  |radic;  |sum;  ))*?) +(?:\xf7|\u27cb|&divide;|&#x0?0?[Ff]7;|&#x27[Cc][Bb];) +(.*?)(?= *\x09| *=| *\[  |  +\]| *&Tab;| *&equals;| *&lsqb;  |  +&rsqb;| *(?:[⇐⇒⇔∏∑√∫]|&hArr;|&int;|&lArr;|&prod;|&rArr;|&radic;|&sum;)(\[|&lsqb;|)  | *$)/g,
+      .replace( /(?! )((?:[^\x09&=[⇐⇒⇔∏∑√∫]|[[⇐⇒⇔∏∑√∫](?!  )|&(?!Tab;|equals;|hArr;  |int;  |lArr;  |lsqb;  |prod;  |rArr;  |radic;  |sum;  ))*?) +(?:\xf7|\u27cb|&divide;|&#x0*[Ff]7;|&#x27[Cc][Bb];) +(.*?)(?= *\x09| *=| *\[  |  +\]| *&Tab;| *&equals;| *&lsqb;  |  +&rsqb;| *(?:[⇐⇒⇔∏∑√∫]|&hArr;|&int;|&lArr;|&prod;|&rArr;|&radic;|&sum;)(\[|&lsqb;|)  | *$)/g,
         "<span class=dvsr>$1</span><span class=dvnd>$2</span>" ))
     .replace( /([∏∑√∫]|&int;|&prod;|&radic;|&sum;|(?=\[|&lsqb;))(\[|&lsqb;|) ( +)|  (\]|&rsqb;)((?! ).*?(?=$|<span class=dvsr>)| ?)/g,
       (m, c1, c2, c3, c4, c5) => (!c4 ? "" : "  ")
@@ -392,10 +394,10 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
       (m, c1, c2, c3) => c1 ? m : c2 + "<sub>" + c3 + "</sub>" )
     .replace(/\u2044|&frasl;/g, "<span class=frasl>$&</span>")
     .replace( /[\u2070-\u207e]|&#x207[0-9A-Ea-e];/g, "<span class=fhlv2>$&</span>" ) // superscripts
-    //.replace( /(?:[\xb2\xb3\xb9\u2070-\u207e]|&#x0?0?[Bb][239];|&#x207[0-9A-Ea-e];|&sup[123];)+/g,
+    //.replace( /(?:[\xb2\xb3\xb9\u2070-\u207e]|&#x0*[Bb][239];|&#x207[0-9A-Ea-e];|&sup[123];)+/g,
       //"<span class=fhlv2>$&</span>" )
-    .replace( /.[\u0300-\u036f]|[\u2150-\u215a]|.&#x0?3[0-6][\dA-Fa-f];|&#x215[\dAa];|&frac\d[356];/g,
-      "<span class=fhlv1>$&</span>" ); // combining marks & vulgar fractions
+    .replace( /.[\u0300-\u036f]|[\u02f7\u2023\u2031\u2034\u203e\u2057\u2150-\u215a]|.&#x0?3[0-6][\dA-Fa-f];|&#x0?2f7;|&#x2023;|&#x203[14e];|&#x2057;|&#x215[\dAa];|&frac\d[356];|&oline;|&pertenk;|&qprime;|&tprime;/g,
+      "<span class=fhlv1>$&</span>" ); // combining marks, vulgar fractions, ˷ ‣ ‱ ‴ ‾ ⁗
     //.replace( /.[\u0300-\u036f]|[\xbc-\xbe\u2150-\u215e]|.&#x0?3[0-6][\dA-Fa-f];|&#x215[\dA-Ea-e];|&frac\d[234568];/g,
       //"<span class=fhlv1>$&</span>" );
   },
