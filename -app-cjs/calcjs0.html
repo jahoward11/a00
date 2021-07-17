@@ -394,9 +394,9 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
     .replace( /(\.\w*|&#?\w*|)([a-zΑ-ω]+)(\d+)(?![0-9a-zΑ-ω])/gi,
       (m, c1, c2, c3) => c1 ? m : c2 + "<sub>" + c3 + "</sub>" )
     .replace(/\u2044|&frasl;/g, "<span class=frasl>$&</span>")
-    .replace( /[\u2070-\u207e]|&#x207[0-9A-Ea-e];/g, "<span class=fhlv2>$&</span>" ) // superscripts
-    //.replace( /(?:[\xb2\xb3\xb9\u2070-\u207e]|&#x0*[Bb][239];|&#x207[0-9A-Ea-e];|&sup[123];)+/g,
-      //"<span class=fhlv2>$&</span>" )
+    .replace( /(?:[\xb2\xb3\xb9\u2070-\u207e]|&#x0*[Bb][239];|&#x207[0-9A-Ea-e];|&sup[123];)+/g,
+      "<span class=fhlv2>$&</span>" ) // superscripts
+    //.replace( /[\u2070-\u207e]|&#x207[0-9A-Ea-e];/g, "<span class=fhlv2>$&</span>" ) // superscripts
     .replace( /.[\u0300-\u036f]|[\u02f7\u2023\u2031\u2034\u203e\u2057\u2150-\u215a]|.&#x0?3[0-6][\dA-Fa-f];|&#x0?2f7;|&#x2023;|&#x203[14e];|&#x2057;|&#x215[\dAa];|&frac\d[356];|&oline;|&pertenk;|&qprime;|&tprime;/g,
       "<span class=fhlv1>$&</span>" ); // combining marks, vulgar fractions, ˷ ‣ ‱ ‴ ‾ ⁗
     //.replace( /.[\u0300-\u036f]|[\xbc-\xbe\u2150-\u215e]|.&#x0?3[0-6][\dA-Fa-f];|&#x215[\dA-Ea-e];|&frac\d[234568];/g,
