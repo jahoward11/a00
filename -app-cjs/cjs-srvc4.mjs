@@ -29,8 +29,8 @@ __AP^®^ BIOLOGY EQUATIONS AND FORMULAS__
  ∑ | sum of all
 
  Mode   | value that occurs most frequently in a data set
- Median | middle value that separates the greater and
-          lesser halves of a data set
+ Median | middle value that separates the greater and lesser
+          halves of a data set
  Mean   | sum of all data points divided by number of data points
  Range  | value obtained by subtracting the smallest observation
           (sample minimum) from the greatest (sample maximum)
@@ -71,8 +71,8 @@ __Hardy-Weinberg Equations__
  *q* | frequency of allele 2 in a population
 
  *p*² + 2┊͏*pq* + *q*² = 1
- *p* + *q* = l
-*/
+ *p* + *q* = 1
+ */
 `;
 
 export {

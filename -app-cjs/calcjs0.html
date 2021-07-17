@@ -98,6 +98,7 @@ body {
 #cgrid .fhlv1 {
   font-family: Helvetica, Arial, sans-serif;
   font-size: 81.25%; /* 13px */
+  line-height: 1.154;
 }
 #cgrid .fhlv2 {
   font-family: Helvetica, Arial, sans-serif;
@@ -347,7 +348,7 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
     _ = {};
     !preresp.innerHTML || (preresp.innerHTML = null);
     xprsns = dinp2.value.replace(/&Tab;/g, "\t").replace(/\$(?=[a-zΑ-ω])/gi, "$$.")
-      .replace(/^\/\*\n([^]*?)\n\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
+      .replace(/^\/\*\n?([^]*?)\n?\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
       .split("\n");
     reslts = xprsns.map(xpr => {
       try {
