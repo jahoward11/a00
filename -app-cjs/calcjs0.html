@@ -374,7 +374,7 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
       .replace( /\/\/ *(.*?) *$/, (m, c1) =>
         '<span class=dnote>' + c1
         .replace(/(\W|\d|^)_([0-9a-zΑ-ω]+)_(?=$|\W|\d)/gi, "$1<strong><em>$2</em></strong>")
-        .replace(/(\W|__|^)\*(?=\S)(.*?\S)\*(?=$|\W|\1)/g, "$1<em>$2</em>")
+        .replace(/(\W|\d|__|^)\*(?=\S)(.*?\S)\*(?=$|\W|\1)/g, "$1<em>$2</em>")
         .replace(/\b__(.+?)__(?!_)/g, "<strong>$1</strong>")
         .replace(/\^(?=\S)(.*?\S)\^/g, "<sup>$1</sup>")
         .replace(/~(?=\S)(.*?\S)~/g, "<sub>$1</sub>")
@@ -385,7 +385,7 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
       (m, c1, c2, c3, c4) => c1 + c2 + c3 + c1 + c4
       .replace( /(?! )((?:[^\x09&=[⇐⇒⇔∏∑√∫]|[[⇐⇒⇔∏∑√∫](?!  )|&(?!Tab;|equals;|hArr;  |int;  |lArr;  |lsqb;  |prod;  |rArr;  |radic;  |sum;  ))*?) +(?:\xf7|\u27cb|&divide;|&#x0*[Ff]7;|&#x27[Cc][Bb];) +(.*?)(?= *\x09| *=| *\[  |  +\]| *&Tab;| *&equals;| *&lsqb;  |  +&rsqb;| *(?:[⇐⇒⇔∏∑√∫]|&hArr;|&int;|&lArr;|&prod;|&rArr;|&radic;|&sum;)(\[|&lsqb;|)  | *$)/g,
         "<span class=dvsr>$1</span><span class=dvnd>$2</span>" ))
-    .replace( /([∏∑√∫]|&int;|&prod;|&radic;|&sum;|(?=\[|&lsqb;))(\[|&lsqb;|) ( +)|  (\]|&rsqb;)((?! ).*?(?=$|<span class=dvsr>)| ?)/g,
+    .replace( /([∏∑√∫]|&int;|&prod;|&radic;|&sum;|(?=\[|&lsqb;))(\[|&lsqb;|) ( +)|  (\]|&rsqb;)((?! ).*?(?=<span class=dvsr>|<\/span>)| ?)/g,
       (m, c1, c2, c3, c4, c5) => (!c4 ? "" : "  ")
       + "<span class=fbig>" + (c4 || c1 + c2) + "</span>"
       + (c4 ? " " : c3 + (!c1 || !c2 ? "" : " "))

@@ -2,11 +2,12 @@
 
 const groupname = "lifescience";
 
-const biology1 = `
-/*
+const biology1 = `/*
 __AP^®^ BIOLOGY EQUATIONS AND FORMULAS__
 
-*Metric Prefixes*
+
+*―――Metric Prefixes―――*
+
  __Factor	Prefix	Symbol__
  10⁹	giga	G
  10⁶	mega	M
@@ -18,7 +19,9 @@ __AP^®^ BIOLOGY EQUATIONS AND FORMULAS__
  10⁻⁹	nano	n
  10⁻¹²	pico	p
 
-*Statistical Analysis and Probability*
+
+*―――Statistical Analysis and Probability―――*
+
  *x̅* | sample mean
  *n* | sample size
  *s* | sample standard deviation
@@ -57,7 +60,7 @@ __Chi-Square Table__
   0.01 |  6.63  9.21 11.34 13.28 15.09 16.81 18.48 20.09 
 
  Degrees of freedom are equal to the number of
- distinct possible outcomes minus one.
+distinct possible outcomes minus one.
 
 __Laws of Probability__
  If A and B are mutually exclusive, then:
@@ -70,10 +73,93 @@ __Hardy-Weinberg Equations__
  *p* | frequency of allele 1 in a population
  *q* | frequency of allele 2 in a population
 
- *p*² + 2┊͏*pq* + *q*² = 1
+ *p*² + 2*pq* + *q*² = 1
  *p* + *q* = 1
- */
-`;
+
+
+*―――Rate and Growth―――*
+
+ *dY*  | amount of change
+ *dt*  | change in time
+ *B*   | birthrate
+ *D*   | death rate
+ *N*   | population size
+ *K*   | carrying capacity
+ *r~max~* | maximum per capita growth rate of population
+
+__Rate__
+
+ *dY* ⟋ *dt*
+
+__Population Growth__
+
+ *dN* ⟋ *dt*   = *B* - *D*
+
+__Exponential Growth__
+
+ *dN* ⟋ *dt*   = *r~max~N*
+
+__Logistic Growth__
+
+ *dN* ⟋ *dt*   = *r~max~N*[  K - N ⟋ ⬚͏ K ⬚͏     ]
+
+__Simpson's Diversity Index__
+ *n* | total number of organisms of a particular species
+ *N* | total number of organisms of all species
+
+ Diversity Index = 1 - ∑[   *n* ⟋ *N*  ]²
+
+__Water Potential (Ψ)__
+ Ψ~P~ | pressure potential
+ Ψ~S~ | solute potential
+
+ Ψ = Ψ~P~ + Ψ~S~
+
+ The water potential will be equal to the solute potential of
+a solution in an open container because, in an open container,
+the pressure potential of the solution is zero.
+
+__The Solute Potential of a Solution__
+ *i* | ionization constant
+     (1.0 for sucrose because sucrose does not ionize in water)
+ *C* | molar concentration
+ *R* | pressure constant
+     (*R* = 0.0831 liter bars/mole K)
+ *T* | temperature in Kelvin (°C + 273)
+
+ Ψ~S~ = -*iCRT*
+
+__pH__
+ *pH* = -log~10~[H⁺]
+
+
+*―――Surface Area and Volume―――*
+
+ *r*  | radius
+ *l*  | length
+ *h*  | height
+ *w*  | width
+ *s*  | length of one side of a cube
+ *SA* | surface area
+ *V*  | volume
+
+__Surface Area/Volume of a Sphere__
+ *SA* = 4*πr*²
+  *V* = ^4^⁄~3~*πr*³
+
+__Surface Area/Volume of a Rectangular Solid__
+ *SA* = 2*lh* + 2*lw* + 2*wh*
+  *V* = *lwh*
+
+__Surface Area/Volume of a Cylinder__
+ *SA* = 2*πrh* + 2*πr*²
+  *V* = *πr*²*h*
+
+__Surface Area/Volume of a Cube__
+ *SA* = 6*s*²
+  *V* = *s*³
+
+*/`;
 
 export {
   groupname, biology1
