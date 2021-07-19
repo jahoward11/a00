@@ -45,7 +45,7 @@ __Surface Area/Volume of a Cylinder__
 __Surface Area/Volume of a Sphere__
  *SA* = 4*πr*²
   *V* = ^4^⁄~3~*πr*³
-
+\\f
 
 *―――Statistical Analysis and Probability―――*
 
@@ -102,7 +102,7 @@ __Hardy-Weinberg Equations__
 
  *p*² + 2*pq* + *q*² = 1
  *p* + *q* = 1
-
+\\f
 
 *―――Rate and Growth―――*
 
@@ -153,7 +153,7 @@ __Primary Productivity Calculation__
  [  mL O2 ⟋ ⬚͏ L ⬚͏     ]  × [  0.536 mg C~fixed~ ⟋ ⬚͏   mL O2    ⬚͏              ]  = mg C~fixed~ ⟋ ⬚͏  L   ⬚͏
 
  (at standard temperature and pressure)
-
+\\f
 
 *―――Chemistry―――*
 

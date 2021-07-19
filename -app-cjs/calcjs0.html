@@ -21,6 +21,9 @@ body {
 .is-hidden {
   display: none;
 }
+.pagebb {
+  line-height: 0;
+}
 #cmain {
   max-width: 720px;
   margin: 0 auto;
@@ -156,6 +159,7 @@ body {
   grid-area: quad2B;
   color: Grey;
   background: #f9f9f9;
+  position: relative;
 }
 #cgrid #dfinal, #cgrid #dinitl {
   position: absolute;
@@ -255,6 +259,7 @@ body {
 }
 @media print {
   body, #cmain { margin: 0 auto; padding: 0; }
+  .pagebb { page-break-before: always; break-before: page; margin-top: -56px; }
   #cgrid>#quad1A { box-shadow: inset 0 -1px LightGrey; }
   #cgrid>#quad1B { box-shadow: inset 0 -1px LightSteelBlue; }
   #cmain>#btncnew, #cgrid #dfinal, #cgrid #dinitl,
@@ -357,10 +362,11 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
           m0 => m0.replace( /([ =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([A-Za-zΑ-ω]\w*)(?! *=)/g,
             (m1, c1, c2) => window[c2] || !Object.keys(_).some(k => k === c2) ? m1 : c1 + "_." + c2 )
           .replace(/(?: |^)(?=[a-zΑ-ω]\w* *=)/gi, "$&_.") );
-        rslt = eval(xpr);
-        return rslt == null ? ""
+        rslt = eval(xpr.replace(/\\f/g, ""));
+        return (!/\\f/.test(xpr) ? "" : "<div class=pagebb></div>")
+        + ( rslt == null ? ""
           : typeof rslt === 'string' ? rslt.replace(/\n/g, "\\n")
-          : rslt.toString().replace(/\s+/g, " ");
+          : rslt.toString().replace(/\s+/g, " ") );
       } catch (err) { respShow(err); return err; }
     });
     quad1A.innerHTML = Object.values($).join("\n").replace(/\n$/, "\n&nbsp;")
@@ -398,9 +404,10 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
       "<span class=fhlv2>$&</span>" ) // superscripts
     //.replace( /[\u2070-\u207e]|&#x207[0-9A-Ea-e];/g, "<span class=fhlv2>$&</span>" ) // superscripts
     .replace( /.[\u0300-\u036f]|[\u02f7\u2023\u2031\u2034\u203e\u2057\u2150-\u215a]|.&#x0?3[0-6][\dA-Fa-f];|&#x0?2f7;|&#x2023;|&#x203[14e];|&#x2057;|&#x215[\dAa];|&frac\d[356];|&oline;|&pertenk;|&qprime;|&tprime;/g,
-      "<span class=fhlv1>$&</span>" ); // combining marks, vulgar fractions, ˷ ‣ ‱ ‴ ‾ ⁗
+      "<span class=fhlv1>$&</span>" ) // combining marks, vulgar fractions, ˷ ‣ ‱ ‴ ‾ ⁗
     //.replace( /.[\u0300-\u036f]|[\xbc-\xbe\u2150-\u215e]|.&#x0?3[0-6][\dA-Fa-f];|&#x215[\dA-Ea-e];|&frac\d[234568];/g,
       //"<span class=fhlv1>$&</span>" );
+    .replace(/(.*?)\\f(.*)/g, "<div class=pagebb></div>$1$2");
   },
   dinpRegen = evt => {
     if ( (eobj = (evt || {}).target)
@@ -417,7 +424,7 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
         q2Bcopy = quad2B.innerHTML;
         quad2B.innerHTML = dinp2.value
         .replace(/&(?=#?\w+;)/g, "&amp;").replace(/&(?=amp;[gl]t;)/gi, "&amp;")
-        .replace(/<(?=\/?\w)/g, "&lt;");
+        .replace(/<(?=\/?\w|!--.*-->)/g, "&lt;");
         di2html = quad2B.innerHTML;
       }
     } else if (!plist.className && quad2B.innerHTML === di2html) {
@@ -442,7 +449,7 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
       .replace(/<\/?\b[ \w,:;"#=-]+>|\n+$|^\n+/g, "")
       .replace(/&gt;/gi, ">").replace(/&lt;/gi, "<").replace(/&quot;/gi, "\"")
       .replace(/&amp;&amp;/gi, "&&").replace(/&amp;(?:amp;(?!Tab;)|)(?=#?\w+;)/gi, "&")
-      .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/^\\t/g, "\t"));
+      .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/\\t/g, "\t"));
       xprsEval();
     }
   },
@@ -508,7 +515,7 @@ plist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
   .map((e, i) => `<li>n.${e}${/^constructor/.test(e) ? "" : "()"}</li>`).join("\n    ")
   + "\n    " + ["", ".toLocaleString()", ".toUTCString()", ".toISOString()", ".getTime()"]
   .map(e => `<li>new Date()${e}</li>`).join("\n    ")
-  + "\n    " + [ "- - -", "&Tab;", "⬚͏ &nbsp;", "┊͏ &zwj;",
+  + "\n    " + [ "- - -", "\\t &Tab;", "\\f (form-feed)", "⬚͏ &nbsp;", "┊͏ &zwj;",
     "- - -", "Α &Alpha;", "α &alpha;", "Β &Beta;", "β &beta;", "Γ &Gamma;", "γ &gamma;", "Δ &Delta;", "δ &delta;", "Ε &Epsilon;", "ε &epsiv;", "Ζ &Zeta;", "ζ &zeta;", "Η &Eta;", "η &eta;", "Θ &Theta;", "θ &theta;", "Ι &Iota;", "ι &iota;", "Κ &Kappa;", "κ &kappa;", "Λ &Lambda;", "λ &lambda;", "Μ &Mu;", "μ &mu;", "Ν &Nu;", "ν &nu;", "Ξ &Xi;", "ξ &xi;", "Ο &Omicron;", "ο &omicron;", "Π &Pi;", "π &pi;", "Ρ &Rho;", "ρ &rho;", "ς &sigmav;", "Σ &Sigma;", "σ &sigma;", "Τ &Tau;", "τ &tau;", "Υ &Upsilon;", "υ &upsi;", "Φ &Phi;", "φ &phi;", "Χ &Chi;", "χ &chi;", "Ψ &Psi;", "ψ &psi;", "Ω &Omega;", "ω &omega;",
     "- - -", "$ &dollar;", "% &percnt;", "& &amp;", "( &lpar;", ") &rpar;", "* &ast;", "+ &plus;", "- (hyphen-minus)", "/ &sol;", "< &lt;", "= &equals;", "> &gt;", "[ &lsqb;", "\\ &bsol;", "] &rsqb;", "^ &Hat;", "_ &lowbar;", "` &grave;", "{ &lcub;", "| &vert;", "} &rcub;", "~ (tilde)",
     "- - -", "¦ &brvbar;", "¨ &uml;", "¯ &macr;", "° &deg;", "± &pm;", "² &sup2;", "³ &sup3;", "´ &acute;", "µ &micro;", "¹ &sup1;", "¼ &frac14;", "½ &frac12;", "¾ &frac34;", "× &times;", "÷ &divide;", "ƒ &fnof;", "˜ &tilde;", "˷ (low tilde &#x2f7;)", " ̂ (combining circumflex &#x302;)", " ̃ (combining tilde &#x303;)", " ̄ (combining macron &#x304;)", " ̅ (combining overline &#x305;)", " ̲ (combining low line &#x332;)", "― &horbar;", "‖ &Vert;", "• &bull;", "‣ (triangular bullet &#x2023;)", "… &hellip;", "‰ &permil;", "‱ &pertenk;", "′ &prime;", "″ &Prime;", "‴ &tprime;", "‵ &backprime;", "‾ &oline;", "⁄ &frasl;", "⁗ &qprime;", "⁰ (superscript 0 &#x2070;)", "⁴ (superscript 4 &#x2074;)", "⁵ (superscript 5 &#x2075;)", "⁶ (superscript 6 &#x2076;)", "⁷ (superscript 7 &#x2077;)", "⁸ (superscript 8 &#x2078;)", "⁹ (superscript 9 &#x2079;)", "⁺ (superscript '+' &#x207a;)", "⁻ (superscript '-' &#x207b;)", "⁽ (superscript '(' &#x207d;)", "⁾ (superscript ')' &#x207e;)", "№ &numero;", "⅓ &frac13;", "⅔ &frac23;", "⅛ &frac18;", "⅜ &frac38;", "⅝ &frac58;", "⅞ &frac78;", "← &larr;", "↑ &uarr;", "→ &rarr;", "↓ &darr;", "↔ &harr;", "⇐ &lArr;", "⇑ &uArr;", "⇒ &rArr;", "⇓ &dArr;", "⇔ &hArr;",
