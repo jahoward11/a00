@@ -59,8 +59,8 @@ __Chi-Square Table__
   0.05 |  3.84  5.99  7.81  9.49 11.07 12.59 14.07 15.51 
   0.01 |  6.63  9.21 11.34 13.28 15.09 16.81 18.48 20.09 
 
- Degrees of freedom are equal to the number of
-distinct possible outcomes minus one.
+ Degrees of freedom are equal to
+the number of distinct possible outcomes minus one.
 
 __Laws of Probability__
  If A and B are mutually exclusive, then:
@@ -87,6 +87,13 @@ __Hardy-Weinberg Equations__
  *K*   | carrying capacity
  *r~max~* | maximum per capita growth rate of population
 
+ *T2*  | higher temperature
+ *T1*  | lower temperature
+ *k2*  | reaction rate at *T2*
+ *k1*  | reaction rate at *T1*
+ Q10 | the factor by which the reaction rate increases
+       when the temperature is raised by ten degrees
+
 __Rate__
 
  *dY* ⟋ *dt*
@@ -109,6 +116,21 @@ __Simpson's Diversity Index__
 
  Diversity Index = 1 - ∑[   *n* ⟋ *N*  ]²
 
+__Temperature Coefficient Q10__
+
+ Q10 = [  *k2* ⟋ *k1*  ]^¹⁰/~*T2* - *T1*~^
+
+__Primary Productivity Calculation__
+
+ [  mg O2 ⟋ ⬚͏ L ⬚͏     ]  × [  0.698 mL ⟋ ⬚͏  mg  ⬚͏        ]  = mL O2 ⟋ ⬚͏ L ⬚͏
+
+ [  mL O2 ⟋ ⬚͏ L ⬚͏     ]  × [  0.536 mg C~fixed~ ⟋ ⬚͏   mL O2    ⬚͏              ]  = mg C~fixed~ ⟋ ⬚͏  L   ⬚͏
+
+ (at standard temperature and pressure)
+
+
+*―――Chemistry―――*
+
 __Water Potential (Ψ)__
  Ψ~P~ | pressure potential
  Ψ~S~ | solute potential
@@ -129,6 +151,23 @@ __The Solute Potential of a Solution__
 
  Ψ~S~ = -*iCRT*
 
+__Dilution__
+*used to create a dilute solution from a concentrated stock solution*
+ i | initial (starting)
+ f | final (desired)
+ *C* | concentration of solute
+ *V* | volume of solution
+
+ *C~i~V~i~* = *C~f~V~f~*
+
+__Gibbs Free Energy__
+ Δ*G* | change in Gibbs free energy
+ Δ*S* | change in entropy
+ Δ*H* | change in enthalpy
+ *T*  | absolute temperature (in Kelvin)
+
+ Δ*G* = Δ*H* - *T*Δ*S*
+
 __pH__
  *pH* = -log~10~[H⁺]
 
@@ -143,21 +182,21 @@ __pH__
  *SA* | surface area
  *V*  | volume
 
-__Surface Area/Volume of a Sphere__
- *SA* = 4*πr*²
-  *V* = ^4^⁄~3~*πr*³
-
 __Surface Area/Volume of a Rectangular Solid__
  *SA* = 2*lh* + 2*lw* + 2*wh*
   *V* = *lwh*
+
+__Surface Area/Volume of a Cube__
+ *SA* = 6*s*²
+  *V* = *s*³
 
 __Surface Area/Volume of a Cylinder__
  *SA* = 2*πrh* + 2*πr*²
   *V* = *πr*²*h*
 
-__Surface Area/Volume of a Cube__
- *SA* = 6*s*²
-  *V* = *s*³
+__Surface Area/Volume of a Sphere__
+ *SA* = 4*πr*²
+  *V* = ^4^⁄~3~*πr*³
 
 */`;
 
