@@ -197,6 +197,7 @@ __Gibbs Free Energy__
 
 __pH Value__
 *acidity (<7) / basicity (>7) of an aqueous solution*
+
  *pH* = -log10[H⁺]
 
 */`;
