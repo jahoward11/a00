@@ -18,27 +18,27 @@ const dimensions1 = `
  // Math.pow(_a_, 2) + Math.pow(_b_, 2) == Math.pow(_c_, 2)  [JS alternate]
 
 // *Trigonometric ratios (for a right triangle)*
- // sin _θ_ = _b_ / _c_
- // cos _θ_ = _a_ / _c_
- // tan _θ_ = _b_ / _a_	= sin _θ_ / cos _θ_
+ // sin┊͏_θ_ = _b_ / _c_
+ // cos┊͏_θ_ = _a_ / _c_
+ // tan┊͏_θ_ = _b_ / _a_	= sin┊͏_θ_ / cos┊͏_θ_
 
 // *Some areas*
  // Area~tri~ = ½_bh_	= 0.5 × base × height
  // Area~rec~ = _lw_	= length × width
- // Area~cir~ = π_r_²	= PI × radius squared
+ // Area~cir~ = *π*_r_²	= PI × radius squared
 
- // Area~sph~ = 4π_r_²	= 4 × PI × radius squared
+ // Area~sph~ = 4*π*_r_²	= 4 × PI × radius squared
  // Area~cyl~ = 2_A_~*cir*~ + _Ch_
  // 		= (2 × Area~cir~) + (Circumference × height)
- // Area~con~ = _A_~*cir*~ + π_rh_~*sl*~
+ // Area~con~ = _A_~*cir*~ + *π_rh_~sl~*
  // 		= Area~cir~ + (PI × radius × slant height)
 
 // *Some volumes*
  // Vol~cub~ = _lwh_	= length × width × height
  // Vol~pyr~ = ^1^⁄~3~_lwh_	= 0.33 × length × width × height
- // Vol~sph~ = ^4^⁄~3~π_r_³	= 1.33 × PI × radius cubed
- // Vol~cyl~ = π_r_²_h_	= PI × radius squared × height
- // Vol~con~ = ^1^⁄~3~π_r_²_h_	= 0.33 × PI × radius squared × height
+ // Vol~sph~ = ^4^⁄~3~*π*_r_³	= 1.33 × PI × radius cubed
+ // Vol~cyl~ = *π*_r_²_h_	= PI × radius squared × height
+ // Vol~con~ = ^1^⁄~3~*π*_r_²_h_	= 0.33 × PI × radius squared × height
 
 // *Note*
 // - Length units of a formula must all be the same
@@ -131,7 +131,7 @@ const dimensions1 = `
  
  $Atz = 0.5 * hz * (bu + bl) // sq-ft
  
- $Acu = (2 * l * w) + (2 * l * h) + (2 * h * w) // sq-ft
+ $Acu = (2 * l * w) + (2 * l * h) + (2 * w * h) // sq-ft
  $Vcu = l * w * h // cu-ft
  $Vpy = (1 / 3) * l * w * h // cu-ft
  
@@ -157,9 +157,9 @@ const triangles1 = `
  // _b_ | opposite side (to theta)
  // _c_ | hypotenuse
 
- // sin _θ_ = _b_ / _c_
- // cos _θ_ = _a_ / _c_
- // tan _θ_ = _b_ / _a_	= sin _θ_ / cos _θ_
+ // sin┊͏_θ_ = _b_ / _c_
+ // cos┊͏_θ_ = _a_ / _c_
+ // tan┊͏_θ_ = _b_ / _a_	= sin┊͏_θ_ / cos┊͏_θ_
  // _a_² + _b_² = _c_²
 
 θ1 = Math.PI / 6	//triangle 1 theta

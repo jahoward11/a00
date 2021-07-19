@@ -20,6 +20,33 @@ __AP^®^ BIOLOGY EQUATIONS AND FORMULAS__
  10⁻¹²	pico	p
 
 
+*―――Surface Area and Volume―――*
+
+ *r*  | radius
+ *l*  | length
+ *h*  | height
+ *w*  | width
+ *s*  | length of one side of a cube
+ *SA* | surface area
+ *V*  | volume
+
+__Surface Area/Volume of a Rectangular Solid__
+ *SA* = 2*lw* + 2*lh* + 2*wh*
+  *V* = *lwh*
+
+__Surface Area/Volume of a Cube__
+ *SA* = 6*s*²
+  *V* = *s*³
+
+__Surface Area/Volume of a Cylinder__
+ *SA* = 2*πrh* + 2*πr*²
+  *V* = *πr*²*h*
+
+__Surface Area/Volume of a Sphere__
+ *SA* = 4*πr*²
+  *V* = ^4^⁄~3~*πr*³
+
+
 *―――Statistical Analysis and Probability―――*
 
  *x̅* | sample mean
@@ -87,13 +114,6 @@ __Hardy-Weinberg Equations__
  *K*   | carrying capacity
  *r~max~* | maximum per capita growth rate of population
 
- *T2*  | higher temperature
- *T1*  | lower temperature
- *k2*  | reaction rate at *T2*
- *k1*  | reaction rate at *T1*
- Q10 | the factor by which the reaction rate increases
-       when the temperature is raised by ten degrees
-
 __Rate__
 
  *dY* ⟋ *dt*
@@ -117,6 +137,12 @@ __Simpson's Diversity Index__
  Diversity Index = 1 - ∑[   *n* ⟋ *N*  ]²
 
 __Temperature Coefficient Q10__
+ *T2*  | higher temperature
+ *T1*  | lower temperature
+ *k2*  | reaction rate at *T2*
+ *k1*  | reaction rate at *T1*
+ Q10 | the factor by which the reaction rate increases
+       when the temperature is raised by ten degrees
 
  Q10 = [  *k2* ⟋ *k1*  ]^¹⁰/~*T2* - *T1*~^
 
@@ -152,7 +178,8 @@ __The Solute Potential of a Solution__
  Ψ~S~ = -*iCRT*
 
 __Dilution__
-*used to create a dilute solution from a concentrated stock solution*
+*used to create a dilute solution*
+*from a concentrated stock solution*
  i | initial (starting)
  f | final (desired)
  *C* | concentration of solute
@@ -168,35 +195,9 @@ __Gibbs Free Energy__
 
  Δ*G* = Δ*H* - *T*Δ*S*
 
-__pH__
- *pH* = -log~10~[H⁺]
-
-
-*―――Surface Area and Volume―――*
-
- *r*  | radius
- *l*  | length
- *h*  | height
- *w*  | width
- *s*  | length of one side of a cube
- *SA* | surface area
- *V*  | volume
-
-__Surface Area/Volume of a Rectangular Solid__
- *SA* = 2*lh* + 2*lw* + 2*wh*
-  *V* = *lwh*
-
-__Surface Area/Volume of a Cube__
- *SA* = 6*s*²
-  *V* = *s*³
-
-__Surface Area/Volume of a Cylinder__
- *SA* = 2*πrh* + 2*πr*²
-  *V* = *πr*²*h*
-
-__Surface Area/Volume of a Sphere__
- *SA* = 4*πr*²
-  *V* = ^4^⁄~3~*πr*³
+__pH Value__
+*acidity (<7) / basicity (>7) of an aqueous solution*
+ *pH* = -log10[H⁺]
 
 */`;
 
