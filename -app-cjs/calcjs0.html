@@ -39,15 +39,15 @@ body {
   font: normal medium/1.25 monospace;
   margin: 0;
   padding: 2px;
-  white-space: pre;
-  word-wrap: normal;
   overflow-wrap: normal;
   overflow-x: hidden;
+  white-space: pre;
+  word-wrap: normal;
 }
 #cmain sub, #cmain sup {
-  font-size: 75%;
-  line-height: 0;
   position: relative;
+  font-size: 0.75em;
+  line-height: 0;
   vertical-align: baseline;
 }
 #cmain sub {
@@ -65,23 +65,23 @@ body {
   margin: 0 0 4px;
 }
 #cmain>#btncnew {
-  color: CornFlowerBlue;
-  background: #f9f9f9;
-  line-height: 1;
-  margin: -22px 4px 0 0;
-  width: 20px;
-  text-align: center;
-  cursor: pointer;
-  text-decoration: underline;
   float: right;
+  background: #f9f9f9;
+  color: CornFlowerBlue;
+  line-height: 1;
+  width: 20px;
+  margin: -22px 4px 0 0;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: underline;
 }
 #cmain>#cgrid {
+  position: relative;
   display: grid;
   grid-template-columns: 168px 1fr;
   grid-template-areas:
     "quad1A quad1B"
     "quad2A quad2B";
-  position: relative;
   width: 100%;
 }
 #cgrid .dvar {
@@ -131,42 +131,42 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 #cgrid>#quad1A, #cgrid>#quad2A {
+//float: left;
   position: relative;
 //width: 168px;
   text-align: right;
-//float: left;
 }
 #cgrid>#quad1B, #cgrid>#quad2B {
 //max-width: 552px;
 }
 #cgrid>#quad1A {
   grid-area: quad1A;
-  color: Grey;
   background: LightGrey;
+  color: Grey;
 }
 #cgrid>#quad1B {
   grid-area: quad1B;
-  font-weight: bold;
-  color: LightSlateGrey;
   background: LightSteelBlue;
+  color: LightSlateGrey;
+  font-weight: bold;
 }
 #cgrid>#quad2A {
   grid-area: quad2A;
-  color: WhiteSmoke;
   background: DarkGrey;
+  color: WhiteSmoke;
 }
 #cgrid>#quad2B {
-  grid-area: quad2B;
-  color: Grey;
-  background: #f9f9f9;
   position: relative;
+  grid-area: quad2B;
+  background: #f9f9f9;
+  color: Grey;
 }
 #cgrid #dfinal, #cgrid #dinitl {
   position: absolute;
   left: 2px;
   font: bold x-small Helvetica, Arial, sans-serif;
-  text-align: left;
   opacity: 0.5;
+  text-align: left;
   user-select: none;
 }
 #cgrid #dfinal {
@@ -188,15 +188,16 @@ body {
   margin: 0;
   padding: 0.5em 0 0.5em 0.5em;
   list-style-type: none;
-  white-space: nowrap;
   opacity: 0.5;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
 }
 #cmain .cfield button,
 #cmain .cfield input,
 #cmain .cfield select {
 //display: inline-block;
+  background: #f9f9f9;
   color: Grey;
   font-size: 14px;
   line-height: 0;
@@ -206,7 +207,6 @@ body {
   border: 0;
   border-radius: 0;
   vertical-align: top;
-  background-color: #f9f9f9;
 }
 #cmain .cfield button .iwarn {
   color: Orange;
@@ -240,8 +240,8 @@ body {
   position: absolute;
   top: 8px;
   right: 8px;
-  content: " ";
   color: Grey;
+  content: " ";
   border-top: 8px solid Grey;
   border-right: 4px solid transparent;
   border-left: 4px solid transparent;
@@ -258,22 +258,20 @@ body {
   margin-right: 0;
 }
 @media print {
-  body, #cmain { margin: 0 auto; padding: 0; }
-  .pagebb { page-break-before: always; break-before: page; margin-top: -56px; }
+  body { margin: 0 auto; }
+  #cmain { padding: 0; }
   #cgrid>#quad1A { box-shadow: inset 0 -1px LightGrey; }
   #cgrid>#quad1B { box-shadow: inset 0 -1px LightSteelBlue; }
   #cmain>#btncnew, #cgrid #dfinal, #cgrid #dinitl,
   #cmain>.cfield:not(#cgrid) { display: none; }
 }
-@media print and (orientation: portrait) and (max-width: 554px),
-print and (orientation: portrait) and (width: 768px),
-print and (orientation: landscape) and (width: 1024px) { /* iPhone/iPad, chrome/safari */
-  :root { //-webkit-text-size-adjust: 93%; //text-size-adjust: 93%; }
-  body { min-width: 677px; max-width: 677px; }
-  p, li, td { line-height: 1.1; }
-  pre, code, #cmain pre, #cmain code { font-size: 12px; line-height: 1.1; }
-  .pagebb { margin-top: 0; }
+@media print and (resolution: 300dpi) and (width: 555px), /* Pixel2, mode:mobile */
+print and (resolution: 300dpi) and (width: 557px) { /* desktop Chrome, page:portrait */
+  .pagebb { page-break-before: always; break-before: page; margin-top: -56px; }
 }
+@media print and (max-width: 554px), print and (min-width: 558px) {
+  body { min-width: 768px; max-width: 768px; }
+} /* iPhone/iPad/desktop Safari */
 </style>
 </head>
 <body>
@@ -353,7 +351,8 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
     $ = {};
     _ = {};
     !preresp.innerHTML || (preresp.innerHTML = null);
-    xprsns = dinp2.value.replace(/&Tab;/g, "\t").replace(/\$(?=[a-zΑ-ω])/gi, "$$.")
+    xprsns = dinp2.value.replace(/<!--[^]*?-->/g, "")
+      .replace(/&Tab;/g, "\t").replace(/\$(?=[a-zΑ-ω])/gi, "$$.")
       .replace(/^\/\*\n?([^]*?)\n?\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
       .split("\n");
     reslts = xprsns.map(xpr => {
@@ -363,8 +362,8 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
           m0 => m0.replace( /([ =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([A-Za-zΑ-ω]\w*)(?! *=)/g,
             (m1, c1, c2) => window[c2] || !Object.keys(_).some(k => k === c2) ? m1 : c1 + "_." + c2 )
           .replace(/(?: |^)(?=[a-zΑ-ω]\w* *=)/gi, "$&_.") );
-        rslt = eval(xpr.replace(/\\f/g, ""));
-        return (!/\\f/.test(xpr) ? "" : "<div class=pagebb></div>")
+        rslt = eval(xpr.replace(/\\f$|^\\f/g, ""));
+        return (!/\\f$|^\\f/.test(xpr) ? "" : "<div class=pagebb></div>")
         + ( rslt == null ? ""
           : typeof rslt === 'string' ? rslt.replace(/\n/g, "\\n")
           : rslt.toString().replace(/\s+/g, " ") );
@@ -408,7 +407,7 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
       "<span class=fsan1>$&</span>" ) // combining marks, vulgar fractions, ˷ ‣ ‱ ‴ ‾ ⁗
     //.replace( /.[\u0300-\u036f]|[\xbc-\xbe\u2150-\u215e]|.&#x0?3[0-6][\dA-Fa-f];|&#x215[\dA-Ea-e];|&frac\d[234568];/g,
       //"<span class=fsan1>$&</span>" );
-    .replace(/(.*?)\\f(.*)/g, "<div class=pagebb></div>$1$2");
+    .replace(/(.*)\\f(<\/span> |)$|^(.*<span class=dnote>|)\\f/gm, "<div class=pagebb></div>$1$2$3");
   },
   dinpRegen = evt => {
     if ( (eobj = (evt || {}).target)
@@ -425,7 +424,7 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
         q2Bcopy = quad2B.innerHTML;
         quad2B.innerHTML = dinp2.value
         .replace(/&(?=#?\w+;)/g, "&amp;").replace(/&(?=amp;[gl]t;)/gi, "&amp;")
-        .replace(/<(?=\/?\w|!--.*-->)/g, "&lt;");
+        .replace(/<(?=\/?\w|!--)/g, "&lt;");
         di2html = quad2B.innerHTML;
       }
     } else if (!plist.className && quad2B.innerHTML === di2html) {
