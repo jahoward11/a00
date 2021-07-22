@@ -34,7 +34,7 @@ const calcdemo1 = `
   // appear and are listed in the left column -- for conveniently
   // copy-pasting into the *ENTRY* field. (See use descriptions below.)
 // - After composing a complete expression set, generate a standalone
-  // copy using the *menu* button at the top right corner.
+  // copy using the *MENU* button at the top right corner.
 // - Create a comment, like this one, by prepending the text
   // with a double slash (e.g., //comment).
 &Tab;// Indent, like this, with *&amp;Tab;* (HTML name code).

@@ -108,6 +108,11 @@ body {
     "quad2A quad2B";
   width: 100%;
 }
+#cmain>#cgrid.xpndq2B {
+  grid-template-areas:
+    "quad1A quad1B"
+    "quad2B quad2B";
+}
 #cgrid .dvar {
   font-weight: bold;
 }
@@ -217,6 +222,9 @@ body {
   -webkit-overflow-scrolling: touch;
   white-space: nowrap;
 }
+#cgrid.xpndq2B>#plist {
+  display: none;
+}
 #cmain .cfield button .iwarn {
   color: Orange;
 }
@@ -284,11 +292,11 @@ print and (resolution: 300dpi) and (width: 557px) { /* desktop Chrome, page:port
 </xmp>
 <h4 id="cheadg">JavaScript Calculator</h4>
 <pre id="preresp"></pre>
-<span id="mctnr"><select id="menulist" title="CalcJS Menu">
+<span id="mctnr"><select id="menulist" title="Calc Top Menu">
   <option></option>
-  <option>&dtrif; Generate a copy of CalcJS and data.</option>
-  <option>&vArr; Expand/collapse FINAL VALUES row.</option>
-  <option>&hArr; Expand/collapse RESULTS column.</option>
+  <option>&dtrif; Generate a copy of CalcJS and displayed data</option>
+  <option>&vArr; Expand/collapse FINAL VALUES row</option>
+  <option>&hArr; Expand/collapse RESULTS column</option>
 </select></span>
 <div id="cgrid" class="cfield">
   <pre id="quad1A"></pre><pre id="quad1B"></pre>
@@ -297,7 +305,7 @@ print and (resolution: 300dpi) and (width: 557px) { /* desktop Chrome, page:port
 </div>
 <div class="cfield">
   <span class="addns ccntr"><span class="ccntr">
-    <input type="text" id="xsetinp" placeholder="Load expression set&hellip;" /></span><span class="ccntr slist"><select id="xsetlist">
+    <input type="text" id="xsetinp" placeholder="Load expression set&hellip;" /></span><span class="ccntr slist"><select id="xsetlist" title="Calc Saved Data">
     </select></span></span><span class="ccntr"><button id="btnsave">
     <span class="isucc">&#x267a;</span> SAVE</button></span><span class="ccntr"><button id="btndel">
     <span class="iwarn">&#x2715;</span> DEL</button></span>
@@ -313,8 +321,9 @@ print and (resolution: 300dpi) and (width: 557px) { /* desktop Chrome, page:port
 <script type="module">
 let $, _, _ks, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
   dinput = document.querySelector('#cmain>#dinput'),
-  menulist = document.querySelector('#cmain>#mctnr>#menulist'),
   preresp = document.querySelector('#cmain>#preresp'),
+  menulist = document.querySelector('#cmain>#mctnr>#menulist'),
+  cgrid = document.querySelector('#cmain>#cgrid'),
   quad1A = document.querySelector('#cgrid>#quad1A'),
   quad1B = document.querySelector('#cgrid>#quad1B'),
   quad2A = document.querySelector('#cgrid>#quad2A'),
@@ -352,8 +361,13 @@ let $, _, _ks, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xpr
       menulist.blur();
       menulist.selectedIndex = 0;
     }, 1);
-    evt.target.selectedIndex !== 1 || calcNew();
     evt.preventDefault();
+    evt.target.selectedIndex !== 1 || calcNew();
+    evt.target.selectedIndex !== 2 || [quad1A, quad1B].forEach(e => e.classList.toggle("is-hidden"));
+    if (evt.target.selectedIndex === 3) {
+      quad2A.classList.toggle("is-hidden");
+      cgrid.classList.toggle("xpndq2B");
+    }
   },
   txtPste = evt => {
     pste = (evt.clipboardData || window.clipboardData).getData('text');
