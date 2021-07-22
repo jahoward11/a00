@@ -387,7 +387,7 @@ let $, _, _ks, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xpr
     _ks = [];
     !preresp.innerHTML || (preresp.innerHTML = null);
     xprsns = dinp2.value.replace(/<!--[^]*?-->/g, "")
-      .replace(/&Tab;/g, "\t").replace(/(?:\t| |\/\/|^)\$(?=[$_a-zΑ-ω])/gim, "$&.")
+      .replace(/&Tab;/g, "\t").replace(/(?:[^\n$.\wΑ-ω]|^)\$(?=[$_a-zΑ-ω])/gim, "$&.")
       .replace(/^\/\*\n?([^]*?)\n?\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
       .split("\n");
     reslts = xprsns.map(xpr => {
