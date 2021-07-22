@@ -56,6 +56,23 @@ body {
 #cmain sup {
   top: -0.5em;
 }
+#cmain button,
+#cmain input,
+#cmain select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: #f9f9f9;
+  color: Grey;
+  font-size: 14px;
+  line-height: 0;
+  height: 24px;
+  margin: 0;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 0;
+  vertical-align: top;
+}
 #cmain>#preresp {
   color: Orange;
   padding: 0;
@@ -64,16 +81,23 @@ body {
   color: Grey;
   margin: 0 0 4px;
 }
-#cmain>#btncnew {
+#cmain>#mctnr {
   float: right;
-  background: #f9f9f9;
-  color: CornFlowerBlue;
-  line-height: 1;
-  width: 20px;
+  position: relative;
   margin: -22px 4px 0 0;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: underline;
+}
+#cmain>#mctnr::after {
+  position: absolute;
+  top: -3px;
+  right: 3px;
+  color: CornFlowerBlue;
+  content: "\2630"; /* ☰ &#x2630; */
+  opacity: 0.5;
+  pointer-events: none;
+}
+#cmain>#mctnr>#menulist {
+  width: 20px;
+  height: 16px;
 }
 #cmain>#cgrid {
   position: relative;
@@ -193,32 +217,11 @@ body {
   -webkit-overflow-scrolling: touch;
   white-space: nowrap;
 }
-#cmain .cfield button,
-#cmain .cfield input,
-#cmain .cfield select {
-//display: inline-block;
-  background: #f9f9f9;
-  color: Grey;
-  font-size: 14px;
-  line-height: 0;
-  height: 24px;
-  margin: 0;
-  padding: 0 8px;
-  border: 0;
-  border-radius: 0;
-  vertical-align: top;
-}
 #cmain .cfield button .iwarn {
   color: Orange;
 }
 #cmain .cfield button .isucc {
   color: CornFlowerBlue;
-}
-#cmain .cfield #xsetinp,
-#cmain .cfield #xsetlist {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
 }
 #cmain .cfield #xsetinp {
   width: 168px;
@@ -262,7 +265,7 @@ body {
   #cmain { padding: 0; }
   #cgrid>#quad1A { box-shadow: inset 0 -1px LightGrey; }
   #cgrid>#quad1B { box-shadow: inset 0 -1px LightSteelBlue; }
-  #cmain>#btncnew, #cgrid #dfinal, #cgrid #dinitl,
+  #cmain>#mctnr>#menulist, #cgrid #dfinal, #cgrid #dinitl,
   #cmain>.cfield:not(#cgrid) { display: none; }
 }
 @media print and (resolution: 300dpi) and (width: 555px), /* Pixel2, mode:mobile */
@@ -281,7 +284,12 @@ print and (resolution: 300dpi) and (width: 557px) { /* desktop Chrome, page:port
 </xmp>
 <h4 id="cheadg">JavaScript Calculator</h4>
 <pre id="preresp"></pre>
-<a id="btncnew" title="Generate a new calcjs doc.">&#x25be;</a>
+<span id="mctnr"><select id="menulist" title="CalcJS Menu">
+  <option></option>
+  <option>&dtrif; Generate a copy of CalcJS and data.</option>
+  <option>&vArr; Expand/collapse FINAL VALUES row.</option>
+  <option>&hArr; Expand/collapse RESULTS column.</option>
+</select></span>
 <div id="cgrid" class="cfield">
   <pre id="quad1A"></pre><pre id="quad1B"></pre>
   <pre id="quad2A"></pre><pre id="quad2B" contenteditable=true></pre>
@@ -303,9 +311,9 @@ print and (resolution: 300dpi) and (width: 557px) { /* desktop Chrome, page:port
 </script>
 <script src="../../a00/-res-js/localforage.nopromises.min.js" type="text/javascript"></script>
 <script type="module">
-let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
+let $, _, _ks, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
   dinput = document.querySelector('#cmain>#dinput'),
-  btncnew = document.querySelector('#cmain>#btncnew'),
+  menulist = document.querySelector('#cmain>#mctnr>#menulist'),
   preresp = document.querySelector('#cmain>#preresp'),
   quad1A = document.querySelector('#cgrid>#quad1A'),
   quad1B = document.querySelector('#cgrid>#quad1B'),
@@ -339,6 +347,14 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
     anew.setAttribute('href', "data:text/html;charset=utf-8," + encodeURIComponent(chtml));
     anew.click();
   },
+  calcMenu = evt => {
+    setTimeout(() => {
+      menulist.blur();
+      menulist.selectedIndex = 0;
+    }, 1);
+    evt.target.selectedIndex !== 1 || calcNew();
+    evt.preventDefault();
+  },
   txtPste = evt => {
     pste = (evt.clipboardData || window.clipboardData).getData('text');
     seln = window.getSelection();
@@ -350,18 +366,20 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
   xprsEval = () => {
     $ = {};
     _ = {};
+    _ks = [];
     !preresp.innerHTML || (preresp.innerHTML = null);
     xprsns = dinp2.value.replace(/<!--[^]*?-->/g, "")
-      .replace(/&Tab;/g, "\t").replace(/\$(?=[a-zΑ-ω])/gi, "$$.")
+      .replace(/&Tab;/g, "\t").replace(/(?:\t| |\/\/|^)\$(?=[$_a-zΑ-ω])/gim, "$&.")
       .replace(/^\/\*\n?([^]*?)\n?\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
       .split("\n");
     reslts = xprsns.map(xpr => {
       try {
         xpr = xpr && xpr
-        .replace( /^(?= *{)|^.*?(?=\(? *function\b[ \w=(),Α-ω]+{|\(? *(?:[\wΑ-ω]+|\([ \w=,Α-ω]*\)) *=>|\/\/|$)/gm,
-          m0 => m0.replace( /([ =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([A-Za-zΑ-ω]\w*)(?! *=)/g,
-            (m1, c1, c2) => window[c2] || !Object.keys(_).some(k => k === c2) ? m1 : c1 + "_." + c2 )
-          .replace(/(?: |^)(?=[a-zΑ-ω]\w* *=)/gi, "$&_.") );
+        .replace( /^(?=[\t ]*{)|^.*?(?=\/\/|\(? *function\b[ \w]*\([^]*?\) *{|\(? *(?:[$\wΑ-ω]+|\([^]*?\)) *=>|$)/g,
+          m0 => m0.replace( /( |^)([$_a-zΑ-ω][$\wΑ-ω]*)(?= *=)/gi,
+            (m1, c1, c2) => _ks.push(c2) && c1 + "_." + c2 )
+          .replace( /([\t =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([$_](?!\.)[$\wΑ-ω]*|[A-Za-zΑ-ω][$\wΑ-ω]*)(?! *=)/g,
+            (m1, c1, c2) => window[c2] || !_ks.some(k => k === c2) ? m1 : c1 + "_." + c2 ) );
         rslt = eval(xpr.replace(/\\f$|^\\f/g, ""));
         return (!/\\f$|^\\f/.test(xpr) ? "" : "<div class=pagebb></div>")
         + ( rslt == null ? ""
@@ -402,11 +420,8 @@ let $, _, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
     .replace(/\u2044|&frasl;/g, "<span class=frasl>$&</span>")
     .replace( /[\xb2\xb3\xb9\u2070-\u207e]|&#x0*[Bb][239];|&#x207[0-9A-Ea-e];|&sup[123];/g,
       "<span class=fsan2>$&</span>" ) // superscripts
-    //.replace( /[\u2070-\u207e]|&#x207[0-9A-Ea-e];/g, "<span class=fsan2>$&</span>" ) // superscripts
     .replace( /.[\u0300-\u036f]|[\u02f7\u2023\u2031\u2034\u203e\u2057\u2150-\u215a]|.&#x0?3[0-6][\dA-Fa-f];|&#x0?2f7;|&#x2023;|&#x203[14e];|&#x2057;|&#x215[\dAa];|&frac\d[356];|&oline;|&pertenk;|&qprime;|&tprime;/g,
       "<span class=fsan1>$&</span>" ) // combining marks, vulgar fractions, ˷ ‣ ‱ ‴ ‾ ⁗
-    //.replace( /.[\u0300-\u036f]|[\xbc-\xbe\u2150-\u215e]|.&#x0?3[0-6][\dA-Fa-f];|&#x215[\dA-Ea-e];|&frac\d[234568];/g,
-      //"<span class=fsan1>$&</span>" );
     .replace(/(.*)\\f(<\/span> |)$|^(.*<span class=dnote>|)\\f/gm, "<div class=pagebb></div>$1$2$3");
   },
   dinpRegen = evt => {
@@ -523,7 +538,7 @@ plist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
   .map(e => `<li>${e.replace(/&(?=#?\w+;\)?$)/, "&amp;")}</li>`).join("\n    ") + "\n  ";
 (document.querySelector('#ecorender') || document.body)
 .addEventListener('click', dinpRegen);
-btncnew.addEventListener('click', calcNew);
+menulist.addEventListener('change', calcMenu);
 quad2B.addEventListener('paste', txtPste);
 xsetinp.addEventListener('blur', xsetLoad);
 xsetlist.addEventListener('change', xsetLoad);
