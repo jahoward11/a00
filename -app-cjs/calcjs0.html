@@ -21,9 +21,6 @@ body {
 .is-hidden {
   display: none;
 }
-.pagebb {
-  line-height: 0;
-}
 #cmain {
   max-width: 720px;
   margin: 0 auto;
@@ -112,6 +109,9 @@ body {
   grid-template-areas:
     "quad1A quad1B"
     "quad2B quad2B";
+}
+#cgrid .pagebb {
+  line-height: 0;
 }
 #cgrid .dvar {
   font-weight: bold;
@@ -273,12 +273,13 @@ body {
   #cmain { padding: 0; }
   #cgrid>#quad1A { box-shadow: inset 0 -1px LightGrey; }
   #cgrid>#quad1B { box-shadow: inset 0 -1px LightSteelBlue; }
-  #cmain>#mctnr>#menulist, #cgrid #dfinal, #cgrid #dinitl,
+  #cmain>#mctnr, #cgrid #dfinal, #cgrid #dinitl,
   #cmain>.cfield:not(#cgrid) { display: none; }
 }
 @media print and (resolution: 300dpi) and (width: 555px), /* Pixel2, mode:mobile */
 print and (resolution: 300dpi) and (width: 557px) { /* desktop Chrome, page:portrait */
-  .pagebb { page-break-before: always; break-before: page; margin-top: -56px; }
+  #cgrid .pagebb { page-break-before: always; break-before: page; }
+  #cgrid:not(.clpsrow1) .pagebb { margin-top: -56px; }
 }
 @media print and (max-width: 554px), print and (min-width: 558px) {
   body { min-width: 768px; max-width: 768px; }
@@ -292,11 +293,11 @@ print and (resolution: 300dpi) and (width: 557px) { /* desktop Chrome, page:port
 </xmp>
 <h4 id="cheadg">JavaScript Calculator</h4>
 <pre id="preresp"></pre>
-<span id="mctnr"><select id="menulist" title="Calc Top Menu">
+<span id="mctnr"><select id="menulist" title="Calc App Menu">
   <option></option>
-  <option>&dtrif; Generate a copy of CalcJS and displayed data</option>
   <option>&vArr; Expand/collapse FINAL VALUES row</option>
   <option>&hArr; Expand/collapse RESULTS column</option>
+  <option>&dtrif; Generate a copy of CalcJS with displayed data</option>
 </select></span>
 <div id="cgrid" class="cfield">
   <pre id="quad1A"></pre><pre id="quad1B"></pre>
@@ -356,17 +357,20 @@ let $, _, _ks, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xpr
     anew.setAttribute('href', "data:text/html;charset=utf-8," + encodeURIComponent(chtml));
     anew.click();
   },
-  calcMenu = evt => {
+  appMenu = evt => {
     setTimeout(() => {
       menulist.blur();
       menulist.selectedIndex = 0;
     }, 1);
     evt.preventDefault();
-    evt.target.selectedIndex !== 1 || calcNew();
-    evt.target.selectedIndex !== 2 || [quad1A, quad1B].forEach(e => e.classList.toggle("is-hidden"));
-    if (evt.target.selectedIndex === 3) {
+    if (evt.target.selectedIndex === 1) {
+      [quad1A, quad1B].forEach(e => e.classList.toggle("is-hidden"));
+      cgrid.classList.toggle("clpsrow1");
+    } else if (evt.target.selectedIndex === 2) {
       quad2A.classList.toggle("is-hidden");
       cgrid.classList.toggle("xpndq2B");
+    } else if (evt.target.selectedIndex === 3) {
+      calcNew();
     }
   },
   txtPste = evt => {
@@ -552,7 +556,7 @@ plist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
   .map(e => `<li>${e.replace(/&(?=#?\w+;\)?$)/, "&amp;")}</li>`).join("\n    ") + "\n  ";
 (document.querySelector('#ecorender') || document.body)
 .addEventListener('click', dinpRegen);
-menulist.addEventListener('change', calcMenu);
+menulist.addEventListener('change', appMenu);
 quad2B.addEventListener('paste', txtPste);
 xsetinp.addEventListener('blur', xsetLoad);
 xsetlist.addEventListener('change', xsetLoad);
