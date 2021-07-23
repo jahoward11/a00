@@ -42,7 +42,7 @@ const calcdemo1 = `
   // in double underscores (e.g., &lowbar;&lowbar;bolded text&lowbar;&lowbar;).
 // - Make commented text *italicized* by wrapping it
   // in single asterisks (e.g., &ast;italicized text&ast;).
-// - Make a commented variable _pop_ by wrapping it alone
+// - Make a commented word _pop_ by wrapping it alone
   // in single underscores (e.g., &lowbar;pop&lowbar;).
 // - Make a ^super^script or ~sub~script by wrapping commented text
   // in single hatcheks or tildes, respectively (e.g., &Hat;super&Hat;, &sim;sub&sim;).
@@ -50,9 +50,9 @@ const calcdemo1 = `
 
  $RndmExpn = Math.ceil(r * 10)
 
-// - Create a __$-variable__ by prepending an ordinary variable
+// - Create a __*$-variable*__ by prepending an ordinary *variable*
   // with a dollar symbol (e.g., &dollar;x&zwj;1, &dollar;RndmExpn).
-  // Use: Every __$-variable__ will automatically be bolded --
+  // Use: Every __*$-variable*__ will automatically _pop_ --
   // and will also appear in the *FINAL VALUES* row, at the top.
 
  $x1 = Math.pow(x0, $RndmExpn)
@@ -149,8 +149,7 @@ const calcdemo1 = `
 // - developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
 // - developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators
 // - developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Numbers_and_dates
-//
-`;
+//`;
 
 export {
   groupname, calcdemo1

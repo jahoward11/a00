@@ -14,6 +14,7 @@
   -moz-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  min-width: 375px;
 }
 body {
   font: normal medium Helvetica, Arial, sans-serif;
@@ -70,6 +71,12 @@ body {
   border-radius: 0;
   vertical-align: top;
 }
+#cmain input::placeholder {
+  opacity: 0.5;
+}
+#cmain select::-ms-expand {
+  display: none;
+}
 #cmain>#preresp {
   color: Orange;
   padding: 0;
@@ -81,20 +88,19 @@ body {
 #cmain>#mctnr {
   float: right;
   position: relative;
-  margin: -22px 4px 0 0;
+  margin: -22px 0 0 0;
 }
 #cmain>#mctnr::after {
   position: absolute;
   top: -3px;
-  right: 3px;
-  color: CornFlowerBlue;
+  right: 5px;
+  color: LightSteelBlue;
   content: "\2630"; /* ☰ &#x2630; */
-  opacity: 0.5;
   pointer-events: none;
 }
 #cmain>#mctnr>#menulist {
-  width: 20px;
-  height: 16px;
+  width: 24px;
+  height: 18px;
 }
 #cmain>#cgrid {
   position: relative;
@@ -114,6 +120,7 @@ body {
   line-height: 0;
 }
 #cgrid .dvar {
+  font-style: italic;
   font-weight: bold;
 }
 #cgrid .dnote {
@@ -177,6 +184,7 @@ body {
   grid-area: quad1B;
   background: LightSteelBlue;
   color: LightSlateGrey;
+  font-style: italic;
   font-weight: bold;
 }
 #cgrid>#quad2A {
@@ -225,24 +233,11 @@ body {
 #cgrid.xpndq2B>#plist {
   display: none;
 }
-#cmain .cfield button .iwarn {
+#cmain .cfield .iwarn {
   color: Orange;
 }
-#cmain .cfield button .isucc {
+#cmain .cfield .isucc {
   color: CornFlowerBlue;
-}
-#cmain .cfield #xsetinp {
-  width: 168px;
-}
-#cmain .cfield #xsetinp::placeholder {
-  opacity: 0.5;
-}
-#cmain .cfield #xsetlist {
-  width: 24px;
-  cursor: pointer;
-}
-#cmain .cfield #xsetlist::-ms-expand {
-  display: none;
 }
 #cmain .cfield .slist {
   position: relative;
@@ -267,6 +262,13 @@ body {
 }
 #cmain .cfield>.addns>.ccntr {
   margin-right: 0;
+}
+#cmain .cfield #xsetinp {
+  width: 168px;
+}
+#cmain .cfield #xsetlist {
+  width: 24px;
+  cursor: pointer;
 }
 @media print {
   body { margin: 0 auto; }
@@ -293,11 +295,12 @@ print and (resolution: 300dpi) and (width: 557px) { /* desktop Chrome, page:port
 </xmp>
 <h4 id="cheadg">JavaScript Calculator</h4>
 <pre id="preresp"></pre>
-<span id="mctnr"><select id="menulist" title="Calc App Menu">
+<span id="mctnr"><select id="menulist" title="CalcJS App Menu">
   <option></option>
-  <option>&vArr; Expand/collapse FINAL VALUES row</option>
+  <option>&hellip; Rename doc TITLE</option>
+  <option>&nbsp;&vArr; Expand/collapse FINAL VALUES row</option>
   <option>&hArr; Expand/collapse RESULTS column</option>
-  <option>&dtrif; Generate a copy of CalcJS with displayed data</option>
+  <option>&nbsp;&dtrif;&#x332; Generate a copy of CalcJS with displayed data</option>
 </select></span>
 <div id="cgrid" class="cfield">
   <pre id="quad1A"></pre><pre id="quad1B"></pre>
@@ -306,7 +309,7 @@ print and (resolution: 300dpi) and (width: 557px) { /* desktop Chrome, page:port
 </div>
 <div class="cfield">
   <span class="addns ccntr"><span class="ccntr">
-    <input type="text" id="xsetinp" placeholder="Load expression set&hellip;" /></span><span class="ccntr slist"><select id="xsetlist" title="Calc Saved Data">
+    <input type="text" id="xsetinp" placeholder="Load expression set&hellip;" /></span><span class="ccntr slist"><select id="xsetlist" title="CalcJS Saved Data">
     </select></span></span><span class="ccntr"><button id="btnsave">
     <span class="isucc">&#x267a;</span> SAVE</button></span><span class="ccntr"><button id="btndel">
     <span class="iwarn">&#x2715;</span> DEL</button></span>
@@ -322,6 +325,7 @@ print and (resolution: 300dpi) and (width: 557px) { /* desktop Chrome, page:port
 <script type="module">
 let $, _, _ks, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
   dinput = document.querySelector('#cmain>#dinput'),
+  cheadg = document.querySelector('#cmain>#cheadg'),
   preresp = document.querySelector('#cmain>#preresp'),
   menulist = document.querySelector('#cmain>#mctnr>#menulist'),
   cgrid = document.querySelector('#cmain>#cgrid'),
@@ -357,6 +361,11 @@ let $, _, _ks, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xpr
     anew.setAttribute('href', "data:text/html;charset=utf-8," + encodeURIComponent(chtml));
     anew.click();
   },
+  titSave = () => {
+    cheadg.setAttribute('contenteditable', false);
+    (document.querySelector('#ecorender>title') || document.querySelector('head>title')).innerHTML
+    = cheadg.innerHTML = cheadg.textContent.trim().substring(0, 32);
+  },
   appMenu = evt => {
     setTimeout(() => {
       menulist.blur();
@@ -364,12 +373,15 @@ let $, _, _ks, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xpr
     }, 1);
     evt.preventDefault();
     if (evt.target.selectedIndex === 1) {
+      cheadg.setAttribute('contenteditable', true);
+      cheadg.focus();
+    } else if (evt.target.selectedIndex === 2) {
       [quad1A, quad1B].forEach(e => e.classList.toggle("is-hidden"));
       cgrid.classList.toggle("clpsrow1");
-    } else if (evt.target.selectedIndex === 2) {
+    } else if (evt.target.selectedIndex === 3) {
       quad2A.classList.toggle("is-hidden");
       cgrid.classList.toggle("xpndq2B");
-    } else if (evt.target.selectedIndex === 3) {
+    } else if (evt.target.selectedIndex === 4) {
       calcNew();
     }
   },
@@ -432,7 +444,10 @@ let $, _, _ks, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xpr
       + "<span class=fbig>" + (c4 || c1 + c2) + "</span>"
       + (c4 ? " " : c3 + (!c1 || !c2 ? "" : " "))
       + (!c5 ? "" : "<span class=dvsr>" + c5 + "</span>") )
-    .replace(/\$\.([\wΑ-ω]+)/g, '<span class=dvar>$1</span>')
+    .replace(/\$\.([\wΑ-ω]+)/g, '<var class=dvar>$1</var>')
+    .replace( !_ks.length ? /[]/
+      : new RegExp("([^$\\wΑ-ω]|^)(" + _ks.join("|") + ")(?![$\\wΑ-ω]|<\\/(?:em|strong|var)>)", "gm"),
+      "$1<var>$2</var>" )
     .replace( /(\.\w*|&#?\w*|)([a-zΑ-ω]+)(\d+)(?![0-9a-zΑ-ω])/gi,
       (m, c1, c2, c3) => c1 ? m : c2 + "<sub>" + c3 + "</sub>" )
     .replace(/\u2044|&frasl;/g, "<span class=frasl>$&</span>")
@@ -477,7 +492,7 @@ let $, _, _ks, cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xpr
       .replace(/<strong><em>([\wΑ-ω]+)<\/em><\/strong>/gi, "_$1_")
       .replace(/<\/?em>/gi, "*")
       .replace(/<\/?strong>/gi, "__")
-      .replace(/<span class=dvar>([\wΑ-ω]+)<\/span>/gi, "$$$1")
+      .replace(/<var class=dvar>([\wΑ-ω]+)<\/var>/gi, "$$$1")
       .replace(/<span class=dnote>(.+)<\/span> */gi, "// $1")
       .replace(/<\/?\b[ \w,:;"#=-]+>|\n+$|^\n+/g, "")
       .replace(/&gt;/gi, ">").replace(/&lt;/gi, "<").replace(/&quot;/gi, "\"")
@@ -556,6 +571,7 @@ plist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
   .map(e => `<li>${e.replace(/&(?=#?\w+;\)?$)/, "&amp;")}</li>`).join("\n    ") + "\n  ";
 (document.querySelector('#ecorender') || document.body)
 .addEventListener('click', dinpRegen);
+cheadg.addEventListener('blur', titSave);
 menulist.addEventListener('change', appMenu);
 quad2B.addEventListener('paste', txtPste);
 xsetinp.addEventListener('blur', xsetLoad);
