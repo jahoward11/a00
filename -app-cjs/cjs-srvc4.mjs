@@ -141,10 +141,10 @@ __Temperature Coefficient Q10__
  *T1*  | lower temperature
  *k2*  | reaction rate at *T2*
  *k1*  | reaction rate at *T1*
- Q10 | the factor by which the reaction rate increases
+ *Q10* | the factor by which the reaction rate increases
        when the temperature is raised by ten degrees
 
- Q10 = [  *k2* ⟋ *k1*  ]^¹⁰/~*T2* - *T1*~^
+ *Q10* = [  *k2* ⟋ *k1*  ]^¹⁰/~*T2* - *T1*~^
 
 __Primary Productivity Calculation__
 
@@ -155,7 +155,7 @@ __Primary Productivity Calculation__
  (at standard temperature and pressure)
 \\f
 
-*―――Chemistry―――*
+*―――Chemical Analysis―――*
 
 __Water Potential (Ψ)__
  Ψ~P~ | pressure potential
@@ -198,7 +198,7 @@ __Gibbs Free Energy__
 __pH Value__
 *acidity (<7) / basicity (>7) of an aqueous solution*
 
- *pH* = -log10[H⁺]
+ pH = -log10[H⁺]
 
 */`;
 

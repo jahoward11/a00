@@ -30,8 +30,8 @@ const calcdemo1 = `
 // - When the *ENTRY* field is de-focused, line-item results appear
   // automatically in the *RESULTS* column -- to the left of each
   // line that contains a valid expression.
-// - When the *ENTRY* field is focused, JavaScript math functions
-  // appear and are listed in the left column -- for conveniently
+// - When the *ENTRY* field is focused, a list of JavaScript math
+  // functions/symbols appear in the left column -- for conveniently
   // copy-pasting into the *ENTRY* field. (See use descriptions below.)
 // - After composing a complete expression set, generate a standalone
   // copy using the *MENU* button at the top right corner.
@@ -44,14 +44,14 @@ const calcdemo1 = `
   // in single asterisks (e.g., &ast;italicized text&ast;).
 // - Make a commented word _pop_ by wrapping it alone
   // in single underscores (e.g., &lowbar;pop&lowbar;).
-// - Make a ^super^script or ~sub~script by wrapping commented text
+// - Create a ^super^script or ~sub~script by wrapping commented text
   // in single hatcheks or tildes, respectively (e.g., &Hat;super&Hat;, &sim;sub&sim;).
-  // Note: Digits at the end of a variable also becomes a subscript.
+  // Note: Digits at the end of a variable will also become a subscript.
 
  $RndmExpn = Math.ceil(r * 10)
 
 // - Create a __*$-variable*__ by prepending an ordinary *variable*
-  // with a dollar symbol (e.g., &dollar;x&zwj;1, &dollar;RndmExpn).
+  // with a dollar symbol (e.g., $&#x78;1, $&#x79;1, $&#x7a;1, &dollar;RndmExpn).
   // Use: Every __*$-variable*__ will automatically _pop_ --
   // and will also appear in the *FINAL VALUES* row, at the top.
 
