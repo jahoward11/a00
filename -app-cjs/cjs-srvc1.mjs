@@ -31,7 +31,7 @@ const calcdemo1 = `
   // automatically in the *RESULTS* column -- to the left of each
   // line that contains a valid expression.
 // - When the *ENTRY* field is focused, a list of JavaScript math
-  // functions/symbols appear in the left column -- for conveniently
+  // functions/symbols appears in the left column -- for conveniently
   // copy-pasting into the *ENTRY* field. (See use descriptions below.)
 // - After composing a complete expression set, generate a standalone
   // copy using the *MENU* button at the top right corner.

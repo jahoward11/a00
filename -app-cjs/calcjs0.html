@@ -296,7 +296,6 @@ print and (resolution: 300dpi) and (width: 557px) { /* desktop Chrome, page:port
 <h4 id="cheadg">JavaScript Calculator</h4>
 <pre id="preresp"></pre>
 <span id="mctnr"><select id="menulist" title="CalcJS App Menu">
-  <option></option>
   <option>&hellip; Rename doc TITLE</option>
   <option>&nbsp;&vArr; Expand/collapse FINAL VALUES row</option>
   <option>&hArr; Expand/collapse RESULTS column</option>
@@ -323,7 +322,7 @@ print and (resolution: 300dpi) and (width: 557px) { /* desktop Chrome, page:port
 </script>
 <script src="../../a00/-res-js/localforage.nopromises.min.js" type="text/javascript"></script>
 <script type="module">
-let cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
+let di2html, q2Bcopy,
   dinput = document.querySelector('#cmain>#dinput'),
   cheadg = document.querySelector('#cmain>#cheadg'),
   preresp = document.querySelector('#cmain>#preresp'),
@@ -369,37 +368,36 @@ let cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
   appMenu = evt => {
     setTimeout(() => {
       menulist.blur();
-      menulist.selectedIndex = 0;
+      menulist.selectedIndex = -1;
     }, 1);
     evt.preventDefault();
-    if (evt.target.selectedIndex === 1) {
+    if (evt.target.selectedIndex === 0) {
       cheadg.setAttribute('contenteditable', true);
       cheadg.focus();
-    } else if (evt.target.selectedIndex === 2) {
+    } else if (evt.target.selectedIndex === 1) {
       [quad1A, quad1B].forEach(e => e.classList.toggle("is-hidden"));
       cgrid.classList.toggle("clpsrow1");
-    } else if (evt.target.selectedIndex === 3) {
+    } else if (evt.target.selectedIndex === 2) {
       quad2A.classList.toggle("is-hidden");
       cgrid.classList.toggle("xpndq2B");
-    } else if (evt.target.selectedIndex === 4) {
+    } else if (evt.target.selectedIndex === 3) {
       calcNew();
     }
   },
   txtPste = evt => {
-    pste = (evt.clipboardData || window.clipboardData).getData('text');
-    seln = window.getSelection();
+    let pste = (evt.clipboardData || window.clipboardData).getData('text'),
+      seln = window.getSelection();
     if (!seln.rangeCount) return false;
     seln.deleteFromDocument();
     seln.getRangeAt(0).insertNode(document.createTextNode(pste));
     evt.preventDefault();
   },
   xprsEval = () => {
-    let $ = {}, $kl, _ = {}, _ks = [];
-    !preresp.innerHTML || (preresp.innerHTML = null);
+    let $ = {}, _ = {}, _ks = [], rslt,
     xprsns = dinp2.value.replace(/<!--[^]*?-->/g, "")
       .replace(/&Tab;/g, "\t").replace(/(?:[^\n$.\wΑ-ω]|^)\$(?=[$_a-zΑ-ω])/gim, "$&.")
       .replace(/^\/\*\n?([^]*?)\n?\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
-      .split("\n");
+      .split("\n"),
     reslts = xprsns.map(xpr => {
       try {
         xpr = xpr && xpr
@@ -414,9 +412,10 @@ let cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
           : typeof rslt === 'string' ? rslt.replace(/\n/g, "\\n")
           : rslt.toString().replace(/\s+/g, " ") );
       } catch (err) { respShow(err); return err; }
-    });
+    }),
     $kl = Object.keys($).length;
     cgrid.style.setProperty("--row1ht", $kl < 4 ? "-56px" : -($kl * 16 + 4) + "px");
+    !preresp.innerHTML || (preresp.innerHTML = null);
     quad1A.innerHTML = Object.values($).join("\n").replace(/\n$/, "\n&nbsp;")
       + '<span id="dfinal">$-variable<br />FINAL VALUES</span>';
     quad1B.innerHTML = Object.keys($).join("\n")
@@ -458,6 +457,7 @@ let cfoc, di2html, eobj, pste, q2Bcopy, reslts, rnge, rslt, seln, xprsns,
     .replace(/(.*)\\f(<\/span> |)$|^(.*<span class=dnote>|)\\f/gm, "<div class=pagebb></div>$1$2$3");
   },
   dinpRegen = evt => {
+    let cfoc, eobj, rnge, seln;
     if ( (eobj = (evt || {}).target)
     && ( cfoc = [null, "parentElement", "parentElement", "parentElement"]
     .some(k => /quad2B|plist/.test((eobj = eobj[k] || eobj).id || "")) )) {
@@ -566,9 +566,10 @@ plist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
   + "\n    " + [ "- - -", "\\t &Tab;", "\\f (form-feed)", "⬚͏ &nbsp;", "┊͏ &zwj;",
     "- - -", "Α &Alpha;", "α &alpha;", "Β &Beta;", "β &beta;", "Γ &Gamma;", "γ &gamma;", "Δ &Delta;", "δ &delta;", "Ε &Epsilon;", "ε &epsiv;", "Ζ &Zeta;", "ζ &zeta;", "Η &Eta;", "η &eta;", "Θ &Theta;", "θ &theta;", "Ι &Iota;", "ι &iota;", "Κ &Kappa;", "κ &kappa;", "Λ &Lambda;", "λ &lambda;", "Μ &Mu;", "μ &mu;", "Ν &Nu;", "ν &nu;", "Ξ &Xi;", "ξ &xi;", "Ο &Omicron;", "ο &omicron;", "Π &Pi;", "π &pi;", "Ρ &Rho;", "ρ &rho;", "ς &sigmav;", "Σ &Sigma;", "σ &sigma;", "Τ &Tau;", "τ &tau;", "Υ &Upsilon;", "υ &upsi;", "Φ &Phi;", "φ &phi;", "Χ &Chi;", "χ &chi;", "Ψ &Psi;", "ψ &psi;", "Ω &Omega;", "ω &omega;",
     "- - -", "$ &dollar;", "% &percnt;", "& &amp;", "( &lpar;", ") &rpar;", "* &ast;", "+ &plus;", "- (hyphen-minus)", "/ &sol;", "< &lt;", "= &equals;", "> &gt;", "[ &lsqb;", "\\ &bsol;", "] &rsqb;", "^ &Hat;", "_ &lowbar;", "` &grave;", "{ &lcub;", "| &vert;", "} &rcub;", "~ (tilde)",
-    "- - -", "¦ &brvbar;", "¨ &uml;", "¯ &macr;", "° &deg;", "± &pm;", "² &sup2;", "³ &sup3;", "´ &acute;", "µ &micro;", "¹ &sup1;", "¼ &frac14;", "½ &frac12;", "¾ &frac34;", "× &times;", "÷ &divide;", "ƒ &fnof;", "˜ &tilde;", "˷ (low tilde &#x2f7;)", " ̂ (combining circumflex &#x302;)", " ̃ (combining tilde &#x303;)", " ̄ (combining macron &#x304;)", " ̅ (combining overline &#x305;)", " ̲ (combining low line &#x332;)", "― &horbar;", "‖ &Vert;", "• &bull;", "‣ (triangular bullet &#x2023;)", "… &hellip;", "‰ &permil;", "‱ &pertenk;", "′ &prime;", "″ &Prime;", "‴ &tprime;", "‵ &backprime;", "‾ &oline;", "⁄ &frasl;", "⁗ &qprime;", "⁰ (superscript 0 &#x2070;)", "⁴ (superscript 4 &#x2074;)", "⁵ (superscript 5 &#x2075;)", "⁶ (superscript 6 &#x2076;)", "⁷ (superscript 7 &#x2077;)", "⁸ (superscript 8 &#x2078;)", "⁹ (superscript 9 &#x2079;)", "⁺ (superscript '+' &#x207a;)", "⁻ (superscript '-' &#x207b;)", "⁽ (superscript '(' &#x207d;)", "⁾ (superscript ')' &#x207e;)", "№ &numero;", "⅓ &frac13;", "⅔ &frac23;", "⅛ &frac18;", "⅜ &frac38;", "⅝ &frac58;", "⅞ &frac78;", "← &larr;", "↑ &uarr;", "→ &rarr;", "↓ &darr;", "↔ &harr;", "⇐ &lArr;", "⇑ &uArr;", "⇒ &rArr;", "⇓ &dArr;", "⇔ &hArr;",
-    "∀ &forall;", "∂ &part;", "∃ &exist;", "∄ &nexist;", "∅ &empty;", "∇ &nabla;", "∈ &in;", "∉ &notin;", "∋ &ni;", "∌ &notni;", "∏ &prod;", "∑ &sum;", "− &minus;", "∕ (division slash &#x2215;)", "∗ &lowast;", "√ &radic;", "∝ &prop;", "∞ &infin;", "∟ &angrt;", "∠ &ang;", "∣ &mid;", "∤ &nmid;", "∥ &par;", "∦ &npar;", "∧ &and;", "∨ &or;", "∩ &cap;", "∪ &cup;", "∫ &int;", "∴ &there4;", "∵ &becaus;", "∶ &ratio;", "∷ &Colon;", "∼ &sim;", "≁ &nsim;", "≅ &cong;", "≈ &ap;", "≉ &nap;", "≠ &ne;", "≡ &equiv;", "≢ &nequiv;", "≤ &le;", "≥ &ge;", "≪ &ll;", "≫ &gg;", "⊂ &sub;", "⊃ &sup;", "⊄ &nsub;", "⊅ &nsup;", "⊆ &sube;", "⊇ &supe;", "⊕ &oplus;", "⊖ &ominus;", "⊗ &otimes;", "⊘ &osol;", "⊙ &odot;", "⊚ &ocir;", "⊛ &oast;", "⊝ &odash;", "⊞ &plusb;", "⊟ &minusb;", "⊠ &timesb;", "⊡ &sdotb;", "⊥ &bot;", "⋅ &sdot;", "✓ &check;", "✕ (multiplication X &#x2715;)", "✗ &cross;", "⟋ (math diagonal &#x27cb;)", "⟌ (long division &#x27cc;)", "⟨ &lang;", "⟩ &rang;", "⟪ &Lang;", "⟫ &Rang;", "⨁ &xoplus;", "⨂ &xotime;" ]
+    "- - -", "¦ &brvbar;", "¨ &uml;", "¯ &macr;", "° &deg;", "± &pm;", "² &sup2;", "³ &sup3;", "´ &acute;", "µ &micro;", "¹ &sup1;", "¼ &frac14;", "½ &frac12;", "¾ &frac34;", "× &times;", "÷ &divide;", "ƒ &fnof;", "˜ &tilde;", "˷ (low tilde &#x2f7;)", " ̂ (combining circumflex &#x302;)", " ̃ (combining tilde &#x303;)", " ̄ (combining macron &#x304;)", " ̅ (combining overline &#x305;)", " ̲ (combining low line &#x332;)", "― &horbar;", "‖ &Vert;", "• &bull;", "‣ (triangular bullet &#x2023;)", "… &hellip;", "‰ &permil;", "‱ &pertenk;", "′ &prime;", "″ &Prime;", "‴ &tprime;", "‵ &backprime;", "‾ &oline;", "⁄ &frasl;", "⁗ &qprime;", "⁰ (superscript 0 &#x2070;)", "⁴ (superscript 4 &#x2074;)", "⁵ (superscript 5 &#x2075;)", "⁶ (superscript 6 &#x2076;)", "⁷ (superscript 7 &#x2077;)", "⁸ (superscript 8 &#x2078;)", "⁹ (superscript 9 &#x2079;)", "⁺ (superscript '+' &#x207a;)", "⁻ (superscript '-' &#x207b;)", "⁽ (superscript '(' &#x207d;)", "⁾ (superscript ')' &#x207e;)", "ℂ &Copf;", "ℍ &Hopf;", "ℕ &Nopf;", "№ &numero;", "ℙ &Popf;", "ℚ &Qopf;", "ℝ &Ropf;", "ℤ &Zopf;", "⅓ &frac13;", "⅔ &frac23;", "⅛ &frac18;", "⅜ &frac38;", "⅝ &frac58;", "⅞ &frac78;", "← &larr;", "↑ &uarr;", "→ &rarr;", "↓ &darr;", "↔ &harr;", "⇐ &lArr;", "⇑ &uArr;", "⇒ &rArr;", "⇓ &dArr;", "⇔ &hArr;",
+    "∀ &forall;", "∂ &part;", "∃ &exist;", "∄ &nexist;", "∅ &empty;", "∇ &nabla;", "∈ &in;", "∉ &notin;", "∋ &ni;", "∌ &notni;", "∏ &prod;", "∑ &sum;", "− &minus;", "∕ (division slash &#x2215;)", "∖ &setmn;", "∗ &lowast;", "√ &radic;", "∝ &prop;", "∞ &infin;", "∟ &angrt;", "∠ &ang;", "∣ &mid;", "∤ &nmid;", "∥ &par;", "∦ &npar;", "∧ &and;", "∨ &or;", "∩ &cap;", "∪ &cup;", "∫ &int;", "∴ &there4;", "∵ &becaus;", "∶ &ratio;", "∷ &Colon;", "∼ &sim;", "≁ &nsim;", "≅ &cong;", "≈ &ap;", "≉ &nap;", "≠ &ne;", "≡ &equiv;", "≢ &nequiv;", "≤ &le;", "≥ &ge;", "≪ &ll;", "≫ &gg;", "⊂ &sub;", "⊃ &sup;", "⊄ &nsub;", "⊅ &nsup;", "⊆ &sube;", "⊇ &supe;", "⊈ &nsube;", "⊉ &nsupe;", "⊊ &subne;", "⊋ &supne;", "⊕ &oplus;", "⊖ &ominus;", "⊗ &otimes;", "⊘ &osol;", "⊙ &odot;", "⊚ &ocir;", "⊛ &oast;", "⊝ &odash;", "⊞ &plusb;", "⊟ &minusb;", "⊠ &timesb;", "⊡ &sdotb;", "⊥ &bot;", "⋅ &sdot;", "✓ &check;", "✕ (multiplication X &#x2715;)", "✗ &cross;", "⟋ (math diagonal &#x27cb;)", "⟌ (long division &#x27cc;)", "⟨ &lang;", "⟩ &rang;", "⟪ &Lang;", "⟫ &Rang;", "⨁ &xoplus;", "⨂ &xotime;" ]
   .map(e => `<li>${e.replace(/&(?=#?\w+;\)?$)/, "&amp;")}</li>`).join("\n    ") + "\n  ";
+menulist.selectedIndex = -1;
 (document.querySelector('#ecorender') || document.body)
 .addEventListener('click', dinpRegen);
 cheadg.addEventListener('blur', titSave);
