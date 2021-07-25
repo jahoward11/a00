@@ -3,7 +3,7 @@
 <head>
 <title>JavaScript Calculator</title>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
+<meta name="viewport" content="width=device-width, maximum-scale=1" />
 <style type="text/css">
 *, *::before, *::after {
   box-sizing: inherit;
@@ -296,10 +296,12 @@ print and (resolution: 300dpi) and (width: 557px) { /* desktop Chrome, page:port
 <h4 id="cheadg">JavaScript Calculator</h4>
 <pre id="preresp"></pre>
 <span id="mctnr"><select id="menulist" title="CalcJS App Menu">
+  <option></option>
+  <option>&nbsp;&pm; Lock/unlock screen zoom</option>
   <option>&hellip; Rename doc TITLE</option>
   <option>&nbsp;&vArr; Expand/collapse FINAL VALUES row</option>
   <option>&hArr; Expand/collapse RESULTS column</option>
-  <option>&nbsp;&dtrif;&#x332; Generate a copy of CalcJS &amp; displayed data</option>
+  <option>&ensp;&dtrif;&#x332; Generate a copy of CalcJS &amp; displayed data</option>
 </select></span>
 <div id="cgrid" class="cfield">
   <pre id="quad1A"></pre><pre id="quad1B"></pre>
@@ -344,44 +346,50 @@ let di2html, q2Bcopy,
   respShow = resp => preresp.innerHTML
     += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor
       ? resp : JSON.stringify(resp, null, 2) ) + "\n\n",
-  calcNew = () => {
+  titSave = () => {
+    cheadg.setAttribute('contenteditable', false);
+    (document.querySelector('#ecorender>title') || document.querySelector('head>title')).innerHTML
+    = cheadg.innerHTML = cheadg.textContent.trim().substring(0, 32);
+  },
+  calcCopy = () => {
     let anew = document.createElement('a'),
       chtml = '<!DOCTYPE html>\n<html lang="en">\n'
       + (document.querySelector('#ecorender') || document.documentElement).innerHTML
         .replace(/^\n|^#cmain \.cfield [^]+?\n(?=@media print {\n)|^ *xstor = \[\],[^]+?\n(?= *dinp2 = )|^ *!xsetlist .+\n|^ *},\n *slistRegen = [^]+?\n(?= *};\nif \(\/\^http)|^if \(\/\^http[^]+?{ slistRegen\(\); }\n/gm, "")
         .replace(/^(<xmp id="dinput".*?>)[^]*?(?=<\/xmp>)/m, (m, c1) => c1 + "\n" + dinp2.value + "\n")
         .replace(/^(<pre id="preresp">)[^]*?(?=<\/pre>)/m, "$1")
-        .replace( /^<div id="cgrid".*?>\n[^]+?(?=\n<\/div>)/m,
-          '<div id="cgrid" class="cfield">\n  <pre id="quad1A"></pre><pre id="quad1B"></pre>\n  <pre id="quad2A"></pre><pre id="quad2B" contenteditable=true></pre>\n  <ul id="plist" class="is-hidden"></ul>' )
-        .replace(/^<div class="cfield">[^]+?\n(?=let \$,)/m, "</main>\n<script type=\"text/javascript\">\n(function () {\n'use strict';\n")
+        .replace( /^(<div id="cgrid".*?>\n *<pre id="quad1A".*?>)[^]*?(<\/pre><pre id="quad1B".*?>)[^]*?(<\/pre>\n *<pre id="quad2A".*?>)[^]+?(?=\n<\/div>)/m,
+          '$1$2$3</pre><pre id="quad2B" contenteditable=true></pre>\n  <ul id="plist" class="is-hidden"></ul>' )
+        .replace(/^<div class="cfield">[^]+?\n(?=let di2html,)/m, "</main>\n<script type=\"text/javascript\">\n(function () {\n'use strict';\n")
         .replace(/^xsetinp\.addEventListener\([^]+?\n(?=<\/script>)/m, "xprsEval();\n})();\n")
       + "\n</html>\n";
     anew.setAttribute('download', "calcjs-draft02.html");
     anew.setAttribute('href', "data:text/html;charset=utf-8," + encodeURIComponent(chtml));
     anew.click();
   },
-  titSave = () => {
-    cheadg.setAttribute('contenteditable', false);
-    (document.querySelector('#ecorender>title') || document.querySelector('head>title')).innerHTML
-    = cheadg.innerHTML = cheadg.textContent.trim().substring(0, 32);
-  },
   appMenu = evt => {
+    let mvp;
     setTimeout(() => {
       menulist.blur();
-      menulist.selectedIndex = -1;
+      menulist.selectedIndex = 0;
     }, 1);
     evt.preventDefault();
-    if (evt.target.selectedIndex === 0) {
+    if (evt.target.selectedIndex === 1) {
+      mvp = document.querySelector('#ecorender>meta[name=viewport]')
+        || document.querySelector('head>meta[name=viewport]');
+      mvp.setAttribute( 'content', "width=device-width, "
+        + (/initial-/.test(mvp.content)? "maximum-scale=1" : "initial-scale=1") );
+    } else if (evt.target.selectedIndex === 2) {
       cheadg.setAttribute('contenteditable', true);
       cheadg.focus();
-    } else if (evt.target.selectedIndex === 1) {
+    } else if (evt.target.selectedIndex === 3) {
       [quad1A, quad1B].forEach(e => e.classList.toggle("is-hidden"));
       cgrid.classList.toggle("clpsrow1");
-    } else if (evt.target.selectedIndex === 2) {
+    } else if (evt.target.selectedIndex === 4) {
       quad2A.classList.toggle("is-hidden");
       cgrid.classList.toggle("xpndq2B");
-    } else if (evt.target.selectedIndex === 3) {
-      calcNew();
+    } else if (evt.target.selectedIndex === 5) {
+      calcCopy();
     }
   },
   txtPste = evt => {
@@ -393,29 +401,29 @@ let di2html, q2Bcopy,
     evt.preventDefault();
   },
   xprsEval = () => {
-    let $ = {}, _ = {}, _ks = [], rslt,
-    xprsns = dinp2.value.replace(/<!--[^]*?-->/g, "")
-      .replace(/&Tab;/g, "\t").replace(/(?:[^\n$.\wΑ-ω]|^)\$(?=[$_a-zΑ-ω])/gim, "$&.")
-      .replace(/^\/\*\n?([^]*?)\n?\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
-      .split("\n"),
-    reslts = xprsns.map(xpr => {
-      try {
-        xpr = xpr && xpr
-        .replace( /^(?=[\t ]*{)|^.*?(?=\/\/|\(? *function\b[ \w]*\([^]*?\) *{|\(? *(?:[$\wΑ-ω]+|\([^]*?\)) *=>|$)/g,
-          m0 => m0.replace( /( |^)([$_a-zΑ-ω][$\wΑ-ω]*)(?= *=)/gi,
-            (m1, c1, c2) => _ks.push(c2) && c1 + "_." + c2 )
-          .replace( /([\t =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([$_](?!\.)[$\wΑ-ω]*|[A-Za-zΑ-ω][$\wΑ-ω]*)(?! *=)/g,
-            (m1, c1, c2) => window[c2] || !_ks.some(k => k === c2) ? m1 : c1 + "_." + c2 ) );
-        rslt = eval(xpr.replace(/\\f$|^\\f/g, ""));
-        return (!/\\f$|^\\f/.test(xpr) ? "" : "<div class=pagebb></div>")
-        + ( rslt == null ? ""
-          : typeof rslt === 'string' ? rslt.replace(/\n/g, "\\n")
-          : rslt.toString().replace(/\s+/g, " ") );
-      } catch (err) { respShow(err); return err; }
-    }),
-    $kl = Object.keys($).length;
-    cgrid.style.setProperty("--row1ht", $kl < 4 ? "-56px" : -($kl * 16 + 4) + "px");
     !preresp.innerHTML || (preresp.innerHTML = null);
+    let $ = {}, _ = {}, _ks = [], rslt,
+      xprsns = dinp2.value.replace(/<!--[^]*?-->/g, "")
+        .replace(/&Tab;/g, "\t").replace(/(?:[^\n$.\wΑ-ω]|^)\$(?=[$_a-zΑ-ω])/gim, "$&.")
+        .replace(/^\/\*\n?([^]*?)\n?\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
+        .split("\n"),
+      reslts = xprsns.map(xpr => {
+        try {
+          xpr = xpr && xpr
+          .replace( /^(?=[\t ]*{)|^.*?(?=\/\/|\(? *function\b[ \w]*\([^]*?\) *{|\(? *(?:[$\wΑ-ω]+|\([^]*?\)) *=>|$)/g,
+            m0 => m0.replace( /( |^)([$_a-zΑ-ω][$\wΑ-ω]*)(?= *=)/gi,
+              (m1, c1, c2) => _ks.push(c2) && c1 + "_." + c2 )
+            .replace( /([\t =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([$_](?!\.)[$\wΑ-ω]*|[A-Za-zΑ-ω][$\wΑ-ω]*)(?! *=)/g,
+              (m1, c1, c2) => window[c2] || !_ks.some(k => k === c2) ? m1 : c1 + "_." + c2 ) );
+          rslt = eval(xpr.replace(/\\f$|^\\f/g, ""));
+          return (!/\\f$|^\\f/.test(xpr) ? "" : "<div class=pagebb></div>")
+          + ( rslt == null ? ""
+            : typeof rslt === 'string' ? rslt.replace(/\n/g, "\\n")
+            : rslt.toString().replace(/\s+/g, " ") );
+        } catch (err) { respShow(err); return err; }
+      }),
+      $kl = Object.keys($).length;
+    cgrid.style.setProperty("--row1ht", $kl < 4 ? "-56px" : -($kl * 16 + 4) + "px");
     quad1A.innerHTML = Object.values($).join("\n").replace(/\n$/, "\n&nbsp;")
       + '<span id="dfinal">$-variable<br />FINAL VALUES</span>';
     quad1B.innerHTML = Object.keys($).join("\n")
@@ -457,10 +465,10 @@ let di2html, q2Bcopy,
     .replace(/(.*)\\f(<\/span> |)$|^(.*<span class=dnote>|)\\f/gm, "<div class=pagebb></div>$1$2$3");
   },
   dinpRegen = evt => {
-    let cfoc, eobj, rnge, seln;
+    let eobj, rnge, seln;
     if ( (eobj = (evt || {}).target)
-    && ( cfoc = [null, "parentElement", "parentElement", "parentElement"]
-    .some(k => /quad2B|plist/.test((eobj = eobj[k] || eobj).id || "")) )) {
+    && [null, "parentElement", "parentElement", "parentElement"]
+    .some(k => /quad2B|plist/.test((eobj = eobj[k] || eobj).id || "")) ) {
       if (/plist/.test((evt.target.parentElement || {}).id || "")) {
         seln = window.getSelection();
         seln.removeAllRanges();
@@ -473,7 +481,8 @@ let di2html, q2Bcopy,
         quad2B.innerHTML = dinp2.value
         .replace(/&(?=#?\w+;)/g, "&amp;").replace(/&(?=amp;[gl]t;)/gi, "&amp;")
         .replace(/<(?=\/?\w|!--)/g, "&lt;");
-        di2html = quad2B.innerHTML;
+        !(di2html = quad2B.innerHTML)
+        || window.getSelection().setPosition(quad2B.firstChild, quad2B.textContent.length / 2);
       }
     } else if (!plist.className && quad2B.innerHTML === di2html) {
       plist.className = "is-hidden";
@@ -569,7 +578,6 @@ plist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
     "- - -", "¦ &brvbar;", "¨ &uml;", "¯ &macr;", "° &deg;", "± &pm;", "² &sup2;", "³ &sup3;", "´ &acute;", "µ &micro;", "¹ &sup1;", "¼ &frac14;", "½ &frac12;", "¾ &frac34;", "× &times;", "÷ &divide;", "ƒ &fnof;", "˜ &tilde;", "˷ (low tilde &#x2f7;)", " ̂ (combining circumflex &#x302;)", " ̃ (combining tilde &#x303;)", " ̄ (combining macron &#x304;)", " ̅ (combining overline &#x305;)", " ̲ (combining low line &#x332;)", "― &horbar;", "‖ &Vert;", "• &bull;", "‣ (triangular bullet &#x2023;)", "… &hellip;", "‰ &permil;", "‱ &pertenk;", "′ &prime;", "″ &Prime;", "‴ &tprime;", "‵ &backprime;", "‾ &oline;", "⁄ &frasl;", "⁗ &qprime;", "⁰ (superscript 0 &#x2070;)", "⁴ (superscript 4 &#x2074;)", "⁵ (superscript 5 &#x2075;)", "⁶ (superscript 6 &#x2076;)", "⁷ (superscript 7 &#x2077;)", "⁸ (superscript 8 &#x2078;)", "⁹ (superscript 9 &#x2079;)", "⁺ (superscript '+' &#x207a;)", "⁻ (superscript '-' &#x207b;)", "⁽ (superscript '(' &#x207d;)", "⁾ (superscript ')' &#x207e;)", "ℂ &Copf;", "ℍ &Hopf;", "ℕ &Nopf;", "№ &numero;", "ℙ &Popf;", "ℚ &Qopf;", "ℝ &Ropf;", "ℤ &Zopf;", "⅓ &frac13;", "⅔ &frac23;", "⅛ &frac18;", "⅜ &frac38;", "⅝ &frac58;", "⅞ &frac78;", "← &larr;", "↑ &uarr;", "→ &rarr;", "↓ &darr;", "↔ &harr;", "⇐ &lArr;", "⇑ &uArr;", "⇒ &rArr;", "⇓ &dArr;", "⇔ &hArr;",
     "∀ &forall;", "∂ &part;", "∃ &exist;", "∄ &nexist;", "∅ &empty;", "∇ &nabla;", "∈ &in;", "∉ &notin;", "∋ &ni;", "∌ &notni;", "∏ &prod;", "∑ &sum;", "− &minus;", "∕ (division slash &#x2215;)", "∖ &setmn;", "∗ &lowast;", "√ &radic;", "∝ &prop;", "∞ &infin;", "∟ &angrt;", "∠ &ang;", "∣ &mid;", "∤ &nmid;", "∥ &par;", "∦ &npar;", "∧ &and;", "∨ &or;", "∩ &cap;", "∪ &cup;", "∫ &int;", "∴ &there4;", "∵ &becaus;", "∶ &ratio;", "∷ &Colon;", "∼ &sim;", "≁ &nsim;", "≅ &cong;", "≈ &ap;", "≉ &nap;", "≠ &ne;", "≡ &equiv;", "≢ &nequiv;", "≤ &le;", "≥ &ge;", "≪ &ll;", "≫ &gg;", "⊂ &sub;", "⊃ &sup;", "⊄ &nsub;", "⊅ &nsup;", "⊆ &sube;", "⊇ &supe;", "⊈ &nsube;", "⊉ &nsupe;", "⊊ &subne;", "⊋ &supne;", "⊕ &oplus;", "⊖ &ominus;", "⊗ &otimes;", "⊘ &osol;", "⊙ &odot;", "⊚ &ocir;", "⊛ &oast;", "⊝ &odash;", "⊞ &plusb;", "⊟ &minusb;", "⊠ &timesb;", "⊡ &sdotb;", "⊥ &bot;", "⋅ &sdot;", "✓ &check;", "✕ (multiplication X &#x2715;)", "✗ &cross;", "⟋ (math diagonal &#x27cb;)", "⟌ (long division &#x27cc;)", "⟨ &lang;", "⟩ &rang;", "⟪ &Lang;", "⟫ &Rang;", "⨁ &xoplus;", "⨂ &xotime;" ]
   .map(e => `<li>${e.replace(/&(?=#?\w+;\)?$)/, "&amp;")}</li>`).join("\n    ") + "\n  ";
-menulist.selectedIndex = -1;
 (document.querySelector('#ecorender') || document.body)
 .addEventListener('click', dinpRegen);
 cheadg.addEventListener('blur', titSave);
