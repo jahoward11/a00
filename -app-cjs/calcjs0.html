@@ -460,8 +460,8 @@ let di2html, q2Bcopy,
       "$1<var class=dvar>$2</var>" )
     .replace(/(<var\b.*?>[a-zΑ-ω]+)(\d+)(?=<\/var>)/gi, "$1<sub>$2</sub>")
     .replace(/\u2044|&frasl;/g, "<span class=frasl>$&</span>")
-    .replace( /[\xb2\xb3\xb9\u2070-\u207e]|&#x0*[Bb][239];|&#x207[0-9A-Ea-e];|&sup[123];/g,
-      "<span class=fsan2>$&</span>" ) // superscripts
+    .replace( /[\xb2\xb3\xb9\u2070-\u207e\u2080-\u208e]|&#x0*[Bb][239];|&#x20[78][0-9A-Ea-e];|&sup[123];/g,
+      "<span class=fsan2>$&</span>" ) // superscripts, subscripts
     .replace( /.[\u0300-\u036f]|[\u02f7\u2023\u2031\u2034\u203e\u2057\u2150-\u215a]|.&#x0?3[0-6][\dA-Fa-f];|&#x0?2f7;|&#x2023;|&#x203[14e];|&#x2057;|&#x215[\dAa];|&frac\d[356];|&oline;|&pertenk;|&qprime;|&tprime;/g,
       "<span class=fsan1>$&</span>" ) // combining marks, vulgar fractions, ˷ ‣ ‱ ‴ ‾ ⁗
     .replace(/(.*)\\f(<\/span> |)$|^(.*<span class=dnote>|)\\f/gm, "<div class=pagebb></div>$1$2$3");

@@ -171,15 +171,15 @@ c = 1
 
 b1 = Math.sin(θ1) * c
 a1 = Math.cos(θ1) * c
- Math.sqrt(3) / 2	//(note: same value as _a1_ &amp; _b3_)
+ Math.sqrt(3) / 2	//(note: same value as a1 &amp; b3)
 
 b2 = Math.sin(θ2) * c
 a2 = Math.cos(θ2) * c
- Math.sqrt(2) / 2	//(note: same value as _a2_ &amp; _b2_)
+ Math.sqrt(2) / 2	//(note: same value as a2 &amp; b2)
 
 b3 = Math.sin(θ3) * c
 a3 = Math.cos(θ3) * c
- Math.sqrt(1) / 2	//(note: same value as _a3_ &amp; _b1_)
+ Math.sqrt(1) / 2	//(note: same value as a3 &amp; b1)
 
 $θ3 = Math.round(θ3 * 1000) / 1000
 $a3 = Math.round(a3 * 1000) / 1000
