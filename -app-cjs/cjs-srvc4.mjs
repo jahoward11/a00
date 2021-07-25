@@ -136,15 +136,15 @@ __Simpson's Diversity Index__
 
  Diversity Index = 1 - ∑[   *n* ⟋ *N*  ]²
 
-__Temperature Coefficient Q10__
- *T2*  | higher temperature
- *T1*  | lower temperature
- *k2*  | reaction rate at *T2*
- *k1*  | reaction rate at *T1*
- *Q10* | the factor by which the reaction rate increases
+__Temperature Coefficient Q~10~__
+ *T~2~*  | higher temperature
+ *T~1~*  | lower temperature
+ *k~2~*  | reaction rate at *T~2~*
+ *k~1~*  | reaction rate at *T~1~*
+ *Q~10~* | the factor by which the reaction rate increases
        when the temperature is raised by ten degrees
 
- *Q10* = [  *k2* ⟋ *k1*  ]^¹⁰/~*T2* - *T1*~^
+ *Q~10~* = [  *k~2~* ⟋ *k~1~*  ]^¹⁰/~*T₂* - *T₁*~^
 
 __Primary Productivity Calculation__
 
@@ -198,7 +198,7 @@ __Gibbs Free Energy__
 __pH Value__
 *acidity (<7) / basicity (>7) of an aqueous solution*
 
- pH = -log10[H⁺]
+ pH = -log~10~[H⁺]
 
 */`;
 

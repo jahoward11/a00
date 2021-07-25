@@ -6,31 +6,31 @@ const homeloan1 = `
 // __Home Loan Scenarios__
 
 // __KEY__
- // rate | monthly (periodic) interest rate
- // ppmt | monthly (periodic) payment amount
+ // *rate* | monthly (periodic) interest rate
+ // *ppmt* | monthly (periodic) payment amount
 
- // pval | present (beginning) value of loan (principal)
+ // *pval* | present (beginning) value of loan (principal)
 
- // fval | future (ending) value of loan
- // fint | total, future interest paid
+ // *fval* | future (ending) value of loan
+ // *fint* | total, future interest paid
 
- // nper | number of monthly payments to make (periods)
- // nyrs | number of years of payments
- // dbeg | beginning date
- // dend | ending date
+ // *nper* | number of monthly payments to make (periods)
+ // *nyrs* | number of years of payments
+ // *dbeg* | beginning date
+ // *dend* | ending date
 
-// __GIVEN VALUE (key0)__
- rate0 = 0.035 / 12	//yearly interest rate / 12 mos/yr
+// __GIVEN VALUE (*key~0~*)__
+ rate0 = 0.035 / 12	//yearly interest rate ÷ 12 ^mos^/~yr~
  ppmt0 = 0
 
  pval0 = 250000
 
  fval0 = 0
 
- nper0 = 30 * 12   	//number of years * 12 mos/yr
+ nper0 = 30 * 12   	//number of years × 12 ^mos^/~yr~
  dbeg0 = new Date("2021-07-01")
 
-// __CALCULATED VALUE (key1)__
+// __CALCULATED VALUE (*key~1~*)__
  ppmt1 = rate0 * pval0 / [1 - Math.pow(1 + rate0, -nper0)]
  $ppmt1 = !nper0 ? "" : (Math.round(ppmt1 * 100) / 100).toFixed(2)
 
@@ -47,26 +47,26 @@ const homeloan1 = `
  dend1 = new Date(new Date(dbeg0).getTime() + [(nper0 || $nper1) + 1] * 30.35 * 24 * 60 * 60 * 1000)
 
 // __QUICK-START GUIDE__
-// 1. To adjust the calculated *Monthly Payment* (_ppmt1_)
-   // First, set the given monthly payment (_ppmt0_) to zero.
+// 1. To adjust the calculated *Monthly Payment* ($ppmt1)
+   // First, set the given monthly payment (ppmt0) to zero.
    // Then, provide or change:
-   // - the given interest rate (_rate0_)
-   // - the given, beginning loan value (_pval0_)
-   // - the given, total number of payments (_nper0_)
+   // - the given interest rate (rate0)
+   // - the given, beginning loan value (pval0)
+   // - the given, total number of payments (nper0)
 
-// 2. To adjust the calculated, *Present Loan Value* (_pval1_)
-   // First, set the given, beginning loan value (_pval0_) to zero.
+// 2. To adjust the calculated, *Present Loan Value* ($pval1)
+   // First, set the given, beginning loan value (pval0) to zero.
    // Then, provide or change:
-   // - the given interest rate (_rate0_)
-   // - the given monthly payment (_ppmt0_)
-   // - the given, total number of payments (_nper0_)
+   // - the given interest rate (rate0)
+   // - the given monthly payment (ppmt0)
+   // - the given, total number of payments (nper0)
 
-// 3. To adjust the calculated, total *Number of Payments* (_nper1_)
-   // First, set the given number of payments (_nper0_) to zero.
+// 3. To adjust the calculated, total *Number of Payments* ($nper1)
+   // First, set the given number of payments (nper0) to zero.
    // Then, provide or change:
-   // - the given interest rate (_rate0_)
-   // - the given monthly payment (_ppmt0_)
-   // - the given, beginning loan value (_pval0_)
+   // - the given interest rate (rate0)
+   // - the given monthly payment (ppmt0)
+   // - the given, beginning loan value (pval0)
 //`;
 
 export {

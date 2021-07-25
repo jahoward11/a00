@@ -422,8 +422,8 @@ let di2html, q2Bcopy,
             : rslt.toString().replace(/\s+/g, " ") );
         } catch (err) { respShow(err); return err; }
       }),
-      $kl = Object.keys($).length;
-    cgrid.style.setProperty("--row1ht", $kl < 4 ? "-56px" : -($kl * 16 + 4) + "px");
+      $ks = Object.keys($);
+    cgrid.style.setProperty("--row1ht", $ks.length < 4 ? "-56px" : -($ks.length * 16 + 4) + "px");
     quad1A.innerHTML = Object.values($).join("\n").replace(/\n$/, "\n&nbsp;")
       + '<span id="dfinal">$-variable<br />FINAL VALUES</span>';
     quad1B.innerHTML = Object.keys($).join("\n")
@@ -455,8 +455,10 @@ let di2html, q2Bcopy,
     .replace( !_ks.length ? /[]/
       : new RegExp("([^$\\wΑ-ω]|^)(" + _ks.join("|") + ")(?![$\\wΑ-ω]|<\\/(?:em|strong|var)>)", "gm"),
       "$1<var>$2</var>" )
-    .replace( /(\.\w*|&#?\w*|)([a-zΑ-ω]+)(\d+)(?![0-9a-zΑ-ω])/gi,
-      (m, c1, c2, c3) => c1 ? m : c2 + "<sub>" + c3 + "</sub>" )
+    .replace( !$ks.length ? /[]/
+      : new RegExp("([^$\\wΑ-ω]|^)(" + $ks.join("|") + ")(?![$\\wΑ-ω]|<\\/(?:em|strong|var)>)", "gm"),
+      "$1<var class=dvar>$2</var>" )
+    .replace(/(<var\b.*?>[a-zΑ-ω]+)(\d+)(?=<\/var>)/gi, "$1<sub>$2</sub>")
     .replace(/\u2044|&frasl;/g, "<span class=frasl>$&</span>")
     .replace( /[\xb2\xb3\xb9\u2070-\u207e]|&#x0*[Bb][239];|&#x207[0-9A-Ea-e];|&sup[123];/g,
       "<span class=fsan2>$&</span>" ) // superscripts
@@ -480,9 +482,9 @@ let di2html, q2Bcopy,
         q2Bcopy = quad2B.innerHTML;
         quad2B.innerHTML = dinp2.value
         .replace(/&(?=#?\w+;)/g, "&amp;").replace(/&(?=amp;[gl]t;)/gi, "&amp;")
-        .replace(/<(?=\/?\w|!--)/g, "&lt;");
+        .replace(/<(?=\/?\w|!--)/g, "&lt;") + (!dinp2.value ? "" : "\n<br>");
         !(di2html = quad2B.innerHTML)
-        || window.getSelection().setPosition(quad2B.firstChild, quad2B.textContent.length / 2);
+        || window.getSelection().setPosition(quad2B.firstChild, quad2B.textContent.length);
       }
     } else if (!plist.className && quad2B.innerHTML === di2html) {
       plist.className = "is-hidden";
