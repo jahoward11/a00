@@ -525,6 +525,7 @@ let di2html, q2Bcopy,
     }
   }),
   xsetLoad = evt => {
+    let optg;
     if (evt.target.id === "xsetlist" && !xsetlist.value) {
       xsetlist.value = xsetinp.value = dinp2.value = "";
       return xprsEval();
@@ -533,10 +534,10 @@ let di2html, q2Bcopy,
       || xsetlist.value === xsetinp.value
       || (xsetlist.value = "");
     }
-    xsetlist.value && evt.target.id === "xsetlist"
+    evt.target.id !== "xsetinp"
     || (xsetlist.value = xsetinp.value || xsetinp.value.replace(/.+\//, ""));
-    let optg = xsetlist.value && xsetlist.selectedOptions[0].parentElement.label;
-    xsetinp.value && xsetlist.value === xsetinp.value.replace(/.+\//, "")
+    optg = xsetlist.value && xsetlist.selectedOptions[0].parentElement.label;
+    xsetinp.value && xsetlist.value === xsetinp.value //.replace(/.+\//, "")
     || (xsetinp.value = (optg === "USERdata/" ? "" : optg) + xsetlist.value);
     optg && optg !== "USERdata/"
     ? (( dinp2.value
