@@ -535,9 +535,10 @@ let di2html, q2Bcopy,
       || (xsetlist.value = "");
     }
     evt.target.id !== "xsetinp"
-    || (xsetlist.value = xsetinp.value || xsetinp.value.replace(/.+\//, ""));
+    || (xsetlist.value = xsetinp.value) && xsetlist.value
+    || (xsetlist.value = xsetinp.value.replace(/.+\//, ""));
     optg = xsetlist.value && xsetlist.selectedOptions[0].parentElement.label;
-    xsetinp.value && xsetlist.value === xsetinp.value //.replace(/.+\//, "")
+    xsetinp.value && xsetlist.value === xsetinp.value.replace(/.+\//, "")
     || (xsetinp.value = (optg === "USERdata/" ? "" : optg) + xsetlist.value);
     optg && optg !== "USERdata/"
     ? (( dinp2.value
