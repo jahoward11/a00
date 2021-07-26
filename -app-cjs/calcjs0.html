@@ -129,7 +129,8 @@ body {
 #cgrid .frasl {
   margin: 0 -5px;
 }
-#cgrid :not(sub):not(sup)>.fsan1, #cgrid .fsan2 {
+#cgrid :not(sub):not(sup)>.fsan1,
+#cgrid :not(sub):not(sup)>.fsan2 {
   display: inline-block;
   width: 7.8px;
   text-align: center;
@@ -404,7 +405,7 @@ let di2html, q2Bcopy,
     !preresp.innerHTML || (preresp.innerHTML = null);
     let $ = {}, _ = {}, _ks = [], rslt,
       xprsns = dinp2.value.replace(/<!--[^]*?-->/g, "")
-        .replace(/&Tab;/g, "\t").replace(/(?:[^\n$.\wΑ-ω]|^)\$(?=[$_a-zΑ-ω])/gim, "$&.")
+        .replace(/&Tab;/g, "\t").replace(/(?:[^$.\wΑ-ω]|^)\$(?=[$_a-zΑ-ω])/gi, "$&.")
         .replace(/^\/\*\n?([^]*?)\n?\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
         .split("\n"),
       reslts = xprsns.map(xpr => {
@@ -451,13 +452,10 @@ let di2html, q2Bcopy,
       + "<span class=fbig>" + (c4 || c1 + c2) + "</span>"
       + (c4 ? " " : c3 + (!c1 || !c2 ? "" : " "))
       + (!c5 ? "" : "<span class=dvsr>" + c5 + "</span>") )
-    .replace(/\$\.([\wΑ-ω]+)/g, '<var class=dvar>$1</var>')
+    .replace(/([^$.\wΑ-ω]|^)\$\.([\wΑ-ω]+)/g, '$1<var class=dvar>$2</var>')
     .replace( !_ks.length ? /[]/
-      : new RegExp("([^$\\wΑ-ω]|^)(" + _ks.join("|") + ")(?![$\\wΑ-ω]|<\\/(?:em|strong|var)>)", "gm"),
+      : new RegExp("([^$.\\wΑ-ω]|^)(" + _ks.join("|") + ")(?![$\\wΑ-ω]|<\\/(?:em|strong|var)>)", "g"),
       "$1<var>$2</var>" )
-    .replace( !$ks.length ? /[]/
-      : new RegExp("([^$\\wΑ-ω]|^)(" + $ks.join("|") + ")(?![$\\wΑ-ω]|<\\/(?:em|strong|var)>)", "gm"),
-      "$1<var class=dvar>$2</var>" )
     .replace(/(<var\b.*?>[a-zΑ-ω]+)(\d+)(?=<\/var>)/gi, "$1<sub>$2</sub>")
     .replace(/\u2044|&frasl;/g, "<span class=frasl>$&</span>")
     .replace( /[\xb2\xb3\xb9\u2070-\u207e\u2080-\u208e]|&#x0*[Bb][239];|&#x20[78][0-9A-Ea-e];|&sup[123];/g,

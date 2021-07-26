@@ -66,11 +66,11 @@ __Surface Area/Volume of a Sphere__
           (sample minimum) from the greatest (sample maximum)
 
 __Mean__
- *x̅* = ^1^⁄~*n*~∑*x*~i~
+ *x̅* = ^1^⁄~*n*~∑*x~i~*
 
 __Standard Deviation__
  
- *s* = √   ∑(*x*~i~ - *x̅*)² ⟋ ⬚͏ *n* - 1  ⬚͏
+ *s* = √   ∑(*x~i~* - *x̅*)² ⟋ ⬚͏ *n* - 1  ⬚͏
  
 __Standard Error of the Mean__
  
@@ -144,7 +144,7 @@ __Temperature Coefficient Q~10~__
  *Q~10~* | the factor by which the reaction rate increases
        when the temperature is raised by ten degrees
 
- *Q~10~* = [  *k~2~* ⟋ *k~1~*  ]^¹⁰/~*T₂* - *T₁*~^
+ *Q~10~* = [  *k~2~* ⟋ *k~1~*  ]^¹⁰/~*T₂- T₁*~^
 
 __Primary Productivity Calculation__
 
