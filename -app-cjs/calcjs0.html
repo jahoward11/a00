@@ -340,7 +340,6 @@ let di2html, q2Bcopy,
   quad2B = document.querySelector('#cgrid>#quad2B'),
   plist = document.querySelector('#cgrid>#plist'),
   xstor = [],
-  mfiles = ["cjs-srvc1.mjs", "cjs-srvc2.mjs", "cjs-srvc3.mjs", "cjs-srvc4.mjs", "cjs-srvc5.mjs", "cjs-srvc6.mjs"],
   xsetinp = document.querySelector('#cmain #xsetinp'),
   xsetlist = document.querySelector('#cmain #xsetlist'),
   btnsave = document.querySelector('#cmain #btnsave'),
@@ -593,7 +592,8 @@ window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
   : /^!row1$/.test(qi) ? gridAdj(3)
   : /^!col1$/.test(qi) ? gridAdj(4) : 0 );
 if (/^http/.test(window.location.protocol)) {
-  Promise.all(mfiles.map(fnm => import("../../a00/-app-cjs/" + fnm)))
+  Promise.all( Array.from(Array(6).keys()).map(e => `cjs-srvc${e + 1}.mjs`)
+    .map(fnm => import("../../a00/-app-cjs/" + fnm)) )
   .then(rslts => rslts.forEach((r, i) => xstor.push([r.groupname || (1 + i), r])))
   .then(slistRegen)
   .catch(respShow);
