@@ -144,7 +144,7 @@ __Temperature Coefficient Q~10~__
  *Q~10~* | the factor by which the reaction rate increases
        when the temperature is raised by ten degrees
 
- *Q~10~* = [  *k~2~* ⟋ *k~1~*  ]^¹⁰/*~T~₂~- T~₁*^
+ *Q~10~* = [  *k~2~* ⟋ *k~1~*  ]^¹⁰/*~T~₂ ~- T~₁*^
 
 __Primary Productivity Calculation__
 
