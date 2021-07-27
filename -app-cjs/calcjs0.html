@@ -296,13 +296,14 @@ print and (resolution: 300dpi) and (width: 557px) { /* desktop Chrome, page:port
 </xmp>
 <h4 id="cheadg">JavaScript Calculator</h4>
 <pre id="preresp"></pre>
-<span id="mctnr"><select id="menulist" title="CalcJS Setup Menu">
+<span id="mctnr"><select id="menulist" title="CalcJS View Options">
   <option></option>
   <option>&nbsp;&pm; Lock/unlock screen zoom</option>
   <option>&hellip; Rename doc TITLE</option>
   <option>&nbsp;&vArr; Expand/collapse FINAL VALUES row</option>
   <option>&hArr; Expand/collapse RESULTS column</option>
-  <option>&ensp;&dtrif;&#x332; Generate a copy of CalcJS &amp; displayed data</option>
+  <option>&thinsp;&Delta; Preserve view settings in web address</option>
+  <option>&nbsp;&dtrif;&#x332; Generate a copy of CalcJS &amp; displayed data</option>
 </select></span>
 <div id="cgrid" class="cfield">
   <pre id="quad1A"></pre><pre id="quad1B"></pre>
@@ -326,6 +327,8 @@ print and (resolution: 300dpi) and (width: 557px) { /* desktop Chrome, page:port
 <script src="../../a00/-res-js/localforage.nopromises.min.js" type="text/javascript"></script>
 <script type="module">
 let di2html, q2Bcopy,
+  metavp = document.querySelector('#ecorender>meta[name=viewport]')
+    || document.querySelector('head>meta[name=viewport]'),
   dinput = document.querySelector('#cmain>#dinput'),
   cheadg = document.querySelector('#cmain>#cheadg'),
   preresp = document.querySelector('#cmain>#preresp'),
@@ -347,16 +350,27 @@ let di2html, q2Bcopy,
   respShow = resp => preresp.innerHTML
     += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor
       ? resp : JSON.stringify(resp, null, 2) ) + "\n\n",
+  zoomTog = zoff => metavp.setAttribute( 'content', "width=device-width, "
+    + (zoff || /maximum-/.test(metavp.content) ? "initial-scale=1" : "maximum-scale=1") ),
   titSave = () => {
     cheadg.setAttribute('contenteditable', false);
     (document.querySelector('#ecorender>title') || document.querySelector('head>title')).innerHTML
     = cheadg.innerHTML = cheadg.textContent.trim().substring(0, 32);
   },
+  gridAdj = idx => {
+    if (idx == 3) {
+      [quad1A, quad1B].forEach(e => e.classList.toggle("is-hidden"));
+      cgrid.classList.toggle("clpsrow1");
+    } else if (idx == 4) {
+      quad2A.classList.toggle("is-hidden");
+      cgrid.classList.toggle("xpndq2B");
+    }
+  },
   calcCopy = () => {
     let anew = document.createElement('a'),
       chtml = '<!DOCTYPE html>\n<html lang="en">\n'
       + (document.querySelector('#ecorender') || document.documentElement).innerHTML
-        .replace(/^\n|^#cmain \.cfield [^]+?\n(?=@media print {\n)|^ *xstor = \[\],[^]+?\n(?= *dinp2 = )|^ *!xsetlist .+\n|^ *},\n *slistRegen = [^]+?\n(?= *};\nif \(\/\^http)|^if \(\/\^http[^]+?{ slistRegen\(\); }\n/gm, "")
+        .replace(/^\n|^#cmain \.cfield [^]+?\n(?=@media print {\n)|^ *xstor = \[\],[^]+?\n(?= *dinp2 = )|^ *!xsetlist .+\n|^ *},\n *slistRegen = [^]+?\n(?= *};\nwindow\.location\.search)|^if \(\/\^http[^]+?{ slistRegen\(\); }\n/gm, "")
         .replace(/^(<xmp id="dinput".*?>)[^]*?(?=<\/xmp>)/m, (m, c1) => c1 + "\n" + dinp2.value + "\n")
         .replace(/^(<pre id="preresp">)[^]*?(?=<\/pre>)/m, "$1")
         .replace( /^(<div id="cgrid".*?>\n *<pre id="quad1A".*?>)[^]*?(<\/pre><pre id="quad1B".*?>)[^]*?(<\/pre>\n *<pre id="quad2A".*?>)[^]+?(?=\n<\/div>)/m,
@@ -369,27 +383,32 @@ let di2html, q2Bcopy,
     anew.click();
   },
   menuSel = evt => {
-    let mvp;
+    let qrys = [];
     setTimeout(() => {
       menulist.blur();
       menulist.selectedIndex = 0;
     }, 1);
     evt.preventDefault();
-    if (evt.target.selectedIndex === 1) {
-      mvp = document.querySelector('#ecorender>meta[name=viewport]')
-        || document.querySelector('head>meta[name=viewport]');
-      mvp.setAttribute( 'content', "width=device-width, "
-        + (/initial-/.test(mvp.content)? "maximum-scale=1" : "initial-scale=1") );
-    } else if (evt.target.selectedIndex === 2) {
+    if (evt.target.selectedIndex == 1) {
+      zoomTog();
+    } else if (evt.target.selectedIndex == 2) {
       cheadg.setAttribute('contenteditable', true);
       cheadg.focus();
-    } else if (evt.target.selectedIndex === 3) {
-      [quad1A, quad1B].forEach(e => e.classList.toggle("is-hidden"));
-      cgrid.classList.toggle("clpsrow1");
-    } else if (evt.target.selectedIndex === 4) {
-      quad2A.classList.toggle("is-hidden");
-      cgrid.classList.toggle("xpndq2B");
-    } else if (evt.target.selectedIndex === 5) {
+    } else if (/[34]/.test(evt.target.selectedIndex)) {
+      gridAdj(evt.target.selectedIndex);
+    } else if (evt.target.selectedIndex == 5 && !dinp2.value) {
+      /maximum-/.test(metavp.content) || qrys.push("!zlock");
+      !cgrid.classList.contains("clpsrow1") || qrys.push("!row1");
+      !cgrid.classList.contains("xpndq2B") || qrys.push("!col1");
+      cheadg.textContent === "JavaScript Calculator"
+      || qrys.push("title=" + window.encodeURIComponent(cheadg.textContent));
+      quad2B.click();
+      quad2B.innerHTML = "// To preserve view settings:"
+      + "\n// 1. Defocus ENTRY field"
+      + "\n   // (writes current settings into URL string & reloads page);"
+      + "\n// 2. Bookmark reloaded page (or, add to home screen)."
+      + "\n\n window.location.search = \"" + qrys.join("&") + "\"" ;
+    } else if (evt.target.selectedIndex == 6) {
       calcCopy();
     }
   },
@@ -512,7 +531,7 @@ let di2html, q2Bcopy,
       .replace(/<\/?\b[ \w,:;"#=-]+>|\n+$|^\n+/g, "")
       .replace(/&gt;/gi, ">").replace(/&lt;/gi, "<").replace(/&quot;/gi, "\"")
       .replace(/&amp;&amp;/gi, "&&").replace(/&amp;(?:amp;(?!Tab;)|)(?=#?\w+;)/gi, "&")
-      .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/\\t/g, "\t"));
+      .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/&amp;/g, "&").replace(/\\t/g, "\t"));
       xprsEval();
     }
   },
@@ -567,6 +586,16 @@ let di2html, q2Bcopy,
     !optg || optg !== "USERdata/" || !window.localforage
     || window.localforage.removeItem(xsetlist.value, slistRegen);
   };
+window.location.search.replace(/^\?/, "").split("&").forEach(qi => {
+  if (/^title=/.test(qi)) {
+    cheadg.textContent = window.decodeURIComponent(qi.replace(/^title=/, ""));
+    titSave(); 
+  } else {
+    !/^!zlock$/.test(qi) || zoomTog(1);
+    !/^!row1$/.test(qi) || gridAdj(3);
+    !/^!col1$/.test(qi) || gridAdj(4);
+  }
+});
 if (/^http/.test(window.location.protocol)) {
   Promise.all(mfiles.map(fnm => import("../../a00/-app-cjs/" + fnm)))
   .then(rslts => rslts.forEach((r, i) => xstor.push([r.groupname || (1 + i), r])))
