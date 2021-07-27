@@ -1,6 +1,6 @@
 // Service Worker
 
-const cacheName = "calcjs-v00.10",
+const cacheName = "calcjs-v00.11",
   cacheKeeplist = [cacheName],
   appShellFiles = [
     "../-app-cjs/calcjs0.html",
@@ -9,6 +9,7 @@ const cacheName = "calcjs-v00.10",
     "../-app-cjs/cjs-srvc3.mjs",
     "../-app-cjs/cjs-srvc4.mjs",
     "../-app-cjs/cjs-srvc5.mjs",
+    "../-app-cjs/cjs-srvc6.mjs",
     "../-res-js/localforage.nopromises.min.js"
   ],
   contentToCache = [],
