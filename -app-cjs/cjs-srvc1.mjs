@@ -60,7 +60,7 @@ const calcdemo1 = `
  $z1 = Math.pow(z0, $RndmExpn)
 
 
-// __JavaScript Math Object__
+// __JavaScript Math Object__\\f
 
 // __Property	Description__
  Math.E		// Returns Euler's number (approx. 2.718)
@@ -103,7 +103,7 @@ const calcdemo1 = `
  Math.random()	// Returns a random number between 0 and 1
 
 
-// __JavaScript Number Object__
+// __JavaScript Number Object__\\f
 
 // __Property	Description__
  z.constructor	// Returns the function that created JavaScript's Number prototype
