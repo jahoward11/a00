@@ -326,7 +326,7 @@ print and (resolution: 300dpi) and (width: 557px) { /* desktop Chrome, page:port
 </script>
 <script src="../../a00/-res-js/localforage.nopromises.min.js" type="text/javascript"></script>
 <script type="module">
-let di2html, q2Bcopy,
+let di2html, q2Bcopy, dload = "", cmods = [],
   metavp = document.querySelector('#ecorender>meta[name=viewport]')
     || document.querySelector('head>meta[name=viewport]'),
   dinput = document.querySelector('#cmain>#dinput'),
@@ -369,7 +369,7 @@ let di2html, q2Bcopy,
     let anew = document.createElement('a'),
       chtml = '<!DOCTYPE html>\n<html lang="en">\n'
       + (document.querySelector('#ecorender') || document.documentElement).innerHTML
-        .replace(/^\n|^#cmain \.cfield [^]+?\n(?=@media print {\n)|^ *xstor = \[\],[^]+?\n(?= *dinp2 = )|^ *!xsetlist .+\n|^ *},\n *slistRegen = [^]+?\n(?= *};\nwindow\.location\.search)|^if \(\/\^http[^]+?{ slistRegen\(\); }\n/gm, "")
+        .replace(/^\n|^#cmain \.cfield [^]+?\n(?=@media print {\n)|^ *xstor = \[\],[^]+?\n(?= *dinp2 = )|^ *!xsetlist .+\n|,\n *slistRegen = [^]+?(?=;\nwindow\.location\.search)|^if \(\/\^http[^]+?\n}\n/gm, "")
         .replace(/^(<xmp id="dinput".*?>)[^]*?(?=<\/xmp>)/m, (m, c1) => c1 + "\n" + dinp2.value + "\n")
         .replace(/^(<pre id="preresp">)[^]*?(?=<\/pre>)/m, "$1")
         .replace( /^(<div id="cgrid".*?>\n *<pre id="quad1A".*?>)[^]*?(<\/pre><pre id="quad1B".*?>)[^]*?(<\/pre>\n *<pre id="quad2A".*?>)[^]+?(?=\n<\/div>)/m,
@@ -484,6 +484,9 @@ let di2html, q2Bcopy,
     .replace( /(.*)(?:\\f|&#0*x[Cc];)(<\/span> |)$|^(.*<span class=dnote>|)(?:\\f|&#0*x[Cc];)/gm,
       "<div class=pagebb></div>$1$2$3" );
   },
+  initLoad = () => /^https?:\/\/.+$/.test(dload)
+    && window.fetch(dload, { credentials: 'omit' })
+    .then(resp => (dinp2.value = resp.text()) && xprsEval()).catch(respShow),
   dinpRegen = evt => {
     let eobj, rnge, seln;
     if ( (eobj = (evt || {}).target)
@@ -549,9 +552,11 @@ let di2html, q2Bcopy,
       xprsEval();
     }
   }),
-  xsetLoad = evt => {
+  xsetLoad = (evt = { target: "" }) => {
     let optg;
-    if (evt.target.id === "xsetlist" && !xsetlist.value) {
+    if (!evt.target.id && /^https?:\/\/.+$/.test(dload)) {
+      return initLoad();
+    } else if (evt.target.id === "xsetlist" && !xsetlist.value) {
       xsetlist.value = xsetinp.value = dinp2.value = "";
       return xprsEval();
     } else if (evt.target.id === "xsetinp" && dinp2.value) {
@@ -587,17 +592,23 @@ let di2html, q2Bcopy,
     || window.localforage.removeItem(xsetlist.value, slistRegen);
   };
 window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
-  /^title=/.test(qi) ? titSave(0, window.decodeURIComponent(qi.replace(/^title=/, "")))
+  /^cmods=/.test(qi) ? (cmods = window.decodeURIComponent(qi.replace(/^cmods=/, "")).split(/[ ,]+/))
+  : /^dload=/.test(qi) ? (dload = window.decodeURIComponent(qi.replace(/^dload=/, "")))
+  : /^title=/.test(qi) ? titSave(0, window.decodeURIComponent(qi.replace(/^title=/, "")))
   : /^!zlock$/.test(qi) ? zoomTog(1)
   : /^!row1$/.test(qi) ? gridAdj(3)
   : /^!col1$/.test(qi) ? gridAdj(4) : 0 );
 if (/^http/.test(window.location.protocol)) {
-  Promise.all( Array.from(Array(6).keys()).map(e => `cjs-srvc${e + 1}.mjs`)
-    .map(fnm => import("../../a00/-app-cjs/" + fnm)) )
+  Promise.all( Array.from(Array(6).keys()).map(e => `cjs-srvc${e + 1}.mjs`).concat(cmods)
+    .map(fnm => import(/\//.test(fnm) ? fnm : "../../a00/-app-cjs/" + fnm)) )
   .then(rslts => rslts.forEach((r, i) => xstor.push([r.groupname || (1 + i), r])))
-  .then(slistRegen)
+  .then(() => slistRegen(dload))
+  .then(() => !dload || xsetLoad())
   .catch(respShow);
-} else { slistRegen(); }
+} else {
+  slistRegen(dload);
+  !dload || xsetLoad();
+}
 plist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
   .map((e, i) => `<li>Math.${e}${/^[A-Z]/.test(e) ? "" : "()"}</li>`).join("\n    ")
   + "\n    " + Object.getOwnPropertyNames(Number)
@@ -612,6 +623,7 @@ plist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
     "- - -", "¦ &brvbar;", "¨ &uml;", "¯ &macr;", "° &deg;", "± &pm;", "² &sup2;", "³ &sup3;", "´ &acute;", "µ &micro;", "¹ &sup1;", "¼ &frac14;", "½ &frac12;", "¾ &frac34;", "× &times;", "÷ &divide;", "ƒ &fnof;", "˜ &tilde;", "˷ (low tilde &#x2f7;)", " ̂ (combining circumflex &#x302;)", " ̃ (combining tilde &#x303;)", " ̄ (combining macron &#x304;)", " ̅ (combining overline &#x305;)", " ̲ (combining low line &#x332;)", "― &horbar;", "‖ &Vert;", "• &bull;", "‣ (triangular bullet &#x2023;)", "… &hellip;", "‰ &permil;", "‱ &pertenk;", "′ &prime;", "″ &Prime;", "‴ &tprime;", "‵ &backprime;", "‾ &oline;", "⁄ &frasl;", "⁗ &qprime;", "⁰ (superscript 0 &#x2070;)", "⁴ (superscript 4 &#x2074;)", "⁵ (superscript 5 &#x2075;)", "⁶ (superscript 6 &#x2076;)", "⁷ (superscript 7 &#x2077;)", "⁸ (superscript 8 &#x2078;)", "⁹ (superscript 9 &#x2079;)", "⁺ (superscript '+' &#x207a;)", "⁻ (superscript '-' &#x207b;)", "⁼ (superscript '=' &#x207c;)", "⁽ (superscript '(' &#x207d;)", "⁾ (superscript ')' &#x207e;)", "₀ (subscript 0 &#x2080;)", "₁ (subscript 1 &#x2081;)", "₂ (subscript 2 &#x2082;)", "₃ (subscript 3 &#x2083;)", "₄ (subscript 4 &#x2084;)", "₅ (subscript 5 &#x2085;)", "₆ (subscript 6 &#x2086;)", "₇ (subscript 7 &#x2087;)", "₈ (subscript 8 &#x2088;)", "₉ (subscript 9 &#x2089;)", "₊ (subscript '+' &#x208a;)", "₋ (subscript '-' &#x208b;)", "₌ (subscript '=' &#x208c;)", "₍ (subscript '(' &#x208d;)", "₎ (subscript ')' &#x208e;)", "ℂ &Copf; (complexes)", "ℍ &Hopf; (quaternions)", "ℕ &Nopf; (naturals)", "№ &numero;", "ℙ &Popf; (primes)", "ℚ &Qopf; (rationals)", "ℝ &Ropf; (reals)", "ℤ &Zopf; (integers)", "⅐ (frac 1 7th &#x2150;)", "⅑ (frac 1 9th &#x2151;)", "⅒ (frac 1 10th &#x2152;)", "⅓ &frac13;", "⅔ &frac23;", "⅕ &frac15;", "⅖ &frac25;", "⅗ &frac35;", "⅘ &frac45;", "⅙ &frac16;", "⅚ &frac56;", "⅛ &frac18;", "⅜ &frac38;", "⅝ &frac58;", "⅞ &frac78;", "⅟ (numerator 1 &#x215f;)", "← &larr;", "↑ &uarr;", "→ &rarr;", "↓ &darr;", "↔ &harr;", "⇐ &lArr;", "⇑ &uArr;", "⇒ &rArr;", "⇓ &dArr;", "⇔ &hArr;",
     "∀ &forall;", "∂ &part;", "∃ &exist;", "∄ &nexist;", "∅ &empty;", "∇ &nabla;", "∈ &in;", "∉ &notin;", "∋ &ni;", "∌ &notni;", "∏ &prod;", "∑ &sum;", "− &minus;", "∕ (division slash &#x2215;)", "∖ &setmn;", "∗ &lowast;", "√ &radic;", "∝ &prop;", "∞ &infin;", "∟ &angrt;", "∠ &ang;", "∣ &mid;", "∤ &nmid;", "∥ &par;", "∦ &npar;", "∧ &and;", "∨ &or;", "∩ &cap;", "∪ &cup;", "∫ &int;", "∴ &there4;", "∵ &becaus;", "∶ &ratio;", "∷ &Colon;", "∼ &sim;", "≁ &nsim;", "≅ &cong;", "≈ &ap;", "≉ &nap;", "≠ &ne;", "≡ &equiv;", "≢ &nequiv;", "≤ &le;", "≥ &ge;", "≪ &ll;", "≫ &gg;", "⊂ &sub;", "⊃ &sup;", "⊄ &nsub;", "⊅ &nsup;", "⊆ &sube;", "⊇ &supe;", "⊈ &nsube;", "⊉ &nsupe;", "⊊ &subne;", "⊋ &supne;", "⊕ &oplus;", "⊖ &ominus;", "⊗ &otimes;", "⊘ &osol;", "⊙ &odot;", "⊚ &ocir;", "⊛ &oast;", "⊝ &odash;", "⊞ &plusb;", "⊟ &minusb;", "⊠ &timesb;", "⊡ &sdotb;", "⊥ &bot;", "⋅ &sdot;", "✓ &check;", "✕ (multiplication X &#x2715;)", "✗ &cross;", "⟋ (math diagonal &#x27cb;)", "⟌ (long division &#x27cc;)", "⟨ &lang;", "⟩ &rang;", "⟪ &Lang;", "⟫ &Rang;", "⨁ &xoplus;", "⨂ &xotime;" ]
   .map(e => `<li>${e.replace(/&(?=#?\w+;)/g, "&amp;")}</li>`).join("\n    ") + "\n  ";
+window.localforage || initLoad();
 (document.querySelector('#ecorender') || document.body)
 .addEventListener('click', dinpRegen);
 cheadg.addEventListener('blur', titSave);
