@@ -423,7 +423,7 @@ let di2html, q2Bcopy, dload = "", cmods = [],
   xprsEval = () => {
     !preresp.innerHTML || (preresp.innerHTML = null);
     let $ = {}, _ = {}, _ks = [], rslt,
-      xprsns = dinp2.value.replace(/<!--[^]*?-->/g, "")
+      xprsns = (dinp2.value || "").replace(/<!--[^]*?-->/g, "")
         .replace(/&Tab;|&#x0*9;/g, "\t").replace(/(?:[^$.\wΑ-ω]|^)\$(?=[$_a-zΑ-ω])/gi, "$&.")
         .replace(/^\/\*\n?([^]*?)\n?\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
         .split("\n"),
@@ -485,8 +485,8 @@ let di2html, q2Bcopy, dload = "", cmods = [],
       "<div class=pagebb></div>$1$2$3" );
   },
   initLoad = () => /^https?:\/\/.+$/.test(dload)
-    && window.fetch(dload, { credentials: 'omit' })
-    .then(resp => (dinp2.value = resp.text()) && xprsEval()).catch(respShow),
+    && window.fetch(dload, { credentials: 'omit' }).then(resp => resp.text())
+    .then(val => (dinp2.value = val) && xprsEval()).catch(respShow),
   dinpRegen = evt => {
     let eobj, rnge, seln;
     if ( (eobj = (evt || {}).target)
@@ -505,7 +505,7 @@ let di2html, q2Bcopy, dload = "", cmods = [],
         rnge = rnge < 0.15 ? 0 : rnge > 0.85 ? 1 : rnge;
         plist.className = "";
         q2Bcopy = quad2B.innerHTML;
-        quad2B.innerHTML = dinp2.value
+        quad2B.innerHTML = (dinp2.value || "")
         .replace(/&(?=#?\w+;)/g, "&amp;").replace(/&(?=amp;[gl]t;)/gi, "&amp;")
         .replace(/<(?=\/?\w|!--)/g, "&lt;") + (!dinp2.value ? "" : "\n<br>");
         !(di2html = quad2B.innerHTML)
