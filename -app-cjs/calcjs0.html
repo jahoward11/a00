@@ -326,7 +326,7 @@ print and (resolution: 300dpi) and (width: 557px) { /* desktop Chrome, page:port
 </script>
 <script src="../../a00/-res-js/localforage.nopromises.min.js" type="text/javascript"></script>
 <script type="module">
-let di2html, q2Bcopy, dload = "", cmods = [],
+let di2html, q2Bcopy, dload = "", cmods = [], xstor = [],
   metavp = document.querySelector('#ecorender>meta[name=viewport]')
     || document.querySelector('head>meta[name=viewport]'),
   dinput = document.querySelector('#cmain>#dinput'),
@@ -339,11 +339,10 @@ let di2html, q2Bcopy, dload = "", cmods = [],
   quad2A = document.querySelector('#cgrid>#quad2A'),
   quad2B = document.querySelector('#cgrid>#quad2B'),
   plist = document.querySelector('#cgrid>#plist'),
-  xstor = [],
-  xsetinp = document.querySelector('#cmain #xsetinp'),
-  xsetlist = document.querySelector('#cmain #xsetlist'),
-  btnsave = document.querySelector('#cmain #btnsave'),
-  btndel = document.querySelector('#cmain #btndel'),
+  xsetinp = document.querySelector('#cmain #xsetinp') || document.createElement('i'),
+  xsetlist = document.querySelector('#cmain #xsetlist') || xsetinp,
+  btnsave = document.querySelector('#cmain #btnsave') || xsetinp,
+  btndel = document.querySelector('#cmain #btndel') || xsetinp,
   dinp2 = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
     || { value: dinput.innerHTML.replace(/\n+$|^\n+/g, "") },
   respShow = resp => preresp.innerHTML
@@ -369,7 +368,7 @@ let di2html, q2Bcopy, dload = "", cmods = [],
     let anew = document.createElement('a'),
       chtml = '<!DOCTYPE html>\n<html lang="en">\n'
       + (document.querySelector('#ecorender') || document.documentElement).innerHTML
-        .replace(/^\n|^#cmain \.cfield [^]+?\n(?=@media print {\n)|^ *xstor = \[\],[^]+?\n(?= *dinp2 = )|^ *!xsetlist .+\n|,\n *slistRegen = [^]+?(?=;\nwindow\.location\.search)|^if \(\/\^http[^]+?\n}\n/gm, "")
+        .replace(/^\n|^#cmain \.cfield [^]+?\n(?=@media print {\n)|^ *!xsetlist .+\n|,\n *slistRegen = [^]+?(?=;\nwindow\.location\.search)|^if \(\/\^http[^]+?\n}\n/gm, "")
         .replace(/^(<xmp id="dinput".*?>)[^]*?(?=<\/xmp>)/m, (m, c1) => c1 + "\n" + dinp2.value + "\n")
         .replace(/^(<pre id="preresp">)[^]*?(?=<\/pre>)/m, "$1")
         .replace( /^(<div id="cgrid".*?>\n *<pre id="quad1A".*?>)[^]*?(<\/pre><pre id="quad1B".*?>)[^]*?(<\/pre>\n *<pre id="quad2A".*?>)[^]+?(?=\n<\/div>)/m,
@@ -395,13 +394,15 @@ let di2html, q2Bcopy, dload = "", cmods = [],
       cheadg.focus();
     } else if (/[34]/.test(evt.target.selectedIndex)) {
       gridAdj(evt.target.selectedIndex);
-    } else if (evt.target.selectedIndex == 5 && !dinp2.value) {
+    } else if (evt.target.selectedIndex == 5 && (xsetlist.value || !dinp2.value)) {
       /maximum-/.test(metavp.content) || qrys.push("!zlock");
       !cgrid.classList.contains("clpsrow1") || qrys.push("!row1");
       !cgrid.classList.contains("xpndq2B") || qrys.push("!col1");
       cheadg.textContent === "JavaScript Calculator"
       || qrys.push("title=" + window.encodeURIComponent(cheadg.textContent));
+      !xsetlist.value || qrys.push("dload=" + window.encodeURIComponent(xsetlist.value));
       quad2B.click();
+      xsetinp.value = quad2A.innerHTML = quad1B.innerHTML = quad1A.innerHTML = "";
       quad2B.innerHTML = "// To preserve view settings:"
       + "\n// 1. De-focus *ENTRY* field"
       + "\n   // (writes current settings into URL string & reloads page);"
