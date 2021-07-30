@@ -122,11 +122,11 @@ body {
 #cgrid .dnote {
   color: LightSteelBlue;
 }
-#cgrid .dvsr {
+#cgrid .dvnd {
   position: absolute;
   margin: -8px 0 0 0;
 }
-#cgrid .dvnd {
+#cgrid .dvsr {
   position: absolute;
   margin: 8px 0 0 0;
   border-top: 1px solid;
@@ -465,12 +465,12 @@ let di2html, q2Bcopy, dload = "", cmods = [],
     .replace( /^[\t ]*(<span class=dnote>)(<\/span>)( *\n[\t ]*)\1(.*)(?=\2 *\n[\t ]*\1\2 *$)/gim,
       (m, c1, c2, c3, c4) => c1 + c2 + c3 + c1 + c4
       .replace( /(?! )((?:[^\x09&=[⇐⇒⇔∏∑√∫]|[[⇐⇒⇔∏∑√∫](?!  )|&(?!Tab;|equals;|hArr;  |int;  |lArr;  |lsqb;  |prod;  |rArr;  |radic;  |sum;  ))*?) +(?:\xf7|\u27cb|&divide;|&#x0*[Ff]7;|&#x27[Cc][Bb];) +(.*?)(?= *\x09| *=| *\[  |  +\]| *&Tab;| *&equals;| *&lsqb;  |  +&rsqb;| *(?:[⇐⇒⇔∏∑√∫]|&hArr;|&int;|&lArr;|&prod;|&rArr;|&radic;|&sum;)(\[|&lsqb;|)  | *$)/g,
-        "<span class=dvsr>$1</span><span class=dvnd>$2</span>" ))
-    .replace( /([∏∑√∫]|&int;|&prod;|&radic;|&sum;|(?=\[|&lsqb;))(\[|&lsqb;|) ( +)|  (\]|&rsqb;)((?! ).*?(?=<span class=dvsr>|<\/span>)| ?)/g,
+        "<span class=dvnd>$1</span><span class=dvsr>$2</span>" ))
+    .replace( /([∏∑√∫]|&int;|&prod;|&radic;|&sum;|(?=\[|&lsqb;))(\[|&lsqb;|) ( +)|  (\]|&rsqb;)((?! ).*?(?=<span class=dvnd>|<\/span>)| ?)/g,
       (m, c1, c2, c3, c4, c5) => (!c4 ? "" : "  ")
       + "<span class=fbig>" + (c4 || c1 + c2) + "</span>"
       + (c4 ? " " : c3 + (!c1 || !c2 ? "" : " "))
-      + (!c5 ? "" : "<span class=dvsr>" + c5 + "</span>") )
+      + (!c5 ? "" : "<span class=dvnd>" + c5 + "</span>") )
     .replace(/([^$.\wΑ-ω]|^)\$\.([\wΑ-ω]+)/g, '$1<var class=dvar>$2</var>')
     .replace( !_ks.length ? /[]/
       : new RegExp("([^$.\\wΑ-ω]|^)(" + _ks.join("|") + ")(?![$\\wΑ-ω]|<\\/(?:em|strong|var)>)", "g"),
