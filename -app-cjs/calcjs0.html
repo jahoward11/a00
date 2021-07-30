@@ -484,9 +484,11 @@ let di2html, q2Bcopy, dload = "", cmods = [],
     .replace( /(.*)(?:\\f|&#0*x[Cc];)(<\/span> |)$|^(.*<span class=dnote>|)(?:\\f|&#0*x[Cc];)/gm,
       "<div class=pagebb></div>$1$2$3" );
   },
-  initLoad = () => /^https?:\/\/.+$/.test(dload)
-    && window.fetch(dload, { credentials: 'omit' }).then(resp => resp.text())
-    .then(val => (dinp2.value = val) && xprsEval()).catch(respShow),
+  initLoad = () => /^https?:\/\/.+$/.test(dload) && window.fetch(dload, { credentials: 'omit' })
+    .then( resp => /\.json$|^https?:\/\/\w[\w.:-]*\/\w[\w-]*\/\w[\w!.*+~-]*$/.test(dload)
+      ? resp.json() : resp.text() )
+    .then(val => dinp2.value = val.content || (typeof val !== 'object' ? val : "// " + JSON.stringify(val)))
+    .then(xprsEval).catch(respShow),
   dinpRegen = evt => {
     let eobj, rnge, seln;
     if ( (eobj = (evt || {}).target)
