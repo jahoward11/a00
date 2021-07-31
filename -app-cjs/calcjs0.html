@@ -423,6 +423,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, xstor = [],
     evt.preventDefault();
   },
   xprsEval = () => {
+    !rset ? rset++ : (preresp.innerHTML = "");
     let $ = {}, _ = {}, _ks = [], rslt,
       xprsns = (dinp2.value || "")
         .replace(/^\/\*\n?([^]*?)\n?\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
@@ -446,7 +447,6 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, xstor = [],
         } catch (err) { respShow(err); return err; }
       }),
       $ks = Object.keys($);
-    !rset ? rset++ : (preresp.innerHTML = "");
     cgrid.style.setProperty("--row1ht", $ks.length < 4 ? "-56px" : -($ks.length * 16 + 4) + "px");
     quad1A.innerHTML = Object.values($).join("\n").replace(/\n$/, "\n&nbsp;")
       + '<span id="dfinal">$-variable<br />FINAL VALUES</span>';
@@ -573,7 +573,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, xstor = [],
       .then(xprsEval)
       .catch(respShow) );
   },
-  slistRegen = (seln, init) => !window.localforage
+  slistRegen = seln => !window.localforage
   || window.localforage.keys((err, lfkeys) => {
     if (err) { respShow(err);
     } else {
@@ -584,7 +584,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, xstor = [],
             .map(e => "<option>" + e + "</option>").join("\n        ")
           + "\n      </optgroup>" ).join("") + "\n";
       xsetlist.value = seln || "";
-      !init ? xprsEval() : xsetLoad();
+      rset || !dload ? xprsEval() : xsetLoad();
     }
   }),
   xsetSave = () => {
@@ -611,10 +611,10 @@ if (/^http/.test(window.location.protocol)) {
     .map(fnm => import(/\//.test(fnm) ? fnm : "./" + fnm).catch(respShow)) )
   .then( rslts => rslts.forEach( (r, i) => typeof r !== 'object'
     || xstor.push([r.groupname || (1 + i), r]) ))
-  .then(() => slistRegen(dload, dload))
+  .then(() => slistRegen(dload))
   .catch(respShow);
 } else {
-  slistRegen(dload, dload);
+  slistRegen(dload);
 }
 document.body.contains(xsetinp) || initLoad();
 plist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
