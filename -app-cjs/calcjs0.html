@@ -615,7 +615,7 @@ if (/^http/.test(window.location.protocol)) {
 } else {
   slistRegen(dload, dload);
 }
-window.localforage || initLoad();
+document.body.contains(xsetinp) || initLoad();
 plist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
   .map((e, i) => `<li>Math.${e}${/^[A-Z]/.test(e) ? "" : "()"}</li>`).join("\n    ")
   + "\n    " + Object.getOwnPropertyNames(Number)
