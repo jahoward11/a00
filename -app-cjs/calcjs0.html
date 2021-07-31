@@ -608,7 +608,7 @@ window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
 if (/^http/.test(window.location.protocol)) {
   Promise.all( (cmods.some(e => /^\d+$/.test(e)) ? cmods : [1,2,3,4,5,6].concat(cmods))
     .map(e => !/^\d+$/.test(e) ? e : `cjs-srvc${e}.mjs`)
-    .map(fnm => import(/\//.test(fnm) ? fnm : "./" + fnm)) )
+    .map(fnm => import(/\//.test(fnm) ? fnm : "./" + fnm).catch(respShow)) )
   .then(rslts => rslts.forEach((r, i) => xstor.push([r.groupname || (1 + i), r])))
   .then(() => slistRegen(dload, dload))
   .catch(respShow);
