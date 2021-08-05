@@ -52,6 +52,7 @@ __Statistical Analysis Tools__
 
  Φ_z = 1 - φ_z * (b1*t + b2*t**2 + b3*t**3 + b4*t**4 + b5*t**5)
 
+
 /*
 *The 68-95-99.7 (empirical) rule, or the 3-sigma rule*
 
