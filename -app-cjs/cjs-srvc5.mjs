@@ -16,7 +16,6 @@ __Statistical Analysis Tools__
  *r*  =  ⬚͏ 1 ⟋ *n* - 1	     ∑ *z~xi~ z~yi~*  =  ⬚͏ 1 ⟋ *n* - 1	∑   [  *x~i~* - *x̅* ⟋ ⬚͏ *s~x~* ⬚͏      ] [  *y~i~* - *y̅* ⟋ ⬚͏ *s~y~* ⬚͏      ] 
 
 
-/*
 *Normal Distribution, Probability Density Function (PDF)*
 
  *p*(*x*)   =   ⬚͏1 ⟋ *σ*√2*π*	 exp[  -(*x - μ*)² ⟋ ⬚͏  2*σ*²  ⬚͏	      ] 
