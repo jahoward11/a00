@@ -128,7 +128,7 @@ __Exponential Growth__
 
 __Logistic Growth__
 
- *dN* ⟋ *dt*   = *r~max~N*[  K - N ⟋ ⬚͏ K ⬚͏     ]
+ *dN* ⟋ *dt*   = *r~max~N*[  *K - N* ⟋ ⬚͏ *K* ⬚͏     ]
 
 __Simpson's Diversity Index__
  *n* | total number of organisms of a particular species

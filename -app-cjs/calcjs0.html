@@ -464,6 +464,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, xstor = [],
         .replace(/\b__(.+?)__(?!_)/g, "<strong>$1</strong>")
         .replace(/\^(?=\S)(.*?\S)\^/g, "<sup>$1</sup>")
         .replace(/~(?=\S)(.*?\S)~/g, "<sub>$1</sub>")
+        .replace(/([^$.\\wΑ-Ͽ]|^)(a)(?= )/gi, "$1<z>$2</z>")
         .replace(/\u2b1a\u034f/g, "&nbsp;")
         .replace(/\u250a\u034f/g, "&zwj;")
         + "</span> " )).join("\n")
@@ -478,7 +479,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, xstor = [],
       + (!c5 ? "" : "<span class=dvnd>" + c5 + "</span>") )
     .replace(/([^$.\wΑ-Ͽ]|^)\$\.([\wΑ-Ͽ]+)/g, '$1<var class=dvar>$2</var>')
     .replace( !_ks.length ? /[]/
-      : new RegExp("([^$.\\wΑ-Ͽ]|^)(" + _ks.join("|") + ")(?![$\\wΑ-Ͽ\u0300-\u036f\u20d0-\u20ff]|[^\n<]*<\\/(?:em|strong|var)>)", "g"),
+      : new RegExp("([^$.\\wΑ-Ͽ]|^)(" + _ks.join("|") + ")(?![$\\wΑ-Ͽ\u0300-\u036f\u20d0-\u20ff]|[^\n<]*<\\/(?:em|strong|var|z)>)", "g"),
       "$1<var>$2</var>" )
     .replace(/(<var\b.*?>[a-zΑ-Ͽ]+)(\d+)(?=<\/var>)/gi, "$1<sub>$2</sub>")
     .replace(/\u2044|&frasl;/g, "<span class=frasl>$&</span>")
