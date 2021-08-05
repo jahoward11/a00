@@ -29,16 +29,20 @@ __Statistical Analysis Tools__
  μ = 0
  σ = 1
 
- x = 1
- z = (x - μ) / σ
+ x1 = 1
+ z1 = (x1 - μ) / σ	// ensure  z1 ≥ 0
 
- φ_z = 1 / (2 * Math.PI * Math.exp(z**2))**0.5
+ x2 = 2
+ z2 = (x2 - μ) / σ	// ensure  z2 ≥ z1
+
+ φ_x1 = 1 / (2 * Math.PI * Math.exp(z1**2))**0.5
+ φ_x2 = 1 / (2 * Math.PI * Math.exp(z2**2))**0.5
 
 
 /*
 *Normal Distribution, Cumulative Density Function (CDF)*
 
- *Φ*(*z*)  =  ∫ *φ*(*z*) *dz*	CDF for a standard n.d.
+ *Φ*(*x*)  =  ∫ *φ*(*x*) *dx*	CDF for a standard n.d.
 
 */
  b0 = 0.2316419
@@ -48,9 +52,13 @@ __Statistical Analysis Tools__
  b4 = -1.821255978
  b5 = 1.330274429
 
- t = 1 / (1 + b0 * z)
+ t1 = 1 / (1 + b0 * z1)
+ t2 = 1 / (1 + b0 * z2)
 
- Φ_z = 1 - φ_z * (b1*t + b2*t**2 + b3*t**3 + b4*t**4 + b5*t**5)
+ $Φ_x1 = 1 - φ_x1 * (b1*t1 + b2*t1**2 + b3*t1**3 + b4*t1**4 + b5*t1**5)
+ $Φ_x2 = 1 - φ_x2 * (b1*t2 + b2*t2**2 + b3*t2**3 + b4*t2**4 + b5*t2**5)
+
+ $P1to2 = $Φ_x2 - $Φ_x1	// probability interval between x1 and x2
 
 
 /*
@@ -61,7 +69,8 @@ __Statistical Analysis Tools__
  99.73% | probability of a position w/i &pm;3 std. devs.
 
 */
- 2 * Φ_z - 1	// coverage, area between *μ - nσ* and *μ + nσ*
+ 2 * $Φ_x1 - 1	// coverage, area between *μ - nσ* and *μ + nσ*
+ 2 * $Φ_x2 - 1
 //`;
 
 export {
