@@ -607,7 +607,7 @@ window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
   : /^dload=./.test(qi) ? (dload = window.decodeURIComponent(qi.replace(/^dload=/, "")))
   : /^vinits=./.test(qi) ? ( vinits = window.decodeURIComponent(qi.replace(/^vinits=/, ""))
     .split(/[ ,]+/).map( e => (e = /(.+:)(.*)/.exec(e))
-      && [new RegExp("^( *" + e[1].replace(/:/g, " *= *") + ")\S*"), "$1" + e[2]] ))
+      && [new RegExp("^( *" + e[1].replace(/:/g, " *= *") + ")\\S*", "m"), "$1" + e[2]] ))
   : /^title=/.test(qi) ? titSave(0, window.decodeURIComponent(qi.replace(/^title=/, "")))
   : /^!zlock$/.test(qi) ? zoomTog(1)
   : /^!row1$/.test(qi) ? gridAdj(3)
