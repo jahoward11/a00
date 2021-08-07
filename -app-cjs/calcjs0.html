@@ -303,8 +303,8 @@ print and (min-width: 558px) and (max-width: 2048px) {
   <option>&hellip; Rename doc TITLE</option>
   <option>&nbsp;&vArr; Expand/collapse FINAL VALUES row</option>
   <option>&hArr; Expand/collapse RESULTS column</option>
-  <option>&thinsp;&Delta; Preserve view settings to URL (then share it)</option>
-  <option>&nbsp;&dtrif;&#x332; Generate a copy of CalcJS &amp; displayed data</option>
+  <option>&thinsp;&Delta; Keep view settings (for re-use &amp; for sharing)</option>
+  <option>&nbsp;&dtrif;&#x332; Generate standalone copy of displayed data</option>
 </select></span>
 <div id="cgrid" class="cfield">
   <pre id="quad1A"></pre><pre id="quad1B"></pre>
@@ -365,6 +365,37 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
       cgrid.classList.toggle("xpndq2B");
     }
   },
+  viewSet = () => {
+    let qrys = [];
+    /maximum-/.test(metavp.content) || qrys.push("!zlock");
+    !cgrid.classList.contains("clpsrow1") || qrys.push("!row1");
+    !cgrid.classList.contains("xpndq2B") || qrys.push("!col1");
+    cheadg.textContent === "JavaScript Calculator"
+    || qrys.push("title=" + window.encodeURIComponent(cheadg.textContent));
+    !xsetlist.value || qrys.push("dload=" + window.encodeURIComponent(xsetlist.value));
+    quad2B.click();
+    xsetinp.value = quad2A.innerHTML = quad1B.innerHTML = quad1A.innerHTML = "";
+    quad2B.innerHTML = "// __To preserve view settings to URL:__"
+    + "\n// 1. Edit &amp; un-comment settings, below --"
+    + "\n   // combining desired parts into a one-line expression."
+    + "\n// 2. De-focus *ENTRY* field."
+    + "\n   // (Alert: This action writes current/edited settings"
+    + "\n   // into URL string &amp; reloads page.)"
+    + "\n// 3. Bookmark reloaded page -- or, add to home screen."
+    + "\n// 4. Optionally, copy new link and paste in text message to share."
+    + "\n\n  // !zlock | unlock screen zoom"
+    + "\n  // !row1  | collapse *FINAL VALUES* row"
+    + "\n  // !col1  | collapse *RESULTS* column"
+    + "\n  // title= | rename doc *TITLE*"
+    + "\n  // cmods= | download certain/additional, pre-made data modules"
+    + "\n  // dload= | load specified data set into *ENTRY* field"
+    + "\n  // val0s= | re-assign specified, initial values of pre-loaded data set\n\n// "
+    + (dinp2.type ? "window_location_search" : "window.location.search") + " = \"" + qrys.join("&")
+    + "\"\n // + \"" + (!qrys.length ? "" : "&") + "cmods=\" + encodeURIComponent(\"3,5,prj42.mjs\")"
+    + ( xsetlist.value ? "" : "\n // + \"&dload=\" + encodeURIComponent(\"https://host/pathname\")")
+    + "\n // + \"&val0s=\" + encodeURIComponent(\"a:10,b:20,c:30\")\n<br>";
+    window.getSelection().setPosition(quad2B.firstChild, quad2B.textContent.length);
+  },
   calcCopy = () => {
     let anew = document.createElement('a'),
       chtml = '<!DOCTYPE html>\n<html lang="en">\n'
@@ -375,7 +406,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
         .replace( /^(<div id="cgrid".*?>\n *<pre id="quad1A".*?>)[^]*?(<\/pre><pre id="quad1B".*?>)[^]*?(<\/pre>\n *<pre id="quad2A".*?>)[^]+?(?=\n<\/div>)/m,
           '$1$2$3</pre><pre id="quad2B" contenteditable=true></pre>\n  <ul id="plist" class="is-hidden"></ul>' )
         .replace(/^<div class="cfield">[^]+?\n(?=let di2html,)/m, "</main>\n<script type=\"text/javascript\">\n(function () {\n'use strict';\n")
-        .replace(/^( *cheadg\.textContent === ").+/m, "&1" + cheadg.innerHTML + "\"")
+        .replace(/^( *cheadg\.textContent === ").+/m, "&1" + cheadg.textContent + "\"")
         .replace(/^xsetinp\.addEventListener\([^]+?(?=\n<\/script>)/m, "})();")
       + "\n</html>\n";
     anew.setAttribute('download', "calcjs-draft02.html");
@@ -383,7 +414,6 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
     anew.click();
   },
   menuSel = evt => {
-    let qrys = [];
     setTimeout(() => {
       menulist.blur();
       menulist.selectedIndex = 0;
@@ -397,24 +427,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
     } else if (/[34]/.test(evt.target.selectedIndex)) {
       gridAdj(evt.target.selectedIndex);
     } else if (evt.target.selectedIndex == 5 && (xsetlist.value || !dinp2.value)) {
-      /maximum-/.test(metavp.content) || qrys.push("!zlock");
-      !cgrid.classList.contains("clpsrow1") || qrys.push("!row1");
-      !cgrid.classList.contains("xpndq2B") || qrys.push("!col1");
-      cheadg.textContent === "JavaScript Calculator"
-      || qrys.push("title=" + window.encodeURIComponent(cheadg.textContent));
-      !xsetlist.value || qrys.push("dload=" + window.encodeURIComponent(xsetlist.value));
-      quad2B.click();
-      xsetinp.value = quad2A.innerHTML = quad1B.innerHTML = quad1A.innerHTML = "";
-      quad2B.innerHTML = "// To preserve/share view settings:"
-      + "\n// 1. De-focus *ENTRY* field"
-      + "\n   // (writes current settings into URL string & reloads page);"
-      + "\n// 2. Bookmark reloaded page (or, add to home screen);"
-      + "\n// 3. Copy new link and paste in text message to share.\n\n "
-      + (dinp2.type ? "window_location_search" : "window.location.search") + " = \"" + qrys.join("&")
-      + "\"\n // + \"" + (!qrys.length ? "" : "&") + "cmods=\" + encodeURIComponent(\"3,5,prj42.mjs\")"
-      + ( xsetlist.value ? "" : "\n // + \"&dload=\" + encodeURIComponent(\"https://host/pathname\")")
-      + "\n // + \"&val0s=\" + encodeURIComponent(\"a:10,b:20,c:30\")\n<br>";
-      window.getSelection().setPosition(quad2B.firstChild, quad2B.textContent.length);
+      viewSet();
     } else if (evt.target.selectedIndex == 6) {
       calcCopy();
     }
