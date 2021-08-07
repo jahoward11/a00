@@ -389,7 +389,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
     + "\n  // title= | rename doc *TITLE*"
     + "\n  // cmods= | download certain/additional, pre-made data modules"
     + "\n  // dload= | load specified data set into *ENTRY* field"
-    + "\n  // val0s= | re-assign specified, initial values of pre-loaded data set\n\n// "
+    + "\n  // val0s= | re-assign initial values of pre-loaded data set\n\n// "
     + (dinp2.type ? "window_location_search" : "window.location.search") + " = \"" + qrys.join("&")
     + "\"\n // + \"" + (!qrys.length ? "" : "&") + "cmods=\" + encodeURIComponent(\"3,5,prj42.mjs\")"
     + ( xsetlist.value ? "" : "\n // + \"&dload=\" + encodeURIComponent(\"https://host/pathname\")")
