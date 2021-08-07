@@ -303,7 +303,7 @@ print and (min-width: 558px) and (max-width: 2048px) {
   <option>&hellip; Rename doc TITLE</option>
   <option>&nbsp;&vArr; Expand/collapse FINAL VALUES row</option>
   <option>&hArr; Expand/collapse RESULTS column</option>
-  <option>&thinsp;&Delta; Preserve view settings to web address</option>
+  <option>&thinsp;&Delta; Preserve view settings to URL (then share it)</option>
   <option>&nbsp;&dtrif;&#x332; Generate a copy of CalcJS &amp; displayed data</option>
 </select></span>
 <div id="cgrid" class="cfield">
@@ -327,7 +327,7 @@ print and (min-width: 558px) and (max-width: 2048px) {
 </script>
 <script src="../../a00/-res-js/localforage.nopromises.min.js" type="text/javascript"></script>
 <script type="module">
-let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, vinits = [], xstor = [],
+let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
   metavp = document.querySelector('#ecorender>meta[name=viewport]')
     || document.querySelector('head>meta[name=viewport]'),
   dinput = document.querySelector('#cmain>#dinput'),
@@ -375,6 +375,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, vinits = [], xstor = [],
         .replace( /^(<div id="cgrid".*?>\n *<pre id="quad1A".*?>)[^]*?(<\/pre><pre id="quad1B".*?>)[^]*?(<\/pre>\n *<pre id="quad2A".*?>)[^]+?(?=\n<\/div>)/m,
           '$1$2$3</pre><pre id="quad2B" contenteditable=true></pre>\n  <ul id="plist" class="is-hidden"></ul>' )
         .replace(/^<div class="cfield">[^]+?\n(?=let di2html,)/m, "</main>\n<script type=\"text/javascript\">\n(function () {\n'use strict';\n")
+        .replace(/^( *cheadg\.textContent === ").+/m, "&1" + cheadg.innerHTML + "\"")
         .replace(/^xsetinp\.addEventListener\([^]+?(?=\n<\/script>)/m, "})();")
       + "\n</html>\n";
     anew.setAttribute('download', "calcjs-draft02.html");
@@ -404,12 +405,15 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, vinits = [], xstor = [],
       !xsetlist.value || qrys.push("dload=" + window.encodeURIComponent(xsetlist.value));
       quad2B.click();
       xsetinp.value = quad2A.innerHTML = quad1B.innerHTML = quad1A.innerHTML = "";
-      quad2B.innerHTML = "// To preserve view settings:"
+      quad2B.innerHTML = "// To preserve/share view settings:"
       + "\n// 1. De-focus *ENTRY* field"
       + "\n   // (writes current settings into URL string & reloads page);"
-      + "\n// 2. Bookmark reloaded page (or, add to home screen).\n\n "
-      + (dinp2.type ? "window_location_search" : "window.location.search")
-      + " = \"" + qrys.join("&") + "\"\n<br>" ;
+      + "\n// 2. Bookmark reloaded page (or, add to home screen);"
+      + "\n// 3. Copy new link and paste in text message to share.\n\n "
+      + (dinp2.type ? "window_location_search" : "window.location.search") + " = \"" + qrys.join("&")
+      + "\"\n // + \"" + (!qrys.length ? "" : "&") + "cmods=\" + encodeURIComponent(\"3,5,prj42.mjs\")"
+      + ( xsetlist.value ? "" : "\n // + \"&dload=\" + encodeURIComponent(\"https://host/pathname\")")
+      + "\n // + \"&val0s=\" + encodeURIComponent(\"a:10,b:20,c:30\")\n<br>";
       window.getSelection().setPosition(quad2B.firstChild, quad2B.textContent.length);
     } else if (evt.target.selectedIndex == 6) {
       calcCopy();
@@ -425,7 +429,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, vinits = [], xstor = [],
   },
   xprsEval = () => {
     rset ? (preresp.innerHTML = "") : ++rset && !(xsetlist.value = "")
-      && vinits.forEach(vi => vi && (dinp2.value = dinp2.value.replace(vi[0], vi[1])));
+      && val0s.forEach(v => v && (dinp2.value = dinp2.value.replace(v[0], v[1])));
     let $ = {}, _ = {}, _ks = [], rslt,
       xprsns = (dinp2.value || "")
         .replace(/^\/\*\n?([^]*?)\n?\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
@@ -605,9 +609,9 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, vinits = [], xstor = [],
 window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
   /^cmods=./.test(qi) ? (cmods = window.decodeURIComponent(qi.replace(/^cmods=/, "")).split(/[ ,]+/))
   : /^dload=./.test(qi) ? (dload = window.decodeURIComponent(qi.replace(/^dload=/, "")))
-  : /^vinits=./.test(qi) ? ( vinits = window.decodeURIComponent(qi.replace(/^vinits=/, ""))
-    .split(/[ ,]+/).map( e => (e = /(.+:)(.*)/.exec(e))
-      && [new RegExp("^( *" + e[1].replace(/:/g, " *= *") + ")\\S*", "m"), "$1" + e[2]] ))
+  : /^val0s=./.test(qi) ? ( val0s = window.decodeURIComponent(qi.replace(/^val0s=/, ""))
+    .split(/,/).map( e => (e = /^ *(.+:)(.*)/.exec(e))
+      && [new RegExp("^( *" + e[1].replace(/:/g, " *= *") + ").*?(?=//|$)", "m"), "$1" + e[2]] ))
   : /^title=/.test(qi) ? titSave(0, window.decodeURIComponent(qi.replace(/^title=/, "")))
   : /^!zlock$/.test(qi) ? zoomTog(1)
   : /^!row1$/.test(qi) ? gridAdj(3)
