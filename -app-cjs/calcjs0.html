@@ -430,7 +430,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, xstor = [],
         .replace(/^\/\*\n?([^]*?)\n?\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
         .replace(/^((?:[^\n\/]|\/(?!\/))*?)(?:<!--[^]*?-->|<script\b.*?>[^]*?<\/script>)/gm, "$1")
         .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/<\/?\b.+?>/g, ""))
-        .replace(/&Tab;|&#x0*9;/g, "\t").replace(/(?:[^$.\wΑ-Ͽ]|^)\$(?=[$_a-zΑ-Ͽ])/gi, "$&.")
+        .replace(/&Tab;/g, "\t").replace(/(?:[^$.\wΑ-Ͽ]|^)\$(?=[$_a-zΑ-Ͽ])/gi, "$&.")
         .split("\n"),
       reslts = xprsns.map(xpr => {
         try {
@@ -471,7 +471,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, xstor = [],
         + "</span> " )).join("\n")
     .replace( /^[\t ]*(<span class=dnote>)(<\/span>)( *\n[\t ]*)\1(.*)(?=\2 *\n[\t ]*\1\2 *$)/gim,
       (m, c1, c2, c3, c4) => c1 + c2 + c3 + c1 + c4
-      .replace( /(?:  ((?:[+\]×÷−∗⋅✕✖-]|&#x0*2[Dd];|&#x271[56];|&divide;|&lowast;|&minus;|&plus;|&rsqb;|&sdot;|&times;) *) |(?! ))((?:[^\x09&=[⇐⇒⇔∏∑√∫]|[[⇐⇒⇔∏∑√∫](?!  )|&(?!Tab;|equals;|hArr;  |int;  |lArr;  |lsqb;  |prod;  |rArr;  |radic;  |sum;  ))*?) +(?:\u2215|\u27cb|&#x2215;|&#x27[Cc][Bb];) +(.*?)(?= *[\x09=]| *\[  |  +]|  +[+×÷−∗⋅✕✖-] |  +&#x0*2[Dd]; |  +&#x271[56]; | *&Tab;|  +&divide; | *&equals;|  +&lowast; | *&lsqb;  |  +&minus; |  +&plus; |  +&rsqb;|  +&sdot; |  +&times; | *(?:[⇐⇒⇔∏∑√∫]|&#x2715;|&hArr;|&int;|&lArr;|&prod;|&rArr;|&radic;|&sum;)(\[|&lsqb;|)  | *$)/g,
+      .replace( /(?:  ((?:[+\]×÷−∗⋅✕✖-]|&divide;|&lowast;|&minus;|&plus;|&rsqb;|&sdot;|&times;) *) |(?! ))((?:[^\x09&=[⇐⇒⇔∏∑√∫]|[[⇐⇒⇔∏∑√∫](?!  )|&(?!Tab;|equals;|hArr;  |int;  |lArr;  |lsqb;  |prod;  |rArr;  |radic;  |sum;  ))*?) +(?:\u2215|\u27cb) +(.*?)(?= *[\x09=]| *\[  |  +]|  +[+×÷−∗⋅✕✖-] | *&Tab;|  +&divide; | *&equals;|  +&lowast; | *&lsqb;  |  +&minus; |  +&plus; |  +&rsqb;|  +&sdot; |  +&times; | *(?:[⇐⇒⇔∏∑√∫]|&hArr;|&int;|&lArr;|&prod;|&rArr;|&radic;|&sum;)(\[|&lsqb;|)  | *$)/g,
         "$1<span class=dvnd>$2</span><span class=dvsr>$3</span>" ))
     .replace( /([∏∑√∫]|&int;|&prod;|&radic;|&sum;|(?=\[|&lsqb;))(\[|&lsqb;|) ( +)|  (\]|&rsqb;)((?! ).*?(?=<span class=dvnd>|<\/span>)| ?)/g,
       (m, c1, c2, c3, c4, c5) => (!c4 ? "" : "  ")
@@ -484,9 +484,9 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, xstor = [],
       "$1<var>$2</var>" )
     .replace(/(<var\b.*?>[a-zΑ-Ͽ]+)(\d+)(?=<\/var>)/gi, "$1<sub>$2</sub>")
     .replace(/\u2044|&frasl;/g, "<span class=frasl>$&</span>")
-    .replace( /[\xb2\xb3\xb9\u2070-\u207e\u2080-\u208e]|&#x0*[Bb][239];|&#x20[78][0-9A-Ea-e];|&sup[123];/g,
+    .replace( /[\xb2\xb3\xb9\u2070-\u207e\u2080-\u208e]|&sup[123];/g,
       "<span class=fsan2>$&</span>" ) // superscripts, subscripts
-    .replace( /.[\u0300-\u036f]|[\u02f7\u03d5\u03dd\u03f0\u03f1\u03f5\u2023\u2031\u2034\u203e\u2057\u2150-\u215a\u215f]|.&#x0?3[0-6][\dA-Fa-f];|&#x0?2f7;|&#x0?3d[5d];|&#x0?3f[015];|&#x2023;|&#x203[14e];|&#x2057;|&#x215[\dAFaf];|&epsiv;|&frac\d[356];|&gammad;|&kappav;|&oline;|&pertenk;|&phiv;|&qprime;|&rhov;|&tprime;/g,
+    .replace( /.[\u0300-\u036f]|[\u02f7\u03d5\u03dd\u03f0\u03f1\u03f5\u2023\u2031\u2034\u203e\u2057\u2150-\u215a\u215f]|&epsiv;|&frac\d[356];|&gammad;|&kappav;|&oline;|&pertenk;|&phiv;|&qprime;|&rhov;|&tprime;/g,
       "<span class=fsan1>$&</span>" ) // combining marks, vulgar fractions, ˷ ϕ ϝ ϰ ϱ ϵ ‣ ‱ ‴ ‾ ⁗
     .replace( /(.*)(?:\\f|&#x0*[Cc];)(<\/span> |)$|^(.*<span class=dnote>|)(?:\\f|&#x0*[Cc];)/gm,
       "<div class=pagebb></div>$1$2$3" );
