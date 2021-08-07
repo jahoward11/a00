@@ -477,12 +477,12 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
     .replace( /^[\t ]*(<span class=dnote>)(<\/span>)( *\n[\t ]*)\1(.*)(?=\2 *\n[\t ]*\1\2 *$)/gim,
       (m, c1, c2, c3, c4) => c1 + c2 + c3 + c1 + c4
       .replace( /(?:  ((?:[+\]×÷−∗⋅✕✖-]|&divide;|&lowast;|&minus;|&plus;|&rsqb;|&sdot;|&times;) *) |(?! ))((?:[^\x09&=[⇐⇒⇔∏∑√∫]|[[⇐⇒⇔∏∑√∫](?!  )|&(?!Tab;|equals;|hArr;  |int;  |lArr;  |lsqb;  |prod;  |rArr;  |radic;  |sum;  ))*?) +(?:\u2215|\u27cb) +(.*?)(?= *[\x09=]| *\[  |  +]|  +[+×÷−∗⋅✕✖-] | *&Tab;|  +&divide; | *&equals;|  +&lowast; | *&lsqb;  |  +&minus; |  +&plus; |  +&rsqb;|  +&sdot; |  +&times; | *(?:[⇐⇒⇔∏∑√∫]|&hArr;|&int;|&lArr;|&prod;|&rArr;|&radic;|&sum;)(\[|&lsqb;|)  | *$)/g,
-        "$1<span class=dvnd>$2</span><span class=dvsr>$3</span>" ))
-    .replace( /([∏∑√∫]|&int;|&prod;|&radic;|&sum;|(?=\[|&lsqb;))(\[|&lsqb;|) ( +)|  (\]|&rsqb;)((?! ).*?(?=<span class=dvnd>|<\/span>)| ?)/g,
-      (m, c1, c2, c3, c4, c5) => (!c4 ? "" : "  ")
-      + "<span class=fbig>" + (c4 || c1 + c2) + "</span>"
-      + (c4 ? " " : c3 + (!c1 || !c2 ? "" : " "))
-      + (!c5 ? "" : "<span class=dvnd>" + c5 + "</span>") )
+        "$1<span class=dvnd>$2</span><span class=dvsr>$3</span>" )
+      .replace( /([∏∑√∫]|&int;|&prod;|&radic;|&sum;|(?=\[|&lsqb;))(\[|&lsqb;|) ( +)|  (\]|&rsqb;)((?! ).*?(?=<span class=dvnd>|<\/span>)| ?)/g,
+        (m, c1, c2, c3, c4, c5) => (!c4 ? "" : "  ")
+        + "<span class=fbig>" + (c4 || c1 + c2) + "</span>"
+        + (c4 ? " " : c3 + (!c1 || !c2 ? "" : " "))
+        + (!c5 ? "" : "<span class=dvnd>" + c5 + "</span>") ))
     .replace(/([^$.\wΑ-Ͽ]|^)\$\.([\wΑ-Ͽ]+)/g, '$1<var class=dvar>$2</var>')
     .replace( !_ks.length ? /[]/
       : new RegExp("(&#?(?!\\w+;)|[^&]#|[^#$&.\\wΑ-Ͽ]|^)(" + _ks.join("|") + ")(?![$\\wΑ-Ͽ\u0300-\u036f\u20d0-\u20ff]|[^\n<]*<\\/(?:em|strong|var|x)>)", "g"),
