@@ -148,9 +148,9 @@ __Temperature Coefficient Q~10~__
 
 __Primary Productivity Calculation__
 
- [  mg O2 ⟋ ⬚͏ L ⬚͏     ]  × [  0.698 mL ⟋ ⬚͏  mg  ⬚͏        ]  = mL O2 ⟋ ⬚͏ L ⬚͏
+ mg O2 ⟋ ⬚͏ L ⬚͏        ×  0.698 mL ⟋ ⬚͏  mg  ⬚͏         = mL O2 ⟋ ⬚͏ L ⬚͏
 
- [  mL O2 ⟋ ⬚͏ L ⬚͏     ]  × [  0.536 mg C~fixed~ ⟋ ⬚͏   mL O2    ⬚͏              ]  = mg C~fixed~ ⟋ ⬚͏  L   ⬚͏
+ mL O2 ⟋ ⬚͏ L ⬚͏        ×  0.536 mg C~fixed~ ⟋ ⬚͏   mL O2    ⬚͏               = mg C~fixed~ ⟋ ⬚͏  L   ⬚͏
 
  (at standard temperature and pressure)
 \\f
