@@ -440,11 +440,11 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, xstor = [],
               (m1, c1, c2) => _ks.push(c2) && c1 + "_." + c2 )
             .replace( /([\t =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([$_](?!\.)[$\wΑ-Ͽ]*|[A-Za-zΑ-Ͽ][$\wΑ-Ͽ]*)(?! *=)/g,
               (m1, c1, c2) => window[c2] || !_ks.some(k => k === c2) ? m1 : c1 + "_." + c2 ) );
-          rslt = eval(xpr.replace(/\\f$|&#x0*[Cc];$|^\\f|^&#x0*[Cc];/g, ""));
-          return (!/\\f$|&#x0*[Cc];$|^\\f|^&#x0*[Cc];/.test(xpr) ? "" : "<div class=pagebb></div>")
-          + ( rslt == null ? ""
-            : typeof rslt === 'string' ? rslt.replace(/\n/g, "\\n")
-            : rslt.toString().replace(/\s+/g, " ") );
+          rslt = eval(xpr.replace(/\x0c$|\\f$|&#x0*[Cc];$|^\x0c|^\\f|^&#x0*[Cc];/g, ""));
+          return ( !/\x0c$|\\f$|&#x0*[Cc];$|^\x0c|^\\f|^&#x0*[Cc];/.test(xpr) ? ""
+            : "<div class=pagebb></div>" ) + ( rslt == null ? ""
+              : typeof rslt === 'string' ? rslt.replace(/\n/g, "\\n")
+              : rslt.toString().replace(/\s+/g, " ") );
         } catch (err) { respShow(err); return err; }
       }),
       $ks = Object.keys($);
@@ -464,8 +464,8 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, xstor = [],
         .replace(/\b__(.+?)__(?!_)/g, "<strong>$1</strong>")
         .replace(/\^(?=\S)(.*?\S)\^/g, "<sup>$1</sup>")
         .replace(/~(?=\S)(.*?\S)~/g, "<sub>$1</sub>")
-        .replace( /([^$.\wΑ-Ͽ]|^)(a)(?= )/gi,
-          (m, c1, c2) => c1 + "&#x" + c2.charCodeAt(0).toString(16) + ";" ) //"$1<x>$2</x>")
+        .replace( /([^$.\wΑ-Ͽ]|^)(a)(?= )/gi, //"$1<x>$2</x>")
+          (m, c1, c2) => c1 + "&#x" + c2.charCodeAt(0).toString(16) + ";" )
         .replace(/\u2b1a\u034f/g, "&nbsp;")
         .replace(/\u250a\u034f/g, "&zwj;")
         + "</span> " )).join("\n")
@@ -488,7 +488,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, xstor = [],
       "<span class=fsan2>$&</span>" ) // superscripts, subscripts
     .replace( /.[\u0300-\u036f]|[\u02f7\u03d5\u03dd\u03f0\u03f1\u03f5\u2023\u2031\u2034\u203e\u2057\u2150-\u215a\u215f]|&epsiv;|&frac\d[356];|&gammad;|&kappav;|&oline;|&pertenk;|&phiv;|&qprime;|&rhov;|&tprime;/g,
       "<span class=fsan1>$&</span>" ) // combining marks, vulgar fractions, ˷ ϕ ϝ ϰ ϱ ϵ ‣ ‱ ‴ ‾ ⁗
-    .replace( /(.*)(?:\\f|&#x0*[Cc];)(<\/span> |)$|^(.*<span class=dnote>|)(?:\\f|&#x0*[Cc];)/gm,
+    .replace( /(.*)(?:\x0c|\\f|&#x0*[Cc];)(<\/span> |)$|^(.*<span class=dnote>|)(?:\x0c|\\f|&#x0*[Cc];)/gm,
       "<div class=pagebb></div>$1$2$3" );
   },
   initLoad = () => !/^https?:\/\/.+$/.test(dload) ? xprsEval()
