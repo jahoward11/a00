@@ -327,7 +327,7 @@ print and (min-width: 558px) and (max-width: 2048px) {
 </script>
 <script src="../../a00/-res-js/localforage.nopromises.min.js" type="text/javascript"></script>
 <script type="module">
-let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, xstor = [],
+let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, vinits = [], xstor = [],
   metavp = document.querySelector('#ecorender>meta[name=viewport]')
     || document.querySelector('head>meta[name=viewport]'),
   dinput = document.querySelector('#cmain>#dinput'),
@@ -424,7 +424,8 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, xstor = [],
     evt.preventDefault();
   },
   xprsEval = () => {
-    !rset ? rset++ : (preresp.innerHTML = "");
+    rset ? (preresp.innerHTML = "") : ++rset && !(xsetlist.value = "")
+      && vinits.forEach(vi => vi && (dinp2.value = dinp2.value.replace(vi[0], vi[1])));
     let $ = {}, _ = {}, _ks = [], rslt,
       xprsns = (dinp2.value || "")
         .replace(/^\/\*\n?([^]*?)\n?\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
@@ -604,6 +605,9 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, xstor = [],
 window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
   /^cmods=./.test(qi) ? (cmods = window.decodeURIComponent(qi.replace(/^cmods=/, "")).split(/[ ,]+/))
   : /^dload=./.test(qi) ? (dload = window.decodeURIComponent(qi.replace(/^dload=/, "")))
+  : /^vinits=./.test(qi) ? ( vinits = window.decodeURIComponent(qi.replace(/^vinits=/, ""))
+    .split(/[ ,]+/).map( e => (e = /(.+:)(.*)/.exec(e))
+      && [new RegExp("^( *" + e[1].replace(/:/g, " *= *") + ")\S*"), "$1" + e[2]] ))
   : /^title=/.test(qi) ? titSave(0, window.decodeURIComponent(qi.replace(/^title=/, "")))
   : /^!zlock$/.test(qi) ? zoomTog(1)
   : /^!row1$/.test(qi) ? gridAdj(3)
