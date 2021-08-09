@@ -407,7 +407,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
         .replace( /^(<div id="cgrid".*?>\n *<pre id="quad1A".*?>)[^]*?(<\/pre><pre id="quad1B".*?>)[^]*?(<\/pre>\n *<pre id="quad2A".*?>)[^]+?(?=\n<\/div>)/m,
           '$1$2$3</pre><pre id="quad2B" contenteditable=true></pre>\n  <ul id="plist" class="is-hidden"></ul>' )
         .replace(/^<div class="cfield">[^]+?\n(?=let di2html,)/m, "</main>\n<script type=\"text/javascript\">\n(function () {\n'use strict';\n")
-        .replace(/^( *cheadg\.textContent === ").+/m, "&1" + cheadg.textContent + "\"")
+        .replace(/^( *cheadg\.textContent === ").+/m, "$1" + cheadg.textContent + "\"")
         .replace(/^xsetinp\.addEventListener\([^]+?(?=\n<\/script>)/m, "})();")
       + "\n</body>\n</html>\n";
     anew.setAttribute('download', "calcjs-draft02.html");
