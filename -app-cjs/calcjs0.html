@@ -400,15 +400,15 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
     let anew = document.createElement('a'),
       chtml = '<!DOCTYPE html>\n<html lang="en">\n<head>\n'
       + (document.querySelector('#ecorender') || document.documentElement).innerHTML
-        .replace(/\n+$|^\n+|^<head>\n?|^#cmain \.cfield [^]+?\n(?=@media print {\n)|,\n *xsetLoad = [^]+?(?=;\nwindow\.location\.search)|^if \(\/\^http[^]+?\n}\n|\n?<\/body>$/gm, "")
+        .replace(/\n+$|^\n+|^<head>\n?|^#cmain \.cfield [^]+?\n(?=@media print {\n)|,\n *xsetLoad = [^]+?(?=;\nwindow\.location\.search)|^if \(\/\^http[^]+?\n}\n|\n?<\/body>$/gim, "")
         .replace(/^(<\/style>)[^]*?(?=<main\b.*?>)/im, "$1\n</head>\n<body>\n")
-        .replace(/^(<xmp id="dinput".*?>)[^]*?(?=<\/xmp>)/m, (m, c1) => c1 + "\n" + dinp2.value + "\n")
-        .replace(/^(<pre id="preresp">)[^]*?(?=<\/pre>)/m, "$1")
-        .replace( /^(<div id="cgrid".*?>\n *<pre id="quad1A".*?>)[^]*?(<\/pre><pre id="quad1B".*?>)[^]*?(<\/pre>\n *<pre id="quad2A".*?>)[^]+?(?=\n<\/div>)/m,
+        .replace(/^(<xmp id="dinput".*?>)[^]*?(?=<\/xmp>)/im, (m, c1) => c1 + "\n" + dinp2.value + "\n")
+        .replace(/^(<pre id="preresp">)[^]*?(?=<\/pre>)/im, "$1")
+        .replace( /^(<div id="cgrid".*?>\n *<pre id="quad1A".*?>)[^]*?(<\/pre><pre id="quad1B".*?>)[^]*?(<\/pre>\n *<pre id="quad2A".*?>)[^]+?(?=\n<\/div>)/im,
           '$1$2$3</pre><pre id="quad2B" contenteditable=true></pre>\n  <ul id="plist" class="is-hidden"></ul>' )
-        .replace(/^<div class="cfield">[^]+?\n(?=let di2html,)/m, "</main>\n<script type=\"text/javascript\">\n(function () {\n'use strict';\n")
+        .replace(/^<div class="cfield">[^]+?\n(?=let di2html,)/im, "</main>\n<script type=\"text/javascript\">\n(function () {\n'use strict';\n")
         .replace(/^( *cheadg\.textContent === ").+/m, "$1" + cheadg.textContent + "\"")
-        .replace(/^xsetinp\.addEventListener\([^]+?(?=\n<\/script>)/m, "})();")
+        .replace(/^xsetinp\.addEventListener\([^]+?(?=\n<\/script>)/im, "})();")
       + "\n</body>\n</html>\n";
     anew.setAttribute('download', "calcjs-draft02.html");
     anew.setAttribute('href', "data:text/html;charset=utf-8," + window.encodeURIComponent(chtml));
@@ -447,7 +447,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
     let $ = {}, _ = {}, _ks = [], rslt,
       xprsns = (dinp2.value || "")
         .replace(/^\/\*\n?([^]*?)\n?\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
-        .replace(/^((?:[^\n\/]|\/(?!\/))*?)(?:<!--[^]*?-->|<script\b.*?>[^]*?<\/script>)/gm, "$1")
+        .replace(/^((?:[^\n\/]|\/(?!\/))*?)(?:<!--[^]*?-->|<script\b.*?>[^]*?<\/script>)/gim, "$1")
         .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/<\/?\b.+?>/g, ""))
         .replace(/&Tab;/g, "\t").replace(/(?:[^$.\wΑ-Ͽ]|^)\$(?=[$_a-zΑ-Ͽ])/gi, "$&.")
         .split("\n"),
@@ -488,7 +488,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
         .replace(/\u2b1a\u034f/g, "&nbsp;")
         .replace(/\u250a\u034f/g, "&zwj;")
         + "</span> " )).join("\n")
-    .replace( /^[\t ]*(<span class=dnote>)(<\/span>)( *\n[\t ]*)\1(.*)(?=\2 *\n[\t ]*\1\2 *$)/gim,
+    .replace( /^[\t ]*(<span class=dnote>)(<\/span>)( *\n[\t ]*)\1(.*)(?=\2 *\n[\t ]*\1\2 *$)/gm,
       (m, c1, c2, c3, c4) => c1 + c2 + c3 + c1 + c4
       .replace( /(?:  ((?:[+\]×÷−∗⋅✕✖-]|&divide;|&lowast;|&minus;|&plus;|&rsqb;|&sdot;|&times;) *) |(?! ))((?:[^\x09&=[⇐⇒⇔∏∑√∫]|[[⇐⇒⇔∏∑√∫](?!  )|&(?!Tab;|equals;|hArr;  |int;  |lArr;  |lsqb;  |prod;  |rArr;  |radic;  |sum;  ))*?) +(?:\u2215|\u27cb) +(.*?)(?= *[\x09=]| *\[  |  +]|  +[+×÷−∗⋅✕✖-] | *&Tab;|  +&divide; | *&equals;|  +&lowast; | *&lsqb;  |  +&minus; |  +&plus; |  +&rsqb;|  +&sdot; |  +&times; | *(?:[⇐⇒⇔∏∑√∫]|&hArr;|&int;|&lArr;|&prod;|&rArr;|&radic;|&sum;)(\[|&lsqb;|)  | *$)/g,
         "$1<span class=dvnd>$2</span><span class=dvsr>$3</span>" )
