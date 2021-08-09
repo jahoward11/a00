@@ -398,9 +398,10 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
   },
   calcCopy = () => {
     let anew = document.createElement('a'),
-      chtml = '<!DOCTYPE html>\n<html lang="en">\n'
+      chtml = '<!DOCTYPE html>\n<html lang="en">\n<head>\n'
       + (document.querySelector('#ecorender') || document.documentElement).innerHTML
-        .replace(/^\n|^#cmain \.cfield [^]+?\n(?=@media print {\n)|,\n *xsetLoad = [^]+?(?=;\nwindow\.location\.search)|^if \(\/\^http[^]+?\n}\n/gm, "")
+        .replace(/\n+$|^\n+|^<head>\n?|^#cmain \.cfield [^]+?\n(?=@media print {\n)|,\n *xsetLoad = [^]+?(?=;\nwindow\.location\.search)|^if \(\/\^http[^]+?\n}\n|\n?<\/body>$/gm, "")
+        .replace(/^(<\/style>)[^]*?(?=<main\b.*?>)/im, "$1\n</head>\n<body>\n")
         .replace(/^(<xmp id="dinput".*?>)[^]*?(?=<\/xmp>)/m, (m, c1) => c1 + "\n" + dinp2.value + "\n")
         .replace(/^(<pre id="preresp">)[^]*?(?=<\/pre>)/m, "$1")
         .replace( /^(<div id="cgrid".*?>\n *<pre id="quad1A".*?>)[^]*?(<\/pre><pre id="quad1B".*?>)[^]*?(<\/pre>\n *<pre id="quad2A".*?>)[^]+?(?=\n<\/div>)/m,
@@ -408,7 +409,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
         .replace(/^<div class="cfield">[^]+?\n(?=let di2html,)/m, "</main>\n<script type=\"text/javascript\">\n(function () {\n'use strict';\n")
         .replace(/^( *cheadg\.textContent === ").+/m, "&1" + cheadg.textContent + "\"")
         .replace(/^xsetinp\.addEventListener\([^]+?(?=\n<\/script>)/m, "})();")
-      + "\n</html>\n";
+      + "\n</body>\n</html>\n";
     anew.setAttribute('download', "calcjs-draft02.html");
     anew.setAttribute('href', "data:text/html;charset=utf-8," + window.encodeURIComponent(chtml));
     anew.click();
@@ -479,7 +480,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
         '<span class=dnote>' + c1
         .replace(/(\W|\d|^)_([0-9a-zΑ-Ͽ]+)_(?=$|\W|\d)/gi, "$1<strong><em>$2</em></strong>")
         .replace(/(\W|\d|__|^)\*(?=\S)(.*?\S)\*(?=$|\W|\1)/g, "$1<em>$2</em>")
-        .replace(/\b__(.+?)__(?!_)/g, "<strong>$1</strong>")
+        .replace(/\b__(.+?)__\b/g, "<strong>$1</strong>")
         .replace(/\^(?=\S)(.*?\S)\^/g, "<sup>$1</sup>")
         .replace(/~(?=\S)(.*?\S)~/g, "<sub>$1</sub>")
         .replace( /([^$.\wΑ-Ͽ]|^)(a)(?= )/gi, //"$1<x>$2</x>")
@@ -551,14 +552,6 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
       dinp2.value = quad2B.innerHTML
       .replace(/<(\w+)>\s*<\/\1>/g, "")
       .replace(/(?:(?:<br>|)<\/div>|<br>|)<div><br><\/div>|(?:(?:<br>|)<\/div>|<br>|\n|)<div>|<br>/gi, "\n")
-      .replace(/([a-zΑ-Ͽ]+)<sub>(\d+)<\/sub>/gi, "$1$2")
-      .replace(/<sub>(.+)<\/sub>/gi, "~$1~")
-      .replace(/<sup>(.+)<\/sup>/gi, "^$1^")
-      .replace(/<strong><em>([\wΑ-Ͽ]+)<\/em><\/strong>/gi, "_$1_")
-      .replace(/<\/?em>/gi, "*")
-      .replace(/<\/?strong>/gi, "__")
-      .replace(/<var class=dvar>([\wΑ-Ͽ]+)<\/var>/gi, "$$$1")
-      .replace(/<span class=dnote>(.+)<\/span> */gi, "// $1")
       .replace(/<\/?\b[ \w,:;"#=-]+>|\n+$|^\n+/g, "")
       .replace(/&gt;/gi, ">").replace(/&lt;/gi, "<").replace(/&quot;/gi, "\"")
       .replace(/&amp;&amp;/gi, "&&").replace(/&amp;(?:amp;(?!Tab;)|)(?=#?\w+;)/gi, "&")
@@ -624,7 +617,7 @@ window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
   : /^dload=./.test(qi) ? (dload = window.decodeURIComponent(qi.replace(/^dload=/, "")))
   : /^val0s=./.test(qi) ? ( val0s = window.decodeURIComponent(qi.replace(/^val0s=/, ""))
     .split(/,/).map( e => (e = /^ *(.+:)(.*)/.exec(e))
-      && [new RegExp("^( *" + e[1].replace(/:/g, " *= *") + ").*?(?=//|$)", "m"), "$1" + e[2]] ))
+      && [new RegExp("^( *" + e[1].replace(/:/g, " *= *") + ").*?(?=[\\t ]*//|$)", "m"), "$1" + e[2]] ))
   : /^title=/.test(qi) ? titSave(0, window.decodeURIComponent(qi.replace(/^title=/, "")))
   : /^!zlock$/.test(qi) ? zoomTog(1)
   : /^!row1$/.test(qi) ? gridAdj(3)
@@ -649,12 +642,13 @@ plist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
   .map((e, i) => `<li>n.${e}${/^constructor/.test(e) ? "" : "()"}</li>`).join("\n    ")
   + "\n    " + ["", ".toLocaleString()", ".toUTCString()", ".toISOString()", ".getTime()"]
   .map(e => `<li>new Date()${e}</li>`).join("\n    ")
-  + "\n    " + [ "- - -", "\\t &Tab;", "\\f (form-feed &#xc;)", "⬚͏ &nbsp; (no-break space)", "┊͏ &zwj; (zero-width joiner)",
-    "- - -", "Α &Alpha;", "α &alpha;", "Β &Beta;", "β &beta;", "Γ &Gamma;", "γ &gamma;", "Ϝ &Gammad;", "ϝ &gammad;", "Δ &Delta;", "δ &delta;", "Ε &Epsilon;", "ε &epsi;", "ϵ &epsiv;", "Ζ &Zeta;", "ζ &zeta;", "Η &Eta;", "η &eta;", "Θ &Theta;", "θ &theta;", "ϑ &thetav;", "Ι &Iota;", "ι &iota;", "Κ &Kappa;", "κ &kappa;", "ϰ &kappav;", "Λ &Lambda;", "λ &lambda;", "Μ &Mu;", "μ &mu;", "Ν &Nu;", "ν &nu;", "Ξ &Xi;", "ξ &xi;", "Ο &Omicron;", "ο &omicron;", "Π &Pi;", "π &pi;", "ϖ &piv;", "Ρ &Rho;", "ρ &rho;", "ϱ &rhov;", "Σ &Sigma;", "σ &sigma;", "ς &sigmav;", "Τ &Tau;", "τ &tau;", "Υ &Upsilon;", "υ &upsi;", "ϒ &upsih;", "Φ &Phi;", "φ &phi;", "ϕ &phiv;", "Χ &Chi;", "χ &chi;", "Ψ &Psi;", "ψ &psi;", "Ω &Omega;", "ω &omega;",
-    "- - -", "! &excl;", "\" &quot;", "# &num;", "$ &dollar;", "% &percnt;", "& &amp;", "' &apos;", "( &lpar;", ") &rpar;", "* &ast;", "+ &plus;", ", &comma;", "- (hyphen-minus &#x2d;)", ". &period;", "/ &sol;", ": &colon;", "; &semi;", "< &lt;", "= &equals;", "> &gt;", "? &quest;", "@ &commat;", "[ &lsqb;", "\\ &bsol;", "] &rsqb;", "^ &Hat;", "_ &lowbar;", "` &grave;", "{ &lcub;", "| &vert;", "} &rcub;", "~ (tilde &#x7e;)",
-    "- - -", "¦ &brvbar;", "¨ &uml;", "¯ &macr;", "° &deg;", "± &pm;", "² &sup2;", "³ &sup3;", "´ &acute;", "µ &micro;", "¹ &sup1;", "¼ &frac14;", "½ &frac12;", "¾ &frac34;", "× &times;", "÷ &divide;", "ƒ &fnof;", "˜ &tilde;", "˷ (low tilde &#x2f7;)", " ̂ (combining circumflex &#x302;)", " ̃ (combining tilde &#x303;)", " ̄ (combining macron &#x304;)", " ̅ (combining overline &#x305;)", " ̲ (combining low line &#x332;)", "― &horbar;", "‖ &Vert;", "• &bull;", "‣ (triangular bullet &#x2023;)", "… &hellip;", "‰ &permil;", "‱ &pertenk;", "′ &prime;", "″ &Prime;", "‴ &tprime;", "‵ &backprime;", "‾ &oline;", "⁄ &frasl;", "⁗ &qprime;", "⁰ (superscript 0 &#x2070;)", "⁴ (superscript 4 &#x2074;)", "⁵ (superscript 5 &#x2075;)", "⁶ (superscript 6 &#x2076;)", "⁷ (superscript 7 &#x2077;)", "⁸ (superscript 8 &#x2078;)", "⁹ (superscript 9 &#x2079;)", "⁺ (superscript '+' &#x207a;)", "⁻ (superscript '-' &#x207b;)", "⁼ (superscript '=' &#x207c;)", "⁽ (superscript '(' &#x207d;)", "⁾ (superscript ')' &#x207e;)", "₀ (subscript 0 &#x2080;)", "₁ (subscript 1 &#x2081;)", "₂ (subscript 2 &#x2082;)", "₃ (subscript 3 &#x2083;)", "₄ (subscript 4 &#x2084;)", "₅ (subscript 5 &#x2085;)", "₆ (subscript 6 &#x2086;)", "₇ (subscript 7 &#x2087;)", "₈ (subscript 8 &#x2088;)", "₉ (subscript 9 &#x2089;)", "₊ (subscript '+' &#x208a;)", "₋ (subscript '-' &#x208b;)", "₌ (subscript '=' &#x208c;)", "₍ (subscript '(' &#x208d;)", "₎ (subscript ')' &#x208e;)", "ℂ &Copf; (complexes)", "ℇ (Euler constant &#x2107;)", "ℍ &Hopf; (quaternions)", "ℕ &Nopf; (naturals)", "№ &numero;", "ℙ &Popf; (primes)", "ℚ &Qopf; (rationals)", "ℝ &Ropf; (reals)", "ℤ &Zopf; (integers)", "ℯ &escr;", "ⅇ &ee;", "ⅈ &ii;", "⅐ (frac 1 7th &#x2150;)", "⅑ (frac 1 9th &#x2151;)", "⅒ (frac 1 10th &#x2152;)", "⅓ &frac13;", "⅔ &frac23;", "⅕ &frac15;", "⅖ &frac25;", "⅗ &frac35;", "⅘ &frac45;", "⅙ &frac16;", "⅚ &frac56;", "⅛ &frac18;", "⅜ &frac38;", "⅝ &frac58;", "⅞ &frac78;", "⅟ (numerator 1 &#x215f;)", "← &larr;", "↑ &uarr;", "→ &rarr;", "↓ &darr;", "↔ &harr;", "⇐ &lArr;", "⇑ &uArr;", "⇒ &rArr;", "⇓ &dArr;", "⇔ &hArr;",
-    "∀ &forall;", "∂ &part;", "∃ &exist;", "∄ &nexist;", "∅ &empty;", "∇ &nabla;", "∈ &in;", "∉ &notin;", "∋ &ni;", "∌ &notni;", "∏ &prod;", "∑ &sum;", "− &minus;", "∕ (division slash &#x2215;)", "∖ &setmn;", "∗ &lowast;", "√ &radic;", "∝ &prop;", "∞ &infin;", "∟ &angrt;", "∠ &ang;", "∣ &mid;", "∤ &nmid;", "∥ &par;", "∦ &npar;", "∧ &and;", "∨ &or;", "∩ &cap;", "∪ &cup;", "∫ &int;", "∴ &there4;", "∵ &becaus;", "∶ &ratio;", "∷ &Colon;", "∼ &sim;", "≁ &nsim;", "≅ &cong;", "≈ &ap;", "≉ &nap;", "≠ &ne;", "≡ &equiv;", "≢ &nequiv;", "≤ &le;", "≥ &ge;", "≪ &ll;", "≫ &gg;", "⊂ &sub;", "⊃ &sup;", "⊄ &nsub;", "⊅ &nsup;", "⊆ &sube;", "⊇ &supe;", "⊈ &nsube;", "⊉ &nsupe;", "⊊ &subne;", "⊋ &supne;", "⊕ &oplus;", "⊖ &ominus;", "⊗ &otimes;", "⊘ &osol;", "⊙ &odot;", "⊚ &ocir;", "⊛ &oast;", "⊝ &odash;", "⊞ &plusb;", "⊟ &minusb;", "⊠ &timesb;", "⊡ &sdotb;", "⊥ &bot;", "⋅ &sdot;", "✓ &check;", "✕ (multiplication X &#x2715;)", "✗ &cross;", "⟋ (math diagonal &#x27cb;)", "⟌ (long division &#x27cc;)", "⟨ &lang;", "⟩ &rang;", "⟪ &Lang;", "⟫ &Rang;", "⨁ &xoplus;", "⨂ &xotime;" ]
-  .map(e => `<li>${e.replace(/&(?=#?\w+;)/g, "&amp;")}</li>`).join("\n    ") + "\n  ";
+  + "\n    " + [ "- - -", "\\t &amp;Tab;", "\\f (form-feed &amp;#xc;)", "⬚͏ &amp;nbsp; (no-break space)", "┊͏ &amp;zwj; (zero-width joiner)" ]
+  .map(e => `<li>${e}</li>`).join("\n    ") + "\n    " + [
+    "- - -", "&Alpha;", "&alpha;", "&Beta;", "&beta;", "&Gamma;", "&gamma;", "&Gammad;", "&gammad;", "&Delta;", "&delta;", "&Epsilon;", "&epsi;", "&epsiv;", "&Zeta;", "&zeta;", "&Eta;", "&eta;", "&Theta;", "&theta;", "&thetav;", "&Iota;", "&iota;", "&Kappa;", "&kappa;", "&kappav;", "&Lambda;", "&lambda;", "&Mu;", "&mu;", "&Nu;", "&nu;", "&Xi;", "&xi;", "&Omicron;", "&omicron;", "&Pi;", "&pi;", "&piv;", "&Rho;", "&rho;", "&rhov;", "&Sigma;", "&sigma;", "&sigmav;", "&Tau;", "&tau;", "&Upsilon;", "&upsi;", "&upsih;", "&Phi;", "&phi;", "&phiv;", "&Chi;", "&chi;", "&Psi;", "&psi;", "&Omega;", "&omega;",
+    "- - -", "&excl;", "&quot;", "&num;", "&dollar;", "&percnt;", "&amp;", "&apos;", "&lpar;", "&rpar;", "&ast;", "&plus;", "&comma;", "(hyphen-minus &#x2d;)", "&period;", "&sol;", "&colon;", "&semi;", "&lt;", "&equals;", "&gt;", "&quest;", "&commat;", "&lsqb;", "&bsol;", "&rsqb;", "&Hat;", "&lowbar;", "&grave;", "&lcub;", "&vert;", "&rcub;", "(tilde &#x7e;)",
+    "- - -", "&brvbar;", "&uml;", "&macr;", "&deg;", "&pm;", "&sup2;", "&sup3;", "&acute;", "&micro;", "&sup1;", "&frac14;", "&frac12;", "&frac34;", "&times;", "&divide;", "&fnof;", "&tilde;", "(low tilde &#x2f7;)", "(combining circumflex &#x302;)", "(combining tilde &#x303;)", "(combining macron &#x304;)", "(combining overline &#x305;)", "(combining low line &#x332;)", "&horbar;", "&Vert;", "&bull;", "(triangular bullet &#x2023;)", "&hellip;", "&permil;", "&pertenk;", "&prime;", "&Prime;", "&tprime;", "&backprime;", "&oline;", "&frasl;", "&qprime;", "(superscript 0 &#x2070;)", "(superscript 4 &#x2074;)", "(superscript 5 &#x2075;)", "(superscript 6 &#x2076;)", "(superscript 7 &#x2077;)", "(superscript 8 &#x2078;)", "(superscript 9 &#x2079;)", "(superscript '+' &#x207a;)", "(superscript '-' &#x207b;)", "(superscript '=' &#x207c;)", "(superscript '(' &#x207d;)", "(superscript ')' &#x207e;)", "(subscript 0 &#x2080;)", "(subscript 1 &#x2081;)", "(subscript 2 &#x2082;)", "(subscript 3 &#x2083;)", "(subscript 4 &#x2084;)", "(subscript 5 &#x2085;)", "(subscript 6 &#x2086;)", "(subscript 7 &#x2087;)", "(subscript 8 &#x2088;)", "(subscript 9 &#x2089;)", "(subscript '+' &#x208a;)", "(subscript '-' &#x208b;)", "(subscript '=' &#x208c;)", "(subscript '(' &#x208d;)", "(subscript ')' &#x208e;)", "&Copf; (complexes)", "(Euler constant &#x2107;)", "&Hopf; (quaternions)", "&Nopf; (naturals)", "&numero;", "&Popf; (primes)", "&Qopf; (rationals)", "&Ropf; (reals)", "&Zopf; (integers)", "&escr;", "&ee;", "&ii;", "(frac 1-7th &#x2150;)", "(frac 1-9th &#x2151;)", "(frac 1-10th &#x2152;)", "&frac13;", "&frac23;", "&frac15;", "&frac25;", "&frac35;", "&frac45;", "&frac16;", "&frac56;", "&frac18;", "&frac38;", "&frac58;", "&frac78;", "(numerator 1 &#x215f;)", "&larr;", "&uarr;", "&rarr;", "&darr;", "&harr;", "&lArr;", "&uArr;", "&rArr;", "&dArr;", "&hArr;",
+    "&forall;", "&part;", "&exist;", "&nexist;", "&empty;", "&nabla;", "&in;", "&notin;", "&ni;", "&notni;", "&prod;", "&sum;", "&minus;", "(division slash &#x2215;)", "&setmn;", "&lowast;", "&radic;", "&prop;", "&infin;", "&angrt;", "&ang;", "&mid;", "&nmid;", "&par;", "&npar;", "&and;", "&or;", "&cap;", "&cup;", "&int;", "&there4;", "&becaus;", "&ratio;", "&Colon;", "&sim;", "&nsim;", "&cong;", "&ap;", "&nap;", "&ne;", "&equiv;", "&nequiv;", "&le;", "&ge;", "&ll;", "&gg;", "&sub;", "&sup;", "&nsub;", "&nsup;", "&sube;", "&supe;", "&nsube;", "&nsupe;", "&subne;", "&supne;", "&oplus;", "&ominus;", "&otimes;", "&osol;", "&odot;", "&ocir;", "&oast;", "&odash;", "&plusb;", "&minusb;", "&timesb;", "&sdotb;", "&bot;", "&sdot;", "&check;", "(multiplication X &#x2715;)", "&cross;", "(math diagonal &#x27cb;)", "(long division &#x27cc;)", "&lang;", "&rang;", "&Lang;", "&Rang;", "&xoplus;", "&xotime;" ]
+  .map(e => `<li>${e.replace(/(.*)&(#?\w+;)/, "&$2 $1&amp;$2")}</li>`).join("\n    ") + "\n  ";
 (document.querySelector('#ecorender') || document.body)
 .addEventListener('click', dinpRegen);
 cheadg.addEventListener('blur', titSave);
