@@ -492,7 +492,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
       (m, c1, c2, c3, c4) => c1 + c2 + c3 + c1 + c4
       .replace( /(?:  ((?:[+\]×÷−∗⋅✕✖-]|&divide;|&lowast;|&minus;|&plus;|&rsqb;|&sdot;|&times;) *) |(?! ))((?:[^\x09&=[⇐⇒⇔∏∑√∫]|[[⇐⇒⇔∏∑√∫](?!  )|&(?!Tab;|equals;|hArr;  |int;  |lArr;  |lsqb;  |prod;  |rArr;  |radic;  |sum;  ))*?) +(?:\u2215|\u27cb) +(.*?)(?= *[\x09=]| *\[  |  +]|  +[+×÷−∗⋅✕✖-] | *&Tab;|  +&divide; | *&equals;|  +&lowast; | *&lsqb;  |  +&minus; |  +&plus; |  +&rsqb;|  +&sdot; |  +&times; | *(?:[⇐⇒⇔∏∑√∫]|&hArr;|&int;|&lArr;|&prod;|&rArr;|&radic;|&sum;)(\[|&lsqb;|)  | *$)/g,
         "$1<span class=dvnd>$2</span><span class=dvsr>$3</span>" )
-      .replace( /([∏∑√∫]|&int;|&prod;|&radic;|&sum;|(?=\[|&lsqb;))(\[|&lsqb;|) ( +)|  (\]|&rsqb;)((?! ).*?(?=<span class=dvnd>|<\/span>)| ?)/g,
+      .replace( /([∏∑√∫]|&int;|&prod;|&radic;|&sum;|(?=\[|&lsqb;))(\[|&lsqb;|) ( +)|  (\]|&rsqb;)((?! ).*?(?=<span class=dvnd>|$)| ?)/g,
         (m, c1, c2, c3, c4, c5) => (!c4 ? "" : "  ")
         + "<span class=fbig>" + (c4 || c1 + c2) + "</span>"
         + (c4 ? " " : c3 + (!c1 || !c2 ? "" : " "))
