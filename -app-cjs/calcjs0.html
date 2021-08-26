@@ -5,58 +5,33 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, maximum-scale=1" />
 <style type="text/css">
-*, *::before, *::after {
-  box-sizing: inherit;
-}
-:root {
+*, *::before, *::after { box-sizing: inherit; }
+html {
+  min-width: 375px;
   box-sizing: border-box;
   -ms-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  min-width: 375px;
 }
-body {
-  font: normal medium Helvetica, Arial, sans-serif;
-}
-.is-hidden {
-  display: none;
-}
+body { font: normal medium Helvetica, Arial, sans-serif; }
+body, strong, a, a:hover { color: inherit; }
+.is-hidden { display: none; }
 #cmain {
   max-width: 720px;
   margin: 0 auto;
   padding: 56px 0;
 }
-#cmain strong, #cmain h4 {
-  color: unset;
-}
-#cmain a:active, #cmain button:active {
-  box-shadow: 0 0 0 0.125em rgb(50 152 220 / 25%);
-}
-#cmain pre {
-  font: normal medium/1.25 monospace;
-  margin: 0;
-  padding: 2px;
-  overflow-wrap: normal;
-  overflow-x: hidden;
-  white-space: pre;
-  word-wrap: normal;
-}
+#cmain a:active, #cmain button:active { box-shadow: 0 0 0 0.125em rgb(50 152 220 / 25%); }
 #cmain sub, #cmain sup {
   position: relative;
   font-size: 0.75em;
   line-height: 0;
   vertical-align: baseline;
 }
-#cmain sub {
-  bottom: -0.25em;
-}
-#cmain sup {
-  top: -0.5em;
-}
-#cmain button,
-#cmain input,
-#cmain select {
+#cmain sub { bottom: -0.25em; }
+#cmain sup { top: -0.5em; }
+#cmain button, #cmain input, #cmain select {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -71,11 +46,55 @@ body {
   border-radius: 0;
   vertical-align: top;
 }
-#cmain input::placeholder {
-  opacity: 0.5;
+#cmain input::placeholder { opacity: 0.5; }
+#cmain select::-ms-expand { display: none; }
+#cmain pre {
+  background-color: unset;
+  color: unset;
+  font: normal medium/1.25 monospace;
+  margin: 0;
+  padding: 2px;
+  overflow-wrap: normal;
+  overflow-x: hidden;
+  white-space: pre;
+  word-wrap: normal;
 }
-#cmain select::-ms-expand {
-  display: none;
+#cgrid .pagebb { line-height: 0; }
+#cgrid .dnote { color: LightSteelBlue; }
+#cgrid .dvnd {
+  position: absolute;
+  margin: -8px 0 0 0;
+}
+#cgrid .dvsr {
+  position: absolute;
+  margin: 8px 0 0 0;
+  border-top: 1px solid;
+}
+#cgrid .dvar {
+  font-style: italic;
+  font-weight: bold;
+}
+#cgrid .frasl { margin: 0 -5px; }
+#cgrid .fbig {
+  position: absolute;
+  transform: scaleY(2.5);
+}
+#cgrid :not(sub):not(sup)>:not(sub):not(sup)>.fsan1,
+#cgrid :not(sub):not(sup)>:not(sub):not(sup)>.fsan2 {
+  display: inline-block;
+  width: 7.8px;
+  text-align: center;
+}
+#cgrid .fsan1 {
+  font-family: Arial, system-ui, sans-serif;
+  font-size: 81.25%; /* 13px */
+  line-height: 1.154;
+}
+#cgrid .fsan2 {
+  font-family: Arial, system-ui, sans-serif;
+  font-size: 93.75%; /* 15px */
+  line-height: 1;
+  vertical-align: bottom;
 }
 #cmain>#preresp {
   color: Orange;
@@ -116,52 +135,7 @@ body {
     "quad1A quad1B"
     "quad2B quad2B";
 }
-#cgrid .pagebb {
-  line-height: 0;
-}
-#cgrid .dnote {
-  color: LightSteelBlue;
-}
-#cgrid .dvnd {
-  position: absolute;
-  margin: -8px 0 0 0;
-}
-#cgrid .dvsr {
-  position: absolute;
-  margin: 8px 0 0 0;
-  border-top: 1px solid;
-}
-#cgrid .dvar {
-  font-style: italic;
-  font-weight: bold;
-}
-#cgrid .frasl {
-  margin: 0 -5px;
-}
-#cgrid .fbig {
-  position: absolute;
-  transform: scaleY(2.5);
-}
-#cgrid :not(sub):not(sup)>:not(sub):not(sup)>.fsan1,
-#cgrid :not(sub):not(sup)>:not(sub):not(sup)>.fsan2 {
-  display: inline-block;
-  width: 7.8px;
-  text-align: center;
-}
-#cgrid .fsan1 {
-  font-family: Arial, system-ui, sans-serif;
-  font-size: 81.25%; /* 13px */
-  line-height: 1.154;
-}
-#cgrid .fsan2 {
-  font-family: Arial, system-ui, sans-serif;
-  font-size: 93.75%; /* 15px */
-  line-height: 1;
-  vertical-align: bottom;
-}
-#cgrid>#quad1A, #cgrid>#quad1B {
-  min-height: 56px;
-}
+#cgrid>#quad1A, #cgrid>#quad1B { min-height: 56px; }
 #cgrid>#quad2A, #cgrid>#quad2B {
   min-height: 472px;
   overflow-x: auto;
@@ -173,9 +147,7 @@ body {
 //width: 168px;
   text-align: right;
 }
-#cgrid>#quad1B, #cgrid>#quad2B {
-//max-width: 552px;
-}
+#cgrid>#quad1B, #cgrid>#quad2B { //max-width: 552px; }
 #cgrid>#quad1A {
   grid-area: quad1A;
   background: LightGrey;
@@ -231,18 +203,10 @@ body {
   -webkit-overflow-scrolling: touch;
   white-space: nowrap;
 }
-#cgrid.xpndq2B>#plist {
-  display: none;
-}
-#cmain .cfield .iwarn {
-  color: Orange;
-}
-#cmain .cfield .isucc {
-  color: CornFlowerBlue;
-}
-#cmain .cfield .slist {
-  position: relative;
-}
+#cgrid.xpndq2B>#plist { display: none; }
+#cmain .cfield .iwarn { color: Orange; }
+#cmain .cfield .isucc { color: CornFlowerBlue; }
+#cmain .cfield .slist { position: relative; }
 #cmain .cfield .slist::after {
   position: absolute;
   top: 8px;
@@ -255,18 +219,10 @@ body {
   opacity: 0.5;
   pointer-events: none;
 }
-#cmain .cfield>.ccntr:not(:last-child) {
-  margin-right: 8px;
-}
-#cmain .cfield:not(:last-child) {
-  margin-bottom: 8px;
-}
-#cmain .cfield>.addns>.ccntr {
-  margin-right: 0;
-}
-#cmain .cfield #xsetinp {
-  width: 168px;
-}
+#cmain .cfield>.ccntr:not(:last-child) { margin-right: 8px; }
+#cmain .cfield:not(:last-child) { margin-bottom: 8px; }
+#cmain .cfield>.addns>.ccntr { margin-right: 0; }
+#cmain .cfield #xsetinp { width: 168px; }
 #cmain .cfield #xsetlist {
   width: 24px;
   cursor: pointer;
@@ -284,8 +240,11 @@ print and (resolution: 300dpi) and (width: 557px) { /* iMac-Chrome, page:portrai
   #cgrid .pagebb { page-break-before: always; break-before: page; }
   #cgrid:not(.clpsrow1) .pagebb { margin-top: var(--row1ht, -56px); }
 }
-@media print and (max-width: 554px), /* iPhone/iPad/iMac-Safari */
-print and (min-width: 558px) and (max-width: 2048px) {
+@media print and (min-width: 365px) and (max-width: 554px),
+print and (min-width: 558px) and (max-width: 736px),
+print and (min-width: 738px) and (max-width: 785px),
+print and (min-width: 787px) and (max-width: 952px),
+print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safari */
   html { width: 768px; }
 }
 </style>
