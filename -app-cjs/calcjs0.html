@@ -14,15 +14,19 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
-body { font: normal medium Helvetica, Arial, sans-serif; }
-body, strong, a, a:hover { color: inherit; }
+strong, mark, table th { color: inherit; }
+body {
+  font: normal medium Helvetica, Arial, sans-serif;
+  margin: 64px 8px;
+  padding: 0;
+}
 .is-hidden { display: none; }
 #cmain {
   max-width: 720px;
   margin: 0 auto;
-  padding: 56px 0;
 }
 #cmain a:active, #cmain button:active { box-shadow: 0 0 0 0.125em rgb(50 152 220 / 25%); }
+#cmain a:hover { color: CornFlowerBlue; }
 #cmain sub, #cmain sup {
   position: relative;
   font-size: 0.75em;
@@ -228,8 +232,7 @@ body, strong, a, a:hover { color: inherit; }
   cursor: pointer;
 }
 @media print {
-  body { margin: 0 auto; }
-  #cmain { padding: 0; }
+  body { margin: 0; }
   #cgrid>#quad1A { box-shadow: inset 0 -1px LightGrey; }
   #cgrid>#quad1B { box-shadow: inset 0 -1px LightSteelBlue; }
   #cmain>#mctnr, #cgrid #dfinal, #cgrid #dinitl,
