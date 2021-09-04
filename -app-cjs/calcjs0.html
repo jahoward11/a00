@@ -21,6 +21,14 @@ body {
   padding: 64px 8px;
 }
 .is-hidden { display: none; }
+#screenmask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 0;
+}
 #cmain {
   max-width: 720px;
   margin: 0 auto;
@@ -245,7 +253,7 @@ print and (resolution: 300dpi) and (width: 557px) { /* iMac-Chrome, page:portrai
   #cgrid:not(.clpsrow1) .pagebb { margin-top: var(--row1ht, -56px); }
 }
 @media print and (min-width: 365px) and (max-width: 554px),
-print and (min-width: 558px) and (max-width: 736px),
+print and (min-width: 558px) and (max-width: 734px),
 print and (min-width: 738px) and (max-width: 785px),
 print and (min-width: 787px) and (max-width: 952px),
 print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safari */
@@ -254,6 +262,7 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
 </style>
 </head>
 <body>
+<div id="screenmask" class="is-hidden"></div>
 <main id="cmain">
 <xmp id="dinput" class="is-hidden">
 
@@ -303,10 +312,10 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
   quad2A = document.querySelector('#cgrid>#quad2A'),
   quad2B = document.querySelector('#cgrid>#quad2B'),
   plist = document.querySelector('#cgrid>#plist'),
-  xsetinp = document.querySelector('#cmain #xsetinp') || document.createElement('i'),
-  xsetlist = document.querySelector('#cmain #xsetlist') || xsetinp,
-  btnsave = document.querySelector('#cmain #btnsave') || xsetinp,
-  btndel = document.querySelector('#cmain #btndel') || xsetinp,
+  xsetinp = document.querySelector('#cmain #xsetinp'),
+  xsetlist = document.querySelector('#cmain #xsetlist'),
+  btnsave = document.querySelector('#cmain #btnsave'),
+  btndel = document.querySelector('#cmain #btndel'),
   dinp2 = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
     || { value: dinput.innerHTML.replace(/\n+$|^\n+/g, "") },
   respShow = resp => preresp.innerHTML
@@ -335,9 +344,9 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
     !cgrid.classList.contains("xpndq2B") || qrys.push("!col1");
     cheadg.textContent === "JavaScript Calculator"
     || qrys.push("title=" + window.encodeURIComponent(cheadg.textContent));
-    !xsetlist.value || qrys.push("dload=" + window.encodeURIComponent(xsetlist.value));
+    !(xsetlist || {}).value || qrys.push("dload=" + window.encodeURIComponent(xsetlist.value));
     quad2B.click();
-    xsetinp.value = quad2A.innerHTML = quad1B.innerHTML = quad1A.innerHTML = "";
+    (xsetinp || {}).value = quad2A.innerHTML = quad1B.innerHTML = quad1A.innerHTML = "";
     quad2B.innerHTML = "// __To preserve view settings to URL:__"
     + "\n// 1. Edit &amp; un-comment settings, below --"
     + "\n   // combining desired parts into a one-line expression."
@@ -355,7 +364,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
     + "\n  // val0s= | re-assign initial values of pre-loaded data set\n\n// "
     + (dinp2.type ? "window_location_search" : "window.location.search") + " = \"" + qrys.join("&")
     + "\"\n // + \"" + (!qrys.length ? "" : "&") + "cmods=\" + encodeURIComponent(\"3,5,prj42.mjs\")"
-    + ( xsetlist.value ? "" : "\n // + \"&dload=\" + encodeURIComponent(\"https://host/pathname\")")
+    + ( (xsetlist || {}).value ? "" : "\n // + \"&dload=\" + encodeURIComponent(\"https://host/pathname\")")
     + "\n // + \"&val0s=\" + encodeURIComponent(\"a:10,b:20,c:30\")\n<br>";
     window.getSelection().setPosition(quad2B.firstChild, quad2B.textContent.length);
   },
@@ -364,7 +373,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
       chtml = '<!DOCTYPE html>\n<html lang="en">\n<head>\n'
       + (document.querySelector('#ecorender') || document.documentElement).innerHTML
         .replace(/\n+$|^\n+|^<head>\n?|^#cmain \.cfield [^]+?\n(?=@media print {\n)|,\n *xsetLoad = [^]+?(?=;\nwindow\.location\.search)|^if \(\/\^http[^]+?\n}\n|\n?<\/body>$/gim, "")
-        .replace(/^(<\/style>)[^]*?(?=<main\b.*?>)/im, "$1\n</head>\n<body>\n")
+        .replace(/^(<\/style>)[^]*?(?=<div .+><\/div>$)/im, "$1\n</head>\n<body>\n")
         .replace(/^(<xmp id="dinput".*?>)[^]*?(?=<\/xmp>)/im, (m, c1) => c1 + "\n" + dinp2.value + "\n")
         .replace(/^(<pre id="preresp">)[^]*?(?=<\/pre>)/im, "$1")
         .replace( /^(<div id="cgrid".*?>\n *<pre id="quad1A".*?>)[^]*?(<\/pre><pre id="quad1B".*?>)[^]*?(<\/pre>\n *<pre id="quad2A".*?>)[^]+?(?=\n<\/div>)/im,
@@ -390,7 +399,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
       cheadg.focus();
     } else if (/[34]/.test(evt.target.selectedIndex)) {
       gridAdj(evt.target.selectedIndex);
-    } else if (evt.target.selectedIndex == 5 && (xsetlist.value || !dinp2.value)) {
+    } else if (evt.target.selectedIndex == 5 && ((xsetlist || {}).value || !dinp2.value)) {
       viewSet();
     } else if (evt.target.selectedIndex == 6) {
       calcCopy();
@@ -405,7 +414,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
     evt.preventDefault();
   },
   xprsEval = () => {
-    rset ? (preresp.innerHTML = "") : ++rset && !(xsetlist.value = "")
+    rset ? (preresp.innerHTML = "") : ++rset && !((xsetlist || {}).value = "")
       && val0s.forEach(v => v && (dinp2.value = dinp2.value.replace(v[0], v[1])));
     let $ = {}, _ = {}, _ks = [], rslt,
       xprsns = (dinp2.value || "")
@@ -480,11 +489,10 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
     .then(val => dinp2.value = val.content || (typeof val !== 'object' ? val : "// " + JSON.stringify(val)))
     .then(xprsEval).catch(respShow),
   dinpRegen = evt => {
-    let eobj, rnge, seln;
-    if ( (eobj = (evt || {}).target)
-    && [null, "parentElement", "parentElement", "parentElement"]
-    .some(k => /quad2B|plist/.test((eobj = eobj[k] || eobj).id || "")) ) {
-      if (/plist/.test((evt.target.parentElement || {}).id || "")) {
+    let rnge, seln;
+    if ( evt.target.parentElement.id === "plist" || evt.path.length >= 7
+    && evt.path[evt.path.length - (!window.ecodc1 ? 7 : 8)].id === "quad2B" ) {
+      if (evt.target.parentElement.id === "plist") {
         seln = window.getSelection();
         seln.removeAllRanges();
         rnge = document.createRange();
@@ -495,7 +503,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
           .findIndex(e => e.isSameNode(seln = window.getSelection().focusNode) || e.contains(seln))
           / quad2B.childNodes.length;
         rnge = rnge < 0.15 ? 0 : rnge > 0.85 ? 1 : rnge;
-        plist.className = "";
+        document.querySelector('#screenmask').className = plist.className = "";
         q2Bcopy = quad2B.innerHTML;
         quad2B.innerHTML = (dinp2.value || "")
         .replace(/&(?=#?\w+;)/g, "&amp;").replace(/&(?=amp;[gl]t;)/gi, "&amp;")
@@ -505,12 +513,12 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
           : quad2B.textContent.indexOf("\n", quad2B.textContent.length * rnge - 1) + 1 );
       }
     } else if (!plist.className && quad2B.innerHTML === di2html) {
-      plist.className = "is-hidden";
+      document.querySelector('#screenmask').className = plist.className = "is-hidden";
       quad2B.innerHTML = q2Bcopy;
       q2Bcopy = di2html = null;
     } else if (!plist.className) {
-      xsetlist.value = "";
-      plist.className = "is-hidden";
+      (xsetlist || {}).value = "";
+      document.querySelector('#screenmask').className = plist.className = "is-hidden";
       q2Bcopy = di2html = null;
       dinp2.value = quad2B.innerHTML
       .replace(/<(\w+)>\s*<\/\1>/g, "")
@@ -596,7 +604,7 @@ if (/^http/.test(window.location.protocol)) {
 } else {
   slistRegen(dload);
 }
-document.body.contains(xsetinp) || initLoad();
+xsetinp || initLoad();
 plist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
   .map((e, i) => `<li>Math.${e}${/^[A-Z]/.test(e) ? "" : "()"}</li>`).join("\n    ")
   + "\n    " + Object.getOwnPropertyNames(Number)
@@ -612,8 +620,7 @@ plist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
     "- - -", "&brvbar;", "&uml;", "&macr;", "&deg;", "&pm;", "&sup2;", "&sup3;", "&acute;", "&micro;", "&sup1;", "&frac14;", "&frac12;", "&frac34;", "&times;", "&divide;", "&fnof;", "&tilde;", "(low tilde &#x2f7;)", "(combining circumflex &#x302;)", "(combining tilde &#x303;)", "(combining macron &#x304;)", "(combining overline &#x305;)", "(combining low line &#x332;)", "&horbar;", "&Vert;", "&bull;", "(triangular bullet &#x2023;)", "&hellip;", "&permil;", "&pertenk;", "&prime;", "&Prime;", "&tprime;", "&backprime;", "&oline;", "&frasl;", "&qprime;", "(superscript 0 &#x2070;)", "(superscript 4 &#x2074;)", "(superscript 5 &#x2075;)", "(superscript 6 &#x2076;)", "(superscript 7 &#x2077;)", "(superscript 8 &#x2078;)", "(superscript 9 &#x2079;)", "(superscript '+' &#x207a;)", "(superscript '-' &#x207b;)", "(superscript '=' &#x207c;)", "(superscript '(' &#x207d;)", "(superscript ')' &#x207e;)", "(subscript 0 &#x2080;)", "(subscript 1 &#x2081;)", "(subscript 2 &#x2082;)", "(subscript 3 &#x2083;)", "(subscript 4 &#x2084;)", "(subscript 5 &#x2085;)", "(subscript 6 &#x2086;)", "(subscript 7 &#x2087;)", "(subscript 8 &#x2088;)", "(subscript 9 &#x2089;)", "(subscript '+' &#x208a;)", "(subscript '-' &#x208b;)", "(subscript '=' &#x208c;)", "(subscript '(' &#x208d;)", "(subscript ')' &#x208e;)", "&Copf; (complexes)", "(Euler constant &#x2107;)", "&Hopf; (quaternions)", "&Nopf; (naturals)", "&numero;", "&Popf; (primes)", "&Qopf; (rationals)", "&Ropf; (reals)", "&Zopf; (integers)", "&escr;", "&ee;", "&ii;", "(frac 1-7th &#x2150;)", "(frac 1-9th &#x2151;)", "(frac 1-10th &#x2152;)", "&frac13;", "&frac23;", "&frac15;", "&frac25;", "&frac35;", "&frac45;", "&frac16;", "&frac56;", "&frac18;", "&frac38;", "&frac58;", "&frac78;", "(numerator 1 &#x215f;)", "&larr;", "&uarr;", "&rarr;", "&darr;", "&harr;", "&lArr;", "&uArr;", "&rArr;", "&dArr;", "&hArr;",
     "&forall;", "&part;", "&exist;", "&nexist;", "&empty;", "&nabla;", "&in;", "&notin;", "&ni;", "&notni;", "&prod;", "&sum;", "&minus;", "(division slash &#x2215;)", "&setmn;", "&lowast;", "&radic;", "&prop;", "&infin;", "&angrt;", "&ang;", "&mid;", "&nmid;", "&par;", "&npar;", "&and;", "&or;", "&cap;", "&cup;", "&int;", "&there4;", "&becaus;", "&ratio;", "&Colon;", "&sim;", "&nsim;", "&cong;", "&ap;", "&nap;", "&ne;", "&equiv;", "&nequiv;", "&le;", "&ge;", "&ll;", "&gg;", "&sub;", "&sup;", "&nsub;", "&nsup;", "&sube;", "&supe;", "&nsube;", "&nsupe;", "&subne;", "&supne;", "&oplus;", "&ominus;", "&otimes;", "&osol;", "&odot;", "&ocir;", "&oast;", "&odash;", "&plusb;", "&minusb;", "&timesb;", "&sdotb;", "&vdash;", "&dashv;", "&top;", "&bot;", "&sdot;", "&check;", "(multiplication X &#x2715;)", "&cross;", "(math diagonal &#x27cb;)", "(long division &#x27cc;)", "&lang;", "&rang;", "&Lang;", "&Rang;", "&xoplus;", "&xotime;" ]
   .map(e => `<li>${e.replace(/(.*)&(#?\w+;)/, "&$2 $1&amp;$2")}</li>`).join("\n    ") + "\n  ";
-(document.querySelector('#ecorender') || document.body)
-.addEventListener('click', dinpRegen);
+['#screenmask', '#cmain'].forEach(e => document.querySelector(e).addEventListener('click', dinpRegen));
 cheadg.addEventListener('blur', titSave);
 menulist.addEventListener('change', menuSel);
 quad2B.addEventListener('paste', txtPste);
