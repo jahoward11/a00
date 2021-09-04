@@ -489,9 +489,10 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
     .then(val => dinp2.value = val.content || (typeof val !== 'object' ? val : "// " + JSON.stringify(val)))
     .then(xprsEval).catch(respShow),
   dinpRegen = evt => {
-    let rnge, seln;
-    if ( evt.target.parentElement.id === "plist" || evt.path.length >= 7
-    && evt.path[evt.path.length - (!window.ecodc1 ? 7 : 8)].id === "quad2B" ) {
+    let eobj = evt.target, rnge, seln;
+    if ( eobj.parentElement.id === "plist" || eobj.id !== "screenmask" && [0, 1, 2, 3, 4, 5, 6]
+    .some(i => (eobj = !i ? eobj : eobj["parentElement"] || eobj).id === "quad2B") ) {
+    //&& evt.path[evt.path.length - (!window.ecodc1 ? 7 : 8)].id === "quad2B" ) {
       if (evt.target.parentElement.id === "plist") {
         seln = window.getSelection();
         seln.removeAllRanges();
