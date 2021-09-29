@@ -1,6 +1,6 @@
 // Service Worker
 
-const cacheName = "calcjs-v00.11",
+const cacheName = "calcjs-v00.12",
   cacheKeeplist = [cacheName],
   appShellFiles = [
     "../-app-cjs/calcjs0.html",
@@ -13,6 +13,7 @@ const cacheName = "calcjs-v00.11",
     "../-res-js/localforage.nopromises.min.js"
   ],
   contentToCache = [],
+  recd1 = {},
   tstampsw = Date.now();
 
 self.addEventListener('install', e => {
@@ -39,18 +40,20 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   //console.log("[Service Worker] Fetching resource: " + e.request.url);
   let reqPrc = (rsp1 = {}) => {
-    if ( rsp1.ok && ( !navigator.onLine
+    if ( rsp1.ok && ( !navigator.onLine || recd1[e.request.url]
     || !/\/a00\/-app-cjs\/[\w.-]+\??$/.test(e.request.url) )) {
       return rsp1;
     } else {
       return fetch(e.request).then(rsp2 =>
         !rsp2.ok || e.request.method !== 'GET' || /\?rev=/.test(e.request.url)
-        || !/\/a00\/[\w/.-]+\??$/.test(e.request.url)
+        || recd1[e.request.url] || !/\/a00\/[\w/.-]+\??$/.test(e.request.url)
         ? rsp1.ok && rsp1 || rsp2
         : caches.open(cacheName).then(cache => {
             console.log( "[Service Worker] Caching new resource: " + e.request.url
               + "\n  (Time elapsed since SW install: "
               + ((Date.now() - tstampsw) / (60 * 1000)) + " min)" );
+            !/\/a00\/-app-cjs\/[\w.-]+\??$/.test(e.request.url)
+            || (recd1[e.request.url] = 1);
             cache.put(e.request, rsp2.clone());
             return rsp2;
           })
@@ -59,6 +62,6 @@ self.addEventListener('fetch', e => {
   };
   e.respondWith(
     !caches ? fetch(e.request)
-    : caches.match(e.request).then(reqPrc).catch(reqPrc).catch(() => fetch(e.request))
+    : caches.match(e.request).catch(reqPrc).catch(() => fetch(e.request))
   );
 });
