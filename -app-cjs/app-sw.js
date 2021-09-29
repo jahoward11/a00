@@ -44,9 +44,9 @@ self.addEventListener('fetch', e => {
     || !/\/a00\/-app-cjs\/[\w.-]+\??$/.test(e.request.url) )) {
       return rsp1;
     } else {
-      return fetch(e.request).then(rsp2 =>
+      return fetch(e.request).then( rsp2 =>
         !rsp2.ok || e.request.method !== 'GET' || /\?rev=/.test(e.request.url)
-        || recd1[e.request.url] || !/\/a00\/[\w/.-]+\??$/.test(e.request.url)
+        || !/\/a00\/[\w/.-]+\??$/.test(e.request.url)
         ? rsp1.ok && rsp1 || rsp2
         : caches.open(cacheName).then(cache => {
             console.log( "[Service Worker] Caching new resource: " + e.request.url

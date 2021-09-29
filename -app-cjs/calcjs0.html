@@ -567,7 +567,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
         : "\n      <optgroup label=\"" + oe[0] + "/\">\n        "
           + (!i ? oe[1] : Object.keys(oe[1]).filter(e => e !== "groupname"))
             .map(e => "<option>" + e + "</option>").join("\n        ")
-          + "\n      </optgroup>" ).join("") + "\n";
+          + "\n      </optgroup>" ).join("") + "\n    ";
       xsetlist.value = seln || "";
       rset || !dload ? xprsEval() : xsetLoad();
     }
