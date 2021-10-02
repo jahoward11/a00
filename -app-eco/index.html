@@ -5256,8 +5256,8 @@ if (rmtready && 'serviceWorker' in window.navigator) {
   linknew.href = "../-app-eco/app.webmanifest";
   linknew.rel = 'manifest';
   linknew.onerror = () => respShow("**Alert: Webmanifest loading failed.");
-  protfile || hostlh || hostibm || document.querySelectorAll('link')
-    .forEach(lnk => lnk.href = lnk.href.replace(/^.*(?:\.\.|\/a00)(?=\/-)/, a00pth));
+  //protfile || hostlh || hostibm || document.querySelectorAll('link')
+    //.forEach(lnk => lnk.href = lnk.href.replace(/^.*(?:\.\.|\/a00)(?=\/-)/, a00pth));
   document.head.insertBefore(linknew, document.querySelector('head>style'));
   window.navigator.serviceWorker.register("../-app-eco/app-sw.js") //, { scope: "../" })
   .then(reg => window.console.log("SW registration succeeded. Scope: " + reg.scope))
