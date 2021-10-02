@@ -1,6 +1,6 @@
 // Service Worker
 
-const hostibm = /\.cloudant\.com$/.test(window.location.host),
+const hostibm = /\.cloudant\.com$/.test(location.host),
   cacheName = "ecollabs-v00.12",
   cacheKeeplist = [cacheName],
   appShellFiles = [
