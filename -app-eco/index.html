@@ -3931,12 +3931,11 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
           <option>EC2.oQA("urls")</option>
           <option>EC2.oQA("epsets")</option>
           <option>EC2.oQA("filewkg")</option>
+          <option>EC2.oQA("lnkstor")</option>
           <option>EC2.oQA("updpch")</option>
-          <option>EC2.oQA("lnkinsstor")</option>
-          <option>EC2.oQA("tm0urole")</option>
-          <option>EC2.oQA("modjs.keys")</option>
+          <option>EC2.oQA("MODJS.keys")</option>
           <option>
-            EC2.oQA("TMPL.publmgr").parseconfigs.scriptsconstr[0].deftxt
+            EC2.oQA("TMPLS.publmgr").parseconfigs.scriptsconstr[0].deftxt
 &#x2028; //PouchDB("mydb1").get("myfile").then(doc =&gt; doc.filefrags[0].contenttxt)
           </option>
           <option>document.querySelector('head').innerHTML.replace(/&lt;style[^]+/, "")</option>
@@ -5158,14 +5157,16 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 (function () {
 'use strict';
 var dbpch, idbrslt, idbReq;
-const assa00 = "https://b41897c5-1ba0-4adb-a2f6-4b7ab462c950-bluemix.cloudant.com/a00/",
-  hostibm = /\.cloudant\.com$/.test(window.location.host),
-  patha00 = /\/a00\/-app-eco\/[\w.-]+$/.test(window.location.pathname),
+const hostibm = /\.cloudant\.com$/.test(window.location.host),
+  hostlh = /^localhost:\d+$|^(?:192\.168|127\.0|0\.0)\.0\.\d+:\d+$/.test(window.location.host),
+  //loca00 = /\/a00\/-app-eco\/[\w.-]+$/.test(window.location.pathname),
   platipd2 = (window.navigator.userAgentData || window.navigator).platform === 'MacIntel'
     && window.screen.height === 1024 && window.screen.width === 768,
   platiphn = (window.navigator.userAgentData || window.navigator).platform === 'iPhone',
   protfile = window.location.protocol === 'file:',
   rmtready = /^http/.test(window.location.protocol) && window.navigator.onLine,
+  a00pth = protfile || hostlh || hostibm ? ".."
+    : "https://b41897c5-1ba0-4adb-a2f6-4b7ab462c950-bluemix.cloudant.com/a00",
   qcontxta = document.querySelector('#econav0 #qcontxta'),
   DB_NAMES = ["a00"], //DB_VERSIONS = [5],
   DB_STORES = ["document-store", "by-sequence", "attach-store"],
@@ -5177,29 +5178,10 @@ const assa00 = "https://b41897c5-1ba0-4adb-a2f6-4b7ab462c950-bluemix.cloudant.co
   MDIT_REFS = ["markdown-it.min.js", "markdown-it-attrs.browser.js", "abbr", "container",
     "deflist", "emoji-light", "footnote", "for-inline", "ins", "mark", "sub", "sup",
     "anchor", "decorate", "implicit-figures"], //"emoji",
-  LOC_ASSETS = !hostibm && !protfile || !patha00 ? [] : FILE_IDS.map( (e, i) =>
+  LOC_ASSETS = !protfile && !hostlh && !hostibm ? [] : FILE_IDS.map( (e, i) =>
       !e || protfile && platipd2 && !/^-app-eco/.test(e) ? "" : "../" + e + "/" + ATT_KEYS[i] ),
-  RMT_ASSETS = [
-    "../-res-js/pouchdb.min.js",
-    //"https://cdn.jsdelivr.net/npm/pouchdb@7.1.1/dist/pouchdb.min.js",
-    "../-res-js/pouchdb.all-dbs.min.js",
-    //"https://raw.githubusercontent.com/pouchdb-community/pouchdb-all-dbs/master/dist/pouchdb.all-dbs.min.js",
-    "../-res-js/appid.min.js",
-    //"https://cdn.appid.cloud.ibm.com/appid-0.3.0.min.js",
-    "",
-    //"../-res-css/bulma0.9.3.min.css",
-    //"https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css",
-    "../-res-js-mdit/markdown-it.min.js",
-    //"https://cdn.jsdelivr.net/npm/markdown-it@latest/dist/markdown-it.min.js",
-    "../-res-js/handlebars.min.js",
-    //"https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.min.js",
-    "../-res-js/localforage.nopromises.min.js",
-    //"https://cdn.rawgit.com/mozilla/localForage/master/dist/localforage.nopromises.min.js",
-    "../-res-js/highlight.pack.js",
-    "../-res-js/dropbox-oauth2.js",
-    //"https://raw.githubusercontent.com/JamesMaroney/dropbox-js/master/dropbox.js",
-    "../-app-eco/eco-ctrl.js"
-  ].map(e => e.replace( /^\.\.\//, assa00)),
+  RMT_ASSETS = FILE_IDS.map( (e, i) =>
+    "https://b41897c5-1ba0-4adb-a2f6-4b7ab462c950-bluemix.cloudant.com/a00/" + e + "/" + ATT_KEYS[i] ),
   respShow = resp => qcontxta.value += !resp ? ""
     : ( resp.target && resp.target.error ? "**" + resp.target.error
       : typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
@@ -5239,14 +5221,12 @@ const assa00 = "https://b41897c5-1ba0-4adb-a2f6-4b7ab462c950-bluemix.cloudant.co
     .catch( () => rmtready && scrInjPr(LOC_ASSETS[2])
       .catch(() => rmtready && scrInjPr(RMT_ASSETS[2])).catch(respShow) )
     .then( () => !dbpch || dbpch.name !== DB_NAMES[0] // todo: test for startup/private browsing mode
-      ? ( window.navigator.onLine && !patha00
-        ? scrInjPr(RMT_ASSETS[4]).catch(respShow)
-        : MDIT_REFS.forEach( (ei, i) =>
-          scrInjPr("../" + FILE_IDS[4] + "/" + (i < 2 ? ei : "markdown-it-" + ei + ".min.js"))
-          .catch(respShow) ))
-      : MDIT_REFS.forEach( (ei, i) =>
-        dbpch.getAttachment(FILE_IDS[4], i < 2 ? ei : "markdown-it-" + ei + ".min.js")
-        .then(scrInjPr).catch(() => {}) ))
+      ? MDIT_REFS.forEach( (e, i) => //scrInjPr(RMT_ASSETS[4]).catch(respShow)
+        scrInjPr(a00pth + "/" + FILE_IDS[4] + "/" + (i < 2 ? e : "markdown-it-" + e + ".min.js"))
+        .catch(respShow) )
+      : MDIT_REFS.forEach( (e, i) =>
+        dbpch.getAttachment(FILE_IDS[4], i < 2 ? e : "markdown-it-" + e + ".min.js")
+        .then(scrInjPr).catch(() => {}) ) )
     .then(() => dbpch && dbpch.getAttachment(FILE_IDS[5], ATT_KEYS[5])).then(scrInjPr)
     .catch(() => scrInjPr(LOC_ASSETS[5]).catch(() => scrInjPr(RMT_ASSETS[5])).catch(respShow))
     .then(() => dbpch && dbpch.getAttachment(FILE_IDS[6], ATT_KEYS[6])).then(scrInjPr)
@@ -5273,12 +5253,12 @@ const assa00 = "https://b41897c5-1ba0-4adb-a2f6-4b7ab462c950-bluemix.cloudant.co
   .setAttribute('content', "width=device-width, maximum-scale=1"); //, user-scalable=yes
 if (rmtready && 'serviceWorker' in window.navigator) {
   let linknew = document.createElement('link');
-  linknew.href = assa00 + "-app-eco/app.webmanifest";
+  linknew.href = a00pth + "/-app-eco/app.webmanifest";
   linknew.rel = 'manifest';
   linknew.onerror = () => respShow("**Alert: Webmanifest loading failed.");
   document.head.insertBefore(linknew, document.querySelector('head>style'));
-  document.querySelectorAll('link')
-  .forEach(lnk => lnk.href = lnk.href.replace(/^\.\.\/(?:\.\.\/a00\/|)/, assa00));
+  protfile || hostlh || hostibm || document.querySelectorAll('link')
+    .forEach(lnk => lnk.href = lnk.href.replace(/^.*(?:\.\.|\/a00)(?=\/-)/, a00pth));
   window.navigator.serviceWorker.register("../-app-eco/app-sw.js") //, { scope: "../" })
   .then(reg => window.console.log("SW registration succeeded. Scope: " + reg.scope))
   .catch(err => window.console.log("SW registration failed: " + err));
