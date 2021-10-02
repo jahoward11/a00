@@ -71,6 +71,6 @@ self.addEventListener('fetch', e => {
   };
   e.respondWith(
     !caches ? fetch(e.request) //caches.match("../-res-img/icon-192.png"))
-    : caches.match(e.request).then(reqPrc).catch(() => fetch(e.request))
+    : caches.match(e.request).catch(reqPrc).then(reqPrc).catch(() => fetch(e.request))
   );
 });
