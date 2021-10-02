@@ -62,6 +62,6 @@ self.addEventListener('fetch', e => {
   };
   e.respondWith(
     !caches ? fetch(e.request)
-    : caches.match(e.request).catch(reqPrc).catch(() => fetch(e.request))
+    : caches.match(e.request).catch(reqPrc).then(reqPrc).catch(() => fetch(e.request))
   );
 });
