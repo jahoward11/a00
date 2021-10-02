@@ -5158,7 +5158,8 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 (function () {
 'use strict';
 var dbpch, idbrslt, idbReq;
-const hostibm = /\.cloudant\.com$/.test(window.location.host),
+const assa00 = "https://b41897c5-1ba0-4adb-a2f6-4b7ab462c950-bluemix.cloudant.com/a00/",
+  hostibm = /\.cloudant\.com$/.test(window.location.host),
   patha00 = /\/a00\/-app-eco\/[\w.-]+$/.test(window.location.pathname),
   platipd2 = (window.navigator.userAgentData || window.navigator).platform === 'MacIntel'
     && window.screen.height === 1024 && window.screen.width === 768,
@@ -5198,8 +5199,7 @@ const hostibm = /\.cloudant\.com$/.test(window.location.host),
     "../-res-js/dropbox-oauth2.js",
     //"https://raw.githubusercontent.com/JamesMaroney/dropbox-js/master/dropbox.js",
     "../-app-eco/eco-ctrl.js"
-  ].map( e => e.replace( /^\.\.\//,
-    "https://b41897c5-1ba0-4adb-a2f6-4b7ab462c950-bluemix.cloudant.com/a00/" )),
+  ].map(e => e.replace( /^\.\.\//, assa00)),
   respShow = resp => qcontxta.value += !resp ? ""
     : ( resp.target && resp.target.error ? "**" + resp.target.error
       : typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
@@ -5273,10 +5273,12 @@ const hostibm = /\.cloudant\.com$/.test(window.location.host),
   .setAttribute('content', "width=device-width, maximum-scale=1"); //, user-scalable=yes
 if (rmtready && 'serviceWorker' in window.navigator) {
   let linknew = document.createElement('link');
-  linknew.href = "../-app-eco/app.webmanifest";
+  linknew.href = assa00 + "-app-eco/app.webmanifest";
   linknew.rel = 'manifest';
   linknew.onerror = () => respShow("**Alert: Webmanifest loading failed.");
   document.head.insertBefore(linknew, document.querySelector('head>style'));
+  document.querySelectorAll('link')
+  .forEach(lnk => lnk.href = lnk.href.replace(/^\.\.\/(?:\.\.\/a00\/|)/, assa00));
   window.navigator.serviceWorker.register("../-app-eco/app-sw.js") //, { scope: "../" })
   .then(reg => window.console.log("SW registration succeeded. Scope: " + reg.scope))
   .catch(err => window.console.log("SW registration failed: " + err));
