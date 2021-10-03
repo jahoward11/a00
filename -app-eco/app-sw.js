@@ -2,6 +2,7 @@
 
 const hostibm = /\.cloudant\.com$/.test(location.host),
   hostlh = /^localhost:\d+$|^(?:192\.168|127\.0|0\.0)\.0\.\d+:\d+$/.test(location.host),
+  a00pth = "https://b41897c5-1ba0-4adb-a2f6-4b7ab462c950-bluemix.cloudant.com/a00",
   cacheName = "ecollabs-v00.12",
   cacheKeeplist = [cacheName],
   appShellFiles = [
@@ -29,8 +30,8 @@ self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(cacheName).then(cache => {
       console.log("[Service Worker] Caching: appShellFiles + content");
-      return cache.addAll( appShellFiles.concat(contentToCache).map( e => hostlh || hostibm ? e
-        : e.replace(/^\.\./, "https://b41897c5-1ba0-4adb-a2f6-4b7ab462c950-bluemix.cloudant.com/a00") ));
+      return cache.addAll( appShellFiles.concat(contentToCache)
+        .map(e => hostlh || hostibm ? e : e.replace(/^\.\./, a00pth)) );
     })
   );
 });
