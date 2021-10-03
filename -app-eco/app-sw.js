@@ -5,17 +5,17 @@ const hostibm = /\.cloudant\.com$/.test(location.host),
   cacheName = "ecollabs-v00.12",
   cacheKeeplist = [cacheName],
   appShellFiles = [
-    "../-app-eco/index.html",
+    //"../-app-eco/index.html",
     "../-app-eco/eco-ctrl.js",
     "../-app-eco/eco-srvc1.js",
     "../-app-eco/eco-srvc2.js",
     "../-app-eco/eco-srvc3.mjs",
     "../-res-js/ebook-annos-fns.js",
-    "../-res-js/srcdiff.js",
-    "../-res-img/ecologo-72.png",
-    "../-res-img/icon-144.png",
-    "../-res-img/icon-192.png",
-    "../-res-img/avatar000.png"
+    "../-res-js/srcdiff.js"
+    //"../-res-img/ecologo-72.png",
+    //"../-res-img/icon-144.png",
+    //"../-res-img/icon-192.png",
+    //"../-res-img/avatar000.png"
   ],
   contentToCache = [
     "../guide-httpcon",
@@ -71,6 +71,6 @@ self.addEventListener('fetch', e => {
   };
   e.respondWith(
     !caches ? fetch(e.request) //caches.match("../-res-img/icon-192.png"))
-    : caches.match(e.request).catch(reqPrc).then(reqPrc).catch(() => fetch(e.request))
+    : caches.match(e.request).then(reqPrc).catch(reqPrc).catch(() => fetch(e.request))
   );
 });
