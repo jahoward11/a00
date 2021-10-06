@@ -33,8 +33,8 @@ self.addEventListener('activate', e => {
     + ((Date.now() - tstamp) / (60 * 1000)) + " min)" );
   e.waitUntil(
     caches.keys().then( keyList => Promise.all( keyList.map( key =>
-      (cacheKeeplist || []).indexOf(key) > -1 || caches.delete(key)
-    )))
+      !key.startsWith(cacheName.replace(/-.+/, "")) || (cacheKeeplist || []).indexOf(key) > -1
+      || caches.delete(key) )))
   );
 });
 
