@@ -7,17 +7,21 @@ const hostibm = /\.cloudant\.com$/.test(location.host),
   cacheName = "ecollabs-v00.12",
   cacheKeeplist = [cacheName],
   appShellFiles = [
-    "../-app-eco/index.html",
+    //"../-app-eco/app.webmanifest",
+    //"../-app-eco/index.html",
     "../-app-eco/eco-ctrl.js",
     "../-app-eco/eco-srvc1.js",
     "../-app-eco/eco-srvc2.js",
     "../-app-eco/eco-srvc3.mjs",
+    "../-res-css/bulma0.9-minireset.css",
+    //"../-res-img/avatar000.png"
+    //"../-res-img/ecologo-72.png",
+    //"../-res-img/icon-48.png",
+    //"../-res-img/icon-96.png",
+    //"../-res-img/icon-144.png",
+    //"../-res-img/icon-192.png",
     "../-res-js/ebook-annos-fns.js",
-    "../-res-js/srcdiff.js",
-    "../-res-img/ecologo-72.png",
-    "../-res-img/icon-144.png",
-    "../-res-img/icon-192.png",
-    "../-res-img/avatar000.png"
+    "../-res-js/srcdiff.js"
   ],
   contentToCache = [
     "../guide-httpcon",
