@@ -64,7 +64,7 @@ self.addEventListener('fetch', e => {
       //console.log("[Service Worker] Fetching resource: " + e.request.url);
       return fetch(e.request).then( rsp2 =>
         !rsp2.ok || e.request.method !== 'GET' || /\?rev=/.test(e.request.url)
-        || !/\/a00\/[\w/.-]+\??$|\.cloudant\.com\/(?!a00\/)[\w.-]+\/-res-img\/[\w.-]+$|\/oauth\/v4\/.+\/(?:openid-configuration|publickeys)$|\/eco\/projects$|\/\/fonts\.gstatic\.com\/|\.gravatar\.com\/avatar\//.test(e.request.url)
+        || !/\/a00\/[\w/.-]+\??$|\.cloudant\.com\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|\/oauth\/v4\/.+\/(?:openid-configuration|publickeys)$|\/eco\/projects$|\/\/fonts\.gstatic\.com\/|\.gravatar\.com\/avatar\//.test(e.request.url)
         ? rsp1.ok && rsp1 || rsp2
         : caches.open(cacheName).then(cache => {
             console.log( "[Service Worker] Caching new resource: " + e.request.url
