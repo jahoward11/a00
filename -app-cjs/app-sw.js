@@ -23,8 +23,7 @@ self.addEventListener('install', e => {
       console.log("[Service Worker] Caching: appShellFiles + content");
       appShellFiles.concat(contentToCache).forEach(e => rcvd1[e] = 1);
       return cache.addAll(appShellFiles.concat(contentToCache));
-    })
-  );
+    }) );
 });
 
 self.addEventListener('activate', e => {
@@ -34,8 +33,7 @@ self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then( keyList => Promise.all( keyList.map( key =>
       !key.startsWith(cacheName.replace(/-.+/, "")) || (cacheKeeplist || []).indexOf(key) > -1
-      || caches.delete(key) )))
-  );
+      || caches.delete(key) ))) );
 });
 
 self.addEventListener('fetch', e => {
@@ -53,16 +51,14 @@ self.addEventListener('fetch', e => {
             console.log( "[Service Worker] Caching new resource: " + e.request.url
               + "\n  (Time elapsed since SW install: "
               + ((Date.now() - tstamp) / (60 * 1000)) + " min)" );
-            !/\/a00\/-app-cjs\/[\w.-]+\??$/.test(e.request.url)
+            !/\/a00\/(?:-app-cjs\/|)[\w.-]+\??$/.test(e.request.url)
             || (rcvd1[e.request.url] = 1);
             cache.put(e.request, rsp2.clone());
             return rsp2;
-          })
-      );
+          }) );
     }
   };
   e.respondWith(
     !caches ? fetch(e.request)
-    : caches.match(e.request).then(reqPrc).catch(reqPrc).catch(() => fetch(e.request))
-  );
+    : caches.match(e.request).then(reqPrc).catch(reqPrc).catch(() => fetch(e.request)) );
 });
