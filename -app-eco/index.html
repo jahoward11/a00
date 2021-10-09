@@ -3926,8 +3926,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
           <option>localStorage.removeItem("key")</option>
           <option>Object.getOwnPropertyNames(Math)</option>
           <option>Object.getOwnPropertyNames(Number)</option>
-          <option>EC2.u2B("")</option>
-          <option>EC2.oQA("")</option>
+          <option>EC2.u2B("avatar000.png")</option>
           <option>EC2.oQA("urls")</option>
           <option>EC2.oQA("epsets")</option>
           <option>EC2.oQA("filewkg")</option>
@@ -5199,15 +5198,15 @@ const hostibm = /\.cloudant\.com$/.test(window.location.host),
   },
   scrInjPr = (urlblob, type, charset) => new Promise((rslv, rjct) => {
     urlblob || rjct("**Alert: Script URL (or attachment BLOb) was not provided.");
-    let scriptnew = document.createElement('script');
-    scriptnew.src = urlblob instanceof Blob ? URL.createObjectURL(urlblob) : urlblob;
-    scriptnew.type = type || 'text/javascript';
-    !charset || scriptnew.setAttribute('charset', charset);
-    !rmtready || scriptnew.setAttribute('crossorigin', 'use-credentials');
-    //scriptnew.async = false; //respShow(err),
-    scriptnew.onerror = err => rjct("**Alert: Script resource GET/load error occured.");
-    scriptnew.onload = rslv;
-    !urlblob || document.querySelector('#iniscripts').appendChild(scriptnew);
+    let scrnew = document.createElement('script');
+    scrnew.src = urlblob instanceof Blob ? URL.createObjectURL(urlblob) : urlblob;
+    scrnew.type = type || 'text/javascript';
+    !charset || scrnew.setAttribute('charset', charset);
+    !rmtready || scrnew.setAttribute('crossorigin', 'use-credentials');
+    //scrnew.async = false; //respShow(err),
+    scrnew.onerror = err => rjct("**Alert: Script resource GET/load error occured.");
+    scrnew.onload = rslv;
+    !urlblob || document.querySelector('#iniscripts').appendChild(scrnew);
   }),
   assetsLoad = pchinjpr => pchinjpr
     .then(() => dbpch = window.PouchDB && new window.PouchDB(DB_NAMES[0]))

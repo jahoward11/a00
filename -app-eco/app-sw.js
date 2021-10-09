@@ -40,8 +40,7 @@ self.addEventListener('install', e => {
       appShellFiles.concat(contentToCache).forEach( e => 
         rcvd1[e.replace(/^\.\./, /\.\w{2,4}$/.test(e) && hostlh || a00path)] = 1 );
       return cache.addAll(hostibm ? appShellFiles.concat(contentToCache) : Object.keys(rcvd1));
-    })
-  );
+    }) );
 });
 
 self.addEventListener('activate', e => {
@@ -51,35 +50,32 @@ self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then( keyList => Promise.all( keyList.map( key =>
       !key.startsWith(cacheName.replace(/-.+/, "")) || (cacheKeeplist || []).indexOf(key) > -1
-      || caches.delete(key) )))
-  );
+      || caches.delete(key) ))) );
 });
 
 self.addEventListener('fetch', e => {
   let reqPrc = (rsp1 = {}) => {
     if ( rsp1.ok && ( !navigator.onLine || rcvd1[e.request.url]
-    || !/\/a00\/(?:-app-eco\/(?:eco-ctrl\.js|eco-srvc\d?\.m?js|index\.html)|-res-js\/ebook-annos-fns\.js|-res-js\/u\d\d[\w.-]+|[\w.-]+\??)$/.test(e.request.url) )) {
+    || !/\/a00\/(?:[\w.-]+\??|-app-eco\/(?:eco-ctrl\.js|eco-srvc\d?\.m?js|index\.html)|-res-js\/ebook-annos-fns\.js)$|\.cloudant\.com\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|-res-\w+\/u\d\d[\w.-]+$/.test(e.request.url) )) {
       return rsp1;
     } else {
       //console.log("[Service Worker] Fetching resource: " + e.request.url);
       return fetch(e.request).then( rsp2 =>
         !rsp2.ok || e.request.method !== 'GET' || /\?rev=/.test(e.request.url)
-        || !/\/a00\/[\w/.-]+\??$|\.cloudant\.com\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|\/oauth\/v4\/.+\/(?:openid-configuration|publickeys)$|\/eco\/projects$|\/\/fonts\.gstatic\.com\/|\.gravatar\.com\/avatar\//.test(e.request.url)
+        || !/\/a00\/[\w/.-]+\??$|\.cloudant\.com\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|-res-\w+\/u\d\d[\w.-]+$|\/oauth\/v4\/.+\/(?:openid-configuration|publickeys)$|\/eco\/projects$|\/\/fonts\.gstatic\.com\/|\.gravatar\.com\/avatar\//.test(e.request.url)
         ? rsp1.ok && rsp1 || rsp2
         : caches.open(cacheName).then(cache => {
             console.log( "[Service Worker] Caching new resource: " + e.request.url
               + "\n  (Time elapsed since SW install: "
               + ((Date.now() - tstamp) / (60 * 1000)) + " min)" );
-            !/\/a00\/(?:-res-js\/ebook-annos-fns\.js|-res-js\/u\d\d[\w.-]+|(?:-app-eco\/|)[\w.-]+\??)$/.test(e.request.url)
+            !/\/a00\/(?:(?:-app-eco\/|)[\w.-]+\??|-res-js\/ebook-annos-fns\.js)$|\.cloudant\.com\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|-res-\w+\/u\d\d[\w.-]+$/.test(e.request.url)
             || (rcvd1[e.request.url] = 1);
             cache.put(e.request, rsp2.clone());
             return rsp2;
-          })
-      );
+          }) );
     }
   };
   e.respondWith(
     !caches ? fetch(e.request) //caches.match("../-res-img/icon-192.png"))
-    : caches.match(e.request).then(reqPrc).catch(reqPrc).catch(() => fetch(e.request))
-  );
+    : caches.match(e.request).then(reqPrc).catch(reqPrc).catch(() => fetch(e.request)) );
 });
