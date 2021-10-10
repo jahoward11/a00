@@ -14,7 +14,9 @@ const cacheName = "calcjs-v00.12",
   ],
   contentToCache = [],
   rcvd1 = {},
-  tstamp = Date.now();
+  tstamp = Date.now(),
+  sepaupds = /\/a00\/(?:-app-cjs\/|)[\w.-]+\??$/,
+  sepakprs = /\/a00\/[\w/.-]+\??$/;
 
 self.addEventListener('install', e => {
   console.log("[Service Worker] Installing new cache: " + cacheName);
@@ -38,21 +40,19 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   let reqPrc = (rsp1 = {}) => {
-    if ( rsp1.ok && ( !navigator.onLine || rcvd1[e.request.url]
-    || !/\/a00\/-app-cjs\/[\w.-]+\??$/.test(e.request.url) )) {
+    if (rsp1.ok && (!navigator.onLine || rcvd1[e.request.url] || !sepaupds.test(e.request.url))) {
       return rsp1;
     } else {
       //console.log("[Service Worker] Fetching resource: " + e.request.url);
       return fetch(e.request).then( rsp2 =>
         !rsp2.ok || e.request.method !== 'GET' || /\?rev=/.test(e.request.url)
-        || !/\/a00\/[\w/.-]+\??$/.test(e.request.url)
+        || !sepakprs.test(e.request.url)
         ? rsp1.ok && rsp1 || rsp2
         : caches.open(cacheName).then(cache => {
             console.log( "[Service Worker] Caching new resource: " + e.request.url
               + "\n  (Time elapsed since SW install: "
               + ((Date.now() - tstamp) / (60 * 1000)) + " min)" );
-            !/\/a00\/(?:-app-cjs\/|)[\w.-]+\??$/.test(e.request.url)
-            || (rcvd1[e.request.url] = 1);
+            !sepaupds.test(e.request.url) || (rcvd1[e.request.url] = 1);
             cache.put(e.request, rsp2.clone());
             return rsp2;
           }) );
