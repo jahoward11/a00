@@ -30,7 +30,9 @@ const hostibm = /\.cloudant\.com$/.test(location.host),
     "https://d889bfcc.us-south.apigw.appdomain.cloud/eco/projects"
   ],
   rcvd1 = {},
-  tstamp = Date.now();
+  tstamp = Date.now(),
+  sepaupds = /\/a00\/(?:(?:-app-eco\/|)[\w.-]+\??|-res-css\/(?:reset|style)[\w.-]+|-res-js\/ebook-annos-fns\.js)$|\.cloudant\.com\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|-res-\w+\/u\d\d[\w.-]+$/,
+  sepakprs = /\/a00\/[\w/.-]+\??$|\.cloudant\.com\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|-res-\w+\/u\d\d[\w.-]+$|\/oauth\/v4\/.+\/(?:openid-configuration|publickeys)$|\/eco\/projects$|\/\/fonts\.gstatic\.com\/|\.gravatar\.com\/avatar\//;
 
 self.addEventListener('install', e => {
   console.log("[Service Worker] Installing new cache: " + cacheName);
@@ -55,21 +57,19 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   let reqPrc = (rsp1 = {}) => {
-    if ( rsp1.ok && ( !navigator.onLine || rcvd1[e.request.url]
-    || !/\/a00\/(?:[\w.-]+\??|-app-eco\/(?:eco-ctrl\.js|eco-srvc\d?\.m?js|index\.html)|-res-js\/ebook-annos-fns\.js)$|\.cloudant\.com\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|-res-\w+\/u\d\d[\w.-]+$/.test(e.request.url) )) {
+    if (rsp1.ok && (!navigator.onLine || rcvd1[e.request.url] || !sepaupds.test(e.request.url))) {
       return rsp1;
     } else {
       //console.log("[Service Worker] Fetching resource: " + e.request.url);
       return fetch(e.request).then( rsp2 =>
         !rsp2.ok || e.request.method !== 'GET' || /\?rev=/.test(e.request.url)
-        || !/\/a00\/[\w/.-]+\??$|\.cloudant\.com\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|-res-\w+\/u\d\d[\w.-]+$|\/oauth\/v4\/.+\/(?:openid-configuration|publickeys)$|\/eco\/projects$|\/\/fonts\.gstatic\.com\/|\.gravatar\.com\/avatar\//.test(e.request.url)
+        || !sepakprs.test(e.request.url)
         ? rsp1.ok && rsp1 || rsp2
         : caches.open(cacheName).then(cache => {
             console.log( "[Service Worker] Caching new resource: " + e.request.url
               + "\n  (Time elapsed since SW install: "
               + ((Date.now() - tstamp) / (60 * 1000)) + " min)" );
-            !/\/a00\/(?:(?:-app-eco\/|)[\w.-]+\??|-res-js\/ebook-annos-fns\.js)$|\.cloudant\.com\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|-res-\w+\/u\d\d[\w.-]+$/.test(e.request.url)
-            || (rcvd1[e.request.url] = 1);
+            !sepaupds.test(e.request.url) || (rcvd1[e.request.url] = 1);
             cache.put(e.request, rsp2.clone());
             return rsp2;
           }) );

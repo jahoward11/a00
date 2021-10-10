@@ -2455,8 +2455,8 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 
 <div id="ecorender">
 <link href="../../a00/-res-css/bulma0.9-minireset.css" type="text/css" rel="stylesheet" />
-<div class="section content">
-<main class="container has-text-grey-dark">
+<div class="section">
+<main class="container content has-text-grey-dark">
   <h1 class="title is-3 has-text-grey-dark">&ldquo;Our Publication&rdquo;</h1>
   <h3 class="subtitle is-5 has-text-grey-dark">&mdash;preview screen&mdash;</h3>
   <p id="msgwelcome">Welcome team member!</p>
@@ -5208,7 +5208,7 @@ const hostibm = /\.cloudant\.com$/.test(window.location.host),
     scrnew.onload = rslv;
     !urlblob || document.querySelector('#iniscripts').appendChild(scrnew);
   }),
-  assetsLoad = pchinjpr => pchinjpr
+  asstsLoad = pchinjpr => pchinjpr
     .then(() => dbpch = window.PouchDB && new window.PouchDB(DB_NAMES[0]))
     .catch( () => scrInjPr(INI_ASSETS[0])
       .catch(err => respShow(err) && respShow("**Alert: pouchdb.js is not preloaded.")) )
@@ -5249,10 +5249,10 @@ const hostibm = /\.cloudant\.com$/.test(window.location.host),
   iniStratgz = () => {
     if (protfile && platipd2) {
       scrInjPr("./" + ATT_KEYS[0])
-      .then(() => { assetsLoad(Promise.resolve()); })
-      .catch(err => { assetsLoad(Promise.reject()); });
+      .then(() => { asstsLoad(Promise.resolve()); })
+      .catch(err => { asstsLoad(Promise.reject()); });
     } else if (!('indexedDB' in window)) {
-      assetsLoad(Promise.reject());
+      asstsLoad(Promise.reject());
     } else {
       idbReq = window.indexedDB.open("_pouch_" + DB_NAMES[0]); //, DB_VERSION);
       idbReq.onerror = event => window.console.warn(event.target.error); //respShow
@@ -5260,7 +5260,7 @@ const hostibm = /\.cloudant\.com$/.test(window.location.host),
         event.target.transaction.abort();
         //respShow("**Alert: Database \"" + DB_NAMES[0] + "\" is not preloaded.");
         //DB_NAMES[0] = "";
-        assetsLoad(Promise.reject());
+        asstsLoad(Promise.reject());
       };
       idbReq.onsuccess = event => {
         let dbGetPr = (sto, key) => new Promise((rslv, rjct) => {
@@ -5285,12 +5285,12 @@ const hostibm = /\.cloudant\.com$/.test(window.location.host),
         .then( resp => scrInjPr( !resp.target || !resp.target.result ? null
           : resp.target.result.body.type ? resp.target.result.body
           : new Blob([window.atob(resp.target.result.body)], {type: 'text/javascript'}) ))
-        .then(() => { assetsLoad(Promise.resolve()); })
+        .then(() => { asstsLoad(Promise.resolve()); })
         .catch(err => {
           //respShow(err);
           //respShow("**Alert: indexedDB data lookup failed.");
           //DB_NAMES[0] = "";
-          assetsLoad(Promise.reject());
+          asstsLoad(Promise.reject());
         });
       };
     }
