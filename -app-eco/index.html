@@ -5157,14 +5157,14 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 var dbpch, idbrslt, idbReq;
 const hostibm = /\.cloudant\.com$/.test(window.location.host),
   hostlh = /^localhost:\d+$|^(?:192\.168|127\.0|0\.0)\.0\.\d+:\d+$/.test(window.location.host)
-    && window.location.origin + "/a00",
+    && window.location.origin,
   platipd2 = (window.navigator.userAgentData || window.navigator).platform === 'MacIntel'
     && window.screen.height === 1024 && window.screen.width === 768,
   platiphn = (window.navigator.userAgentData || window.navigator).platform === 'iPhone',
   protfile = window.location.protocol === 'file:',
   rmtready = /^http/.test(window.location.protocol) && window.navigator.onLine,
-  a00path = protfile || hostibm ? ".."
-    : "https://b41897c5-1ba0-4adb-a2f6-4b7ab462c950-bluemix.cloudant.com/a00",
+  a00orig = "https://b41897c5-1ba0-4adb-a2f6-4b7ab462c950-bluemix.cloudant.com",
+  a00path = (protfile || hostibm ? "../.." : hostlh || a00orig) + "/a00",
   qcontxta = document.querySelector('#econav0 #qcontxta'),
   DB_NAMES = ["a00"], //DB_VERSIONS = [5],
   DB_STORES = ["document-store", "by-sequence", "attach-store"],
@@ -5177,7 +5177,7 @@ const hostibm = /\.cloudant\.com$/.test(window.location.host),
     "deflist", "emoji-light", "footnote", "for-inline", "ins", "mark", "sub", "sup",
     "anchor", "decorate", "implicit-figures"], //"emoji",
   INI_ASSETS = FILE_IDS.map( (e, i) => !e || protfile && platipd2 && i !== 9
-    ? "" : (i === 9 && hostlh || a00path) + "/" + e + "/" + ATT_KEYS[i] ),
+    ? "" : a00path + "/" + e + "/" + ATT_KEYS[i] ),
   respShow = resp => qcontxta.value += !resp ? ""
     : ( resp.target && resp.target.error ? "**" + resp.target.error
       : typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
