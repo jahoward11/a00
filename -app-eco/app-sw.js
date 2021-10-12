@@ -16,8 +16,8 @@ const hostibm = /\.cloudant\.com$/.test(location.host),
     "../-res-css/bulma0.9-content.css",
     "../-res-css/bulma0.9-minireset.css",
     "../-res-css/bulma0.9.3.min.css",
-    location.origin + "/a00/-res-img/avatar000.png",
-    location.origin + "/a00/-res-img/ecologo-72.png",
+    "../-res-img/avatar000.png",
+    "../-res-img/ecologo-72.png",
     //location.origin + "/a00/-res-img/icon-48.png",
     //location.origin + "/a00/-res-img/icon-96.png",
     //location.origin + "/a00/-res-img/icon-144.png",
@@ -25,7 +25,7 @@ const hostibm = /\.cloudant\.com$/.test(location.host),
     "../-res-js/ebook-annos-fns.js",
     "../-res-js/srcdiff.js"
   ],
-  contentToCache = [
+  appContent = [
     "../guide-httpcon",
     "https://d889bfcc.us-south.apigw.appdomain.cloud/eco/projects"
   ],
@@ -38,10 +38,10 @@ self.addEventListener('install', e => {
   console.log("[Service Worker] Installing new cache: " + cacheName);
   e.waitUntil(
     caches.open(cacheName).then(cache => {
-      console.log("[Service Worker] Caching: appShellFiles + content");
-      appShellFiles.concat(contentToCache).forEach( e => 
-        rcvd1[e.replace(/^\.\./, (/\.\w{2,4}$/.test(e) && hostlh || a00orig)  + "/a00")] = 1 );
-      return cache.addAll(hostibm ? appShellFiles.concat(contentToCache) : Object.keys(rcvd1));
+      console.log("[Service Worker] Caching: appShellFiles + appContent");
+      appShellFiles.concat(appContent).forEach( e => 
+        rcvd1[e.replace(/^\.\./, (/\.\w{2,4}$/.test(e) && hostlh || a00orig) + "/a00")] = 1 );
+      return cache.addAll(hostibm ? appShellFiles.concat(appContent) : Object.keys(rcvd1));
     }) );
 });
 
@@ -51,7 +51,7 @@ self.addEventListener('activate', e => {
     + ((Date.now() - tstamp) / (60 * 1000)) + " min)" );
   e.waitUntil(
     caches.keys().then( keyList => Promise.all( keyList.map( key =>
-      !key.startsWith(cacheName.replace(/-.+/, "")) || (cacheKeeplist || []).indexOf(key) > -1
+      !key.startsWith(cacheName.replace(/-.+/, "")) || cacheKeeplist.indexOf(key) > -1
       || caches.delete(key) ))) );
 });
 
