@@ -2037,10 +2037,12 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 }
 #econav0 {
 //position: fixed;
+  width: 100%;
   opacity: 0.9;
   transition: top 0.3s;
 }
 #econav0.hgtnav0 { height: 45.5px; }
+#econav0.mtup2 { margin-top: -45.5px; }
 #ecorender>.srcview, #ecosrcview>.srcview {
   font-family: monospace;
   font-size: 16px;
@@ -2231,8 +2233,11 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 @media screen and (max-height: 394px) {
   :root { -webkit-text-size-adjust: 100%; -moz-text-size-adjust: 100%; text-size-adjust: 100%; }
 }
-@media screen and (max-height: 684px) {
+@media screen and (max-height: 620px) {
   #econav0 #qcontxta { height: 128px; }
+}
+@media screen and (min-height: 621px) and (max-height: 684px) {
+  #econav0 #qcontxta { height: 192px; }
 }
 @media screen and (max-width: 394px) {
   #ecoprj0 #pdbinpc { width: 208px; }
@@ -2241,7 +2246,6 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 }
 @media screen and (max-width: 684px) {
   #ecoprj0 .media-left>.image, #ecoesp0 .media-left>.image { margin: 0; }
-  #econav0.mtup2 { margin-top: -45.5px; }
   #econav0 .navbar-link:not(.is-arrowless)::after { border-color: transparent; }
   #ecoesp0 #prjdisc>.field:first-child>.panel { width: unset; }
   #ecoesp0 #jdepty .ptybtnc.mtdn2 { margin-top: 35px; }
@@ -2345,7 +2349,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
           <span class="has-text-weight-bold">HTTP:&nbsp;</span>Database Query Console
         </div>
         <div id="qcni2" class="navbar-item">
-          <textarea id="qcontxta" class="textarea is-family-code is-size-7" rows="16" onfocus="EC1.formFoc(0, 1)" onblur="EC1.formBlr()"></textarea>
+          <textarea id="qcontxta" class="textarea is-family-code is-size-7" rows="16" onfocus="EC1.formFoc(0, 1)" onblur="EC1.formBlr(1)"></textarea>
         </div>
         <span class="txtaprf is-pulled-right is-hidden">
           <a class="button is-white has-text-link" onclick="EC1.txtaSel('qcontxta', 1)">
@@ -2376,7 +2380,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         <div class="navbar-item field is-grouped is-marginless">
           <span class="field has-addons control">
             <span id="pfsflg0" class="control">
-              <input type="text" id="pfsinp" class="input" placeholder="Load project file&hellip;" onfocus="EC1.formFoc(0, 1)" onblur="EC1.formBlr(); EC1.pfsInp();" />
+              <input type="text" id="pfsinp" class="input" placeholder="Load project file&hellip;" onfocus="EC1.formFoc(0, 1)" onblur="EC1.formBlr(1); EC1.pfsInp();" />
               <span id="pfsflg1" class="icon is-left is-size-4 is-hidden">&#x2710;</span>
             </span>
             <span class="control">
@@ -3573,7 +3577,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         </div>
         <div class="field is-grouped">
           <span class="control">
-            <input type="text" id="irename" class="input" placeholder="Rename as attachment&hellip;" onfocus="EC1.formFoc()" />
+            <input type="text" id="irename" class="input" placeholder="Rename as attachment&hellip;" onfocus="EC1.formFoc(0)" onblur="EC1.formBlr()" />
           </span>
           <span class="control">
             <button id="imgabtn" class="button is-success is-outlined" onclick="EC2.dirUpd(2)" disabled>
@@ -3836,11 +3840,11 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
       <div class="field">
         <div class="label has-text-grey">Search and Replace</div>
         <div class="field control">
-          <input type="text" id="sepainp" class="input" placeholder="RegExp search pattern..." onfocus="EC1.formFoc()" />
+          <input type="text" id="sepainp" class="input" placeholder="RegExp search pattern..." onfocus="EC1.formFoc(0)" onblur="EC1.formBlr()" />
         </div>
         <div class="field is-grouped">
           <span class="control">
-            <input type="text" id="rfncinp" class="input" placeholder="Replacement term/function..." onfocus="EC1.formFoc()" />
+            <input type="text" id="rfncinp" class="input" placeholder="Replacement term/function..." onfocus="EC1.formFoc(0)" onblur="EC1.formBlr()" />
           </span>
           <span class="control">
             <button id="prsebtn" class="button is-info is-outlined" onclick="EC1.swapExe(1)" disabled>
@@ -4488,7 +4492,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
     <div class="panel-block">
       <label class="has-text-grey-light">From:</label>
       <span id="dcinpc" class="control">
-        <input type="text" class="input" onfocus="EC1.formFoc()" onchange="EC2.discTog(event)" list="eco0dcntcs" value="{{tm0disc}}" />
+        <input type="text" class="input" onfocus="EC1.formFoc(0)" onblur="EC1.formBlr()" onchange="EC2.discTog(event)" list="eco0dcntcs" value="{{tm0disc}}" />
         <datalist id="eco0dcntcs">
           {{#each dcntcs}}
           <option value="{{this}}">{{#if @last}}(all names){{/if}}</option>
@@ -4547,10 +4551,10 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
       </span>
     </div>
     <div class="field control">
-      <input id="postinp" type="text" class="input" placeholder="Subject" {{#if disbl}}disabled{{/if}} />
+      <input id="postinp" type="text" class="input" placeholder="Subject" onfocus="EC1.formFoc(0)" onblur="EC1.formBlr()" {{#if disbl}}disabled{{/if}} />
     </div>
     <div class="field control">
-      <textarea id="posttxta" class="textarea" placeholder="Message" onfocus="EC1.formFoc()" onblur="EC1.formBlr()" {{#if disbl}}disabled{{/if}}></textarea>
+      <textarea id="posttxta" class="textarea" placeholder="Message" onfocus="EC1.formFoc(0)" onblur="EC1.formBlr()" {{#if disbl}}disabled{{/if}}></textarea>
     </div>
     <span class="txtaprf is-pulled-right">
       <a class="button is-white has-text-weight-normal has-text-link" onclick="EC1.txtaSel('posttxta', 1)">
