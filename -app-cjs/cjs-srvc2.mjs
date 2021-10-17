@@ -7,30 +7,51 @@ __Dimensions of Common Use__
 - _angle_ of a slope or incline
 - _length_ of a side, distance or boundary
 - _Perimeter_ of any shape (a length)
-- _Circumference_ of a circle (a length &amp; a perimeter)
-- surface _Area_ (e.g., of a carpeted floor or painted wall)
+- _Circumference_ of a circle (a length & a perimeter)
+- Surface _Area_ (e.g., of a carpeted floor or painted wall)
 - _Volume_ of space or an object
 
 __Reference Formulas__
 *Pythagorean theorem (for a right triangle)*
  _a_² + _b_² = _c_²
- _a_&ast;&ast;2 + _b_&ast;&ast;2 == _c_&ast;&ast;2  [recomposed with JS exponentiation operator]
- Math.pow(_a_, 2) + Math.pow(_b_, 2) == Math.pow(_c_, 2)  [JS alternate]
+
+ _a_&ast;&ast;2 + _b_&ast;&ast;2 == _c_&ast;&ast;2  [rewritten with JS exponentiation operator]
+ Math.pow(_a_, 2) + Math.pow(_b_, 2) == Math.pow(_c_, 2) [JS alternate]
 
 *Trigonometric ratios (for a right triangle)*
  sin┊͏_θ_ = _b_ / _c_
  cos┊͏_θ_ = _a_ / _c_
  tan┊͏_θ_ = _b_ / _a_	= sin┊͏_θ_ / cos┊͏_θ_
 
+*Some lengths*
+ Perim~tri~ = _a_+_b_+_c_  = side *a* + side *b* + side *c*
+ Perim~rec~ = 2_l_+2_w_  = (2 × length) + (2 × width)
+
+ diam~cir~  = 2_r_	  = 2 × radius
+ Circm~cir~ = *π*_d_	  = PI × diameter
+ Circm~cir~ = 2*π*_r_	  = 2 × PI × radius
+
+ slant~con~ = √_r_²+_h_² = square-root of (radius sq'd + height sq'd)
+ slant~pyr~ = √(½_l_)²+(½_w_)²+_h_²
+		  = square-root of
+		    (½-length sq'd + ½-width sq'd + height sq'd)
+
 *Some areas*
  Area~tri~ = ½_bh_	= 0.5 × base × height
  Area~rec~ = _lw_	= length × width
  Area~cir~ = *π*_r_²	= PI × radius squared
 
+ Area~cub~ = 2_lw_ + 2_lh_ + 2_wh_
+		=  (2 × length × width)
+		 + (2 × length × height)
+		 + (2 × width × height)
+ Area~pyr~ = _A_*~bas~* + ½_P_*~bas~*_h_*~sla~*
+		= Area~tri/rec-base~
+		 + (0.5 × Perim~tri/rec-base~ × slant height)
  Area~sph~ = 4*π*_r_²	= 4 × PI × radius squared
  Area~cyl~ = 2_A_~*cir*~ + _Ch_
- 		= (2 × Area~cir~) + (Circumference × height)
- Area~con~ = _A_~*cir*~ + *π_rh_~sl~*
+ 		= (2 × Area~cir~) + (Circm~cir~ × height)
+ Area~con~ = _A_~*cir*~ + *π_rh_~sla~*
  		= Area~cir~ + (PI × radius × slant height)
 
 *Some volumes*
@@ -44,7 +65,7 @@ __Reference Formulas__
 - Length units of a formula must all be the same
   (e.g., all in inches, or all in km, etc.).
 
-__KEY__\\f
+__KEY__\f
  _θ_   | right-triangle reference angle, theta (in radians)
  _a_   | right-triangle adjacent-side length
  _b_   | right-triangle opposite-side length
@@ -69,7 +90,8 @@ __KEY__\\f
  
  _rn_  | cylinder/cone radius length
  _hn_  | cylinder/cone height length
- _hsl_ | cone slant height length
+ _slc_ | cone slant-height length
+ _slp_ | pyramid slant-height length
  
  _Ptr_ | Perimeter of a triangle (a length)
  _Atr_ | Area of a triangle
@@ -81,22 +103,23 @@ __KEY__\\f
  
  _Atz_ | Area of a trapezoid
  
- _Acu_ | surface Area of a rectangular solid (cuboid)
+ _Acu_ | Surface Area of a rectangular solid (cuboid)
  _Vcu_ | Volume of a rectangular solid (cuboid)
+ _Apy_ | Surface Area of a rectangular pyramid
  _Vpy_ | Volume of a rectangular pyramid
  
  _C_   | Circumference of a circle (a length)
  _Aci_ | Area of a circle
- _Asp_ | surface Area of a sphere
+ _Asp_ | Surface Area of a sphere
  _Vsp_ | Volume of a sphere
  
- _Acy_ | surface Area of a cylinder
+ _Acy_ | Surface Area of a cylinder
  _Vcy_ | Volume of a cylinder
- _Aco_ | surface Area of a cone
+ _Aco_ | Surface Area of a cone
  _Vco_ | Volume of a cone
 */
 
-// __GIVEN VALUE__\\f
+// __GIVEN VALUE__\f
  a = 30 // ft
  b = 40 // ft
  c = 50 // ft
@@ -134,6 +157,8 @@ __KEY__\\f
  
  $Acu = (2 * l * w) + (2 * l * h) + (2 * w * h) // sq-ft
  $Vcu = l * w * h // cu-ft
+ slp = Math.sqrt((l / 2)**2 + (w / 2)**2 + h**2) // ft
+ $Apy = $Are + (0.5 * $Pre * slp) // sq-ft
  $Vpy = (1 / 3) * l * w * h // cu-ft
  
  d = 2 * r // ft
@@ -145,8 +170,8 @@ __KEY__\\f
  
  $Acy = (2 * Math.PI * rn**2) + (2 * Math.PI * rn * hn) // sq-ft
  $Vcy = Math.PI * rn**2 * hn // cu-ft
- hsl = Math.pow(rn**2 + hn**2, 0.5) // ft
- $Aco = (Math.PI * rn**2) + (Math.PI * rn * hsl) // sq-ft
+ slc = Math.sqrt(rn**2 + hn**2) // ft
+ $Aco = (Math.PI * rn**2) + (Math.PI * rn * slc) // sq-ft
  $Vco = (1 / 3) * Math.PI * rn**2 * hn // cu-ft
 //`;
 
@@ -161,7 +186,7 @@ const triangles1 = `
  // cos┊͏_θ_ = _a_ / _c_
  // tan┊͏_θ_ = _b_ / _a_	= sin┊͏_θ_ / cos┊͏_θ_
 
- // _a_² + _b_² = _c_²
+ // _a_² + _b_² = _c_²		Pythagorean theorem
 
 θ1 = Math.PI / 6	//triangle 1 theta
 θ2 = Math.PI / 4	//triangle 2 theta
@@ -171,15 +196,15 @@ c = 1
 
 b1 = Math.sin(θ1) * c
 a1 = Math.cos(θ1) * c
- Math.sqrt(3) / 2	//(note: same value as a1 &amp; b3)
+ Math.sqrt(3) / 2	//note: same value as a1 &amp; b3
 
 b2 = Math.sin(θ2) * c
 a2 = Math.cos(θ2) * c
- Math.sqrt(2) / 2	//(note: same value as a2 &amp; b2)
+ Math.sqrt(2) / 2	//note: same value as a2 &amp; b2
 
 b3 = Math.sin(θ3) * c
 a3 = Math.cos(θ3) * c
- Math.sqrt(1) / 2	//(note: same value as a3 &amp; b1)
+ Math.sqrt(1) / 2	//note: same value as a3 &amp; b1
 
 $θ3 = Math.round(θ3 * 1000) / 1000
 $a3 = Math.round(a3 * 1000) / 1000

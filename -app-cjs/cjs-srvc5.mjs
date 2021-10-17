@@ -35,8 +35,8 @@ __Statistical Analysis Tools__
  x2 = 2
  z2 = (x2 - μ) / σ	// ensure  z2 ≥ z1
 
- φ_x1 = 1 / (2 * Math.PI * Math.exp(z1**2))**0.5
- φ_x2 = 1 / (2 * Math.PI * Math.exp(z2**2))**0.5
+ φx1 = 1 / (2 * Math.PI * Math.exp(z1**2))**0.5
+ φx2 = 1 / (2 * Math.PI * Math.exp(z2**2))**0.5
 
 
 /*
@@ -55,10 +55,12 @@ __Statistical Analysis Tools__
  t1 = 1 / (1 + b0 * z1)
  t2 = 1 / (1 + b0 * z2)
 
- $Φ_x1 = 1 - φ_x1 * (b1*t1 + b2*t1**2 + b3*t1**3 + b4*t1**4 + b5*t1**5)
- $Φ_x2 = 1 - φ_x2 * (b1*t2 + b2*t2**2 + b3*t2**3 + b4*t2**4 + b5*t2**5)
+ $Φx1 = 1 - φx1 * (b1*t1 + b2*t1**2 + b3*t1**3 + b4*t1**4 + b5*t1**5)
+ $Φx2 = 1 - φx2 * (b1*t2 + b2*t2**2 + b3*t2**3 + b4*t2**4 + b5*t2**5)
 
- $P1to2 = $Φ_x2 - $Φ_x1	// probability interval between x1 and x2
+ $P1inv = 1 - $Φx1	// probability interval above x1
+ $P2inv = 1 - $Φx2	// probability interval above x2
+ $P1to2 = $Φx2 - $Φx1	// probability interval between x1 and x2
 
 
 /*
@@ -69,8 +71,11 @@ __Statistical Analysis Tools__
  99.73% | probability of a position w/i &pm;3 std. devs.
 
 */
- 2 * $Φ_x1 - 1	// coverage, area between *μ - nσ* and *μ + nσ*
- 2 * $Φ_x2 - 1
+ 2 * $Φx1 - 1	// coverage, area between *μ - nσ* and *μ + nσ*
+ 2 * $Φx2 - 1
+
+ 2 * (1 - $Φx1)	// inverse coverage, 2 areas outside *μ - nσ* and *μ + nσ*
+ 2 * (1 - $Φx2)
 //`;
 
 export {

@@ -175,7 +175,7 @@ __The Solute Potential of a Solution__
      (*R* = 0.0831 liter bars/mole K)
  *T* | temperature in Kelvin (°C + 273)
 
- Ψ~S~ = -*iCRT*
+ Ψ~S~ = ⁻*iCRT*
 
 __Dilution__
 *used to create a dilute solution*
@@ -198,7 +198,7 @@ __Gibbs Free Energy__
 __pH Value__
 *acidity (<7) / basicity (>7) of an aqueous solution*
 
- pH = -log~10~[H⁺]
+ pH = ⁻log~10~[H⁺]
 
 */`;
 
