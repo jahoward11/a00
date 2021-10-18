@@ -14,8 +14,7 @@ __Dimensions of Common Use__
 __Reference Formulas__
 *Pythagorean theorem (for a right triangle)*
  _a_² + _b_² = _c_²
-
- _a_&ast;&ast;2 + _b_&ast;&ast;2 == _c_&ast;&ast;2  [rewritten with JS exponentiation operator]
+ _a_&ast;&ast;2 + _b_&ast;&ast;2 == _c_&ast;&ast;2  [redisplay with JS exponentiation operator]
  Math.pow(_a_, 2) + Math.pow(_b_, 2) == Math.pow(_c_, 2) [JS alternate]
 
 *Trigonometric ratios (for a right triangle)*
@@ -31,10 +30,10 @@ __Reference Formulas__
  Circm~cir~ = *π*_d_	  = PI × diameter
  Circm~cir~ = 2*π*_r_	  = 2 × PI × radius
 
- slant~con~ = √_r_²+_h_² = square-root of (radius sq'd + height sq'd)
  slant~pyr~ = √(½_l_)²+(½_w_)²+_h_²
 		  = square-root of
 		    (½-length sq'd + ½-width sq'd + height sq'd)
+ slant~con~ = √_r_²+_h_² = square-root of (radius sq'd + height sq'd)
 
 *Some areas*
  Area~tri~ = ½_bh_	= 0.5 × base × height
@@ -65,21 +64,23 @@ __Reference Formulas__
 - Length units of a formula must all be the same
   (e.g., all in inches, or all in km, etc.).
 
-__KEY__
+__KEY__\f
  _θ_   | right-triangle reference angle, theta (in radians)
  _a_   | right-triangle adjacent-side length
  _b_   | right-triangle opposite-side length
  _c_   | right-triangle hypotenuse-side length
  
- _bt_  | triangle base length
- _ht_  | triangle height length
+ _btr_ | triangle base length
+ _htr_ | triangle height length
+ _Ptr_ | Perimeter of a triangle (a length)
  
  _l_   | rectangle length
  _w_   | rectangle width (a length)
  _h_   | rectangular-solid height (a length)
+ _Pre_ | Perimeter of a rectangle (a length)
  
- _bp_  | parallelogram base length
- _hp_  | parallelogram height length
+ _bpa_ | parallelogram base length
+ _hpa_ | parallelogram height length
  
  _bu_  | trapezoid upper base length
  _bl_  | trapezoid lower base length
@@ -87,34 +88,27 @@ __KEY__
  
  _r_   | circle radius length
  _d_   | circle diameter length
+ _C_   | Circumference of a circle (a length)
  
- _rn_  | cylinder/cone radius length
- _hn_  | cylinder/cone height length
- _slc_ | cone slant-height length
- _slp_ | pyramid slant-height length
- 
- _Ptr_ | Perimeter of a triangle (a length)
  _Atr_ | Area of a triangle
- 
- _Pre_ | Perimeter of a rectangle (a length)
  _Are_ | Area of a rectangle
- 
  _Apg_ | Area of a parallelogram
- 
  _Atz_ | Area of a trapezoid
- 
+ _Aci_ | Area of a circle
+  
  _Acu_ | Surface Area of a rectangular solid (cuboid)
  _Vcu_ | Volume of a rectangular solid (cuboid)
+ _spy_ | pyramid slant-height length
  _Apy_ | Surface Area of a rectangular pyramid
  _Vpy_ | Volume of a rectangular pyramid
  
- _C_   | Circumference of a circle (a length)
- _Aci_ | Area of a circle
  _Asp_ | Surface Area of a sphere
  _Vsp_ | Volume of a sphere
- 
+ _rn_  | cylinder/cone radius length
+ _hn_  | cylinder/cone height length
  _Acy_ | Surface Area of a cylinder
  _Vcy_ | Volume of a cylinder
+ _sco_ | cone slant-height length
  _Aco_ | Surface Area of a cone
  _Vco_ | Volume of a cone
 */
@@ -124,15 +118,15 @@ __KEY__
  b = 40 // ft
  c = 50 // ft
  
- bt = a // ft
- ht = b // ft
+ btr = a // ft
+ htr = b // ft
  
  l = 25 // ft
  w = 15 // ft
  h = 10 // ft
  
- bp = 20 // ft
- hp = 12 // ft
+ bpa = 20 // ft
+ hpa = 12 // ft
  
  bu = 16 // ft
  bl = 14 // ft
@@ -146,32 +140,31 @@ __KEY__
 // __CALCULATED VALUE__
  $θ = Math.asin(b / c) // rad
  $Ptr = a + b + c // ft
- $Atr = 0.5 * bt * ht // sq-ft
+ $Atr = 0.5 * btr * htr // sq-ft
  
  $Pre = (2 * l) + (2 * w) // ft
  $Are = l * w // sq-ft
  
- $Apg = bp * hp // sq-ft
+ $Apg = bpa * hpa // sq-ft
  
  $Atz = 0.5 * hz * (bu + bl) // sq-ft
  
  $Acu = (2 * l * w) + (2 * l * h) + (2 * w * h) // sq-ft
  $Vcu = l * w * h // cu-ft
- slp = Math.sqrt((l / 2)**2 + (w / 2)**2 + h**2) // ft
- $Apy = $Are + (0.5 * $Pre * slp) // sq-ft
+ spy = Math.sqrt((l / 2)**2 + (w / 2)**2 + h**2) // ft
+ $Apy = $Are + (0.5 * $Pre * spy) // sq-ft
  $Vpy = (1 / 3) * l * w * h // cu-ft
  
  d = 2 * r // ft
- C = Math.PI * d // ft
- $C = 2 * Math.PI * r // ft
+ $C = Math.PI * d // ft
  $Aci = Math.PI * r**2 // sq-ft
  $Asp = 4 * Math.PI * r**2 // sq-ft
  $Vsp = (4 / 3) * Math.PI * r**3 // cu-ft
  
  $Acy = (2 * Math.PI * rn**2) + (2 * Math.PI * rn * hn) // sq-ft
  $Vcy = Math.PI * rn**2 * hn // cu-ft
- slc = Math.sqrt(rn**2 + hn**2) // ft
- $Aco = (Math.PI * rn**2) + (Math.PI * rn * slc) // sq-ft
+ sco = Math.sqrt(rn**2 + hn**2) // ft
+ $Aco = (Math.PI * rn**2) + (Math.PI * rn * sco) // sq-ft
  $Vco = (1 / 3) * Math.PI * rn**2 * hn // cu-ft
 //`;
 
