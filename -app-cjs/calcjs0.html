@@ -238,6 +238,11 @@ body {
   width: 24px;
   cursor: pointer;
 }
+#cmain .cfield>.help {
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+#cmain .cfield>.help:not(.is-hidden) { display: block; }
 @media print {
   body { padding: 0; }
   #cgrid>#quad1A { box-shadow: inset 0 -1px LightGrey; }
@@ -285,9 +290,11 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
 <div class="cfield">
   <span class="addns ccntr"><span class="ccntr">
     <input type="text" id="xsetinp" placeholder="Load expression set&hellip;" /></span><span class="ccntr slist"><select id="xsetlist" title="CalcJS Data Storage">
-    </select></span></span><span class="ccntr"><button id="btnsave">
-    <span class="isucc">&#x267a;</span> SAVE</button></span><span class="ccntr"><button id="btndel">
+    </select></span></span><span class="ccntr"><button id="xbtnsav">
+    <span class="isucc">&#x267a;</span> SAVE</button></span><span class="ccntr"><button id="xbtndel">
     <span class="iwarn">&#x2715;</span> DEL</button></span>
+  <span class="help isucc is-hidden">Expression set is saved in local storage.</span>
+  <span class="help iwarn is-hidden">Expression set is deleted from local storage.</span>
 </div>
 </main>
 <script type="text/javascript">
@@ -313,8 +320,9 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
   plist = document.querySelector('#cgrid>#plist'),
   xsetinp = document.querySelector('#cmain #xsetinp'),
   xsetlist = document.querySelector('#cmain #xsetlist'),
-  btnsave = document.querySelector('#cmain #btnsave'),
-  btndel = document.querySelector('#cmain #btndel'),
+  xbtnsav = document.querySelector('#cmain #xbtnsav'),
+  xbtndel = document.querySelector('#cmain #xbtndel'),
+  xsethlps = document.querySelectorAll('#cmain .cfield>.help'),
   dinp2 = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
     || { value: dinput.innerHTML.replace(/\n+$|^\n+/g, "") },
   respShow = resp => preresp.innerHTML
@@ -518,6 +526,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
       q2Bcopy = di2html = null;
     } else if (!plist.className) {
       (xsetlist || {}).value = "";
+      xsethlps.forEach(elm => elm.classList.add("is-hidden"));
       document.querySelector('#screenmask').className = plist.className = "is-hidden";
       q2Bcopy = di2html = null;
       dinp2.value = quad2B.innerHTML
@@ -532,6 +541,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
   },
   xsetLoad = (evt = { target: "" }) => {
     let optg;
+    xsethlps.forEach(elm => elm.classList.add("is-hidden"));
     if (!evt.target.id && /^https?:\/\/.+$/.test(dload)) {
       return initLoad();
     } else if (evt.target.id === "xsetlist" && !xsetlist.value) {
@@ -573,15 +583,19 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
     }
   }),
   xsetSave = () => {
+    xsethlps.forEach(elm => elm.classList.add("is-hidden"));
     xsetinp.value = xsetinp.value.trim();
     !xsetinp.value || !window.localforage
     || window.localforage.setItem( xsetinp.value, dinp2.value,
-      (err, _val) => err ? respShow(err) : slistRegen(xsetinp.value) );
+      (err, _val) => err ? respShow(err)
+      : slistRegen(xsetinp.value) && xsethlps[0].classList.remove("is-hidden") );
   },
   xsetDel = () => {
     let optg = xsetlist.value && xsetlist.selectedOptions[0].parentElement.label;
+    xsethlps.forEach(elm => elm.classList.add("is-hidden"));
     !optg || optg !== "USERdata/" || !window.localforage
-    || window.localforage.removeItem(xsetlist.value, slistRegen);
+    || window.localforage.removeItem( xsetlist.value,
+      err => err ? respShow(err) : slistRegen() && xsethlps[1].classList.remove("is-hidden") );
   };
 window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
   /^cmods=./.test(qi) ? (cmods = window.decodeURIComponent(qi.replace(/^cmods=/, "")).split(/[ ,]+/))
@@ -626,8 +640,8 @@ menulist.addEventListener('change', menuSel);
 quad2B.addEventListener('paste', txtPste);
 xsetinp.addEventListener('blur', xsetLoad);
 xsetlist.addEventListener('change', xsetLoad);
-btnsave.addEventListener('click', xsetSave);
-btndel.addEventListener('click', xsetDel);
+xbtnsav.addEventListener('click', xsetSave);
+xbtndel.addEventListener('click', xsetDel);
 </script>
 </body>
 </html>

@@ -65,7 +65,7 @@ __Reference Formulas__
 - Length units of a formula must all be the same
   (e.g., all in inches, or all in km, etc.).
 
-__KEY__\f
+__KEY__
  _θ_   | right-triangle reference angle, theta (in radians)
  _a_   | right-triangle adjacent-side length
  _b_   | right-triangle opposite-side length
