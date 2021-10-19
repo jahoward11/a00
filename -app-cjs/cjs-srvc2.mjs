@@ -64,7 +64,7 @@ __Reference Formulas__
 - Length units of a formula must all be the same
   (e.g., all in inches, or all in km, etc.).
 
-__KEY__\f
+__KEY__\\f
  _θ_   | right-triangle reference angle, theta (in radians)
  _a_   | right-triangle adjacent-side length
  _b_   | right-triangle opposite-side length
@@ -113,7 +113,7 @@ __KEY__\f
  _Vco_ | Volume of a cone
 */
 
-// __GIVEN VALUE__\f
+// __GIVEN VALUE__\\f
  a = 30 // ft
  b = 40 // ft
  c = 50 // ft
