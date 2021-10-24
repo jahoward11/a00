@@ -4,15 +4,16 @@ const cacheName = "calcjs-v00.12",
   cacheKeeplist = [cacheName],
   appShellFiles = [
     "../-app-cjs/calcjs0.html",
+    "../-res-js/localforage.nopromises.min.js"
+  ],
+  appContent = [
     "../-app-cjs/cjs-srvc1.mjs",
     "../-app-cjs/cjs-srvc2.mjs",
     "../-app-cjs/cjs-srvc3.mjs",
     "../-app-cjs/cjs-srvc4.mjs",
     "../-app-cjs/cjs-srvc5.mjs",
-    "../-app-cjs/cjs-srvc6.mjs",
-    "../-res-js/localforage.nopromises.min.js"
+    "../-app-cjs/cjs-srvc6.mjs"
   ],
-  contentToCache = [],
   rcvd1 = {},
   tstamp = Date.now(),
   sepaupds = /\/a00\/(?:-app-cjs\/|)[\w.-]+\??$/,
@@ -22,9 +23,9 @@ self.addEventListener('install', e => {
   console.log("[Service Worker] Installing new cache: " + cacheName);
   e.waitUntil(
     caches.open(cacheName).then(cache => {
-      console.log("[Service Worker] Caching: appShellFiles + content");
-      appShellFiles.concat(contentToCache).forEach(e => rcvd1[e] = 1);
-      return cache.addAll(appShellFiles.concat(contentToCache));
+      console.log("[Service Worker] Caching: appShellFiles + appContent");
+      appShellFiles.concat(appContent).forEach(e => rcvd1[e] = 1);
+      return cache.addAll(appShellFiles.concat(appContent));
     }) );
 });
 

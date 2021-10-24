@@ -72,6 +72,7 @@ body {
 }
 #cgrid .pagebb { line-height: 0; }
 #cgrid .dnote { color: LightSteelBlue; }
+#cgrid .vert { position: absolute; }
 #cgrid .dvnd {
   position: absolute;
   margin: -8px 0 0 0;
@@ -451,12 +452,12 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
       + '<span id="dfinal">$-variable<br />FINAL VALUES</span>';
     quad1B.innerHTML = Object.keys($).join("\n")
       .replace(/^([a-zΑ-Ͽ]+)(\d+)$/gim, "$1<sub>$2</sub>");
-    quad2A.innerHTML = reslts.join('\n').replace(/\n$/, "\n&nbsp;")
+    quad2A.innerHTML = reslts.join("\n").replace(/\n$/, "\n&nbsp;")
       + '<span id="dinitl">Line-expression<br />RESULTS</span>';
     quad2B.innerHTML = xprsns.map( xpr => xpr
       .replace(/&(?=[gl]t;|#x0*[ad];|NewLine;)/gi, "&amp;").replace(/<(?=\/?\w)/g, "&lt;")
       .replace( /\/\/ *(.*?) *$/, (m, c1) =>
-        '<span class=dnote>' + c1
+        "<span class=dnote>" + c1
         .replace(/(\W|\d|^)_([0-9a-zΑ-Ͽ]+)_(?=$|\W|\d)/gi, "$1<strong><em>$2</em></strong>")
         .replace(/(\W|\d|__|^)\*(?=\S)(.*?\S)\*(?=$|\W|\1)/g, "$1<em>$2</em>")
         .replace(/\b__(.+?)__\b/g, "<strong>$1</strong>")
@@ -475,8 +476,10 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
         (m, c1, c2, c3, c4, c5) => (!c4 ? "" : "  ")
         + "<span class=fbig>" + (c4 || c1 + c2) + "</span>"
         + (c4 ? " " : c3 + (!c1 || !c2 ? "" : " "))
-        + (!c5 ? "" : "<span class=dvnd>" + c5 + "</span>") ))
-    .replace(/([^$.\wΑ-Ͽ]|^)\$\.([\wΑ-Ͽ]+)/g, '$1<var class=dvar>$2</var>')
+        + (!c5 ? "" : "<span class=dvnd>" + c5 + "</span>") ) )
+    .replace( /\(((?: |&nbsp;)*<sup>.*?<\/sup>)((?: |&nbsp;)*<sub>.*?<\/sub>)((?: |&nbsp;)*)\)/g,
+      "(<span class=vert>$1</span><span class=vert>$2</span>$3)" )
+    .replace(/([^$.\wΑ-Ͽ]|^)\$\.([\wΑ-Ͽ]+)/g, "$1<var class=dvar>$2</var>")
     .replace( !_ks.length ? /[]/
       : new RegExp("(&#?(?!\\w+;)|[^&]#|[^#$&.\\wΑ-Ͽ]|^)(" + _ks.join("|") + ")(?![$\\wΑ-Ͽ\u0300-\u036f\u20d0-\u20ff]|[^\n<]*<\\/(?:em|strong|var|x)>)", "g"),
       "$1<var>$2</var>" )
@@ -557,7 +560,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
     || (xsetlist.value = xsetinp.value.replace(/.+\//, "")) && xsetlist.value
     || (xsetlist.value = "");
     optg = xsetlist.value && xsetlist.selectedOptions[0].parentElement.label;
-    xsetinp.value && xsetlist.value === xsetinp.value.replace(/.+\//, "")
+    xsetinp.value && (!xsetlist.value || xsetlist.value === xsetinp.value.replace(/.+\//, ""))
     || (xsetinp.value = (optg === "USERdata/" ? "" : optg) + xsetlist.value);
     !optg || ( optg !== "USERdata/"
     ? (( dinp2.value
