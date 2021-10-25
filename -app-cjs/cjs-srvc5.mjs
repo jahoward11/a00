@@ -78,6 +78,51 @@ __Statistical Analysis Tools__
  2 * (1 - $Φx2)
 //`;
 
+const analysis2 = `/*
+__Statistical Analysis Tools, part 2__
+
+*Counting, Possible Scenarios*
+ _n_ | sample total
+ _k_ | number selected
+ *P* | Permutations
+ *C* | Combinations
+
+ selecting with replacement
+ _n_^_k_^		   ordered selections
+ (^_n_ + _k_ - 1^   ~_k_~	 ) 	   unordered selections
+
+ selecting without replacement
+
+ ~_n_~*P*~_k_~ =   ⬚͏  _n_! ∕ (_n_ - _k_)!	   ordered selections
+
+ ~_n_~*C*~_k_~ =  ⬚͏   _n_! ∕ _k_!(_n_ - _k_)!	    unordered selections
+
+*Discrete Random Variable*
+ Expected value, variance & std. dev.
+ E(*X*)   = _μ_~*X*~  = ^1^⁄~_n_~∑_x_~*i*~
+ Var(*X*) = _σ_²~*X*~ = ∑(_x_~*i*~ - _μ_~*x*~)²_p_~*i*~
+ _σ_~*X*~  =  √Var(*X*)
+
+*Binomial Random Variable*
+ Probability, _k_ successes in _n_ attempts, given proportion _p_
+ *P*(_k_ in _n_) = (^_n_^~_k_~ )_p_^_k_^(1 - _p_)^_n_-_k_^
+
+ Mean & std. dev.
+ _μ_~*X*~ = _np_
+ _σ_~*X*~ = √_np_(1 - _p_)
+
+*Sampling Distributions*
+ Sample proportion *p̂*, mean & std. dev.
+ _μ_~*p̂*~ = _p_
+ _σ_~*p̂*~ = √_p_(1 - _p_)/_n_
+
+ Sample mean *x̄*, mean & std. dev.
+ *x̄* = ^1^⁄~_n_~∑_x_~*i*~
+ _μ_~*x̄*~ = _μ_
+ _σ_~*x̄*~ = _σ_/√_n_	*standard error of the mean*
+
+*/`;
+
 export {
-  groupname, analysis1
+  groupname, analysis1, analysis2
 };
