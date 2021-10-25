@@ -477,8 +477,8 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
         + "<span class=fbig>" + (c4 || c1 + c2) + "</span>"
         + (c4 ? " " : c3 + (!c1 || !c2 ? "" : " "))
         + (!c5 ? "" : "<span class=dvnd>" + c5 + "</span>") ) )
-    .replace( /\(((?: |&nbsp;)*<sup>.*?<\/sup>)((?: |&nbsp;)*<sub>.*?<\/sub>)((?: |&nbsp;)*)\)/g,
-      "(<span class=vert>$1</span><span class=vert>$2</span>$3)" )
+    .replace( /\(((?:\t| |&nbsp;)*<sup>.*?<\/sup>)((?:\t| |&nbsp;)*<sub>.*?<\/sub>)(?=(?:\t| |&nbsp;)*\))/g,
+      "(<span class=vert>$1</span><span class=vert>$2</span>" )
     .replace(/([^$.\wΑ-Ͽ]|^)\$\.([\wΑ-Ͽ]+)/g, "$1<var class=dvar>$2</var>")
     .replace( !_ks.length ? /[]/
       : new RegExp("(&#?(?!\\w+;)|[^&]#|[^#$&.\\wΑ-Ͽ]|^)(" + _ks.join("|") + ")(?![$\\wΑ-Ͽ\u0300-\u036f\u20d0-\u20ff]|[^\n<]*<\\/(?:em|strong|var|x)>)", "g"),
