@@ -83,7 +83,7 @@ __Statistical Analysis Tools, part 2__
 
 *Counting Methods, All Possible Scenarios*
  _n_ | sample total
- _k_ | number selected
+ _k_ | amount selected
  *P* | Permutations
  *C* | Combinations
 
@@ -98,15 +98,21 @@ __Statistical Analysis Tools, part 2__
   (^_n_ + _k_ - 1^   ~_k_~	  ) 		unordered selections
 
 *Discrete Random Variable*
- *X* | number of test successes in sample 
+ *X*   | a discrete r.v. (amount of test successes in sample)
+ _x_   | one value in sample
+ _μ_   | mean (average of all values)
+ _σ_   | standard deviation
+ *P*() | p.m.f., probability weight for each value in sample
 
  Expected value (mean), variance & std. dev. of discrete r.v.
  *E*(*X*) = _μ_~*X*~  = ^1^⁄~_n_~∑_x_~*i*~
- *V*(*X*) = _σ_²~*X*~ = ∑(_x_~*i*~ - _μ_~*x*~)²_p_~*i*~
+ *V*(*X*) = _σ_²~*X*~ = ∑(_x_~*i*~ - _μ_~*x*~)²*P*(_x_~*i*~)
  _σ_~*X*~   = √*V*(*X*)
 
 *Binomial Random Variable*
- Probability, _k_ successes in _n_ attempts, given pop. proportion _p_
+ _p_ | true population proportion of successes
+
+ Probability, _k_ successes in _n_ attempts, given _p_
  *P*(_k_ in _n_) = (^_n_^~_k_~ )_p_^_k_^(1 - _p_)^_n_-_k_^
 
  Mean & std. dev. of binomial r.v.
@@ -114,7 +120,7 @@ __Statistical Analysis Tools, part 2__
  _σ_~*X*~ = √_np_(1 - _p_)
 
 *Sampling Distributions*
- Pop. proportion sample estimator _p̂_, mean & std. dev. of
+ Pop.-proportion estimator _p̂_, mean & std. dev. of
  _p̂_ = *X*/_n_	sample fraction of successes
  _μ_~*p̂*~ = _p_
  _σ_~*p̂*~ = √_p_(1 - _p_)/_n_
