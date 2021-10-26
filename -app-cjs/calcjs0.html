@@ -429,15 +429,15 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
         .replace(/^\/\*\n?([^]*?)\n?\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
         .replace(/^((?:[^\n\/]|\/(?!\/))*?)(?:<!--[^]*?-->|<script\b.*?>[^]*?<\/script>)/gim, "$1")
         .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/<\/?\b.+?>/g, ""))
-        .replace(/&Tab;/g, "\t").replace(/(?:[^$.\wΑ-Ͽ]|^)\$(?=[$_a-zΑ-Ͽ])/gi, "$&.")
+        .replace(/&Tab;/g, "\t").replace(/(?:[^$.\wÀ-Ͽ]|^)\$(?=[$_a-zÀ-Ͽ])/gi, "$&.")
         .split("\n"),
       reslts = xprsns.map(xpr => {
         try {
           xpr = xpr && xpr
-          .replace( /^(?=[\t ]*{)|^.*?(?=\/\/|\(? *function\b[ \w]*\([^]*?\) *{|\(? *(?:[$\wΑ-Ͽ]+|\([^]*?\)) *=>|$)/g,
-            m0 => m0.replace( /( |^)([$_a-zΑ-Ͽ][$\wΑ-Ͽ]*)(?= *=)/gi,
+          .replace( /^(?=[\t ]*{)|^.*?(?=\/\/|\(? *function\b[ \w]*\([^]*?\) *{|\(? *(?:[$\wÀ-Ͽ]+|\([^]*?\)) *=>|$)/g,
+            m0 => m0.replace( /( |^)([$_a-zÀ-Ͽ][$\wÀ-Ͽ]*)(?= *=)/gi,
               (m1, c1, c2) => _ks.push(c2) && c1 + "_." + c2 )
-            .replace( /([\t =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([$_](?!\.)[$\wΑ-Ͽ]*|[A-Za-zΑ-Ͽ][$\wΑ-Ͽ]*)(?! *=)/g,
+            .replace( /([\t =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([$_](?!\.)[$\wÀ-Ͽ]*|[A-Za-zÀ-Ͽ][$\wÀ-Ͽ]*)(?! *=)/g,
               (m1, c1, c2) => window[c2] || !_ks.some(k => k === c2) ? m1 : c1 + "_." + c2 ) );
           rslt = eval(xpr.replace(/\x0c$|\\f$|&#x0*[Cc];$|^\x0c|^\\f|^&#x0*[Cc];/g, ""));
           return ( !/\x0c$|\\f$|&#x0*[Cc];$|^\x0c|^\\f|^&#x0*[Cc];/.test(xpr) ? ""
@@ -451,19 +451,19 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
     quad1A.innerHTML = Object.values($).join("\n").replace(/\n$/, "\n&nbsp;")
       + '<span id="dfinal">$-variable<br />FINAL VALUES</span>';
     quad1B.innerHTML = Object.keys($).join("\n")
-      .replace(/^([a-zΑ-Ͽ]+)(\d+)$/gim, "$1<sub>$2</sub>");
+      .replace(/^([a-zÀ-Ͽ]+)(\d+)$/gim, "$1<sub>$2</sub>");
     quad2A.innerHTML = reslts.join("\n").replace(/\n$/, "\n&nbsp;")
       + '<span id="dinitl">Line-expression<br />RESULTS</span>';
     quad2B.innerHTML = xprsns.map( xpr => xpr
       .replace(/&(?=[gl]t;|#x0*[ad];|NewLine;)/gi, "&amp;").replace(/<(?=\/?\w)/g, "&lt;")
       .replace( /\/\/ *(.*?) *$/, (m, c1) =>
         "<span class=dnote>" + c1
-        .replace(/(\W|\d|^)_([0-9a-zΑ-Ͽ]+)_(?=$|\W|\d)/gi, "$1<strong><em>$2</em></strong>")
+        .replace(/(\W|\d|^)_([0-9a-zÀ-Ͽ]+)_(?=$|\W|\d)/gi, "$1<strong><em>$2</em></strong>")
         .replace(/(\W|\d|__|^)\*(?=\S)(.*?\S)\*(?=$|\W|\1)/g, "$1<em>$2</em>")
         .replace(/\b__(.+?)__\b/g, "<strong>$1</strong>")
         .replace(/\^(?=\S)(.*?\S)\^/g, "<sup>$1</sup>")
         .replace(/~(?=\S)(.*?\S)~/g, "<sub>$1</sub>")
-        .replace( /([^$.\wΑ-Ͽ]|^)(a)(?= )/gi, //"$1<x>$2</x>")
+        .replace( /([^$.\wÀ-Ͽ]|^)(a)(?= )/gi, //"$1<x>$2</x>")
           (m, c1, c2) => c1 + "&#x" + c2.charCodeAt(0).toString(16) + ";" )
         .replace(/\u2b1a\u034f/g, "&nbsp;")
         .replace(/\u250a\u034f/g, "&zwj;")
@@ -479,11 +479,11 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
         + (!c5 ? "" : "<span class=dvnd>" + c5 + "</span>") ) )
     .replace( /\(((?:\t| |&nbsp;)*<sup>.*?<\/sup>)((?:\t| |&nbsp;)*<sub>.*?<\/sub>)(?=(?:\t| |&nbsp;)*\))/g,
       "(<span class=vert>$1</span><span class=vert>$2</span>" )
-    .replace(/([^$.\wΑ-Ͽ]|^)\$\.([\wΑ-Ͽ]+)/g, "$1<var class=dvar>$2</var>")
+    .replace(/([^$.\wÀ-Ͽ]|^)\$\.([\wÀ-Ͽ]+)/g, "$1<var class=dvar>$2</var>")
     .replace( !_ks.length ? /[]/
-      : new RegExp("(&#?(?!\\w+;)|[^&]#|[^#$&.\\wΑ-Ͽ]|^)(" + _ks.join("|") + ")(?![$\\wΑ-Ͽ\u0300-\u036f\u20d0-\u20ff]|[^\n<]*<\\/(?:em|strong|var|x)>)", "g"),
+      : new RegExp("(&#?(?!\\w+;)|[^&]#|[^#$&.\\wÀ-Ͽ]|^)(" + _ks.join("|") + ")(?![$\\wÀ-Ͽ\u0300-\u036f\u20d0-\u20ff]|[^\n<]*<\\/(?:em|strong|var|x)>)", "g"),
       "$1<var>$2</var>" )
-    .replace(/(<var\b.*?>[a-zΑ-Ͽ]+)(\d+)(?=<\/var>)/gi, "$1<sub>$2</sub>")
+    .replace(/(<var\b.*?>[a-zÀ-Ͽ]+)(\d+)(?=<\/var>)/gi, "$1<sub>$2</sub>")
     .replace(/\u2044|&frasl;/g, "<span class=frasl>$&</span>")
     .replace( /[\xb2\xb3\xb9\u2070-\u207e\u2080-\u208e]|&sup[123];/g,
       "<span class=fsan2>$&</span>" ) // superscripts, subscripts
