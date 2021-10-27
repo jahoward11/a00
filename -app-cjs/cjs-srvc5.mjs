@@ -151,36 +151,56 @@ __Statistical Analysis Tools, part 2__
 
 
 *Binomial Random Variable*
- *X*  | a discrete r.v. that meets binomial conditions
+ *B*  | a discrete r.v. that meets binomial conditions
 
  Probability, _k_ successes out of _n_ attempts, given _p_
- *P*(*X* = _k_) = (^_n_^~_k_~ )_p_^_k_^(1 - _p_)^_n_-_k_^
+ *P*(*B* = _k_) = (^_n_^~_k_~ )_p_^_k_^(1 - _p_)^_n_-_k_^
 
  Mean &amp; std. dev. of binomial r.v.
- _μ_~*X*~ = _np_
- _σ_~*X*~ = √_np_(1 - _p_)
+ _μ_~*B*~ = _np_
+ _σ_~*B*~ = √_np_(1 - _p_)
 */
 
- p = 0.5
+ pB = 0.5
 
- $PX = $Combs * p**k * (1 - p)**(n - k)
- $μX = n * p
- $σX = Math.sqrt(n * p * (1 - p))
+ $PB = $Combs * pB**k * (1 - pB)**(n - k)
+ $μB = n * pB
+ $σB = Math.sqrt(n * pB * (1 - pB))
+
+
+/*
+*Geometric Random Variable*
+ *G*  | a quasi-binomial r.v. with potentially unlimited outcomes
+
+ Probability, success in (before/after) _n_ attempts, given _p_
+ *P*(*G* = _n_) = _p_(1 - _p_)^_n_-1^
+
+ Mean &amp; std. dev. of geometric r.v.
+ _μ_~*G*~ = 1 / _p_
+ _σ_~*G*~ = ^1^⁄~_p_~√(1 - _p_)
+*/
+
+ pG = pB
+
+ PG = pG * (1 - pG)**(n - 1)
+ μG = 1 / pG
+ σG = Math.sqrt(1 - pG) / pG
 
 
 /*
 *Sampling Distributions*
  Pop.-prop. estimator _p̂_――mean &amp; std. dev. of
- _p̂_ = *X*/_n_	sample fraction of successes
+ _p̂_ = *X* / _n_	sample fraction of successes
  _μ_~*p̂*~ = _p_
  _σ_~*p̂*~ = √_p_(1 - _p_)/_n_
 
  All samples' means _x̅_――mean &amp; std. dev. of
  _x̅_ = ^1^⁄~_n_~∑_x_~*i*~
  _μ_~*x̅*~ = _μ_
- _σ_~*x̅*~ = _σ_/√_n_	standard error of the mean
+ _σ_~*x̅*~ = _σ_ / √_n_	standard error of the mean
 */
 
+ p = pB
  μ = 0
  σ = 1
  X = k
