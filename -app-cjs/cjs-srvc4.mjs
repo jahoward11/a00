@@ -66,7 +66,8 @@ __Surface Area/Volume of a Sphere__
           (sample minimum) from the greatest (sample maximum)
 
 __Mean__
- *x̅* = ^1^⁄~*n*~∑*x~i~*
+
+ *x̅* = ∑*x~i~* ⟋ ⬚͏*n*⬚͏
 
 __Standard Deviation__
  
@@ -81,7 +82,7 @@ __Chi-Square__
  *χ*² = ∑   (*o* - *e*)² ⟋ ⬚͏  *e*   ⬚͏
  
 __Chi-Square Table__
- *P*-    | Degrees of Freedom
+  *P*-   | Degrees of Freedom
  v̲a̲l̲u̲e̲ |  ̲ ̲1̲ ̲ ̲  ̲ ̲2̲ ̲ ̲  ̲ ̲3̲ ̲ ̲  ̲ ̲4̲ ̲ ̲  ̲ ̲5̲ ̲ ̲  ̲ ̲6̲ ̲ ̲  ̲ ̲7̲ ̲ ̲  ̲ ̲8̲ ̲ ̲ 
   0.05 |  3.84  5.99  7.81  9.49 11.07 12.59 14.07 15.51 
   0.01 |  6.63  9.21 11.34 13.28 15.09 16.81 18.48 20.09 

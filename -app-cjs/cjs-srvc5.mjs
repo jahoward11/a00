@@ -102,9 +102,9 @@ __Statistical Analysis Tools, part 2__
  _s_  | sample std. dev.
 
  _z_  | *z*-score, a value's horizontal distance from mean,
-      as factor of std. dev., along std. n.d. curve
+      as multiple of std. dev., along std. &#x6e;.d. curve
  *P*()| probability mass/density function (PMF or PDF),
-      e.g., frequency of each value in sample
+      e.g., frequency of given value from sample
 
 
 *Counting Methods, all possible scenarios*
@@ -126,10 +126,11 @@ __Statistical Analysis Tools, part 2__
  k = 3
 
  fctl = c => Array.from(Array(c).keys()).reduce((a, b) => a * (1 + b), 1); "";
- Perms = fctl(n) / fctl(n - k)
+
+ $Perms = fctl(n) / fctl(n - k)
  $Combs = fctl(n) / fctl(k) / fctl(n - k)
- ReplO = n**k
- ReplU = fctl(n + k - 1) / fctl(k) / fctl((n + k - 1) - k)
+ replO = n**k
+ replU = fctl(n + k - 1) / fctl(k) / fctl((n + k - 1) - k)
 
 
 /*
@@ -152,7 +153,7 @@ __Statistical Analysis Tools, part 2__
 *Binomial Random Variable*
  *X*  | a discrete r.v. that meets binomial conditions
 
- Probability, _k_ successes in _n_ attempts, given _p_
+ Probability, _k_ successes out of _n_ attempts, given _p_
  *P*(*X* = _k_) = (^_n_^~_k_~ )_p_^_k_^(1 - _p_)^_n_-_k_^
 
  Mean &amp; std. dev. of binomial r.v.
@@ -169,12 +170,12 @@ __Statistical Analysis Tools, part 2__
 
 /*
 *Sampling Distributions*
- Pop.-prop. estimator _p̂_ -- mean &amp; std. dev. of
+ Pop.-prop. estimator _p̂_――mean &amp; std. dev. of
  _p̂_ = *X*/_n_	sample fraction of successes
  _μ_~*p̂*~ = _p_
  _σ_~*p̂*~ = √_p_(1 - _p_)/_n_
 
- All samples' means _x̅_ -- mean &amp; std. dev. of
+ All samples' means _x̅_――mean &amp; std. dev. of
  _x̅_ = ^1^⁄~_n_~∑_x_~*i*~
  _μ_~*x̅*~ = _μ_
  _σ_~*x̅*~ = _σ_/√_n_	standard error of the mean

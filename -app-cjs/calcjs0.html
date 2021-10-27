@@ -451,7 +451,9 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
     quad1A.innerHTML = Object.values($).join("\n").replace(/\n$/, "\n&nbsp;")
       + '<span id="dfinal">$-variable<br />FINAL VALUES</span>';
     quad1B.innerHTML = Object.keys($).join("\n")
-      .replace(/^([a-zÀ-Ͽ]+)(\d+)$/gim, "$1<sub>$2</sub>");
+      .replace(/^([a-zÀ-Ͽ]+)(\d+)$/gim, "$1<sub>$2</sub>")
+      .replace( /.[\u0300-\u036f]|[\u02f7\u03d5\u03dd\u03f0\u03f1\u03f5]/g,
+        "<span class=fsan1>$&</span>" );
     quad2A.innerHTML = reslts.join("\n").replace(/\n$/, "\n&nbsp;")
       + '<span id="dinitl">Line-expression<br />RESULTS</span>';
     quad2B.innerHTML = xprsns.map( xpr => xpr
