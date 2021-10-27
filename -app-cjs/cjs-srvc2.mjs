@@ -7,7 +7,7 @@ __Dimensions of Common Use__
 - _angle_ of a slope or incline
 - _length_ of a side, distance or boundary
 - _Perimeter_ of any shape (a length)
-- _Circumference_ of a circle (a length & a perimeter)
+- _Circumference_ of a circle (a length &amp; a perimeter)
 - Surface _Area_ (e.g., of a carpeted floor or painted wall)
 - _Volume_ of space or an object
 
@@ -79,8 +79,8 @@ __KEY__\\f
  _h_   | rectangular-solid height (a length)
  _Pre_ | Perimeter of a rectangle (a length)
  
- _bpa_ | parallelogram base length
- _hpa_ | parallelogram height length
+ _bpg_ | parallelogram base length
+ _hpg_ | parallelogram height length
  
  _bu_  | trapezoid upper base length
  _bl_  | trapezoid lower base length
@@ -95,7 +95,7 @@ __KEY__\\f
  _Apg_ | Area of a parallelogram
  _Atz_ | Area of a trapezoid
  _Aci_ | Area of a circle
-  
+ 
  _Acu_ | Surface Area of a rectangular solid (cuboid)
  _Vcu_ | Volume of a rectangular solid (cuboid)
  _spy_ | pyramid slant-height length
@@ -104,6 +104,7 @@ __KEY__\\f
  
  _Asp_ | Surface Area of a sphere
  _Vsp_ | Volume of a sphere
+ 
  _rn_  | cylinder/cone radius length
  _hn_  | cylinder/cone height length
  _Acy_ | Surface Area of a cylinder
@@ -125,8 +126,8 @@ __KEY__\\f
  w = 15 // ft
  h = 10 // ft
  
- bpa = 20 // ft
- hpa = 12 // ft
+ bpg = 20 // ft
+ hpg = 12 // ft
  
  bu = 16 // ft
  bl = 14 // ft
@@ -145,7 +146,7 @@ __KEY__\\f
  $Pre = (2 * l) + (2 * w) // ft
  $Are = l * w // sq-ft
  
- $Apg = bpa * hpa // sq-ft
+ $Apg = bpg * hpg // sq-ft
  
  $Atz = 0.5 * hz * (bu + bl) // sq-ft
  
