@@ -441,9 +441,9 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
               (m1, c1, c2) => window[c2] || !_ks.some(k => k === c2) ? m1 : c1 + "_." + c2 ) );
           rslt = eval(xpr.replace(/\x0c$|\\f$|&#x0*[Cc];$|^\x0c|^\\f|^&#x0*[Cc];/g, ""));
           return ( !/\x0c$|\\f$|&#x0*[Cc];$|^\x0c|^\\f|^&#x0*[Cc];/.test(xpr) ? ""
-            : "<div class=pagebb></div>" ) + ( rslt == null ? ""
-              : typeof rslt === 'string' ? rslt.replace(/\n/g, "\\n")
-              : rslt.toString().replace(/\s+/g, " ") );
+            : "<div class=pagebb></div>" )
+          + ( rslt == null ? "" : typeof rslt === 'string' ? rslt.replace(/\n/g, "\\n")
+            : rslt.toString().replace(/\s+/g, " ") );
         } catch (err) { respShow(err); return err; }
       }),
       $ks = Object.keys($);
