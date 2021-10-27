@@ -102,9 +102,9 @@ __Statistical Analysis Tools, part 2__
  _s_  | sample std. dev.
 
  _z_  | *z*-score, a value's horizontal distance from mean,
-      as multiple of std. dev., along std. &#x6e;.d. curve
- *P*()| probability mass/density function (PMF or PDF),
-      e.g., frequency of given value from sample
+      as multiple of std. dev., along &#x6e;.d. (bell) curve
+ *P*()| probability mass/density/dist. function (PMF or PDF),
+      e.g., relative frequency of given value from sample
 
 
 *Counting Methods, all possible scenarios*
