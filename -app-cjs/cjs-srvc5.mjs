@@ -22,12 +22,12 @@ __*Z-score*__
 __*Correlation Coefficient*__
  *r*  | how closely aligned are plot points to linear regression line?
 
- *r*  =  ⬚͏ 1 ⟋ *n* - 1	     ∑ *z~xi~ z~yi~*  =  ⬚͏ 1 ⟋ *n* - 1	∑   [  *x~i~* - *x̅* ⟋ ⬚͏ *s~x~* ⬚͏      ] [  *y~i~* - *y̅* ⟋ ⬚͏ *s~y~* ⬚͏      ] 
+ *r*  =  ⬚͏ 1 ⟋ *n* - 1	     ∑ *z~xi~ z~yi~*  =  ⬚͏ 1 ⟋ *n* - 1	∑   [  *x~i~* - *x̅* ⟋ ⬚͏ *s~x~* ⬚͏      ] [  *y~i~* - *y̅* ⟋ ⬚͏ *s~y~* ⬚͏      ]
 
 
 __*Normal Distribution, Probability Density Function (PDF)*__
 
- *p*(*x*)  =   ⬚͏1 ⟋ *σ*√2*π*	exp[  -(*x - μ*)² ⟋ ⬚͏  2*σ*²  ⬚͏	     ] 
+ *p*(*x*)  =   ⬚͏1 ⟋ *σ*√2*π*	exp[  -(*x - μ*)² ⟋ ⬚͏  2*σ*²  ⬚͏	     ]
 
        =   ⬚͏  1 ⟋ *σ*√2*π*ℯ^*z*²^
 
@@ -143,9 +143,9 @@ __*Statistic (from samples) vs. Parameter (of population)*__
 
 
 __*Discrete Random Variable*__
- *X*  | number of test successes in sample
+ *X*  | anticipated number of test successes in sample
 
- Expected value (mean), variance &amp; std. dev. of discrete r.v.
+ Expected value (mean), variance &amp; std. dev. of discrete r.v. *X*
  *E*(*X*) = _μ_~*X*~  = ^1^⁄~_n_~∑_x_~*i*~
  *V*(*X*) = _σ_²~*X*~ = ∑(_x_~*i*~ - _μ_~*x*~)²*P*(_x_~*i*~)
  	_σ_~*X*~  = √*V*(*X*)
@@ -157,7 +157,7 @@ __*Binomial Random Variable*__
  Probability, _k_ successes out of _n_ attempts, given _p_
  *P*(*B* = _k_) = (^_n_^~_k_~ )_p_^_k_^(1 - _p_)^_n_-_k_^
 
- Mean &amp; std. dev. of binomial r.v.
+ Mean &amp; std. dev. of binomial r.v. *B*
  _μ_~*B*~ = _np_
  _σ_~*B*~ = √_np_(1 - _p_)
 */
@@ -171,12 +171,12 @@ __*Binomial Random Variable*__
 
 /*
 __*Geometric Random Variable*__
- *G*  | a quasi-binomial r.v. without set number of outcomes
+ *G*  | a quasi-binomial r.v. without set number of trials
 
  Probability, success in _n_ attempts, given _p_
  *P*(*G* = _n_) = _p_(1 - _p_)^_n_-1^
 
- Mean &amp; std. dev. of geometric r.v.
+ Mean &amp; std. dev. of geometric r.v. *G*
  _μ_~*G*~ = 1 / _p_
  _σ_~*G*~ = ^1^⁄~_p_~√(1 - _p_)
 */
