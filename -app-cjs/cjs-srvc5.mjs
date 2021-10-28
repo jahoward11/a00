@@ -10,22 +10,22 @@ __Statistical Analysis Tools__
 
  _n_  | sample total count
  _x_,_y_| one value in sample
- _s_  | sample std. dev.
+ _s_  | sample standard deviation
 
 
-*Z-score*
+__*Z-score*__
  *z*  | how many standard deviations is a value away from the mean?
 
  *z*  =  *x - μ* ⟋ *⬚͏ σ ⬚͏*	      =  ~data point - mean~ ⟋ ⬚͏  ^std. dev.^  ⬚͏
 
 
-*Correlation Coefficient*
+__*Correlation Coefficient*__
  *r*  | how closely aligned are plot points to linear regression line?
 
  *r*  =  ⬚͏ 1 ⟋ *n* - 1	     ∑ *z~xi~ z~yi~*  =  ⬚͏ 1 ⟋ *n* - 1	∑   [  *x~i~* - *x̅* ⟋ ⬚͏ *s~x~* ⬚͏      ] [  *y~i~* - *y̅* ⟋ ⬚͏ *s~y~* ⬚͏      ] 
 
 
-*Normal Distribution, Probability Density Function (PDF)*
+__*Normal Distribution, Probability Density Function (PDF)*__
 
  *p*(*x*)  =   ⬚͏1 ⟋ *σ*√2*π*	exp[  -(*x - μ*)² ⟋ ⬚͏  2*σ*²  ⬚͏	     ] 
 
@@ -48,7 +48,7 @@ __Statistical Analysis Tools__
 
 
 /*
-*Normal Distribution, Cumulative Density Function (CDF)*
+__*Normal Distribution, Cumulative Density Function (CDF)*__
 
  *Φ*(*x*)  =  ∫ *φ*(*x*) *dx*	CDF for a std. n.d.
 */
@@ -72,7 +72,7 @@ __Statistical Analysis Tools__
 
 
 /*
-*The 68-95-99.7 (empirical) rule, or the 3-sigma rule*
+__*The 68-95-99.7 (empirical) rule, or the 3-sigma rule*__
 
  68.27% | probability of a position w/i &pm;1 std. dev.
  95.45% | probability of a position w/i &pm;2 std. devs.
@@ -99,27 +99,27 @@ __Statistical Analysis Tools, part 2__
  _n_  | sample total count
  _k_  | number selected from sample
  _x_  | one value in sample
- _s_  | sample std. dev.
+ _s_  | sample standard deviation
 
  _z_  | *z*-score, a value's horizontal distance from mean,
-      as multiple of std. dev., along &#x6e;.d. (bell) curve
+      as multiplier of std. dev., along &#x6e;.d. (bell) curve
  *P*()| probability mass/density/dist. function (PMF or PDF),
       e.g., relative frequency of given value from sample
 
 
-*Counting Methods, all possible scenarios*
+__*Counting Methods, all possible scenarios*__
  *P*  | Permutations
  *C*  | Combinations
 
- selecting without replacement
+ selections without replacement
 
-       ~_n_~*P*~_k_~ =   ⬚͏  _n_! ∕ (_n_ - _k_)!		ordered selections
+       ~_n_~*P*~_k_~ =   ⬚͏  _n_! ∕ (_n_ - _k_)!		ordered
 
- (^_n_^~_k_~ ) = ~_n_~*C*~_k_~ = ⬚͏   _n_! ∕ _k_!(_n_ - _k_)!		unordered selections
+ (^_n_^~_k_~ ) = ~_n_~*C*~_k_~ = ⬚͏   _n_! ∕ _k_!(_n_ - _k_)!		unordered
 
- selecting with replacement
-   _n_^_k_^			ordered selections
-  (^_n_ + _k_ - 1^   ~_k_~	  ) 		unordered selections
+ selections with replacement
+   _n_^_k_^			ordered
+  (^_n_ + _k_ - 1^   ~_k_~	  ) 		unordered
 */
 
  n = 5
@@ -134,14 +134,15 @@ __Statistical Analysis Tools, part 2__
 
 
 /*
-*Statistic (from samples) vs. Parameter (of population)*
+__*Statistic (from samples) vs. Parameter (of population)*__
+
  __sample statistic__	__population parameter__
  _x̅_ = ^1^⁄~_n_~∑_x_~*i*~		_μ_ = ^1^⁄~_N_~∑_x_~*i*~
  _s_ = √^1^⁄~_n_-1~∑(_x_~*i*~ - _x̅_)²	_σ_ = √^1^⁄~_N_~∑(_x_~*i*~ - _μ_)²
  _z_ = (_x_ - _x̅_) / _s_	_z_ = (_x_ - _μ_) / _σ_
 
 
-*Discrete Random Variable*
+__*Discrete Random Variable*__
  *X*  | number of test successes in sample
 
  Expected value (mean), variance &amp; std. dev. of discrete r.v.
@@ -150,7 +151,7 @@ __Statistical Analysis Tools, part 2__
  	_σ_~*X*~  = √*V*(*X*)
 
 
-*Binomial Random Variable*
+__*Binomial Random Variable*__
  *B*  | a discrete r.v. that meets binomial conditions
 
  Probability, _k_ successes out of _n_ attempts, given _p_
@@ -169,10 +170,10 @@ __Statistical Analysis Tools, part 2__
 
 
 /*
-*Geometric Random Variable*
- *G*  | a quasi-binomial r.v. with potentially unlimited outcomes
+__*Geometric Random Variable*__
+ *G*  | a quasi-binomial r.v. without set number of outcomes
 
- Probability, success in (before/after) _n_ attempts, given _p_
+ Probability, success in _n_ attempts, given _p_
  *P*(*G* = _n_) = _p_(1 - _p_)^_n_-1^
 
  Mean &amp; std. dev. of geometric r.v.
@@ -182,13 +183,13 @@ __Statistical Analysis Tools, part 2__
 
  pG = pB
 
- PG = pG * (1 - pG)**(n - 1)
- μG = 1 / pG
- σG = Math.sqrt(1 - pG) / pG
+ $PG = pG * (1 - pG)**(n - 1)
+ $μG = 1 / pG
+ $σG = Math.sqrt(1 - pG) / pG
 
 
 /*
-*Sampling Distributions*
+__*Sampling Distributions*__
  Pop.-prop. estimator _p̂_――mean &amp; std. dev. of
  _p̂_ = *X* / _n_	sample fraction of successes
  _μ_~*p̂*~ = _p_
