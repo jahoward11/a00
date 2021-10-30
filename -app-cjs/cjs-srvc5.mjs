@@ -83,16 +83,16 @@ __*Std. N.D., the 68-95-99.7 (empirical) rule, or the 3-sigma rule*__
  2 * $Φx1 - 1
  2 * $Φx2 - 1
 
- // inverse coverage, 2 areas outside *μ - zσ* and *μ + zσ*
+ // inverted coverage, 2 areas outside *μ - zσ* and *μ + zσ*
  2 * (1 - $Φx1)
  2 * (1 - $Φx2)
 
 
-// __*Std. N.D., calculate value* z *, given probability* p__
+// __*Std. N.D., calculate value* z *given CDF probability* p__
 
- p = 0.995		// ensure  0.5000 < p < 0.9998
+ p = 0.995		// ensure  0.5 < p < 0.9998
 
- $z = 0; zmin = 0; zmax = 3.51; ""
+ $z = 0; zmin = 0; zmax = 3.5; ""
  φz = () => 1 / (2 * Math.PI * Math.exp($z**2))**0.5; ""
  Tz = () => 1 / (1 + _.b0 * $z); ""
  Φz = (φ, t) => 1 - φ * (_.b1*t + _.b2*t**2 + _.b3*t**3 + _.b4*t**4 + _.b5*t**5); ""
