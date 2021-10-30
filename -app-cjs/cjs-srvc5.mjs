@@ -72,7 +72,7 @@ __*Normal Distribution, Cumulative Density Function (CDF)*__
 
 
 /*
-__*The 68-95-99.7 (empirical) rule, or the 3-sigma rule*__
+__*Std. N.D., the 68-95-99.7 (empirical) rule, or the 3-sigma rule*__
 
  68.27% | probability of a position w/i &pm;1 std. dev.
  95.45% | probability of a position w/i &pm;2 std. devs.
@@ -86,6 +86,17 @@ __*The 68-95-99.7 (empirical) rule, or the 3-sigma rule*__
  // inverse coverage, 2 areas outside *μ - zσ* and *μ + zσ*
  2 * (1 - $Φx1)
  2 * (1 - $Φx2)
+
+
+// __*Std. N.D., calculate value* z *, given probability* p__
+
+ p = 0.995		// ensure  0.5000 < p < 0.9998
+
+ $z = 0; zmin = 0; zmax = 3.51; ""
+ φz = () => 1 / (2 * Math.PI * Math.exp($z**2))**0.5; ""
+ Tz = () => 1 / (1 + _.b0 * $z); ""
+ Φz = (φ, t) => 1 - φ * (_.b1*t + _.b2*t**2 + _.b3*t**3 + _.b4*t**4 + _.b5*t**5); ""
+ while (zmax - zmin > 0.000001) { Φz(φz(), Tz()) > p ? zmax = $z : zmin = $z; $z = (zmax + zmin) / 2; }
 //`;
 
 const analysis2 = `/*
@@ -125,7 +136,7 @@ __*Counting Methods, all possible scenarios*__
  n = 5
  k = 3
 
- fctl = c => Array.from(Array(c).keys()).reduce((a, b) => a * (1 + b), 1); "";
+ fctl = c => Array.from(Array(c).keys()).reduce((a, b) => a * (1 + b), 1); ""
 
  $Perms = fctl(n) / fctl(n - k)
  $Combs = fctl(n) / fctl(k) / fctl(n - k)
