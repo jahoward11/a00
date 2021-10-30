@@ -14,13 +14,13 @@ __Statistical Analysis Tools__
 
 
 __*Z-score*__
- *z*  | how many standard deviations is a value away from the mean?
+ _z_  | how many standard deviations is a value away from the mean?
 
  *z*  =  *x - μ* ⟋ *⬚͏ σ ⬚͏*	      =  ~data point - mean~ ⟋ ⬚͏  ^std. dev.^  ⬚͏
 
 
 __*Correlation Coefficient*__
- *r*  | how closely aligned are plot points to linear regression line?
+ _r_  | how closely aligned are plot points to linear regression line?
 
  *r*  =  ⬚͏ 1 ⟋ *n* - 1	     ∑ *z~xi~ z~yi~*  =  ⬚͏ 1 ⟋ *n* - 1	∑   [  *x~i~* - *x̅* ⟋ ⬚͏ *s~x~* ⬚͏      ] [  *y~i~* - *y̅* ⟋ ⬚͏ *s~y~* ⬚͏      ]
 
@@ -43,12 +43,14 @@ __*Normal Distribution, Probability Density Function (PDF)*__
  x2 = 2
  z2 = (x2 - μ) / σ	// ensure  z2 ≥ z1
 
- φx1 = 1 / (2 * Math.PI * Math.exp(z1**2))**0.5
- φx2 = 1 / (2 * Math.PI * Math.exp(z2**2))**0.5
+ φx1 = 1 / Math.sqrt(2 * Math.PI * Math.exp(z1**2))
+ φx2 = 1 / Math.sqrt(2 * Math.PI * Math.exp(z2**2))
 
 
 /*
 __*Normal Distribution, Cumulative Density Function (CDF)*__
+
+ *P*(*x*)  =  ∫ *p*(*x*) *dx*
 
  *Φ*(*x*)  =  ∫ *φ*(*x*) *dx*	CDF for a std. n.d.
 */
@@ -94,9 +96,9 @@ __*Std. N.D., the 68-95-99.7 (empirical) rule, or the 3-sigma rule*__
 
  $z = 0; zmin = 0; zmax = 3.5; ""
  φz = () => 1 / (2 * Math.PI * Math.exp($z**2))**0.5; ""
- Tz = () => 1 / (1 + _.b0 * $z); ""
+ tz = () => 1 / (1 + _.b0 * $z); ""
  Φz = (φ, t) => 1 - φ * (_.b1*t + _.b2*t**2 + _.b3*t**3 + _.b4*t**4 + _.b5*t**5); ""
- while (zmax - zmin > 0.000001) { Φz(φz(), Tz()) > p ? zmax = $z : zmin = $z; $z = (zmax + zmin) / 2; }
+ while (zmax - zmin > 0.000001) { Φz(φz(), tz()) > p ? zmax = $z : zmin = $z; $z = (zmax + zmin) / 2; }
 //`;
 
 const analysis2 = `/*
@@ -140,8 +142,8 @@ __*Counting Methods, all possible scenarios*__
 
  $Perms = fctl(n) / fctl(n - k)
  $Combs = fctl(n) / fctl(k) / fctl(n - k)
- replO = n**k
- replU = fctl(n + k - 1) / fctl(k) / fctl((n + k - 1) - k)
+ replo = n**k
+ replu = fctl(n + k - 1) / fctl(k) / fctl((n + k - 1) - k)
 
 
 /*

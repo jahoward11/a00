@@ -483,7 +483,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
       "(<span class=vert>$1</span><span class=vert>$2</span>" )
     .replace(/([^$.\wÀ-Ͽ]|^)\$\.([\wÀ-Ͽ]+)/g, "$1<var class=dvar>$2</var>")
     .replace( !_ks.length ? /[]/
-      : new RegExp("(&#?(?!\\w+;)|[^&]#|[^#$&.\\wÀ-Ͽ]|^)(" + _ks.join("|") + ")(?![$\\wÀ-Ͽ\u0300-\u036f\u20d0-\u20ff]|[^\n<]*<\\/(?:em|strong|var|x)>)", "g"),
+      : new RegExp("(&#?(?!\\w+;)|[^&]#|[^#$&.\\wÀ-Ͽ]|^)(?:_\.|)(" + _ks.join("|") + ")(?![$\\wÀ-Ͽ\u0300-\u036f\u20d0-\u20ff]|[^\n<]*<\\/(?:em|strong|var|x)>)", "g"),
       "$1<var>$2</var>" )
     .replace(/(<var\b.*?>[a-zÀ-Ͽ]+)(\d+)(?=<\/var>)/gi, "$1<sub>$2</sub>")
     .replace(/\u2044|&frasl;/g, "<span class=frasl>$&</span>")
