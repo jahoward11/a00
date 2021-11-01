@@ -299,7 +299,7 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
 </div>
 </main>
 <script type="text/javascript">
-!/^http/.test(window.location.protocol) || !window.navigator.serviceWorker
+!/^http/.test(window.location.protocol) || !window.navigator.onLine || !window.navigator.serviceWorker
 || window.navigator.serviceWorker.register("../-app-cjs/app-sw.js") //, { scope: "../" })
   .then(reg => window.console.log("SW registration succeeded. Scope: " + reg.scope))
   .catch(err => window.console.log("SW registration failed: " + err));

@@ -194,7 +194,7 @@ __*Geometric Random Variable*__
  _σ_~*G*~ = ^1^⁄~_p_~√(1 - _p_)
 */
 
- pG = pB
+ pG = 0.5
 
  $PG = pG * (1 - pG)**(n - 1)
  $μG = 1 / pG
@@ -214,7 +214,7 @@ __*Sampling Distributions*__
  _σ_~*x̅*~ = _σ_ / √_n_	standard error of the mean
 */
 
- p = pB
+ p = 0.5
  μ = 0
  σ = 1
  X = k
