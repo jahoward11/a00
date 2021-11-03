@@ -306,7 +306,7 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
 </script>
 <script src="../../a00/-res-js/localforage.nopromises.min.js" type="text/javascript"></script>
 <script type="module">
-let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
+let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], xstor = [],
   metavp = document.querySelector('#ecorender>meta[name=viewport]')
     || document.querySelector('head>meta[name=viewport]'),
   dinput = document.querySelector('#cmain>#dinput'),
@@ -327,7 +327,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
   dinp2 = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
     || { value: dinput.innerHTML.replace(/\n+$|^\n+/g, "") },
   respShow = resp => preresp.innerHTML
-    += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor
+    += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
       ? resp : JSON.stringify(resp, null, 2) ) + "\n\n",
   zoomTog = zoff => metavp.setAttribute( 'content', "width=device-width, "
     + (zoff || /maximum-/.test(metavp.content) ? "initial-scale=1" : "maximum-scale=1") ),
@@ -345,6 +345,17 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
       cgrid.classList.toggle("xpndq2B");
     }
   },
+  scrInj = url => new Promise((rslv, rjct) => {
+    url || rjct("**Alert: Script URL was not provided.");
+    let scrnew = document.createElement('script');
+    scrnew.src = url;
+    scrnew.type = 'text/javascript';
+    !/^http/.test(window.location.protocol) || !window.navigator.onLine
+    || scrnew.setAttribute('crossorigin', 'use-credentials');
+    scrnew.onerror = err => rjct("**Alert: Script resource GET/load error occured.");
+    scrnew.onload = rslv;
+    !url || document.body.appendChild(scrnew);
+  }),
   viewSet = () => {
     let qrys = [];
     /maximum-/.test(metavp.content) || qrys.push("!zlock");
@@ -369,18 +380,20 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
     + "\n  // title= | rename doc *TITLE*"
     + "\n  // cmods= | download certain/additional, pre-made data modules"
     + "\n  // dload= | load specified data set into *ENTRY* field"
-    + "\n  // val0s= | re-assign initial values of pre-loaded data set\n\n// "
+    + "\n  // val0s= | re-assign initial values of pre-loaded data set"
+    + "\n  // jsrcs= | inject supplemental JavaScript resources\n\n// "
     + (dinp2.type ? "window_location_search" : "window.location.search") + " = \"" + qrys.join("&")
     + "\"\n // + \"" + (!qrys.length ? "" : "&") + "cmods=\" + encodeURIComponent(\"3,5,prj42.mjs\")"
-    + ( (xsetlist || {}).value ? "" : "\n // + \"&dload=\" + encodeURIComponent(\"https://host/pathname\")")
-    + "\n // + \"&val0s=\" + encodeURIComponent(\"a:10,b:20,c:30\")\n<br>";
+    + ((xsetlist || {}).value ? "" : "\n // + \"&dload=\" + encodeURIComponent(\"https://host/pathname\")")
+    + "\n // + \"&val0s=\" + encodeURIComponent(\"a:10,b:20,c:30\")"
+    + "\n // + \"&jsrcs=\" + encodeURIComponent(\"../-res-js/jstat.js\")\n<br>";
     window.getSelection().setPosition(quad2B.firstChild, quad2B.textContent.length);
   },
   calcCopy = () => {
     let anew = document.createElement('a'),
       chtml = '<!DOCTYPE html>\n<html lang="en">\n<head>\n'
       + (document.querySelector('#ecorender') || document.documentElement).innerHTML
-        .replace(/\n+$|^\n+|^<head>\n?|^#cmain \.cfield[^]+?\n(?=@media print {\n)|,\n *xsetLoad = [^]+?(?=;\nwindow\.location\.search)|^if \(\/\^http[^]+?\n}\n|\n?<\/body>$/gim, "")
+        .replace(/\n+$|^\n+|^<head>\n?|^#cmain \.cfield[^]+?\n(?=@media print {\n)|,\n *xsetLoad = [^]+?(?=;\nwindow\.location\.search)|^ *!\/\^http.+slistRegen[^]+?;\n|\n?<\/body>$/gim, "")
         .replace(/^(<\/style>)[^]*?(?=<div .+><\/div>$)/im, "$1\n</head>\n<body>\n")
         .replace(/^(<xmp id="dinput".*?>)[^]*?(?=<\/xmp>)/im, (m, c1) => c1 + "\n" + dinp2.value + "\n")
         .replace(/^(<pre id="preresp">)[^]*?(?=<\/pre>)/im, "$1")
@@ -603,27 +616,27 @@ let di2html, q2Bcopy, cmods = [], dload = "", rset = 0, val0s = [], xstor = [],
       err => err ? respShow(err) : slistRegen() && xsethlps[1].classList.remove("is-hidden") );
   };
 window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
-  /^cmods=./.test(qi) ? (cmods = window.decodeURIComponent(qi.replace(/^cmods=/, "")).split(/[ ,]+/))
+  /^jsrcs=./.test(qi) ? (jsrcs = window.decodeURIComponent(qi.replace(/^jsrcs=/, "")).split(/[ ,]+/))
+  : /^cmods=./.test(qi) ? (cmods = window.decodeURIComponent(qi.replace(/^cmods=/, "")).split(/[ ,]+/))
   : /^dload=./.test(qi) ? (dload = window.decodeURIComponent(qi.replace(/^dload=/, "")))
   : /^val0s=./.test(qi) ? ( val0s = window.decodeURIComponent(qi.replace(/^val0s=/, ""))
     .split(/,/).map( e => (e = /^ *(.+:)(.*)/.exec(e))
-      && [new RegExp("^( *" + e[1].replace(/:/g, " *= *") + ").*?(?=[\\t ]*//|$)", "m"), "$1" + e[2]] ))
+      && [new RegExp("^( *" + e[1].replace(/:/g, " *= *") + ").*?(?=[\\t ]*//|$)", "m"), "$1" + e[2]] ) )
   : /^title=/.test(qi) ? titSave(0, window.decodeURIComponent(qi.replace(/^title=/, "")))
   : /^!zlock$/.test(qi) ? zoomTog(1)
   : /^!row1$/.test(qi) ? gridAdj(3)
   : /^!col1$/.test(qi) ? gridAdj(4) : 0 );
-if (/^http/.test(window.location.protocol)) {
-  Promise.all( (cmods.some(e => /^\d+$/.test(e)) ? cmods : [1,2,3,4,5,6].concat(cmods))
-    .map(e => !/^\d+$/.test(e) ? e : `cjs-srvc${e}.mjs`)
-    .map(fnm => fnm && import(/\//.test(fnm) ? fnm : "./" + fnm).catch(respShow)) )
-  .then( rslts => rslts.forEach( (r, i) => !r || typeof r !== 'object'
-    || xstor.push([r.groupname || "group" + (1 + i), r]) ))
-  .then(() => slistRegen(dload))
-  .catch(respShow);
-} else {
-  slistRegen(dload);
-}
-xsetinp || initLoad();
+Promise.all(jsrcs.map(scrInj)).catch(respShow).then(() => {
+  !/^http/.test(window.location.protocol) ? slistRegen(dload)
+  : Promise.all( (cmods.some(e => /^\d+$/.test(e)) ? cmods : [1,2,3,4,5,6].concat(cmods))
+      .map(e => !/^\d+$/.test(e) ? e : `cjs-srvc${e}.mjs`)
+      .map(fnm => fnm && import(/\//.test(fnm) ? fnm : "./" + fnm).catch(respShow)) )
+    .then( rslts => rslts.forEach( (r, i) => !r || typeof r !== 'object'
+      || xstor.push([r.groupname || "group" + (1 + i), r]) ))
+    .then(() => slistRegen(dload))
+    .catch(respShow);
+  xsetinp || initLoad();
+});
 plist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
   .map((e, i) => `<li>Math.${e}${/^[A-Z]/.test(e) ? "" : "()"}</li>`).join("\n    ")
   + "\n    " + Object.getOwnPropertyNames(Number)
