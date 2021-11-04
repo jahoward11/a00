@@ -1,4 +1,4 @@
-// from jstat.js
+// from github.com/jstat/jstat v1.9.3
 
 (function () {
 'use strict';
@@ -72,6 +72,62 @@ jStat.variance = function variance(arr, flag) {
 // flag = true indicates sample instead of population
 jStat.stdev = function stdev(arr, flag) {
   return Math.sqrt(jStat.variance(arr, flag));
+};
+
+// Returns the error function erf(x)
+jStat.erf = function erf(x) {
+  var cof = [-1.3026537197817094, 6.4196979235649026e-1, 1.9476473204185836e-2,
+             -9.561514786808631e-3, -9.46595344482036e-4, 3.66839497852761e-4,
+             4.2523324806907e-5, -2.0278578112534e-5, -1.624290004647e-6,
+             1.303655835580e-6, 1.5626441722e-8, -8.5238095915e-8,
+             6.529054439e-9, 5.059343495e-9, -9.91364156e-10,
+             -2.27365122e-10, 9.6467911e-11, 2.394038e-12,
+             -6.886027e-12, 8.94487e-13, 3.13092e-13,
+             -1.12708e-13, 3.81e-16, 7.106e-15,
+             -1.523e-15, -9.4e-17, 1.21e-16,
+             -2.8e-17];
+  var j = cof.length - 1;
+  var isneg = false;
+  var d = 0;
+  var dd = 0;
+  var t, ty, tmp, res;
+  if (x < 0) {
+    x = -x;
+    isneg = true;
+  }
+  t = 2 / (2 + x);
+  ty = 4 * t - 2;
+  for(; j > 0; j--) {
+    tmp = d;
+    d = ty * d - dd + cof[j];
+    dd = tmp;
+  }
+  res = t * Math.exp(-x * x + 0.5 * (cof[0] + ty * d) - dd);
+  return isneg ? res - 1 : 1 - res;
+};
+
+// Returns the complmentary error function erfc(x)
+jStat.erfc = function erfc(x) {
+  return 1 - jStat.erf(x);
+};
+
+// Returns the inverse of the complementary error function
+jStat.erfcinv = function erfcinv(p) {
+  var j = 0;
+  var x, err, t, pp;
+  if (p >= 2)
+    return -100;
+  if (p <= 0)
+    return 100;
+  pp = (p < 1) ? p : 2 - p;
+  t = Math.sqrt(-2 * Math.log(pp / 2));
+  x = -0.70711 * ((2.30753 + t * 0.27061) /
+                  (1 + t * (0.99229 + t * 0.04481)) - t);
+  for (; j < 2; j++) {
+    err = jStat.erfc(x) - pp;
+    x += err / (1.12837916709551257 * Math.exp(-x * x) - x * err);
+  }
+  return (p < 1) ? x : -x;
 };
 
 // gamma of x
@@ -169,13 +225,11 @@ jStat.betacf = function betacf(x, a, b) {
   var c = 1;
   var d = 1 - qab * x / qap;
   var m2, aa, del, h;
-
   // These q's will be used in factors that occur in the coefficients
   if (Math.abs(d) < fpmin)
     d = fpmin;
   d = 1 / d;
   h = d;
-
   for (; m <= 100; m++) {
     m2 = 2 * m;
     aa = m * (b - m) * x / ((qam + m2) * (a + m2));
@@ -202,7 +256,6 @@ jStat.betacf = function betacf(x, a, b) {
     if (Math.abs(del - 1.0) < 3e-7)
       break;
   }
-
   return h;
 };
 
@@ -327,6 +380,35 @@ jStat.randg = function randg(shape, n, m) {
   return Math.pow(u, 1 / oalph) * a1 * v;
 };
 
+// extend normal function with static methods
+jStat.normal = {
+  pdf: function pdf(x, mean, std) {
+    return Math.exp(-0.5 * Math.log(2 * Math.PI) -
+                    Math.log(std) - Math.pow(x - mean, 2) / (2 * std * std));
+  },
+  cdf: function cdf(x, mean, std) {
+    return 0.5 * (1 + jStat.erf((x - mean) / Math.sqrt(2 * std * std)));
+  },
+  inv: function(p, mean, std) {
+    return -1.41421356237309505 * std * jStat.erfcinv(2 * p) + mean;
+  },
+  mean: function(mean/*, std*/) {
+    return mean;
+  },
+  median: function median(mean/*, std*/) {
+    return mean;
+  },
+  mode: function (mean/*, std*/) {
+    return mean;
+  },
+  sample: function sample(mean, std) {
+    return jStat.randn() * std + mean;
+  },
+  variance: function(mean, std) {
+    return std * std;
+  }
+});
+
 // extend studentt function with static methods
 jStat.studentt = {
   pdf: function pdf(x, dof) {
@@ -358,6 +440,49 @@ jStat.studentt = {
   },
   variance: function variance(dof) {
     return (dof  > 2) ? dof / (dof - 2) : (dof > 1) ? Infinity : undefined;
+  }
+};
+
+// Z Statistics
+// flag==true denotes use of sample standard deviation
+jStat.zscore = function zscore() {
+  // 2 different parameter lists:
+  // (value, mean, sd)
+  // (value, array, flag)
+  var args = Array.prototype.slice.call(arguments);
+  if (isNumber(args[1])) {
+    return (args[0] - args[1]) / args[2];
+  }
+  return (args[0] - jStat.mean(args[1])) / jStat.stdev(args[1], args[2]);
+};
+
+jStat.ztest = function ztest() {
+  // 3 different paramter lists:
+  // (value, mean, sd, sides)
+  // (zscore, sides)
+  // (value, array, sides, flag)
+  var args = Array.prototype.slice.call(arguments);
+  var z;
+  if (isArray(args[1])) {
+    // (value, array, sides, flag)
+    z = jStat.zscore(args[0],args[1],args[3]);
+    return (args[2] === 1) ?
+      (jStat.normal.cdf(-Math.abs(z), 0, 1)) :
+      (jStat.normal.cdf(-Math.abs(z), 0, 1)*2);
+  } else {
+    if (args.length > 2) {
+      // (value, mean, sd, sides)
+      z = jStat.zscore(args[0],args[1],args[2]);
+      return (args[3] === 1) ?
+        (jStat.normal.cdf(-Math.abs(z),0,1)) :
+        (jStat.normal.cdf(-Math.abs(z),0,1)* 2);
+    } else {
+      // (zscore, sides)
+      z = args[0];
+      return (args[1] === 1) ?
+        (jStat.normal.cdf(-Math.abs(z),0,1)) :
+        (jStat.normal.cdf(-Math.abs(z),0,1)*2);
+    }
   }
 };
 
