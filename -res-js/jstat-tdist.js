@@ -407,7 +407,7 @@ jStat.normal = {
   variance: function(mean, std) {
     return std * std;
   }
-});
+};
 
 // extend studentt function with static methods
 jStat.studentt = {
