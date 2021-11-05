@@ -227,6 +227,95 @@ __*Sampling Distributions*__
  $σx̅ = σ / n**0.5
 //`;
 
+const analysis3 = `/*
+__Statistical Analysis Tools, part 3__
+
+__*Hypothesis Testing & Statistical Significance*__
+ _z_  | *z*-score, a value's horizontal distance from mean,
+      as multiplier of std. dev., along &#x6e;.d. (bell) curve
+ _t_  | *t*-score, a *z*-score that is calculated on a student-*t* dist.,
+      as for significance tests of low sample size (< 30)
+
+ *H*~0~ | null hypothesis: unchanged/expected state, described with
+      expression of equality, reject/fail-to-reject test result
+ *H*~1~ | alternative hypothesis: unusual state, described with
+      expression of inequality, call-to-action trigger (a.k.a., *H*~a~)
+*/
+
+ try { jStat } catch { scrInj("../-res-js/jstat-tdist.js") }
+
+ n = 16
+ k = 3
+
+ p0 = 0.8
+ p̂ = 0.85
+
+ μ0 = 68
+ x̅ = 67
+ sx = 2
+
+/*
+*Confidence Interval, _z_ interval (statistic ± margin of error)*
+
+ _p̂_ ± _z_^*^ √  _p̂_(1 - _p̂_) ⟋ ⬚͏   _n_  ⬚͏		= (statistic) ± (^critical^~value~      ) × (^std. error^~of statistic~	     )
+
+*/
+ zcv = jStat.normal.inv(0.95, 0, 1)	// for 90% conf. int.
+
+ p̂ - zcv * Math.sqrt(p̂ * (1 - p̂) / n)
+ p̂ + zcv * Math.sqrt(p̂ * (1 - p̂) / n)
+
+/*
+*Confidence Interval, one-sample _t_ interval (est. _μ_ w/unk. _σ_)*
+
+ _x̅_ ± _t_^&ast;^	_s_~*x*~ ⟋ √_n_		= (statistic) ± (^critical^~value~      ) × (^std. dev.^~of statistic~	     )
+
+*/
+ tcv = jStat.studentt.inv(0.975, _.n - 1)	// for 95% conf. int.
+
+ x̅ - tcv * sx / n**0.5
+ x̅ + tcv * sx / n**0.5
+
+/*
+*Significance Test, with test statistic _z_*
+ *H*~0~: *p* = 0.8	*H*~1~: *p* > 0.8
+
+ _z_ =  ⬚͏   _p̂_ - _p_₀ ⟋ √_p_₀(1 - _p_₀)/_n_			=  ~statistic - parameter~ ⟋ ^std. dev. of statistic^
+
+*/
+ z = (p̂ - p0) / Math.sqrt(p0 * (1 - p0) / n)
+ jStat.zscore(_.p̂, _.p0, Math.sqrt(p0 * (1 - p0) / n))
+				// *z*, alternate method
+ jStat.normal.cdf(-_.z, 0, 1)	// corresponding *P*-value
+
+/*
+*Significance Test, with test statistic _t_*
+ *H*~0~: *μ* = 68	*H*~1~: *μ* < 68
+
+ _t_ =	 ⬚͏_x̅_ - _μ_₀ ⟋ ⬚͏_s_~*x*~/√_n_ ⬚͏		=  ~statistic - parameter~ ⟋ ^std. err. of statistic^
+
+*/
+ t = (x̅ - μ0) / (sx / n**0.5)
+ jStat.tscore(_.x̅, _.μ0, _.sx, _.n)	// *t*, alternate method
+
+ jStat.studentt.cdf(_.t, _.n - 1)	// corresponding *P*-value
+
+/*
+*Type I Error*
+ - rejecting a true *H*~0~
+ - mitigated by decreasing *α*
+
+*Type II Error*
+ - failing to accept a true *H*~1~
+ - mitigated by increasing *α* &/or *n*
+ - reduced as null/alt. parameters are more distant
+
+*Power*
+ - probability of not making a type II error
+   *P*(rejecting *H*~0~ | *H*~0~ false) = 1 - *P*(type II error)
+*/
+//`
+
 export {
-  groupname, analysis1, analysis2
+  groupname, analysis1, analysis2, analysis3
 };
