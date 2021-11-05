@@ -448,7 +448,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], 
         try {
           xpr = xpr && xpr
           .replace( /^(?=[\t ]*{)|^.*?(?=\/\/|\(? *function\b[ \w]*\([^]*?\) *{|\(? *(?:[$\wÀ-Ͽ]+|\([^]*?\)) *=>|$)/g,
-            m0 => m0.replace( /( |^)([$_a-zÀ-Ͽ][$\wÀ-Ͽ]*)(?= *=)/gi,
+            m0 => m0.replace( /( |^)(?:_\.|)([$_a-zÀ-Ͽ][$\wÀ-Ͽ]*)(?= *=)/gi,
               (m1, c1, c2) => _ks.push(c2) && c1 + "_." + c2 )
             .replace( /([\t =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([$_](?!\.)[$\wÀ-Ͽ]*|[A-Za-zÀ-Ͽ][$\wÀ-Ͽ]*)(?! *=)/g,
               (m1, c1, c2) => window[c2] || !_ks.some(k => k === c2) ? m1 : c1 + "_." + c2 ) );
@@ -464,7 +464,8 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], 
     quad1A.innerHTML = Object.values($).join("\n").replace(/\n$/, "\n&nbsp;")
       + '<span id="dfinal">$-variable<br />FINAL VALUES</span>';
     quad1B.innerHTML = Object.keys($).join("\n")
-      .replace(/^([a-zÀ-Ͽ]+)(\d+)$/gim, "$1<sub>$2</sub>")
+      .replace(/^([a-zÀ-Ͽ]+)_\u0302(.+)$/gim, "$1<sup>$2</sup>")
+      .replace(/^([a-zÀ-Ͽ]+)(?:_\u0303(.+)|(\d+))$/gim, "$1<sub>$2$3</sub>")
       .replace( /.[\u0300-\u036f]|[\u02f7\u03d5\u03dd\u03f0\u03f1\u03f5]/g,
         "<span class=fsan1>$&</span>" );
     quad2A.innerHTML = reslts.join("\n").replace(/\n$/, "\n&nbsp;")
@@ -498,7 +499,8 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], 
     .replace( !_ks.length ? /[]/
       : new RegExp("(&#?(?!\\w+;)|[^&]#|[^#$&.\\wÀ-Ͽ]|^)(?:_\.|)(" + _ks.join("|") + ")(?![$\\wÀ-Ͽ\u0300-\u036f\u20d0-\u20ff]|[^\n<]*<\\/(?:em|strong|var|x)>)", "g"),
       "$1<var>$2</var>" )
-    .replace(/(<var\b.*?>[a-zÀ-Ͽ]+)(\d+)(?=<\/var>)/gi, "$1<sub>$2</sub>")
+    .replace(/(<var\b.*?>[a-zÀ-Ͽ]+)_\u0302(.+?)(?=<\/var>)/gi, "$1<sup>$2</sup>")
+    .replace(/(<var\b.*?>[a-zÀ-Ͽ]+)(?:_\u0303(.+?)|(\d+))(?=<\/var>)/gi, "$1<sub>$2$3</sub>")
     .replace(/\u2044|&frasl;/g, "<span class=frasl>$&</span>")
     .replace( /[\xb2\xb3\xb9\u2070-\u207e\u2080-\u208e]|&sup[123];/g,
       "<span class=fsan2>$&</span>" ) // superscripts, subscripts

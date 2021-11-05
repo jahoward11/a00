@@ -68,9 +68,9 @@ __*Normal Distribution, Cumulative Density Function (CDF)*__
  $Φx1 = 1 - φx1 * (b1*t1 + b2*t1**2 + b3*t1**3 + b4*t1**4 + b5*t1**5)
  $Φx2 = 1 - φx2 * (b1*t2 + b2*t2**2 + b3*t2**3 + b4*t2**4 + b5*t2**5)
 
- $P1inv = 1 - $Φx1	// probability interval above x1
- $P2inv = 1 - $Φx2	// probability interval above x2
- $P1to2 = $Φx2 - $Φx1	// probability interval between x1 and x2
+ $P_̃1inv = 1 - $Φx1  	// probability interval above x1
+ $P_̃2inv = 1 - $Φx2  	// probability interval above x2
+ $P_̃1to2 = $Φx2 - $Φx1	// probability interval between x1 and x2
 
 
 /*
@@ -126,9 +126,9 @@ __*Counting Methods, all possible scenarios*__
 
  selections without replacement
 
-       ~_n_~*P*~_k_~ =   ⬚͏  _n_! ∕ (_n_ - _k_)!		ordered
+       ~_n_~*P*~_k_~ =   ⬚͏  _n_! ⟋ (_n_ - _k_)!		ordered
 
- (^_n_^~_k_~ ) = ~_n_~*C*~_k_~ = ⬚͏   _n_! ∕ _k_!(_n_ - _k_)!		unordered
+ (^_n_^~_k_~ ) = ~_n_~*C*~_k_~ = ⬚͏   _n_! ⟋ _k_!(_n_ - _k_)!		unordered
 
  selections with replacement
    _n_^_k_^			ordered
@@ -175,11 +175,11 @@ __*Binomial Random Variable*__
  _σ_~*B*~ = √_np_(1 - _p_)
 */
 
- pB = 0.5
+ p_̃B = 0.5
 
- $PB = $Combs * pB**k * (1 - pB)**(n - k)
- $μB = n * pB
- $σB = Math.sqrt(n * pB * (1 - pB))
+ $P_̃B = $Combs * p_̃B**k * (1 - p_̃B)**(n - k)
+ $μ_̃B = n * p_̃B
+ $σ_̃B = Math.sqrt(n * p_̃B * (1 - p_̃B))
 
 
 /*
@@ -194,11 +194,11 @@ __*Geometric Random Variable*__
  _σ_~*G*~ = ^1^⁄~_p_~√(1 - _p_)
 */
 
- pG = 0.5
+ p_̃G = 0.5
 
- $PG = pG * (1 - pG)**(n - 1)
- $μG = 1 / pG
- $σG = Math.sqrt(1 - pG) / pG
+ $P_̃G = p_̃G * (1 - p_̃G)**(n - 1)
+ $μ_̃G = 1 / p_̃G
+ $σ_̃G = Math.sqrt(1 - p_̃G) / p_̃G
 
 
 /*
@@ -220,11 +220,12 @@ __*Sampling Distributions*__
  X = k
 
  $p̂ = X / n
- $μp̂ = p
- $σp̂ = Math.sqrt(p * (1 - p) / n)
+ $μ_̃p̂ = p
+ $σ_̃p̂ = Math.sqrt(p * (1 - p) / n)
 
- $μx̅ = μ
- $σx̅ = σ / n**0.5
+ $x̅ = X
+ $μ_̃x̅ = μ
+ $σ_̃x̅ = σ / n**0.5
 //`;
 
 const analysis3 = `/*
@@ -234,25 +235,32 @@ __*Hypothesis Testing & Statistical Significance*__
  _z_  | *z*-score, a value's horizontal distance from mean,
       as multiplier of std. dev., along &#x6e;.d. (bell) curve
  _t_  | *t*-score, a *z*-score that is calculated on a student-*t* dist.,
-      as for significance tests of low sample size (< 30)
+      as for significance tests of low sample size (_n_ < 30)
+ _df_ | degrees of freedom = sample size _n_ - 1
+
+ *Pv* | *P*-value, probability of values at least as extreme as *z*-score
+      = area(s) under std. &#x6e;.d. curve beyond one/both± *z*-score(s)
+ *α*  | complement of confidence level = left/right/2-tail area(s)
 
  *H*~0~ | null hypothesis: unchanged/expected state, described with
-      expression of equality, reject/fail-to-reject test result
+      expression of equality, reject/fail-to-reject test subject
  *H*~1~ | alternative hypothesis: unusual state, described with
       expression of inequality, call-to-action trigger (a.k.a., *H*~a~)
 */
 
  try { jStat } catch { scrInj("../-res-js/jstat-tdist.js") }
 
+ $α = (1 - 0.950).toFixed(3)	// for 95% confidence level
+
  n = 16
- k = 3
+ df = n - 1
 
  p0 = 0.8
  p̂ = 0.85
 
  μ0 = 68
  x̅ = 67
- sx = 2
+ s_̃x = 2
 
 /*
 *Confidence Interval, _z_ interval (statistic ± margin of error)*
@@ -260,10 +268,10 @@ __*Hypothesis Testing & Statistical Significance*__
  _p̂_ ± _z_^*^ √  _p̂_(1 - _p̂_) ⟋ ⬚͏   _n_  ⬚͏		= (statistic) ± (^critical^~value~      ) × (^std. error^~of statistic~	     )
 
 */
- zcv = jStat.normal.inv(0.95, 0, 1)	// for 90% conf. int.
+ z_̂cv = jStat.normal.inv(0.95, 0, 1)	// for 90% conf. int.
 
- p̂ - zcv * Math.sqrt(p̂ * (1 - p̂) / n)
- p̂ + zcv * Math.sqrt(p̂ * (1 - p̂) / n)
+ p̂ - z_̂cv * Math.sqrt(p̂ * (1 - p̂) / n)
+ p̂ + z_̂cv * Math.sqrt(p̂ * (1 - p̂) / n)
 
 /*
 *Confidence Interval, one-sample _t_ interval (est. _μ_ w/unk. _σ_)*
@@ -271,10 +279,10 @@ __*Hypothesis Testing & Statistical Significance*__
  _x̅_ ± _t_^&ast;^	_s_~*x*~ ⟋ √_n_		= (statistic) ± (^critical^~value~      ) × (^std. dev.^~of statistic~	     )
 
 */
- tcv = jStat.studentt.inv(0.975, _.n - 1)	// for 95% conf. int.
+ t_̂cv = jStat.studentt.inv(0.975, _.df)	// for 95% conf. int.
 
- x̅ - tcv * sx / n**0.5
- x̅ + tcv * sx / n**0.5
+ x̅ - t_̂cv * s_̃x / n**0.5
+ x̅ + t_̂cv * s_̃x / n**0.5
 
 /*
 *Significance Test, with test statistic _z_*
@@ -283,10 +291,11 @@ __*Hypothesis Testing & Statistical Significance*__
  _z_ =  ⬚͏   _p̂_ - _p_₀ ⟋ √_p_₀(1 - _p_₀)/_n_			=  ~statistic - parameter~ ⟋ ^std. dev. of statistic^
 
 */
- z = (p̂ - p0) / Math.sqrt(p0 * (1 - p0) / n)
+ $z = (p̂ - p0) / Math.sqrt(p0 * (1 - p0) / n)
  jStat.zscore(_.p̂, _.p0, Math.sqrt(p0 * (1 - p0) / n))
-				// *z*, alternate method
- jStat.normal.cdf(-_.z, 0, 1)	// corresponding *P*-value
+		// *z*, alternate method
+ $Pv_̃z = jStat.normal.cdf(-$.z, 0, 1)
+ $Pv_̃z < $α	// reject *H*~0~ ...?
 
 /*
 *Significance Test, with test statistic _t_*
@@ -295,20 +304,21 @@ __*Hypothesis Testing & Statistical Significance*__
  _t_ =	 ⬚͏_x̅_ - _μ_₀ ⟋ ⬚͏_s_~*x*~/√_n_ ⬚͏		=  ~statistic - parameter~ ⟋ ^std. err. of statistic^
 
 */
- t = (x̅ - μ0) / (sx / n**0.5)
- jStat.tscore(_.x̅, _.μ0, _.sx, _.n)	// *t*, alternate method
-
- jStat.studentt.cdf(_.t, _.n - 1)	// corresponding *P*-value
+ $t = (x̅ - μ0) / (s_̃x / n**0.5)
+ jStat.tscore(_.x̅, _.μ0, _.s_̃x, _.n)
+		// *t*, alternate method
+ $Pv_̃t = jStat.studentt.cdf($.t, _.df)
+ $Pv_̃t < $α	// reject *H*~0~ ...?
 
 /*
 *Type I Error*
  - rejecting a true *H*~0~
- - mitigated by decreasing *α*
+ - mitigated by decreasing _α_
 
 *Type II Error*
  - failing to accept a true *H*~1~
- - mitigated by increasing *α* &/or *n*
- - reduced as null/alt. parameters are more distant
+ - mitigated by increasing _α_ &/or _n_
+ - reduced as null/alt. parameters are naturally more distant
 
 *Power*
  - probability of not making a type II error
