@@ -231,14 +231,14 @@ __*Sampling Distributions*__
 const analysis3 = `/*
 __Statistical Analysis Tools, part 3__
 
-__*Hypothesis Testing & Statistical Significance*__
+__*Hypothesis Testing &amp; Statistical Significance*__
  _z_  | *z*-score, a value's horizontal distance from mean,
       as multiplier of std. dev., along &#x6e;.d. (bell) curve
  _t_  | *t*-score, a *z*-score that is calculated on a student-*t* dist.,
       as for significance tests of low sample size (_n_ < 30)
  _df_ | degrees of freedom = sample size _n_ - 1
 
- *Pv* | *P*-value, probability of values at least as extreme as *z*-score
+ *PV* | *P*-value, probability of values at least as extreme as *z*-score
       = area(s) under std. &#x6e;.d. curve beyond one/both± *z*-score(s)
  *α*  | complement of confidence level = left/right/2-tail area(s)
 
@@ -294,8 +294,8 @@ __*Hypothesis Testing & Statistical Significance*__
  $z = (p̂ - p0) / Math.sqrt(p0 * (1 - p0) / n)
  jStat.zscore(_.p̂, _.p0, Math.sqrt(p0 * (1 - p0) / n))
 		// *z*, alternate method
- $Pv_̃z = jStat.normal.cdf(-$.z, 0, 1)
- $Pv_̃z < $α	// reject *H*~0~ ...?
+ $PV_̃z = jStat.normal.cdf(-$.z, 0, 1)
+ $PV_̃z < $α	// reject *H*~0~ ...?
 
 /*
 *Significance Test, with test statistic _t_*
@@ -307,8 +307,8 @@ __*Hypothesis Testing & Statistical Significance*__
  $t = (x̅ - μ0) / (s_̃x / n**0.5)
  jStat.tscore(_.x̅, _.μ0, _.s_̃x, _.n)
 		// *t*, alternate method
- $Pv_̃t = jStat.studentt.cdf($.t, _.df)
- $Pv_̃t < $α	// reject *H*~0~ ...?
+ $PV_̃t = jStat.studentt.cdf($.t, _.df)
+ $PV_̃t < $α	// reject *H*~0~ ...?
 
 /*
 *Type I Error*
@@ -317,7 +317,7 @@ __*Hypothesis Testing & Statistical Significance*__
 
 *Type II Error*
  - failing to accept a true *H*~1~
- - mitigated by increasing _α_ &/or _n_
+ - mitigated by increasing _α_ &amp;/or _n_
  - reduced as null/alt. parameters are naturally more distant
 
 *Power*
