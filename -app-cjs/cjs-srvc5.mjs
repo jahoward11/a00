@@ -31,7 +31,7 @@ __*Normal Distribution, Probability Density Function (PDF)*__
 
        =   ⬚͏  1 ⟋ *σ*√2*π*ℯ^*z*²^
 
- *φ*(*x*)  =    ⬚͏ 1 ⟋ √2*π*ℯ^*z*²^		PDF for a std. n.d.
+ *φ*(*x*)  =    ⬚͏ 1 ⟋ √2*π*ℯ^*z*²^		PDF for a std. &#x6e;.d.
 
 */
  μ = 0
@@ -52,7 +52,7 @@ __*Normal Distribution, Cumulative Density Function (CDF)*__
 
  *P*(*x*)  =  ∫ *p*(*x*) *dx*
 
- *Φ*(*x*)  =  ∫ *φ*(*x*) *dx*	CDF for a std. n.d.
+ *Φ*(*x*)  =  ∫ *φ*(*x*) *dx*	CDF for a std. &#x6e;.d.
 */
 
  b0 = 0.2316419
@@ -70,7 +70,7 @@ __*Normal Distribution, Cumulative Density Function (CDF)*__
 
  $P_̃1inv = 1 - $Φx1  	// probability interval above x1
  $P_̃2inv = 1 - $Φx2  	// probability interval above x2
- $P_̃1to2 = $Φx2 - $Φx1	// probability interval between x1 and x2
+ $P_̃1to2 = $Φx2 - $Φx1	// probability interval between x1 &amp; x2
 
 
 /*
@@ -81,11 +81,11 @@ __*Std. N.D., the 68-95-99.7 (empirical) rule, or the 3-sigma rule*__
  99.73% | probability of a position w/i &pm;3 std. devs.
 */
 
- // coverage, area between *μ - zσ* and *μ + zσ*
+ // coverage, area between *μ - zσ* &amp; *μ + zσ*
  2 * $Φx1 - 1
  2 * $Φx2 - 1
 
- // inverted coverage, 2 areas outside *μ - zσ* and *μ + zσ*
+ // inverted coverage, 2 areas outside *μ - zσ* &amp; *μ + zσ*
  2 * (1 - $Φx1)
  2 * (1 - $Φx2)
 
@@ -98,7 +98,7 @@ __*Std. N.D., the 68-95-99.7 (empirical) rule, or the 3-sigma rule*__
  φz = () => 1 / (2 * Math.PI * Math.exp($z**2))**0.5; ""
  tz = () => 1 / (1 + _.b0 * $z); ""
  Φz = (φ, t) => 1 - φ * (_.b1*t + _.b2*t**2 + _.b3*t**3 + _.b4*t**4 + _.b5*t**5); ""
- while (zmax - zmin > 0.000001) { Φz(φz(), tz()) > p ? zmax = $z : zmin = $z; $z = (zmax + zmin) / 2; }
+ while (zmax - zmin > 1e-6) { Φz(φz(), tz()) > p ? zmax = $z : zmin = $z; $z = (zmax + zmin) / 2; }
 //`;
 
 const analysis2 = `/*
@@ -119,12 +119,11 @@ __Statistical Analysis Tools, part 2__
  *P*()| probability mass/density/dist. function (PMF or PDF),
       e.g., relative frequency of given value from sample
 
-
 __*Counting Methods, all possible scenarios*__
  *P*  | Permutations
  *C*  | Combinations
 
- selections without replacement
+ selections w/o replacement
 
        ~_n_~*P*~_k_~ =   ⬚͏  _n_! ⟋ (_n_ - _k_)!		ordered
 
@@ -139,21 +138,23 @@ __*Counting Methods, all possible scenarios*__
  k = 3
 
  fctl = c => Array.from(Array(c).keys()).reduce((a, b) => a * (1 + b), 1); ""
-
  $Perms = fctl(n) / fctl(n - k)
  $Combs = fctl(n) / fctl(k) / fctl(n - k)
  replo = n**k
  replu = fctl(n + k - 1) / fctl(k) / fctl((n + k - 1) - k)
 
-
 /*
 __*Statistic (from samples) vs. Parameter (of population)*__
+- A *sample* is a subset of an entire *population*.
+- Probability reasons from the population to a sample (deductive):
+  Known parameters can be used to anticipate sample test results.
+- Statistics reasons from sample(s) to population (inductive):
+  Sample test results can be used to estimate/refine parameters.
 
- __sample statistic__	__population parameter__
- _x̅_ = ^1^⁄~_n_~∑_x_~*i*~		_μ_ = ^1^⁄~_N_~∑_x_~*i*~
- _s_ = √^1^⁄~_n_-1~∑(_x_~*i*~ - _x̅_)²	_σ_ = √^1^⁄~_N_~∑(_x_~*i*~ - _μ_)²
- _z_ = (_x_ - _x̅_) / _s_	_z_ = (_x_ - _μ_) / _σ_
-
+  __sample statistic__	__population parameter__
+  _x̅_ = ^1^⁄~_n_~∑_x_~*i*~		_μ_ = ^1^⁄~_N_~∑_x_~*i*~
+  _s_ = √^1^⁄~_n_-1~∑(_x_~*i*~ - _x̅_)²	_σ_ = √^1^⁄~_N_~∑(_x_~*i*~ - _μ_)²
+  _z_ = (_x_ - _x̅_) / _s_	_z_ = (_x_ - _μ_) / _σ_
 
 __*Discrete Random Variable*__
  *X*  | anticipated number of test successes in sample
@@ -162,7 +163,6 @@ __*Discrete Random Variable*__
  *E*(*X*) = _μ_~*X*~  = ^1^⁄~_n_~∑_x_~*i*~
  *V*(*X*) = _σ_²~*X*~ = ∑(_x_~*i*~ - _μ_~*x*~)²*P*(_x_~*i*~)
  	_σ_~*X*~  = √*V*(*X*)
-
 
 __*Binomial Random Variable*__
  *B*  | a discrete r.v. that meets binomial conditions
@@ -181,13 +181,12 @@ __*Binomial Random Variable*__
  $μ_̃B = n * p_̃B
  $σ_̃B = Math.sqrt(n * p_̃B * (1 - p_̃B))
 
-
 /*
 __*Geometric Random Variable*__
- *G*  | a quasi-binomial r.v. without set number of trials
+ *G*  | a quasi-binomial r.v. w/o set number of trials
 
  Probability, success in _n_ attempts, given _p_
- *P*(*G* = _n_) = _p_(1 - _p_)^_n_-1^
+ *P*(*G* = _n_) = _p_(1 - _p_)^_n_ - 1^
 
  Mean &amp; std. dev. of geometric r.v. *G*
  _μ_~*G*~ = 1 / _p_
@@ -199,7 +198,6 @@ __*Geometric Random Variable*__
  $P_̃G = p_̃G * (1 - p_̃G)**(n - 1)
  $μ_̃G = 1 / p_̃G
  $σ_̃G = Math.sqrt(1 - p_̃G) / p_̃G
-
 
 /*
 __*Sampling Distributions*__
@@ -243,12 +241,10 @@ __*Hypothesis Testing &amp; Statistical Significance*__
  *α*  | complement of confidence level = left/right/2-tail area(s)
 
  *H*~0~ | null hypothesis: unchanged/expected state, described with
-      expression of equality, reject/fail-to-reject test subject
+      expression of equality, a reject/fail-to-reject test focus
  *H*~1~ | alternative hypothesis: unusual state, described with
       expression of inequality, call-to-action trigger (a.k.a., *H*~a~)
 */
-
- try { jStat } catch { scrInj("../-res-js/jstat-tdist.js") }
 
  $α = (1 - 0.950).toFixed(3)	// for 95% confidence level
 
@@ -293,7 +289,7 @@ __*Hypothesis Testing &amp; Statistical Significance*__
 */
  $z = (p̂ - p0) / Math.sqrt(p0 * (1 - p0) / n)
  jStat.zscore(_.p̂, _.p0, Math.sqrt(p0 * (1 - p0) / n))
-		// *z*, alternate method
+		// _z_, alternate method
  $PV_̃z = jStat.normal.cdf(-$.z, 0, 1)
  $PV_̃z < $α	// reject *H*~0~ ...?
 
@@ -306,24 +302,27 @@ __*Hypothesis Testing &amp; Statistical Significance*__
 */
  $t = (x̅ - μ0) / (s_̃x / n**0.5)
  jStat.tscore(_.x̅, _.μ0, _.s_̃x, _.n)
-		// *t*, alternate method
+		// _t_, alternate method
  $PV_̃t = jStat.studentt.cdf($.t, _.df)
  $PV_̃t < $α	// reject *H*~0~ ...?
 
 /*
 *Type I Error*
- - rejecting a true *H*~0~
- - mitigated by decreasing _α_
+- rejecting a true *H*~0~
+- mitigated by decreasing _α_
 
 *Type II Error*
- - failing to accept a true *H*~1~
- - mitigated by increasing _α_ &amp;/or _n_
- - reduced as null/alt. parameters are naturally more distant
+- failing to accept a true *H*~1~
+- mitigated by increasing _α_ &amp;/or _n_
+- reduced as null/alt. parameters are naturally more distant
 
 *Power*
- - probability of not making a type II error
-   *P*(rejecting *H*~0~ | *H*~0~ false) = 1 - *P*(type II error)
+- probability of not making a type II error
+  *P*(rejecting *H*~0~ | *H*~0~ false) = 1 - *P*(type II error)
 */
+
+//- - - - - 
+try { jStat } catch { scrInj("../-res-js/jstat-tdist.js") }
 //`
 
 export {
