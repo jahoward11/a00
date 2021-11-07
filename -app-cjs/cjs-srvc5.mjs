@@ -234,16 +234,17 @@ __*Hypothesis Testing &amp; Statistical Significance*__
       as multiplier of std. dev., along &#x6e;.d. (bell) curve
  _t_  | *t*-score, a *z*-score that is calculated on a student-*t* dist.,
       as for significance tests of low sample size (_n_ < 30)
+ _χ_² | Chi-square, a *z*-score that is calculated on a chi-sq. dist.,
+      as for significance tests on sample category proportions
  _df_ | degrees of freedom = sample size _n_ - 1
 
  *PV* | *P*-value, probability of values at least as extreme as *z*-score
       = area(s) under std. &#x6e;.d. curve beyond one/both± *z*-score(s)
  *α*  | complement of confidence level = left/right/2-tail area(s)
-
  *H*~0~ | null hypothesis: unchanged/expected state, described with
       expression of equality, a reject/fail-to-reject test focus
- *H*~1~ | alternative hypothesis: unusual state, described with
-      expression of inequality, call-to-action trigger (a.k.a., *H*~a~)
+ *H*~1~ | alternative hypothesis: new/unusual state, described with
+      expression of inequality, a call-to-action trigger (a.k.a., *H*~a~)
 */
 
  $α = (1 - 0.950).toFixed(3)	// for 95% confidence level
@@ -259,13 +260,13 @@ __*Hypothesis Testing &amp; Statistical Significance*__
  s_̃x = 2
 
 /*
-*Confidence Interval, _z_ interval (statistic ± margin of error)*
+*Confidence Interval,*
+*one-sample _z_ interval (statistic ± margin of error)*
 
  _p̂_ ± _z_^*^ √  _p̂_(1 - _p̂_) ⟋ ⬚͏   _n_  ⬚͏		= (statistic) ± (^critical^~value~      ) × (^std. error^~of statistic~	     )
 
 */
  z_̂cv = jStat.normal.inv(0.95, 0, 1)	// for 90% conf. int.
-
  p̂ - z_̂cv * Math.sqrt(p̂ * (1 - p̂) / n)
  p̂ + z_̂cv * Math.sqrt(p̂ * (1 - p̂) / n)
 
@@ -276,12 +277,11 @@ __*Hypothesis Testing &amp; Statistical Significance*__
 
 */
  t_̂cv = jStat.studentt.inv(0.975, _.df)	// for 95% conf. int.
-
  x̅ - t_̂cv * s_̃x / n**0.5
  x̅ + t_̂cv * s_̃x / n**0.5
 
 /*
-*Significance Test, with test statistic _z_*
+*Significance Test, with one-sample test statistic _z_*
  *H*~0~: *p* = 0.8	*H*~1~: *p* > 0.8
 
  _z_ =  ⬚͏   _p̂_ - _p_₀ ⟋ √_p_₀(1 - _p_₀)/_n_			=  ~statistic - parameter~ ⟋ ^std. dev. of statistic^
@@ -294,7 +294,7 @@ __*Hypothesis Testing &amp; Statistical Significance*__
  $PV_̃z < $α	// reject *H*~0~ ...?
 
 /*
-*Significance Test, with test statistic _t_*
+*Significance Test, with one-sample test statistic _t_*
  *H*~0~: *μ* = 68	*H*~1~: *μ* < 68
 
  _t_ =	 ⬚͏_x̅_ - _μ_₀ ⟋ ⬚͏_s_~*x*~/√_n_ ⬚͏		=  ~statistic - parameter~ ⟋ ^std. err. of statistic^
@@ -305,6 +305,19 @@ __*Hypothesis Testing &amp; Statistical Significance*__
 		// _t_, alternate method
  $PV_̃t = jStat.studentt.cdf($.t, _.df)
  $PV_̃t < $α	// reject *H*~0~ ...?
+
+/*
+*Significance Test, with one-sample test statistic _χ_²*
+ *H*~0~: *p* = ^1^⁄~3~	*H*~1~: *p* ≠ ^1^⁄~3~
+
+ _χ_² =  ∑   (_o_~*i*~ - _e_~*i*~)² ⟋ ⬚͏  _e_~*i*~   ⬚͏		= ∑   (*o~bserved~ - e~xpected~*)² ⟋ ⬚͏    *e~xpected~*     ⬚͏
+
+*/
+ $χ_̂2 = (12 - 10)**2 / 10 + (5 - 10)**2 / 10 + (13 - 10)**2 / 10
+ df_̃χ2 = 3 - 1
+
+ $PV_̃χ2 = 1 - jStat.chisquare.cdf($.χ_̂2, _.df_̃χ2)
+ $PV_̃χ2 < $α	// reject *H*~0~ ...?
 
 /*
 *Type I Error*
