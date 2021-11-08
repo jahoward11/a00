@@ -160,7 +160,7 @@ __*Discrete Random Variable*__
  *X*  | anticipated number of test successes in sample
 
  Expected value (mean), variance &amp; std. dev. of discrete r.v. *X*
- *E*(*X*) = _μ_~*X*~  = ^1^⁄~_n_~∑_x_~*i*~
+ *E*(*X*) = _μ_~*X*~  = ∑_x_~*i*~*P*(_x_~*i*~)
  *V*(*X*) = _σ_²~*X*~ = ∑(_x_~*i*~ - _μ_~*x*~)²*P*(_x_~*i*~)
  	_σ_~*X*~  = √*V*(*X*)
 
