@@ -85,7 +85,7 @@ __*Std. N.D., the 68-95-99.7 (empirical) rule, or the 3-sigma rule*__
  2 * $Φx1 - 1
  2 * $Φx2 - 1
 
- // inverted coverage, 2 areas outside *μ - zσ* &amp; *μ + zσ*
+ // inverted coverage, 2 tail areas outside *μ - zσ* &amp; *μ + zσ*
  2 * (1 - $Φx1)
  2 * (1 - $Φx2)
 
@@ -120,18 +120,18 @@ __Statistical Analysis Tools, part 2__
       e.g., relative frequency of given value from sample
 
 __*Counting Methods, all possible scenarios*__
- *P*  | Permutations
- *C*  | Combinations
+ ~_n_~*P*~_k_~ | Permutations, ordered selections w/o replacement
+ ~_n_~*C*~_k_~ | Combinations, unordered selections w/o replacement, a.k.a. (^_n_^~_k_~ )
 
- selections w/o replacement
+ selecting w/o replacement (no repetition)
 
        ~_n_~*P*~_k_~ =   ⬚͏  _n_! ⟋ (_n_ - _k_)!		ordered
 
  (^_n_^~_k_~ ) = ~_n_~*C*~_k_~ = ⬚͏   _n_! ⟋ _k_!(_n_ - _k_)!		unordered
 
- selections with replacement
-   _n_^_k_^			ordered
-  (^_n_ + _k_ - 1^   ~_k_~	  ) 		unordered
+ selecting with replacement (repetition allowed)
+   _n_^_k_^			ordered (i.e., Perms. w/rep.)
+  (^_n_ + _k_ - 1^   ~_k_~	  ) 		unordered (i.e., Combs. w/rep.)
 */
 
  n = 5
@@ -140,15 +140,15 @@ __*Counting Methods, all possible scenarios*__
  fctl = c => Array.from(Array(c).keys()).reduce((a, b) => a * (1 + b), 1); ""
  $Perms = fctl(n) / fctl(n - k)
  $Combs = fctl(n) / fctl(k) / fctl(n - k)
- replo = n**k
- replu = fctl(n + k - 1) / fctl(k) / fctl((n + k - 1) - k)
+ Prep = n**k
+ Crep = fctl(n + k - 1) / fctl(k) / fctl((n + k - 1) - k)
 
 /*
 __*Statistic (from samples) vs. Parameter (of population)*__
 - A *sample* is a subset of an entire *population*.
-- Probability reasons from the population to a sample (deductive):
+- Probability reasons from the population to a sample (deduction):
   Known parameters can be used to anticipate sample test results.
-- Statistics reasons from sample(s) to population (inductive):
+- Statistics reasons from sample(s) to population (induction):
   Sample test results can be used to estimate/refine parameters.
 
   __sample statistic__	__population parameter__
@@ -236,10 +236,10 @@ __*Hypothesis Testing &amp; Statistical Significance*__
       as for significance tests of low sample size (_n_ < 30)
  _χ_² | Chi-square, a *z*-score that is calculated on a chi-sq. dist.,
       as for significance tests on sample category proportions
- _df_ | degrees of freedom = sample size _n_ - 1
+ _df_ | degrees of freedom = sample/category size _n_ - 1
 
  *PV* | *P*-value, probability of values at least as extreme as *z*-score
-      = area(s) under std. &#x6e;.d. curve beyond one/both± *z*-score(s)
+      = area(s) under &#x6e;.d./*χ*²-d. curve beyond one/both± *z*-score(s)
  *α*  | complement of confidence level = left/right/2-tail area(s)
  *H*~0~ | null hypothesis: unchanged/expected state, described with
       expression of equality, a reject/fail-to-reject test focus
@@ -260,8 +260,8 @@ __*Hypothesis Testing &amp; Statistical Significance*__
  s_̃x = 2
 
 /*
-*Confidence Interval,*
-*one-sample _z_ interval (statistic ± margin of error)*
+*Confidence Interval (statistic ± margin of error),*
+*1-sample _z_ interval (as when estimating pop.-prop. _p_)*
 
  _p̂_ ± _z_^*^ √  _p̂_(1 - _p̂_) ⟋ ⬚͏   _n_  ⬚͏		= (statistic) ± (^critical^~value~      ) × (^std. error^~of statistic~	     )
 
@@ -271,7 +271,7 @@ __*Hypothesis Testing &amp; Statistical Significance*__
  p̂ + z_̂cv * Math.sqrt(p̂ * (1 - p̂) / n)
 
 /*
-*Confidence Interval, one-sample _t_ interval (est. _μ_ w/unk. _σ_)*
+*Confidence Interval, 1-sample _t_ interval (est. _μ_ w/unk. _σ_)*
 
  _x̅_ ± _t_^&ast;^	_s_~*x*~ ⟋ √_n_		= (statistic) ± (^critical^~value~      ) × (^std. dev.^~of statistic~	     )
 
@@ -281,7 +281,7 @@ __*Hypothesis Testing &amp; Statistical Significance*__
  x̅ + t_̂cv * s_̃x / n**0.5
 
 /*
-*Significance Test, with one-sample test statistic _z_*
+*Significance Test, with 1-sample test statistic _z_*
  *H*~0~: *p* = 0.8	*H*~1~: *p* > 0.8
 
  _z_ =  ⬚͏   _p̂_ - _p_₀ ⟋ √_p_₀(1 - _p_₀)/_n_			=  ~statistic - parameter~ ⟋ ^std. dev. of statistic^
@@ -294,7 +294,7 @@ __*Hypothesis Testing &amp; Statistical Significance*__
  $PV_̃z < $α	// reject *H*~0~ ...?
 
 /*
-*Significance Test, with one-sample test statistic _t_*
+*Significance Test, with 1-sample test statistic _t_*
  *H*~0~: *μ* = 68	*H*~1~: *μ* < 68
 
  _t_ =	 ⬚͏_x̅_ - _μ_₀ ⟋ ⬚͏_s_~*x*~/√_n_ ⬚͏		=  ~statistic - parameter~ ⟋ ^std. err. of statistic^
@@ -307,7 +307,7 @@ __*Hypothesis Testing &amp; Statistical Significance*__
  $PV_̃t < $α	// reject *H*~0~ ...?
 
 /*
-*Significance Test, with one-sample test statistic _χ_²*
+*Significance Test, with 1-sample test statistic _χ_²*
  *H*~0~: *p* = ^1^⁄~3~	*H*~1~: *p* ≠ ^1^⁄~3~
 
  _χ_² =  ∑   (_o_~*i*~ - _e_~*i*~)² ⟋ ⬚͏  _e_~*i*~   ⬚͏		= ∑   (*o~bserved~ - e~xpected~*)² ⟋ ⬚͏    *e~xpected~*     ⬚͏
