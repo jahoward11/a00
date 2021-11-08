@@ -123,13 +123,13 @@ __*Counting Methods, all possible scenarios*__
  ~_n_~*P*~_k_~ | Permutations, ordered selections w/o replacement
  ~_n_~*C*~_k_~ | Combinations, unordered selections w/o replacement, a.k.a. (^_n_^~_k_~ )
 
- selecting w/o replacement (no repetition)
+ Selecting w/o replacement (no repetition)
 
        ~_n_~*P*~_k_~ =   ⬚͏  _n_! ⟋ (_n_ - _k_)!		ordered
 
  (^_n_^~_k_~ ) = ~_n_~*C*~_k_~ = ⬚͏   _n_! ⟋ _k_!(_n_ - _k_)!		unordered
 
- selecting with replacement (repetition allowed)
+ Selecting with replacement (repetition allowed)
    _n_^_k_^			ordered (i.e., Perms. w/rep.)
   (^_n_ + _k_ - 1^   ~_k_~	  ) 		unordered (i.e., Combs. w/rep.)
 */
@@ -247,7 +247,7 @@ __*Hypothesis Testing &amp; Statistical Significance*__
       expression of inequality, a call-to-action trigger (a.k.a., *H*~a~)
 */
 
- $α = (1 - 0.950).toFixed(3)	// for 95% confidence level
+ $α = (1 - 0.950).toFixed(3)	// for a 95% confidence level
 
  n = 16
  df = n - 1
@@ -261,12 +261,12 @@ __*Hypothesis Testing &amp; Statistical Significance*__
 
 /*
 *Confidence Interval (statistic ± margin of error),*
-*1-sample _z_ interval (as when estimating pop.-prop. _p_)*
+*one-sample _z_ interval (as when estimating pop.-prop. _p_)*
 
  _p̂_ ± _z_^*^ √  _p̂_(1 - _p̂_) ⟋ ⬚͏   _n_  ⬚͏		= (statistic) ± (^critical^~value~      ) × (^std. error^~of statistic~	     )
 
 */
- z_̂cv = jStat.normal.inv(0.95, 0, 1)	// for 90% conf. int.
+ z_̂cv = jStat.normal.inv(0.95, 0, 1)	// _z_^*^ at 90% conf. int.
  p̂ - z_̂cv * Math.sqrt(p̂ * (1 - p̂) / n)
  p̂ + z_̂cv * Math.sqrt(p̂ * (1 - p̂) / n)
 
@@ -276,7 +276,7 @@ __*Hypothesis Testing &amp; Statistical Significance*__
  _x̅_ ± _t_^&ast;^	_s_~*x*~ ⟋ √_n_		= (statistic) ± (^critical^~value~      ) × (^std. dev.^~of statistic~	     )
 
 */
- t_̂cv = jStat.studentt.inv(0.975, _.df)	// for 95% conf. int.
+ t_̂cv = jStat.studentt.inv(0.975, _.df)	// _t_^&ast;^ at 95% conf. int.
  x̅ - t_̂cv * s_̃x / n**0.5
  x̅ + t_̂cv * s_̃x / n**0.5
 
