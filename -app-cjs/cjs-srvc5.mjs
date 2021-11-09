@@ -151,7 +151,7 @@ __*Statistic (from samples) vs. Parameter (of population)*__
 - Statistics reasons from sample(s) to population (induction):
   Sample test results can be used to estimate/refine parameters.
 
-  __sample statistic__	__population parameter__
+  sample statistic	population parameter
   _x̅_ = ^1^⁄~_n_~∑_x_~*i*~		_μ_ = ^1^⁄~_N_~∑_x_~*i*~
   _s_ = √^1^⁄~_n_-1~∑(_x_~*i*~ - _x̅_)²	_σ_ = √^1^⁄~_N_~∑(_x_~*i*~ - _μ_)²
   _z_ = (_x_ - _x̅_) / _s_	_z_ = (_x_ - _μ_) / _σ_
@@ -168,7 +168,7 @@ __*Binomial Random Variable*__
  *B*  | a discrete r.v. that meets binomial conditions
 
  Probability, _k_ successes out of _n_ attempts, given _p_
- *P*(*B* = _k_) = (^_n_^~_k_~ )_p_^_k_^(1 - _p_)^_n_-_k_^
+ *P*(*B* = _k_) = (^_n_^~_k_~ )_p_^_k_^(1 - _p_)^_n_ - _k_^
 
  Mean &amp; std. dev. of binomial r.v. *B*
  _μ_~*B*~ = _np_
