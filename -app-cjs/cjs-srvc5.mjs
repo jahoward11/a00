@@ -224,7 +224,14 @@ __*Sampling Distributions*__
  $x̅ = X
  $μ_̃x̅ = μ
  $σ_̃x̅ = σ / n**0.5
-//`;
+
+/*
+__*Combining 2 Distributions, analyzing sum/difference*__
+ _μ_~*X+Y*~ = _μ_~*X*~ + _μ_~*Y*~
+ _μ_~*X-Y*~ = _μ_~*X*~ - _μ_~*Y*~
+ _σ_²~*X+Y*~ = _σ_²~*X-Y*~ = _σ_²~*X*~ + _σ_²~*Y*~
+
+*/`;
 
 const analysis3 = `/*
 __Statistical Analysis Tools, part 3__

@@ -11,6 +11,7 @@ __Dimensions of Common Use__
 - Surface _Area_ (e.g., of a carpeted floor or painted wall)
 - _Volume_ of space or an object
 
+
 __Reference Formulas__
 *Pythagorean theorem (for a right triangle)*
  _a_² + _b_² = _c_²
@@ -64,6 +65,7 @@ __Reference Formulas__
 - Length units of a formula must all be the same
   (e.g., all in inches, or all in km, etc.).
 
+
 __KEY__\\f
  _θ_   | right-triangle reference angle, theta (in radians)
  _a_   | right-triangle adjacent-side length
@@ -114,6 +116,7 @@ __KEY__\\f
  _Vco_ | Volume of a cone
 */
 
+
 // __GIVEN VALUE__\\f
  a = 30 // ft
  b = 40 // ft
@@ -137,6 +140,7 @@ __KEY__\\f
  
  rn = r // ft
  hn = h // ft
+
 
 // __CALCULATED VALUE__
  $θ = Math.asin(b / c) // rad
