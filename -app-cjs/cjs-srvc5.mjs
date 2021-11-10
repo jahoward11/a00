@@ -235,7 +235,7 @@ __*Hypothesis Testing &amp; Statistical Significance*__
  _t_  | *t*-score, a *z*-score that is calculated on a student-*t* dist.,
       as for significance tests of low sample size (_n_ < 30)
  _χ_² | Chi-square, a *z*-score that is calculated on a chi-sq. dist.,
-      as for significance tests on sample category proportions
+      as for significance tests on sample category frequencies
  _df_ | degrees of freedom = sample/category size _n_ - 1
 
  *PV* | *P*-value, probability of values at least as extreme as *z*-score
