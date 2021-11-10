@@ -148,7 +148,7 @@ __*Statistic (from samples) vs. Parameter (of population)*__
 - A *sample* is a subset of an entire *population*.
 - Probability reasons from the population to a sample (deduction):
   Known parameters can be used to anticipate sample test results.
-- Statistics reasons from sample(s) to population (induction):
+- Statistics reasons from sample(s) to population (inference):
   Sample test results can be used to estimate/refine parameters.
 
   sample statistic	population parameter
@@ -307,19 +307,38 @@ __*Hypothesis Testing &amp; Statistical Significance*__
  $PV_̃t < $α	// reject *H*~0~ ...?
 
 /*
-*Significance Test, with 1-sample test statistic _χ_²*
- *H*~0~: *p* = ^1^⁄~3~	*H*~1~: *p* ≠ ^1^⁄~3~
+*Goodness-of-Fit Test, with categorical data &amp; test stat. _χ_²*
+ *H*~0~: uniform/claimed freqs. (e.g., *p~each cat.~* = ^1^⁄~3~)
+ *H*~1~: uneven/counter freqs. (e.g., *p~each cat.~* ≠ ^1^⁄~3~)
 
  _χ_² =  ∑   (_o_~*i*~ - _e_~*i*~)² ⟋ ⬚͏  _e_~*i*~   ⬚͏		= ∑   (*o~bserved~ - e~xpected~*)² ⟋ ⬚͏    *e~xpected~*     ⬚͏
 
 */
  $χ_̂2 = (12 - 10)**2 / 10 + (5 - 10)**2 / 10 + (13 - 10)**2 / 10
- df_̃χ2 = 3 - 1
+ df_̃χ2 = 3 - 1	// = number of categories - 1
 
  $PV_̃χ2 = 1 - jStat.chisquare.cdf($.χ_̂2, _.df_̃χ2)
  $PV_̃χ2 < $α	// reject *H*~0~ ...?
 
 /*
+*Homogeneity Test* __|__ *Association (Independence) Test,*
+*with contingency table &amp; test statistic _χ_²*
+ _r_  | number of row categories (e.g., herb selections)
+ _c_  | number of column categories (e.g., health conditions)
+ _df_ | degrees of freedom = (_r_ - 1)(_c_ - 1)
+
+ Homogeneity (1 variable trait across 2+ separate groups)
+ *H*~0~: similar (e.g., genre preferences of men &amp; women match)
+ *H*~1~: different (e.g., genre preferences of men &amp; women vary)
+
+ Association (2+ variable traits for every member of 1 group)
+ *H*~0~: independent (e.g., herbs do nothing in flu outbreak)
+ *H*~1~: dependent (e.g., herbs do something in flu outbreak)
+
+ _χ_² =  ∑   (_o_~*i*~ - _e_~*i*~)² ⟋ ⬚͏  _e_~*i*~   ⬚͏		where _e_ = ~row total × column total~ ⟋ ⬚͏    ^grand total^    ⬚͏
+
+ _PV_~*χ2*~ = 1 - jStat.chisquare.cdf(_χ_², _df_)
+
 *Type I Error*
 - rejecting a true *H*~0~
 - mitigated by decreasing _α_
