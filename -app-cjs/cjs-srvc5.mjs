@@ -334,13 +334,13 @@ __*Hypothesis Testing &amp; Statistical Significance*__
  _c_  | number of column categories (e.g., health conditions)
  _df_ | degrees of freedom = (_r_ - 1)(_c_ - 1)
 
- Homogeneity (1 variable trait across 2+ separate groups)
- *H*~0~: similar (e.g., genre preferences of men &amp; women match)
- *H*~1~: different (e.g., genre preferences of men &amp; women vary)
+ Homogeneity (2+ sample groups, 1 distribution)
+ *H*~0~: same dists. (e.g., party divisions of 2 states match)
+ *H*~1~: diff. dists. (e.g., party divisions of 2 states vary)
 
- Association (2+ variable traits for every member of 1 group)
- *H*~0~: independent (e.g., herbs do nothing in flu outbreak)
- *H*~1~: dependent (e.g., herbs do something in flu outbreak)
+ Association (1 sample group, 2+ variables)
+ *H*~0~: independent vars. (e.g., herbs do nothing in flu outbreak)
+ *H*~1~: dependent vars. (e.g., herbs have effect in flu outbreak)
 
  _χ_² =  ∑   (_o_~*i*~ - _e_~*i*~)² ⟋ ⬚͏  _e_~*i*~   ⬚͏		where _e_ = ~row total × column total~ ⟋ ⬚͏    ^grand total^    ⬚͏
 
