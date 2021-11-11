@@ -99,7 +99,20 @@ __*Std. N.D., the 68-95-99.7 (empirical) rule, or the 3-sigma rule*__
  tz = () => 1 / (1 + _.b0 * $z); ""
  Φz = (φ, t) => 1 - φ * (_.b1*t + _.b2*t**2 + _.b3*t**3 + _.b4*t**4 + _.b5*t**5); ""
  while (zmax - zmin > 1e-6) { Φz(φz(), tz()) > p ? zmax = $z : zmin = $z; $z = (zmax + zmin) / 2; }
-//`;
+
+
+/*
+__*Probabilities, given possible event outcomes A & B*__
+
+ *P*(A′) = 1 - *P*(A)	   probability of complement of A
+
+ *P*(A ∩ B) = *P*(A) × *P*(B)	   when A & B are independent
+ *P*(A ∩ B) = *P*(A) × *P*(B|A)  intersection general case
+
+ *P*(A ∪ B) = *P*(A) + *P*(B)	   when A & B are mutually exclusive
+ *P*(A ∪ B) = *P*(A) + *P*(B) - *P*(A ∩ B)  union general case
+
+*/`;
 
 const analysis2 = `/*
 __Statistical Analysis Tools, part 2__
@@ -120,18 +133,18 @@ __Statistical Analysis Tools, part 2__
       e.g., relative frequency of given value from sample
 
 __*Counting Methods, all possible scenarios*__
- ~_n_~*P*~_k_~ | Permutations, ordered selections w/o replacement
- ~_n_~*C*~_k_~ | Combinations, unordered selections w/o replacement, a.k.a. (^_n_^~_k_~ )
+ ~_n_~*P*~_k_~ | total supply-depleting Permutations (ordered arrangements)
+ ~_n_~*C*~_k_~ | total supply-depleting Combinations (unordered groupings)
 
- Selecting w/o replacement (no repetition)
+ Selecting w/o supply replacement (no repeats)
 
        ~_n_~*P*~_k_~ =   ⬚͏  _n_! ⟋ (_n_ - _k_)!		ordered
 
  (^_n_^~_k_~ ) = ~_n_~*C*~_k_~ = ⬚͏   _n_! ⟋ _k_!(_n_ - _k_)!		unordered
 
- Selecting with replacement (repetition allowed)
-   _n_^_k_^			ordered (i.e., Perms. w/rep.)
-  (^_n_ + _k_ - 1^   ~_k_~	  ) 		unordered (i.e., Combs. w/rep.)
+ Selecting with supply replacement (repeats allowed)
+   _n_^_k_^			ordered (Permutations w/replacement)
+  (^_n_ + _k_ - 1^   ~_k_~	  ) 		unordered (Combinations w/replacement)
 */
 
  n = 5
@@ -140,8 +153,8 @@ __*Counting Methods, all possible scenarios*__
  fctl = c => Array.from(Array(c).keys()).reduce((a, b) => a * (1 + b), 1); ""
  $Perms = fctl(n) / fctl(n - k)
  $Combs = fctl(n) / fctl(k) / fctl(n - k)
- Prep = n**k
- Crep = fctl(n + k - 1) / fctl(k) / fctl((n + k - 1) - k)
+ Preps = n**k
+ Creps = fctl(n + k - 1) / fctl(k) / fctl((n + k - 1) - k)
 
 /*
 __*Statistic (from samples) vs. Parameter (of population)*__
@@ -226,7 +239,7 @@ __*Sampling Distributions*__
  $σ_̃x̅ = σ / n**0.5
 
 /*
-__*Combining 2 N.D.s, analyzing sum/difference*__
+__*Combining 2 N.D.s, sum/difference distribution*__
  _μ_~*X+Y*~ = _μ_~*X*~ + _μ_~*Y*~
  _μ_~*X-Y*~ = _μ_~*X*~ - _μ_~*Y*~
  _σ_²~*X+Y*~ = _σ_²~*X-Y*~ = _σ_²~*X*~ + _σ_²~*Y*~   for independent samples
