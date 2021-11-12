@@ -112,10 +112,10 @@ __*Probabilities, given possible event outcomes A & B*__
  *P*(A ∪ B) = *P*(A) + *P*(B)	   when A & B are mutually exclusive
  *P*(A ∪ B) = *P*(A) + *P*(B) - *P*(A ∩ B)  union general case
 
- __Disease Testing Scenario__
- - __99%__ of patients who have the disease will test positive
- - __5%__ of patients who don't have the disease will also test positive
- - __10%__ of the population in question has the disease
+ __Disease test scenario__
+ - __99%__ of patients who have the disease will test positive.
+ - __5%__ of patients who don't have the disease will also test positive.
+ - __10%__ of the population in question has the disease.
 
  __Q:__ If a random patient tests positive, what is the probability
     that they have the disease?
@@ -124,7 +124,7 @@ __*Probabilities, given possible event outcomes A & B*__
  U  | Uninfected
  P  | tested Positive
 
- *P*(I|P) = *P*(P ∩ I) ⟋ ⬚͏ *P*(P) ⬚͏	   = ⬚͏    *P*(I ∩ P) ⟋ *P*(I ∩ P) + *P*(U ∩ P)
+ *P*(I|P) = *P*(P ∩ I) ⟋ ⬚͏ *P*(P) ⬚͏	   = ⬚͏     *P*(I ∩ P) ⟋ *P*[(I ∩ P) ∪ (U ∩ P)]
 
 */
  0.1 * 0.99 / (0.1 * 0.99 + 0.9 * 0.05)
@@ -169,8 +169,8 @@ __*Counting Methods, all possible scenarios*__
  fctl = c => Array.from(Array(c).keys()).reduce((a, b) => a * (1 + b), 1); ""
  $Perms = fctl(n) / fctl(n - k)
  $Combs = fctl(n) / fctl(k) / fctl(n - k)
- pres = n**k
- cres = fctl(n + k - 1) / fctl(k) / fctl((n + k - 1) - k)
+ perms = n**k
+ combs = fctl(n + k - 1) / fctl(k) / fctl((n + k - 1) - k)
 
 /*
 __*Statistic (from samples) vs. Parameter (of population)*__
@@ -351,7 +351,7 @@ __*Hypothesis Testing &amp; Statistical Significance*__
 
 */
  $χ_̂2 = (12 - 10)**2 / 10 + (5 - 10)**2 / 10 + (13 - 10)**2 / 10
- df_̃χ2 = 3 - 1	// = number of categories - 1
+ df_̃χ2 = 3 - 1		// = number of categories - 1
 
  $PV_̃χ2 = 1 - jStat.chisquare.cdf($.χ_̂2, _.df_̃χ2)
  $PV_̃χ2 < $α	// reject *H*~0~ ...?
