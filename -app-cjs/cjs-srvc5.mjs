@@ -81,11 +81,11 @@ __*Std. N.D., the 68-95-99.7 (empirical) rule, or the 3-sigma rule*__
  99.73% | probability of a position w/i &pm;3 std. devs.
 */
 
- // coverage, area between *μ - zσ* &amp; *μ + zσ*
+ // Coverage, area between *μ - zσ* &amp; *μ + zσ*
  2 * $Φx1 - 1
  2 * $Φx2 - 1
 
- // inverted coverage, 2 tail areas outside *μ - zσ* &amp; *μ + zσ*
+ // Inverted coverage, 2 tail areas outside *μ - zσ* &amp; *μ + zσ*
  2 * (1 - $Φx1)
  2 * (1 - $Φx2)
 
