@@ -112,7 +112,23 @@ __*Probabilities, given possible event outcomes A & B*__
  *P*(A ∪ B) = *P*(A) + *P*(B)	   when A & B are mutually exclusive
  *P*(A ∪ B) = *P*(A) + *P*(B) - *P*(A ∩ B)  union general case
 
-*/`;
+ __Disease Testing Scenario__
+ - __99%__ of patients who have the disease will test positive
+ - __5%__ of patients who don't have the disease will also test positive
+ - __10%__ of the population in question has the disease
+
+ __Q:__ If a random patient tests positive, what is the probability
+    that they have the disease?
+
+ I  | Infected
+ U  | Uninfected
+ P  | tested Positive
+
+ *P*(I|P) = *P*(P ∩ I) ⟋ ⬚͏ *P*(P) ⬚͏	   = ⬚͏    *P*(I ∩ P) ⟋ *P*(I ∩ P) + *P*(U ∩ P)
+
+*/
+ 0.1 * 0.99 / (0.1 * 0.99 + 0.9 * 0.05)
+//`;
 
 const analysis2 = `/*
 __Statistical Analysis Tools, part 2__
@@ -136,15 +152,15 @@ __*Counting Methods, all possible scenarios*__
  ~_n_~*P*~_k_~ | total supply-depleting Permutations (ordered arrangements)
  ~_n_~*C*~_k_~ | total supply-depleting Combinations (unordered groupings)
 
- Selecting w/o supply replacement (no repeats)
+ Selection w/o resupply (no repeats)
 
        ~_n_~*P*~_k_~ =   ⬚͏  _n_! ⟋ (_n_ - _k_)!		ordered
 
  (^_n_^~_k_~ ) = ~_n_~*C*~_k_~ = ⬚͏   _n_! ⟋ _k_!(_n_ - _k_)!		unordered
 
- Selecting with supply replacement (repeats allowed)
-   _n_^_k_^			ordered (Permutations w/replacement)
-  (^_n_ + _k_ - 1^   ~_k_~	  ) 		unordered (Combinations w/replacement)
+ Selection with resupply (repeats allowed)
+   _n_^_k_^			ordered (permutations w/repetition)
+  (^_n_ + _k_ - 1^   ~_k_~	  ) 		unordered (combinations w/repetition)
 */
 
  n = 5
@@ -153,8 +169,8 @@ __*Counting Methods, all possible scenarios*__
  fctl = c => Array.from(Array(c).keys()).reduce((a, b) => a * (1 + b), 1); ""
  $Perms = fctl(n) / fctl(n - k)
  $Combs = fctl(n) / fctl(k) / fctl(n - k)
- Preps = n**k
- Creps = fctl(n + k - 1) / fctl(k) / fctl((n + k - 1) - k)
+ pres = n**k
+ cres = fctl(n + k - 1) / fctl(k) / fctl((n + k - 1) - k)
 
 /*
 __*Statistic (from samples) vs. Parameter (of population)*__
@@ -239,7 +255,7 @@ __*Sampling Distributions*__
  $σ_̃x̅ = σ / n**0.5
 
 /*
-__*Combining 2 N.D.s, sum/difference distribution*__
+__*Combining 2 N.D.s, a sum/difference n.d.*__
  _μ_~*X+Y*~ = _μ_~*X*~ + _μ_~*Y*~
  _μ_~*X-Y*~ = _μ_~*X*~ - _μ_~*Y*~
  _σ_²~*X+Y*~ = _σ_²~*X-Y*~ = _σ_²~*X*~ + _σ_²~*Y*~   for independent samples
@@ -328,8 +344,8 @@ __*Hypothesis Testing &amp; Statistical Significance*__
 
 /*
 *Goodness-of-Fit Test, with categorical data &amp; test stat. _χ_²*
- *H*~0~: uniform/claimed freqs. (e.g., *p~each cat.~* = ^1^⁄~3~)
- *H*~1~: uneven/counter freqs. (e.g., *p~each cat.~* ≠ ^1^⁄~3~)
+ *H*~0~: uniform/claimed freqs. (e.g., *p~each~* = ^1^⁄~3~)
+ *H*~1~: uneven/counter freqs. (e.g., *p~each~* ≠ ^1^⁄~3~)
 
  _χ_² =  ∑   (_o_~*i*~ - _e_~*i*~)² ⟋ ⬚͏  _e_~*i*~   ⬚͏		= ∑   (*o~bserved~ - e~xpected~*)² ⟋ ⬚͏    *e~xpected~*     ⬚͏
 
