@@ -122,9 +122,9 @@ __*Probabilities, given possible event outcomes A & B*__
 
  I  | Infected
  U  | Uninfected
- P  | tested Positive
+ T  | True, tested positive
 
- *P*(I|P) = *P*(P ∩ I) ⟋ ⬚͏ *P*(P) ⬚͏	   = ⬚͏     *P*(I ∩ P) ⟋ *P*[(I ∩ P) ∪ (U ∩ P)]
+ *P*(I|T) = *P*(T ∩ I) ⟋ ⬚͏ *P*(T) ⬚͏	   = ⬚͏     *P*(I ∩ T) ⟋ *P*[(I ∩ T) ∪ (U ∩ T)]
 
 */
  0.1 * 0.99 / (0.1 * 0.99 + 0.9 * 0.05)

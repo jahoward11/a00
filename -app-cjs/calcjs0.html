@@ -632,7 +632,7 @@ Promise.all(jsrcs.map(scrInj)).catch(respShow).then(() => {
   !/^http/.test(window.location.protocol) ? slistRegen(dload)
   : Promise.all( (cmods.some(e => /^\d+$/.test(e)) ? cmods : [1,2,3,4,5,6].concat(cmods))
       .map(e => !/^\d+$/.test(e) ? e : `cjs-srvc${e}.js`)
-      .map(fnm => fnm && import(/\//.test(fnm) ? fnm : "./" + fnm).catch(respShow)) )
+      .map(fnm => fnm && import(/\//.test(fnm) ? fnm : "../-app-cjs/" + fnm).catch(respShow)) )
     .then( rslts => rslts.forEach( (r, i) => !r || typeof r !== 'object'
       || xstor.push([r.groupname || "group" + (1 + i), r]) ))
     .then(() => slistRegen(dload))
