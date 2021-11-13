@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>JavaScript Calculator</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, maximum-scale=1" />
+<style type="text/css">
+*, *::before, *::after { box-sizing: inherit; }
+html {
+  min-width: 375px;
+  box-sizing: border-box;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+strong, mark, table th { color: inherit; }
+body {
+  font: normal medium Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 64px 8px;
+}
+.is-hidden { display: none; }
+#screenmask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 100vh;
+}
+#cmain {
+  max-width: 720px;
+  margin: 0 auto;
+}
+#cmain a:active, #cmain button:active { box-shadow: 0 0 0 0.125em rgb(50 152 220 / 25%); }
+#cmain a:hover { color: CornFlowerBlue; }
+#cmain sub, #cmain sup {
+  position: relative;
+  font-size: 0.75em;
+  line-height: 0;
+  vertical-align: baseline;
+}
+#cmain sub { bottom: -0.25em; }
+#cmain sup { top: -0.5em; }
+#cmain button, #cmain input, #cmain select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: #f9f9f9;
+  color: Grey;
+  font-size: 14px;
+  line-height: 0;
+  height: 24px;
+  margin: 0;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 0;
+  vertical-align: top;
+}
+#cmain input::placeholder { opacity: 0.5; }
+#cmain select::-ms-expand { display: none; }
+#cmain pre {
+  background-color: unset;
+  color: unset;
+  font: normal medium/1.25 monospace;
+  margin: 0;
+  padding: 2px;
+  word-wrap: normal;
+  overflow-wrap: normal;
+  overflow-x: hidden;
+  white-space: pre;
+}
+#cgrid .pagebb { line-height: 0; }
+#cgrid .dnote { color: LightSteelBlue; }
+#cgrid .vert { position: absolute; }
+#cgrid .dvnd {
+  position: absolute;
+  margin: -8px 0 0 0;
+}
+#cgrid .dvsr {
+  position: absolute;
+  margin: 8px 0 0 0;
+  border-top: 1px solid;
+}
+#cgrid .dvar {
+  font-style: italic;
+  font-weight: bold;
+}
+#cgrid .frasl { margin: 0 -5px; }
+#cgrid .fbig {
+  position: absolute;
+  transform: scaleY(2.5);
+}
+#cgrid :not(sub):not(sup)>:not(sub):not(sup)>.fsan1,
+#cgrid :not(sub):not(sup)>:not(sub):not(sup)>.fsan2 {
+  display: inline-block;
+  width: 7.8px;
+  text-align: center;
+}
+#cgrid .fsan1 {
+  font-family: Arial, system-ui, sans-serif;
+  font-size: 81.25%; /* 13px */
+  line-height: 1.154;
+}
+#cgrid .fsan2 {
+  font-family: Arial, system-ui, sans-serif;
+  font-size: 93.75%; /* 15px */
+  line-height: 1;
+  vertical-align: bottom;
+}
+#cmain>#preresp {
+  color: Orange;
+  padding: 0;
+}
+#cmain>#cheadg {
+  color: Grey;
+  margin: 0 0 4px;
+}
+#cmain>#mctnr {
+  float: right;
+  position: relative;
+  margin: -24px 0 0 0;
+}
+#cmain>#mctnr::after {
+  position: absolute;
+  top: -2px;
+  right: 5px;
+  color: LightSteelBlue;
+  content: "\2630"; /* ☰ &#x2630; */
+  pointer-events: none;
+}
+#cmain>#mctnr>#menulist {
+  width: 24px;
+  height: 20px;
+}
+#cmain>#cgrid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 168px 1fr;
+  grid-template-areas:
+    "quad1A quad1B"
+    "quad2A quad2B";
+  width: 100%;
+}
+#cmain>#cgrid.xpndq2B {
+  grid-template-areas:
+    "quad1A quad1B"
+    "quad2B quad2B";
+}
+#cgrid>#quad1A, #cgrid>#quad1B { min-height: 56px; }
+#cgrid>#quad2A, #cgrid>#quad2B {
+  min-height: 472px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+#cgrid>#quad1A, #cgrid>#quad2A {
+//float: left;
+  position: relative;
+//width: 168px;
+  text-align: right;
+}
+#cgrid>#quad1B, #cgrid>#quad2B { //max-width: 552px; }
+#cgrid>#quad1A {
+  grid-area: quad1A;
+  background: LightGrey;
+  color: Grey;
+}
+#cgrid>#quad1B {
+  grid-area: quad1B;
+  background: LightSteelBlue;
+  color: LightSlateGrey;
+  font-style: italic;
+  font-weight: bold;
+}
+#cgrid>#quad2A {
+  grid-area: quad2A;
+  background: DarkGrey;
+  color: WhiteSmoke;
+}
+#cgrid>#quad2B {
+  position: relative;
+  grid-area: quad2B;
+  background: #f9f9f9;
+  color: Grey;
+}
+#cgrid #dfinal, #cgrid #dinitl {
+  position: absolute;
+  left: 2px;
+  font: bold x-small Helvetica, Arial, sans-serif;
+  opacity: 0.5;
+  text-align: left;
+  user-select: none;
+}
+#cgrid #dfinal {
+  bottom: 0;
+  color: DarkGrey;
+}
+#cgrid #dinitl {
+  top: 0;
+  color: Grey;
+}
+#cgrid>#plist {
+  position: absolute;
+  top: 0;
+  background: Black;
+  color: White;
+  font-size: small;
+  width: 168px;
+  height: 100%;
+  margin: 0;
+  padding: 0.5em 0 0.5em 0.5em;
+  list-style-type: none;
+  opacity: 0.5;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
+}
+#cgrid.xpndq2B>#plist { display: none; }
+#cmain .cfield:not(:last-child) { margin-bottom: 8px; }
+#cmain .cfield .iwarn { color: Orange; }
+#cmain .cfield .isucc { color: CornFlowerBlue; }
+#cmain .cfield .slist { position: relative; }
+#cmain .cfield .slist::after {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: Grey;
+  content: " ";
+  border-top: 8px solid Grey;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  opacity: 0.5;
+  pointer-events: none;
+}
+#cmain .cfield>.ccntr:not(:last-child) { margin-right: 8px; }
+#cmain .cfield>.addns>.ccntr { margin-right: 0; }
+#cmain .cfield #xsetinp { width: 168px; }
+#cmain .cfield #xsetlist {
+  width: 24px;
+  cursor: pointer;
+}
+#cmain .cfield>.help {
+  font-size: 12px;
+  margin-top: 4px;
+}
+#cmain .cfield>.help:not(.is-hidden) { display: block; }
+@media print {
+  body { padding: 0; }
+  #cgrid>#quad1A { box-shadow: inset 0 -1px LightGrey; }
+  #cgrid>#quad1B { box-shadow: inset 0 -1px LightSteelBlue; }
+  #cmain>#mctnr, #cgrid #dfinal, #cgrid #dinitl,
+  #cmain>.cfield:not(#cgrid) { display: none; }
+}
+@media print and (resolution: 300dpi) and (width: 2572px), /* Pixel2, mode:desktop */
+print and (resolution: 300dpi) and (width: 555px), /* Pixel2, mode:mobile */
+print and (resolution: 300dpi) and (width: 557px) { /* iMac-Chrome, page:portrait */
+  #cgrid .pagebb { page-break-before: always; break-before: page; }
+  #cgrid:not(.clpsrow1) .pagebb { margin-top: var(--row1ht, -56px); }
+}
+@media print and (min-width: 365px) and (max-width: 554px),
+print and (min-width: 558px) and (max-width: 734px),
+print and (min-width: 738px) and (max-width: 785px),
+print and (min-width: 787px) and (max-width: 952px),
+print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safari */
+  html { width: 768px; }
+}
+</style>
+</head>
+<body>
+<div id="screenmask" class="is-hidden"></div>
+<main id="cmain">
+<xmp id="dinput" class="is-hidden">
+
+</xmp>
+<h4 id="cheadg">JavaScript Calculator</h4>
+<pre id="preresp"></pre>
+<span id="mctnr"><select id="menulist" title="CalcJS View Options">
+  <option></option>
+  <option>&nbsp;&pm; Lock/unlock screen zoom</option>
+  <option>&hellip; Rename doc TITLE</option>
+  <option>&nbsp;&vArr; Expand/collapse FINAL VALUES row</option>
+  <option>&hArr; Expand/collapse RESULTS column</option>
+  <option>&thinsp;&Delta; Keep view settings (for re-use &amp; for sharing)</option>
+  <option>&nbsp;&dtrif;&#x332; Generate standalone copy of displayed data</option>
+</select></span>
+<div id="cgrid" class="cfield">
+  <pre id="quad1A"></pre><pre id="quad1B"></pre>
+  <pre id="quad2A"></pre><pre id="quad2B" contenteditable=true></pre>
+  <ul id="plist" class="is-hidden"></ul>
+</div>
+<div class="cfield">
+  <span class="addns ccntr"><span class="ccntr">
+    <input type="text" id="xsetinp" placeholder="Load expression set&hellip;" /></span><span class="ccntr slist"><select id="xsetlist" title="CalcJS Data Storage">
+    </select></span></span><span class="ccntr"><button id="xbtnsav">
+    <span class="isucc">&#x267a;</span> SAVE</button></span><span class="ccntr"><button id="xbtndel">
+    <span class="iwarn">&#x2715;</span> DEL</button></span>
+  <span class="help isucc is-hidden">Expression set is saved in local storage.</span>
+  <span class="help iwarn is-hidden">Expression set is deleted from local storage.</span>
+</div>
+</main>
+<script type="text/javascript">
+!/^http/.test(window.location.protocol) || !window.navigator.onLine || !window.navigator.serviceWorker
+|| window.navigator.serviceWorker.register("../-app-cjs/app-sw.js") //, { scope: "../" })
+  .then(reg => window.console.log("SW registration succeeded. Scope: " + reg.scope))
+  .catch(err => window.console.log("SW registration failed: " + err));
+</script>
+<script src="../-res-js/localforage.nopromises.min.js" type="text/javascript"></script>
+<script type="module">
+let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], xstor = [],
+  metavp = document.querySelector('#ecorender>meta[name=viewport]')
+    || document.querySelector('head>meta[name=viewport]'),
+  dinput = document.querySelector('#cmain>#dinput'),
+  cheadg = document.querySelector('#cmain>#cheadg'),
+  preresp = document.querySelector('#cmain>#preresp'),
+  menulist = document.querySelector('#cmain>#mctnr>#menulist'),
+  cgrid = document.querySelector('#cmain>#cgrid'),
+  quad1A = document.querySelector('#cgrid>#quad1A'),
+  quad1B = document.querySelector('#cgrid>#quad1B'),
+  quad2A = document.querySelector('#cgrid>#quad2A'),
+  quad2B = document.querySelector('#cgrid>#quad2B'),
+  plist = document.querySelector('#cgrid>#plist'),
+  xsetinp = document.querySelector('#cmain #xsetinp'),
+  xsetlist = document.querySelector('#cmain #xsetlist'),
+  xbtnsav = document.querySelector('#cmain #xbtnsav'),
+  xbtndel = document.querySelector('#cmain #xbtndel'),
+  xsethlps = document.querySelectorAll('#cmain .cfield>.help'),
+  dinp2 = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
+    || { value: dinput.innerHTML.replace(/\n+$|^\n+/g, "") },
+  respShow = resp => preresp.innerHTML
+    += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
+      ? resp : JSON.stringify(resp, null, 2) ) + "\n\n",
+  zoomTog = zoff => metavp.setAttribute( 'content', "width=device-width, "
+    + (zoff || /maximum-/.test(metavp.content) ? "initial-scale=1" : "maximum-scale=1") ),
+  titSave = (evt, tnew) => {
+    cheadg.setAttribute('contenteditable', false);
+    (document.querySelector('#ecorender>title') || document.querySelector('head>title')).innerHTML
+    = cheadg.innerHTML = (tnew || cheadg.textContent.trim().substring(0, 32));
+  },
+  gridAdj = idx => {
+    if (idx == 3) {
+      [quad1A, quad1B].forEach(e => e.classList.toggle("is-hidden"));
+      cgrid.classList.toggle("clpsrow1");
+    } else if (idx == 4) {
+      quad2A.classList.toggle("is-hidden");
+      cgrid.classList.toggle("xpndq2B");
+    }
+  },
+  scrInj = url => new Promise((rslv, rjct) => {
+    url || rjct("**Alert: Script URL was not provided.");
+    let scrnew = document.createElement('script');
+    scrnew.src = url;
+    scrnew.type = 'text/javascript';
+    !/^http/.test(window.location.protocol) || !window.navigator.onLine
+    || scrnew.setAttribute('crossorigin', 'use-credentials');
+    scrnew.onerror = err => rjct("**Alert: Script resource GET/load error occured.");
+    scrnew.onload = rslv;
+    !url || document.body.appendChild(scrnew);
+  }),
+  viewSet = () => {
+    let qrys = [];
+    /maximum-/.test(metavp.content) || qrys.push("!zlock");
+    !cgrid.classList.contains("clpsrow1") || qrys.push("!row1");
+    !cgrid.classList.contains("xpndq2B") || qrys.push("!col1");
+    cheadg.textContent === "JavaScript Calculator"
+    || qrys.push("title=" + window.encodeURIComponent(cheadg.textContent));
+    !(xsetlist || {}).value || qrys.push("dload=" + window.encodeURIComponent(xsetlist.value));
+    quad2B.click();
+    (xsetinp || {}).value = quad2A.innerHTML = quad1B.innerHTML = quad1A.innerHTML = "";
+    quad2B.innerHTML = "// __To preserve view settings to URL:__"
+    + "\n// 1. Edit &amp; un-comment settings, below --"
+    + "\n   // combining desired parts into a one-line expression."
+    + "\n// 2. De-focus *ENTRY* field."
+    + "\n   // (Alert: This action writes current/edited settings"
+    + "\n   // into URL string &amp; reloads page.)"
+    + "\n// 3. Bookmark reloaded page -- or, add to home screen."
+    + "\n// 4. Optionally, copy new link and paste in text message to share."
+    + "\n\n  // !zlock | unlock screen zoom"
+    + "\n  // !row1  | collapse *FINAL VALUES* row"
+    + "\n  // !col1  | collapse *RESULTS* column"
+    + "\n  // title= | rename doc *TITLE*"
+    + "\n  // cmods= | download certain/additional, pre-made data modules"
+    + "\n  // dload= | load specified data set into *ENTRY* field"
+    + "\n  // val0s= | re-assign initial values of pre-loaded data set"
+    + "\n  // jsrcs= | inject supplemental JavaScript resources\n\n// "
+    + (dinp2.type ? "window_location_search" : "window.location.search") + " = \"" + qrys.join("&")
+    + "\"\n // + \"" + (!qrys.length ? "" : "&") + "cmods=\" + encodeURIComponent(\"3,5,prj42.mjs\")"
+    + ((xsetlist || {}).value ? "" : "\n // + \"&dload=\" + encodeURIComponent(\"https://host/pathname\")")
+    + "\n // + \"&val0s=\" + encodeURIComponent(\"a:10,b:20,c:30\")"
+    + "\n // + \"&jsrcs=\" + encodeURIComponent(\"../-res-js/jstat.js\")\n<br>";
+    window.getSelection().setPosition(quad2B.firstChild, quad2B.textContent.length);
+  },
+  calcCopy = () => {
+    let anew = document.createElement('a'),
+      chtml = '<!DOCTYPE html>\n<html lang="en">\n<head>\n'
+      + (document.querySelector('#ecorender') || document.documentElement).innerHTML
+        .replace(/\n+$|^\n+|^<head>\n?|^#cmain \.cfield[^]+?\n(?=@media print {\n)|,\n *xsetLoad = [^]+?(?=;\nwindow\.location\.search)|^ *!\/\^http.+slistRegen[^]+?;\n|\n*<script\b.*><\/script>(?=$|<\/body>)|\n?<\/body>$/gim, "")
+        .replace(/^(<\/style>)[^]*?(?=<div .+><\/div>$)/im, "$1\n</head>\n<body>\n")
+        .replace(/^(<xmp id="dinput".*?>)[^]*?(?=<\/xmp>)/im, (m, c1) => c1 + "\n" + dinp2.value + "\n")
+        .replace(/^(<pre id="preresp">)[^]*?(?=<\/pre>)/im, "$1")
+        .replace( /^(<div id="cgrid".*?>\n *<pre id="quad1A".*?>)[^]*?(<\/pre><pre id="quad1B".*?>)[^]*?(<\/pre>\n *<pre id="quad2A".*?>)[^]+?(?=\n<\/div>)/im,
+          '$1$2$3</pre><pre id="quad2B" contenteditable=true></pre>\n  <ul id="plist" class="is-hidden"></ul>' )
+        .replace(/^<div class="cfield">[^]+?\n(?=let di2html,)/im, "</main>\n<script type=\"text/javascript\">\n(function () {\n'use strict';\n")
+        .replace(/^( *cheadg\.textContent === ").+/m, "$1" + cheadg.textContent + "\"")
+        .replace(/^xsetinp\.addEventListener\([^]+?(?=\n<\/script>)/im, "})();")
+      + "\n</body>\n</html>\n";
+    anew.setAttribute('download', "calcjs-draft02.html");
+    anew.setAttribute('href', "data:text/html;charset=utf-8," + window.encodeURIComponent(chtml));
+    anew.click();
+  },
+  menuSel = evt => {
+    window.setTimeout(() => {
+      menulist.blur();
+      menulist.selectedIndex = 0;
+    }, 1);
+    evt.preventDefault();
+    if (evt.target.selectedIndex == 1) {
+      zoomTog();
+    } else if (evt.target.selectedIndex == 2) {
+      cheadg.setAttribute('contenteditable', true);
+      cheadg.focus();
+    } else if (/[34]/.test(evt.target.selectedIndex)) {
+      gridAdj(evt.target.selectedIndex);
+    } else if (evt.target.selectedIndex == 5 && ((xsetlist || {}).value || !dinp2.value)) {
+      viewSet();
+    } else if (evt.target.selectedIndex == 6) {
+      calcCopy();
+    }
+  },
+  txtPste = evt => {
+    let pste = (evt.clipboardData || window.clipboardData).getData('text'),
+      seln = window.getSelection();
+    if (!seln.rangeCount) return false;
+    seln.deleteFromDocument();
+    seln.getRangeAt(0).insertNode(document.createTextNode(pste));
+    evt.preventDefault();
+  },
+  xprsEval = () => {
+    rset ? (preresp.innerHTML = "") : ++rset && !((xsetlist || {}).value = "")
+      && val0s.forEach(v => v && (dinp2.value = dinp2.value.replace(v[0], v[1])));
+    let $ = {}, _ = {}, _ks = [], rslt,
+      xprsns = (dinp2.value || "")
+        .replace(/^\/\*\n?([^]*?)\n?\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
+        .replace(/^((?:[^\n\/]|\/(?!\/))*?)(?:<!--[^]*?-->|<script\b.*?>[^]*?<\/script>)/gim, "$1")
+        .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/<\/?\b.+?>/g, ""))
+        .replace(/&Tab;/g, "\t").replace(/(?:[^$.\wÀ-Ͽ]|^)\$(?=[$_a-zÀ-Ͽ])/gi, "$&.")
+        .split("\n"),
+      reslts = xprsns.map(xpr => {
+        try {
+          xpr = xpr && xpr
+          .replace( /^(?=[\t ]*{)|^.*?(?=\/\/|\(? *function\b[ \w]*\([^]*?\) *{|\(? *(?:[$\wÀ-Ͽ]+|\([^]*?\)) *=>|$)/g,
+            m0 => m0.replace( /( |^)(?:_\.|)([$_a-zÀ-Ͽ][$\wÀ-Ͽ]*)(?= *=)/gi,
+              (m1, c1, c2) => _ks.push(c2) && c1 + "_." + c2 )
+            .replace( /([\t =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([$_](?!\.)[$\wÀ-Ͽ]*|[A-Za-zÀ-Ͽ][$\wÀ-Ͽ]*)(?! *=)/g,
+              (m1, c1, c2) => window[c2] || !_ks.some(k => k === c2) ? m1 : c1 + "_." + c2 ) );
+          rslt = eval(xpr.replace(/\x0c$|\\f$|&#x0*[Cc];$|^\x0c|^\\f|^&#x0*[Cc];/g, ""));
+          return ( !/\x0c$|\\f$|&#x0*[Cc];$|^\x0c|^\\f|^&#x0*[Cc];/.test(xpr) ? ""
+            : "<div class=pagebb></div>" )
+          + ( rslt == null ? "" : typeof rslt === 'string' ? rslt.replace(/\n/g, "\\n")
+            : rslt.toString().replace(/\s+/g, " ") );
+        } catch (err) { respShow(err); return err; }
+      }),
+      $ks = Object.keys($);
+    cgrid.style.setProperty("--row1ht", $ks.length < 4 ? "-56px" : -($ks.length * 16 + 4) + "px");
+    quad1A.innerHTML = Object.values($).join("\n").replace(/\n$/, "\n&nbsp;")
+      + '<span id="dfinal">$-variable<br />FINAL VALUES</span>';
+    quad1B.innerHTML = Object.keys($).join("\n")
+      .replace(/^([a-zÀ-Ͽ]+)_\u0302(.+)$/gim, "$1<sup>$2</sup>")
+      .replace(/^([a-zÀ-Ͽ]+)(?:_\u0303(.+)|(\d+))$/gim, "$1<sub>$2$3</sub>")
+      .replace( /.[\u0300-\u036f]|[\u02f7\u03d5\u03dd\u03f0\u03f1\u03f5]/g,
+        "<span class=fsan1>$&</span>" );
+    quad2A.innerHTML = reslts.join("\n").replace(/\n$/, "\n&nbsp;")
+      + '<span id="dinitl">Line-expression<br />RESULTS</span>';
+    quad2B.innerHTML = xprsns.map( xpr => xpr
+      .replace(/&(?=[gl]t;|#x0*[ad];|NewLine;)/gi, "&amp;").replace(/<(?=\/?\w)/g, "&lt;")
+      .replace( /\/\/ *(.*?) *$/, (m, c1) =>
+        "<span class=dnote>" + c1
+        .replace(/(\W|\d|^)_([0-9a-zÀ-Ͽ]+)_(?=$|\W|\d)/gi, "$1<strong><em>$2</em></strong>")
+        .replace(/(\W|\d|__|^)\*(?=\S)(.*?\S)\*(?=$|\W|\1)/g, "$1<em>$2</em>")
+        .replace(/\b__(.+?)__\b/g, "<strong>$1</strong>")
+        .replace(/\^(?=\S)(.*?\S)\^/g, "<sup>$1</sup>")
+        .replace(/~(?=\S)(.*?\S)~/g, "<sub>$1</sub>")
+        .replace( /([^$.\wÀ-Ͽ]|^)(a)(?= )/gi, //"$1<x>$2</x>")
+          (m, c1, c2) => c1 + "&#x" + c2.charCodeAt(0).toString(16) + ";" )
+        .replace(/\u2b1a\u034f/g, "&nbsp;")
+        .replace(/\u250a\u034f/g, "&zwj;")
+        + "</span> " )).join("\n")
+    .replace( /^[\t ]*(<span class=dnote>)(<\/span>)( *\n[\t ]*)\1(.*)(?=\2 *\n[\t ]*\1\2 *$)/gm,
+      (m, c1, c2, c3, c4) => c1 + c2 + c3 + c1 + c4
+      .replace( /(?:  ((?:[+\]×÷−∗⋅✕✖-]|&divide;|&lowast;|&minus;|&plus;|&rsqb;|&sdot;|&times;) *) |(?! ))((?:[^\x09&=[⇐⇒⇔∏∑√∫]|[[⇐⇒⇔∏∑√∫](?!  )|&(?!Tab;|equals;|hArr;  |int;  |lArr;  |lsqb;  |prod;  |rArr;  |radic;  |sum;  ))*?) +(?:\u2215|\u27cb) +(.*?)(?= *[\x09=]| *\[  |  +]|  +[+×÷−∗⋅✕✖-] | *&Tab;|  +&divide; | *&equals;|  +&lowast; | *&lsqb;  |  +&minus; |  +&plus; |  +&rsqb;|  +&sdot; |  +&times; | *(?:[⇐⇒⇔∏∑√∫]|&hArr;|&int;|&lArr;|&prod;|&rArr;|&radic;|&sum;)(\[|&lsqb;|)  | *$)/g,
+        "$1<span class=dvnd>$2</span><span class=dvsr>$3</span>" )
+      .replace( /([∏∑√∫]|&int;|&prod;|&radic;|&sum;|(?=\[|&lsqb;))(\[|&lsqb;|) ( +)|  (\]|&rsqb;)((?! ).*?(?=<span class=dvnd>|$)| ?)/g,
+        (m, c1, c2, c3, c4, c5) => (!c4 ? "" : "  ")
+        + "<span class=fbig>" + (c4 || c1 + c2) + "</span>"
+        + (c4 ? " " : c3 + (!c1 || !c2 ? "" : " "))
+        + (!c5 ? "" : "<span class=dvnd>" + c5 + "</span>") ) )
+    .replace( /\(((?:\t| |&nbsp;)*<sup>.*?<\/sup>)((?:\t| |&nbsp;)*<sub>.*?<\/sub>)(?=(?:\t| |&nbsp;)*\))/g,
+      "(<span class=vert>$1</span><span class=vert>$2</span>" )
+    .replace(/([^$.\wÀ-Ͽ]|^)\$\.([\wÀ-Ͽ]+)/g, "$1<var class=dvar>$2</var>")
+    .replace( !_ks.length ? /[]/
+      : new RegExp("(&#?(?!\\w+;)|[^&]#|[^#$&.\\wÀ-Ͽ]|^)(?:_\.|)(" + _ks.join("|") + ")(?![$\\wÀ-Ͽ\u0300-\u036f\u20d0-\u20ff]|[^\n<]*<\\/(?:em|strong|var|x)>)", "g"),
+      "$1<var>$2</var>" )
+    .replace(/(<var\b.*?>[a-zÀ-Ͽ]+)_\u0302(.+?)(?=<\/var>)/gi, "$1<sup>$2</sup>")
+    .replace(/(<var\b.*?>[a-zÀ-Ͽ]+)(?:_\u0303(.+?)|(\d+))(?=<\/var>)/gi, "$1<sub>$2$3</sub>")
+    .replace(/\u2044|&frasl;/g, "<span class=frasl>$&</span>")
+    .replace( /[\xb2\xb3\xb9\u2070-\u207e\u2080-\u208e]|&sup[123];/g,
+      "<span class=fsan2>$&</span>" ) // superscripts, subscripts
+    .replace( /.[\u0300-\u036f]|[\u02f7\u03d5\u03dd\u03f0\u03f1\u03f5\u2023\u2031\u2034\u203e\u2057\u2150-\u215a\u215f]|&epsiv;|&frac\d[356];|&gammad;|&kappav;|&oline;|&pertenk;|&phiv;|&qprime;|&rhov;|&tprime;/g,
+      "<span class=fsan1>$&</span>" ) // combining marks, vulgar fractions, ˷ ϕ ϝ ϰ ϱ ϵ ‣ ‱ ‴ ‾ ⁗
+    .replace( /(.*)(?:\x0c|\\f|&#x0*[Cc];)(<\/span> |)$|^(.*<span class=dnote>|)(?:\x0c|\\f|&#x0*[Cc];)/gm,
+      "<div class=pagebb></div>$1$2$3" );
+  },
+  initLoad = () => !/^https?:\/\/.+$/.test(dload) ? xprsEval()
+    : window.fetch(dload, { credentials: 'omit' })
+    .then( resp => /\.json$|^https?:\/\/\w[\w.:-]*\/\w[\w-]*\/\w[\w!.*+~-]*$/.test(dload)
+      ? resp.json() : resp.text() )
+    .then(val => dinp2.value = val.content || (typeof val !== 'object' ? val : "// " + JSON.stringify(val)))
+    .then(xprsEval).catch(respShow),
+  dinpRegen = evt => {
+    let eobj = evt.target, rnge, seln;
+    if ( eobj.parentElement.id === "plist" || eobj.id !== "screenmask" && [0, 1, 2, 3, 4, 5, 6]
+    .some(i => (eobj = !i ? eobj : eobj["parentElement"] || eobj).id === "quad2B") ) {
+    //&& evt.path[evt.path.length - (!window.EC1 ? 7 : 8)].id === "quad2B" ) {
+      if (evt.target.parentElement.id === "plist") {
+        seln = window.getSelection();
+        seln.removeAllRanges();
+        rnge = document.createRange();
+        rnge.selectNodeContents(evt.target);
+        seln.addRange(rnge);
+      } else if (plist.className) {
+        rnge = Array.from(quad2B.childNodes)
+          .findIndex(e => e.isSameNode(seln = window.getSelection().focusNode) || e.contains(seln))
+          / quad2B.childNodes.length;
+        rnge = rnge < 0.15 ? 0 : rnge > 0.85 ? 1 : rnge;
+        document.querySelector('#screenmask').className = plist.className = "";
+        q2Bcopy = quad2B.innerHTML;
+        quad2B.innerHTML = (dinp2.value || "")
+        .replace(/&(?=#?\w+;)/g, "&amp;").replace(/&(?=amp;[gl]t;)/gi, "&amp;")
+        .replace(/<(?=\/?\w|!--)/g, "&lt;") + (!dinp2.value ? "" : "\n<br>");
+        !(di2html = quad2B.innerHTML)
+        || window.getSelection().setPosition( quad2B.firstChild, !rnge ? 0
+          : quad2B.textContent.indexOf("\n", quad2B.textContent.length * rnge - 1) + 1 );
+      }
+    } else if (!plist.className && quad2B.innerHTML === di2html) {
+      document.querySelector('#screenmask').className = plist.className = "is-hidden";
+      quad2B.innerHTML = q2Bcopy;
+      q2Bcopy = di2html = null;
+    } else if (!plist.className) {
+      (xsetlist || {}).value = "";
+      xsethlps.forEach(e => e.classList.add("is-hidden"));
+      document.querySelector('#screenmask').className = plist.className = "is-hidden";
+      q2Bcopy = di2html = null;
+      dinp2.value = quad2B.innerHTML
+      .replace(/<(\w+)>\s*<\/\1>/g, "")
+      .replace(/(?:(?:<br>|)<\/div>|<br>|)<div><br><\/div>|(?:(?:<br>|)<\/div>|<br>|\n|)<div>|<br>/gi, "\n")
+      .replace(/<\/?\b[ \w,:;"#=-]+>|\n+$|^\n+/g, "")
+      .replace(/&gt;/gi, ">").replace(/&lt;/gi, "<").replace(/&quot;/gi, "\"")
+      .replace(/&amp;&amp;/gi, "&&").replace(/&amp;(?:amp;(?!Tab;)|)(?=#?\w+;)/gi, "&")
+      .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/&amp;/g, "&").replace(/\\t/g, "\t"));
+      xprsEval();
+    }
+  },
+  xsetLoad = (evt = { target: "" }) => {
+    let optg;
+    xsethlps.forEach(e => e.classList.add("is-hidden"));
+    if (!evt.target.id && /^https?:\/\/.+$/.test(dload)) {
+      return initLoad();
+    } else if (evt.target.id === "xsetlist" && !xsetlist.value) {
+      xsetlist.value = xsetinp.value = dinp2.value = "";
+      return xprsEval();
+    } else if (evt.target.id === "xsetinp" && dinp2.value) {
+      return xsetlist.value === xsetinp.value.replace(/.+\//, "")
+      || xsetlist.value === xsetinp.value
+      || (xsetlist.value = "");
+    }
+    evt.target.id !== "xsetinp"
+    || (xsetlist.value = xsetinp.value) && xsetlist.value
+    || (xsetlist.value = xsetinp.value.replace(/.+\//, "")) && xsetlist.value
+    || (xsetlist.value = "");
+    optg = xsetlist.value && xsetlist.selectedOptions[0].parentElement.label;
+    xsetinp.value && (!xsetlist.value || xsetlist.value === xsetinp.value.replace(/.+\//, ""))
+    || (xsetinp.value = (optg === "USERdata/" ? "" : optg) + xsetlist.value);
+    !optg || ( optg !== "USERdata/"
+    ? (( dinp2.value
+      = ((xstor.find(oe => oe[0] === optg.replace(/\/$/, "")) || ["", {}])[1][xsetlist.value] || "")
+      .replace(/\n+$|^\n+/g, "") ), xprsEval() )
+    : !window.localforage || window.localforage.getItem(xsetinp.value)
+      .then(val => dinp2.value = val || "")
+      .then(xprsEval)
+      .catch(respShow) );
+  },
+  slistRegen = seln => !window.localforage
+  || window.localforage.keys((err, lfkeys) => {
+    if (err) { respShow(err);
+    } else {
+      xsetlist.innerHTML = "\n      <option></option>"
+      + [["USERdata", lfkeys]].concat(xstor).map( (oe, i) => i && !oe[1] ? ""
+        : "\n      <optgroup label=\"" + oe[0] + "/\">\n        "
+          + (!i ? oe[1] : Object.keys(oe[1]).filter(e => e !== "groupname"))
+            .map(e => "<option>" + e + "</option>").join("\n        ")
+          + "\n      </optgroup>" ).join("") + "\n    ";
+      xsetlist.value = seln || "";
+      rset || !dload ? xprsEval() : xsetLoad();
+    }
+  }),
+  xsetSave = () => {
+    xsethlps.forEach(e => e.classList.add("is-hidden"));
+    xsetinp.value = xsetinp.value.trim();
+    !xsetinp.value || !window.localforage
+    || window.localforage.setItem( xsetinp.value, dinp2.value,
+      (err, _val) => err ? respShow(err)
+      : slistRegen(xsetinp.value) && xsethlps[0].classList.remove("is-hidden") );
+  },
+  xsetDel = () => {
+    let optg = xsetlist.value && xsetlist.selectedOptions[0].parentElement.label;
+    xsethlps.forEach(e => e.classList.add("is-hidden"));
+    !optg || optg !== "USERdata/" || !window.localforage
+    || window.localforage.removeItem( xsetlist.value,
+      err => err ? respShow(err) : slistRegen() && xsethlps[1].classList.remove("is-hidden") );
+  };
+window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
+  /^jsrcs=./.test(qi) ? (jsrcs = window.decodeURIComponent(qi.replace(/^jsrcs=/, "")).split(/[ ,]+/))
+  : /^cmods=./.test(qi) ? (cmods = window.decodeURIComponent(qi.replace(/^cmods=/, "")).split(/[ ,]+/))
+  : /^dload=./.test(qi) ? (dload = window.decodeURIComponent(qi.replace(/^dload=/, "")))
+  : /^val0s=./.test(qi) ? ( val0s = window.decodeURIComponent(qi.replace(/^val0s=/, ""))
+    .split(/,/).map( e => (e = /^ *(.+:)(.*)/.exec(e))
+      && [new RegExp("^( *" + e[1].replace(/:/g, " *= *") + ").*?(?=[\\t ]*//|$)", "m"), "$1" + e[2]] ) )
+  : /^title=/.test(qi) ? titSave(0, window.decodeURIComponent(qi.replace(/^title=/, "")))
+  : /^!zlock$/.test(qi) ? zoomTog(1)
+  : /^!row1$/.test(qi) ? gridAdj(3)
+  : /^!col1$/.test(qi) ? gridAdj(4) : 0 );
+Promise.all(jsrcs.map(scrInj)).catch(respShow).then(() => {
+  !/^http/.test(window.location.protocol) ? slistRegen(dload)
+  : Promise.all( (cmods.some(e => /^\d+$/.test(e)) ? cmods : [1,2,3,4,5,6].concat(cmods))
+      .map(e => !/^\d+$/.test(e) ? e : `cjs-srvc${e}.js`)
+      .map(fnm => fnm && import(/\//.test(fnm) ? fnm : "./" + fnm).catch(respShow)) )
+    .then( rslts => rslts.forEach( (r, i) => !r || typeof r !== 'object'
+      || xstor.push([r.groupname || "group" + (1 + i), r]) ))
+    .then(() => slistRegen(dload))
+    .catch(respShow);
+  xsetinp || initLoad();
+});
+plist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
+  .map((e, i) => `<li>Math.${e}${/^[A-Z]/.test(e) ? "" : "()"}</li>`).join("\n    ")
+  + "\n    " + Object.getOwnPropertyNames(Number)
+  .map((e, i) => `<li>Number.${e}${!/^is|^parse/.test(e) ? "" : "()"}</li>`).join("\n    ")
+  + "\n    " + Object.getOwnPropertyNames(Number.prototype)
+  .map((e, i) => `<li>n.${e}${/^constructor/.test(e) ? "" : "()"}</li>`).join("\n    ")
+  + "\n    " + ["", ".toLocaleString()", ".toUTCString()", ".toISOString()", ".getTime()"]
+  .map(e => `<li>new Date()${e}</li>`).join("\n    ")
+  + "\n    " + [ "- - -", "\\t &amp;Tab;", "\\f (form-feed &amp;#xc;)", "⬚͏ &amp;nbsp; (no-break space)", "┊͏ &amp;zwj; (zero-width joiner)" ]
+  .map(e => `<li>${e}</li>`).join("\n    ") + "\n    " + [
+    "- - -", "&Alpha;", "&alpha;", "&Beta;", "&beta;", "&Gamma;", "&gamma;", "&Gammad;", "&gammad;", "&Delta;", "&delta;", "&Epsilon;", "&epsi;", "&epsiv;", "&Zeta;", "&zeta;", "&Eta;", "&eta;", "&Theta;", "&theta;", "&thetav;", "&Iota;", "&iota;", "&Kappa;", "&kappa;", "&kappav;", "&Lambda;", "&lambda;", "&Mu;", "&mu;", "&Nu;", "&nu;", "&Xi;", "&xi;", "&Omicron;", "&omicron;", "&Pi;", "&pi;", "&piv;", "&Rho;", "&rho;", "&rhov;", "&Sigma;", "&sigma;", "&sigmav;", "&Tau;", "&tau;", "&Upsilon;", "&upsi;", "&upsih;", "&Phi;", "&phi;", "&phiv;", "&Chi;", "&chi;", "&Psi;", "&psi;", "&Omega;", "&omega;",
+    "- - -", "&excl;", "&quot;", "&num;", "&dollar;", "&percnt;", "&amp;", "&apos;", "&lpar;", "&rpar;", "&ast;", "&plus;", "&comma;", "(hyphen-minus &#x2d;)", "&period;", "&sol;", "&colon;", "&semi;", "&lt;", "&equals;", "&gt;", "&quest;", "&commat;", "&lsqb;", "&bsol;", "&rsqb;", "&Hat;", "&lowbar;", "&grave;", "&lcub;", "&vert;", "&rcub;", "(tilde &#x7e;)",
+    "- - -", "&brvbar;", "&uml;", "&macr;", "&deg;", "&pm;", "&sup2;", "&sup3;", "&acute;", "&micro;", "&sup1;", "&frac14;", "&frac12;", "&frac34;", "&times;", "&divide;", "&fnof;", "&tilde;", "(low tilde &#x2f7;)", "(combining circumflex &#x302;)", "(combining tilde &#x303;)", "(combining macron &#x304;)", "(combining overline &#x305;)", "(combining low line &#x332;)", "&horbar;", "&Vert;", "&bull;", "(triangular bullet &#x2023;)", "&hellip;", "&permil;", "&pertenk;", "&prime;", "&Prime;", "&tprime;", "&backprime;", "&oline;", "&frasl;", "&qprime;", "(superscript 0 &#x2070;)", "(superscript 4 &#x2074;)", "(superscript 5 &#x2075;)", "(superscript 6 &#x2076;)", "(superscript 7 &#x2077;)", "(superscript 8 &#x2078;)", "(superscript 9 &#x2079;)", "(superscript '+' &#x207a;)", "(superscript '-' &#x207b;)", "(superscript '=' &#x207c;)", "(superscript '(' &#x207d;)", "(superscript ')' &#x207e;)", "(subscript 0 &#x2080;)", "(subscript 1 &#x2081;)", "(subscript 2 &#x2082;)", "(subscript 3 &#x2083;)", "(subscript 4 &#x2084;)", "(subscript 5 &#x2085;)", "(subscript 6 &#x2086;)", "(subscript 7 &#x2087;)", "(subscript 8 &#x2088;)", "(subscript 9 &#x2089;)", "(subscript '+' &#x208a;)", "(subscript '-' &#x208b;)", "(subscript '=' &#x208c;)", "(subscript '(' &#x208d;)", "(subscript ')' &#x208e;)", "&Copf; (complexes)", "(Euler constant &#x2107;)", "&Hopf; (quaternions)", "&Nopf; (naturals)", "&numero;", "&Popf; (primes)", "&Qopf; (rationals)", "&Ropf; (reals)", "&Zopf; (integers)", "&escr;", "&ee;", "&ii;", "(frac 1-7th &#x2150;)", "(frac 1-9th &#x2151;)", "(frac 1-10th &#x2152;)", "&frac13;", "&frac23;", "&frac15;", "&frac25;", "&frac35;", "&frac45;", "&frac16;", "&frac56;", "&frac18;", "&frac38;", "&frac58;", "&frac78;", "(numerator 1 &#x215f;)", "&larr;", "&uarr;", "&rarr;", "&darr;", "&harr;", "&lArr;", "&uArr;", "&rArr;", "&dArr;", "&hArr;",
+    "&forall;", "&part;", "&exist;", "&nexist;", "&empty;", "&nabla;", "&in;", "&notin;", "&ni;", "&notni;", "&prod;", "&sum;", "&minus;", "(division slash &#x2215;)", "&setmn;", "&lowast;", "&radic;", "&prop;", "&infin;", "&angrt;", "&ang;", "&mid;", "&nmid;", "&par;", "&npar;", "&and;", "&or;", "&cap;", "&cup;", "&int;", "&there4;", "&becaus;", "&ratio;", "&Colon;", "&sim;", "&nsim;", "&cong;", "&ap;", "&nap;", "&ne;", "&equiv;", "&nequiv;", "&le;", "&ge;", "&ll;", "&gg;", "&sub;", "&sup;", "&nsub;", "&nsup;", "&sube;", "&supe;", "&nsube;", "&nsupe;", "&subne;", "&supne;", "&oplus;", "&ominus;", "&otimes;", "&osol;", "&odot;", "&ocir;", "&oast;", "&odash;", "&plusb;", "&minusb;", "&timesb;", "&sdotb;", "&vdash;", "&dashv;", "&top;", "&bot;", "&sdot;", "&check;", "(multiplication X &#x2715;)", "&cross;", "(math diagonal &#x27cb;)", "(long division &#x27cc;)", "&lang;", "&rang;", "&Lang;", "&Rang;", "&xoplus;", "&xotime;" ]
+  .map(e => `<li>${e.replace(/(.*)&(#?\w+;)/, "&$2 $1&amp;$2")}</li>`).join("\n    ") + "\n  ";
+['#screenmask', '#cmain'].forEach(e => document.querySelector(e).addEventListener('click', dinpRegen));
+cheadg.addEventListener('blur', titSave);
+menulist.addEventListener('change', menuSel);
+quad2B.addEventListener('paste', txtPste);
+xsetinp.addEventListener('blur', xsetLoad);
+xsetlist.addEventListener('change', xsetLoad);
+xbtnsav.addEventListener('click', xsetSave);
+xbtndel.addEventListener('click', xsetDel);
+</script>
+</body>
+</html>
