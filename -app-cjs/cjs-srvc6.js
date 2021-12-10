@@ -27,7 +27,7 @@ __JavaScript Coding Tutorials__
   + building blocks for composing your instructions
     (to manipulate/display data)
   + the set of keywords that the CLI understands
-- Application Programming Interfaces,
+- Application Programming Interfaces --
   specifically the client-side web APIs
   + pre-built JS code patterns, useful for sending and receiving live,
     current feeds of data
@@ -45,7 +45,7 @@ __JavaScript Coding Tutorials__
 the JavaScript Calculator app.
  After these beginner skills have been mastered, code blocks
 from the CalcJS-app source code could be deconstructed and
-recycled as needed to build a complete, new, stand-alone app.
+recycled as needed to build a complete, new, standalone app.
 
  1. Describe your __end product__.
     + The end product should be an app.
@@ -73,12 +73,14 @@ recycled as needed to build a complete, new, stand-alone app.
 */
 
 convlen = n => n * 0.9144  // converts yards to meters
+
 convlen(100)  // calls function &amp; returns result of 100 * 0.9144
 
 /*
  3. Modify the __function__ to handle bi-directional conversions.
     + Add an input variable that will indicate the initial unit,
-      the unit being provided.
+      the unit being provided. Two or more variables are wrapped in
+      parentheses, and variables are separated by a comma (,).
     + Use a test and conditional operators
       ("?" = "if true"; ":" = "if false")
       to select the correct directional calculation.
@@ -100,7 +102,7 @@ convlen(91.44, "m")  // calls function &amp; returns result of 91.44 / 0.9144
       the correct calculation formula.
 */
 
-convlen = (n, u0, u1) => /^y/i.test(u0) && /^m/i.test(u1) ? n * 0.9144 : /^f/i.test(u0) && /^m/i.test(u1) ? n * 0.3048 : /^m/i.test(u0) && /^y/i.test(u1) ? n / 0.9144 : /^m/i.test(u0) && /^f/i.test(u1) ? n / 0.3048 : n
+convlen = (n, u0, u1) => /^y/i.test(u0) && /^m/i.test(u1) ? n * 0.9144 : /^f/i.test(u0) && /^m/i.test(u1) ? n * 0.3048 : /^m/i.test(u0) && /^y/i.test(u1) ? n / 0.9144 : /^m/i.test(u0) && /^f/i.test(u1) ? n / 0.3048 : u0 === u1 ? n : "error"
 
 convlen(100, "y", "m")  // converts 100 yards to meters
 convlen(600, "f", "m")  // converts 600 feet to meters
