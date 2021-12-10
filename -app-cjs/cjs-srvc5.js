@@ -122,7 +122,7 @@ __*Probabilities, given possible event outcomes A & B*__
 
  I  | Infected
  U  | Uninfected
- T  | True, tested positive
+ T  | tested positive (True)
 
  *P*(I|T) = *P*(T ∩ I) ⟋ ⬚͏ *P*(T) ⬚͏	   = ⬚͏     *P*(I ∩ T) ⟋ *P*[(I ∩ T) ∪ (U ∩ T)]
 
@@ -154,13 +154,13 @@ __*Counting Methods, all possible scenarios*__
 
  Selection w/o resupply (no repeats)
 
-       ~_n_~*P*~_k_~ =   ⬚͏  _n_! ⟋ (_n_ - _k_)!		ordered
+       ~_n_~*P*~_k_~ =   ⬚͏  _n_! ⟋ (_n_ - _k_)!		ordered (Permutations)
 
- (^_n_^~_k_~ ) = ~_n_~*C*~_k_~ = ⬚͏   _n_! ⟋ _k_!(_n_ - _k_)!		unordered
+ (^_n_^~_k_~ ) = ~_n_~*C*~_k_~ = ⬚͏   _n_! ⟋ _k_!(_n_ - _k_)!		unordered (Combinations)
 
  Selection with resupply (repeats allowed)
-   _n_^_k_^			ordered (permutations w/repetition)
-  (^_n_ + _k_ - 1^   ~_k_~	  ) 		unordered (combinations w/repetition)
+   _n_^_k_^			ordered (permutations)
+  (^_n_ + _k_ - 1^   ~_k_~	  ) 		unordered (combinations)
 */
 
  n = 5
@@ -278,9 +278,9 @@ __*Hypothesis Testing &amp; Statistical Significance*__
       = area(s) under &#x6e;.d./*χ*²-d. curve beyond one/both± *z*-score(s)
  *α*  | complement of confidence level = left/right/2-tail area(s)
  *H*~0~ | null hypothesis: unchanged/expected state, described with
-      expression of equality, a reject/fail-to-reject test focus
+      expression of equality; a reject/fail-to-reject test focus
  *H*~1~ | alternative hypothesis: new/unusual state, described with
-      expression of inequality, a call-to-action trigger (a.k.a., *H*~a~)
+      expression of inequality; a call-to-action trigger (a.k.a., *H*~a~)
 */
 
  $α = (1 - 0.950).toFixed(3)	// for a 95% confidence level
@@ -297,7 +297,7 @@ __*Hypothesis Testing &amp; Statistical Significance*__
 
 /*
 *Confidence Interval (statistic ± margin of error),*
-*one-sample _z_ interval (as when estimating pop.-prop. _p_)*
+*1-sample _z_ interval (as when estimating pop.-prop. _p_)*
 
  _p̂_ ± _z_^*^ √  _p̂_(1 - _p̂_) ⟋ ⬚͏   _n_  ⬚͏		= (statistic) ± (^critical^~value~      ) × (^std. error^~of statistic~	     )
 
