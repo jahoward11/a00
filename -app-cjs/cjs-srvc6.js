@@ -5,7 +5,7 @@ const groupname = "JScode";
 const tutorial1 = `/*
 __JavaScript Coding Tutorials, Part One__
 
-*Some (initial) __reasons__ to learn JS coding ...*
+*Some (initial) __reasons to learn__ JS coding ...*
 - Custom-tailor your routine accounting tasks.
 - Build a web app for a personal, interactive reference.
 - Progress more efficiently through your independent studies.
@@ -17,7 +17,7 @@ __JavaScript Coding Tutorials, Part One__
 - ...
 
 *What are the __fundamental tools__ of JS coding?*
-- Web browser console
+- Web-browser console
   + for generating direct, instant results to your coded instructions
   + available on almost any computer or device with a web browser
 - Hyper-Text Markup Language (HTML) and Cascading Style Sheets (CSS)
@@ -33,17 +33,19 @@ __JavaScript Coding Tutorials, Part One__
     current feeds of data
   + ever evolving to accommodate changing internet uses and demands
 
-*Where could someone go to more deeply __explore__ these JS coding tools?*
+*Where could someone go to __explore JS coding__ tools in depth?*
 - developer.mozilla.org/en-US/docs/Web/HTML/Reference
 - developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML
 - developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
 - developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps
 - developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs
 
-*__Tutorial One:__ Building a unit-convertor web app*
- Note: The following steps are meant to work only within the
+- - - - -
+__*Tutorial One: Building a unit-convertor web app*__
+
+ *Note:* The following steps are meant to work only within the
 JavaScript Calculator app.
- After these beginner skills have been mastered, code blocks from
+ *Optional:* After these beginner skills have been mastered, code blocks from
 the app source code could be deconstructed and repurposed as needed
 to build a complete, new, standalone app.
 
@@ -89,9 +91,9 @@ ucLen(100)  // calls function &amp; returns result of 100 * 0.9144
     + If an argument is not a number, it is wrapped in quotes (\`"…"\`).
 */
 
-ucLen = (n, u0) => /^y/i.test(u0) ? n * 0.9144 : n / 0.9144
+ucLen = (n, u0) => /^yd/i.test(u0) ? n * 0.9144 : n / 0.9144
  // converts either yards to meters, or meters to yards
-ucLen(100, "y")    // calls function &amp; returns result of 100 * 0.9144
+ucLen(100, "yd")    // calls function &amp; returns result of 100 * 0.9144
 ucLen(91.44, "m")  // calls function &amp; returns result of 91.44 / 0.9144
 
 /*
@@ -102,24 +104,24 @@ ucLen(91.44, "m")  // calls function &amp; returns result of 91.44 / 0.9144
       correct calculation formula.
 */
 
-ucLen = (n, u0, u1) => /^f/i.test(u0) && /^y/i.test(u1) ? n / 3 : /^y/i.test(u0) && /^f/i.test(u1) ? n * 3 : /^f/i.test(u0) && /^m/i.test(u1) ? n * 0.3048 : /^m/i.test(u0) && /^f/i.test(u1) ? n / 0.3048 : /^y/i.test(u0) && /^m/i.test(u1) ? n * 0.9144 : /^m/i.test(u0) && /^y/i.test(u1) ? n / 0.9144 : u0 === u1 ? n : "error"; ""
+ucLen = (n, u0, u1) => /^ft/i.test(u0) && /^yd/i.test(u1) ? n / 3 : /^yd/i.test(u0) && /^ft/i.test(u1) ? n * 3 : /^ft/i.test(u0) && /^m/i.test(u1) ? n * 0.3048 : /^m/i.test(u0) && /^ft/i.test(u1) ? n / 0.3048 : /^yd/i.test(u0) && /^m/i.test(u1) ? n * 0.9144 : /^m/i.test(u0) && /^yd/i.test(u1) ? n / 0.9144 : u0 === u1 ? n : "error"; ""
  // makes conversion between any lengths as
- // feet (f), yards (y) or meters (m)
-ucLen(100, "y", "m")  // converts 100 yards to meters
-ucLen(92, "m", "y")   // converts 92 meters to yards
-ucLen(600, "f", "m")  // converts 600 feet to meters
-ucLen(183, "m", "f")  // converts 183 meters to feet
+ // feet (ft), yards (yd) or meters (m)
+ucLen(100, "yd", "m")  // converts 100 yards to meters
+ucLen(92, "m", "yd")   // converts 92 meters to yards
+ucLen(600, "ft", "m")  // converts 600 feet to meters
+ucLen(183, "m", "ft")  // converts 183 meters to feet
 
 /*
  5. Build a __collection of functions__
-    to handle many kinds of conversions.
+    to handle many other kinds of conversions.
     + For complex conversions that require multiple operations, the
       steps of a *function* definition are wrapped in curly brackets
       (\`{ … }\`) and are separated by a semicolon (\`;\`). The final
       result is indicated with the \`return\` keyword.
     + Within a *function* block of multiple operations, include arrays,
       new variable declarations (\`let …\`) and loop statements
-      (\`forEach( … )\`, \`while { … }\`) as needed.
+      (\`.forEach( … )\`, \`while ( … ) { … }\`) as needed.
 */
 
 ucSpe = (n, u0, u1) => /^m[/p]s/i.test(u0) && /^km?[/p]h/i.test(u1) ? n * 3.6 : /^km?[/p]h/i.test(u0) && /^m[/p]s/i.test(u1) ? n / 3.6 : /^m[/p]s/i.test(u0) && /^mi?[/p]h/i.test(u1) ? n * 2.23694 : /^mi?[/p]h/i.test(u0) && /^m[/p]s/i.test(u1) ? n / 2.23694 : /^km?[/p]h/i.test(u0) && /^mi?[/p]h/i.test(u1) ? n * 0.621371 : /^mi?[/p]h/i.test(u0) && /^km?[/p]h/i.test(u1) ? n / 0.621371 : u0 === u1 ? n : "error"; ""
@@ -146,14 +148,23 @@ frRom("MCXI", "Roman", "Arabic")
 /*
  6. Finally, consolidate the collection of functions to
     __maximize efficiency__, which improves user experience.
+    + Use \`.push( … )\` to combine sets of regular-expression tests
+      into a single, lookup array.
+    + Use \`Object.assign( … , … )\` to combine corresponding sets of
+      conversion formulas into a single, lookup object.
 */
 
-uxs = [/^f(?:oot|eet|)$/, /^y(?:ards?|)$/i, /^m(?:eters?|)$/i, /^m[/p]s$/i, /^km?[/p]h$/i, /^mi?[/p]h$/i, /^C(?:elsius|)$/i, /^K(?:elvin|)$/i, /^F(?:ahrenheit|)$/]; ""
-ucs = { f01: n => n / 3, f10: n => n * 3, f02: n => n * 0.3048, f20: n => n / 0.3048, f12: n => n * 0.9144, f21: n => n / 0.9144, f34: n => n * 3.6, f43: n => n / 3.6, f35: n => n * 2.23694, f53: n => n / 2.23694, f45: n => n * 0.621371, f54: n => n / 0.621371, f67: n => n + 273.15, f76: n => n - 273.15, f68: n => n * 9 / 5 + 32, f86: n => (n - 32) * 5 / 9, f78: n => (n - 273.15) * 9 / 5 + 32, f87: n => (n - 32) * 5 / 9 + 273.15 }; ""
+uxs = [/^f(?:oo|ee|)t$/i, /^y(?:a?r?ds?|)$/i, /^m(?:eters?|)$/i]; ""
+uxs.push(/^m[/p]s$/i, /^km?[/p]h$/i, /^mi?[/p]h$/i)
+uxs.push(/^C(?:elsius|)$/i, /^K(?:elvin|)$/i, /^F(?:ahrenheit|)$/i)
+
+ucs = { f01: n => n / 3, f10: n => n * 3, f02: n => n * 0.3048, f20: n => n / 0.3048, f12: n => n * 0.9144, f21: n => n / 0.9144 }
+Object.assign(ucs, { f34: n => n * 3.6, f43: n => n / 3.6, f35: n => n * 2.23694, f53: n => n / 2.23694, f45: n => n * 0.621371, f54: n => n / 0.621371 })
+Object.assign(ucs, { f67: n => n + 273.15, f76: n => n - 273.15, f68: n => n * 9 / 5 + 32, f86: n => (n - 32) * 5 / 9, f78: n => (n - 273.15) * 9 / 5 + 32, f87: n => (n - 32) * 5 / 9 + 273.15 })
 
 uConv = (n, u0, u1) => { let [x0, x1] = [_.uxs.findIndex(r => r.test(u0)), _.uxs.findIndex(r => r.test(u1))]; return /^[cdilmvx]+$/i.test(n || "") ? _.frRom(n) : typeof n !== 'number' ? "error" : x0 < 0 ? _.toRom(n) : x1 < 0 ? "error" : x0 === x1 ? n : (_.ucs["f" + x0 + x1] || (() => "error"))(n); }; ""
 
-uConv(100, "y", "m")
+uConv(100, "yd", "m")
 uConv(101, "mph", "km/h")
 uConv(110, "F", "C")
 uConv(1111)
