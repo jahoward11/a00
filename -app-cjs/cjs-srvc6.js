@@ -48,7 +48,7 @@ the app source code could be deconstructed and repurposed as needed
 to build a complete, new, standalone app.
 
  1. Describe your __end product__.
-    + The end product is an app.
+    + The end product is a convertor app.
     + The app accepts any inputted number as a unit of measurement.
     + The app then returns the equivalent number in another unit of
       the same kind of measurement.
@@ -67,7 +67,7 @@ to build a complete, new, standalone app.
       an arbitrary function name, the assignment operator (\`=\`),
       input variable(s), the arrow notation (\`=>\`), and manipulations
       or calculations (formulas) to be done on the input.
-    + A *function* is called (executed) by writing the *function* name
+    + A *function* is called (executed) by writing the function name
       followed by a set of parentheses. Input data (arguments) are
       written within the parentheses.
 */
@@ -80,17 +80,17 @@ ucLen(100)  // calls function &amp; returns result of 100 * 0.9144
  3. __Modify the function__ to handle bi-directional conversions.
     + Add an input variable that will indicate the initial unit,
       the unit being provided. Two or more variables are wrapped in
-      parentheses (\`( … )\`) and separated by a comma (\`,\`).
-    + Use a test with conditional operators
-      (\`?\` = "if true"; \`:\` = "if false")
-      to select the correct directional formula.
+      parentheses (\`( … )\`) and are separated by a comma (\`,\`).
+    + Use a true-false test with conditional operators
+      (\`?\` = "if true", \`:\` = "if false")
+      to invoke the correct directional formula.
     + If including multiple arguments in a *function* call,
       they are separated with a comma (\`,\`).
     + If an argument is not a number, it is wrapped in quotes (\`"…"\`).
 */
 
 ucLen = (n, u0) => /^y/i.test(u0) ? n * 0.9144 : n / 0.9144
- // converts either yards to meters or meters to yards
+ // converts either yards to meters, or meters to yards
 ucLen(100, "y")    // calls function &amp; returns result of 100 * 0.9144
 ucLen(91.44, "m")  // calls function &amp; returns result of 91.44 / 0.9144
 
@@ -98,7 +98,7 @@ ucLen(91.44, "m")  // calls function &amp; returns result of 91.44 / 0.9144
  4. __Modify the function__ to return a specified unit.
     + Add another input variable that will indicate the final unit,
       the unit being requested.
-    + Use successive tests with conditional operators to select the
+    + Use successive tests with conditional operators to invoke the
       correct calculation formula.
 */
 
@@ -115,11 +115,11 @@ ucLen(183, "m", "f")  // converts 183 meters to feet
     to handle many kinds of conversions.
     + For complex conversions that require multiple operations, the
       steps of a *function* definition are wrapped in curly brackets
-      (\`{ … }\`) and separated by a semicolon (\`;\`). The final result
-      is indicated with the \`return\` keyword.
+      (\`{ … }\`) and are separated by a semicolon (\`;\`). The final
+      result is indicated with the \`return\` keyword.
     + Within a *function* block of multiple operations, include arrays,
-      new variable declarations (\`let\`) and loop statements
-      (\`forEach(…)\`, \`while { … }\`) as needed.
+      new variable declarations (\`let …\`) and loop statements
+      (\`forEach( … )\`, \`while { … }\`) as needed.
 */
 
 ucSpe = (n, u0, u1) => /^m[/p]s/i.test(u0) && /^km?[/p]h/i.test(u1) ? n * 3.6 : /^km?[/p]h/i.test(u0) && /^m[/p]s/i.test(u1) ? n / 3.6 : /^m[/p]s/i.test(u0) && /^mi?[/p]h/i.test(u1) ? n * 2.23694 : /^mi?[/p]h/i.test(u0) && /^m[/p]s/i.test(u1) ? n / 2.23694 : /^km?[/p]h/i.test(u0) && /^mi?[/p]h/i.test(u1) ? n * 0.621371 : /^mi?[/p]h/i.test(u0) && /^km?[/p]h/i.test(u1) ? n / 0.621371 : u0 === u1 ? n : "error"; ""
