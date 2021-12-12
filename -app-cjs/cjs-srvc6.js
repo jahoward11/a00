@@ -17,17 +17,17 @@ __JavaScript Coding Tutorials, Part One__
 - ...
 
 *What are the __fundamental tools__ of JS coding?*
-- Browser console
+- Web browser console
   + for generating direct, instant results to your coded instructions
   + available on almost any computer or device with a web browser
 - Hyper-Text Markup Language (HTML) and Cascading Style Sheets (CSS)
-  + for designing the screen layout of any computer or device output
-  + rendered on (viewed with) a standard web browser
+  + for designing the screen layout of any computer or device display
+  + rendered by (viewed with) a standard web browser
 - Core JavaScript language (JS)
-  + building blocks for composing your instructions
-    (to manipulate/display data)
   + the set of keywords that a browser console understands
-- Application Programming Interfaces --
+  + building blocks for composing your instructions to manipulate
+    and display data
+- Application Programming Interfaces (API) --
   specifically the client-side web APIs
   + pre-built JS code patterns, useful for sending and receiving live,
     current feeds of data
@@ -58,9 +58,9 @@ to build a complete, new, standalone app.
 
     In the Google search bar, type | In the result list, expect
     "100 yards to meters"          | "91.44 meters"
-    "101 mph to km/h"               | "162.544 kilometers per hour"
+    "101 mph to km/h"              | "162.544 kilometers per hour"
     "110 Fahrenheit to Celsius"    | "43.3333 Celsius"
-    "1111 to Roman numeral"        | "MCXI"
+    "1111 to Roman"                | "MCXI"
 
  2. Write a __conversion function__.
     + A *function* is defined (written) by sequentially combining:
@@ -90,7 +90,7 @@ ucLen(100)  // calls function &amp; returns result of 100 * 0.9144
 */
 
 ucLen = (n, u0) => /^y/i.test(u0) ? n * 0.9144 : n / 0.9144
-  // converts either yards to meters or meters to yards
+ // converts either yards to meters or meters to yards
 ucLen(100, "y")    // calls function &amp; returns result of 100 * 0.9144
 ucLen(91.44, "m")  // calls function &amp; returns result of 91.44 / 0.9144
 
@@ -102,51 +102,56 @@ ucLen(91.44, "m")  // calls function &amp; returns result of 91.44 / 0.9144
       correct calculation formula.
 */
 
-ucLen = (n, u0, u1) => /^f/i.test(u0) && /^y/i.test(u1) ? n / 3 : /^y/i.test(u0) && /^f/i.test(u1) ? n * 3 : /^f/i.test(u0) && /^m/i.test(u1) ? n * 0.3048 : /^m/i.test(u0) && /^f/i.test(u1) ? n / 0.3048 : /^y/i.test(u0) && /^m/i.test(u1) ? n * 0.9144 : /^m/i.test(u0) && /^y/i.test(u1) ? n / 0.9144 : u0 === u1 ? n : "error"
-  // makes conversion between any lengths in
-  // feet (f), yards (y) &amp; meters (m)
+ucLen = (n, u0, u1) => /^f/i.test(u0) && /^y/i.test(u1) ? n / 3 : /^y/i.test(u0) && /^f/i.test(u1) ? n * 3 : /^f/i.test(u0) && /^m/i.test(u1) ? n * 0.3048 : /^m/i.test(u0) && /^f/i.test(u1) ? n / 0.3048 : /^y/i.test(u0) && /^m/i.test(u1) ? n * 0.9144 : /^m/i.test(u0) && /^y/i.test(u1) ? n / 0.9144 : u0 === u1 ? n : "error"; ""
+ // makes conversion between any lengths as
+ // feet (f), yards (y) or meters (m)
 ucLen(100, "y", "m")  // converts 100 yards to meters
 ucLen(92, "m", "y")   // converts 92 meters to yards
 ucLen(600, "f", "m")  // converts 600 feet to meters
 ucLen(183, "m", "f")  // converts 183 meters to feet
 
 /*
- 5. __Build a collection of functions__
+ 5. Build a __collection of functions__
     to handle many kinds of conversions.
     + For complex conversions that require multiple operations, the
       steps of a *function* definition are wrapped in curly brackets
       (\`{ … }\`) and separated by a semicolon (\`;\`). The final result
-      is indicated with the keyword \`return\`.
+      is indicated with the \`return\` keyword.
     + Within a *function* block of multiple operations, include arrays,
       new variable declarations (\`let\`) and loop statements
       (\`forEach(…)\`, \`while { … }\`) as needed.
 */
 
-ucSpe = (n, u0, u1) => /^m[p\/]s/i.test(u0) && /^km?[p\/]h/i.test(u1) ? n * 3.6 : /^km?[p\/]h/i.test(u0) && /^m[p\/]s/i.test(u1) ? n / 3.6 : /^m[p\/]s/i.test(u0) && /^mi?[p\/]h/i.test(u1) ? n * 2.23694 : /^mi?[p\/]h/i.test(u0) && /^m[p\/]s/i.test(u1) ? n / 2.23694 : /^km?[p\/]h/i.test(u0) && /^mi?[p\/]h/i.test(u1) ? n * 0.621371 : /^mi?[p\/]h/i.test(u0) && /^km?[p\/]h/i.test(u1) ? n / 0.621371 : u0 === u1 ? n : "error"; ""
-  // makes conversion between any speeds in miles-per-hour (mph),
-  // kilometers-per-hour (km/h) &amp; meters-per-second (m/s)
+ucSpe = (n, u0, u1) => /^m[/p]s/i.test(u0) && /^km?[/p]h/i.test(u1) ? n * 3.6 : /^km?[/p]h/i.test(u0) && /^m[/p]s/i.test(u1) ? n / 3.6 : /^m[/p]s/i.test(u0) && /^mi?[/p]h/i.test(u1) ? n * 2.23694 : /^mi?[/p]h/i.test(u0) && /^m[/p]s/i.test(u1) ? n / 2.23694 : /^km?[/p]h/i.test(u0) && /^mi?[/p]h/i.test(u1) ? n * 0.621371 : /^mi?[/p]h/i.test(u0) && /^km?[/p]h/i.test(u1) ? n / 0.621371 : u0 === u1 ? n : "error"; ""
+ // makes conversion between any speeds as miles-per-hour (mph),
+ // kilometers-per-hour (km/h) or meters-per-second (m/s)
 ucSpe(101, "mph", "km/h")
 
 ucTem = (n, u0, u1) => /^C/i.test(u0) && /^K/i.test(u1) ? n + 273.15 : /^K/i.test(u0) && /^C/i.test(u1) ? n - 273.15 : /^C/i.test(u0) && /^F/i.test(u1) ? n * 9 / 5 + 32 : /^F/i.test(u0) && /^C/i.test(u1) ? (n - 32) * 5 / 9 : /^K/i.test(u0) && /^F/i.test(u1) ? (n - 273.15) * 9 / 5 + 32 : /^F/i.test(u0) && /^K/i.test(u1) ? (n - 32) * 5 / 9 + 273.15 : u0 === u1 ? n : "error"; ""
-  // makes conversion between any temperatures in
-  // Fahrenheit (F), Celsius (C) &amp; Kelvin (K)
+ // makes conversion between any temperatures as
+ // Fahrenheit (F), Celsius (C) or Kelvin (K)
 ucTem(110, "Fahrenheit", "Celsius")
 
-toRom = val => { let str = "", arb = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1], rom = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]; arb.forEach((ai, i) => { while (val % ai < val) { str += rom[i]; val -= ai; } }); return str; }; ""
-  // converts Arabic integer into Roman numeral
+ara = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]; ""
+rom = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]; ""
+
+toRom = val => { let str = ""; _.ara.forEach((ai, i) => { while (val % ai < val) { str += _.rom[i]; val -= ai; } }); return str; }; ""
+ // converts Arabic integer into Roman numeral
 toRom(1111, "Arabic", "Roman")
 
-frRom = str => { let val = 0, arb = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1], rom = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]; str = str.toUpperCase(); arb.forEach((ai, i) => { while (str.indexOf(rom[i]) === 0) { val += ai; str = str.replace(rom[i], ""); } }); return val; }; ""
-  // converts Roman numeral into Arabic integer
+frRom = str => { let val = 0; str = str.toUpperCase(); _.ara.forEach((ai, i) => { while (str.indexOf(_.rom[i]) === 0) { val += ai; str = str.replace(_.rom[i], ""); } }); return val; }; ""
+ // converts Roman numeral into Arabic integer
 frRom("MCXI", "Roman", "Arabic")
 
 /*
  6. Finally, consolidate the collection of functions to
-    __maximize efficiency and user experience__.
+    __maximize efficiency__, which improves user experience.
 */
 
-urexs = [/^f(?:oot|eet|)$/, /^y(?:ards?|)$/i, /^m(?:eters?|)$/i, /^m[p\/]s$/i, /^km?[p\/]h$/i, /^mi?[p\/]h$/i, /^C(?:elsius|)$/i, /^K(?:elvin|)$/i, /^F(?:ahrenheit|)$/]; ""
-uConv = (n, u0, u1) => { let idx = _.urexs.findIndex(re => re.test(u0)); return typeof n !== 'number' && !/^[cdilmvx]+$/i.test(n) ? "error" : idx < 0 ? (/^[cdilmvx]+$/i.test(n) ? _.frRom(n) : _.toRom(n)) : idx < 3 ? _.ucLen(n, u0, u1) : idx < 6 ? _.ucSpe(n, u0, u1) : _.ucTem(n, u0, u1); }; ""
+uxs = [/^f(?:oot|eet|)$/, /^y(?:ards?|)$/i, /^m(?:eters?|)$/i, /^m[/p]s$/i, /^km?[/p]h$/i, /^mi?[/p]h$/i, /^C(?:elsius|)$/i, /^K(?:elvin|)$/i, /^F(?:ahrenheit|)$/]; ""
+ucs = { f01: n => n / 3, f10: n => n * 3, f02: n => n * 0.3048, f20: n => n / 0.3048, f12: n => n * 0.9144, f21: n => n / 0.9144, f34: n => n * 3.6, f43: n => n / 3.6, f35: n => n * 2.23694, f53: n => n / 2.23694, f45: n => n * 0.621371, f54: n => n / 0.621371, f67: n => n + 273.15, f76: n => n - 273.15, f68: n => n * 9 / 5 + 32, f86: n => (n - 32) * 5 / 9, f78: n => (n - 273.15) * 9 / 5 + 32, f87: n => (n - 32) * 5 / 9 + 273.15 }; ""
+
+uConv = (n, u0, u1) => { let [x0, x1] = [_.uxs.findIndex(r => r.test(u0)), _.uxs.findIndex(r => r.test(u1))]; return /^[cdilmvx]+$/i.test(n || "") ? _.frRom(n) : typeof n !== 'number' ? "error" : x0 < 0 ? _.toRom(n) : x1 < 0 ? "error" : x0 === x1 ? n : (_.ucs["f" + x0 + x1] || (() => "error"))(n); }; ""
 
 uConv(100, "y", "m")
 uConv(101, "mph", "km/h")
