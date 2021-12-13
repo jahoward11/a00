@@ -43,11 +43,11 @@ __JavaScript Coding Tutorials, Part One__
 - - - - -
 __*Tutorial One: Building a unit-convertor web app*__
 
- *Note:* The following steps are meant to work only within the
-JavaScript Calculator app.
- *Optional:* After these beginner skills have been mastered, code blocks from
-the app source code could be deconstructed and repurposed as needed
-to build a complete, new, standalone app.
+ *Note:* The following steps are only an app's inner logic and could not
+work outside an app framework such as the JavaScript Calculator app.
+ *Optional:* After these beginner skills have been mastered, structural
+blocks from the calculator app's source code could be deconstructed
+and repurposed as needed to build an original, standalone app.
 
  1. Describe your __end product__.
     + The end product is a convertor app.
@@ -93,7 +93,7 @@ ucLen(100)  // calls function &amp; returns result of 100 * 0.9144
 
 ucLen = (n, u0) => /^yd/i.test(u0) ? n * 0.9144 : n / 0.9144
  // converts either yards to meters, or meters to yards
-ucLen(100, "yd")    // calls function &amp; returns result of 100 * 0.9144
+ucLen(100, "yd")   // calls function &amp; returns result of 100 * 0.9144
 ucLen(91.44, "m")  // calls function &amp; returns result of 91.44 / 0.9144
 
 /*
