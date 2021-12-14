@@ -148,8 +148,8 @@ frRom("MCXI", "Roman", "Arabic")
 /*
  6. Finally, consolidate the collection of functions to
     __maximize efficiency__, which improves user experience.
-    + Use \`.push( … )\` to combine sets of test regular-expressions
-      into a single, lookup array.
+    + Use \`.push( … )\` to combine sets of regular-expression test
+      patterns into a single, lookup array.
     + Use \`Object.assign( … , … )\` to combine corresponding sets of
       conversion formulas into a single, lookup object.
 */
