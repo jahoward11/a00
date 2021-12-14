@@ -7,9 +7,9 @@ __JavaScript Coding Tutorials, Part One__
 
 *Some (initial) __reasons to learn__ JS coding ...*
 - Custom-tailor your routine accounting tasks.
-- Build a web app for a personal, interactive reference.
+- Build a personal web app for referencing or strategizing.
 - Progress more efficiently through your independent studies.
-- Publish/archive proprietary records w/o inviting a security breech.
+- Publish/catalog proprietary records w/o inviting a security breech.
 - Confirm a questionable computational result or statistical summary.
 - Increase your skill at diagnosing a technical problem.
 - Design a new game for fun.
@@ -141,14 +141,14 @@ toRom = val => { let str = ""; _.ara.forEach((ai, i) => { while (val % ai < val)
  // converts Arabic integer into Roman numeral
 toRom(1111, "Arabic", "Roman")
 
-frRom = str => { let val = 0; str = str.toUpperCase(); _.ara.forEach((ai, i) => { while (str.indexOf(_.rom[i]) === 0) { val += ai; str = str.replace(_.rom[i], ""); } }); return val; }; ""
+frRom = str => { let val = 0; str = str.toUpperCase(); _.ara.forEach((ai, i) => { while (!str.indexOf(_.rom[i])) { val += ai; str = str.replace(_.rom[i], ""); } }); return val; }; ""
  // converts Roman numeral into Arabic integer
 frRom("MCXI", "Roman", "Arabic")
 
 /*
  6. Finally, consolidate the collection of functions to
     __maximize efficiency__, which improves user experience.
-    + Use \`.push( … )\` to combine sets of regular-expression tests
+    + Use \`.push( … )\` to combine sets of test regular-expressions
       into a single, lookup array.
     + Use \`Object.assign( … , … )\` to combine corresponding sets of
       conversion formulas into a single, lookup object.
