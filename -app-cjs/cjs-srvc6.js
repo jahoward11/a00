@@ -171,19 +171,19 @@ uConv(1111)
 uConv("MCXI")
 
 /*
- 7. __*Optional demo:*__ To create and view (below, under the calculator)
+ 7. __*Optional demo:*__ To create and demo (below, under the calculator)
     one, possible, user-interface (UI) design for your unit-converter
     web app, un-comment (i.e., remove the \`//\` characters of) the
-    last two lines of the following block of code.
+    last three lines of the following block of code.
 */
 
 ucGen = () => ucout.value = _.uConv(!/^-?(?:\\d+|\\d*\\.\\d+)(?:e-?\\d+|)|^-?0x[\\da-f]+$/i.test(ucinp.value) ? ucinp.value : +ucinp.value, ulist0.value, ulist1.value); ""
-opts = ["", "feet", "yards", "meters", "m/s", "km/h", "mph", "Fahrenheit", "Celsius", "Kelvin"].map(e => "<" + "option>" + e + "<" + "/option>").join("\\n"); ""
-ucui = "\\n<" + "h3 class" + "=cfield>Unit Converter<" + "/h3>"; ""
-ucui += "\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucinp placeholder:=\\"Enter measurement&hellip;\\" /><:/span><:span class:=ccntr><:select id:=ulist0 class:=aauto>\\n".replace(/(<):|:(=)/g, "$1$2"); ""
-ucui += opts + "\\n<:/select><:/span><:/div>\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucout disabled /><:/span><:span class:=ccntr><:select id:=ulist1 class:=aauto>\\n".replace(/(<):|:(=)/g, "$1$2"); ""
-ucui += opts + "\\n<" + "/select><" + "/span><" + "/div>"; ""
-ndiv = document.createElement('div'); ndiv.innerHTML = ucui; ""
+opts = ["", "feet", "yards", "meters", "m/s", "km/h", "mph", "Fahrenheit", "Celsius", "Kelvin"].map(e => "<:option>" + e + "<:/option>").join("\\n"); ""
+ucui = "\\n<:h3 class:=cfield>Unit Converter<:/h3>"; ""
+ucui += "\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucinp placeholder:=\\"Enter measurement&hellip;\\" /><:/span><:span class:=ccntr><:select id:=ulist0 class:=aauto>\\n"; ""
+ucui += opts + "\\n<:/select><:/span><:/div>\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucout disabled /><:/span><:span class:=ccntr><:select id:=ulist1 class:=aauto>\\n"; ""
+ucui += opts + "\\n<:/select><:/span><:/div>"; ""
+// ndiv = document.createElement('div'); ndiv.innerHTML = ucui.replace(/(<):|:(=)/g, "$1$2"); ""
 // cmain.appendChild(ndiv)
 // [ucinp, ulist0, ulist1].forEach((e, i) => e.addEventListener(!i ? 'blur' : 'change', _.ucGen))
 //`;
