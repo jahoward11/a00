@@ -3,7 +3,7 @@
 const groupname = "JScode";
 
 const tutorial1 = `/*
-__JavaScript Coding Tutorials, Part One__
+__JavaScript Coding Tutorials, Part 1__
 
 *Some (initial) __reasons to learn__ JS coding ...*
 - Custom-tailor your routine accounting tasks.
@@ -154,13 +154,13 @@ frRom("MCXI", "Roman", "Arabic")
       conversion formulas into a single, lookup object.
 */
 
-uxs = [/^f(?:oo|ee|)t$/i, /^y(?:a?r?ds?|)$/i, /^m(?:eters?|)$/i]; ""
+uxs = [/^$/, /^f(?:oo|ee|)t$/i, /^y(?:a?r?ds?|)$/i, /^m(?:eters?|)$/i]; ""
 uxs.push(/^m[/p]s$/i, /^km?[/p]h$/i, /^mi?[/p]h$/i)
 uxs.push(/^C(?:elsius|)$/i, /^K(?:elvin|)$/i, /^F(?:ahrenheit|)$/i)
 
-ucs = { f01: n => n / 3, f10: n => n * 3, f02: n => n * 0.3048, f20: n => n / 0.3048, f12: n => n * 0.9144, f21: n => n / 0.9144 }
-Object.assign(ucs, { f34: n => n * 3.6, f43: n => n / 3.6, f35: n => n * 2.23694, f53: n => n / 2.23694, f45: n => n * 0.621371, f54: n => n / 0.621371 })
-Object.assign(ucs, { f67: n => n + 273.15, f76: n => n - 273.15, f68: n => n * 9 / 5 + 32, f86: n => (n - 32) * 5 / 9, f78: n => (n - 273.15) * 9 / 5 + 32, f87: n => (n - 32) * 5 / 9 + 273.15 })
+ucs = { f12: n => n / 3, f21: n => n * 3, f13: n => n * 0.3048, f31: n => n / 0.3048, f23: n => n * 0.9144, f32: n => n / 0.9144 }
+Object.assign(ucs, { f45: n => n * 3.6, f54: n => n / 3.6, f46: n => n * 2.23694, f64: n => n / 2.23694, f56: n => n * 0.621371, f65: n => n / 0.621371 })
+Object.assign(ucs, { f78: n => +n + 273.15, f87: n => n - 273.15, f79: n => n * 9 / 5 + 32, f97: n => (n - 32) * 5 / 9, f89: n => (n - 273.15) * 9 / 5 + 32, f98: n => (n - 32) * 5 / 9 + 273.15 })
 
 uConv = (n, u0, u1) => { let [x0, x1] = [_.uxs.findIndex(r => r.test(u0)), _.uxs.findIndex(r => r.test(u1))]; return /^[cdilmvx]+$/i.test(n || "") ? _.frRom(n) : typeof n !== 'number' ? "error" : x0 < 0 ? _.toRom(n) : x1 < 0 ? "error" : x0 === x1 ? n : (_.ucs["f" + x0 + x1] || (() => "error"))(n); }; ""
 
@@ -169,8 +169,31 @@ uConv(101, "mph", "km/h")
 uConv(110, "F", "C")
 uConv(1111)
 uConv("MCXI")
+
+/*
+ 7. __*Optional demo:*__ To create and view (below, under the calculator)
+    one, possible, user-interface (UI) design for your unit-converter
+    web app, un-comment (i.e., remove the \`//\` characters of) the
+    last two lines of the following block of code.
+*/
+
+ucGen = () => ucout.value = _.uConv(/^\\d+$/.test(ucinp.value) ? +ucinp.value : ucinp.value, ulist0.value, ulist1.value); ""
+opts = ["", "feet", "yards", "meters", "m/s", "km/h", "mph", "Fahrenheit", "Celsius", "Kelvin"].map(e => "<" + "option>" + e + "<" + "/option>").join("\\n"); ""
+cpnl = "\\n<" + "h3 class" + "=cfield>Unit Converter<" + "/h3>"; ""
+cpnl += "\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucinp placeholder:=\\"Enter measurement&hellip;\\" /><:/span><:span class:=ccntr><:select id:=ulist0 class:=aauto>\\n".replace(/(<):|:(=)/g, "$1$2"); ""
+cpnl += opts + "\\n<:/select><:/span><:/div>\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucout disabled /><:/span><:span class:=ccntr><:select id:=ulist1 class:=aauto>\\n".replace(/(<):|:(=)/g, "$1$2"); ""
+cpnl += opts + "\\n<" + "/select><" + "/span><" + "/div>"; ""
+ndiv = document.createElement('div'); ndiv.innerHTML = cpnl; ""
+// cmain.appendChild(ndiv)
+// [ucinp, ulist0, ulist1].forEach((e, i) => e.addEventListener(!i ? 'blur' : 'change', _.ucGen))
+//`;
+
+const tutorial2 = `/*
+__JavaScript Coding Tutorials, Part 2__
+
+... comming soon ...
 //`;
 
 export {
-  groupname, tutorial1
+  groupname, tutorial1, tutorial2
 };

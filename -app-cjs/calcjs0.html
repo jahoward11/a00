@@ -57,8 +57,13 @@ body {
   border-radius: 0;
   vertical-align: top;
 }
+#cmain .aauto {
+  -webkit-appearance: auto;
+  -moz-appearance: auto;
+  appearance: auto;
+}
 #cmain input::placeholder { opacity: 0.5; }
-#cmain select::-ms-expand { display: none; }
+#cmain select:not(.aauto)::-ms-expand { display: none; }
 #cmain pre {
   background-color: unset;
   color: unset;

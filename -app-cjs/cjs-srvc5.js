@@ -3,7 +3,7 @@
 const groupname = "statistics";
 
 const analysis1 = `/*
-__Statistical Analysis Tools__
+__Statistical Analysis Tools, Part 1__
 
  _μ_  | mean (average of all values)
  _σ_  | standard deviation (measure of spread)
@@ -131,7 +131,7 @@ __*Probabilities, given possible event outcomes A & B*__
 //`;
 
 const analysis2 = `/*
-__Statistical Analysis Tools, part 2__
+__Statistical Analysis Tools, Part 2__
 
  _N_  | population total count
  _p_  | true population proportion of successes
@@ -263,7 +263,7 @@ __*Combining 2 N.D.s, a sum/difference n.d.*__
 */`;
 
 const analysis3 = `/*
-__Statistical Analysis Tools, part 3__
+__Statistical Analysis Tools, Part 3__
 
 __*Hypothesis Testing &amp; Statistical Significance*__
  _z_  | *z*-score, a value's horizontal distance from mean,
