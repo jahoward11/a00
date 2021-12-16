@@ -162,7 +162,7 @@ ucs = { f12: n => n / 3, f21: n => n * 3, f13: n => n * 0.3048, f31: n => n / 0.
 Object.assign(ucs, { f45: n => n * 3.6, f54: n => n / 3.6, f46: n => n * 2.23694, f64: n => n / 2.23694, f56: n => n * 0.621371, f65: n => n / 0.621371 })
 Object.assign(ucs, { f78: n => +n + 273.15, f87: n => n - 273.15, f79: n => n * 9 / 5 + 32, f97: n => (n - 32) * 5 / 9, f89: n => (n - 273.15) * 9 / 5 + 32, f98: n => (n - 32) * 5 / 9 + 273.15 })
 
-uConv = (n, u0, u1) => { let [x0, x1] = [_.uxs.findIndex(r => r.test(u0)), _.uxs.findIndex(r => r.test(u1))]; return /^[cdilmvx]+$/i.test(n || "") ? _.frRom(n) : typeof n !== 'number' ? "error" : x0 < 0 ? _.toRom(n) : x1 < 0 ? "error" : x0 === x1 ? n : (_.ucs["f" + x0 + x1] || (() => "error"))(n); }; ""
+uConv = (n, u0, u1) => { let [x0, x1] = [_.uxs.findIndex(r => r.test(u0)), _.uxs.findIndex(r => r.test(u1))]; return /^[cdilmvx]+$/i.test(n || "") ? _.frRom(n) : typeof n !== 'number' ? "error" : x0 < 1 ? _.toRom(n) : x1 < 1 ? "error" : x0 === x1 ? n : (_.ucs["f" + x0 + x1] || (() => "error"))(n); }; ""
 
 uConv(100, "yd", "m")
 uConv(101, "mph", "km/h")
@@ -191,7 +191,8 @@ ndiv = document.createElement('div'); ndiv.innerHTML = cpnl; ""
 const tutorial2 = `/*
 __JavaScript Coding Tutorials, Part 2__
 
-... comming soon ...
+&hellip; comming soon &hellip;
+*/
 //`;
 
 export {
