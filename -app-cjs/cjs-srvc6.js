@@ -177,13 +177,13 @@ uConv("MCXI")
     last two lines of the following block of code.
 */
 
-ucGen = () => ucout.value = _.uConv(/^\\d+$/.test(ucinp.value) ? +ucinp.value : ucinp.value, ulist0.value, ulist1.value); ""
+ucGen = () => ucout.value = _.uConv(!/^-?(?:\\d+|\\d*\\.\\d+)(?:e-?\\d+|)|^-?0x[\\da-f]+$/i.test(ucinp.value) ? ucinp.value : +ucinp.value, ulist0.value, ulist1.value); ""
 opts = ["", "feet", "yards", "meters", "m/s", "km/h", "mph", "Fahrenheit", "Celsius", "Kelvin"].map(e => "<" + "option>" + e + "<" + "/option>").join("\\n"); ""
-cpnl = "\\n<" + "h3 class" + "=cfield>Unit Converter<" + "/h3>"; ""
-cpnl += "\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucinp placeholder:=\\"Enter measurement&hellip;\\" /><:/span><:span class:=ccntr><:select id:=ulist0 class:=aauto>\\n".replace(/(<):|:(=)/g, "$1$2"); ""
-cpnl += opts + "\\n<:/select><:/span><:/div>\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucout disabled /><:/span><:span class:=ccntr><:select id:=ulist1 class:=aauto>\\n".replace(/(<):|:(=)/g, "$1$2"); ""
-cpnl += opts + "\\n<" + "/select><" + "/span><" + "/div>"; ""
-ndiv = document.createElement('div'); ndiv.innerHTML = cpnl; ""
+ucui = "\\n<" + "h3 class" + "=cfield>Unit Converter<" + "/h3>"; ""
+ucui += "\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucinp placeholder:=\\"Enter measurement&hellip;\\" /><:/span><:span class:=ccntr><:select id:=ulist0 class:=aauto>\\n".replace(/(<):|:(=)/g, "$1$2"); ""
+ucui += opts + "\\n<:/select><:/span><:/div>\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucout disabled /><:/span><:span class:=ccntr><:select id:=ulist1 class:=aauto>\\n".replace(/(<):|:(=)/g, "$1$2"); ""
+ucui += opts + "\\n<" + "/select><" + "/span><" + "/div>"; ""
+ndiv = document.createElement('div'); ndiv.innerHTML = ucui; ""
 // cmain.appendChild(ndiv)
 // [ucinp, ulist0, ulist1].forEach((e, i) => e.addEventListener(!i ? 'blur' : 'change', _.ucGen))
 //`;
