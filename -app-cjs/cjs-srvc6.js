@@ -91,10 +91,10 @@ ucLen(100)  // calls function &amp; returns result of 100 * 0.9144
     + If an argument is not a number, it is wrapped in quotes (\`"…"\`).
 */
 
-ucLen = (n, u0) => /^yd/i.test(u0) ? n * 0.9144 : n / 0.9144
- // converts either yards to meters, or meters to yards
-ucLen(100, "yd")   // calls function &amp; returns result of 100 * 0.9144
-ucLen(91.44, "m")  // calls function &amp; returns result of 91.44 / 0.9144
+ucLen = (n, u0) => /^in/i.test(u0) ? n / 12 : n * 12
+ // converts either inches to feet, or feet to inches
+ucLen(36, "in")  // calls function &amp; returns result of 36 / 12
+ucLen(3, "ft")   // calls function &amp; returns result of 3 * 12
 
 /*
  4. __Modify the function__ to return a specified unit.
@@ -104,13 +104,13 @@ ucLen(91.44, "m")  // calls function &amp; returns result of 91.44 / 0.9144
       correct calculation formula.
 */
 
-ucLen = (n, u0, u1) => /^ft/i.test(u0) && /^yd/i.test(u1) ? n / 3 : /^yd/i.test(u0) && /^ft/i.test(u1) ? n * 3 : /^ft/i.test(u0) && /^m/i.test(u1) ? n * 0.3048 : /^m/i.test(u0) && /^ft/i.test(u1) ? n / 0.3048 : /^yd/i.test(u0) && /^m/i.test(u1) ? n * 0.9144 : /^m/i.test(u0) && /^yd/i.test(u1) ? n / 0.9144 : u0 === u1 ? n : "error"; ""
+ucLen = (n, u0, u1) => /^in/i.test(u0) && /^ft/i.test(u1) ? n => n / 12 : /^in/i.test(u0) && /^yd/i.test(u1) n => n / 36 : /^ft/i.test(u0) && /^in/i.test(u1) ? n => n * 12 : /^ft/i.test(u0) && /^yd/i.test(u1) ? n => n / 3 : /^yd/i.test(u0) && /^in/i.test(u1) ? n => n * 36 : /^yd/i.test(u0) && /^ft/i.test(u1) ? n => n * 3 : u0 === u1 ? n : "error"; ""
  // makes conversion between any lengths as
- // feet (ft), yards (yd) or meters (m)
-ucLen(100, "yd", "m")  // converts 100 yards to meters
-ucLen(92, "m", "yd")   // converts 92 meters to yards
-ucLen(600, "ft", "m")  // converts 600 feet to meters
-ucLen(183, "m", "ft")  // converts 183 meters to feet
+ // inches (in), feet (ft) or yards (yd)
+ucLen(72, "in", "yd")   // converts 72 inches to yards
+ucLen(2, "yd", "in")    // converts 2 yards to inches
+ucLen(4.5, "ft", "yd")  // converts 4.5 feet to yards
+ucLen(1.5, "yd", "ft")  // converts 1.5 yards to feet
 
 /*
  5. Build a __collection of functions__
@@ -124,26 +124,26 @@ ucLen(183, "m", "ft")  // converts 183 meters to feet
       (\`.forEach( … )\`, \`while ( … ) { … }\`) as needed.
 */
 
-ucSpe = (n, u0, u1) => /^m[/p]s/i.test(u0) && /^km?[/p]h/i.test(u1) ? n * 3.6 : /^km?[/p]h/i.test(u0) && /^m[/p]s/i.test(u1) ? n / 3.6 : /^m[/p]s/i.test(u0) && /^mi?[/p]h/i.test(u1) ? n * 2.23694 : /^mi?[/p]h/i.test(u0) && /^m[/p]s/i.test(u1) ? n / 2.23694 : /^km?[/p]h/i.test(u0) && /^mi?[/p]h/i.test(u1) ? n * 0.621371 : /^mi?[/p]h/i.test(u0) && /^km?[/p]h/i.test(u1) ? n / 0.621371 : u0 === u1 ? n : "error"; ""
- // makes conversion between any speeds as miles-per-hour (mph),
- // kilometers-per-hour (km/h) or meters-per-second (m/s)
-ucSpe(101, "mph", "km/h")
+ucSpd = (n, u0, u1) => /^mi?[/p]h/i.test(u0) && /^km?[/p]h/i.test(u1) ? n * 5280 * 12 * 0.0000254 : /^km?[/p]h/i.test(u0) && /^mi?[/p]h/i.test(u1) ? n / 0.0000254 / 12 / 5280 : u0 === u1 ? n : "error"; ""
+ // makes conversion of speeds in either
+ // miles-per-hour (mph) or kilometers-per-hour (km/h)
+ucSpd(101, "mph", "km/h")
 
-ucTem = (n, u0, u1) => /^C/i.test(u0) && /^K/i.test(u1) ? n + 273.15 : /^K/i.test(u0) && /^C/i.test(u1) ? n - 273.15 : /^C/i.test(u0) && /^F/i.test(u1) ? n * 9 / 5 + 32 : /^F/i.test(u0) && /^C/i.test(u1) ? (n - 32) * 5 / 9 : /^K/i.test(u0) && /^F/i.test(u1) ? (n - 273.15) * 9 / 5 + 32 : /^F/i.test(u0) && /^K/i.test(u1) ? (n - 32) * 5 / 9 + 273.15 : u0 === u1 ? n : "error"; ""
+ucTmp = (n, u0, u1) => /^F/i.test(u0) && /^C/i.test(u1) ? (n - 32) * 5 / 9 : /^F/i.test(u0) && /^K/i.test(u1) ? (n - 32) * 5 / 9 + 273.15 : /^C/i.test(u0) && /^F/i.test(u1) ? n * 9 / 5 + 32 : /^C/i.test(u0) && /^K/i.test(u1) ? n + 273.15 : /^K/i.test(u0) && /^F/i.test(u1) ? (n - 273.15) * 9 / 5 + 32 : /^K/i.test(u0) && /^C/i.test(u1) ? n - 273.15 : u0 === u1 ? n : "error"; ""
  // makes conversion between any temperatures as
  // Fahrenheit (F), Celsius (C) or Kelvin (K)
-ucTem(110, "Fahrenheit", "Celsius")
+ucTmp(110, "Fahrenheit", "Celsius")
 
-ara = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]; ""
-rom = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]; ""
+uara = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]; ""
+urom = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]; ""
 
-toRom = val => { let str = ""; _.ara.forEach((ai, i) => { while (val % ai < val) { str += _.rom[i]; val -= ai; } }); return str; }; ""
+utoRom = val => { let str = ""; _.uara.forEach((ai, i) => { while (val % ai < val) { str += _.urom[i]; val -= ai; } }); return str; }; ""
  // converts Arabic integer into Roman numeral
-toRom(1111, "Arabic", "Roman")
+utoRom(1111, "Arabic", "Roman")
 
-frRom = str => { let val = 0; str = str.toUpperCase(); _.ara.forEach((ai, i) => { while (!str.indexOf(_.rom[i])) { val += ai; str = str.replace(_.rom[i], ""); } }); return val; }; ""
+ufrRom = str => { let val = 0; str = str.toUpperCase(); _.uara.forEach((ai, i) => { while (!str.indexOf(_.urom[i])) { val += ai; str = str.replace(_.urom[i], ""); } }); return val; }; ""
  // converts Roman numeral into Arabic integer
-frRom("MCXI", "Roman", "Arabic")
+ufrRom("MCXI", "Roman", "Arabic")
 
 /*
  6. Finally, consolidate the collection of functions to
@@ -152,17 +152,18 @@ frRom("MCXI", "Roman", "Arabic")
       patterns into a single, lookup array.
     + Use \`Object.assign( … , … )\` to combine corresponding sets of
       conversion formulas into a single, lookup object.
+    + *Challenge:* How would you allow conversions of mass or volume?
 */
 
-uxs = [/^$/, /^f(?:oo|ee|)t$/i, /^y(?:a?r?ds?|)$/i, /^m(?:eters?|)$/i]; ""
-uxs.push(/^m[/p]s$/i, /^km?[/p]h$/i, /^mi?[/p]h$/i)
-uxs.push(/^C(?:elsius|)$/i, /^K(?:elvin|)$/i, /^F(?:ahrenheit|)$/i)
+uxs = [/^$/, /^in(?:che?s?|)$/i, /^f(?:oo|ee|)t$/i, /^y(?:a?r?ds?|)$/i, /^mi(?:les?|)$/i, /^m(?:eters?|)$/i]; ""
+uxs.push(/^ft?[/p]s$/i, /^mi?[/p]h$/i, /^m[/p]s$/i, /^km?[/p]h$/i)
+uxs.push(/^F(?:ahrenheit|)$/i, /^C(?:elsius|)$/i, /^K(?:elvin|)$/i)
 
-ucs = { f12: n => n / 3, f21: n => n * 3, f13: n => n * 0.3048, f31: n => n / 0.3048, f23: n => n * 0.9144, f32: n => n / 0.9144 }
-Object.assign(ucs, { f45: n => n * 3.6, f54: n => n / 3.6, f46: n => n * 2.23694, f64: n => n / 2.23694, f56: n => n * 0.621371, f65: n => n / 0.621371 })
-Object.assign(ucs, { f78: n => +n + 273.15, f87: n => n - 273.15, f79: n => n * 9 / 5 + 32, f97: n => (n - 32) * 5 / 9, f89: n => (n - 273.15) * 9 / 5 + 32, f98: n => (n - 32) * 5 / 9 + 273.15 })
+ucs = { f12: n => n / 12, f13: n => n / 36, f14: n => n / 12 / 5280, f15: n => n * 0.0254, f21: n => n * 12, f23: n => n / 3, f24: n => n / 5280, f25: n => n * 12 * 0.0254, f31: n => n * 36, f32: n => n * 3, f34: n => n * 3 / 5280, f35: n => n * 36 * 0.0254, f41: n => n * 5280 * 12, f42: n => n * 5280, f43: n => n * 5280 / 3, f45: n => n * 5280 * 12 * 0.0254, f51: n => n / 0.0254, f52: n => n / 0.0254 / 12, f53: n => n / 0.0254 / 36, f54: n => n / 0.0254 / 12 / 5280 }
+Object.assign(ucs, { f67: n => n * 3600 / 5280, f68: n => n * 12 * 0.0254, f69: n => n * 3600 * 12 * 0.0000254, f76: n => n * 5280 / 3600, f78: n => n * 5280 * 12 * 0.0254 / 3600, f79: n => n * 5280 * 12 * 0.0000254, f86: n => n / 0.0254 / 12, f87: n => n * 3600 / 0.0254 / 12 / 5280, f89: n => n * 3600 / 1000, f96: n => n / 0.0000254 / 12 / 3600, f97: n => n / 0.0000254 / 12 / 5280, f98: n => n * 1000 / 3600 })
+Object.assign(ucs, { f1011: n => (n - 32) * 5 / 9, f1012: n => (n - 32) * 5 / 9 + 273.15, f1110: n => n * 9 / 5 + 32, f1112: n => +n + 273.15, f1210: n => (n - 273.15) * 9 / 5 + 32, f1211: n => n - 273.15 })
 
-uConv = (n, u0, u1) => { let [x0, x1] = [_.uxs.findIndex(r => r.test(u0)), _.uxs.findIndex(r => r.test(u1))]; return /^[cdilmvx]+$/i.test(n || "") ? _.frRom(n) : typeof n !== 'number' ? "error" : x0 < 1 ? _.toRom(n) : x1 < 1 ? "error" : x0 === x1 ? n : (_.ucs["f" + x0 + x1] || (() => "error"))(n); }; ""
+uConv = (n, u0, u1) => { let [x0, x1] = [_.uxs.findIndex(r => r.test(u0)), _.uxs.findIndex(r => r.test(u1))]; return typeof n !== 'number' ? (!/^[cdilmvx]+$/i.test(n || "") || x0 > 0 ? "error" : _.ufrRom(n)) : x0 < 1 ? _.utoRom(n) : x1 < 1 ? "error" : x0 === x1 ? n : (_.ucs["f" + x0 + x1] || (() => "error"))(n); }; ""
 
 uConv(100, "yd", "m")
 uConv(101, "mph", "km/h")
@@ -174,24 +175,23 @@ uConv("MCXI")
  7. __*Optional demo:*__ To create and demo (below, under the calculator)
     one, possible, user-interface (UI) design for your unit-converter
     web app, un-comment (i.e., remove the \`//\` characters of) the
-    last three lines of the following block of code.
+    last two lines of the following block of code.
 */
 
-ucGen = () => ucout.value = _.uConv(!/^-?(?:\\d+|\\d*\\.\\d+)(?:e-?\\d+|)|^-?0x[\\da-f]+$/i.test(ucinp.value) ? ucinp.value : +ucinp.value, ulist0.value, ulist1.value); ""
-opts = ["", "feet", "yards", "meters", "m/s", "km/h", "mph", "Fahrenheit", "Celsius", "Kelvin"].map(e => "<:option>" + e + "<:/option>").join("\\n"); ""
+ucShow = () => ucout.value = _.uConv(!/^-?(?:\\d+|\\d*\\.\\d+)(?:e-?\\d+|)|^-?0x[\\da-f]+$/i.test(ucinp.value) ? ucinp.value : +ucinp.value, ulist0.value, ulist1.value); ""
+opts = ["", "inches", "feet", "yards", "miles", "meters", "ft/s", "mph", "m/s", "km/h", "Fahrenheit", "Celsius", "Kelvin"].map(e => "<:option>" + e + "<:/option>").join("\\n"); ""
 ucui = "\\n<:hr>\\n<:h3 class:=cfield>Unit Converter<:/h3>"; ""
 ucui += "\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucinp placeholder:=\\"Enter measurement&hellip;\\" /><:/span><:span class:=ccntr><:select id:=ulist0 class:=aauto>\\n"; ""
 ucui += opts + "\\n<:/select><:/span><:/div>\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucout disabled /><:/span><:span class:=ccntr><:select id:=ulist1 class:=aauto>\\n"; ""
 ucui += opts + "\\n<:/select><:/span><:/div>"; ""
-// ndiv = document.createElement('div'); ndiv.innerHTML = ucui.replace(/(<):|:(=)/g, "$1$2"); ""
-// cmain.appendChild(ndiv)
-// [ucinp, ulist0, ulist1].forEach((e, i) => e.addEventListener(!i ? 'blur' : 'change', _.ucGen))
+// ndiv = document.createElement('div'); ndiv.innerHTML = ucui.replace(/(<):|:(=)/g, "$1$2"); cmain.appendChild(ndiv)
+// [ucinp, ulist0, ulist1].forEach((e, i) => e.addEventListener(!i ? 'blur' : 'change', _.ucShow))
 //`;
 
 const tutorial2 = `/*
 __JavaScript Coding Tutorials, Part 2__
 
-&hellip; *comming soon* &hellip;
+&hellip;*comming soon*&hellip;
 */
 //`;
 
