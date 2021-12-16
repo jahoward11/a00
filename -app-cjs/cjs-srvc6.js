@@ -104,7 +104,7 @@ ucLen(3, "ft")   // calls function &amp; returns result of 3 * 12
       correct calculation formula.
 */
 
-ucLen = (n, u0, u1) => /^in/i.test(u0) && /^ft/i.test(u1) ? n => n / 12 : /^in/i.test(u0) && /^yd/i.test(u1) ? n => n / 36 : /^ft/i.test(u0) && /^in/i.test(u1) ? n => n * 12 : /^ft/i.test(u0) && /^yd/i.test(u1) ? n => n / 3 : /^yd/i.test(u0) && /^in/i.test(u1) ? n => n * 36 : /^yd/i.test(u0) && /^ft/i.test(u1) ? n => n * 3 : u0 === u1 ? n : "error"; ""
+ucLen = (n, u0, u1) => /^in/i.test(u0) && /^ft/i.test(u1) ? n / 12 : /^in/i.test(u0) && /^yd/i.test(u1) ? n / 36 : /^ft/i.test(u0) && /^in/i.test(u1) ? n * 12 : /^ft/i.test(u0) && /^yd/i.test(u1) ? n / 3 : /^yd/i.test(u0) && /^in/i.test(u1) ? n * 36 : /^yd/i.test(u0) && /^ft/i.test(u1) ? n * 3 : u0 === u1 ? n : "error"; ""
  // makes conversion between any lengths as
  // inches (in), feet (ft) or yards (yd)
 ucLen(72, "in", "yd")   // converts 72 inches to yards
