@@ -41,7 +41,7 @@ __JavaScript Coding Tutorials, Part 1__
 - developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs
 
 - - - - -
-__*Tutorial One: Building a unit-convertor web app*__
+__*Tutorial One: Building a unit-converter web app*__
 
  *Note:* The following steps are only an app's inner logic and could not
 work outside an app framework such as the JavaScript Calculator app.
@@ -50,7 +50,7 @@ blocks from the calculator app's source code could be deconstructed
 and repurposed as needed to build an original, standalone app.
 
  1. Describe your __end product__.
-    + The end product is a convertor app.
+    + The end product is a converter app.
     + The app accepts any inputted number as a unit of measurement.
     + The app then returns the equivalent number in another unit of
       the same kind of measurement.
@@ -179,7 +179,7 @@ uConv("MCXI")
 
 ucGen = () => ucout.value = _.uConv(!/^-?(?:\\d+|\\d*\\.\\d+)(?:e-?\\d+|)|^-?0x[\\da-f]+$/i.test(ucinp.value) ? ucinp.value : +ucinp.value, ulist0.value, ulist1.value); ""
 opts = ["", "feet", "yards", "meters", "m/s", "km/h", "mph", "Fahrenheit", "Celsius", "Kelvin"].map(e => "<:option>" + e + "<:/option>").join("\\n"); ""
-ucui = "\\n<:h3 class:=cfield>Unit Converter<:/h3>"; ""
+ucui = "\\n<:hr>\\n<:h3 class:=cfield>Unit Converter<:/h3>"; ""
 ucui += "\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucinp placeholder:=\\"Enter measurement&hellip;\\" /><:/span><:span class:=ccntr><:select id:=ulist0 class:=aauto>\\n"; ""
 ucui += opts + "\\n<:/select><:/span><:/div>\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucout disabled /><:/span><:span class:=ccntr><:select id:=ulist1 class:=aauto>\\n"; ""
 ucui += opts + "\\n<:/select><:/span><:/div>"; ""
@@ -191,7 +191,7 @@ ucui += opts + "\\n<:/select><:/span><:/div>"; ""
 const tutorial2 = `/*
 __JavaScript Coding Tutorials, Part 2__
 
-&hellip; comming soon &hellip;
+&hellip; *comming soon* &hellip;
 */
 //`;
 
