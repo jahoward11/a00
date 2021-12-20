@@ -113,7 +113,7 @@ ucLen(4.5, "ft", "yd")  // converts 4.5 feet to yards
 ucLen(1.5, "yd", "ft")  // converts 1.5 yards to feet
 
 /*
- 5. __Build a collection of functions__
+ 5. Build out __a collection of functions__
     to handle many other kinds of conversions.
     + For complex conversions that require multiple operations, the
       steps of a *function* definition are wrapped in curly brackets
@@ -191,14 +191,14 @@ ucui += opts + "\\n<:/select><:/span><:/div>"; ""
 const tutorial2 = `/*
 __JavaScript Coding Tutorials, Part 2__
 
- In part 1, we saw in brief some of the more useful JS elements and
+ In *part 1*, we saw in brief some of the more useful JS elements and
 how they are used. We learned about combining key JS elements to get
-practical results. We used core JS code only -- which would work in any
+practical results. We used core JS code only -- which would work in a
 __browser console__ and allow us to get immediate feedback on our work.
 
- In part 2, we turn our focus to __HTML__ with __CSS__ -- a language for coding
-layout and design. We'll build some visual games -- in which we can
-appreciate why layout and design matter when coding.
+ In *part 2*, we turn our focus to __HTML__ with __CSS__ -- a language for
+coding layout and design. We'll build some visual games -- in which
+we can appreciate just why layout and design matter when coding.
 
 - - - - -
 __*Tutorial Two: Building a sliding-tiles puzzle (and other games)*__
