@@ -51,8 +51,8 @@ and repurposed as needed to build an original, standalone app.
 
  1. Describe your __end product__.
     + The end product is a converter app.
-    + The app accepts any inputted number as a unit of measurement.
-    + The app then returns the equivalent number in another unit of
+    + The app accepts an inputted value and a unit of measurement.
+    + The app then returns the equivalent value in another unit of
       the same kind of measurement.
 
     E.G.: The app should function in a similar way unit conversions
@@ -79,7 +79,7 @@ ucLen = n => n * 12  // converts a length in feet to inches
 ucLen(3)  // calls function &amp; returns result of 3 * 12
 
 /*
- 3. __Modify the function__ to handle bi-directional conversions.
+ 3. Modify the function to __handle bi-directional conversions__.
     + Add an input variable that will indicate the initial unit,
       the unit being provided. Two or more variables are wrapped in
       parentheses (\`( … )\`) and are separated by a comma (\`,\`).
@@ -97,7 +97,7 @@ ucLen(36, "in")  // calls function &amp; returns result of 36 / 12
 ucLen(3, "ft")   // calls function &amp; returns result of 3 * 12
 
 /*
- 4. __Modify the function__ to return a specified unit.
+ 4. Modify the function to __return a specified unit__.
     + Add another input variable that will indicate the final unit,
       the unit being requested.
     + Use successive tests with conditional operators to invoke the
@@ -113,7 +113,7 @@ ucLen(4.5, "ft", "yd")  // converts 4.5 feet to yards
 ucLen(1.5, "yd", "ft")  // converts 1.5 yards to feet
 
 /*
- 5. Build a __collection of functions__
+ 5. __Build a collection of functions__
     to handle many other kinds of conversions.
     + For complex conversions that require multiple operations, the
       steps of a *function* definition are wrapped in curly brackets
@@ -146,8 +146,8 @@ ufrRom = str => { let val = 0; str = str.toUpperCase(); _.uara.forEach((ai, i) =
 ufrRom("MCXI", "Roman", "Arabic")
 
 /*
- 6. Finally, consolidate the collection of functions to
-    __maximize efficiency__, which improves user experience.
+ 6. Finally, consolidate the collection of functions
+    to __maximize efficiency__, which also improves user experience.
     + Use \`.push( … )\` to combine sets of regular-expression test
       patterns into a single, lookup array.
     + Use \`Object.assign( … , … )\` to combine corresponding sets of
@@ -181,7 +181,7 @@ uConv("MCXI")
 ucShow = () => ucout.value = _.uConv(!/^-?(?:\\d+|\\d*\\.\\d+)(?:e-?\\d+|)|^-?0x[\\da-f]+$/i.test(ucinp.value) ? ucinp.value : +ucinp.value, ulist0.value, ulist1.value); ""
 opts = ["", "inches", "feet", "yards", "miles", "meters", "ft/s", "mph", "m/s", "km/h", "Fahrenheit", "Celsius", "Kelvin"].map(e => "<:option>" + e + "<:/option>").join("\\n"); ""
 ucui = "\\n<:hr style:=\\"margin: 1.5rem 0;\\">\\n<:h4 class:=cfield>Unit Converter<:/h4>"; ""
-ucui += "\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucinp placeholder:=\\"Enter measurement&hellip;\\" /><:/span><:span class:=ccntr><:select id:=ulist0 class:=aauto>\\n"; ""
+ucui += "\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucinp placeholder:=\\"Enter measurement…\\" /><:/span><:span class:=ccntr><:select id:=ulist0 class:=aauto>\\n"; ""
 ucui += opts + "\\n<:/select><:/span><:/div>\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucout readonly /><:/span><:span class:=ccntr><:select id:=ulist1 class:=aauto>\\n"; ""
 ucui += opts + "\\n<:/select><:/span><:/div>"; ""
 // ndiv = document.createElement('div'); ndiv.innerHTML = ucui.replace(/(<):|:(=)/g, "$1$2"); cmain.appendChild(ndiv)
@@ -191,7 +191,19 @@ ucui += opts + "\\n<:/select><:/span><:/div>"; ""
 const tutorial2 = `/*
 __JavaScript Coding Tutorials, Part 2__
 
-&hellip;*comming soon*&hellip;
+ In part 1, we saw in brief some of the more useful JS elements and
+how they are used. We learned about combining key JS elements to get
+practical results. We used core JS code only -- which would work in any
+__browser console__ and allow us to get immediate feedback on our work.
+
+ In part 2, we turn our focus to __HTML__ with __CSS__ -- a language for coding
+layout and design. We'll build some visual games -- in which we can
+appreciate why layout and design matter when coding.
+
+- - - - -
+__*Tutorial Two: Building a sliding-tiles puzzle (and other games)*__
+
+… *comming soon* …
 */
 //`;
 
