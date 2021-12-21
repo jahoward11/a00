@@ -19,7 +19,7 @@ const calcdemo1 = `
 
 // *Why?*
 // - Interactive: rerun a trial -- giving new initial values
-// - Reusable: copy and paste a custom expression or whole block
+// - Reusable: copy and paste a custom expression or code block
 // - Printable: make clean print-outs on standard, letter-size paper
 // - Lightweight: minimally leverage shared code across major browsers
 // - Conventional: reinforce standards in notation/methods of science

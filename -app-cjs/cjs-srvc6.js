@@ -194,7 +194,8 @@ __JavaScript Coding Tutorials, Part 2__
  In *part 1*, we saw in brief some of the more useful JS elements and
 how they are used. We learned about combining key JS elements to get
 practical results. We used core JS code only -- which would work in a
-__browser console__ and allow us to get immediate feedback on our work.
+__browser console__ and allow us to get immediate feedback on our work
+as we code.
 
  In *part 2*, we turn our focus to __HTML__ with __CSS__ -- a language for
 coding layout and design. We'll build some visual games -- in which
@@ -203,7 +204,31 @@ we can appreciate just why layout and design matter when coding.
 - - - - -
 __*Tutorial Two: Building a sliding-tiles puzzle (and other games)*__
 
-… *comming soon* …
+str = "\\n<:style>\\nhr { margin: 1.5rem 0; }"; ""
+str += "\\n.blank, .tile { width: 50px; height: 50px; text-align: center; }"; ""
+str += "\\n.tile { background: Silver; color: White; font-weight: bold; border: 2px solid White; }"; ""
+str += "\\n#gboard { width: auto; padding: 10px; }"; ""
+str += "\\n#gbdsub { font-size: small; padding: 0 0 0 15px; }"; ""
+str += "\\n#txtmvs { font-weight: bold; }"; ""
+str += "\\n<:/style>\\n<:hr>\\n<:h4>Sliding Tiles<:/h4>\\n<:p>"; ""
+str += "\\n<:label>Rows <:input type:=text id:=rows value:=4 size:=2><:/label>&emsp;"; ""
+str += "\\n<:label>Columns <:input type:=text id:=cols value:=4 size:=2><:/label>&emsp;"; ""
+str += "\\n<:input type:=button value:=\\"↻ NEW GAME\\" onclick:=gmReset()>\\n<:/p>"; ""
+str += "\\n<:table id:=gboard><:/table>\\n<:div id:=gbdsub>Count: <:span id:=txtmvs>0<:/span><:/div>\\n"; ""
+
+try { gwrap } catch { ndiv = document.createElement('div'); ndiv.id = "gwrap"; ndiv.innerHTML = str.replace(/(<):|:(=)/g, "$1$2"); cmain.appendChild(ndiv) }
+
+moves = rval = cval = unsh = shuf = tarr = ""
+gbdGen = () => gboard.innerHTML = _.tarr.map( (e, i) => "\\n<:tr>" + e.map( (f, j) => f === 0 ? "<:td class:=blank> <:/td>" : "<:td class:=tile onclick:=tileMove(" + i + "," + j + ")>" + f + "<:/td>" ).join("") + "<:/tr>" ).join("").replace(/(<):|:(=)/g, "$1$2"); ""
+
+posSwap = (p0, p1) => [_.tarr[p0][p1], _.tarr[p0][p1 + 1]] = [_.tarr[p0][p1 + 1], _.tarr[p0][p1]]; ""
+isSolva = () => { let ctinvs; _.shuf = _.tarr.flat().filter(e => e); ctinvs = _.shuf.reduce((a, b, i) => a + _.shuf.slice(i + 1).reduce((c, d) => c + (d > b ? 0 : 1), 0), 0); _.shuf = _.tarr.flat(); return (ctinvs + (_.cval % 2 === 1 ? 0 : _.rval - Math.ceil((_.shuf.indexOf(0) + 1) / _.cval))) % 2 === 0; }; ""
+
+window.tileMove = (rx, cx) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (_.tarr[p0] || "")[p1] === 0); !bl || ([_.tarr[bl[0]][bl[1]], _.tarr[rx][cx]] = [_.tarr[rx][cx], 0]) && ( txtmvs.innerHTML = "" + _.tarr !== "" + _.unsh ? ++_.moves + " moves." : ("<:em>Puzzle solved in " + ++_.moves + " moves!<:/em>").replace(/(<):/g, "$1") ) && _.gbdGen(); }; ""
+window.gmReset = () => { txtmvs.innerHTML = _.moves = 0; _.rval = +rows.value; _.cval = +cols.value; _.unsh = Array.from(Array(_.rval * _.cval).keys()).slice(1).concat(0); _.shuf = _.unsh.map(v => ({ v: v, o: Math.random() })).sort((a, b) => a.o - b.o).map(e => e.v); _.tarr = Array.from(Array(_.rval)).map(() => _.shuf.splice(0, _.cval)); _.isSolva() || (_.shuf[0] && _.shuf[1] ? _.posSwap(0, 0) : _.posSwap(_.rval - 1, _.cval - 2)); _.gbdGen(); }; ""
+
+
+… *other games coming soon* …
 */
 //`;
 
