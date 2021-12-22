@@ -240,7 +240,7 @@ isSolva = () => { let ctinvs = _.shuf.filter(e => e).reduce((a, b, i, f) => a + 
 
 window.mvRvrs = () => !(_.mtrk || "").length || tileMove(..._.mtrk.pop(), 1); ""
 window.ctZero = () => (_.mtrk = []) && (txtmvs.innerHTML = 0); ""
-window.tileMove = (rx, cx, bk) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (_.tarr[p0] || "")[p1] === 0); !bl || (bk || mtrk.push([bl[0], bl[1]])) && ([_.tarr[bl[0]][bl[1]], _.tarr[rx][cx]] = [_.tarr[rx][cx], 0]) && ( txtmvs.innerHTML = "" + _.tarr !== "" + _.unsh ? _.mtrk.length + " moves" : ("<:em>Puzzle solved in " + _.mtrk.length + " moves!<:/em>").replace(/(<):/g, "$1") ) && _.gbdGen(); }; ""
+window.tileMove = (rx, cx, bk) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (_.tarr[p0] || "")[p1] === 0); !bl || (bk || _.mtrk.push([bl[0], bl[1]])) && ([_.tarr[bl[0]][bl[1]], _.tarr[rx][cx]] = [_.tarr[rx][cx], 0]) && ( txtmvs.innerHTML = "" + _.tarr !== "" + _.unsh ? _.mtrk.length + " moves" : ("<:em>Puzzle solved in " + _.mtrk.length + " moves!<:/em>").replace(/(<):/g, "$1") ) && _.gbdGen(); }; ""
 window.gmReset = () => { _.mtrk = []; txtmvs.innerHTML = 0; _.rval = +rows.value; _.cval = +cols.value; _.tnx = tnmrl.selectedIndex; _.unsh = Array.from(Array(_.rval * _.cval).keys()).slice(1).map(_.nAlt).concat(0); _.shuf = _.unsh.map(v => ({ v: v, o: Math.random() })).sort((a, b) => a.o - b.o).map(e => e.v); _.tarr = Array.from(Array(_.rval)).map(() => _.shuf.splice(0, _.cval)); _.shuf = _.tarr.flat(); _.isSolva() || (_.shuf[0] && _.shuf[1] ? _.posSwap(0, 0) : _.posSwap(_.rval - 1, _.cval - 2)); _.gbdGen(); }; ""
 gmReset()
 
