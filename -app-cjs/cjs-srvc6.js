@@ -185,7 +185,7 @@ ucui += "\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucinp
 ucui += opts + "\\n<:/select><:/span><:/div>\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucout readonly /><:/span><:span class:=ccntr><:select id:=ulist1 class:=aauto>\\n"; ""
 ucui += opts + "\\n<:/select><:/span><:/div>"; ""
 // try { ucwrap } catch { ndiv = document.createElement('div'); ndiv.id = "ucwrap"; ndiv.innerHTML = ucui.replace(/(<):|:(=)/g, "$1$2"); cmain.appendChild(ndiv); }
-// [ucinp, ulist0, ulist1].forEach((e, i) => e.addEventListener(!i ? 'blur' : 'change', _.ucShow))
+// [ucinp, ulist0, ulist1].forEach((e, i) => e[!i ? 'onblur' : 'onchange'] = _.ucShow)
 //`;
 
 const tutorial2 = `/*
@@ -215,15 +215,17 @@ gui += "\\n#rows, #cols { max-width: 28px; }"; ""
 gui += "\\n#gboard { width: auto; margin: 14px; border-collapse: collapse; }"; ""
 gui += "\\n#gmscor { font-size: small; margin-left: 16px; }"; ""
 gui += "\\n#txtmvs { font-weight: bold; }"; ""
-gui += "\\n<:/style>\\n<:hr>\\n<:h4 class:=cfield>Sliding Tiles<:/h4>\\n<:div class:=cfield>"; ""
-gui += "\\n<:label class:=ccntr>Rows <:input type:=text id:=rows value:=4 size:=2><:/label>"; ""
-gui += "\\n<:label class:=ccntr>Columns <:input type:=text id:=cols value:=4 size:=2><:/label>\\n<:/div>"; ""
+gui += "\\n<:/style>\\n<:hr>\\n<:h4 class:=cfield>Sliding Tiles<:/h4>"; ""
 gui += "\\n<:div class:=cfield>\\n<:label class:=ccntr>Characters <:select id:=tnmrl class:=aauto>\\n"; ""
-gui += ["1 2 3 4 …", "I II III IV …", "A B C D …", "Α Β Γ Δ …"].map(e => "<:option>" + e + "<:/option>").join("\\n"); ""
-gui += "\\n<:/select><:/label><:input type:=button value:=\\"↻ NEW GAME\\" onclick:=gmReset()>\\n<:/div>"; ""
+gui += ["", "1 2 3 4 …", "I II III IV …", "A B C D …", "Α Β Γ Δ …"].map(e => "<:option>" + e + "<:/option>").join("\\n"); ""
+gui += "\\n<:/select><:/label>\\n<:label class:=ccntr>Colors <:input type:=checkbox id:=tclrs class:=aauto><:/label>\\n<:/div>\\n<:div class:=cfield>"; ""
+gui += "\\n<:label class:=ccntr>Rows <:input type:=text id:=rows value:=4 size:=2><:/label>"; ""
+gui += "\\n<:label class:=ccntr>Columns <:input type:=text id:=cols value:=4 size:=2><:/label>"; ""
+gui += "\\n<:input type:=button value:=\\"↻ NEW GAME\\" onclick:=gmReset()>\\n<:/div>"; ""
 gui += "\\n<:table id:=gboard><:/table>\\n<:div id:=gmscor class:=cfield>Count: <:span id:=txtmvs>0<:/span><:/div>"; ""
 gui += "\\n<:div class:=cfield>\\n<:span class:=ccntr><:input type:=button value:=\\"RETRACT MOVE\\" onclick:=mvRvrs()><:/span><:span class:=ccntr><:input type:=button value:=\\"RESET COUNTER\\" onclick:=ctZero()><:/span>\\n<:/div>\\n"; ""
 
+// gwrap.remove() // ALERT: useful only if test-editing code
 try { gwrap } catch { ndiv = document.createElement('div'); ndiv.id = "gwrap"; ndiv.innerHTML = gui.replace(/(<):|:(=)/g, "$1$2"); cmain.appendChild(ndiv); }
 
 rval = cval = tnx = mtrk = unsh = shuf = tarr = ""
@@ -233,7 +235,7 @@ urom = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]; 
 utoRom = v => { let s = ""; _.uara.forEach((ai, i) => { while (v % ai < v) { s += _.urom[i]; v -= ai; } }); return s; }; ""
 utoEng = v => { let i, codpts = []; while (v) { i = 0; while ((v - ++i) % 26) {}; codpts.unshift(i + 64); v = (v - i) / 26; } return String.fromCodePoint(...codpts || 65); }; ""
 utoGre = v => { let i, codpts = []; while (v) { i = 0; while ((v - ++i) % 24) {}; codpts.unshift((i < 18 ? i : 1 + i) + 912); v = (v - i) / 24; } return String.fromCodePoint(...codpts || 913); }; ""
-nAlt = v => _.tnx == 1 ? _.utoRom(v) : _.tnx == 2 ? _.utoEng(v) : _.tnx == 3 ? _.utoGre(v) : v; ""
+nAlt = v => _.tnx == 2 ? _.utoRom(v) : _.tnx == 3 ? _.utoEng(v) : _.tnx == 4 ? _.utoGre(v) : v; ""
 posSwap = (p0, p1) => [_.tarr[p0][p1], _.tarr[p0][p1 + 1]] = [_.tarr[p0][p1 + 1], _.tarr[p0][p1]]; ""
 isSolva = () => { let ctinvs = _.shuf.filter(e => e).reduce((a, b, i, f) => a + f.slice(i + 1).reduce((c, d) => c + (d > b ? 0 : 1), 0), 0); return (ctinvs + (_.cval % 2 === 1 ? 0 : _.rval - Math.ceil((_.shuf.indexOf(0) + 1) / _.cval))) % 2 === 0; }; ""
 
