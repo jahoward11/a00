@@ -227,22 +227,22 @@ gui += "\\n<:div class:=cfield>\\n<:span class:=ccntr><:input type:=button value
 
 try { gwrap } catch { ndiv = document.createElement('div'); ndiv.id = "gwrap"; ndiv.innerHTML = gui.replace(/(<):|:(=)/g, "$1$2"); cmain.appendChild(ndiv); }
 
-rval = cval = tnx = unsh = shuf = tarr = mtrk = ""
+rval = cval = tnx = mtrk = unsh = shuf = tarr = ""
+gbdGen = () => gboard.innerHTML = _.tarr.map( (e, i) => "\\n<:tr>" + e.map( (f, j) => f === 0 ? "<:td class:=blank> <:/td>" : "<:td class:=gtile onclick:=tileMove(" + i + "," + j + ")>" + f + "<:/td>" ).join("") + "<:/tr>" ).join("").replace(/(<):|:(=)/g, "$1$2"); ""
 uara = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]; ""
 urom = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]; ""
-utoRom = v => { let s = "", _.uara.forEach((ai, i) => { while (v % ai < v) { s += _.urom[i]; v -= ai; } }); return s; }; ""
+utoRom = v => { let s = ""; _.uara.forEach((ai, i) => { while (v % ai < v) { s += _.urom[i]; v -= ai; } }); return s; }; ""
 utoEng = v => { let i, codpts = []; while (v) { i = 0; while ((v - ++i) % 26) {}; codpts.unshift(i + 64); v = (v - i) / 26; } return String.fromCodePoint(...codpts || 65); }; ""
 utoGre = v => { let i, codpts = []; while (v) { i = 0; while ((v - ++i) % 24) {}; codpts.unshift((i < 18 ? i : 1 + i) + 912); v = (v - i) / 24; } return String.fromCodePoint(...codpts || 913); }; ""
-gbdGen = () => gboard.innerHTML = _.tarr.map( (e, i) => "\\n<:tr>" + e.map( (f, j) => f === 0 ? "<:td class:=blank> <:/td>" : "<:td class:=gtile onclick:=tileMove(" + i + "," + j + ")>" + f + "<:/td>" ).join("") + "<:/tr>" ).join("").replace(/(<):|:(=)/g, "$1$2"); ""
-nAlt = v => _.tnx == 1 ? utoRom(v) : _.tnx == 2 ? utoEng(v) : _.tnx == 3 ? utoGre(v) : v; ""
+nAlt = v => _.tnx == 1 ? _.utoRom(v) : _.tnx == 2 ? _.utoEng(v) : _.tnx == 3 ? _.utoGre(v) : v; ""
 posSwap = (p0, p1) => [_.tarr[p0][p1], _.tarr[p0][p1 + 1]] = [_.tarr[p0][p1 + 1], _.tarr[p0][p1]]; ""
 isSolva = () => { let ctinvs = _.shuf.filter(e => e).reduce((a, b, i, f) => a + f.slice(i + 1).reduce((c, d) => c + (d > b ? 0 : 1), 0), 0); return (ctinvs + (_.cval % 2 === 1 ? 0 : _.rval - Math.ceil((_.shuf.indexOf(0) + 1) / _.cval))) % 2 === 0; }; ""
 
-window.mvRvrs = () => !(_.mtrk || "").length || tileMove(..._.mtrk.pop(), 1);
-window.ctZero = () => (_.mtrk = []) && (txtmvs.innerHTML = 0);
-window.tileMove = (rx, cx) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (_.tarr[p0] || "")[p1] === 0); !bl || ([_.tarr[bl[0]][bl[1]], _.tarr[rx][cx]] = [_.tarr[rx][cx], 0]) && ( txtmvs.innerHTML = "" + _.tarr !== "" + _.unsh ? _.mtrk.length + " moves" : ("<:em>Puzzle solved in " + _.mtrk.length + " moves!<:/em>").replace(/(<):/g, "$1") ) && _.gbdGen(); }; ""
-window.gmReset = () => { txtmvs.innerHTML = 0; _.rval = +rows.value; _.cval = +cols.value; _.tnx = tnmrl.selectedIndex; _.unsh = Array.from(Array(_.rval * _.cval).keys()).slice(1).map(_.nAlt).concat(0); _.shuf = _.unsh.map(v => ({ v: v, o: Math.random() })).sort((a, b) => a.o - b.o).map(e => e.v); _.tarr = Array.from(Array(_.rval)).map(() => _.shuf.splice(0, _.cval)); _.shuf = _.tarr.flat(); _.isSolva() || (_.shuf[0] && _.shuf[1] ? _.posSwap(0, 0) : _.posSwap(_.rval - 1, _.cval - 2)); _.gbdGen(); }; ""
-
+window.mvRvrs = () => !(_.mtrk || "").length || tileMove(..._.mtrk.pop(), 1); ""
+window.ctZero = () => (_.mtrk = []) && (txtmvs.innerHTML = 0); ""
+window.tileMove = (rx, cx, bk) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (_.tarr[p0] || "")[p1] === 0); !bl || (bk || mtrk.push([bl[0], bl[1]])) && ([_.tarr[bl[0]][bl[1]], _.tarr[rx][cx]] = [_.tarr[rx][cx], 0]) && ( txtmvs.innerHTML = "" + _.tarr !== "" + _.unsh ? _.mtrk.length + " moves" : ("<:em>Puzzle solved in " + _.mtrk.length + " moves!<:/em>").replace(/(<):/g, "$1") ) && _.gbdGen(); }; ""
+window.gmReset = () => { _.mtrk = []; txtmvs.innerHTML = 0; _.rval = +rows.value; _.cval = +cols.value; _.tnx = tnmrl.selectedIndex; _.unsh = Array.from(Array(_.rval * _.cval).keys()).slice(1).map(_.nAlt).concat(0); _.shuf = _.unsh.map(v => ({ v: v, o: Math.random() })).sort((a, b) => a.o - b.o).map(e => e.v); _.tarr = Array.from(Array(_.rval)).map(() => _.shuf.splice(0, _.cval)); _.shuf = _.tarr.flat(); _.isSolva() || (_.shuf[0] && _.shuf[1] ? _.posSwap(0, 0) : _.posSwap(_.rval - 1, _.cval - 2)); _.gbdGen(); }; ""
+gmReset()
 
 /*
 … *more games … coming soon* …
