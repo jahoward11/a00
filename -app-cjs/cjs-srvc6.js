@@ -184,8 +184,8 @@ ucui = "\\n<:hr style:=\\"margin: 1.5rem 0;\\">\\n<:h4 class:=cfield>Unit Conver
 ucui += "\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucinp placeholder:=\\"Enter measurement…\\" /><:/span><:span class:=ccntr><:select id:=ulist0 class:=aauto>\\n"; ""
 ucui += opts + "\\n<:/select><:/span><:/div>\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucout readonly /><:/span><:span class:=ccntr><:select id:=ulist1 class:=aauto>\\n"; ""
 ucui += opts + "\\n<:/select><:/span><:/div>"; ""
-// ndiv = document.createElement('div'); ndiv.innerHTML = ucui.replace(/(<):|:(=)/g, "$1$2"); cmain.appendChild(ndiv)
-// [ucinp, ulist0, ulist1].forEach((e, i) => e.addEventListener(!i ? 'blur' : 'change', _.ucShow))
+// try { ucwrap } catch { ndiv = document.createElement('div'); ndiv.id = "ucwrap"; ndiv.innerHTML = ucui.replace(/(<):|:(=)/g, "$1$2"); cmain.appendChild(ndiv); }
+// ucwrap || [ucinp, ulist0, ulist1].forEach((e, i) => e.addEventListener(!i ? 'blur' : 'change', _.ucShow)) }
 //`;
 
 const tutorial2 = `/*
@@ -203,32 +203,49 @@ we can appreciate just why layout and design matter when coding.
 
 - - - - -
 __*Tutorial Two: Building a sliding-tiles puzzle (and other games)*__
+*/
 
-str = "\\n<:style>\\nhr { margin: 1.5rem 0; }"; ""
-str += "\\n.blank, .tile { width: 50px; height: 50px; text-align: center; }"; ""
-str += "\\n.tile { background: Silver; color: White; font-weight: bold; border: 2px solid White; }"; ""
-str += "\\n#gboard { width: auto; padding: 10px; }"; ""
-str += "\\n#gbdsub { font-size: small; padding: 0 0 0 15px; }"; ""
-str += "\\n#txtmvs { font-weight: bold; }"; ""
-str += "\\n<:/style>\\n<:hr>\\n<:h4>Sliding Tiles<:/h4>\\n<:p>"; ""
-str += "\\n<:label>Rows <:input type:=text id:=rows value:=4 size:=2><:/label>&emsp;"; ""
-str += "\\n<:label>Columns <:input type:=text id:=cols value:=4 size:=2><:/label>&emsp;"; ""
-str += "\\n<:input type:=button value:=\\"↻ NEW GAME\\" onclick:=gmReset()>\\n<:/p>"; ""
-str += "\\n<:table id:=gboard><:/table>\\n<:div id:=gbdsub>Count: <:span id:=txtmvs>0<:/span><:/div>\\n"; ""
+gui = "\\n<:style>\\nhr { margin: 1.5rem 0; }"; ""
+gui += "\\n#gwrap { font: normal medium Helvetica, Arial, sans-serif; }"; ""
+gui += "\\n#gwrap button, #gwrap input[type=button] { font-size: 12px; }"; ""
+gui += "\\n#gwrap .cfield:not(:last-child) { margin-bottom: 8px; }"; ""
+gui += "\\n#gwrap .cfield>.ccntr:not(:last-child) { margin-right: 8px; }"; ""
+gui += "\\n#gwrap .blank, #gwrap .gtile { width: 58px; height: 58px; border: 4px solid White; }"; ""
+gui += "\\n#gwrap .gtile { background: LightSteelBlue; color: White; font-size: large; font-weight: bold; cursor: pointer; text-align: center; }"; ""
+gui += "\\n#rows, #cols { max-width: 28px; }"; ""
+gui += "\\n#gboard { width: auto; margin: 14px; border-collapse: collapse; }"; ""
+gui += "\\n#gmscor { font-size: small; margin-left: 16px; }"; ""
+gui += "\\n#txtmvs { font-weight: bold; }"; ""
+gui += "\\n<:/style>\\n<:hr>\\n<:h4 class:=cfield>Sliding Tiles<:/h4>\\n<:div class:=cfield>"; ""
+gui += "\\n<:label class:=ccntr>Rows <:input type:=text id:=rows value:=4 size:=2><:/label>"; ""
+gui += "\\n<:label class:=ccntr>Columns <:input type:=text id:=cols value:=4 size:=2><:/label>\\n<:/div>"; ""
+gui += "\\n<:div class:=cfield>\\n<:span class:=ccntr><:select id:=tnmrl class:=aauto>\\n"; ""
+gui += ["1 2 3 4 …", "I II III IV …", "A B C D …", "Α Β Γ Δ …"].map(e => "<:option>" + e + "<:/option>").join("\\n"); ""
+gui += "\\n<:/select><:/span><:input type:=button value:=\\"↻ NEW GAME\\" onclick:=gmReset()>\\n<:/div>"; ""
+gui += "\\n<:table id:=gboard><:/table>\\n<:div id:=gmscor class:=cfield>Count: <:span id:=txtmvs>0<:/span><:/div>"; ""
+gui += "\\n<:div class:=cfield>\\n<:span class:=ccntr><:input type:=button value:=\\"RETRACT MOVE\\" onclick:=mvRvrs()><:/span><:span class:=ccntr><:input type:=button value:=\\"RESET COUNTER\\" onclick:=ctZero()><:/span>\\n<:/div>\\n"; ""
 
-try { gwrap } catch { ndiv = document.createElement('div'); ndiv.id = "gwrap"; ndiv.innerHTML = str.replace(/(<):|:(=)/g, "$1$2"); cmain.appendChild(ndiv) }
+try { gwrap } catch { ndiv = document.createElement('div'); ndiv.id = "gwrap"; ndiv.innerHTML = gui.replace(/(<):|:(=)/g, "$1$2"); cmain.appendChild(ndiv); }
 
-moves = rval = cval = unsh = shuf = tarr = ""
-gbdGen = () => gboard.innerHTML = _.tarr.map( (e, i) => "\\n<:tr>" + e.map( (f, j) => f === 0 ? "<:td class:=blank> <:/td>" : "<:td class:=tile onclick:=tileMove(" + i + "," + j + ")>" + f + "<:/td>" ).join("") + "<:/tr>" ).join("").replace(/(<):|:(=)/g, "$1$2"); ""
-
+rval = cval = tnx = unsh = shuf = tarr = mtrk = ""
+uara = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]; ""
+urom = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]; ""
+utoRom = v => { let s = "", _.uara.forEach((ai, i) => { while (v % ai < v) { s += _.urom[i]; v -= ai; } }); return s; }; ""
+utoEng = v => { let i, codpts = []; while (v) { i = 0; while ((v - ++i) % 26) {}; codpts.unshift(i + 64); v = (v - i) / 26; } return String.fromCodePoint(...codpts || 65); }; ""
+utoGre = v => { let i, codpts = []; while (v) { i = 0; while ((v - ++i) % 24) {}; codpts.unshift((i < 18 ? i : 1 + i) + 912); v = (v - i) / 24; } return String.fromCodePoint(...codpts || 913); }; ""
+gbdGen = () => gboard.innerHTML = _.tarr.map( (e, i) => "\\n<:tr>" + e.map( (f, j) => f === 0 ? "<:td class:=blank> <:/td>" : "<:td class:=gtile onclick:=tileMove(" + i + "," + j + ")>" + f + "<:/td>" ).join("") + "<:/tr>" ).join("").replace(/(<):|:(=)/g, "$1$2"); ""
+nAlt = v => _.tnx == 1 ? utoRom(v) : _.tnx == 2 ? utoEng(v) : _.tnx == 3 ? utoGre(v) : v; ""
 posSwap = (p0, p1) => [_.tarr[p0][p1], _.tarr[p0][p1 + 1]] = [_.tarr[p0][p1 + 1], _.tarr[p0][p1]]; ""
-isSolva = () => { let ctinvs; _.shuf = _.tarr.flat().filter(e => e); ctinvs = _.shuf.reduce((a, b, i) => a + _.shuf.slice(i + 1).reduce((c, d) => c + (d > b ? 0 : 1), 0), 0); _.shuf = _.tarr.flat(); return (ctinvs + (_.cval % 2 === 1 ? 0 : _.rval - Math.ceil((_.shuf.indexOf(0) + 1) / _.cval))) % 2 === 0; }; ""
+isSolva = () => { let ctinvs = _.shuf.filter(e => e).reduce((a, b, i, f) => a + f.slice(i + 1).reduce((c, d) => c + (d > b ? 0 : 1), 0), 0); return (ctinvs + (_.cval % 2 === 1 ? 0 : _.rval - Math.ceil((_.shuf.indexOf(0) + 1) / _.cval))) % 2 === 0; }; ""
 
-window.tileMove = (rx, cx) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (_.tarr[p0] || "")[p1] === 0); !bl || ([_.tarr[bl[0]][bl[1]], _.tarr[rx][cx]] = [_.tarr[rx][cx], 0]) && ( txtmvs.innerHTML = "" + _.tarr !== "" + _.unsh ? ++_.moves + " moves." : ("<:em>Puzzle solved in " + ++_.moves + " moves!<:/em>").replace(/(<):/g, "$1") ) && _.gbdGen(); }; ""
-window.gmReset = () => { txtmvs.innerHTML = _.moves = 0; _.rval = +rows.value; _.cval = +cols.value; _.unsh = Array.from(Array(_.rval * _.cval).keys()).slice(1).concat(0); _.shuf = _.unsh.map(v => ({ v: v, o: Math.random() })).sort((a, b) => a.o - b.o).map(e => e.v); _.tarr = Array.from(Array(_.rval)).map(() => _.shuf.splice(0, _.cval)); _.isSolva() || (_.shuf[0] && _.shuf[1] ? _.posSwap(0, 0) : _.posSwap(_.rval - 1, _.cval - 2)); _.gbdGen(); }; ""
+window.mvRvrs = () => !(_.mtrk || "").length || tileMove(..._.mtrk.pop(), 1);
+window.ctZero = () => (_.mtrk = []) && (txtmvs.innerHTML = 0);
+window.tileMove = (rx, cx) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (_.tarr[p0] || "")[p1] === 0); !bl || ([_.tarr[bl[0]][bl[1]], _.tarr[rx][cx]] = [_.tarr[rx][cx], 0]) && ( txtmvs.innerHTML = "" + _.tarr !== "" + _.unsh ? _.mtrk.length + " moves" : ("<:em>Puzzle solved in " + _.mtrk.length + " moves!<:/em>").replace(/(<):/g, "$1") ) && _.gbdGen(); }; ""
+window.gmReset = () => { txtmvs.innerHTML = 0; _.rval = +rows.value; _.cval = +cols.value; _.tnx = tnmrl.selectedIndex; _.unsh = Array.from(Array(_.rval * _.cval).keys()).slice(1).map(_.nAlt).concat(0); _.shuf = _.unsh.map(v => ({ v: v, o: Math.random() })).sort((a, b) => a.o - b.o).map(e => e.v); _.tarr = Array.from(Array(_.rval)).map(() => _.shuf.splice(0, _.cval)); _.shuf = _.tarr.flat(); _.isSolva() || (_.shuf[0] && _.shuf[1] ? _.posSwap(0, 0) : _.posSwap(_.rval - 1, _.cval - 2)); _.gbdGen(); }; ""
 
 
-… *other games coming soon* …
+/*
+… *more games … coming soon* …
 */
 //`;
 
