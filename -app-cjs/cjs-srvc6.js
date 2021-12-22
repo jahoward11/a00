@@ -185,7 +185,7 @@ ucui += "\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucinp
 ucui += opts + "\\n<:/select><:/span><:/div>\\n<:div class:=cfield><:span class:=ccntr><:input type:=text id:=ucout readonly /><:/span><:span class:=ccntr><:select id:=ulist1 class:=aauto>\\n"; ""
 ucui += opts + "\\n<:/select><:/span><:/div>"; ""
 // try { ucwrap } catch { ndiv = document.createElement('div'); ndiv.id = "ucwrap"; ndiv.innerHTML = ucui.replace(/(<):|:(=)/g, "$1$2"); cmain.appendChild(ndiv); }
-// ucwrap || [ucinp, ulist0, ulist1].forEach((e, i) => e.addEventListener(!i ? 'blur' : 'change', _.ucShow)) }
+// [ucinp, ulist0, ulist1].forEach((e, i) => e.addEventListener(!i ? 'blur' : 'change', _.ucShow))
 //`;
 
 const tutorial2 = `/*
@@ -207,7 +207,6 @@ __*Tutorial Two: Building a sliding-tiles puzzle (and other games)*__
 
 gui = "\\n<:style>\\nhr { margin: 1.5rem 0; }"; ""
 gui += "\\n#gwrap { font: normal medium Helvetica, Arial, sans-serif; }"; ""
-gui += "\\n#gwrap button, #gwrap input[type=button] { font-size: 12px; }"; ""
 gui += "\\n#gwrap .cfield:not(:last-child) { margin-bottom: 8px; }"; ""
 gui += "\\n#gwrap .cfield>.ccntr:not(:last-child) { margin-right: 8px; }"; ""
 gui += "\\n#gwrap .blank, #gwrap .gtile { width: 58px; height: 58px; border: 4px solid White; }"; ""
@@ -219,9 +218,9 @@ gui += "\\n#txtmvs { font-weight: bold; }"; ""
 gui += "\\n<:/style>\\n<:hr>\\n<:h4 class:=cfield>Sliding Tiles<:/h4>\\n<:div class:=cfield>"; ""
 gui += "\\n<:label class:=ccntr>Rows <:input type:=text id:=rows value:=4 size:=2><:/label>"; ""
 gui += "\\n<:label class:=ccntr>Columns <:input type:=text id:=cols value:=4 size:=2><:/label>\\n<:/div>"; ""
-gui += "\\n<:div class:=cfield>\\n<:span class:=ccntr><:select id:=tnmrl class:=aauto>\\n"; ""
+gui += "\\n<:div class:=cfield>\\n<:label class:=ccntr>Characters <:select id:=tnmrl class:=aauto>\\n"; ""
 gui += ["1 2 3 4 …", "I II III IV …", "A B C D …", "Α Β Γ Δ …"].map(e => "<:option>" + e + "<:/option>").join("\\n"); ""
-gui += "\\n<:/select><:/span><:input type:=button value:=\\"↻ NEW GAME\\" onclick:=gmReset()>\\n<:/div>"; ""
+gui += "\\n<:/select><:/label><:input type:=button value:=\\"↻ NEW GAME\\" onclick:=gmReset()>\\n<:/div>"; ""
 gui += "\\n<:table id:=gboard><:/table>\\n<:div id:=gmscor class:=cfield>Count: <:span id:=txtmvs>0<:/span><:/div>"; ""
 gui += "\\n<:div class:=cfield>\\n<:span class:=ccntr><:input type:=button value:=\\"RETRACT MOVE\\" onclick:=mvRvrs()><:/span><:span class:=ccntr><:input type:=button value:=\\"RESET COUNTER\\" onclick:=ctZero()><:/span>\\n<:/div>\\n"; ""
 
