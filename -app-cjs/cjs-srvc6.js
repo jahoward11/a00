@@ -219,7 +219,7 @@ gui += "\\n<:/style>\\n<:hr>\\n<:h4 class:=cfield>Sliding Tiles<:/h4>"; ""
 gui += "\\n<:div class:=cfield>\\n<:span class:=ccntr><:select id:=tnmrl class:=aauto>\\n<:option disabled>Characters<:/option>\\n"; ""
 gui += ["1 2 3 4 …", "I II III IV …", "A B C D …", "Α Β Γ Δ …"].map(e => "<:option>" + e + "<:/option>").join("\\n"); ""
 gui += "\\n<:/select><:/span>\\n<:span class:=ccntr><:select id:=tclrs class:=aauto>\\n<:option disabled>Color Cascades<:/option>\\n"; ""
-gui += ["No gradient", "Red gradient", "Gold gradient", "Blue gradient"].map(e => "<:option>" + e + "<:/option>").join("\\n"); ""
+gui += ["No gradient", "Red gradient", "Gold gradient", "Blue gradient", "Rainbow pattern"].map(e => "<:option>" + e + "<:/option>").join("\\n"); ""
 gui += "\\n<:/select><:/span>\\n<:label class:=ccntr>Auto-shuffle <:input type:=checkbox id:=pshuf class:=aauto checked><:/label>\\n<:/div>\\n<:div class:=cfield>"; ""
 gui += "\\n<:label class:=ccntr>Rows <:input type:=text id:=trows value:=4 size:=2><:/label>"; ""
 gui += "\\n<:label class:=ccntr>Columns <:input type:=text id:=tcols value:=4 size:=2><:/label>"; ""
@@ -227,11 +227,11 @@ gui += "\\n<:input type:=button value:=\\"↻ NEW GAME\\" onclick:=gmReset()>\\n
 gui += "\\n<:table id:=gboard><:/table>\\n<:div id:=gmscor class:=cfield>Count: <:span id:=txtmvs>0<:/span><:/div>"; ""
 gui += "\\n<:div class:=cfield>\\n<:span class:=ccntr><:input type:=button value:=\\"RETRACT MOVE\\" onclick:=mvRvrs()><:/span><:span class:=ccntr><:input type:=button value:=\\"RESET COUNTER\\" onclick:=ctZero()><:/span>\\n<:/div>\\n"; ""
 
-// gwrap.remove() // ALERT: useful only if edit-testing this code
+// gwrap.remove() // ALERT: useful only if edit-testing the GUI code above
 try { gwrap } catch { ndiv = document.createElement('div'); ndiv.id = "gwrap"; ndiv.innerHTML = gui.replace(/(<):|:(=)/g, "$1$2"); cmain.appendChild(ndiv); }
 
 tnx = tcx = psh = rval = cval = max = ovr = mtrk = unsh = cxs = shxs = shuf = tarr = cras = cra2 = ""
-clrefs = [ "", "", ["#752424", "#9c3030", "#c33c3c", "#cf6363", "#db8a8a", "#e7b1b1", "#f3d8d8"], ["#856514", "#b1871b", "#dea821", "#e4ba4e", "#ebcb7a", "#f2dca6", "#f8eed3"], ["#2b506e", "#396a93", "#4785b8", "#6c9dc6", "#91b6d4", "#b6cee2", "#dae7f1"] ]; ""
+clrefs = [ "", "", ["#752424", "#9c3030", "#c33c3c", "#cf6363", "#db8a8a", "#e7b1b1", "#f3d8d8"], ["#856514", "#b1871b", "#dea821", "#e4ba4e", "#ebcb7a", "#f2dca6", "#f8eed3"], ["#2b506e", "#396a93", "#4785b8", "#6c9dc6", "#91b6d4", "#b6cee2", "#dae7f1"], ["#ff9999", "#ffcc99", "#fff099", "#99cc99", "#9999ff", "#cc99cc", "#d8bfd8"] ]; ""
 gbdGen = () => gboard.innerHTML = _.tarr.map( (e, i) => "\\n<:tr>" + e.map( (f, j) => f === 0 ? "<:td class:=blank> <:/td>" : \`<:td class:=gtile \${!_.cras ? "" : \`style:="background:\${_.cras[f]};color:\${_.cra2[f]};" \`}onclick:=tileSli(\${i},\${j})>\${f}<:/td>\` ).join("") + "<:/tr>" ).join("").replace(/(<):|:(=)/g, "$1$2"); ""
 uara = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]; ""
 urom = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]; ""
@@ -241,11 +241,11 @@ utoGre = v => { let i, codpts = []; while (v) { i = 0; while ((v - ++i) % 24); c
 nAlt = v => _.tnx == 2 ? _.utoRom(v) : _.tnx == 3 ? _.utoEng(v) : _.tnx == 4 ? _.utoGre(v) : v; ""
 posSwap = (p0, p1) => [_.tarr[p0][p1], _.tarr[p0][p1 + 1]] = [_.tarr[p0][p1 + 1], _.tarr[p0][p1]]; ""
 isSolva = () => { let ctinvs = _.shxs.filter(e => e.v).map(e => e.i + 1).reduce((a, b, i, f) => a + f.slice(i + 1).reduce((c, d) => c + (d > b ? 0 : 1), 0), 0); return (ctinvs + (_.cval % 2 === 1 ? 0 : _.rval - Math.ceil((_.shuf.indexOf(0) + 1) / _.cval))) % 2 === 0; }; ""
-clRanks = () => { _.cras = _.tcx > 1 && _.unsh.map( v => _.ovr < 0 ? _.clrefs[_.tcx][_.cxs.find(x => x === 6 || v <= _.cval || (v % _.cval > 0 && v % _.cval <= _.cval - _.rval + 1) || (v > _.cval * (1 + x) - _.rval + (1 + x) && v <= _.cval * (1 + x)) || (v - (1 + x) - (_.cval - _.rval)) % _.cval === 0)] : _.clrefs[_.tcx][_.cxs.find(x => x === 6 || v - _.ovr <= _.max * (1 + x) || (v - (1 + x)) % _.max === 0)] ); _.cra2 = _.tcx > 1 && _.unsh.map( v => _.ovr < 0 ? (v <= _.cval - _.rval || (v - 1 - (_.cval - _.rval)) % (1 + _.cval) !== 0 || v > 7 * _.cval ? 'White' : 'Gold') : v - 1 < _.ovr || (v - 1 - _.ovr) % (1 + _.max) !== 0 || v - 1 - _.ovr > 7 * _.max ? 'White' : 'Gold' ); }; ""
+clRanks = () => { _.cras = _.tcx > 1 && _.unsh.map( v => _.ovr < 0 ? _.clrefs[_.tcx][_.cxs.find(x => x === 6 || v <= _.cval || (v % _.cval > 0 && v % _.cval <= _.cval - _.rval + 1) || (v > _.cval * (1 + x) - _.rval + (1 + x) && v <= _.cval * (1 + x)) || (v - (1 + x) - (_.cval - _.rval)) % _.cval === 0)] : _.clrefs[_.tcx][_.cxs.find(x => x === 6 || v - _.ovr <= _.max * (1 + x) || (v - (1 + x)) % _.max === 0)] ); _.cra2 = _.tcx > 1 && _.unsh.map( v => _.ovr < 0 ? (v <= _.cval - _.rval || (v - 1 - (_.cval - _.rval)) % (1 + _.cval) !== 0 || v > 7 * _.cval ? 'White' : tcx < 5 ? 'Gold' : 'LimeGreen') : v - 1 < _.ovr || (v - 1 - _.ovr) % (1 + _.max) !== 0 || v - 1 - _.ovr > 7 * _.max ? 'White' : tcx < 5 ? 'Gold' : 'LimeGreen' ); }; ""
 
+window.tileSli = (rx, cx, bkup) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (_.tarr[p0] || "")[p1] === 0); !bl || (bkup || _.mtrk.push([bl[0], bl[1]])) && ([_.tarr[bl[0]][bl[1]], _.tarr[rx][cx]] = [_.tarr[rx][cx], 0]) && ( txtmvs.innerHTML = "" + _.tarr !== "" + _.unsh ? _.mtrk.length + " moves" : ("<:em>Puzzle solved in " + _.mtrk.length + " moves!<:/em>").replace(/(<):/g, "$1") ) && _.gbdGen(); }; ""
 window.mvRvrs = () => !(_.mtrk || "").length || tileSli(... _.mtrk.pop(), 1); ""
 window.ctZero = () => (_.mtrk = []) && (txtmvs.innerHTML = 0); ""
-window.tileSli = (rx, cx, bkup) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (_.tarr[p0] || "")[p1] === 0); !bl || (bkup || _.mtrk.push([bl[0], bl[1]])) && ([_.tarr[bl[0]][bl[1]], _.tarr[rx][cx]] = [_.tarr[rx][cx], 0]) && ( txtmvs.innerHTML = "" + _.tarr !== "" + _.unsh ? _.mtrk.length + " moves" : ("<:em>Puzzle solved in " + _.mtrk.length + " moves!<:/em>").replace(/(<):/g, "$1") ) && _.gbdGen(); }; ""
 window.gmReset = () => { _.tnx = tnmrl.selectedIndex; _.tcx = tclrs.selectedIndex; _.psh = pshuf.checked; _.rval = +trows.value; _.cval = +tcols.value; _.max = _.rval <= _.cval ? _.rval : _.cval; _.ovr = (_.rval - _.cval) * _.max; _.mtrk = []; txtmvs.innerHTML = 0; _.unsh = Array.from(Array(_.rval * _.cval).keys()); _.cxs = Array.from(Array(_.max > 7 ? 7 : _.max).keys()); _.clRanks(); _.unsh = _.unsh.slice(1).map(_.nAlt).concat(0); !_.tnx || (_.cras = Object.fromEntries(_.unsh.map((v, i) => [v, _.cras[i + 1]]))) && (_.cra2 = Object.fromEntries(_.unsh.map((v, i) => [v, _.cra2[i + 1]]))); _.shxs = _.unsh.map((v, i) => ({ i, v, o: Math.random() })).sort((a, b) => !_.psh || a.o - b.o); _.shuf = _.shxs.map(e => e.v); _.tarr = Array.from(Array(_.rval)).map(() => _.shuf.splice(0, _.cval)); _.shuf = _.tarr.flat(); _.isSolva() || (_.shuf[0] && _.shuf[1] ? _.posSwap(0, 0) : _.posSwap(_.rval - 1, _.cval - 2)); _.gbdGen(); }; ""
 gmReset()
 
