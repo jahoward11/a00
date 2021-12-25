@@ -205,12 +205,14 @@ we can appreciate just why layout and design matter when coding.
 __*Tutorial Two: Building a sliding-tiles puzzle (and other games)*__
 */
 
-gui = "\\n<:style>\\nhr { margin: 1.5rem 0; }"; ""
+gui = "\\n<:style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
+gui += "\\nhtml { box-sizing: border-box; }"; ""
+gui += "\\nhr { margin: 1.5rem 0; }"; ""
 gui += "\\n#gwrap { font: normal medium Helvetica, Arial, sans-serif; }"; ""
 gui += "\\n#gwrap .cfield:not(:last-child) { margin-bottom: 8px; }"; ""
 gui += "\\n#gwrap .ccntr:not(:last-child) { margin-right: 8px; }"; ""
 gui += "\\n#gwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }"; ""
-gui += "\\n#gwrap .blank, #gwrap .gtile { width: 58px; height: 58px; border: 4px solid White; }"; ""
+gui += "\\n#gwrap .blank, #gwrap .gtile { width: 60px; height: 60px; border: 4px solid White; }"; ""
 gui += "\\n#gwrap .gtile { background: LightSteelBlue; color: White; font-size: large; font-weight: bold; cursor: pointer; text-align: center; }"; ""
 gui += "\\n#trows, #tcols { max-width: 36px; }"; ""
 gui += "\\n#gboard { width: auto; margin: 14px; border-collapse: collapse; }"; ""
