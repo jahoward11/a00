@@ -399,7 +399,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], 
     let anew = document.createElement('a'),
       chtml = '<!DOCTYPE html>\n<html lang="en">\n<head>\n'
       + (document.querySelector('#ecorender') || document.documentElement).innerHTML
-        .replace(/\n+$|^\n+|^<head>\n?|^#cmain \.cfield[^]+?\n(?=@media print {\n)|,\n *xsetLoad = [^]+?(?=;\nwindow\.location\.search)|^ *!\/\^http.+slistRegen[^]+?;\n|\n*<script\b.*><\/script>(?=$|<\/body>)|\n?<\/body>$/gim, "")
+        .replace(/\n+$|^\n+|^<head>\n?|^#cmain \.iwarn[^]+?\n(?=@media print {\n)|,\n *xsetLoad = [^]+?(?=;\nwindow\.location\.search)|^ *!\/\^http.+slistRegen[^]+?;\n|\n*<script\b.*><\/script>(?=$|<\/body>)|\n?<\/body>$/gim, "")
         .replace(/^(<\/style>)[^]*?(?=<div .+><\/div>$)/im, "$1\n</head>\n<body>\n")
         .replace(/^(<xmp id="dinput".*?>)[^]*?(?=<\/xmp>)/im, (m, c1) => c1 + "\n" + dinp2.value + "\n")
         .replace(/^(<pre id="preresp">)[^]*?(?=<\/pre>)/im, "$1")
