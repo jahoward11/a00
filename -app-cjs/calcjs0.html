@@ -238,7 +238,10 @@ body {
 }
 #cmain .cfield:not(:last-child) { margin-bottom: 8px; }
 #cmain .ccntr:not(:last-child) { margin-right: 8px; }
-#cmain :not(.cfield)>.ccntr { margin-bottom: 8px; }
+#cmain :not(.cfield)>:not(.cfield)>.ccntr {
+  display: inline-block;
+  margin-bottom: 8px;
+}
 #cmain .addns>.ccntr { margin-right: 0; }
 #cmain .cfield>.help {
   font-size: 12px;
