@@ -221,11 +221,10 @@ body {
   white-space: nowrap;
 }
 #cgrid.xpndq2B>#plist { display: none; }
-#cmain .cfield:not(:last-child) { margin-bottom: 8px; }
-#cmain .cfield .iwarn { color: Orange; }
-#cmain .cfield .isucc { color: CornFlowerBlue; }
-#cmain .cfield .slist { position: relative; }
-#cmain .cfield .slist::after {
+#cmain .iwarn { color: Orange; }
+#cmain .isucc { color: CornFlowerBlue; }
+#cmain .slist { position: relative; }
+#cmain .slist::after {
   position: absolute;
   top: 8px;
   right: 8px;
@@ -237,18 +236,20 @@ body {
   opacity: 0.5;
   pointer-events: none;
 }
-#cmain .cfield>.ccntr:not(:last-child) { margin-right: 8px; }
-#cmain .cfield>.addns>.ccntr { margin-right: 0; }
-#cmain .cfield #xsetinp { width: 168px; }
-#cmain .cfield #xsetlist {
-  width: 24px;
-  cursor: pointer;
-}
+#cmain .cfield:not(:last-child) { margin-bottom: 8px; }
+#cmain .ccntr:not(:last-child) { margin-right: 8px; }
+#cmain :not(.cfield)>.ccntr { margin-bottom: 8px; }
+#cmain .addns>.ccntr { margin-right: 0; }
 #cmain .cfield>.help {
   font-size: 12px;
   margin-top: 4px;
 }
 #cmain .cfield>.help:not(.is-hidden) { display: block; }
+#cmain #xsetinp { width: 168px; }
+#cmain #xsetlist {
+  width: 24px;
+  cursor: pointer;
+}
 @media print {
   body { padding: 0; }
   #cgrid>#quad1A { box-shadow: inset 0 -1px LightGrey; }
