@@ -213,7 +213,7 @@ gui += "\\n#gwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8
 gui += "\\n#gwrap .blank, #gwrap .gtile { width: 58px; height: 58px; border: 4px solid White; }"; ""
 gui += "\\n#gwrap .gtile { background: LightSteelBlue; color: White; font-size: large; font-weight: bold; cursor: pointer; text-align: center; }"; ""
 gui += "\\n#trows, #tcols { max-width: 36px; }"; ""
-gui += "\\n#gboard { width: auto; margin: 0 14px 14px; border-collapse: collapse; }"; ""
+gui += "\\n#gboard { width: auto; margin: 14px; border-collapse: collapse; }"; ""
 gui += "\\n#gmscor { font-size: small; margin-left: 16px; }"; ""
 gui += "\\n#txtmvs { font-weight: bold; }"; ""
 gui += "\\n<:/style>\\n<:hr>\\n<:h4 class:=cfield>Sliding Tiles<:/h4>"; ""
