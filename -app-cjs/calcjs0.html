@@ -449,15 +449,14 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], 
     let $ = {}, _ = {}, _ks = [], rslt,
       xprsns = (dinp2.value || "")
         .replace(/^\/\*\n?([^]*?)\n?\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
-        .replace(/^((?:[^\n\/]|\/(?!\/))*?)(?:<!--[^]*?-->|<script\b.*?>[^]*?<\/script>)/gim, "$1")
-        .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/<\/?\b.+?>/g, ""))
+        .replace(/^((?:[^\n\/]|\/(?!\/))*?)(?:<!--.*\n[^]*?-->)/gim, "$1") //|<script\b.*?>.*\n[^]*?<\/script>
         .replace(/&Tab;/g, "\t").replace(/(?:[^$.\wÀ-Ͽ]|^)\$(?=[$_a-zÀ-Ͽ])/gi, "$&.")
         .split("\n"),
       reslts = xprsns.map(xpr => {
         try {
           xpr = xpr && xpr
-          .replace( /^(?=[\t ]*{)|^.*?(?=\/\/|\(? *function\b[ \w]*\([^]*?\) *{|\(? *(?:[$\wÀ-Ͽ]+|\([^]*?\)) *=>|$)/g,
-            m0 => m0.replace( /( |^)(?:_\.|)([$_a-zÀ-Ͽ][$\wÀ-Ͽ]*)(?= *=)/gi,
+          .replace( /^(?=[\t ]*{)|^.*?(?=\/\/|<\/?\b[ \w\\,:;'"#=-]+>|\(? *function\b[ \w]*\(.*?\) *{|\(? *(?:[$\wÀ-Ͽ]+|\(.*?\)) *=>|$)/g,
+            m0 => m0.replace( /( |^)(?:_\.|)([$_a-zÀ-Ͽ][$\wÀ-Ͽ]*)(?=\s*=\s*[$\wÀ-Ͽ.'"`({\[])/gi,
               (m1, c1, c2) => _ks.push(c2) && c1 + "_." + c2 )
             .replace( /([\t =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([$_](?!\.)[$\wÀ-Ͽ]*|[A-Za-zÀ-Ͽ][$\wÀ-Ͽ]*)(?! *=)/g,
               (m1, c1, c2) => window[c2] || !_ks.some(k => k === c2) ? m1 : c1 + "_." + c2 ) );
@@ -480,7 +479,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], 
     quad2A.innerHTML = reslts.join("\n").replace(/\n$/, "\n&nbsp;")
       + '<span id="dinitl">Line-expression<br />RESULTS</span>';
     quad2B.innerHTML = xprsns.map( xpr => xpr
-      .replace(/&(?=[gl]t;|#x0*[ad];|NewLine;)/gi, "&amp;").replace(/<(?=\/?\w)/g, "&lt;")
+      .replace(/&(?=[gl]t;|#x0*[ad];|NewLine;)/gi, "&amp;").replace(/<(?=\/?\w|!--)/g, "&lt;")
       .replace( /\/\/ *(.*?) *$/, (m, c1) =>
         "<span class=dnote>" + c1
         .replace(/(\W|\d|^)_([0-9a-zÀ-Ͽ]+)_(?=$|\W|\d)/gi, "$1<strong><em>$2</em></strong>")
@@ -561,10 +560,10 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], 
       dinp2.value = quad2B.innerHTML
       .replace(/<(\w+)>\s*<\/\1>/g, "")
       .replace(/(?:(?:<br>|)<\/div>|<br>|)<div><br><\/div>|(?:(?:<br>|)<\/div>|<br>|\n|)<div>|<br>/gi, "\n")
-      .replace(/<\/?\b[ \w,:;"#=-]+>|\n+$|^\n+/g, "")
+      .replace(/\n+$|^\n+/g, "")
       .replace(/&gt;/gi, ">").replace(/&lt;/gi, "<").replace(/&quot;/gi, "\"")
       .replace(/&amp;&amp;/gi, "&&").replace(/&amp;(?:amp;(?!Tab;)|)(?=#?\w+;)/gi, "&")
-      .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/&amp;/g, "&").replace(/\\t/g, "\t"));
+      .replace( /^.*?(?=\/\/|$)/gm, m => m.replace(/&amp;/g, "&").replace(/\\t/g, "\t"));
       xprsEval();
     }
   },
