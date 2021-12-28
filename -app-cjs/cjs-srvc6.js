@@ -299,10 +299,10 @@ gmReset();
       (beginning with \`tnx = …\` and ending with \`gmReset();\`).
     + Unload the tutorial (clear *ENTRY* field) and paste the copied
       text into the empty *ENTRY* field of the calculator app.
-    + Wrap the copied text with JS block-comment tags (\`/* … */\`).
+    + Wrap the pasted text with JS block-comment tags (\`/* … */\`).
       In other words, in the *ENTRY* field, type \`/*\` into a blank
-      line before the rest of the text and \`*/\` into a blank line
-      after all of the text.
+      line before all of the text and \`*/\` into a blank line after
+      all of the text.
     + Type \`tutor2js\` into the *DATA-LOAD* input box (directly under
       the calculator), and tap *SAVE*.
     + Reload this tutorial, and un-comment the following two lines
