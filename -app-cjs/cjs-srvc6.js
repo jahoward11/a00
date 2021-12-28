@@ -290,6 +290,7 @@ gmReset();
 // dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Sliding Tiles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n", "\\n<script type=module>\\n", "\\n</script>\\n</html>"]; ""
 // respShow((dwrap[0] + gwrap.outerHTML + dwrap[1] + dwrap[2]).replace(/\\n<hr>/, "").replace(/<(?=[!/?a-z])/gi, "&lt;"))
 
+/*
  3. Add in the puzzle's inner logic (its "script", extracted from the
     tutorial code) to __turn a static web doc into a dynamic web app__
     -- an interactive game.
@@ -313,6 +314,7 @@ gmReset();
     + *Note:* When opened up in a web browser, the web app should be
       responsive and the game should work as expected. If not, try it
       again: Begin fresh and repeat all procedures of steps 2 and 3.
+*/
 
 // preresp.innerHTML = ""
 // localforage.getItem("tutor2js").then( rslt => respShow( "let " + rslt.replace(/\\b_\\.\\b| ""$|^\\n|^\\/\\*\\n*|\\n*\\*\\/$/gm, "").replace(/^.+/, m => m.replace(/ =/g, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,").replace(/<(?=[!/?a-z])/gi, "&lt;") )).catch(respShow)
