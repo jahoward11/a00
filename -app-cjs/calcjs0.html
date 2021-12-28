@@ -449,7 +449,6 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], 
     let $ = {}, _ = {}, _ks = [], rslt,
       xprsns = (dinp2.value || "")
         .replace(/^\/\*\n?([^]*?)\n?\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
-        .replace(/^((?:[^\n\/]|\/(?!\/))*?)(?:<!--.*\n[^]*?-->)/gim, "$1") //|<script\b.*?>.*\n[^]*?<\/script>
         .replace(/&Tab;/g, "\t").replace(/(?:[^$.\wÀ-Ͽ]|^)\$(?=[$_a-zÀ-Ͽ])/gi, "$&.")
         .split("\n"),
       reslts = xprsns.map(xpr => {
@@ -541,8 +540,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], 
         rnge = rnge < 0.15 ? 0 : rnge > 0.85 ? 1 : rnge;
         document.querySelector('#screenmask').className = plist.className = "";
         q2Bcopy = quad2B.innerHTML;
-        quad2B.innerHTML = (dinp2.value || "")
-        .replace(/&(?=#?\w+;)/g, "&amp;").replace(/&(?=amp;[gl]t;)/gi, "&amp;")
+        quad2B.innerHTML = (dinp2.value || "").replace(/&(?=#?\w+;)/g, "&amp;")
         .replace(/<(?=\/?\w|!--)/g, "&lt;") + (!dinp2.value ? "" : "\n<br>");
         !(di2html = quad2B.innerHTML)
         || window.getSelection().setPosition( quad2B.firstChild, !rnge ? 0
@@ -557,13 +555,8 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], 
       xsethlps.forEach(e => e.classList.add("is-hidden"));
       document.querySelector('#screenmask').className = plist.className = "is-hidden";
       q2Bcopy = di2html = null;
-      dinp2.value = quad2B.innerHTML
-      .replace(/<(\w+)>\s*<\/\1>/g, "")
-      .replace(/(?:(?:<br>|)<\/div>|<br>|)<div><br><\/div>|(?:(?:<br>|)<\/div>|<br>|\n|)<div>|<br>/gi, "\n")
-      .replace(/\n+$|^\n+/g, "")
-      .replace(/&gt;/gi, ">").replace(/&lt;/gi, "<").replace(/&quot;/gi, "\"")
-      .replace(/&amp;&amp;/gi, "&&").replace(/&amp;(?:amp;(?!Tab;)|)(?=#?\w+;)/gi, "&")
-      .replace( /^.*?(?=\/\/|$)/gm, m => m.replace(/&amp;/g, "&").replace(/\\t/g, "\t"));
+      dinp2.value = quad2B.innerText.replace(/\n+$|^\n+/g, "")
+      .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/\\t/g, "\t"));
       xprsEval();
     }
   },
