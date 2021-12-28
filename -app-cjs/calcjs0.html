@@ -43,9 +43,6 @@ body {
 #cmain sub { bottom: -0.25em; }
 #cmain sup { top: -0.5em; }
 #cmain button, #cmain input, #cmain select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
   background: #f9f9f9;
   color: Grey;
   font-size: 14px;
@@ -57,13 +54,13 @@ body {
   border-radius: 0;
   vertical-align: top;
 }
-#cmain .aauto {
-  -webkit-appearance: revert;
-  -moz-appearance: revert;
-  appearance: auto;
-}
 #cmain input::placeholder { opacity: 0.5; }
-#cmain select:not(.aauto)::-ms-expand { display: none; }
+#cmain select.anone {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+#cmain select.anone::-ms-expand { display: none; }
 #cmain pre {
   background-color: unset;
   color: unset;
@@ -283,7 +280,7 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
 </xmp>
 <h4 id="cheadg">JavaScript Calculator</h4>
 <pre id="preresp"></pre>
-<span id="mctnr"><select id="menulist" title="CalcJS View Options">
+<span id="mctnr"><select id="menulist" class="anone" title="CalcJS View Options">
   <option></option>
   <option>&nbsp;&pm; Lock/unlock screen zoom</option>
   <option>&hellip; Rename doc TITLE</option>
@@ -299,7 +296,7 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
 </div>
 <div class="cfield">
   <span class="addns ccntr"><span class="ccntr">
-    <input type="text" id="xsetinp" placeholder="Load expression set&hellip;" /></span><span class="ccntr slist"><select id="xsetlist" title="CalcJS Data Storage">
+    <input type="text" id="xsetinp" placeholder="Load expression set&hellip;" /></span><span class="ccntr slist"><select id="xsetlist" class="anone" title="CalcJS Data Storage">
     </select></span></span><span class="ccntr"><button id="xbtnsav">
     <span class="isucc">&#x267a;</span> SAVE</button></span><span class="ccntr"><button id="xbtndel">
     <span class="iwarn">&#x2715;</span> DEL</button></span>
@@ -335,9 +332,9 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], 
   xsethlps = document.querySelectorAll('#cmain .cfield>.help'),
   dinp2 = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
     || { value: dinput.innerHTML.replace(/\n+$|^\n+/g, "") },
-  respShow = resp => preresp.innerHTML
+  respShow = resp => { preresp.innerHTML
     += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
-      ? resp : JSON.stringify(resp, null, 2) ) + "\n\n",
+      ? resp : JSON.stringify(resp, null, 2) ) + "\n\n" },
   zoomTog = zoff => metavp.setAttribute( 'content', "width=device-width, "
     + (zoff || /maximum-/.test(metavp.content) ? "initial-scale=1" : "maximum-scale=1") ),
   titSave = (evt, tnew) => {
@@ -478,7 +475,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], 
     quad2A.innerHTML = reslts.join("\n").replace(/\n$/, "\n&nbsp;")
       + '<span id="dinitl">Line-expression<br />RESULTS</span>';
     quad2B.innerHTML = xprsns.map( xpr => xpr
-      .replace(/&(?=[gl]t;|#x0*[ad];|NewLine;)/gi, "&amp;").replace(/<(?=\/?\w|!--)/g, "&lt;")
+      .replace(/&(?=[gl]t;|#x0*[ad];|NewLine;)/gi, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;")
       .replace( /\/\/ *(.*?) *$/, (m, c1) =>
         "<span class=dnote>" + c1
         .replace(/(\W|\d|^)_([0-9a-zÀ-Ͽ]+)_(?=$|\W|\d)/gi, "$1<strong><em>$2</em></strong>")
@@ -541,7 +538,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], 
         document.querySelector('#screenmask').className = plist.className = "";
         q2Bcopy = quad2B.innerHTML;
         quad2B.innerHTML = (dinp2.value || "").replace(/&(?=#?\w+;)/g, "&amp;")
-        .replace(/<(?=\/?\w|!--)/g, "&lt;") + (!dinp2.value ? "" : "\n<br>");
+        .replace(/<(?=[!/?a-z])/gi, "&lt;") + (!dinp2.value ? "" : "\n<br>");
         !(di2html = quad2B.innerHTML)
         || window.getSelection().setPosition( quad2B.firstChild, !rnge ? 0
           : quad2B.textContent.indexOf("\n", quad2B.textContent.length * rnge - 1) + 1 );
