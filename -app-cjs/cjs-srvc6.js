@@ -285,7 +285,7 @@ gmReset();
       be responsive because it does not yet have the script code.
 */
 
-// dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Sliding Tiles</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n", "\\n<script type=module>\\n", "\\n</script>\\n</html>"]; ""
+// dwrap = ["&lt;!DOCTYPE html>\\n<html lang=en>\\n<title>Sliding Tiles</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n", "\\n<script type=module>\\n", "\\n</script>\\n</html>"]; ""
 // respShow((dwrap[0] + gwrap.outerHTML + dwrap[1] + dwrap[2]).replace(/\\n<hr>/, "").replace(/</g, "&lt;")); ""
 
 
