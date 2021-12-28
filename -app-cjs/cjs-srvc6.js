@@ -263,8 +263,9 @@ gmReset();
       in which strings of HTML and CSS text are cumulatively assigned
       to the GUI variable (\`gui += " … "\`).
     + As you can see below, the entire GUI string was injected into
-      the web doc -- where it will remain unchanged, as it was so
-      designed, until it gets altered (overwritten) by a script.
+      the web doc -- where it will remain unchanged (even when the
+      tutorial is unloaded), just as it was first designed, until it
+      gets altered (overwritten) by a script.
     + *Challenge:* Un-comment the \`gwrap.remove()\` line, above,
       and make edits to the GUI, such as:
       * changing the \`.gtile\` background color to \`Pink\`;
@@ -274,9 +275,10 @@ gmReset();
       * setting the starting value of the number of rows and columns
         to three (tip: \`<input … value=3 … >\`).
 
- 2. Detach the GUI from the calculator app and
+ 2. Reproduce the GUI from the calculator-app tutorial code and
     __begin building a standalone web app__.
-    + Un-comment the following two lines of code.
+    + Un-comment the following two lines of code to generate the
+      web-doc text.
     + Select and copy the orange text that appears above
       the calculator.
     + Paste the text into a new text file; Give the file any filename
