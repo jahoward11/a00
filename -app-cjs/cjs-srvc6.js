@@ -181,8 +181,8 @@ uConv("MCXI")
 ucShow = () => ucout.value = _.uConv(!/^-?(?:\\d+|\\d*\\.\\d+)(?:e-?\\d+|)|^-?0x[\\da-f]+$/i.test(ucinp.value) ? ucinp.value : +ucinp.value, ulist0.value, ulist1.value); ""
 opts = ["", "inches", "feet", "yards", "miles", "meters", "ft/s", "mph", "m/s", "km/h", "Fahrenheit", "Celsius", "Kelvin"].map(e => "<option>" + e + "</option>").join("\\n"); ""
 ucui = "\\n<hr style=\\"margin: 1.5rem 0;\\">\\n<h4 class=cfield>Unit Converter</h4>"; ""
-ucui += "\\n<div class=cfield><span class=ccntr><input type=text id=ucinp placeholder=\\"Enter measurement…\\" /></span><span class=ccntr><select id=ulist0 class=aauto>\\n"; ""
-ucui += opts + "\\n</select></span></div>\\n<div class=cfield><span class=ccntr><input type=text id=ucout readonly /></span><span class=ccntr><select id=ulist1 class=aauto>\\n"; ""
+ucui += "\\n<div class=cfield><span class=ccntr><input type=text id=ucinp placeholder=\\"Enter measurement…\\" /></span><span class=ccntr><select id=ulist0>\\n"; ""
+ucui += opts + "\\n</select></span></div>\\n<div class=cfield><span class=ccntr><input type=text id=ucout readonly /></span><span class=ccntr><select id=ulist1>\\n"; ""
 ucui += opts + "\\n</select></span></div>"; ""
 // try { ucwrap } catch { ndiv = document.createElement('div'); ndiv.id = "ucwrap"; ndiv.innerHTML = ucui; cmain.appendChild(ndiv); }
 // [ucinp, ulist0, ulist1].forEach((e, i) => e[!i ? 'onblur' : 'onchange'] = _.ucShow)
@@ -219,11 +219,11 @@ gui += "\\n#gboard { width: auto; margin: 14px; border-collapse: collapse; }"; "
 gui += "\\n#gmscor { font-size: small; margin-left: 16px; }"; ""
 gui += "\\n#txtmvs { font-weight: bold; }"; ""
 gui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Sliding Tiles</h4>"; ""
-gui += "\\n<div>\\n<span class=ccntr><select id=tnmrl class=aauto>\\n<option disabled>Characters</option>\\n"; ""
+gui += "\\n<div>\\n<span class=ccntr><select id=tnmrl>\\n<option disabled>Characters</option>\\n"; ""
 gui += ["1 2 3 4 …", "I II III IV …", "A B C D …", "Α Β Γ Δ …"].map(e => "<option>" + e + "</option>").join("\\n"); ""
-gui += "\\n</select></span><span class=ccntr><select id=tclrs class=aauto>\\n<option disabled>Color Cascades</option>\\n"; ""
+gui += "\\n</select></span><span class=ccntr><select id=tclrs>\\n<option disabled>Color Cascades</option>\\n"; ""
 gui += ["No gradient", "Red gradient", "Gold gradient", "Blue gradient", "Rainbow pattern"].map(e => "<option>" + e + "</option>").join("\\n"); ""
-gui += "\\n</select></span>\\n<label class=ccntr>Auto-shuffle <input type=checkbox id=pshuf class=aauto checked></label>\\n</div>\\n<div>"; ""
+gui += "\\n</select></span>\\n<label class=ccntr>Auto-shuffle <input type=checkbox id=pshuf checked></label>\\n</div>\\n<div>"; ""
 gui += "\\n<label class=ccntr>Rows <input type=text id=trows value=4 size=2></label>"; ""
 gui += "\\n<label class=ccntr>Columns <input type=text id=tcols value=4 size=2></label>"; ""
 gui += "\\n<span class=ccntr><input type=button value=\\"↻ NEW GAME\\" onclick=gmReset()></span>\\n</div>"; ""
@@ -247,7 +247,7 @@ isSolva = () => { let ctinvs = _.shxs.filter(e => e.v).map(e => e.i + 1).reduce(
 posSwap = (p0, p1) => [_.tarr[p0][p1], _.tarr[p0][p1 + 1]] = [_.tarr[p0][p1 + 1], _.tarr[p0][p1]]; ""
 gbdGen = () => gboard.innerHTML = _.tarr.map( (e, i) => "\\n<tr>" + e.map( (f, j) => f === 0 ? "<td class=blank> </td>" : \`<td class=gtile \${!_.cras ? "" : \`style="background:\${_.cras[f]};color:\${_.cr2s[f]};" \`}onclick=tileSli(\${i},\${j})>\${f}</td>\` ).join("") + "</tr>" ).join("") + "\\n"; ""
 
-window.gmReset = () => { _.tnx = tnmrl.selectedIndex; _.tcx = tclrs.selectedIndex; _.psh = pshuf.checked; _.rval = +trows.value; _.cval = +tcols.value; _.max = _.rval <= _.cval ? _.rval : _.cval; _.ovr = (_.rval - _.cval) * _.max; _.mtrk = []; txtmvs.innerHTML = 0; _.unsh = Array.from(Array(_.rval * _.cval).keys()); _.cxs = Array.from(Array(_.max > 7 ? 7 : _.max).keys()); _.tcx < 2 || ([_.cras, _.cr2s] = [_.clRanks(), _.clRnk2s()]); _.unsh = _.unsh.slice(1).map(_.nAlt).concat(0); _.tnx < 2 || ([_.cras, _.cr2s] = [_.cras, _.cr2s].map(e => Object.fromEntries(_.unsh.map((v, i) => [v, e[i + 1]])))); _.shxs = _.unsh.map((v, i) => ({ i, v, o: Math.random() })).sort((a, b) => !_.psh || a.o - b.o); _.shuf = _.shxs.map(e => e.v); _.tarr = Array.from(Array(_.rval)).map(() => _.shuf.splice(0, _.cval)); _.shuf = _.tarr.flat(); _.isSolva() || (_.shuf[0] && _.shuf[1] ? _.posSwap(0, 0) : _.posSwap(_.rval - 1, _.cval - 2)); _.gbdGen(); }; ""
+window.gmReset = () => { _.tnx = tnmrl.selectedIndex; _.tcx = tclrs.selectedIndex; _.psh = pshuf.checked; _.rval = +trows.value; _.cval = +tcols.value; _.max = _.rval <= _.cval ? _.rval : _.cval; _.ovr = (_.rval - _.cval) * _.max; _.mtrk = []; txtmvs.innerHTML = 0; _.unsh = Array.from(Array(_.rval * _.cval).keys()); _.cxs = Array.from(Array(_.max > 7 ? 7 : _.max).keys()); [_.cras, _.cr2s] = _.tcx < 2 ? [0, 0] : [_.clRanks(), _.clRnk2s()]; _.unsh = _.unsh.slice(1).map(_.nAlt).concat(0); _.tcx < 2 || ([_.cras, _.cr2s] = [_.cras, _.cr2s].map(e => Object.fromEntries(_.unsh.map((v, i) => [v, e[i + 1]])))); _.shxs = _.unsh.map((v, i) => ({ i, v, o: Math.random() })).sort((a, b) => !_.psh || a.o - b.o); _.shuf = _.shxs.map(e => e.v); _.tarr = Array.from(Array(_.rval)).map(() => _.shuf.splice(0, _.cval)); _.shuf = _.tarr.flat(); _.isSolva() || (_.shuf[0] && _.shuf[1] ? _.posSwap(0, 0) : _.posSwap(_.rval - 1, _.cval - 2)); _.gbdGen(); }; ""
 window.tileSli = (rx, cx, bkup) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (_.tarr[p0] || "")[p1] === 0); !bl || (bkup || _.mtrk.push([bl[0], bl[1]])) && ([_.tarr[bl[0]][bl[1]], _.tarr[rx][cx]] = [_.tarr[rx][cx], 0]) && ( txtmvs.innerHTML = "" + _.tarr !== "" + _.unsh ? _.mtrk.length + " moves" : "<em>Puzzle solved in " + _.mtrk.length + " moves!</em>" ) && _.gbdGen(); }; ""
 window.mvRvrs = () => !(_.mtrk || "").length || tileSli(... _.mtrk.pop(), 1); ""
 window.ctZero = () => (_.mtrk = []) && (txtmvs.innerHTML = 0); ""
@@ -260,35 +260,62 @@ gmReset();
       controllers (\`<div><span class=ccntr> … </span></div>\`), and
       the game-board display (\`<table id=gboard> … </table>\`).
     + The GUI, below, is built from the leading block of code, above,
-      in which strings of HTML and CSS text are cumulatively assigned
-      to the GUI variable (\`gui += " … "\`).
+      in which strings of HTML/CSS text are cumulatively assigned to
+      the GUI variable (\`gui += " … "\`).
     + As you can see below, the entire GUI string was injected into
       the web doc -- where it will remain unchanged (even when the
       tutorial is unloaded), just as it was first designed, until it
       gets altered (overwritten) by a script.
     + *Challenge:* Un-comment the \`gwrap.remove()\` line, above,
       and make edits to the GUI, such as:
-      * changing the \`.gtile\` background color to \`Pink\`;
+      * changing the \`.gtile\` background color to \`Pink\` or \`Tan\`;
       * changing the game-board title to "My First Web Game";
       * unchecking the "Auto-shuffle" checkbox
         (tip: remove the word \`checked\` in the \`<input … >\` tag);
       * setting the starting value of the number of rows and columns
-        to three (tip: \`<input … value=3 … >\`).
+        each to three (tip: \`<input … value=3 … >\`).
 
- 2. Reproduce the GUI from the calculator-app tutorial code and
+ 2. Reproduce the GUI from the calculator-app tutorial code, and
     __begin building a standalone web app__.
     + Un-comment the following two lines of code to generate the
-      web-doc text.
+      web-doc text that will be the app framework.
     + Select and copy the orange text that appears above
       the calculator.
-    + Paste the text into a new text file; Give the file any filename
-      and an HTML extension (e.g., \`jsgame-tiles.html\`).
+    + Paste the copied text into a new text file; Give the file any
+      filename with an HTML extension (e.g., \`jsgame-tiles.html\`).
     + *Note:* When opened up in a web browser, the web app will not
-      be responsive because it does not yet have the script code.
+      be responsive because it does not yet have any script code.
 */
 
-// dwrap = ["&lt;!DOCTYPE html>\\n<html lang=en>\\n<title>Sliding Tiles</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n", "\\n<script type=module>\\n", "\\n</script>\\n</html>"]; ""
-// respShow((dwrap[0] + gwrap.outerHTML + dwrap[1] + dwrap[2]).replace(/\\n<hr>/, "").replace(/</g, "&lt;")); ""
+// dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Sliding Tiles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n", "\\n<script type=module>\\n", "\\n</script>\\n</html>"]; ""
+// respShow((dwrap[0] + gwrap.outerHTML + dwrap[1] + dwrap[2]).replace(/\\n<hr>/, "").replace(/<(?=[!/?a-z])/gi, "&lt;"))
+
+ 3. Add in the puzzle's inner logic (its "script", extracted from the
+    tutorial code) to __turn a static web doc into a dynamic web app__
+    -- an interactive game.
+    *ALERT:* Read through all of these procedures before starting.
+    + Select and copy the 3rd and 4th blocks of code, above
+      (beginning with \`tnx = …\` and ending with \`gmReset();\`).
+    + Unload the tutorial (clear *ENTRY* field) and paste the copied
+      text into the empty *ENTRY* field of the calculator app.
+    + Wrap the copied text with JS block-comment tags (\`/* … */\`).
+      In other words, in the *ENTRY* field, type \`/*\` into a blank
+      line before the rest of the text and \`*/\` into a blank line
+      after all of the text.
+    + Type \`tutor2js\` into the *DATA-LOAD* input box (directly under
+      the calculator), and tap *SAVE*.
+    + Reload this tutorial, and un-comment the following two lines
+      of code.
+    + Select and copy the orange text that appears above
+      the calculator.
+    + Paste the copied text inside the \`<script> … </script>\` tags of
+      the new HTML file created in step 2, then re-save the file.
+    + *Note:* When opened up in a web browser, the web app should be
+      responsive and the game should work as expected. If not, try it
+      again: Begin fresh and repeat all procedures of steps 2 and 3.
+
+// preresp.innerHTML = ""
+// localforage.getItem("tutor2js").then( rslt => respShow( "let " + rslt.replace(/\\b_\\.\\b| ""$|^\\n|^\\/\\*\\n*|\\n*\\*\\/$/gm, "").replace(/^.+/, m => m.replace(/ =/g, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,").replace(/<(?=[!/?a-z])/gi, "&lt;") )).catch(respShow)
 
 
 /*
