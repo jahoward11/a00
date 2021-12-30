@@ -135,7 +135,7 @@ body {
   width: 24px;
   height: 20px;
 }
-#cmain>#cgrid {
+#cmain>#cgrid:not(.is-hidden) {
   position: relative;
   display: grid;
   grid-template-columns: 168px 1fr;
@@ -245,8 +245,8 @@ body {
   margin-top: 4px;
 }
 #cmain .cfield>.help:not(.is-hidden) { display: block; }
-#cmain #xsetinp { width: 168px; }
-#cmain #xsetlist {
+#xctrls #xsetinp { width: 168px; }
+#xctrls #xsetlist {
   width: 24px;
   cursor: pointer;
 }
@@ -255,7 +255,7 @@ body {
   #cgrid>#quad1A { box-shadow: inset 0 -1px LightGrey; }
   #cgrid>#quad1B { box-shadow: inset 0 -1px LightSteelBlue; }
   #cmain>#mctnr, #cgrid #dfinal, #cgrid #dinitl,
-  #cmain>.cfield:not(#cgrid) { display: none; }
+  #cmain>#xctrls { display: none; }
 }
 @media print and (resolution: 300dpi) and (width: 2572px), /* Pixel2, mode:desktop */
 print and (resolution: 300dpi) and (width: 555px), /* Pixel2, mode:mobile */
@@ -284,6 +284,7 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
   <option></option>
   <option>&nbsp;&pm; Lock/unlock screen zoom</option>
   <option>&hellip; Rename doc TITLE</option>
+  <option>&odash; Show/hide calculator</option>
   <option>&nbsp;&vArr; Expand/collapse FINAL VALUES row</option>
   <option>&hArr; Expand/collapse RESULTS column</option>
   <option>&thinsp;&Delta; Keep view settings (for re-use &amp; for sharing)</option>
@@ -294,7 +295,7 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
   <pre id="quad2A"></pre><pre id="quad2B" contenteditable=true></pre>
   <ul id="plist" class="is-hidden"></ul>
 </div>
-<div class="cfield">
+<div id="xctrls" class="cfield">
   <span class="addns ccntr"><span class="ccntr">
     <input type="text" id="xsetinp" placeholder="Load expression set&hellip;" /></span><span class="ccntr slist"><select id="xsetlist" class="anone" title="CalcJS Data Storage">
     </select></span></span><span class="ccntr"><button id="xbtnsav">
@@ -325,11 +326,12 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], 
   quad2A = document.querySelector('#cgrid>#quad2A'),
   quad2B = document.querySelector('#cgrid>#quad2B'),
   plist = document.querySelector('#cgrid>#plist'),
-  xsetinp = document.querySelector('#cmain #xsetinp'),
-  xsetlist = document.querySelector('#cmain #xsetlist'),
-  xbtnsav = document.querySelector('#cmain #xbtnsav'),
-  xbtndel = document.querySelector('#cmain #xbtndel'),
-  xsethlps = document.querySelectorAll('#cmain .cfield>.help'),
+  xctrls = document.querySelector('#cmain>#xctrls'),
+  xsetinp = document.querySelector('#xctrls #xsetinp'),
+  xsetlist = document.querySelector('#xctrls #xsetlist'),
+  xbtnsav = document.querySelector('#xctrls #xbtnsav'),
+  xbtndel = document.querySelector('#xctrls #xbtndel'),
+  xsethlps = document.querySelectorAll('#xctrls .cfield>.help'),
   dinp2 = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
     || { value: dinput.innerHTML.replace(/\n+$|^\n+/g, "") },
   respShow = resp => { preresp.innerHTML
@@ -343,10 +345,10 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], 
     = cheadg.innerHTML = (tnew || cheadg.textContent.trim().substring(0, 32));
   },
   gridAdj = idx => {
-    if (idx == 3) {
+    if (idx == 4) {
       [quad1A, quad1B].forEach(e => e.classList.toggle("is-hidden"));
       cgrid.classList.toggle("clpsrow1");
-    } else if (idx == 4) {
+    } else if (idx == 5) {
       quad2A.classList.toggle("is-hidden");
       cgrid.classList.toggle("xpndq2B");
     }
@@ -365,6 +367,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], 
   viewSet = () => {
     let qrys = [];
     /maximum-/.test(metavp.content) || qrys.push("!zlock");
+    !cgrid.classList.contains("is-hidden") || qrys.push("!displ");
     !cgrid.classList.contains("clpsrow1") || qrys.push("!row1");
     !cgrid.classList.contains("xpndq2B") || qrys.push("!col1");
     cheadg.textContent === "JavaScript Calculator"
@@ -376,11 +379,12 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], 
     + "\n// 1. Edit &amp; un-comment settings, below --"
     + "\n   // combining desired parts into a one-line expression."
     + "\n// 2. De-focus *ENTRY* field."
-    + "\n   // (Alert: This action writes current/edited settings"
+    + "\n   // (*Alert:* This action writes current/edited settings"
     + "\n   // into URL string &amp; reloads page.)"
     + "\n// 3. Bookmark reloaded page -- or, add to home screen."
     + "\n// 4. Optionally, copy new link and paste in text message to share."
     + "\n\n  // !zlock | unlock screen zoom"
+    + "\n  // !displ | hide calculator UI display"
     + "\n  // !row1  | collapse *FINAL VALUES* row"
     + "\n  // !col1  | collapse *RESULTS* column"
     + "\n  // title= | rename doc *TITLE*"
@@ -405,7 +409,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], 
         .replace(/^(<pre id="preresp">)[^]*?(?=<\/pre>)/im, "$1")
         .replace( /^(<div id="cgrid".*?>\n *<pre id="quad1A".*?>)[^]*?(<\/pre><pre id="quad1B".*?>)[^]*?(<\/pre>\n *<pre id="quad2A".*?>)[^]+?(?=\n<\/div>)/im,
           '$1$2$3</pre><pre id="quad2B" contenteditable=true></pre>\n  <ul id="plist" class="is-hidden"></ul>' )
-        .replace(/^<div class="cfield">[^]+?\n(?=let di2html,)/im, "</main>\n<script type=\"text/javascript\">\n(function () {\n'use strict';\n")
+        .replace(/^<div id="xctrls".*?>[^]+?\n(?=let di2html,)/im, "</main>\n<script type=\"text/javascript\">\n(function () {\n'use strict';\n")
         .replace(/^( *cheadg\.textContent === ").+/m, "$1" + cheadg.textContent + "\"")
         .replace(/^xsetinp\.addEventListener\([^]+?(?=\n<\/script>)/im, "})();")
       + "\n</body>\n</html>\n";
@@ -424,11 +428,13 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], 
     } else if (evt.target.selectedIndex == 2) {
       cheadg.setAttribute('contenteditable', true);
       cheadg.focus();
-    } else if (/[34]/.test(evt.target.selectedIndex)) {
+    } else if (evt.target.selectedIndex == 3) {
+      [cgrid, xctrls].forEach(e => e.classList.toggle("is-hidden"));
+    } else if (/[45]/.test(evt.target.selectedIndex)) {
       gridAdj(evt.target.selectedIndex);
-    } else if (evt.target.selectedIndex == 5 && ((xsetlist || {}).value || !dinp2.value)) {
+    } else if (evt.target.selectedIndex == 6 && ((xsetlist || {}).value || !dinp2.value)) {
       viewSet();
-    } else if (evt.target.selectedIndex == 6) {
+    } else if (evt.target.selectedIndex == 7) {
       calcCopy();
     }
   },
@@ -445,13 +451,13 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], 
       && val0s.forEach(v => v && (dinp2.value = dinp2.value.replace(v[0], v[1])));
     let $ = {}, _ = {}, _ks = [], rslt,
       xprsns = (dinp2.value || "")
-        .replace(/^\/\*\n?([^]*?)\n?\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
+        .replace(/^\/\*(?:\s*?\n|)([^]*?)\s*\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
         .replace(/&Tab;/g, "\t").replace(/(?:[^$.\wÀ-Ͽ]|^)\$(?=[$_a-zÀ-Ͽ])/gi, "$&.")
         .split("\n"),
       reslts = xprsns.map(xpr => {
         try {
           xpr = xpr && xpr
-          .replace( /^(?=[\t ]*{)|^.*?(?=\/\/|<\/?\b[ \w\\,:;'"#=-]+>|\(? *function\b[ \w]*\(.*?\) *{|\(? *(?:[$\wÀ-Ͽ]+|\(.*?\)) *=>|$)/g,
+          .replace( /^(?=[\t ]*{)|^.*?(?=\/\/|<\/?\b[ \w\\,;:'"#=-]+>|\(? *function\b[ \w]*\(.*?\) *{|\(? *(?:[$\wÀ-Ͽ]+|\(.*?\)) *=>|$)/g,
             m0 => m0.replace( /( |^)(?:_\.|)([$_a-zÀ-Ͽ][$\wÀ-Ͽ]*)(?=\s*=\s*(?:$|[$\wÀ-Ͽ'"`([{.+-]))/gi,
               (m1, c1, c2) => _ks.push(c2) && c1 + "_." + c2 )
             .replace( /([\t =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([$_](?!\.)[$\wÀ-Ͽ]*|[A-Za-zÀ-Ͽ][$\wÀ-Ͽ]*)(?! *=)/g,
@@ -476,17 +482,17 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [], 
       + '<span id="dinitl">Line-expression<br />RESULTS</span>';
     quad2B.innerHTML = xprsns.map( xpr => xpr
       .replace(/&(?=[gl]t;|#x0*[ad];|NewLine;)/gi, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;")
-      .replace( /\/\/ *(.*?) *$/, (m, c1) =>
-        "<span class=dnote>" + c1
-        .replace(/(\W|\d|^)_([0-9a-zÀ-Ͽ]+)_(?=$|\W|\d)/gi, "$1<strong><em>$2</em></strong>")
-        .replace(/(\W|\d|__|^)\*(?=\S)(.*?\S)\*(?=$|\W|\1)/g, "$1<em>$2</em>")
-        .replace(/\b__(.+?)__\b/g, "<strong>$1</strong>")
-        .replace(/\^(?=\S)(.*?\S)\^/g, "<sup>$1</sup>")
-        .replace(/~(?=\S)(.*?\S)~/g, "<sub>$1</sub>")
-        .replace( /([^$.\wÀ-Ͽ]|^)(a)(?= )/gi, //"$1<x>$2</x>")
-          (m, c1, c2) => c1 + "&#x" + c2.charCodeAt(0).toString(16) + ";" )
-        .replace(/\u2b1a\u034f/g, "&nbsp;")
-        .replace(/\u250a\u034f/g, "&zwj;")
+      .replace( /\/\/ *(.*?) *( \/\/|)$/, (m, c1, c2) =>
+        "<span class=dnote>" + ( c2 ? c1 : c1
+          .replace(/(\W|\d|^)_([0-9a-zÀ-Ͽ]+)_(?=$|\W|\d)/gi, "$1<strong><em>$2</em></strong>")
+          .replace(/(\W|\d|__|^)\*(?=\S)(.*?\S)\*(?=$|\W|\1)/g, "$1<em>$2</em>")
+          .replace(/\b__(.+?)__\b/g, "<strong>$1</strong>")
+          .replace(/\^(?=\S)(.*?\S)\^/g, "<sup>$1</sup>")
+          .replace(/~(?=\S)(.*?\S)~/g, "<sub>$1</sub>")
+          .replace( /([^$.\wÀ-Ͽ]|^)(a)(?= )/gi, //"$1<x>$2</x>")
+            (m, c1, c2) => c1 + "&#x" + c2.charCodeAt(0).toString(16) + ";" )
+          .replace(/\u2b1a\u034f/g, "&nbsp;")
+          .replace(/\u250a\u034f/g, "&zwj;") )
         + "</span> " )).join("\n")
     .replace( /^[\t ]*(<span class=dnote>)(<\/span>)( *\n[\t ]*)\1(.*)(?=\2 *\n[\t ]*\1\2 *$)/gm,
       (m, c1, c2, c3, c4) => c1 + c2 + c3 + c1 + c4
@@ -623,9 +629,10 @@ window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
     .split(/,/).map( e => (e = /^ *(.+:)(.*)/.exec(e))
       && [new RegExp("^( *" + e[1].replace(/:/g, " *= *") + ").*?(?=[\\t ]*//|$)", "m"), "$1" + e[2]] ) )
   : /^title=/.test(qi) ? titSave(0, window.decodeURIComponent(qi.replace(/^title=/, "")))
+  : /^!displ$/.test(qi) ? [cgrid, xctrls].forEach(e => e.classList.add("is-hidden"))
   : /^!zlock$/.test(qi) ? zoomTog(1)
-  : /^!row1$/.test(qi) ? gridAdj(3)
-  : /^!col1$/.test(qi) ? gridAdj(4) : 0 );
+  : /^!row1$/.test(qi) ? gridAdj(4)
+  : /^!col1$/.test(qi) ? gridAdj(5) : 0 );
 Promise.all(jsrcs.map(scrInj)).catch(respShow).then(() => {
   !/^http/.test(window.location.protocol) ? slistRegen(dload)
   : Promise.all( (cmods.some(e => /^\d+$/.test(e)) ? cmods : [1,2,3,4,5,6].concat(cmods))

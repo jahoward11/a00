@@ -172,7 +172,7 @@ uConv(1111)
 uConv("MCXI")
 
 /*
- 7. __*Optional demo:*__ To create and demo (below, under the calculator)
+ 7. __*Optional demo:*__ To create and demo (below, beneath the calculator)
     one, possible, user-interface (UI) design for your unit-converter
     web app, un-comment (i.e., remove the \`//\` characters of) the
     last two lines of the following block of code.
@@ -230,7 +230,7 @@ gui += "\\n<span class=ccntr><input type=button value=\\"↻ NEW GAME\\" onclick
 gui += "\\n<table id=gboard></table>\\n<div id=gmscor class=cfield>Count: <span id=txtmvs>0</span></div>"; ""
 gui += "\\n<div>\\n<span class=ccntr><input type=button value=\\"RETRACT MOVE\\" onclick=mvRvrs()></span><span class=ccntr><input type=button value=\\"RESET COUNTER\\" onclick=ctZero()></span>\\n</div>\\n"; ""
 
-// gwrap.remove() // ALERT: useful only if edit-testing the GUI code above
+// gwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 try { gwrap } catch { ndiv = document.createElement('div'); ndiv.id = "gwrap"; ndiv.innerHTML = gui; cmain.appendChild(ndiv); }
 
 tnx = tcx = psh = rval = cval = max = ovr = mtrk = unsh = cxs = shxs = shuf = tarr = cras = cr2s = ""
@@ -259,30 +259,30 @@ gmReset();
       block (\`<h4 class=cfield>Sliding Tiles</h4>\`), some game-board
       controllers (\`<div><span class=ccntr> … </span></div>\`), and
       the game-board display (\`<table id=gboard> … </table>\`).
-    + The GUI, below, is built from the leading block of code, above,
-      in which strings of HTML/CSS text are cumulatively assigned to
-      the GUI variable (\`gui += " … "\`).
+    + The rendered GUI, below, is built from the leading block of
+      code, above, in which strings of HTML/CSS text are cumulatively
+      assigned to the GUI variable (\`gui += " … "\`).
     + As you can see below, the entire GUI string was injected into
-      the web doc -- where it will remain unchanged (even when the
-      tutorial is unloaded), just as it was first designed, until it
-      gets altered (overwritten) by a script.
+      this web doc -- where it will remain as rendered (even after
+      this tutorial is unloaded), unchanged from the way it was first
+      designed, until it gets altered (overwritten) by another script.
     + *Challenge:* Un-comment the \`gwrap.remove()\` line, above,
-      and make edits to the GUI, such as:
-      * changing the \`.gtile\` background color to \`Pink\` or \`Tan\`;
-      * changing the game-board title to "My First Web Game";
+      and make assorted edits to the GUI code, such as:
+      * changing the \`.gtile\` background color to \`Pink\` … or \`Tan\`;
+      * changing the game-board title to "My First Web Game" … or …;
       * unchecking the "Auto-shuffle" checkbox
         (tip: remove the word \`checked\` in the \`<input … >\` tag);
       * setting the starting value of the number of rows and columns
         each to three (tip: \`<input … value=3 … >\`).
 
- 2. Reproduce the GUI from the calculator-app tutorial code, and
+ 2. Reproduce the GUI text from the calculator-app tutorial code, and
     __begin building a standalone web app__.
     + Un-comment the following two lines of code to generate the
       web-doc text that will be the app framework.
-    + Select and copy the orange text that appears above
+    + Select and copy the orange text that appears above, overtop
       the calculator.
-    + Paste the copied text into a new text file; Give the file any
-      filename with an HTML extension (e.g., \`jsgame-tiles.html\`).
+    + Paste the copied text into a new text file; Save the file under
+      any filename with an HTML extension (e.g., \`jsgame-tiles.html\`).
     + *Note:* When opened up in a web browser, the web app will not
       be responsive because it does not yet have any script code.
 */
@@ -294,30 +294,30 @@ gmReset();
  3. Add in the puzzle's inner logic (its "script", extracted from the
     tutorial code) to __turn a static web doc into a dynamic web app__
     -- an interactive game.
-    *ALERT:* Read through all of these procedures before starting.
-    + Select and copy the 3rd and 4th blocks of code, above
-      (beginning with \`tnx = …\` and ending with \`gmReset();\`).
-    + Unload the tutorial (clear *ENTRY* field) and paste the copied
-      text into the empty *ENTRY* field of the calculator app.
+    *Alert:* Read through all procedures of this step before starting.
+    + Select and copy the 3rd and 4th blocks of code, above --
+      beginning with \`tnx = …\` and ending with \`gmReset();\`.
+    + Unload this tutorial (clear *ENTRY* field), and paste the copied
+      text into the empty, *ENTRY* field of the calculator app.
     + Wrap the pasted text with JS block-comment tags (\`/* … */\`).
       In other words, in the *ENTRY* field, type \`/*\` into a blank
       line before all of the text and \`*/\` into a blank line after
       all of the text.
-    + Type \`tutor2js\` into the *DATA-LOAD* input box (directly under
+    + Type \`tutor2js\` into the *DATA-LOAD* input box (directly beneath
       the calculator), and tap *SAVE*.
     + Reload this tutorial, and un-comment the following two lines
       of code.
-    + Select and copy the orange text that appears above
+    + Select and copy the orange text that appears above, overtop
       the calculator.
     + Paste the copied text inside the \`<script> … </script>\` tags of
-      the new HTML file created in step 2, then re-save the file.
+      the new HTML file created in step 2; Then re-save the file.
     + *Note:* When opened up in a web browser, the web app should be
-      responsive and the game should work as expected. If not, try it
-      again: Begin fresh and repeat all procedures of steps 2 and 3.
+      responsive and the game should work as expected; If not, try it
+      again: Start fresh, and repeat all procedures of steps 2 and 3.
 */
 
-// preresp.innerHTML = ""
-// localforage.getItem("tutor2js").then( rslt => respShow( "let " + rslt.replace(/\\b_\\.\\b| ""$|^\\n|^\\/\\*\\n*|\\n*\\*\\/$/gm, "").replace(/^.+/, m => m.replace(/ =/g, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,").replace(/<(?=[!/?a-z])/gi, "&lt;") )).catch(respShow)
+// preresp.innerHTML = "" // clears any orange text (in case GUI text is still visible)
+// localforage.getItem("tutor2js").then( rslt => respShow( "let " + rslt.replace(/\\b_\\.\\b| ""$|^\\n|^\\/\\*\\n*|\\n*\\*\\/$/gm, "").replace(/^.+/, m => m.replace(/ =/g, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,").replace(/<(?=[!/?a-z])/gi, "&lt;") )).catch(respShow) //
 
 
 /*
