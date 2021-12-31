@@ -1,4 +1,4 @@
-m1trk/* JavaScript module */
+/* JavaScript module */
 
 const groupname = "JScode";
 
