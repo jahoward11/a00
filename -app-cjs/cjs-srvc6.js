@@ -210,14 +210,15 @@ __* * * SLIDING TILES * * *__
 gui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
 gui += "\\nhtml { box-sizing: border-box; }"; ""
 gui += "\\nhr { margin: 1.5rem 0; }"; ""
-gui += "\\n#g1wrap { font: normal medium Helvetica, Arial, sans-serif; }"; ""
+gui += "\\n#g1wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 1.5rem 0; }"; ""
+gui += "\\n#g1wrap .cfield { max-width: 359px; }"; ""
 gui += "\\n#g1wrap .cfield:not(:last-child) { margin-bottom: 8px; }"; ""
 gui += "\\n#g1wrap .ccntr:not(:last-child) { margin-right: 8px; }"; ""
 gui += "\\n#g1wrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }"; ""
 gui += "\\n#g1wrap .blank, #g1wrap .gtile { width: 60px; height: 60px; border: 4px solid White; }"; ""
 gui += "\\n#g1wrap .gtile { background: LightSteelBlue; color: White; font-size: large; font-weight: bold; cursor: pointer; text-align: center; }"; ""
 gui += "\\n#trows, #tcols { max-width: 36px; }"; ""
-gui += "\\n#g1board { width: auto; margin: 14px; border-collapse: collapse; }"; ""
+gui += "\\n#g1board { margin: 14px; border-collapse: collapse; }"; ""
 gui += "\\n#g1scor { font-size: small; margin-left: 16px; }"; ""
 gui += "\\n#g1movs { font-weight: bold; }"; ""
 gui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Sliding Tiles</h4>"; ""
@@ -322,12 +323,12 @@ gmReset();
 // localforage.getItem("tutor2js").then( rslt => respShow( "let " + rslt.replace(/\\b_\\.\\b| ""$|^\\n|^\\/\\*\\n*|\\n*\\*\\/$/gm, "").replace(/^.+/, m => m.replace(/ =/g, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,").replace(/<(?=[!/?a-z])/gi, "&lt;") )).catch(respShow) //
 
 /*
- 4. See how __GUI design techniques__ get applied to other games.
+ 4. See how __GUI design techniques__ get applied to multiple games.
     *Note:* For each of the following games, the GUI has not yet been
-    displayed in this web doc.
-    + Un-comment corresponding lines of doc-manipulating code
-      (as in step 1, above) to display the game's GUI (below, beneath
-      both the calculator and the *Sliding Tiles* puzzle).
+    displayed on this web doc.
+    + Un-comment associated lines of doc-manipulating code (as in
+      step 1, above) to display the game's GUI (below, beneath both
+      the calculator and the *Sliding Tiles* puzzle).
     + To generate the web-app code of a game -- for building a
       standalone game app (as in step's 2 and 3, above) -- make use of
       the text-generating commands already provided in step's 2 and 3.
@@ -335,20 +336,22 @@ gmReset();
       variable to the other game's "wrap" ID (e.g., \`g2wrap\`); And
       update the saved \`tutor2js\` data file with the other game's
       GUI code.
-    + *Take notice:* For each additional game in this tutorial, the
+    + *Take notice:* For each additional game in this tutorial, its
       game board has many elements and structures in common with the
       first one (e.g., \`<table id=g1board>\`) -- but, each has a
-      custom-tailored selection of CSS style options to display those
-      structures in graphically different ways. Fine-control over the
-      visual elements of an app is most often a matter of assigning
-      ID and CLASS names to key elements, then applying to those names
-      such style specifics as size and positioning on the page,
-      box-model spacing and borders, or alternate, responsive states,
-      like a change in color or shape or font, etc.
+      custom-tailored selection of CSS style options that display
+      those structures in graphically different ways. Fine-control
+      over the visual elements of an app is most often a matter of
+      assigning ID and CLASS names to key elements, then applying to
+      those names such style specifics as an element's size and
+      positioning on the page; or its own spacing and borders relative
+      to the CSS box model; or alternate states of appearance in
+      response to user clicks, like a change in color or shape, etc.
     + *Challenge:* Play with the styles -- as well as the script code.
-      Adjust and refine these game boards in any way that you would
-      like. Every little bit of experience in these skills now will
-      have big and frequent payoffs down the road of your future.
+      Reshape and refine these game boards in any way that you would
+      like. Every little bit of experience in design skills now will
+      have big and frequent payoffs down the road of your future,
+      wherever it may lead.
 
 __* * * LIGHTS OUT * * *__
 */
@@ -356,14 +359,15 @@ __* * * LIGHTS OUT * * *__
 g2ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
 g2ui += "\\nhtml { box-sizing: border-box; }"; ""
 g2ui += "\\nhr { margin: 1.5rem 0; }"; ""
-g2ui += "\\n#g2wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 0 0 56px; max-width: 348px; }"; ""
+g2ui += "\\n#g2wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 1.5rem 0; }"; ""
+g2ui += "\\n#g2wrap .cfield { max-width: 359px; }"; ""
 g2ui += "\\n#g2wrap .cfield:not(:last-child) { margin-bottom: 8px; }"; ""
 g2ui += "\\n#g2wrap .ccntr:not(:last-child) { margin-right: 8px; }"; ""
 g2ui += "\\n#g2wrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }"; ""
 g2ui += "\\n#g2bcntr { position: relative; padding-top: 1px; }"; ""
-g2ui += "\\n#g2circt { width: auto; margin: 44px; border-collapse: collapse; }"; ""
+g2ui += "\\n#g2circt { margin: 44px; border-collapse: collapse; }"; ""
 g2ui += "\\n#g2circt td { width: 60px; height: 60px; border: 4px solid black; }"; ""
-g2ui += "\\n#g2board { position: absolute; top: 0; width: auto; margin: 12px; border-spacing: 8px; }"; ""
+g2ui += "\\n#g2board { position: absolute; top: 0; margin: 12px; border-spacing: 8px; }"; ""
 g2ui += "\\n#g2board td { background: MediumOrchid; width: 52px; height: 52px; border-radius: 26px; box-shadow: 0 0 16px 4px Orchid; cursor: pointer; }"; ""
 g2ui += "\\n#g2board td.ldark { background: Indigo; box-shadow: 0 0 16px 4px Grey; cursor: pointer; }"; ""
 g2ui += "\\n#g2scor { font-size: small; margin-left: 16px; }"; ""
@@ -372,7 +376,7 @@ g2ui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Lights Out</h4>"; ""
 g2ui += "\\n<div class=cfield><em>Objective:</em> Switch all matrix lights off.</div>"; ""
 g2ui += "\\n<div class=cfield><em>Game Action:</em> Switching a diode in a lighting matrix also switches any up-, down-, left- or right- connected diodes.</div>"; ""
 g2ui += "\\n<div><span class=ccntr><select id=lpatt>"; ""
-g2ui += ["&mdash;Startup Pattern&mdash;", "Eight-pocket table (in 5)", "Peep holes (in 6)", "Square target (in 9)", "Bi-polar opposites (in 11)", "Central light out (in 12)", "Road caution marks (in 15)"].map(e => \`\\n<option>\${e}</option>\`).join(""); ""
+g2ui += ["&mdash;Startup Pattern&mdash;", "Treasure spot marker (in 4)", "Lucy's Diamond (in 5)", "Eight-pocket table (in 5)", "Picasso emoji (in 5)", "Peep holes (in 6)", "Square target (in 9)", "Bi-polar opposites (in 11)", "Central light out (in 12)", "Road caution marks (in 15)"].map(e => \`\\n<option>\${e}</option>\`).join(""); ""
 g2ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x21bb; RESTART\\" onclick=\\"g2Reset()\\"></span></div>"; ""
 g2ui += "\\n<div id=g2bcntr>\\n<table id=g2circt><tbody>"; ""
 g2ui += [0, 1, 2, 3].map(r => "\\n<tr>" + [0, 1, 2, 3].map(c => "<td></td>").join("") + "</tr>").join(""); ""
@@ -387,7 +391,7 @@ g2ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=utog> A
 // try { g2wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g2wrap"; ndiv.innerHTML = g2ui; cmain.appendChild(ndiv); }
 
 m2trk = 0; ""
-patt0s = [ "", ["0,0", "0,2", "0,4", "2,0", "2,4", "4,0", "4,2", "4,4"], ["2,1", "2,3"], ["1,1", "1,2", "1,3", "2,1", "2,3", "3,1", "3,2", "3,3"], ["0,4", "4,0"], ["2,2"], ["0,2", "1,1", "2,0", "2,4", "3,3", "4,2"] ]; ""
+patt0s = [ "", ["0,0", "0,4", "1,1", "1,3", "2,2", "3,1", "3,3", "4,0", "4,4"], ["0,2", "1,1", "1,3", "2,0", "2,4", "3,1", "3,3", "4,2"], ["0,0", "0,2", "0,4", "2,0", "2,4", "4,0", "4,2", "4,4"], ["2,1", "2,3", "3,2", "4,1", "4,2", "4,3"], ["2,1", "2,3"], ["1,1", "1,2", "1,3", "2,1", "2,3", "3,1", "3,2", "3,3"], ["0,4", "4,0"], ["2,2"], ["0,2", "1,1", "2,0", "2,4", "3,3", "4,2"] ]; ""
 window.c2Zero = () => g2movs.innerHTML = _.m2trk = 0; ""
 window.g2Reset = () => c2Zero() || [0, 1, 2, 3, 4].forEach( r => [0, 1, 2, 3, 4].forEach( c => window["n" + r + c].classList[_.patt0s[lpatt.selectedIndex].includes([r, c].join()) ? "add" : "remove"]("ldark") ) ); ""
 window.litSwi = (rx, cx) => { utog.checked ? window["n" + rx + cx].classList.toggle("ldark") : [[rx - 1, cx], [rx, cx - 1], [rx, cx], [rx, cx + 1], [rx + 1, cx]].forEach( ([r, c]) => r < 0 || c < 0 || r > 4 || c > 4 || window["n" + r + c].classList.toggle("ldark") ); utog.checked || ( g2movs.innerHTML = [0, 1, 2, 3, 4].some( r => [0, 1, 2, 3, 4].some(c => !window["n" + r + c].classList.contains("ldark")) ) ? ++_.m2trk + " switches" : "<em>Puzzle solved with " + ++_.m2trk + " switches!</em>" ); }; ""
