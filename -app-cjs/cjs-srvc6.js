@@ -228,7 +228,7 @@ gui += ["No gradient", "Red gradient", "Gold gradient", "Blue gradient", "Rainbo
 gui += "\\n</select></span>\\n<label class=ccntr>Auto-shuffle <input type=checkbox id=pshuf checked></label>\\n</div>\\n<div>"; ""
 gui += "\\n<label class=ccntr>Rows <input type=text id=trows value=4 size=2></label>"; ""
 gui += "\\n<label class=ccntr>Columns <input type=text id=tcols value=4 size=2></label>"; ""
-gui += "\\n<span class=ccntr><input type=button value=\\"↻ NEW GAME\\" onclick=gmReset()></span>\\n</div>"; ""
+gui += "\\n<span class=ccntr><input type=button value=\\"&#x21bb; NEW GAME\\" onclick=gmReset()></span>\\n</div>"; ""
 gui += "\\n<table id=g1board></table>\\n<div id=g1scor class=cfield>Count: <span id=g1movs>0</span></div>"; ""
 gui += "\\n<div>\\n<span class=ccntr><input type=button value=\\"RETRACT MOVE\\" onclick=mvRvrs()></span><span class=ccntr><input type=button value=\\"RESET COUNTER\\" onclick=ctZero()></span>\\n</div>\\n"; ""
 
@@ -373,14 +373,14 @@ g2ui += "\\n<div class=cfield><em>Objective:</em> Switch all matrix lights off.<
 g2ui += "\\n<div class=cfield><em>Game Action:</em> Switching a diode in a lighting matrix also switches any up-, down-, left- or right- connected diodes.</div>"; ""
 g2ui += "\\n<div><span class=ccntr><select id=lpatt>"; ""
 g2ui += ["&mdash;Startup Pattern&mdash;", "Eight-pocket table (in 5)", "Peep holes (in 6)", "Square target (in 9)", "Bi-polar opposites (in 11)", "Central light out (in 12)", "Road caution marks (in 15)"].map(e => \`\\n<option>\${e}</option>\`).join(""); ""
-g2ui += "\\n</select></span><span class=ccntr><input type=button value=\"↻ RESTART\" onclick=\"g2Reset()\"></span></div>"; ""
+g2ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x21bb; RESTART\\" onclick=\\"g2Reset()\\"></span></div>"; ""
 g2ui += "\\n<div id=g2bcntr>\\n<table id=g2circt><tbody>"; ""
 g2ui += [0, 1, 2, 3].map(r => "\\n<tr>" + [0, 1, 2, 3].map(c => "<td></td>").join("") + "</tr>").join(""); ""
 g2ui += "\\n</tbody></table>\\n<table id=g2board><tbody>"; ""
-g2ui += [0, 1, 2, 3, 4].map(r => "\\n<tr>" + [0, 1, 2, 3, 4].map(c => \`<td id=n\${r}\${c} onclick=\"litSwi(\${r},\${c})\"></td>\`).join("") + "</tr>").join(""); ""
+g2ui += [0, 1, 2, 3, 4].map(r => "\\n<tr>" + [0, 1, 2, 3, 4].map(c => \`<td id=n\${r}\${c} onclick=\\"litSwi(\${r},\${c})\\"></td>\`).join("") + "</tr>").join(""); ""
 g2ui += "\\n</tbody></table>\\n</div>"; ""
 g2ui += "\\n<div id=g2scor class=cfield>Count: <span id=g2movs>0</span></div>"; ""
-g2ui += "\\n<div class=cfield><span class=ccntr><input type=button value=\"RESET COUNTER\" onclick=\"c2Zero()\"></span></div>"; ""
+g2ui += "\\n<div class=cfield><span class=ccntr><input type=button value=\\"RESET COUNTER\\" onclick=\\"c2Zero()\\"></span></div>"; ""
 g2ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=utog> Allow single-diode toggle&mdash;Suspend counter</label></div>\\n"; ""
 
 // g2wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
