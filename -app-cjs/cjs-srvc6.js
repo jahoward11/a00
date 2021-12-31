@@ -1,4 +1,4 @@
-/* JavaScript module */
+m1trk/* JavaScript module */
 
 const groupname = "JScode";
 
@@ -203,21 +203,23 @@ we can appreciate just why layout and design matter when coding.
 
 - - - - -
 __*Tutorial Two: Building a sliding-tiles puzzle (and other games)*__
+
+__* * * SLIDING TILES * * *__
 */
 
 gui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
 gui += "\\nhtml { box-sizing: border-box; }"; ""
 gui += "\\nhr { margin: 1.5rem 0; }"; ""
-gui += "\\n#gwrap { font: normal medium Helvetica, Arial, sans-serif; }"; ""
-gui += "\\n#gwrap .cfield:not(:last-child) { margin-bottom: 8px; }"; ""
-gui += "\\n#gwrap .ccntr:not(:last-child) { margin-right: 8px; }"; ""
-gui += "\\n#gwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }"; ""
-gui += "\\n#gwrap .blank, #gwrap .gtile { width: 60px; height: 60px; border: 4px solid White; }"; ""
-gui += "\\n#gwrap .gtile { background: LightSteelBlue; color: White; font-size: large; font-weight: bold; cursor: pointer; text-align: center; }"; ""
+gui += "\\n#g1wrap { font: normal medium Helvetica, Arial, sans-serif; }"; ""
+gui += "\\n#g1wrap .cfield:not(:last-child) { margin-bottom: 8px; }"; ""
+gui += "\\n#g1wrap .ccntr:not(:last-child) { margin-right: 8px; }"; ""
+gui += "\\n#g1wrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }"; ""
+gui += "\\n#g1wrap .blank, #g1wrap .gtile { width: 60px; height: 60px; border: 4px solid White; }"; ""
+gui += "\\n#g1wrap .gtile { background: LightSteelBlue; color: White; font-size: large; font-weight: bold; cursor: pointer; text-align: center; }"; ""
 gui += "\\n#trows, #tcols { max-width: 36px; }"; ""
-gui += "\\n#gboard { width: auto; margin: 14px; border-collapse: collapse; }"; ""
-gui += "\\n#gmscor { font-size: small; margin-left: 16px; }"; ""
-gui += "\\n#txtmvs { font-weight: bold; }"; ""
+gui += "\\n#g1board { width: auto; margin: 14px; border-collapse: collapse; }"; ""
+gui += "\\n#g1scor { font-size: small; margin-left: 16px; }"; ""
+gui += "\\n#g1movs { font-weight: bold; }"; ""
 gui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Sliding Tiles</h4>"; ""
 gui += "\\n<div>\\n<span class=ccntr><select id=tnmrl>\\n<option disabled>Characters</option>\\n"; ""
 gui += ["1 2 3 4 …", "I II III IV …", "A B C D …", "Α Β Γ Δ …"].map(e => "<option>" + e + "</option>").join("\\n"); ""
@@ -227,30 +229,30 @@ gui += "\\n</select></span>\\n<label class=ccntr>Auto-shuffle <input type=checkb
 gui += "\\n<label class=ccntr>Rows <input type=text id=trows value=4 size=2></label>"; ""
 gui += "\\n<label class=ccntr>Columns <input type=text id=tcols value=4 size=2></label>"; ""
 gui += "\\n<span class=ccntr><input type=button value=\\"↻ NEW GAME\\" onclick=gmReset()></span>\\n</div>"; ""
-gui += "\\n<table id=gboard></table>\\n<div id=gmscor class=cfield>Count: <span id=txtmvs>0</span></div>"; ""
+gui += "\\n<table id=g1board></table>\\n<div id=g1scor class=cfield>Count: <span id=g1movs>0</span></div>"; ""
 gui += "\\n<div>\\n<span class=ccntr><input type=button value=\\"RETRACT MOVE\\" onclick=mvRvrs()></span><span class=ccntr><input type=button value=\\"RESET COUNTER\\" onclick=ctZero()></span>\\n</div>\\n"; ""
 
-// gwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
-try { gwrap } catch { ndiv = document.createElement('div'); ndiv.id = "gwrap"; ndiv.innerHTML = gui; cmain.appendChild(ndiv); }
+// g1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
+try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap"; ndiv.innerHTML = gui; cmain.appendChild(ndiv); }
 
-tnx = tcx = psh = rval = cval = max = ovr = mtrk = unsh = cxs = shxs = shuf = tarr = cras = cr2s = ""
+tnx = tcx = psh = rval = cval = tmax = tovr = m1trk = unsh = cxs = shxs = shuf = tarr = cras = cr2s = ""
 clrefs = [ "", "", ["#752424", "#9c3030", "#c33c3c", "#cf6363", "#db8a8a", "#e7b1b1", "#f3d8d8"], ["#856514", "#b1871b", "#dea821", "#e4ba4e", "#ebcb7a", "#f2dca6", "#f8eed3"], ["#2b506e", "#396a93", "#4785b8", "#6c9dc6", "#91b6d4", "#b6cee2", "#dae7f1"], ["#ff9999", "#ffcc99", "#fff099", "#99cc99", "#9999ff", "#cc99cc", "#d8bfd8"] ]; ""
 uara = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]; ""
 urom = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]; ""
 utoRom = v => { let s = ""; _.uara.forEach((ai, i) => { while (v % ai < v) { s += _.urom[i]; v -= ai; } }); return s; }; ""
 utoEng = v => { let i, codpts = []; while (v) { i = 0; while ((v - ++i) % 26); codpts.unshift(i + 64); v = (v - i) / 26; } return String.fromCodePoint(...codpts || 65); }; ""
 utoGre = v => { let i, codpts = []; while (v) { i = 0; while ((v - ++i) % 24); codpts.unshift((i < 18 ? i : 1 + i) + 912); v = (v - i) / 24; } return String.fromCodePoint(...codpts || 913); }; ""
-clRanks = () => _.unsh.map( v => _.clrefs[_.tcx][ _.cxs.find( x => _.ovr < 0 ? x === 6 || v <= _.cval || (v % _.cval > 0 && v % _.cval <= _.cval - _.rval + 1) || (v > _.cval * (1 + x) - _.rval + (1 + x) && v <= _.cval * (1 + x)) || (v - (1 + x) - (_.cval - _.rval)) % _.cval === 0 : x === 6 || v - _.ovr <= _.max * (1 + x) || (v - (1 + x)) % _.max === 0 )]); ""
-clRnk2s = () => _.unsh.map( v => ( _.ovr < 0 ? v <= _.cval - _.rval || (v - 1 - (_.cval - _.rval)) % (1 + _.cval) !== 0 || v > 7 * _.cval : v - 1 < _.ovr || (v - 1 - _.ovr) % (1 + _.max) !== 0 || v - 1 - _.ovr > 7 * _.max ) ? 'White' : _.tcx < 5 ? 'Gold' : 'LimeGreen' ); ""
+clRanks = () => _.unsh.map( v => _.clrefs[_.tcx][ _.cxs.find( x => _.tovr < 0 ? x === 6 || v <= _.cval || (v % _.cval > 0 && v % _.cval <= _.cval - _.rval + 1) || (v > _.cval * (1 + x) - _.rval + (1 + x) && v <= _.cval * (1 + x)) || (v - (1 + x) - (_.cval - _.rval)) % _.cval === 0 : x === 6 || v - _.tovr <= _.tmax * (1 + x) || (v - (1 + x)) % _.tmax === 0 )]); ""
+clRnk2s = () => _.unsh.map( v => ( _.tovr < 0 ? v <= _.cval - _.rval || (v - 1 - (_.cval - _.rval)) % (1 + _.cval) !== 0 || v > 7 * _.cval : v - 1 < _.tovr || (v - 1 - _.tovr) % (1 + _.tmax) !== 0 || v - 1 - _.tovr > 7 * _.tmax ) ? 'White' : _.tcx < 5 ? 'Gold' : 'LimeGreen' ); ""
 nAlt = v => _.tnx == 2 ? _.utoRom(v) : _.tnx == 3 ? _.utoEng(v) : _.tnx == 4 ? _.utoGre(v) : v; ""
 isSolva = () => { let ctinvs = _.shxs.filter(e => e.v).map(e => e.i + 1).reduce((a, b, i, f) => a + f.slice(i + 1).reduce((c, d) => c + (d > b ? 0 : 1), 0), 0); return (ctinvs + (_.cval % 2 === 1 ? 0 : _.rval - Math.ceil((_.shuf.indexOf(0) + 1) / _.cval))) % 2 === 0; }; ""
 posSwap = (p0, p1) => [_.tarr[p0][p1], _.tarr[p0][p1 + 1]] = [_.tarr[p0][p1 + 1], _.tarr[p0][p1]]; ""
-gbdGen = () => gboard.innerHTML = _.tarr.map( (e, i) => "\\n<tr>" + e.map( (f, j) => f === 0 ? "<td class=blank> </td>" : \`<td class=gtile \${!_.cras ? "" : \`style="background:\${_.cras[f]};color:\${_.cr2s[f]};" \`}onclick=tileSli(\${i},\${j})>\${f}</td>\` ).join("") + "</tr>" ).join("") + "\\n"; ""
+gbdGen = () => g1board.innerHTML = _.tarr.map( (e, i) => "\\n<tr>" + e.map( (f, j) => f === 0 ? "<td class=blank> </td>" : \`<td class=gtile \${!_.cras ? "" : \`style="background:\${_.cras[f]};color:\${_.cr2s[f]};" \`}onclick=tileSli(\${i},\${j})>\${f}</td>\` ).join("") + "</tr>" ).join("") + "\\n"; ""
 
-window.gmReset = () => { _.tnx = tnmrl.selectedIndex; _.tcx = tclrs.selectedIndex; _.psh = pshuf.checked; _.rval = +trows.value; _.cval = +tcols.value; _.max = _.rval <= _.cval ? _.rval : _.cval; _.ovr = (_.rval - _.cval) * _.max; _.mtrk = []; txtmvs.innerHTML = 0; _.unsh = Array.from(Array(_.rval * _.cval).keys()); _.cxs = Array.from(Array(_.max > 7 ? 7 : _.max).keys()); [_.cras, _.cr2s] = _.tcx < 2 ? [0, 0] : [_.clRanks(), _.clRnk2s()]; _.unsh = _.unsh.slice(1).map(_.nAlt).concat(0); _.tcx < 2 || ([_.cras, _.cr2s] = [_.cras, _.cr2s].map(e => Object.fromEntries(_.unsh.map((v, i) => [v, e[i + 1]])))); _.shxs = _.unsh.map((v, i) => ({ i, v, o: Math.random() })).sort((a, b) => !_.psh || a.o - b.o); _.shuf = _.shxs.map(e => e.v); _.tarr = Array.from(Array(_.rval)).map(() => _.shuf.splice(0, _.cval)); _.shuf = _.tarr.flat(); _.isSolva() || (_.shuf[0] && _.shuf[1] ? _.posSwap(0, 0) : _.posSwap(_.rval - 1, _.cval - 2)); _.gbdGen(); }; ""
-window.tileSli = (rx, cx, bkup) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (_.tarr[p0] || "")[p1] === 0); !bl || (bkup || _.mtrk.push([bl[0], bl[1]])) && ([_.tarr[bl[0]][bl[1]], _.tarr[rx][cx]] = [_.tarr[rx][cx], 0]) && ( txtmvs.innerHTML = "" + _.tarr !== "" + _.unsh ? _.mtrk.length + " moves" : "<em>Puzzle solved in " + _.mtrk.length + " moves!</em>" ) && _.gbdGen(); }; ""
-window.mvRvrs = () => !(_.mtrk || "").length || tileSli(... _.mtrk.pop(), 1); ""
-window.ctZero = () => (_.mtrk = []) && (txtmvs.innerHTML = 0); ""
+window.gmReset = () => { _.tnx = tnmrl.selectedIndex; _.tcx = tclrs.selectedIndex; _.psh = pshuf.checked; _.rval = +trows.value; _.cval = +tcols.value; _.tmax = _.rval <= _.cval ? _.rval : _.cval; _.tovr = (_.rval - _.cval) * _.tmax; _.m1trk = []; g1movs.innerHTML = 0; _.unsh = Array.from(Array(_.rval * _.cval).keys()); _.cxs = Array.from(Array(_.tmax > 7 ? 7 : _.tmax).keys()); [_.cras, _.cr2s] = _.tcx < 2 ? [0, 0] : [_.clRanks(), _.clRnk2s()]; _.unsh = _.unsh.slice(1).map(_.nAlt).concat(0); _.tcx < 2 || ([_.cras, _.cr2s] = [_.cras, _.cr2s].map(e => Object.fromEntries(_.unsh.map((v, i) => [v, e[i + 1]])))); _.shxs = _.unsh.map((v, i) => ({ i, v, o: Math.random() })).sort((a, b) => !_.psh || a.o - b.o); _.shuf = _.shxs.map(e => e.v); _.tarr = Array.from(Array(_.rval)).map(() => _.shuf.splice(0, _.cval)); _.shuf = _.tarr.flat(); _.isSolva() || (_.shuf[0] && _.shuf[1] ? _.posSwap(0, 0) : _.posSwap(_.rval - 1, _.cval - 2)); _.gbdGen(); }; ""
+window.tileSli = (rx, cx, bkup) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (_.tarr[p0] || "")[p1] === 0); !bl || (bkup || _.m1trk.push([bl[0], bl[1]])) && ([_.tarr[bl[0]][bl[1]], _.tarr[rx][cx]] = [_.tarr[rx][cx], 0]) && ( g1movs.innerHTML = "" + _.tarr !== "" + _.unsh ? _.m1trk.length + " moves" : "<em>Puzzle solved in " + _.m1trk.length + " moves!</em>" ) && _.gbdGen(); }; ""
+window.mvRvrs = () => !(_.m1trk || "").length || tileSli(... _.m1trk.pop(), 1); ""
+window.ctZero = () => (_.m1trk = []) && (g1movs.innerHTML = 0); ""
 gmReset();
 
 /*
@@ -258,7 +260,7 @@ gmReset();
     + Include a block of styles (\`<style> … </style>\`), a title
       block (\`<h4 class=cfield>Sliding Tiles</h4>\`), some game-board
       controllers (\`<div><span class=ccntr> … </span></div>\`), and
-      the game-board display (\`<table id=gboard> … </table>\`).
+      the game-board display (\`<table id=g1board> … </table>\`).
     + The rendered GUI, below, is built from the leading block of
       code, above, in which strings of HTML/CSS text are cumulatively
       assigned to the GUI variable (\`gui += " … "\`).
@@ -266,7 +268,7 @@ gmReset();
       this web doc -- where it will remain as rendered (even after
       this tutorial is unloaded), unchanged from the way it was first
       designed, until it gets altered (overwritten) by another script.
-    + *Challenge:* Un-comment the \`gwrap.remove()\` line, above,
+    + *Challenge:* Un-comment the \`g1wrap.remove()\` line, above,
       and make assorted edits to the GUI code, such as:
       * changing the \`.gtile\` background color to \`Pink\` … or \`Tan\`;
       * changing the game-board title to "My First Web Game" … or …;
@@ -288,7 +290,7 @@ gmReset();
 */
 
 // dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Sliding Tiles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n", "\\n<script type=module>\\n", "\\n</script>\\n</html>"]; ""
-// respShow((dwrap[0] + gwrap.outerHTML + dwrap[1] + dwrap[2]).replace(/\\n<hr>/, "").replace(/<(?=[!/?a-z])/gi, "&lt;"))
+// respShow((dwrap[0] + g1wrap.outerHTML + dwrap[1] + dwrap[2]).replace(/\\n<hr>/, "").replace(/<(?=[!/?a-z])/gi, "&lt;"))
 
 /*
  3. Add in the puzzle's inner logic (its "script", extracted from the
@@ -319,6 +321,76 @@ gmReset();
 // preresp.innerHTML = "" // clears any orange text (in case GUI text is still visible)
 // localforage.getItem("tutor2js").then( rslt => respShow( "let " + rslt.replace(/\\b_\\.\\b| ""$|^\\n|^\\/\\*\\n*|\\n*\\*\\/$/gm, "").replace(/^.+/, m => m.replace(/ =/g, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,").replace(/<(?=[!/?a-z])/gi, "&lt;") )).catch(respShow) //
 
+/*
+ 4. See how __GUI design techniques__ get applied to other games.
+    *Note:* For each of the following games, the GUI has not yet been
+    displayed in this web doc.
+    + Un-comment corresponding lines of doc-manipulating code
+      (as in step 1, above) to display the game's GUI (below, beneath
+      both the calculator and the *Sliding Tiles* puzzle).
+    + To generate the web-app code of a game -- for building a
+      standalone game app (as in step's 2 and 3, above) -- make use of
+      the text-generating commands already provided in step's 2 and 3.
+      Within those lines of code, above, simply change the \`g1wrap\`
+      variable to the other game's "wrap" ID (e.g., \`g2wrap\`); And
+      update the saved \`tutor2js\` data file with the other game's
+      GUI code.
+    + *Take notice:* For each additional game in this tutorial, the
+      game board has many elements and structures in common with the
+      first one (e.g., \`<table id=g1board>\`) -- but, each has a
+      custom-tailored selection of CSS style options to display those
+      structures in graphically different ways. Fine-control over the
+      visual elements of an app is most often a matter of assigning
+      ID and CLASS names to key elements, then applying to those names
+      such style specifics as size and positioning on the page,
+      box-model spacing and borders, or alternate, responsive states,
+      like a change in color or shape or font, etc.
+    + *Challenge:* Play with the styles -- as well as the script code.
+      Adjust and refine these game boards in any way that you would
+      like. Every little bit of experience in these skills now will
+      have big and frequent payoffs down the road of your future.
+
+__* * * LIGHTS OUT * * *__
+*/
+
+g2ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
+g2ui += "\\nhtml { box-sizing: border-box; }"; ""
+g2ui += "\\nhr { margin: 1.5rem 0; }"; ""
+g2ui += "\\n#g2wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 0 0 56px; max-width: 348px; }"; ""
+g2ui += "\\n#g2wrap .cfield:not(:last-child) { margin-bottom: 8px; }"; ""
+g2ui += "\\n#g2wrap .ccntr:not(:last-child) { margin-right: 8px; }"; ""
+g2ui += "\\n#g2wrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }"; ""
+g2ui += "\\n#g2bcntr { position: relative; padding-top: 1px; }"; ""
+g2ui += "\\n#g2circt { width: auto; margin: 44px; border-collapse: collapse; }"; ""
+g2ui += "\\n#g2circt td { width: 60px; height: 60px; border: 4px solid black; }"; ""
+g2ui += "\\n#g2board { position: absolute; top: 0; width: auto; margin: 12px; border-spacing: 8px; }"; ""
+g2ui += "\\n#g2board td { background: MediumOrchid; width: 52px; height: 52px; border-radius: 26px; box-shadow: 0 0 16px 4px Orchid; cursor: pointer; }"; ""
+g2ui += "\\n#g2board td.ldark { background: Indigo; box-shadow: 0 0 16px 4px Grey; cursor: pointer; }"; ""
+g2ui += "\\n#g2scor { font-size: small; margin-left: 16px; }"; ""
+g2ui += "\\n#g2movs { font-weight: bold; }"; ""
+g2ui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Lights Out</h4>"; ""
+g2ui += "\\n<div class=cfield><em>Objective:</em> Switch all matrix lights off.</div>"; ""
+g2ui += "\\n<div class=cfield><em>Game Action:</em> Switching a diode in a lighting matrix also switches any up-, down-, left- or right- connected diodes.</div>"; ""
+g2ui += "\\n<div><span class=ccntr><select id=lpatt>"; ""
+g2ui += ["&mdash;Startup Pattern&mdash;", "Eight-pocket table (in 5)", "Peep holes (in 6)", "Square target (in 9)", "Bi-polar opposites (in 11)", "Central light out (in 12)", "Road caution marks (in 15)"].map(e => \`\\n<option>\${e}</option>\`).join(""); ""
+g2ui += "\\n</select></span><span class=ccntr><input type=button value=\"↻ RESTART\" onclick=\"g2Reset()\"></span></div>"; ""
+g2ui += "\\n<div id=g2bcntr>\\n<table id=g2circt><tbody>"; ""
+g2ui += [0, 1, 2, 3].map(r => "\\n<tr>" + [0, 1, 2, 3].map(c => "<td></td>").join("") + "</tr>").join(""); ""
+g2ui += "\\n</tbody></table>\\n<table id=g2board><tbody>"; ""
+g2ui += [0, 1, 2, 3, 4].map(r => "\\n<tr>" + [0, 1, 2, 3, 4].map(c => \`<td id=n\${r}\${c} onclick=\"litSwi(\${r},\${c})\"></td>\`).join("") + "</tr>").join(""); ""
+g2ui += "\\n</tbody></table>\\n</div>"; ""
+g2ui += "\\n<div id=g2scor class=cfield>Count: <span id=g2movs>0</span></div>"; ""
+g2ui += "\\n<div class=cfield><span class=ccntr><input type=button value=\"RESET COUNTER\" onclick=\"c2Zero()\"></span></div>"; ""
+g2ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=utog> Allow single-diode toggle&mdash;Suspend counter</label></div>\\n"; ""
+
+// g2wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
+// try { g2wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g2wrap"; ndiv.innerHTML = g2ui; cmain.appendChild(ndiv); }
+
+m2trk = 0; ""
+patt0s = [ "", ["0,0", "0,2", "0,4", "2,0", "2,4", "4,0", "4,2", "4,4"], ["2,1", "2,3"], ["1,1", "1,2", "1,3", "2,1", "2,3", "3,1", "3,2", "3,3"], ["0,4", "4,0"], ["2,2"], ["0,2", "1,1", "2,0", "2,4", "3,3", "4,2"] ]; ""
+window.c2Zero = () => g2movs.innerHTML = _.m2trk = 0; ""
+window.g2Reset = () => c2Zero() || [0, 1, 2, 3, 4].forEach( r => [0, 1, 2, 3, 4].forEach( c => window["n" + r + c].classList[_.patt0s[lpatt.selectedIndex].includes([r, c].join()) ? "add" : "remove"]("ldark") ) ); ""
+window.litSwi = (rx, cx) => { utog.checked ? window["n" + rx + cx].classList.toggle("ldark") : [[rx - 1, cx], [rx, cx - 1], [rx, cx], [rx, cx + 1], [rx + 1, cx]].forEach( ([r, c]) => r < 0 || c < 0 || r > 4 || c > 4 || window["n" + r + c].classList.toggle("ldark") ); utog.checked || ( g2movs.innerHTML = [0, 1, 2, 3, 4].some( r => [0, 1, 2, 3, 4].some(c => !window["n" + r + c].classList.contains("ldark")) ) ? ++_.m2trk + " switches" : "<em>Puzzle solved with " + ++_.m2trk + " switches!</em>" ); }; ""
 
 /*
 … *more games … coming soon* …
