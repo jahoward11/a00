@@ -210,7 +210,7 @@ __* * * SLIDING TILES * * *__
 gui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
 gui += "\\nhtml { box-sizing: border-box; }"; ""
 gui += "\\nhr { margin: 1.5rem 0; }"; ""
-gui += "\\n#g1wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 1.5rem 0; }"; ""
+gui += "\\n#g1wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 16px 0; }"; ""
 gui += "\\n#g1wrap .cfield { max-width: 359px; }"; ""
 gui += "\\n#g1wrap .cfield:not(:last-child) { margin-bottom: 8px; }"; ""
 gui += "\\n#g1wrap .ccntr:not(:last-child) { margin-right: 8px; }"; ""
@@ -301,8 +301,8 @@ gmReset();
     + Select and copy the 3rd and 4th blocks of code, above --
       beginning with \`tnx = …\` and ending with \`gmReset();\`.
     + Unload this tutorial (clear *ENTRY* field), and paste the copied
-      text into the empty, *ENTRY* field of the calculator app.
-    + Wrap the pasted text with JS block-comment tags (\`/* … */\`).
+      text into the empty *ENTRY* field of the calculator app.
+    + Wrap the pasted text in JS block-comment tags (\`/* … */\`).
       In other words, in the *ENTRY* field, type \`/*\` into a blank
       line before all of the text and \`*/\` into a blank line after
       all of the text.
@@ -327,15 +327,15 @@ gmReset();
     *Note:* For each of the following games, the GUI has not yet been
     displayed on this web doc.
     + Un-comment associated lines of doc-manipulating code (as in
-      step 1, above) to display the game's GUI (below, beneath both
-      the calculator and the *Sliding Tiles* puzzle).
+      step 1, above) to display a game's GUI (below, beneath both the
+      calculator and the *Sliding Tiles* puzzle).
     + To generate the web-app code of a game -- for building a
       standalone game app (as in step's 2 and 3, above) -- make use of
       the text-generating commands already provided in step's 2 and 3.
       Within those lines of code, above, simply change the \`g1wrap\`
       variable to the other game's "wrap" ID (e.g., \`g2wrap\`); And
       update the saved \`tutor2js\` data file with the other game's
-      GUI code.
+      GUI text.
     + *Take notice:* For each additional game in this tutorial, its
       game board has many elements and structures in common with the
       first one (e.g., \`<table id=g1board>\`) -- but, each has a
@@ -359,7 +359,7 @@ __* * * LIGHTS OUT * * *__
 g2ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
 g2ui += "\\nhtml { box-sizing: border-box; }"; ""
 g2ui += "\\nhr { margin: 1.5rem 0; }"; ""
-g2ui += "\\n#g2wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 1.5rem 0; }"; ""
+g2ui += "\\n#g2wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 16px 0; }"; ""
 g2ui += "\\n#g2wrap .cfield { max-width: 359px; }"; ""
 g2ui += "\\n#g2wrap .cfield:not(:last-child) { margin-bottom: 8px; }"; ""
 g2ui += "\\n#g2wrap .ccntr:not(:last-child) { margin-right: 8px; }"; ""
@@ -376,7 +376,7 @@ g2ui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Lights Out</h4>"; ""
 g2ui += "\\n<div class=cfield><em>Objective:</em> Switch all matrix lights off.</div>"; ""
 g2ui += "\\n<div class=cfield><em>Game Action:</em> Switching a diode in a lighting matrix also switches any up-, down-, left- or right- connected diodes.</div>"; ""
 g2ui += "\\n<div><span class=ccntr><select id=lpatt>"; ""
-g2ui += ["&mdash;Startup Pattern&mdash;", "Treasure spot marker (in 4)", "Lucy's diamond (in 5)", "Eight-pocket table (in 5)", "Picasso emoji (in 5)", "Peep holes (in 6)", "Square target (in 9)", "Bi-polar opposites (in 11)", "Central light out (in 12)", "Road caution marks (in 15)"].map(e => \`\\n<option>\${e}</option>\`).join(""); ""
+g2ui += ["&mdash;Startup Pattern&mdash;", "Treasure marker (in 4)", "Lucy's diamond (in 5)", "Eight-pocket table (in 5)", "Picasso emoji (in 5)", "Peep holes (in 6)", "Square target (in 9)", "Bi-polar opposites (in 11)", "Central light out (in 12)", "Road caution marks (in 15)"].map(e => \`\\n<option>\${e}</option>\`).join(""); ""
 g2ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x21bb; RESTART\\" onclick=\\"g2Reset()\\"></span></div>"; ""
 g2ui += "\\n<div id=g2bcntr>\\n<table id=g2circt><tbody>"; ""
 g2ui += [0, 1, 2, 3].map(r => "\\n<tr>" + [0, 1, 2, 3].map(c => "<td></td>").join("") + "</tr>").join(""); ""
