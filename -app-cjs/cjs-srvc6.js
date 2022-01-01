@@ -207,34 +207,34 @@ __*Tutorial Two: Building a sliding-tiles puzzle (and other games)*__
 __* * * SLIDING TILES * * *__
 */
 
-gui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
-gui += "\\nhtml { box-sizing: border-box; }"; ""
-gui += "\\nhr { margin: 1.5rem 0; }"; ""
-gui += "\\n#g1wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 16px 0; }"; ""
-gui += "\\n#g1wrap .cfield { max-width: 359px; }"; ""
-gui += "\\n#g1wrap .cfield:not(:last-child) { margin-bottom: 8px; }"; ""
-gui += "\\n#g1wrap .ccntr:not(:last-child) { margin-right: 8px; }"; ""
-gui += "\\n#g1wrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }"; ""
-gui += "\\n#g1wrap .blank, #g1wrap .gtile { width: 60px; height: 60px; border: 4px solid White; }"; ""
-gui += "\\n#g1wrap .gtile { background: LightSteelBlue; color: White; font-size: large; font-weight: bold; cursor: pointer; text-align: center; }"; ""
-gui += "\\n#trows, #tcols { max-width: 36px; }"; ""
-gui += "\\n#g1board { margin: 14px; border-collapse: collapse; }"; ""
-gui += "\\n#g1scor { font-size: small; margin-left: 16px; }"; ""
-gui += "\\n#g1movs { font-weight: bold; }"; ""
-gui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Sliding Tiles</h4>"; ""
-gui += "\\n<div>\\n<span class=ccntr><select id=tnmrl>\\n<option disabled>Characters</option>\\n"; ""
-gui += ["1 2 3 4 …", "I II III IV …", "A B C D …", "Α Β Γ Δ …"].map(e => "<option>" + e + "</option>").join("\\n"); ""
-gui += "\\n</select></span><span class=ccntr><select id=tclrs>\\n<option disabled>Color Cascades</option>\\n"; ""
-gui += ["No gradient", "Red gradient", "Gold gradient", "Blue gradient", "Rainbow pattern"].map(e => "<option>" + e + "</option>").join("\\n"); ""
-gui += "\\n</select></span>\\n<label class=ccntr>Auto-shuffle <input type=checkbox id=pshuf checked></label>\\n</div>\\n<div>"; ""
-gui += "\\n<label class=ccntr>Rows <input type=text id=trows value=4 size=2></label>"; ""
-gui += "\\n<label class=ccntr>Columns <input type=text id=tcols value=4 size=2></label>"; ""
-gui += "\\n<span class=ccntr><input type=button value=\\"&#x21bb; NEW GAME\\" onclick=gmReset()></span>\\n</div>"; ""
-gui += "\\n<table id=g1board></table>\\n<div id=g1scor class=cfield>Count: <span id=g1movs>0</span></div>"; ""
-gui += "\\n<div>\\n<span class=ccntr><input type=button value=\\"RETRACT MOVE\\" onclick=mvRvrs()></span><span class=ccntr><input type=button value=\\"RESET COUNTER\\" onclick=ctZero()></span>\\n</div>\\n"; ""
+g1ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
+g1ui += "\\nhtml { box-sizing: border-box; }"; ""
+g1ui += "\\nhr { margin: 1.5rem 0; }"; ""
+g1ui += "\\n#g1wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 16px 0; }"; ""
+g1ui += "\\n#g1wrap .cfield { max-width: 359px; }"; ""
+g1ui += "\\n#g1wrap .cfield:not(:last-child) { margin-bottom: 8px; }"; ""
+g1ui += "\\n#g1wrap .ccntr:not(:last-child) { margin-right: 8px; }"; ""
+g1ui += "\\n#g1wrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }"; ""
+g1ui += "\\n#g1wrap .blank, #g1wrap .gtile { width: 60px; height: 60px; border: 4px solid White; }"; ""
+g1ui += "\\n#g1wrap .gtile { background: LightSteelBlue; color: White; font-size: large; font-weight: bold; cursor: pointer; text-align: center; }"; ""
+g1ui += "\\n#trows, #tcols { max-width: 36px; }"; ""
+g1ui += "\\n#g1board { margin: 14px; border-collapse: collapse; }"; ""
+g1ui += "\\n#g1scor { font-size: small; margin-left: 16px; }"; ""
+g1ui += "\\n#g1movs { font-weight: bold; }"; ""
+g1ui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Sliding Tiles</h4>"; ""
+g1ui += "\\n<div>\\n<span class=ccntr><select id=tnmrl>\\n<option disabled>Characters</option>\\n"; ""
+g1ui += ["1 2 3 4 …", "I II III IV …", "A B C D …", "Α Β Γ Δ …"].map(e => "<option>" + e + "</option>").join("\\n"); ""
+g1ui += "\\n</select></span><span class=ccntr><select id=tclrs>\\n<option disabled>Color Cascades</option>\\n"; ""
+g1ui += ["No gradient", "Red gradient", "Gold gradient", "Blue gradient", "Rainbow pattern"].map(e => "<option>" + e + "</option>").join("\\n"); ""
+g1ui += "\\n</select></span>\\n<label class=ccntr>Auto-shuffle <input type=checkbox id=pshuf checked></label>\\n</div>\\n<div>"; ""
+g1ui += "\\n<label class=ccntr>Rows <input type=text id=trows value=4 size=2></label>"; ""
+g1ui += "\\n<label class=ccntr>Columns <input type=text id=tcols value=4 size=2></label>"; ""
+g1ui += "\\n<span class=ccntr><input type=button value=\\"&#x21bb; NEW GAME\\" onclick=gmReset()></span>\\n</div>"; ""
+g1ui += "\\n<table id=g1board></table>\\n<div id=g1scor class=cfield>Count: <span id=g1movs>0</span></div>"; ""
+g1ui += "\\n<div>\\n<span class=ccntr><input type=button value=\\"RETRACT MOVE\\" onclick=mvRvrs()></span><span class=ccntr><input type=button value=\\"RESET COUNTER\\" onclick=ctZero()></span>\\n</div>\\n"; ""
 
 // g1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
-try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap"; ndiv.innerHTML = gui; cmain.appendChild(ndiv); }
+try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap"; ndiv.innerHTML = g1ui; cmain.appendChild(ndiv); }
 
 tnx = tcx = psh = rval = cval = tmax = tovr = m1trk = unsh = cxs = shxs = shuf = tarr = cras = cr2s = ""
 clrefs = [ "", "", ["#752424", "#9c3030", "#c33c3c", "#cf6363", "#db8a8a", "#e7b1b1", "#f3d8d8"], ["#856514", "#b1871b", "#dea821", "#e4ba4e", "#ebcb7a", "#f2dca6", "#f8eed3"], ["#2b506e", "#396a93", "#4785b8", "#6c9dc6", "#91b6d4", "#b6cee2", "#dae7f1"], ["#ff9999", "#ffcc99", "#fff099", "#99cc99", "#9999ff", "#cc99cc", "#d8bfd8"] ]; ""
@@ -250,10 +250,10 @@ isSolva = () => { let ctinvs = _.shxs.filter(e => e.v).map(e => e.i + 1).reduce(
 posSwap = (p0, p1) => [_.tarr[p0][p1], _.tarr[p0][p1 + 1]] = [_.tarr[p0][p1 + 1], _.tarr[p0][p1]]; ""
 gbdGen = () => g1board.innerHTML = _.tarr.map( (e, i) => "\\n<tr>" + e.map( (f, j) => f === 0 ? "<td class=blank> </td>" : \`<td class=gtile \${!_.cras ? "" : \`style="background:\${_.cras[f]};color:\${_.cr2s[f]};" \`}onclick=tileSli(\${i},\${j})>\${f}</td>\` ).join("") + "</tr>" ).join("") + "\\n"; ""
 
-window.gmReset = () => { _.tnx = tnmrl.selectedIndex; _.tcx = tclrs.selectedIndex; _.psh = pshuf.checked; _.rval = +trows.value; _.cval = +tcols.value; _.tmax = _.rval <= _.cval ? _.rval : _.cval; _.tovr = (_.rval - _.cval) * _.tmax; _.m1trk = []; g1movs.innerHTML = 0; _.unsh = Array.from(Array(_.rval * _.cval).keys()); _.cxs = Array.from(Array(_.tmax > 7 ? 7 : _.tmax).keys()); [_.cras, _.cr2s] = _.tcx < 2 ? [0, 0] : [_.clRanks(), _.clRnk2s()]; _.unsh = _.unsh.slice(1).map(_.nAlt).concat(0); _.tcx < 2 || ([_.cras, _.cr2s] = [_.cras, _.cr2s].map(e => Object.fromEntries(_.unsh.map((v, i) => [v, e[i + 1]])))); _.shxs = _.unsh.map((v, i) => ({ i, v, o: Math.random() })).sort((a, b) => !_.psh || a.o - b.o); _.shuf = _.shxs.map(e => e.v); _.tarr = Array.from(Array(_.rval)).map(() => _.shuf.splice(0, _.cval)); _.shuf = _.tarr.flat(); _.isSolva() || (_.shuf[0] && _.shuf[1] ? _.posSwap(0, 0) : _.posSwap(_.rval - 1, _.cval - 2)); _.gbdGen(); }; ""
+window.ctZero = () => (_.m1trk = []) && (g1movs.innerHTML = 0); ""
+window.gmReset = () => { _.tnx = tnmrl.selectedIndex; _.tcx = tclrs.selectedIndex; _.psh = pshuf.checked; _.rval = +trows.value; _.cval = +tcols.value; _.tmax = _.rval <= _.cval ? _.rval : _.cval; _.tovr = (_.rval - _.cval) * _.tmax; ctZero(); _.unsh = Array.from(Array(_.rval * _.cval).keys()); _.cxs = Array.from(Array(_.tmax > 7 ? 7 : _.tmax).keys()); [_.cras, _.cr2s] = _.tcx < 2 ? [0, 0] : [_.clRanks(), _.clRnk2s()]; _.unsh = _.unsh.slice(1).map(_.nAlt).concat(0); _.tcx < 2 || ([_.cras, _.cr2s] = [_.cras, _.cr2s].map(e => Object.fromEntries(_.unsh.map((v, i) => [v, e[i + 1]])))); _.shxs = _.unsh.map((v, i) => ({ i, v, o: Math.random() })).sort((a, b) => !_.psh || a.o - b.o); _.shuf = _.shxs.map(e => e.v); _.tarr = Array.from(Array(_.rval)).map(() => _.shuf.splice(0, _.cval)); _.shuf = _.tarr.flat(); _.isSolva() || (_.shuf[0] && _.shuf[1] ? _.posSwap(0, 0) : _.posSwap(_.rval - 1, _.cval - 2)); _.gbdGen(); }; ""
 window.tileSli = (rx, cx, bkup) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (_.tarr[p0] || "")[p1] === 0); !bl || (bkup || _.m1trk.push([bl[0], bl[1]])) && ([_.tarr[bl[0]][bl[1]], _.tarr[rx][cx]] = [_.tarr[rx][cx], 0]) && ( g1movs.innerHTML = "" + _.tarr !== "" + _.unsh ? _.m1trk.length + " moves" : "<em>Puzzle solved in " + _.m1trk.length + " moves!</em>" ) && _.gbdGen(); }; ""
 window.mvRvrs = () => !(_.m1trk || "").length || tileSli(... _.m1trk.pop(), 1); ""
-window.ctZero = () => (_.m1trk = []) && (g1movs.innerHTML = 0); ""
 gmReset();
 
 /*
@@ -264,7 +264,7 @@ gmReset();
       the game-board display (\`<table id=g1board> … </table>\`).
     + The rendered GUI, below, is built from the leading block of
       code, above, in which strings of HTML/CSS text are cumulatively
-      assigned to the GUI variable (\`gui += " … "\`).
+      assigned to the GUI variable (\`g1ui += " … "\`).
     + As you can see below, the entire GUI string was injected into
       this web doc -- where it will remain as rendered (even after
       this tutorial is unloaded), unchanged from the way it was first
@@ -345,7 +345,7 @@ gmReset();
       assigning ID and CLASS names to key elements, then applying to
       those names such style specifics as an element's size and
       positioning on the page; or its own spacing and borders relative
-      to the CSS box model; or alternate states of appearance in
+      to the CSS box model; or alternate states of its appearance in
       response to user clicks, like a change in color or shape, etc.
     + *Challenge:* Play with the styles -- as well as the script code.
       Reshape and refine these game boards in any way that you would
