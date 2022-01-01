@@ -258,7 +258,7 @@ gmReset();
 
 /*
  1. Design a game board -- or, __graphic user interface__ (GUI).
-    + Include a block of styles (\`<style> … </style>\`), a title
+    + Include: a block of styles (\`<style> … </style>\`), a title
       block (\`<h4 class=cfield>Sliding Tiles</h4>\`), some game-board
       controllers (\`<div><span class=ccntr> … </span></div>\`), and
       the game-board display (\`<table id=g1board> … </table>\`).
@@ -274,9 +274,9 @@ gmReset();
       * changing the \`.gtile\` background color to \`Pink\` … or \`Tan\`;
       * changing the game-board title to "My First Web Game" … or …;
       * unchecking the "Auto-shuffle" checkbox
-        (tip: remove the word \`checked\` in the \`<input … >\` tag);
+        (*tip:* remove the word \`checked\` in the \`<input … >\` tag);
       * setting the starting value of the number of rows and columns
-        each to three (tip: \`<input … value=3 … >\`).
+        each to three (*tip:* \`<input … value=3 … >\`).
 
  2. Reproduce the GUI text from the calculator-app tutorial code, and
     __begin building a standalone web app__.
