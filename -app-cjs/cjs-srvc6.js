@@ -178,12 +178,12 @@ uConv("MCXI")
     last two lines of the following block of code.
 */
 
-ucShow = () => ucout.value = _.uConv(!/^-?(?:\\d+|\\d*\\.\\d+)(?:e-?\\d+|)|^-?0x[\\da-f]+$/i.test(ucinp.value) ? ucinp.value : +ucinp.value, ulist0.value, ulist1.value); ""
+ucShow = () => ucout.value = _.uConv(!/^[+-]?(?:\\d+\\.?|\\d*\\.\\d+)(?:e[+-]?\\d+|)|^0x[\\da-f]+$/i.test(ucinp.value) ? ucinp.value : +ucinp.value, ulist0.value, ulist1.value); ""
 opts = ["", "inches", "feet", "yards", "miles", "meters", "ft/s", "mph", "m/s", "km/h", "Fahrenheit", "Celsius", "Kelvin"].map(e => "<option>" + e + "</option>").join("\\n"); ""
 ucui = "\\n<hr style=\\"margin: 1.5rem 0;\\">\\n<h4 class=cfield>Unit Converter</h4>"; ""
-ucui += "\\n<div class=cfield><span class=ccntr><input type=text id=ucinp placeholder=\\"Enter measurement…\\" /></span><span class=ccntr><select id=ulist0>\\n"; ""
-ucui += opts + "\\n</select></span></div>\\n<div class=cfield><span class=ccntr><input type=text id=ucout readonly /></span><span class=ccntr><select id=ulist1>\\n"; ""
-ucui += opts + "\\n</select></span></div>"; ""
+ucui += "\\n<div class=cfield><span class=ccntr><input type=text id=ucinp placeholder=\\"Enter measurement…\\"></span><span class=ccntr><select id=ulist0>\\n"; ""
+ucui += opts + "\\n</select></span></div>\\n<div class=cfield><span class=ccntr><input type=text id=ucout readonly></span><span class=ccntr><select id=ulist1>\\n"; ""
+ucui += opts + "\\n</select></span></div>\\n"; ""
 // try { ucwrap } catch { ndiv = document.createElement('div'); ndiv.id = "ucwrap"; ndiv.innerHTML = ucui; cmain.appendChild(ndiv); }
 // [ucinp, ulist0, ulist1].forEach((e, i) => e[!i ? 'onblur' : 'onchange'] = _.ucShow)
 //`;
@@ -231,7 +231,7 @@ g1ui += "\\n<label class=ccntr>Rows <input type=text id=trows value=4 size=2></l
 g1ui += "\\n<label class=ccntr>Columns <input type=text id=tcols value=4 size=2></label>"; ""
 g1ui += "\\n<span class=ccntr><input type=button value=\\"&#x21bb; NEW GAME\\" onclick=gmReset()></span>\\n</div>"; ""
 g1ui += "\\n<table id=g1board></table>\\n<div id=g1scor class=cfield>Count: <span id=g1movs>0</span></div>"; ""
-g1ui += "\\n<div>\\n<span class=ccntr><input type=button value=\\"RETRACT MOVE\\" onclick=mvRvrs()></span><span class=ccntr><input type=button value=\\"RESET COUNTER\\" onclick=ctZero()></span>\\n</div>\\n"; ""
+g1ui += "\\n<div>\\n<span class=ccntr><input type=button value=\\"RETRACT MOVE\\" onclick=m1Rvrs()></span><span class=ccntr><input type=button value=\\"RESET COUNTER\\" onclick=ctZero()></span>\\n</div>\\n"; ""
 
 // g1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap"; ndiv.innerHTML = g1ui; cmain.appendChild(ndiv); }
@@ -253,7 +253,7 @@ gbdGen = () => g1board.innerHTML = _.tarr.map( (e, i) => "\\n<tr>" + e.map( (f, 
 window.ctZero = () => (_.m1trk = []) && (g1movs.innerHTML = 0); ""
 window.gmReset = () => { _.tnx = tnmrl.selectedIndex; _.tcx = tclrs.selectedIndex; _.psh = pshuf.checked; _.rval = +trows.value; _.cval = +tcols.value; _.tmax = _.rval <= _.cval ? _.rval : _.cval; _.tovr = (_.rval - _.cval) * _.tmax; ctZero(); _.unsh = Array.from(Array(_.rval * _.cval).keys()); _.cxs = Array.from(Array(_.tmax > 7 ? 7 : _.tmax).keys()); [_.cras, _.cr2s] = _.tcx < 2 ? [0, 0] : [_.clRanks(), _.clRnk2s()]; _.unsh = _.unsh.slice(1).map(_.nAlt).concat(0); _.tcx < 2 || ([_.cras, _.cr2s] = [_.cras, _.cr2s].map(e => Object.fromEntries(_.unsh.map((v, i) => [v, e[i + 1]])))); _.shxs = _.unsh.map((v, i) => ({ i, v, o: Math.random() })).sort((a, b) => !_.psh || a.o - b.o); _.shuf = _.shxs.map(e => e.v); _.tarr = Array.from(Array(_.rval)).map(() => _.shuf.splice(0, _.cval)); _.shuf = _.tarr.flat(); _.isSolva() || (_.shuf[0] && _.shuf[1] ? _.posSwap(0, 0) : _.posSwap(_.rval - 1, _.cval - 2)); _.gbdGen(); }; ""
 window.tileSli = (rx, cx, bkup) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (_.tarr[p0] || "")[p1] === 0); !bl || (bkup || _.m1trk.push([bl[0], bl[1]])) && ([_.tarr[bl[0]][bl[1]], _.tarr[rx][cx]] = [_.tarr[rx][cx], 0]) && ( g1movs.innerHTML = "" + _.tarr !== "" + _.unsh ? _.m1trk.length + " moves" : "<em>Puzzle solved in " + _.m1trk.length + " moves!</em>" ) && _.gbdGen(); }; ""
-window.mvRvrs = () => !(_.m1trk || "").length || tileSli(... _.m1trk.pop(), 1); ""
+window.m1Rvrs = () => !(_.m1trk || "").length || tileSli(... _.m1trk.pop(), 1); ""
 gmReset();
 
 /*
@@ -369,7 +369,7 @@ g2ui += "\\n#g2circt { margin: 44px; border-collapse: collapse; }"; ""
 g2ui += "\\n#g2circt td { width: 60px; height: 60px; border: 4px solid black; }"; ""
 g2ui += "\\n#g2board { position: absolute; top: 0; margin: 12px; border-spacing: 8px; }"; ""
 g2ui += "\\n#g2board td { background: MediumOrchid; width: 52px; height: 52px; border-radius: 26px; box-shadow: 0 0 16px 4px Orchid; cursor: pointer; }"; ""
-g2ui += "\\n#g2board td.ldark { background: Indigo; box-shadow: 0 0 16px 4px Grey; cursor: pointer; }"; ""
+g2ui += "\\n#g2board td.ldark { background: Indigo; box-shadow: 0 0 16px 4px Grey; }"; ""
 g2ui += "\\n#g2scor { font-size: small; margin-left: 16px; }"; ""
 g2ui += "\\n#g2movs { font-weight: bold; }"; ""
 g2ui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Lights Out</h4>"; ""
@@ -377,28 +377,78 @@ g2ui += "\\n<div class=cfield><em>Objective:</em> Switch all matrix lights off.<
 g2ui += "\\n<div class=cfield><em>Game Action:</em> Switching a diode in a lighting matrix also switches any up-, down-, left- or right- connected diodes.</div>"; ""
 g2ui += "\\n<div><span class=ccntr><select id=lpatt>"; ""
 g2ui += ["&mdash;Startup Pattern&mdash;", "Treasure marker (in 4)", "Lucy's diamond (in 5)", "Eight-pocket table (in 5)", "Picasso emoji (in 5)", "Peep holes (in 6)", "Square target (in 9)", "Bi-polar opposites (in 11)", "Central light out (in 12)", "Road caution marks (in 15)"].map(e => \`\\n<option>\${e}</option>\`).join(""); ""
-g2ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x21bb; RESTART\\" onclick=\\"g2Reset()\\"></span></div>"; ""
+g2ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x21bb; RESTART\\" onclick=g2Reset()></span></div>"; ""
 g2ui += "\\n<div id=g2bcntr>\\n<table id=g2circt><tbody>"; ""
 g2ui += [0, 1, 2, 3].map(r => "\\n<tr>" + [0, 1, 2, 3].map(c => "<td></td>").join("") + "</tr>").join(""); ""
 g2ui += "\\n</tbody></table>\\n<table id=g2board><tbody>"; ""
-g2ui += [0, 1, 2, 3, 4].map(r => "\\n<tr>" + [0, 1, 2, 3, 4].map(c => \`<td id=n\${r}\${c} onclick=\\"litSwi(\${r},\${c})\\"></td>\`).join("") + "</tr>").join(""); ""
+g2ui += [0, 1, 2, 3, 4].map(r => "\\n<tr>" + [0, 1, 2, 3, 4].map(c => \`<td id=n\${r}\${c} onclick=litSwi(\${r},\${c})></td>\`).join("") + "</tr>").join(""); ""
 g2ui += "\\n</tbody></table>\\n</div>"; ""
 g2ui += "\\n<div id=g2scor class=cfield>Count: <span id=g2movs>0</span></div>"; ""
-g2ui += "\\n<div class=cfield><span class=ccntr><input type=button value=\\"RESET COUNTER\\" onclick=\\"c2Zero()\\"></span></div>"; ""
-g2ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=utog> Allow single-diode toggle&mdash;Suspend counter</label></div>\\n"; ""
+g2ui += "\\n<div class=cfield><span class=ccntr><input type=button value=\\"RESET COUNTER\\" onclick=c2Zero()></span></div>"; ""
+g2ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u2tog> Allow single-diode toggle&mdash;Suspend&nbsp;counter</label></div>\\n"; ""
 
 // g2wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 // try { g2wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g2wrap"; ndiv.innerHTML = g2ui; cmain.appendChild(ndiv); }
 
 m2trk = 0; ""
-patt0s = [ "", ["0,0", "0,4", "1,1", "1,3", "2,2", "3,1", "3,3", "4,0", "4,4"], ["0,2", "1,1", "1,3", "2,0", "2,4", "3,1", "3,3", "4,2"], ["0,0", "0,2", "0,4", "2,0", "2,4", "4,0", "4,2", "4,4"], ["2,1", "2,3", "3,2", "4,1", "4,2", "4,3"], ["2,1", "2,3"], ["1,1", "1,2", "1,3", "2,1", "2,3", "3,1", "3,2", "3,3"], ["0,4", "4,0"], ["2,2"], ["0,2", "1,1", "2,0", "2,4", "3,3", "4,2"] ]; ""
+litp0s = [ "", ["0,0", "0,4", "1,1", "1,3", "2,2", "3,1", "3,3", "4,0", "4,4"], ["0,2", "1,1", "1,3", "2,0", "2,4", "3,1", "3,3", "4,2"], ["0,0", "0,2", "0,4", "2,0", "2,4", "4,0", "4,2", "4,4"], ["2,1", "2,3", "3,2", "4,1", "4,2", "4,3"], ["2,1", "2,3"], ["1,1", "1,2", "1,3", "2,1", "2,3", "3,1", "3,2", "3,3"], ["0,4", "4,0"], ["2,2"], ["0,2", "1,1", "2,0", "2,4", "3,3", "4,2"] ]; ""
 window.c2Zero = () => g2movs.innerHTML = _.m2trk = 0; ""
-window.g2Reset = () => c2Zero() || [0, 1, 2, 3, 4].forEach( r => [0, 1, 2, 3, 4].forEach( c => window["n" + r + c].classList[_.patt0s[lpatt.selectedIndex].includes([r, c].join()) ? "add" : "remove"]("ldark") ) ); ""
-window.litSwi = (rx, cx) => { utog.checked ? window["n" + rx + cx].classList.toggle("ldark") : [[rx - 1, cx], [rx, cx - 1], [rx, cx], [rx, cx + 1], [rx + 1, cx]].forEach( ([r, c]) => r < 0 || c < 0 || r > 4 || c > 4 || window["n" + r + c].classList.toggle("ldark") ); utog.checked || ( g2movs.innerHTML = [0, 1, 2, 3, 4].some( r => [0, 1, 2, 3, 4].some(c => !window["n" + r + c].classList.contains("ldark")) ) ? ++_.m2trk + " switches" : "<em>Puzzle solved with " + ++_.m2trk + " switches!</em>" ); }; ""
+window.g2Reset = () => c2Zero() || [0, 1, 2, 3, 4].forEach( r => [0, 1, 2, 3, 4].forEach( c => window["n" + r + c].classList[_.litp0s[lpatt.selectedIndex].includes([r, c].join()) ? "add" : "remove"]("ldark") ) ); ""
+window.litSwi = (rx, cx) => { u2tog.checked ? window["n" + rx + cx].classList.toggle("ldark") : [[rx - 1, cx], [rx, cx - 1], [rx, cx], [rx, cx + 1], [rx + 1, cx]].forEach( ([r, c]) => r < 0 || c < 0 || r > 4 || c > 4 || window["n" + r + c].classList.toggle("ldark") ); u2tog.checked || ( g2movs.innerHTML = [0, 1, 2, 3, 4].some( r => [0, 1, 2, 3, 4].some(c => !window["n" + r + c].classList.contains("ldark")) ) ? ++_.m2trk + " switches" : "<em>Puzzle solved with " + ++_.m2trk + " switches!</em>" ); }; ""
 
-/*
-… *more games … coming soon* …
-*/
+// __* * * PEGS * * *__
+
+g3ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
+g3ui += "\\nhtml { box-sizing: border-box; }"; ""
+g3ui += "\\nhr { margin: 1.5rem 0; }"; ""
+g3ui += "\\n#g3wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 16px 0; }"; ""
+g3ui += "\\n#g3wrap .cfield { max-width: 359px; }"; ""
+g3ui += "\\n#g3wrap .cfield:not(:last-child) { margin-bottom: 8px; }"; ""
+g3ui += "\\n#g3wrap .ccntr:not(:last-child) { margin-right: 8px; }"; ""
+g3ui += "\\n#g3wrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }"; ""
+g3ui += "\\n#g3bcntr { position: relative; padding-top: 1px; }"; ""
+g3ui += "\\n#g3panel { margin: 16px 17px; border: 4px solid DarkKhaki; border-collapse: collapse; }"; ""
+g3ui += "\\n#g3panel td { background: beige; width: 40px; height: 40px; }"; ""
+g3ui += "\\n#g3panel td.jdest { background: LightYellow; }"; ""
+g3ui += "\\n#g3board { position: absolute; top: 0; margin: 7px; border-spacing: 24px; }"; ""
+g3ui += "\\n#g3board td { background: Black; width: 16px; height: 16px; border-radius: 8px; box-shadow: inset 1px 0 3px 2px Grey; cursor: pointer; }"; ""
+g3ui += "\\n#g3board td.nohol { background: Transparent; box-shadow: none; }"; ""
+g3ui += "\\n#g3board td.phead { background: Red; box-shadow: -2px -2px 0 3px Red, 4px 4px 4px 1px Grey; }"; ""
+g3ui += "\\n#g3scor { font-size: small; margin-left: 16px; }"; ""
+g3ui += "\\n#g3movs { font-weight: bold; }"; ""
+g3ui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Pegs</h4>"; ""
+g3ui += "\\n<div class=cfield><em>Objective:</em> Remove all board pegs but&nbsp;one.</div>"; ""
+g3ui += "\\n<div class=cfield><em>How to play:</em> Remove a peg by jumping over it with an adjacent peg. Tap on a peg to select it for jumping&mdash;then, tap on a highlighted hole to select it for that peg's&nbsp;destination.</div>"; ""
+g3ui += "\\n<div>\\n<span class=ccntr><select id=ppatt>\\n"; ""
+g3ui += ["&mdash;Startup Pattern&mdash;", "Cross", "Plus", "North Wing", "Up Arrow", "Pyramid", "Diamond", "Solitaire"].map(e => "<option>" + e + "</option>").join("\\n"); ""
+g3ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x21bb; RESTART\\" onclick=g3Reset()></span>"; ""
+g3ui += "\\n</div>\\n<div id=g3bcntr>\\n<table id=g3panel><tbody>"; ""
+g3ui += [0, 1, 2, 3, 4, 5, 6].map(r => "\\n<tr>" + [0, 1, 2, 3, 4, 5, 6].map(c => "<td></td>").join("") + "</tr>").join(""); ""
+g3ui += "\\n</tbody></table>\\n<table id=g3board><tbody>"; ""
+g3ui += [0, 1, 2, 3, 4, 5, 6].map(r => "\\n<tr>" + [0, 1, 2, 3, 4, 5, 6].map(c => "<td " + (["0,0", "0,1", "0,5", "0,6", "1,0", "1,1", "1,5", "1,6", "5,0", "5,1", "5,5", "5,6", "6,0", "6,1", "6,5", "6,6"].includes("" + [r, c]) ? "class=nohol" : \`id=h\${r}\${c} onclick=pegJmp(\${r},\${c})\`) + "></td>").join("") + "</tr>").join(""); ""
+g3ui += "\\n</tbody></table>\\n</div>"; ""
+g3ui += "\\n<div id=g3scor class=cfield>Count: <span id=g3movs>0</span></div>"; ""
+g3ui += "\\n<div class=cfield><span class=ccntr><input type=button value=\\"RETRACT MOVE\\" onclick=m3Rvrs()></span><input type=button value=\\"RESET COUNTER\\" onclick=c3Zero()></span></div>"; ""
+g3ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u3tog> Allow free peg placement&mdash;Suspend&nbsp;counter</label></div>\\n"; ""
+
+// g3wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
+// try { g3wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g3wrap"; ndiv.innerHTML = g3ui; cmain.appendChild(ndiv); }
+
+jopts = peg0s = ""
+m3trk = [];
+a0t6 = [0, 1, 2, 3, 4, 5, 6]; ""
+p3sol = a0t6.map(r => _.a0t6.map(c => "" + [r, c])).flat(); ""
+try { p3tds = Array.from(g3panel.querySelectorAll('tr')).map(e => e.querySelectorAll('td')); } catch {}; ""
+osClr = () => g3panel.querySelectorAll('.jdest').forEach(e => e.className = ""); ""
+psRplc = (jps, bkup) => (_.jopts = 0) || _.osClr() || (bkup || _.m3trk.push(jps)) && jps.forEach(([r, c]) => window["h" + r + c].classList.toggle("phead")) || u3tog.checked || ( g3movs.innerHTML = g3board.querySelectorAll('.phead').length !== 1 ? _.m3trk.length + " jumps" : "<em>Puzzle solved with " + _.m3trk.length + " jumps!</em>" ); ""
+josGen = (rx, cx) => [ [[rx, cx], [rx - 1, cx], [rx - 2, cx]], [[rx, cx], [rx, cx - 1], [rx, cx - 2]], [[rx, cx], [rx, cx + 1], [rx, cx + 2]], [[rx, cx], [rx + 1, cx], [rx + 2, cx]] ]; ""
+[47, 42, 40, 35, 12, 7, 5, 0].forEach(e => _.p3sol.splice(e, 2));
+p3sol.splice(16, 1); ""
+peg0s = [ "", ["1,3", "2,2", "2,3", "2,4", "3,3", "4,3"], ["1,3", "2,3", "3,1", "3,2", "3,3", "3,4", "3,5", "4,3", "5,3"], ["0,2", "0,3", "0,4", "1,2", "1,3", "1,4", "2,2", "2,3", "2,4", "3,2", "3,4"], ["0,3", "1,2", "1,3", "1,4", "2,1", "2,2", "2,3", "2,4", "2,5", "3,3", "4,3", "5,2", "5,3", "5,4", "6,2", "6,3", "6,4"], ["1,3", "2,2", "2,3", "2,4", "3,1", "3,2", "3,3", "3,4", "3,5", "4,0", "4,1", "4,2", "4,3", "4,4", "4,5", "4,6"], p3sol.filter((e, i) => ![0, 2, 6, 12, 19, 25, 29, 31].includes(i)), _.p3sol ]; ""
+window.c3Zero = () => (_.m3trk = []) && (g3movs.innerHTML = 0); ""
+window.g3Reset = () => c3Zero() || _.a0t6.forEach( r => _.a0t6.forEach( c => !window["h" + r + c] || window["h" + r + c].classList[_.peg0s[ppatt.selectedIndex].includes([r, c].join()) ? "add" : "remove"]("phead") ) ); ""
+window.pegJmp = (rx, cx) => { let jx, ph1 = window["h" + rx + cx].classList.contains("phead"); _.jopts = !ph1 ? _.jopts : _.josGen(rx, cx); u3tog.checked ? (_.jopts = 0) || window["h" + rx + cx].classList.toggle("phead") : !ph1 ? !_.p3tds[rx][cx].className || _.psRplc(_.jopts.find(e => "" + e[2] === "" + [rx, cx])) : _.osClr() || _.jopts.forEach( ([_, [r1, c1], [r2, c2]], i) => !window["h" + r1 + c1] || !window["h" + r1 + c1].classList.contains("phead") || !window["h" + r2 + c2] || window["h" + r2 + c2].className || (_.p3tds[r2][c2].className = "jdest") && (jx = i) ); return u3tog.checked || ( jx == null ? _.jopts = 0 : g3panel.querySelectorAll('.jdest').length !== 1 || _.psRplc(_.jopts[jx]) ); }; ""
+window.m3Rvrs = () => !(_.m3trk || "").length || _.psRplc(_.m3trk.pop(), 1); ""
 //`;
 
 export {
