@@ -203,9 +203,9 @@ we can appreciate just why layout and design matter when coding.
 
 - - - - -
 __*Tutorial Two: Building a sliding-tiles puzzle (and other games)*__
-
-__* * * SLIDING TILES * * *__
 */
+
+// __* * * SLIDING TILES * * *__
 
 g1ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
 g1ui += "\\nhtml { box-sizing: border-box; }"; ""
@@ -352,9 +352,9 @@ gmReset();
       like. Every little bit of experience in design skills now will
       have big and frequent payoffs down the road of your future,
       wherever it may lead.
-
-__* * * LIGHTS OUT * * *__
 */
+
+// __* * * LIGHTS OUT * * *__
 
 g2ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
 g2ui += "\\nhtml { box-sizing: border-box; }"; ""
@@ -391,9 +391,9 @@ g2ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u2tog> 
 // try { g2wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g2wrap"; ndiv.innerHTML = g2ui; cmain.appendChild(ndiv); }
 
 m2trk = 0; ""
-litp0s = [ "", ["0,0", "0,4", "1,1", "1,3", "2,2", "3,1", "3,3", "4,0", "4,4"], ["0,2", "1,1", "1,3", "2,0", "2,4", "3,1", "3,3", "4,2"], ["0,0", "0,2", "0,4", "2,0", "2,4", "4,0", "4,2", "4,4"], ["2,1", "2,3", "3,2", "4,1", "4,2", "4,3"], ["2,1", "2,3"], ["1,1", "1,2", "1,3", "2,1", "2,3", "3,1", "3,2", "3,3"], ["0,4", "4,0"], ["2,2"], ["0,2", "1,1", "2,0", "2,4", "3,3", "4,2"] ]; ""
+lit0s = [ "", ["0,0", "0,4", "1,1", "1,3", "2,2", "3,1", "3,3", "4,0", "4,4"], ["0,2", "1,1", "1,3", "2,0", "2,4", "3,1", "3,3", "4,2"], ["0,0", "0,2", "0,4", "2,0", "2,4", "4,0", "4,2", "4,4"], ["2,1", "2,3", "3,2", "4,1", "4,2", "4,3"], ["2,1", "2,3"], ["1,1", "1,2", "1,3", "2,1", "2,3", "3,1", "3,2", "3,3"], ["0,4", "4,0"], ["2,2"], ["0,2", "1,1", "2,0", "2,4", "3,3", "4,2"] ]; ""
 window.c2Zero = () => g2movs.innerHTML = _.m2trk = 0; ""
-window.g2Reset = () => c2Zero() || [0, 1, 2, 3, 4].forEach( r => [0, 1, 2, 3, 4].forEach( c => window["n" + r + c].classList[_.litp0s[lpatt.selectedIndex].includes([r, c].join()) ? "add" : "remove"]("ldark") ) ); ""
+window.g2Reset = () => c2Zero() || [0, 1, 2, 3, 4].forEach( r => [0, 1, 2, 3, 4].forEach( c => window["n" + r + c].classList[_.lit0s[lpatt.selectedIndex].includes("" + [r, c]) ? "add" : "remove"]("ldark") ) ); ""
 window.litSwi = (rx, cx) => { u2tog.checked ? window["n" + rx + cx].classList.toggle("ldark") : [[rx - 1, cx], [rx, cx - 1], [rx, cx], [rx, cx + 1], [rx + 1, cx]].forEach( ([r, c]) => r < 0 || c < 0 || r > 4 || c > 4 || window["n" + r + c].classList.toggle("ldark") ); u2tog.checked || ( g2movs.innerHTML = [0, 1, 2, 3, 4].some( r => [0, 1, 2, 3, 4].some(c => !window["n" + r + c].classList.contains("ldark")) ) ? ++_.m2trk + " switches" : "<em>Puzzle solved with " + ++_.m2trk + " switches!</em>" ); }; ""
 
 // __* * * PEGS * * *__
@@ -438,17 +438,18 @@ jopts = peg0s = ""
 m3trk = [];
 a0t6 = [0, 1, 2, 3, 4, 5, 6]; ""
 p3sol = a0t6.map(r => _.a0t6.map(c => "" + [r, c])).flat(); ""
-try { p3tds = Array.from(g3panel.querySelectorAll('tr')).map(e => e.querySelectorAll('td')); } catch {}; ""
+g3panel = window.g3panel || document.createElement('table'); ""
+p3tds = Array.from(g3panel.querySelectorAll('tr')).map(e => e.querySelectorAll('td')); ""
+osGen = (rx, cx) => [ [[rx, cx], [rx - 1, cx], [rx - 2, cx]], [[rx, cx], [rx, cx - 1], [rx, cx - 2]], [[rx, cx], [rx, cx + 1], [rx, cx + 2]], [[rx, cx], [rx + 1, cx], [rx + 2, cx]] ]; ""
 osClr = () => g3panel.querySelectorAll('.jdest').forEach(e => e.className = ""); ""
-psRplc = (jps, bkup) => (_.jopts = 0) || _.osClr() || (bkup || _.m3trk.push(jps)) && jps.forEach(([r, c]) => window["h" + r + c].classList.toggle("phead")) || u3tog.checked || ( g3movs.innerHTML = g3board.querySelectorAll('.phead').length !== 1 ? _.m3trk.length + " jumps" : "<em>Puzzle solved with " + _.m3trk.length + " jumps!</em>" ); ""
-josGen = (rx, cx) => [ [[rx, cx], [rx - 1, cx], [rx - 2, cx]], [[rx, cx], [rx, cx - 1], [rx, cx - 2]], [[rx, cx], [rx, cx + 1], [rx, cx + 2]], [[rx, cx], [rx + 1, cx], [rx + 2, cx]] ]; ""
+pegsRplc = (jps, bkup) => (_.jopts = 0) || _.osClr() || (bkup || _.m3trk.push(jps)) && jps.forEach(([r, c]) => window["h" + r + c].classList.toggle("phead")) || u3tog.checked || ( g3movs.innerHTML = g3board.querySelectorAll('.phead').length !== 1 ? _.m3trk.length + " jumps" : "<em>Puzzle solved with " + _.m3trk.length + " jumps!</em>" ); ""
 [47, 42, 40, 35, 12, 7, 5, 0].forEach(e => _.p3sol.splice(e, 2));
 p3sol.splice(16, 1); ""
 peg0s = [ "", ["1,3", "2,2", "2,3", "2,4", "3,3", "4,3"], ["1,3", "2,3", "3,1", "3,2", "3,3", "3,4", "3,5", "4,3", "5,3"], ["0,2", "0,3", "0,4", "1,2", "1,3", "1,4", "2,2", "2,3", "2,4", "3,2", "3,4"], ["0,3", "1,2", "1,3", "1,4", "2,1", "2,2", "2,3", "2,4", "2,5", "3,3", "4,3", "5,2", "5,3", "5,4", "6,2", "6,3", "6,4"], ["1,3", "2,2", "2,3", "2,4", "3,1", "3,2", "3,3", "3,4", "3,5", "4,0", "4,1", "4,2", "4,3", "4,4", "4,5", "4,6"], p3sol.filter((e, i) => ![0, 2, 6, 12, 19, 25, 29, 31].includes(i)), _.p3sol ]; ""
 window.c3Zero = () => (_.m3trk = []) && (g3movs.innerHTML = 0); ""
-window.g3Reset = () => c3Zero() || _.a0t6.forEach( r => _.a0t6.forEach( c => !window["h" + r + c] || window["h" + r + c].classList[_.peg0s[ppatt.selectedIndex].includes([r, c].join()) ? "add" : "remove"]("phead") ) ); ""
-window.pegJmp = (rx, cx) => { let jx, ph1 = window["h" + rx + cx].classList.contains("phead"); _.jopts = !ph1 ? _.jopts : _.josGen(rx, cx); u3tog.checked ? (_.jopts = 0) || window["h" + rx + cx].classList.toggle("phead") : !ph1 ? !_.p3tds[rx][cx].className || _.psRplc(_.jopts.find(e => "" + e[2] === "" + [rx, cx])) : _.osClr() || _.jopts.forEach( ([_, [r1, c1], [r2, c2]], i) => !window["h" + r1 + c1] || !window["h" + r1 + c1].classList.contains("phead") || !window["h" + r2 + c2] || window["h" + r2 + c2].className || (_.p3tds[r2][c2].className = "jdest") && (jx = i) ); return u3tog.checked || ( jx == null ? _.jopts = 0 : g3panel.querySelectorAll('.jdest').length !== 1 || _.psRplc(_.jopts[jx]) ); }; ""
-window.m3Rvrs = () => !(_.m3trk || "").length || _.psRplc(_.m3trk.pop(), 1); ""
+window.g3Reset = () => c3Zero() || _.a0t6.forEach( r => _.a0t6.forEach( c => !window["h" + r + c] || window["h" + r + c].classList[_.peg0s[ppatt.selectedIndex].includes("" + [r, c]) ? "add" : "remove"]("phead") ) ); ""
+window.pegJmp = (rx, cx) => { let jx, ph1 = window["h" + rx + cx].classList.contains("phead"); _.jopts = !ph1 ? _.jopts : _.josGen(rx, cx); u3tog.checked ? (_.jopts = 0) || window["h" + rx + cx].classList.toggle("phead") : !ph1 ? !_.p3tds[rx][cx].className || _.pegsRplc(_.jopts.find(e => "" + e[2] === "" + [rx, cx])) : _.osClr() || _.jopts.forEach( ([[], [r1, c1], [r2, c2]], i) => !window["h" + r1 + c1] || !window["h" + r1 + c1].classList.contains("phead") || !window["h" + r2 + c2] || window["h" + r2 + c2].className || (_.p3tds[r2][c2].className = "jdest") && (jx = i) ); return u3tog.checked || ( jx == null ? _.jopts = 0 : g3panel.querySelectorAll('.jdest').length !== 1 || _.pegsRplc(_.jopts[jx]) ); }; ""
+window.m3Rvrs = () => !(_.m3trk || "").length || _.pegsRplc(_.m3trk.pop(), 1); ""
 //`;
 
 export {
