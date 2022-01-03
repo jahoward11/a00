@@ -445,9 +445,7 @@ p3tds = Array.from(g3panel.querySelectorAll('tr')).map(e => e.querySelectorAll('
 osGen = (rx, cx) => [ [[rx, cx], [rx - 1, cx], [rx - 2, cx]], [[rx, cx], [rx, cx - 1], [rx, cx - 2]], [[rx, cx], [rx, cx + 1], [rx, cx + 2]], [[rx, cx], [rx + 1, cx], [rx + 2, cx]] ]; ""
 osClr = () => g3panel.querySelectorAll('.jdest').forEach(e => e.className = ""); ""
 pegsRplc = (jps, bkup) => (_.jopts = 0) || _.osClr() || (bkup || _.m3trk.push(jps)) && jps.forEach(([r, c]) => window["h" + r + c].classList.toggle("phead")) || u3tog.checked || ( g3movs.innerHTML = g3board.querySelectorAll('.phead').length !== 1 ? _.m3trk.length + " jumps" : "<em>Puzzle solved with " + _.m3trk.length + " jumps!</em>" ); ""
-[ [0,0], [0,1], [], [0,5], [0,6], [1,0], [1,1], [], [1,5], [1,6], [],
-[5,0], [5,1], [], [5,5], [5,6], [6,0], [6,1], [], [6,5], [6,6] ]
-.forEach(([r, c], i) => r == null || (_.p3tds[r][c].className = i % 2 === 0 ? "chckr0" : "chckr1"));
+[ [0,0], [0,1], [], [0,5], [0,6], [1,0], [1,1], [], [1,5], [1,6], [], [5,0], [5,1], [], [5,5], [5,6], [6,0], [6,1], [], [6,5], [6,6] ].forEach(([r, c], i) => r == null || (_.p3tds[r][c].className = i % 2 === 0 ? "chckr0" : "chckr1"));
 [47, 42, 40, 35, 12, 7, 5, 0].forEach(e => _.p3sol.splice(e, 2));
 p3sol.splice(16, 1); ""
 peg0s = [ "", ["1,3", "2,2", "2,3", "2,4", "3,3", "4,3"], ["1,3", "2,3", "3,1", "3,2", "3,3", "3,4", "3,5", "4,3", "5,3"], ["0,2", "0,3", "0,4", "1,2", "1,3", "1,4", "2,2", "2,3", "2,4", "3,2", "3,4"], ["1,4", "2,0", "2,1", "2,4", "2,5", "3,0", "3,1", "3,2", "3,3", "3,4", "3,5", "3,6", "4,0", "4,1", "4,4", "4,5", "5,4"], ["1,3", "2,2", "2,3", "2,4", "3,1", "3,2", "3,3", "3,4", "3,5", "4,0", "4,1", "4,2", "4,3", "4,4", "4,5", "4,6"], p3sol.filter((e, i) => ![0, 2, 6, 12, 19, 25, 29, 31].includes(i)), _.p3sol ]; ""
