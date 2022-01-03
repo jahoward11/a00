@@ -407,11 +407,13 @@ g3ui += "\\n#g3wrap .cfield:not(:last-child) { margin-bottom: 8px; }"; ""
 g3ui += "\\n#g3wrap .ccntr:not(:last-child) { margin-right: 8px; }"; ""
 g3ui += "\\n#g3wrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }"; ""
 g3ui += "\\n#g3bcntr { position: relative; padding-top: 1px; }"; ""
-g3ui += "\\n#g3panel { margin: 16px 17px; border: 4px solid DarkKhaki; border-collapse: collapse; }"; ""
-g3ui += "\\n#g3panel td { background: beige; width: 40px; height: 40px; }"; ""
-g3ui += "\\n#g3panel td.jdest { background: LightYellow; }"; ""
-g3ui += "\\n#g3board { position: absolute; top: 0; margin: 7px; border-spacing: 24px; }"; ""
-g3ui += "\\n#g3board td { background: Black; width: 16px; height: 16px; border-radius: 8px; box-shadow: inset 1px 0 3px 2px Grey; cursor: pointer; }"; ""
+g3ui += "\\n#g3panel { box-sizing: content-box; margin: 15px 16px; border: 4px solid DarkKhaki; border-collapse: collapse; }"; ""
+g3ui += "\\n#g3panel td { background: beige; width: 38px; height: 38px; }"; ""
+g3ui += "\\n#g3panel td.chckr0 { background: LightSlateGrey; }"; ""
+g3ui += "\\n#g3panel td.chckr1 { background: Gainsboro; }"; ""
+g3ui += "\\n#g3panel td.jdest { box-shadow: inset 0 0 0 5px White; }"; ""
+g3ui += "\\n#g3board { position: absolute; top: 0; margin: 8px; border-spacing: 24px; cursor: pointer; }"; ""
+g3ui += "\\n#g3board td { background: Black; width: 16px; height: 16px; border-radius: 8px; box-shadow: inset 1px 0 3px 2px Grey; }"; ""
 g3ui += "\\n#g3board td.nohol { background: Transparent; box-shadow: none; }"; ""
 g3ui += "\\n#g3board td.phead { background: Red; box-shadow: -2px -2px 0 3px Red, 4px 4px 4px 1px Grey; }"; ""
 g3ui += "\\n#g3scor { font-size: small; margin-left: 16px; }"; ""
@@ -443,12 +445,15 @@ p3tds = Array.from(g3panel.querySelectorAll('tr')).map(e => e.querySelectorAll('
 osGen = (rx, cx) => [ [[rx, cx], [rx - 1, cx], [rx - 2, cx]], [[rx, cx], [rx, cx - 1], [rx, cx - 2]], [[rx, cx], [rx, cx + 1], [rx, cx + 2]], [[rx, cx], [rx + 1, cx], [rx + 2, cx]] ]; ""
 osClr = () => g3panel.querySelectorAll('.jdest').forEach(e => e.className = ""); ""
 pegsRplc = (jps, bkup) => (_.jopts = 0) || _.osClr() || (bkup || _.m3trk.push(jps)) && jps.forEach(([r, c]) => window["h" + r + c].classList.toggle("phead")) || u3tog.checked || ( g3movs.innerHTML = g3board.querySelectorAll('.phead').length !== 1 ? _.m3trk.length + " jumps" : "<em>Puzzle solved with " + _.m3trk.length + " jumps!</em>" ); ""
+[ [0,0], [0,1], [], [0,5], [0,6], [1,0], [1,1], [], [1,5], [1,6], [],
+[5,0], [5,1], [], [5,5], [5,6], [6,0], [6,1], [], [6,5], [6,6] ]
+.forEach(([r, c], i) => r == null || (_.p3tds[r][c].className = i % 2 === 0 ? "chckr0" : "chckr1"));
 [47, 42, 40, 35, 12, 7, 5, 0].forEach(e => _.p3sol.splice(e, 2));
 p3sol.splice(16, 1); ""
 peg0s = [ "", ["1,3", "2,2", "2,3", "2,4", "3,3", "4,3"], ["1,3", "2,3", "3,1", "3,2", "3,3", "3,4", "3,5", "4,3", "5,3"], ["0,2", "0,3", "0,4", "1,2", "1,3", "1,4", "2,2", "2,3", "2,4", "3,2", "3,4"], ["1,4", "2,0", "2,1", "2,4", "2,5", "3,0", "3,1", "3,2", "3,3", "3,4", "3,5", "3,6", "4,0", "4,1", "4,4", "4,5", "5,4"], ["1,3", "2,2", "2,3", "2,4", "3,1", "3,2", "3,3", "3,4", "3,5", "4,0", "4,1", "4,2", "4,3", "4,4", "4,5", "4,6"], p3sol.filter((e, i) => ![0, 2, 6, 12, 19, 25, 29, 31].includes(i)), _.p3sol ]; ""
 window.c3Zero = () => (_.m3trk = []) && (g3movs.innerHTML = 0); ""
-window.g3Reset = () => c3Zero() || _.a0t6.forEach( r => _.a0t6.forEach( c => !window["h" + r + c] || window["h" + r + c].classList[_.peg0s[ppatt.selectedIndex].includes("" + [r, c]) ? "add" : "remove"]("phead") ) ); ""
-window.pegJmp = (rx, cx) => { let jx, ph1 = window["h" + rx + cx].classList.contains("phead"); _.jopts = !ph1 ? _.jopts : _.osGen(rx, cx); u3tog.checked ? (_.jopts = 0) || window["h" + rx + cx].classList.toggle("phead") : !ph1 ? !_.p3tds[rx][cx].className || _.pegsRplc(_.jopts.find(e => "" + e[2] === "" + [rx, cx])) : _.osClr() || _.jopts.forEach( ([[], [r1, c1], [r2, c2]], i) => !window["h" + r1 + c1] || !window["h" + r1 + c1].classList.contains("phead") || !window["h" + r2 + c2] || window["h" + r2 + c2].className || (_.p3tds[r2][c2].className = "jdest") && (jx = i) ); return u3tog.checked || ( jx == null ? _.jopts = 0 : g3panel.querySelectorAll('.jdest').length !== 1 || _.pegsRplc(_.jopts[jx]) ); }; ""
+window.g3Reset = () => osClr() || c3Zero() || _.a0t6.forEach( r => _.a0t6.forEach( c => !window["h" + r + c] || window["h" + r + c].classList[_.peg0s[ppatt.selectedIndex].includes("" + [r, c]) ? "add" : "remove"]("phead") ) ); ""
+window.pegJmp = (rx, cx) => { let jx, ph1 = window["h" + rx + cx].classList.contains("phead"); _.jopts = !ph1 ? _.jopts : _.osGen(rx, cx); u3tog.checked ? (_.jopts = 0) || window["h" + rx + cx].classList.toggle("phead") : !ph1 ? !_.p3tds[rx][cx].className || _.pegsRplc(_.jopts.find(e => "" + e[2] === "" + [rx, cx])) : _.osClr() || _.jopts.forEach( ([[], [r1, c1], [r2, c2]], i) => !window["h" + r1 + c1] || !window["h" + r1 + c1].classList.contains("phead") || !window["h" + r2 + c2] || window["h" + r2 + c2].className || (_.p3tds[r2][c2].className = "jdest") && (jx = i) ); return u3tog.checked || ( jx == null ? _.jopts = 0 : (_.p3tds[rx][cx].className = "jdest") && g3panel.querySelectorAll('.jdest').length > 2 || _.pegsRplc(_.jopts[jx]) ); }; ""
 window.m3Rvrs = () => !(_.m3trk || "").length || _.pegsRplc(_.m3trk.pop(), 1); ""
 //`;
 
