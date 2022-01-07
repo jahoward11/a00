@@ -584,9 +584,8 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     xsetinp.value && (!xsetlist.value || xsetlist.value === xsetinp.value.replace(/.+\//, ""))
     || (xsetinp.value = (optg === "USERdata/" ? "" : optg) + xsetlist.value);
     !optg || ( optg !== "USERdata/"
-    ? (( dinp2.value
-      = ((xstor.find(oe => oe[0] === optg.replace(/\/$/, "")) || ["", {}])[1][xsetlist.value] || "")
-      .replace(/\n+$|^\n+/g, "") ), xprsEval() )
+    ? ( dinp2.value = ((xstor[optg.replace(/\/$/, "")] || "")[xsetlist.value] || "")
+      .replace(/\n+$|^\n+/g, "") ) && xprsEval()
     : !window.localforage || window.localforage.getItem(xsetinp.value)
       .then(val => dinp2.value = val || "")
       .then(xprsEval)
@@ -597,7 +596,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     if (err) { respShow(err);
     } else {
       xsetlist.innerHTML = "\n      <option></option>"
-      + [["USERdata", lfkeys]].concat(xstor).map( (oe, i) => i && !oe[1] ? ""
+      + [["USERdata", lfkeys]].concat(Object.entries(xstor)).map( (oe, i) => i && !oe[1] ? ""
         : "\n      <optgroup label=\"" + oe[0] + "/\">\n        "
           + (!i ? oe[1] : Object.keys(oe[1]).filter(e => e !== "groupname"))
             .map(e => "<option>" + e + "</option>").join("\n        ")
@@ -621,7 +620,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     || window.localforage.removeItem( xsetlist.value,
       err => err ? respShow(err) : slistRegen() && xsethlps[1].classList.remove("is-hidden") );
   };
-window.xstor = [];
+window.xstor = {};
 window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
   /^jsrcs=./.test(qi) ? (jsrcs = window.decodeURIComponent(qi.replace(/^jsrcs=/, "")).split(/[ ,]+/))
   : /^cmods=./.test(qi) ? (cmods = window.decodeURIComponent(qi.replace(/^cmods=/, "")).split(/[ ,]+/))
@@ -640,7 +639,7 @@ Promise.all(jsrcs.map(scrInj)).catch(respShow).then(() => {
       .map(e => !/^\d+$/.test(e) ? e : `cjs-srvc${e}.js`)
       .map(fnm => fnm && import(/\//.test(fnm) ? fnm : "../-app-cjs/" + fnm).catch(respShow)) )
     .then( rslts => rslts.forEach( (r, i) => !r || typeof r !== 'object'
-      || xstor.push([r.groupname || "group" + (1 + i), r]) ))
+      || (xstor[r.groupname || "group" + (1 + i)] = r) ))
     .then(() => slistRegen(dload))
     .catch(respShow);
   xsetinp || initLoad();
