@@ -122,7 +122,7 @@ var dbar, midx, gball, tstrk, t0trk,
     } else if (!t0trk) {
       dbar = dbar
         || (gball.ysp < 0 ? 1 : gball.ysp > 0 ? 2 : gball.xsp < 0 ? 3 : gball.xsp > 0 ? 4 : 0);
-      gball.xsp = gball.ysp = 0;
+      gball.ysp = gball.xsp = 0;
       gball.posRvrs(dbar);
     } else {
       !tstrk.length || g4view.clear( (tstrk.splice(t0trk - 1, 1)[0] || [])
