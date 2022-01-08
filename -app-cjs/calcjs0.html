@@ -353,16 +353,17 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
       cgrid.classList.toggle("xpndq2B");
     }
   },
-  scrInj = url => new Promise((rslv, rjct) => {
-    url || rjct("**Alert: Script URL was not provided.");
-    let scrnew = document.createElement('script');
-    scrnew.src = url;
-    scrnew.type = 'text/javascript';
-    !/^http/.test(window.location.protocol) || !window.navigator.onLine
-    || scrnew.setAttribute('crossorigin', 'use-credentials');
-    scrnew.onerror = err => rjct("**Alert: Script resource GET/load error occured.");
-    scrnew.onload = rslv;
-    !url || document.body.appendChild(scrnew);
+  scrInj = (url, typ, cnt) => new Promise((rslv, rjct) => {
+    url || cnt || rjct("**Alert: Script content or URL was not provided.");
+    let nscr = document.createElement('script');
+    !url || (nscr.src = url);
+    nscr.type = typ || (/\.mjs$/.test(url) ? 'module' : 'text/javascript');
+    cnt || !/^http/.test(window.location.protocol) || !window.navigator.onLine
+    || nscr.setAttribute('crossorigin', 'use-credentials');
+    nscr.innerHTML = cnt || null;
+    nscr.onerror = err => rjct("**Alert: Script resource GET/load error occured.");
+    nscr.onload = rslv;
+    !(url || cnt) || document.body.appendChild(nscr);
   }),
   viewSet = () => {
     let qrys = [];
@@ -400,7 +401,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     window.getSelection().setPosition(quad2B.firstChild, quad2B.textContent.length);
   },
   calcCopy = () => {
-    let anew = document.createElement('a'),
+    let nanc = document.createElement('a'),
       chtml = '<!DOCTYPE html>\n<html lang="en">\n<head>\n'
       + (document.querySelector('#ecorender') || document.documentElement).innerHTML
         .replace(/\n+$|^\n+|^<head>\n?|^#cmain \.iwarn[^]+?\n(?=@media print {\n)|,\n *xsetLoad = [^]+?(?=;\nwindow\.xstor =)|^ *!\/\^http.+slistRegen[^]+?;\n|\n*<script\b.*><\/script>(?=$|<\/body>)|\n?<\/body>$/gim, "")
@@ -413,9 +414,9 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
         .replace(/^( *cheadg\.textContent === ").+/m, "$1" + cheadg.textContent + "\"")
         .replace(/^xsetinp\.addEventListener\([^]+?(?=\n<\/script>)/im, "})();")
       + "\n</body>\n</html>\n";
-    anew.setAttribute('download', "calcjs-draft02.html");
-    anew.setAttribute('href', "data:text/html;charset=utf-8," + window.encodeURIComponent(chtml));
-    anew.click();
+    nanc.setAttribute('download', "calcjs-draft02.html");
+    nanc.setAttribute('href', "data:text/html;charset=utf-8," + window.encodeURIComponent(chtml));
+    nanc.click();
   },
   menuSel = evt => {
     window.setTimeout(() => {
@@ -626,8 +627,9 @@ window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
   : /^cmods=./.test(qi) ? (cmods = window.decodeURIComponent(qi.replace(/^cmods=/, "")).split(/[ ,]+/))
   : /^dload=./.test(qi) ? (dload = window.decodeURIComponent(qi.replace(/^dload=/, "")))
   : /^val0s=./.test(qi) ? ( val0s = window.decodeURIComponent(qi.replace(/^val0s=/, ""))
-    .split(/,/).map( e => (e = /^ *(.+:)(.*)/.exec(e))
-      && [new RegExp("^( *" + e[1].replace(/:/g, " *= *") + ").*?(?=[\\t ]*//|$)", "m"), "$1" + e[2]] ) )
+    .split(/,/).map( e => (e = /^ *(.+:)(.*)|^ *(\/.+\/[gim]*):?(.*)/.exec(e))
+      && ( /^\//.test(e[1]) ? [eval(e[1]), !/^['"]|=>/.test(e[2]) ? e[2] : eval(e[2])]
+        : [new RegExp("^( *" + e[1].replace(/:/g, " *= *") + ").*?(?=[\\t ]*//|$)", "m"), "$1" + e[2]] ) ) )
   : /^title=/.test(qi) ? titSave(0, window.decodeURIComponent(qi.replace(/^title=/, "")))
   : /^!displ$/.test(qi) ? [cgrid, xctrls].forEach(e => e.classList.add("is-hidden"))
   : /^!zlock$/.test(qi) ? zoomTog(1)
@@ -635,7 +637,7 @@ window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
   : /^!col1$/.test(qi) ? gridAdj(5) : 0 );
 Promise.all(jsrcs.map(scrInj)).catch(respShow).then(() => {
   !/^http/.test(window.location.protocol) ? slistRegen(dload)
-  : Promise.all( (cmods.some(e => /^\d+$/.test(e)) ? cmods : [1,2,3,4,5,6].concat(cmods))
+  : Promise.all( (cmods.some(e => /^\d+$/.test(e)) ? cmods : [1,2,3,4,5,6,7].concat(cmods))
       .map(e => !/^\d+$/.test(e) ? e : `cjs-srvc${e}.js`)
       .map(fnm => fnm && import(/\//.test(fnm) ? fnm : "../-app-cjs/" + fnm).catch(respShow)) )
     .then( rslts => rslts.forEach( (r, i) => !r || typeof r !== 'object'
