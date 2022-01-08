@@ -47,7 +47,7 @@ g4ui += "\\n#g4movs { font-weight: bold; }"; ""
 g4ui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Tilt Maze</h4>"; ""
 g4ui += "\\n<div class=cfield><em>Objective:</em> Guide the ball to the&nbsp;target(s).</div>"; ""
 g4ui += "\\n<div class=cfield><em>Tip:</em> This is a logic puzzle&mdash;not a test of skill with eye&#x2011;hand&nbsp;coordination.</div>"; ""
-g4ui += "\\n<div>\\n<span class=ccntr><select id=mpatt>\\n<option disabled>Maze Pattern</option>"; ""
+g4ui += "\\n<div>\\n<span class=ccntr><select id=mpatt>\\n<option disabled>Maze Pattern</option>\\n"; ""
 g4ui += ["Level I (single)", "Level II (single)", "Level III (single)", "Level IV (single)", "Level V (single)", "Level VI (single)", "Level VII (multi)", "Level VIII (multi)", "Level IX (multi)", "Level X (multi)", "Level XI (multi)"].map(e => "<option>" + e + "</option>").join("\\n"); ""
 g4ui += "\\n</select></span><span class=ccntr><select id=gscrg>"; ""
 g4ui += "\\n<option disabled>Game Scoring</option>\\n<option>reset counter</option>\\n<option selected>add up total</option>"; ""
@@ -102,7 +102,7 @@ __CHESS__
 *A JavaScript Puzzle GUI*
 */
 
-// &hellip;comming soon&hellip;
+// &hellip; coming soon &hellip;
 //`;
 
 export {
