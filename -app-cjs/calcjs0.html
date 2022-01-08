@@ -448,8 +448,8 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     evt.preventDefault();
   },
   xprsEval = () => {
-    rset ? (preresp.innerHTML = "") : ++rset && !((xsetlist || {}).value = "")
-      && val0s.forEach(v => v && (dinp2.value = dinp2.value.replace(v[0], v[1])));
+    rset ? (preresp.innerHTML = "") : ++rset && !val0s.length || ((xsetlist || {}).value = "")
+      || val0s.forEach(v => v && (dinp2.value = dinp2.value.replace(v[0], v[1])));
     let $ = {}, _ = {}, _ks = [], rslt,
       xprsns = (dinp2.value || "")
         .replace(/^\/\*(?:\s*?\n|)([^]*?)\s*\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
