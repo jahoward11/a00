@@ -5,26 +5,26 @@ const groupname = "puzzle";
 const collection1 = `/*
 __Puzzle Collection I: from JS Tutorial 2__
 
- This module screen functions only to display all of the puzzle GUIs
-that are already built within the \`JScode/tutorial2\` data file:
+ This module option functions only to display all of the puzzle GUIs
+that are already written in the \`JScode\` module's data files:
 - SLIDING TILES
 - LIGHTS OUT
 - PEGS
 */
 
-ptm = xstor["JScode"]["tutorial2"]; ""
-bodGen = rslt => "<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + rslt.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/; ""$|^g\\dui = /g, "").split(/; ""\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n"); "" //
-scrGen = rslt => rslt.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *\\/[\\/*])/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,")).join("\\n"); "" //
+t2x = xstor["JScode"]["tutorial2"]; ""
+bodGen = src => "<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/; ""$|^g\\dui = /g, "").split(/; ""\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n"); "" //
+scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *\\/[\\/*])/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,")).join("\\n"); "" //
 uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "pz1wrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); }; ""
 
 // pz1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
-try { pz1wrap } catch { uiDspl(bodGen(ptm)); scrInj(null, 'module', scrGen(ptm)).catch(respShow); }
+try { pz1wrap } catch { uiDspl(bodGen(t2x)); scrInj(null, 'module', scrGen(t2x)).catch(respShow); }
 
  // Un-comment the following 2 lines of code to generate the
 // full source code (e.g., for building a standalone web app).
 
 // dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=pz1wrap>\\n", "\\n</div>\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"]; ""
-// respShow((dwrap[0] + bodGen(ptm) + dwrap[1] + scrGen(ptm) + dwrap[2]).replace(/<(?=[!/?a-z])/gi, "&lt;"))
+// respShow((dwrap[0] + bodGen(t2x) + dwrap[1] + scrGen(t2x) + dwrap[2]).replace(/<(?=[!/?a-z])/gi, "&lt;"))
 //`;
 
 const tiltmaze = `/*
@@ -90,8 +90,8 @@ g4Start();
 
 /*
 ptm = xstor["puzzle"]["tiltmaze"]; ""
-bodGen = rslt => rslt.match(/^g\\dui = [^]+?(?=\\n$)/m)[0].replace(/; ""$|^g\\dui = /g, "").split(/; ""\\ng\\dui \\+= /).map(eval).join("").trim(); "" //
-scrGen = rslt => "let " + rslt.match(/^dbar = [^]+?(?=\\n+ *\\/[\\/*])/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,"); "" //
+bodGen = src => src.match(/^g\\dui = [^]+?(?=\\n$)/m)[0].replace(/; ""$|^g\\dui = /g, "").split(/; ""\\ng\\dui \\+= /).map(eval).join("").trim(); "" //
+scrGen = src => "let " + src.match(/^dbar = [^]+?(?=\\n+ *\\/[\\/*])/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,"); "" //
 dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Tilt Maze</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=g4wrap>\\n", "\\n</div>\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"]; ""
 respShow((dwrap[0] + bodGen(ptm) + dwrap[1] + scrGen(ptm) + dwrap[2]).replace(/\\n<hr>/, "").replace(/<(?=[!/?a-z])/gi, "&lt;"))
 */
@@ -102,7 +102,7 @@ __CHESS__
 *A JavaScript Puzzle GUI*
 */
 
-// &hellips;comming soon&hellips;
+// &hellip;comming soon&hellip;
 //`;
 
 export {
