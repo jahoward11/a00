@@ -59,5 +59,7 @@ respShow((dwrap[0] + bodGen(t2x) + dwrap[1] + scrGen(t2x) + dwrap[2]).replace(/<
 */`;
 
 export {
-  groupname, vkeys, nformat, uiwidth, objloc, scripts, caches, token
+  groupname, vkeys, nformat,
+  uiwidth, objloc, scripts,
+  caches, token, apptxt
 };
