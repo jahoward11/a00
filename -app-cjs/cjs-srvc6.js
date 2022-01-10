@@ -328,16 +328,16 @@ g1Reset();
  4. See how __GUI design techniques__ get applied to multiple games.
     *Note:* For each of the following games, the GUI has not yet been
     displayed on this web doc.
-    + Un-comment associated lines of doc-manipulating code (as in
-      step 1, above) to display a game's GUI (below, beneath both the
-      calculator and the *Sliding Tiles* puzzle).
+    + Un-comment an associated \`try { … } catch { … }\` line of code
+      (following each block of HTML/CSS text) to display a game's GUI
+      in this web doc (below, beneath the *Sliding Tiles* puzzle).
     + To generate the web-app code of a game -- for building a
       standalone game app (as in step's 2 and 3, above) -- make use of
       the text-generating commands already provided in step's 2 and 3.
       Within those lines of code, above, simply change the \`g1wrap\`
       variable to the other game's "wrap" ID (e.g., \`g2wrap\`); And
       update the saved \`tutor2js\` data file with the other game's
-      GUI text.
+      "script" code blocks.
     + *Take notice:* For each additional game in this tutorial, its
       game board has many elements and structures in common with the
       first one (e.g., \`<table id=g1board>\`) -- but, each has a
