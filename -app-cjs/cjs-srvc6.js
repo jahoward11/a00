@@ -309,7 +309,7 @@ g1Reset();
       all of the text.
     + Type \`tutor2js\` into the *DATA-LOAD* input box (directly beneath
       the calculator), and tap *SAVE*.
-    + Reload this tutorial, and un-comment the following two lines
+    + Reload this tutorial, and un-comment the following three lines
       of code.
     + Select and copy the orange text that appears above, overtop
       the calculator.
@@ -321,7 +321,8 @@ g1Reset();
 */
 
 // preresp.innerHTML = "" // clears any orange text (in case GUI text is still visible)
-// localforage.getItem("tutor2js").then( rslt => respShow( "let " + rslt.replace(/\\b_\\.\\b| *"";?$|^\\n|^\\/\\*\\n*|\\n*\\*\\/$/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,").replace(/<(?=[!/?a-z])/gi, "&lt;") )).catch(respShow) //
+// scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,")).join("\\n\\n"); "" //
+// localforage.getItem("tutor2js").then( rslt => respShow( _.scrGen(rslt).replace(/<(?=[!/?a-z])/gi, "&lt;") )).catch(respShow)
 
 /*
  4. See how __GUI design techniques__ get applied to multiple games.
