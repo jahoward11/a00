@@ -232,7 +232,7 @@ g1ui += "\\n<label class=ccntr>Rows <input type=text id=trows value=4 size=2></l
 g1ui += "\\n<label class=ccntr>Columns <input type=text id=tcols value=4 size=2></label>"; ""
 g1ui += "\\n<span class=ccntr><input type=button value=\\"&#x21bb; NEW GAME\\" onclick=g1Reset()></span>\\n</div>"; ""
 g1ui += "\\n<table id=g1board></table>\\n<div id=g1scor class=cfield>Count: <span id=g1movs>0</span></div>"; ""
-g1ui += "\\n<div>\\n<span class=ccntr><input type=button value=\\"RETRACT MOVE\\" onclick=m1Rvrs()></span><span class=ccntr><input type=button value=\\"RESET COUNTER\\" onclick=c1Zero()></span>\\n</div>\\n"; ""
+g1ui += "\\n<div><span class=ccntr><input type=button value=\\"RETRACT MOVE\\" onclick=m1Rvrs()></span><span class=ccntr><input type=button value=\\"RESET COUNTER\\" onclick=c1Zero()></span></div>\\n"; ""
 
 // g1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap"; ndiv.innerHTML = g1ui; cmain.appendChild(ndiv); }
@@ -377,9 +377,9 @@ g2ui += "\\n#g2movs { font-weight: bold; }"; ""
 g2ui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Lights Out</h4>"; ""
 g2ui += "\\n<div class=cfield><em>Objective:</em> Switch all matrix lights off.</div>"; ""
 g2ui += "\\n<div class=cfield><em>Game Action:</em> Switching a diode in this lighting matrix also switches any directly connected up-, down-, left- or right- diodes.</div>"; ""
-g2ui += "\\n<div><span class=ccntr><select id=lpatt>"; ""
+g2ui += "\\n<div>\\n<span class=ccntr><select id=lpatt>"; ""
 g2ui += ["&mdash;Startup Pattern&mdash;", "Treasure marker (in 4)", "Lucy's diamond (in 5)", "Eight-pocket table (in 5)", "Picasso emoji (in 5)", "Peep holes (in 6)", "Split screen (in 6)", "Square target (in 9)", "Bi-polar opposites (in 11)", "Central light out (in 12)", "Road caution marks (in 15)"].map(e => \`\\n<option>\${e}</option>\`).join(""); ""
-g2ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x21bb; RESTART\\" onclick=g2Reset()></span></div>"; ""
+g2ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x21bb; RESTART\\" onclick=g2Reset()></span>\\n</div>"; ""
 g2ui += "\\n<div id=g2bcntr>\\n<table id=g2circt><tbody>"; ""
 g2ui += [0, 1, 2, 3].map(r => "\\n<tr>" + [0, 1, 2, 3].map(c => "<td></td>").join("") + "</tr>").join(""); ""
 g2ui += "\\n</tbody></table>\\n<table id=g2board><tbody>"; ""

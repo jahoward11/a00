@@ -13,7 +13,7 @@ that are already written in the \`JScode\` module's data files:
 */
 
 t2x = xstor["JScode"]["tutorial2"]; ""
-bodGen = src => "<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/; ""$|^g\\dui = /g, "").split(/; ""\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n"); "" //
+bodGen = src => "\\n<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/; ""$|^g\\dui = /g, "").split(/; ""\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n") + "\\n"; "" //
 scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,")).join("\\n\\n"); "" //
 uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "pz1wrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); }; ""
 
@@ -55,7 +55,7 @@ g4ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x21b
 g4ui += "\\n<div id=g4board></div>"; ""
 g4ui += "\\n<div id=g4scor class=cfield>Score: <span id=g4movs>0</span></div>"; ""
 g4ui += "\\n<div class=cfield align=center><span class=ccntr><button onclick=pcMove(3)>&ltrif; LEFT</button></span><span class=ccntr><button onclick=pcMove(1)>&utrif; TOP</button></span><span class=ccntr><button onclick=pcMove(4)>RIGHT &rtrif;</button></span></div>"; ""
-g4ui += "\\n<div class=cfield align=center><span class=ccntr><button onclick=pcMove(2)>&dtrif; BOTTOM</button></span></div>"; ""
+g4ui += "\\n<div class=cfield align=center><span class=ccntr><button onclick=pcMove(2)>&dtrif; BOTTOM</button></span></div>\\n"; ""
 
 // g4wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 try { g4wrap && (g4board.innerHTML = ""); } catch { ndiv = document.createElement('div'); ndiv.id = "g4wrap"; ndiv.innerHTML = g4ui; cmain.appendChild(ndiv); }
