@@ -23,8 +23,8 @@ try { pz1wrap } catch { uiDspl(bodGen(t2x)); scrInj(null, 'module', scrGen(t2x))
  // Un-comment the following 2 lines of code to generate the
 // full source code (e.g., for building a standalone web app).
 
-// dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=pz1wrap>\\n", "\\n</div>\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"]; ""
-// respShow((dwrap[0] + bodGen(t2x) + dwrap[1] + scrGen(t2x) + dwrap[2]).replace(/<(?=[!/?a-z])/gi, "&lt;"))
+// dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"]; ""
+// respShow((dwrap[0] + pz1wrap.outerHTML + dwrap[1] + scrGen(t2x) + dwrap[2]).replace(/<(?=[!/?a-z])/gi, "&lt;"))
 //`;
 
 const tiltmaze = `/*
@@ -90,11 +90,9 @@ g4Start();
 // full source code (e.g., for building a standalone web app).
 
 /*
-ptm = xstor["puzzle"]["tiltmaze"]; ""
-bodGen = src => src.match(/^g\\dui = [^]+?(?=\\n$)/m)[0].replace(/; ""$|^g\\dui = /g, "").split(/; ""\\ng\\dui \\+= /).map(eval).join("").trim(); "" //
-scrGen = src => "let " + src.match(/^dbar = [^]+?(?=\\n+ *\\/[\\/*])/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,"); "" //
-dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Tilt Maze</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=g4wrap>\\n", "\\n</div>\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"]; ""
-respShow((dwrap[0] + bodGen(ptm) + dwrap[1] + scrGen(ptm) + dwrap[2]).replace(/\\n<hr>/, "").replace(/<(?=[!/?a-z])/gi, "&lt;"))
+scrGen = src => "let " + src.match(/^dbar = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,"); "" //
+dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Tilt Maze</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"]; ""
+respShow((dwrap[0] + g4wrap.outerHTML + dwrap[1] + scrGen(xstor["puzzle"]["tiltmaze"]) + dwrap[2]).replace(/\\n<hr>/, "").replace(/<(?=[!/?a-z])/gi, "&lt;"))
 */
 //`;
 

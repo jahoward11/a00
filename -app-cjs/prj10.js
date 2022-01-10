@@ -50,6 +50,14 @@ opts = { method: 'POST', headers: hdrs, body: uenc, redirect: 'follow' };
 fetch("https:/" + "/iam.cloud.ibm.com/identity/token", opts).then(resp => resp.text()).then(respShow).catch(respShow);
 */`;
 
+const apptxt = `/*
+t2x = xstor["JScode"]["tutorial2"]; ""
+bodGen = src => "<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/; ""$|^g\\dui = /g, "").split(/; ""\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n"); "" //
+scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,")).join("\\n\\n"); "" //
+dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=pz1wrap>\\n", "\\n</div>\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"]; ""
+respShow((dwrap[0] + bodGen(t2x) + dwrap[1] + scrGen(t2x) + dwrap[2]).replace(/<(?=[!/?a-z])/gi, "&lt;"))
+*/`;
+
 export {
   groupname, vkeys, nformat, uiwidth, objloc, scripts, caches, token
 };
