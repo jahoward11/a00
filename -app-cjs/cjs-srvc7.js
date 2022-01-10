@@ -20,7 +20,7 @@ uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "pz1wrap";
 // pz1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 try { pz1wrap } catch { uiDspl(bodGen(t2x)); scrInj(null, 'module', scrGen(t2x)).catch(respShow); }
 
- // Un-comment the following 2 lines of code to generate the
+ // Un-comment the following two lines of code to generate the
 // full source code (e.g., for building a standalone web app).
 
 // dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"]; ""

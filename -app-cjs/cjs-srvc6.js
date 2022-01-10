@@ -327,10 +327,10 @@ g1Reset();
 /*
  4. See how __GUI design techniques__ get applied to multiple games.
     *Note:* For each of the following games, the GUI has not yet been
-    displayed on this web doc.
+    displayed on this app.
     + Un-comment an associated \`try { … } catch { … }\` line of code
-      (following each block of HTML/CSS text) to display a game's GUI
-      in this web doc (below, beneath the *Sliding Tiles* puzzle).
+      (following each block of HTML/CSS text) to inject into this web
+      doc, and display (down below), another game's GUI.
     + To generate the web-app code of a game -- for building a
       standalone game app (as in step's 2 and 3, above) -- make use of
       the text-generating commands already provided in step's 2 and 3.
@@ -352,7 +352,7 @@ g1Reset();
     + *Challenge:* Play with the styles -- as well as the script code.
       Reshape and refine these game boards in any way that you would
       like. Every little bit of experience in design skills now will
-      have big and frequent payoffs down the road of your future,
+      have big and frequent payoffs down the road to your future,
       wherever it may lead.
 */
 
