@@ -24,11 +24,11 @@ __JavaScript Coding Tutorials, Part 1__
   + for designing the screen layout of any computer or device display
   + rendered by (viewed with) a standard web browser
 - Core JavaScript language (JS)
-  + the set of keywords that a browser console understands
+  + the set of commands (keywords) that a browser console understands
   + building blocks for composing your instructions to manipulate
     and display data
-- Application Programming Interfaces (API) --
-  specifically the client-side web APIs
+- Application Programming Interfaces (API) -- specifically the
+  client-side web APIs
   + pre-built JS code patterns, useful for sending and receiving live,
     current feeds of data
   + ever evolving to accommodate changing internet uses and demands
@@ -270,8 +270,9 @@ g1Reset();
       this web doc -- where it will remain as rendered (even after
       this tutorial is unloaded), unchanged from the way it was first
       designed, until it gets altered (overwritten) by another script.
-    + *Challenge:* Un-comment the \`g1wrap.remove()\` line, above,
-      and make assorted edits to the GUI code, such as:
+    + *Challenge:* Un-comment (i.e., remove the \`//\` characters of)
+      the \`g1wrap.remove()\` line, above; And make assorted edits to
+      the GUI code, such as:
       * changing the \`.gtile\` background color to \`Pink\` … or \`Tan\`;
       * changing the game-board title to "My First Web Game" … or …;
       * unchecking the "Auto-shuffle" checkbox
@@ -327,7 +328,7 @@ g1Reset();
 /*
  4. See how __GUI design techniques__ get applied to multiple games.
     *Note:* For each of the following games, the GUI has not yet been
-    displayed on this app.
+    displayed anywhere on this page.
     + Un-comment an associated \`try { … } catch { … }\` line of code
       (following each block of HTML/CSS text) to inject into this web
       doc, and display (down below), another game's GUI.
@@ -457,6 +458,64 @@ window.pegJmp = (rx, cx) => { let jx, ph1 = window["h" + rx + cx].classList.cont
 window.m3Rvrs = () => !(_.m3trk || "").length || _.pegsRplc(_.m3trk.pop(), 1); ""
 //`;
 
+const tutorial3 = `/*
+__JavaScript Coding Tutorials, Part 3__
+
+ In *part 1* and *part 2*: We coded various calculations, which
+could be reconstructed in a __browser console__ and performed anywhere;
+And we designed a diversity of graphic elements out of whole cloth,
+using only the __HTML/CSS__ language.
+
+ In *part 3*, we will move beyond basic form and function into
+the more open vistas of coding literacy. We will begin to compose
+practical algorithms -- the kind that refine and repackage for human
+consumption the raw data that we often encounter in our modern world.
+Applying __core JavaScript protocols__ only, we will automate some common,
+time-consuming, publishing tasks -- enabling ourselves to do any one
+or another of these kind of tasks instantaneously.
+
+ Specifically, we will:
+ 1) locate a string of text within a lengthy document,
+ 2) markup an article to display its structural parts
+    meaningfully, and
+ 3) format a memo or report to fit any size screen.
+
+- - - - -
+__*Tutorial Three: Automating a custom task*__
+*/
+
+srui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
+srui += "\\nhtml { box-sizing: border-box; }"; ""
+srui += "\\nhr { margin: 1.5rem 0; }"; ""
+srui += "\\n#srwrap { font: normal medium Helvetica, Arial, sans-serif; margin: 16px 0; }"; ""
+srui += "\\n#srwrap textarea { display: block; font-size: medium; width: 100%; height: 384px; }"; ""
+srui += "\\n#srwrap .iwarn { color: Orange; }"; ""
+srui += "\\n#srwrap .isucc { color: CornFlowerBlue; }"; ""
+srui += "\\n#srwrap textarea.iwarn { color: unset; border-color: Orange; }"; ""
+srui += "\\n#srwrap textarea.isucc { color: unset; border-color: CornFlowerBlue; }"; ""
+srui += "\\n#srwrap .cfield { max-width: 720px; }"; ""
+srui += "\\n#srwrap .cfield:not(:last-child) { margin-bottom: 8px; }"; ""
+srui += "\\n#srwrap .ccntr:not(:last-child) { margin-right: 8px; }"; ""
+srui += "\\n#srwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }"; ""
+srui += "\\n#srwrap .cfield>.help { font-size: 12px; margin-top: 4px; }"; ""
+srui += "\\n#srwrap h4+.cfield:not(:last-child) { margin-bottom: 16px; }"; ""
+srui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Source</h4>"; ""
+srui += "\\n<div class=cfield><textarea id=srctxta></textarea></div>"; ""
+srui += "\\n<div class=cfield><label class=ccntr><input type=text id=sepainp> Search</label></div>"; ""
+srui += "\\n<div class=cfield><label class=ccntr><input type=text id=rfncinp> Replace</label></div>"; ""
+srui += "\\n<div class=cfield><span class=ccntr><input type=button value=\\"&rlhar; SWAP\\" onclick=txtSwap()></span>"; ""
+srui += "<span class=ccntr><input type=button value=\\"&rArr; PARSE\\" onclick=strPars()></span></div>"; ""
+srui += "\\n<h4 class=cfield>Target</h4>"; ""
+srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=replhelp class=help></div></div>"; ""
+
+// srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
+// try { srwrap } catch { ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = srui; cmain.appendChild(ndiv); }
+
+msgClr = () => (replhelp.innerHTML = "") || [trgtxta, replhelp].forEach(e => e.classList.remove("iwarn", "isucc")); ""
+window.txtSwap = () => _.msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]); ""
+window.strPars = () => { let lrpl; _.msgClr(); if (/^\\/.+\\/[im]*g[im]*$/.test(sepainp.value)) { replhelp.innerHTML = (lrpl = (srctxta.value.match(eval(sepainp.value)) || []).length) + " replacements have been made."; [trgtxta, replhelp].forEach(e => e.classList.add(!lrpl ? "iwarn" : "isucc")); } trgtxta.value = srctxta.value.replace( !/^\\/.+\\/[gim]*$/.test(sepainp.value) ? sepainp.value : eval(sepainp.value), !/(?:\\w+|\\([ \\w,]*\\)) *=>.|window\\.[\\w.]+/.test(rfncinp.value.trim()) ? rfncinp.value : window.eval(rfncinp.value) ); }; ""
+//`;
+
 export {
-  groupname, tutorial1, tutorial2
+  groupname, tutorial1, tutorial2, tutorial3
 };
