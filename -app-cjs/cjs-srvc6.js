@@ -555,15 +555,16 @@ arr[3]        // the returned value should be \`true\`
 /*
  2. Perform __a simple search-and-replace__ on a string.
     + The \`.replace( … , … )\` method makes changes on any string.
-    + Two examples are provided below:
-      * The first works on a string directly;
-      * The second works on a different string that is previously
+    + Two examples are presented below:
+      * The first parses over a string directly;
+      * The second parses over a different string that is first
         assigned to the variable \`str\`.
     + In each example, two arguments are provided to the
       \`.replace( … , … )\` method -- a search string and a
       replacement string.
 */
 
+"Controlled chaos."
 "Controlled chaos.".replace("ch", "K") // 1st example
 
 str = "Deafening silence."
@@ -574,13 +575,13 @@ str.replace("silence.", "SILENCE!")    // 2nd example
     __a regular expression__ (*RegExp*) __as the search pattern__.
     + A *RegExp* pattern allows full control over a search.
     + The pattern is wrapped in a pair of forward slashes \`/ … /\`.
-    + It is composed of simple characters, such as \`/abc/\`, or a
-      combination of simple and special characters, such as \`/ab*c/\`
-      or \`/Chapter (\\d+)\\.\\d*/\`.
-    + Learning how to compose a *RegExp* can be involved,
-      as demonstrated at this reference link:
+    + It is composed of simple characters, such as \`/abc/\`,
+      or a combination of simple and special characters, such as
+      \`/ab*c/\` or \`/Chapter (\\d+)\\.\\d*/\`.
+    + Learning how to compose a *RegExp* can be an involved process,
+      as evidenced at this reference link:
       developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Cheatsheet
-    + As a quick-start, here are the most common, special characters.
+    + For quick-start, here are the most helpful special characters.
 
       .   | matches any character except NewLine \`\\n\`
       [^] | matches any character
@@ -602,8 +603,9 @@ str.replace("silence.", "SILENCE!")    // 2nd example
             "$&" in the replacement string returns the whole match,
             even without a CG in the *RegExp*;
 
-    + To make a *RegExp* complete, any of three flag characters may
-      optionally be added onto the end (e.g., \`/abc/i\` or \`/^abc/gim\`).
+    + To make a *RegExp* complete, any of three flag characters
+      may optionally be added onto the end
+      (e.g., \`/abc/i\` or \`/^abc/gim\`).
 
       g | global flag: find every match encountered;
           (otherwise, find only the first match encountered);
@@ -644,9 +646,10 @@ str.replace(/(deaf)\\w+ (\\w+)\\./i, (m, c1, c2) => \`\${c1} & \${c2.replace(/ce
     and __build a search-and-replace web app__.
     + The elements of a minimal search-and-replace user interface (UI)
       are: "Source" and "Target" text fields, "Search" and "Replace"
-      inputs, and a trigger ("PARSE" button) to activate the operation.
+      inputs, and a trigger ("PARSE" button) to activate the
+      search/replace operation.
     + Un-comment the \`try { … } catch { … }\` line following the
-      next code block to display a simple, search-and-replace UI,
+      next code block to display a basic search-and-replace UI,
       down below.
 */
 
@@ -679,24 +682,25 @@ srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=replhelp c
 
 /*
     + The following "script" code that makes this UI functional hinges
-      on a standard \`.replace( … , … )\` method to manipulate the source
-      string -- taken from the "Source" text field of the UI.
+      on a standard \`.replace( … , … )\` method to manipulate the
+      source string -- taken from the "Source" text field of the UI.
     + The arguments of the \`.replace( … , … )\` method are taken from
       the "Search" and "Replace" inputs of the UI:
-      * A recognized search pattern will be either a string or a *RegExp*,
-        depending on whether or not the user entered a *RegExp* pattern 
-        (i.e., one wrapped in \`/ … /\`).
+      * A recognized search pattern will be either a string or a
+        *RegExp*, depending on whether or not the user entered a *RegExp* 
+        pattern (i.e., one wrapped in \`/ … /\`).
       * Recognized replacement code will be either a string or a
-        function, depending on whether or not the user entered (either)
-        a function definition (with arrow notation \`=>\`) or a function
-        name (of one that is defined elsewhere in the script).
+        function, depending on whether or not the user entered
+        (either) a function definition (with arrow notation \`=>\`) or
+        function name (of one that is defined elsewhere in the script).
     + The result of the \`.replace( … , … )\` method is then sent to
       the "Target" text field.
     + Other assorted bells and whistles have been written into this
-      "script" code -- to display the replacement count, to allow for a
-      one-click swapping of content between "Source" and "Target" text
-      fields, and to turn the "Source" and "Target" labels each into a
-      live trigger for selecting all of its text-field's content.
+      "script" code -- to display the replacement count, to allow for
+      a one-click swapping of content between "Source" and "Target"
+      text fields, and to turn the "Source" and "Target" labels
+      each into a live trigger for auto-selecting all of its
+      text-field's content.
 */
 
 rx = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /(?:[$\\wÀ-Ͽ]+|\\(.*?\\)) *=>.|window\\.[\\w.]+/]; ""
