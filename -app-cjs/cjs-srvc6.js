@@ -566,14 +566,14 @@ arr[3]        // the returned value should be \`true\`
 
 "Controlled chaos.".replace("ch", "K") // 1st example
 
-str = "Deafening silence."; ""
+str = "Deafening silence."
 str.replace("silence.", "SILENCE!")    // 2nd example
 
 /*
  3. Now, perform another search-and-replace on each string using
     __a regular expression__ (*RegExp*) __as the search pattern__.
     + A *RegExp* pattern allows full control over a search.
-    + The pattern is wrapped in a pair of forward slashes.
+    + The pattern is wrapped in a pair of forward slashes \`/ … /\`.
     + It is composed of simple characters, such as \`/abc/\`, or a
       combination of simple and special characters, such as \`/ab*c/\`
       or \`/Chapter (\\d+)\\.\\d*/\`.
@@ -602,7 +602,7 @@ str.replace("silence.", "SILENCE!")    // 2nd example
             "$&" in the replacement string returns the whole match,
             even without a CG in the *RegExp*;
 
-    + To make a complete *RegExp*, any of three flag characters may
+    + To make a *RegExp* complete, any of three flag characters may
       optionally be added onto the end (e.g., \`/abc/i\` or \`/^abc/gim\`).
 
       g | global flag: find every match encountered;
@@ -640,8 +640,14 @@ str.replace(/(deaf)\\w+ (\\w+)\\./i, (m, c1, c2) => \`\${c1} & \${c2.replace(/ce
  // 2nd example
 
 /*
- 5. Bring these elements together to
-    __build a search-and-replace web app__.
+ 5. Bring these elements together in a pursuit of higher convenience
+    and __build a search-and-replace web app__.
+    + The elements of a minimal search-and-replace user interface (UI)
+      are: "Source" and "Target" text fields, "Search" and "Replace"
+      inputs, and a trigger ("PARSE" button) to activate the operation.
+    + Un-comment the \`try { … } catch { … }\` line following the
+      next code block to display a simple, search-and-replace UI,
+      down below.
 */
 
 srui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
@@ -671,19 +677,51 @@ srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=replhelp c
 // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 // try { srwrap } catch { ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = srui; cmain.appendChild(ndiv); }
 
+/*
+    + The following "script" code that makes this UI functional hinges
+      on a standard \`.replace( … , … )\` method to manipulate the source
+      string -- taken from the "Source" text field of the UI.
+    + The arguments of the \`.replace( … , … )\` method are taken from
+      the "Search" and "Replace" inputs of the UI:
+      * A recognized search pattern will be either a string or a *RegExp*,
+        depending on whether or not the user entered a *RegExp* pattern 
+        (i.e., one wrapped in \`/ … /\`).
+      * Recognized replacement code will be either a string or a
+        function, depending on whether or not the user entered (either)
+        a function definition (with arrow notation \`=>\`) or a function
+        name (of one that is defined elsewhere in the script).
+    + The result of the \`.replace( … , … )\` method is then sent to
+      the "Target" text field.
+    + Other assorted bells and whistles have been written into this
+      "script" code -- to display the replacement count, to allow for a
+      one-click swapping of content between "Source" and "Target" text
+      fields, and to turn the "Source" and "Target" labels each into a
+      live trigger for selecting all of its text-field's content.
+*/
+
 rx = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /(?:[$\\wÀ-Ͽ]+|\\(.*?\\)) *=>.|window\\.[\\w.]+/]; ""
 msgClr = () => (replhelp.innerHTML = "") || [trgtxta, replhelp].forEach(e => e.classList.remove("iwarn", "isucc")); ""
 window.txtaSel = e => e.focus() || e.setSelectionRange(0, e.textLength); ""
 window.txtSwap = () => _.msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]); ""
-window.strPars = () => { let lr, sv = sepainp.value, rv = rfncinp.value.trim(); _.msgClr(); if (_.rx[0].test(sv)) { replhelp.innerHTML = (lr = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; [trgtxta, replhelp].forEach(e => e.classList.add(!lr ? "iwarn" : "isucc")); } trgtxta.value = srctxta.value.replace( !_.rx[1].test(sv) ? sv : eval(sv), window[rv] || (!_.rx[2].test(rv) ? rv : window.eval(rv)) ); }; ""
+window.strPars = () => { let lm, sv = sepainp.value, rv = rfncinp.value.trim(); _.msgClr(); if (_.rx[0].test(sv)) { replhelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; [trgtxta, replhelp].forEach(e => e.classList.add(!lm ? "iwarn" : "isucc")); } trgtxta.value = srctxta.value.replace( !_.rx[1].test(sv) ? sv : eval(sv), window[rv] || (!_.rx[2].test(rv) ? rv : window.eval(rv)) ); }; ""
 
- // Un-comment the following block of code to generate the
-// full source code (e.g., for building a standalone web app).
+/*
+   + Un-comment the following block of code to generate the
+     full source code (e.g., for building a standalone web app).
+*/
 
 /*
 scrGen = src => "let " + src.match(/^rx = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,"); "" //
 dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"]; ""
 respShow((dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(xstor["JScode"]["tutorial3"]) + dwrap[2]).replace(/\\n<hr>/, "").replace(/<(?=[!/?a-z])/gi, "&lt;"))
+*/
+
+/*
+ 6. Expand the use of the search-and-replace web app to be able to
+    __locate a specified string within a lengthy document__.
+
+    To be continued …
+
 */
 //`;
 
