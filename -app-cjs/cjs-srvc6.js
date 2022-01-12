@@ -492,10 +492,10 @@ __*Tutorial Three: Automating custom publishing tasks*__
 
       string    | any sequence of characters wrapped in one of
                   quotes (" … "), ticks (' … ') or backticks (\` … \`);
-                  (e.g. "The journey ahead seems long.");
+                  (e.g., "The journey ahead seems long.");
       number    | digits mostly, with or without a decimal or sign,
                   or intertwined in other notations for various needs;
-                  (e.g. 25, -3, 4.8271, 0x3cd, 2.222e-6);
+                  (e.g., 25, -3, 4.8271, 0x3cd, 2.222e-6);
       boolean   | one of two values only: true or false;
       undefined | a one-of-a-kind data type, signaling the absense of
                   any other data type;
@@ -522,16 +522,16 @@ foo = null   // foo is now a null "object"
                each of which can be any data type or structure;
                ordinarily wrapped in curly brackets \`{ … }\` and
                containing comma-separated, key-value pairs flanking
-               a colon each (e.g. \`{ a: 1, b: 2, c: "a string" }\`);
+               a colon each (e.g., \`{ a: 1, b: 2, c: "a string" }\`);
                often packaged up and transmitted as a JSON string;
       array  | also called an "object" data structure;
                an ordered sequence of values --
                each of which can be any data type or structure;
                ordinarily wrapped in square brackets \`[ … ]\` and
                containing a sequential list of comma-separated values
-               (e.g. \`[1, 2, "a string", false, null]\`);
+               (e.g., \`[1, 2, "a string", false, null]\`);
                array values are numbered starting with zero;
-               the numbered position of a value is its index number;
+               the position of a value is its index number;
 
     + Here are examples of assigning a data structure to a variable,
       then accessing data contained within that structure.
@@ -573,6 +573,7 @@ str.replace("silence.", "SILENCE!")    // 2nd example
  3. Now, perform another search-and-replace on each string using
     __a regular expression__ (*RegExp*) __as the search pattern__.
     + A *RegExp* pattern allows full control over a search.
+    + The pattern is wrapped in a pair of forward slashes.
     + It is composed of simple characters, such as \`/abc/\`, or a
       combination of simple and special characters, such as \`/ab*c/\`
       or \`/Chapter (\\d+)\\.\\d*/\`.
@@ -601,8 +602,8 @@ str.replace("silence.", "SILENCE!")    // 2nd example
             "$&" in the replacement string returns the whole match,
             even without a CG in the *RegExp*;
 
-    + For a complete *RegExp*, any of three flag characters may
-      optionally be added onto the end (e.g. \`/abc/i\` or \`/^abc/gim\`).
+    + To make a complete *RegExp*, any of three flag characters may
+      optionally be added onto the end (e.g., \`/abc/i\` or \`/^abc/gim\`).
 
       g | global flag: find every match encountered;
           (otherwise, find only the first match encountered);
@@ -639,7 +640,8 @@ str.replace(/(deaf)\\w+ (\\w+)\\./i, (m, c1, c2) => \`\${c1} & \${c2.replace(/ce
  // 2nd example
 
 /*
- 5. Bring these elements together to __build a search-and-replace web app__.
+ 5. Bring these elements together to
+    __build a search-and-replace web app__.
 */
 
 srui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
