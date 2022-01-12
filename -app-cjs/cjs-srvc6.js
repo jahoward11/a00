@@ -502,8 +502,8 @@ __*Tutorial Three: Automating custom publishing tasks*__
       null      | another one-of-a-kind, signaling that the intended
                   "value" is no value;
 
-    + Here is an example of identifying these data types as they
-      are, in turn, assigned to the variable \`foo\`.
+    + Here is an example of identifying these data types as each
+      is, in turn, assigned to the variable \`foo\`.
 */
 
 let foo      // foo is now undefined
@@ -513,7 +513,10 @@ foo = true   // foo is now a boolean
 foo = null   // foo is now a null "object"
 
 /*
-    + Here are, by far, the most common of the JS data structures.
+    + Following are, by far, the most useful of the JS
+      data structures.
+    + Note that, like data types, each structure also has its own
+      powerful set of data manipulating properties and methods.
 
       object | a group of keys and their assigned values --
                each of which can be any data type or structure;
@@ -521,7 +524,7 @@ foo = null   // foo is now a null "object"
                containing comma-separated, key-value pairs flanking
                a colon each (e.g. \`{ a: 1, b: 2, c: "a string" }\`);
                often packaged up and transmitted as a JSON string;
-      array  | also called an "object" data type;
+      array  | also called an "object" data structure;
                an ordered sequence of values --
                each of which can be any data type or structure;
                ordinarily wrapped in square brackets \`[ … ]\` and
@@ -531,7 +534,7 @@ foo = null   // foo is now a null "object"
                the numbered position of a value is its index number;
 
     + Here are examples of assigning a data structure to a variable,
-      then accessing data contained within the data structure.
+      then accessing data contained within that structure.
       *Challenge:* Make changes to values within these structures;
       And confirm that the new values have been stored.
 */
@@ -551,7 +554,7 @@ arr[3]        // the returned value should be \`true\`
 
 /*
  2. Perform __a simple search-and-replace__ on a string.
-    + The \`.replace( … , … )\` method performs changes on any string.
+    + The \`.replace( … , … )\` method makes changes on any string.
     + Two examples are provided below:
       * The first works on a string directly;
       * The second works on a different string that is previously
@@ -568,9 +571,9 @@ str.replace("silence.", "SILENCE!")    // 2nd example
 
 /*
  3. Now, perform another search-and-replace on each string using
-    a __regular expression__ (*RegExp*) __as the search pattern__.
+    __a regular expression__ (*RegExp*) __as the search pattern__.
     + A *RegExp* pattern allows full control over a search.
-      It is composed of simple characters, such as \`/abc/\`, or a
+    + It is composed of simple characters, such as \`/abc/\`, or a
       combination of simple and special characters, such as \`/ab*c/\`
       or \`/Chapter (\\d+)\\.\\d*/\`.
     + Learning how to compose a *RegExp* can be involved,
@@ -636,7 +639,7 @@ str.replace(/(deaf)\\w+ (\\w+)\\./i, (m, c1, c2) => \`\${c1} & \${c2.replace(/ce
  // 2nd example
 
 /*
- 5. Put these tools together to __build a search-and-replace web app__.
+ 5. Bring these elements together to __build a search-and-replace web app__.
 */
 
 srui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
