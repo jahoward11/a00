@@ -191,13 +191,13 @@ ucui += opts + "\\n</select></span></div>\\n"; ""
 const tutorial2 = `/*
 __JavaScript Coding Tutorials, Part 2__
 
- In *part 1*, we saw in brief some of the more useful JS elements and
+ In *Part 1*, we saw in brief some of the more useful JS elements and
 how they are used. We learned about combining key JS elements to get
 practical results. We used core JS code only -- which would work in a
 __browser console__ and allow us to get immediate feedback on our work
 as we code.
 
- In *part 2*, we turn our focus to __HTML__ with __CSS__ -- a language for
+ In *Part 2*, we turn our focus to __HTML__ with __CSS__ -- a language for
 coding layout and design. We'll build some visual games -- in which
 we can appreciate just why layout and design matter when coding.
 
@@ -461,12 +461,12 @@ window.m3Rvrs = () => !(_.m3trk || "").length || _.pegsRplc(_.m3trk.pop(), 1); "
 const tutorial3 = `/*
 __JavaScript Coding Tutorials, Part 3__
 
- In *part 1* and *part 2*: We coded various calculations, which
-could be reconstructed in a __browser console__ and performed anywhere;
+ In *Part 1* and *Part 2*: We coded various calculations, which could
+be reconstructed in a __browser console__ and performed on the fly;
 And we designed a diversity of graphic elements out of whole cloth,
 using only the __HTML/CSS__ language.
 
- In *part 3*, we will move beyond basic form and function into
+ In *Part 3*, we will move beyond basic form and function into
 the more open vistas of coding literacy. We will begin to compose
 practical algorithms -- the kind that refine and repackage for human
 consumption the raw data that we often encounter in our modern world.
@@ -481,14 +481,169 @@ or another of these kind of tasks instantaneously.
  3) format a memo or report to fit any size screen.
 
 - - - - -
-__*Tutorial Three: Automating a custom task*__
+__*Tutorial Three: Automating custom publishing tasks*__
+
+ 1. Understand the __data types__ and __data structures__ that you are
+    working on -- and will be manipulating.
+    + Following is a short list of high-use data types.
+    + Distinguishing between them is important; Each type has its
+      own set of properties and methods, which, when mastered, are
+      powerful manipulation tools for your data.
+
+      string    | any sequence of characters wrapped in one of
+                  quotes (" … "), ticks (' … ') or backticks (\` … \`);
+                  (e.g. "The journey ahead seems long.");
+      number    | digits mostly, with or without a decimal or sign,
+                  or intertwined in other notations for various needs;
+                  (e.g. 25, -3, 4.8271, 0x3cd, 2.222e-6);
+      boolean   | one of two values only: true or false;
+      undefined | a one-of-a-kind data type, signaling the absense of
+                  any other data type;
+      null      | another one-of-a-kind, signaling that the intended
+                  "value" is no value;
+
+    + Here is an example of identifying these data types as they
+      are, in turn, assigned to the variable \`foo\`.
+*/
+
+let foo      // foo is now undefined
+foo = 'bar'  // foo is now a string
+foo = 42     // foo is now a number
+foo = true   // foo is now a boolean
+foo = null   // foo is now a null "object"
+
+/*
+    + Here are, by far, the most common of the JS data structures.
+
+      object | a group of keys and their assigned values --
+               each of which can be any data type or structure;
+               ordinarily wrapped in curly brackets \`{ … }\` and
+               containing comma-separated, key-value pairs flanking
+               a colon each (e.g. \`{ a: 1, b: 2, c: "a string" }\`);
+               often packaged up and transmitted as a JSON string;
+      array  | also called an "object" data type;
+               an ordered sequence of values --
+               each of which can be any data type or structure;
+               ordinarily wrapped in square brackets \`[ … ]\` and
+               containing a sequential list of comma-separated values
+               (e.g. \`[1, 2, "a string", false, null]\`);
+               array values are numbered starting with zero;
+               the numbered position of a value is its index number;
+
+    + Here are examples of assigning a data structure to a variable,
+      then accessing data contained within the data structure.
+      *Challenge:* Make changes to values within these structures;
+      And confirm that the new values have been stored.
+*/
+
+obj = { a: 1, b: 2, c: "a string" }   // an object
+
+arr = [1, 2, "a string", false, null] // an array object
+
+obj.b         // the returned value should be \`2\` (*note:* dot notation)
+obj["b"]      // the returned value should be \`2\` (alternate notation)
+obj["c"]      // the returned value should be \`a string\`
+
+arr[0]        // the returned value should be \`1\`
+arr[3]        // the returned value should be \`false\`
+arr[3] = true // the array value at index 3 is now \`true\`
+arr[3]        // the returned value should be \`true\`
+
+/*
+ 2. Perform __a simple search-and-replace__ on a string.
+    + The \`.replace( … , … )\` method performs changes on any string.
+    + Two examples are provided below:
+      * The first works on a string directly;
+      * The second works on a different string that is previously
+        assigned to the variable \`str\`.
+    + In each example, two arguments are provided to the
+      \`.replace( … , … )\` method -- a search string and a
+      replacement string.
+*/
+
+"Controlled chaos.".replace("ch", "K") // 1st example
+
+str = "Deafening silence."; ""
+str.replace("silence.", "SILENCE!")    // 2nd example
+
+/*
+ 3. Now, perform another search-and-replace on each string using
+    a __regular expression__ (*RegExp*) __as the search pattern__.
+    + A *RegExp* pattern allows full control over a search.
+      It is composed of simple characters, such as \`/abc/\`, or a
+      combination of simple and special characters, such as \`/ab*c/\`
+      or \`/Chapter (\\d+)\\.\\d*/\`.
+    + Learning how to compose a *RegExp* can be involved,
+      as demonstrated at this reference link:
+      developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Cheatsheet
+    + As a quick-start, here are the most common, special characters.
+
+      .   | matches any character except NewLine \`\\n\`
+      [^] | matches any character
+      \\w  | matches any alphanumeric character (including \`_\`)
+      \\d  | matches any digit (0 - 9)
+      \\n  | matches a NewLine
+      \\s  | matches a white space character (including Tab &amp; NewLine)
+      [x] | matches any of the items between the brackets
+      [^x]| matches any item not found between the brackets
+      x*  | matches the preceding item "x" 0 or more times
+      x+  | matches the preceding item "x" 1 or more times
+      x?  | matches the preceding item "x" 0 or 1 times
+      x*?
+      x+? | stops looking for another match after the first one
+      \\?  | escapes (normalizes) a special character (* . ? etc.)
+      (x) | Capturing Group: matches "x" and remembers the match;
+            "$1" in the replacement string returns the 1st CG,
+            "$2" in the replacement string returns the 2nd CG, etc.;
+            "$&" in the replacement string returns the whole match,
+            even without a CG in the *RegExp*;
+
+    + For a complete *RegExp*, any of three flag characters may
+      optionally be added onto the end (e.g. \`/abc/i\` or \`/^abc/gim\`).
+
+      g | global flag: find every match encountered;
+          (otherwise, find only the first match encountered);
+      i | case insensitive flag: find either upper or lower cases;
+          (otherwise, find the same case of a specified character);
+      m | multiline flag: make alternate use of 2 special characters
+          -- \`^\` = start of a line, \`$\` = end of a line;
+          (otherwise, retain default use of special characters --
+          \`^\` = start of entire string, \`$\` = end of entire string);
+*/
+
+"Controlled chaos.".replace(/ch?/gi, "K")          // 1st example
+
+str.replace(/(deaf)\\w+ (\\w+)\\./i, "$1ness … $2 …") // 2nd example
+
+/*
+ 4. Now, perform another search-and-replace on each string using
+    __a function to generate the replacement string__.
+    + The argument variables of a replacement function may
+      be arbitrarilly named.
+    + The first argument returns the entire matched string.
+    + The value of each subsequent argument aligns with a capturing
+      group of the *RegExp* search pattern.
+
+      arg0 | returns the entire matched string
+      arg1 | returns 1st capturing group
+      arg2 | returns 2nd capturing group, and so on …
+*/
+
+"Controlled chaos.".replace(/ch?/gi, m => m === "C" ? "K" : "k")
+ // 1st example
+
+str.replace(/(deaf)\\w+ (\\w+)\\./i, (m, c1, c2) => \`\${c1} & \${c2.replace(/ce$/, "t")}?\`)
+ // 2nd example
+
+/*
+ 5. Put these tools together to __build a search-and-replace web app__.
 */
 
 srui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
 srui += "\\nhtml { box-sizing: border-box; }"; ""
 srui += "\\nhr { margin: 1.5rem 0; }"; ""
 srui += "\\n#srwrap { font: normal medium Helvetica, Arial, sans-serif; margin: 16px 0; }"; ""
-srui += "\\n#srwrap textarea { display: block; font-size: medium; width: 100%; height: 384px; }"; ""
+srui += "\\n#srwrap textarea { display: block; font-size: medium; width: 100%; height: 288px; }"; ""
 srui += "\\n#srwrap .iwarn { color: Orange; }"; ""
 srui += "\\n#srwrap .isucc { color: CornFlowerBlue; }"; ""
 srui += "\\n#srwrap textarea.iwarn { color: unset; border-color: Orange; }"; ""
@@ -499,21 +654,32 @@ srui += "\\n#srwrap .ccntr:not(:last-child) { margin-right: 8px; }"; ""
 srui += "\\n#srwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }"; ""
 srui += "\\n#srwrap .cfield>.help { font-size: 12px; margin-top: 4px; }"; ""
 srui += "\\n#srwrap h4+.cfield:not(:last-child) { margin-bottom: 16px; }"; ""
-srui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Source</h4>"; ""
+srui += "\\n</style>\\n<hr>\\n<h4 class=cfield><span onclick=txtaSel(srctxta)>Source</span></h4>"; ""
 srui += "\\n<div class=cfield><textarea id=srctxta></textarea></div>"; ""
 srui += "\\n<div class=cfield><label class=ccntr><input type=text id=sepainp> Search</label></div>"; ""
 srui += "\\n<div class=cfield><label class=ccntr><input type=text id=rfncinp> Replace</label></div>"; ""
 srui += "\\n<div class=cfield><span class=ccntr><input type=button value=\\"&rlhar; SWAP\\" onclick=txtSwap()></span>"; ""
-srui += "<span class=ccntr><input type=button value=\\"&rArr; PARSE\\" onclick=strPars()></span></div>"; ""
-srui += "\\n<h4 class=cfield>Target</h4>"; ""
-srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=replhelp class=help></div></div>"; ""
+srui += "<span class=ccntr><input type=button value=\\"&#x2964; PARSE\\" onclick=strPars()></span></div>"; ""
+srui += "\\n<h4 class=cfield><span onclick=txtaSel(trgtxta)>Target</span></h4>"; ""
+srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=replhelp class=help></div></div>\\n"; ""
 
 // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 // try { srwrap } catch { ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = srui; cmain.appendChild(ndiv); }
 
+rx = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /(?:[$\\wÀ-Ͽ]+|\\(.*?\\)) *=>.|window\\.[\\w.]+/]; ""
 msgClr = () => (replhelp.innerHTML = "") || [trgtxta, replhelp].forEach(e => e.classList.remove("iwarn", "isucc")); ""
+window.txtaSel = e => e.focus() || e.setSelectionRange(0, e.textLength); ""
 window.txtSwap = () => _.msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]); ""
-window.strPars = () => { let lrpl; _.msgClr(); if (/^\\/.+\\/[im]*g[im]*$/.test(sepainp.value)) { replhelp.innerHTML = (lrpl = (srctxta.value.match(eval(sepainp.value)) || []).length) + " replacements have been made."; [trgtxta, replhelp].forEach(e => e.classList.add(!lrpl ? "iwarn" : "isucc")); } trgtxta.value = srctxta.value.replace( !/^\\/.+\\/[gim]*$/.test(sepainp.value) ? sepainp.value : eval(sepainp.value), !/(?:\\w+|\\([ \\w,]*\\)) *=>.|window\\.[\\w.]+/.test(rfncinp.value.trim()) ? rfncinp.value : window.eval(rfncinp.value) ); }; ""
+window.strPars = () => { let lr, sv = sepainp.value, rv = rfncinp.value.trim(); _.msgClr(); if (_.rx[0].test(sv)) { replhelp.innerHTML = (lr = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; [trgtxta, replhelp].forEach(e => e.classList.add(!lr ? "iwarn" : "isucc")); } trgtxta.value = srctxta.value.replace( !_.rx[1].test(sv) ? sv : eval(sv), window[rv] || (!_.rx[2].test(rv) ? rv : window.eval(rv)) ); }; ""
+
+ // Un-comment the following block of code to generate the
+// full source code (e.g., for building a standalone web app).
+
+/*
+scrGen = src => "let " + src.match(/^rx = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,"); "" //
+dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"]; ""
+respShow((dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(xstor["JScode"]["tutorial3"]) + dwrap[2]).replace(/\\n<hr>/, "").replace(/<(?=[!/?a-z])/gi, "&lt;"))
+*/
 //`;
 
 export {
