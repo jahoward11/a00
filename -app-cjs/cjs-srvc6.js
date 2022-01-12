@@ -55,8 +55,8 @@ and repurposed as needed to build an original, standalone app.
     + The app then returns the equivalent value in another unit of
       the same kind of measurement.
 
-    E.G.: The app should function in a similar way unit conversions
-    are made by Google.
+    E.G.: The app should function in a similar way that unit
+    conversions are made by Google.
 
     In the Google search bar, type | In the result list, expect
     "100 yards to meters"          | "91.44 meters"
@@ -66,8 +66,8 @@ and repurposed as needed to build an original, standalone app.
 
  2. Write a __conversion function__.
     + A *function* is defined (written) by sequentially combining:
-      an arbitrary function name, the assignment operator (\`=\`),
-      input variable(s), the arrow notation (\`=>\`), and manipulations
+      an arbitrary function name, the assignment operator \`=\`,
+      input variable(s), the arrow notation \`=>\`, and manipulations
       or calculations (formulas) to be done on the input.
     + A *function* is called (executed) by writing the function name
       followed by a set of parentheses. Input data (arguments) are
@@ -80,15 +80,15 @@ ucLen(3)  // calls function &amp; returns result of 3 * 12
 
 /*
  3. Modify the function to __handle bi-directional conversions__.
-    + Add an input variable that will indicate the initial unit,
+    + Add a second input variable that will indicate the initial unit,
       the unit being provided. Two or more variables are wrapped in
-      parentheses (\`( … )\`) and are separated by a comma (\`,\`).
+      parentheses \`( … )\` and are separated by a comma \`,\`.
     + Use a true-false test with conditional operators
-      (\`?\` = "if true", \`:\` = "if false")
-      to invoke the correct directional formula.
-    + If including multiple arguments in a *function* call,
-      they are separated with a comma (\`,\`).
-    + If an argument is not a number, it is wrapped in quotes (\`"…"\`).
+      (\`?\` = "if true", \`:\` = "if false") to invoke the
+      correct directional formula.
+    + If including multiple arguments in a *function* call, they are
+      separated with a comma \`,\`.
+    + If an argument is not a number, it is wrapped in quotes \`" … "\`.
 */
 
 ucLen = (n, u0) => /^in/i.test(u0) ? n / 12 : n * 12
@@ -98,7 +98,7 @@ ucLen(3, "ft")   // calls function &amp; returns result of 3 * 12
 
 /*
  4. Modify the function to __return a specified unit__.
-    + Add another input variable that will indicate the final unit,
+    + Add a third input variable that will indicate the final unit,
       the unit being requested.
     + Use successive tests with conditional operators to invoke the
       correct calculation formula.
@@ -113,15 +113,15 @@ ucLen(4.5, "ft", "yd")  // converts 4.5 feet to yards
 ucLen(1.5, "yd", "ft")  // converts 1.5 yards to feet
 
 /*
- 5. Build out __a collection of functions__
+ 5. Build out __a collection of functions__ --
     to handle many other kinds of conversions.
     + For complex conversions that require multiple operations, the
       steps of a *function* definition are wrapped in curly brackets
-      (\`{ … }\`) and are separated by a semicolon (\`;\`). The final
-      result is indicated with the \`return\` keyword.
-    + Within a *function* block of multiple operations, include arrays,
-      new variable declarations (\`let …\`) and loop statements
-      (\`.forEach( … )\`, \`while ( … ) { … }\`) as needed.
+      \`{ … }\` and are separated by a semicolon \`;\`. The final result
+      is indicated with the \`return\` keyword.
+    + Within a *function* block of multiple operations, as needed,
+      include new variable declarations (\`let …\`), lookup arrays and
+      loop statements (\`.forEach( … )\`, \`while ( … ) { … }\`).
 */
 
 ucSpd = (n, u0, u1) => /^mi?[/p]h/i.test(u0) && /^km?[/p]h/i.test(u1) ? n * 5280 * 12 * 0.0000254 : /^km?[/p]h/i.test(u0) && /^mi?[/p]h/i.test(u1) ? n / 0.0000254 / 12 / 5280 : u0 === u1 ? n : "error"; ""
@@ -146,13 +146,14 @@ ufrRom = str => { let val = 0; str = str.toUpperCase(); _.uara.forEach((ai, i) =
 ufrRom("MCXI", "Roman", "Arabic")
 
 /*
- 6. Finally, consolidate the collection of functions
-    to __maximize efficiency__, which also improves user experience.
+ 6. Finally, consolidate the collection of functions to
+    __maximize efficiency__, which also improves user experience (UX).
     + Use \`.push( … )\` to combine sets of regular-expression test
       patterns into a single, lookup array.
     + Use \`Object.assign( … , … )\` to combine corresponding sets of
       conversion formulas into a single, lookup object.
-    + *Challenge:* How would you allow conversions of mass or volume?
+    + *Challenge:* How would you allow for conversions of mass ...
+      or of volume ... or ... ?
 */
 
 uxs = [/^$/, /^in(?:che?s?|)$/i, /^f(?:oo|ee|)t$/i, /^y(?:a?r?ds?|)$/i, /^mi(?:les?|)$/i, /^m(?:eters?|)$/i]; ""
@@ -203,10 +204,15 @@ we can appreciate just why layout and design matter when coding.
 
 - - - - -
 __*Tutorial Two: Building a sliding-tiles puzzle (and other games)*__
+
+ 1. Design a game board -- or, __graphic user interface__ (GUI).
+    + Include: a block of styles (\`<style> … </style>\`), a title
+      block (\`<h4 class=cfield>Sliding Tiles</h4>\`), some game-board
+      controllers (\`<div><span class=ccntr> … </span></div>\`), and
+      the game-board display (\`<table id=g1board> … </table>\`).
 */
 
 // __* * * SLIDING TILES * * *__
-
 g1ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
 g1ui += "\\nhtml { box-sizing: border-box; }"; ""
 g1ui += "\\nhr { margin: 1.5rem 0; }"; ""
@@ -237,32 +243,7 @@ g1ui += "\\n<div><span class=ccntr><input type=button value=\\"RETRACT MOVE\\" o
 // g1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap"; ndiv.innerHTML = g1ui; cmain.appendChild(ndiv); }
 
-tnx = tcx = psh = rval = cval = tmax = tovr = m1trk = unsh = cxs = shxs = shuf = tarr = cr1s = cr2s = ""
-clrefs = [ "", "", ["#752424", "#9c3030", "#c33c3c", "#cf6363", "#db8a8a", "#e7b1b1", "#f3d8d8"], ["#856514", "#b1871b", "#dea821", "#e4ba4e", "#ebcb7a", "#f2dca6", "#f8eed3"], ["#2b506e", "#396a93", "#4785b8", "#6c9dc6", "#91b6d4", "#b6cee2", "#dae7f1"], ["#ff9999", "#ffcc99", "#fff099", "#99cc99", "#9999ff", "#cc99cc", "#d8bfd8"] ]; ""
-uara = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]; ""
-urom = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]; ""
-utoRom = v => { let s = ""; _.uara.forEach((ai, i) => { while (v % ai < v) { s += _.urom[i]; v -= ai; } }); return s; }; ""
-utoEng = v => { let i, codpts = []; while (v) { i = 0; while ((v - ++i) % 26); codpts.unshift(i + 64); v = (v - i) / 26; } return String.fromCodePoint(...codpts || 65); }; ""
-utoGre = v => { let i, codpts = []; while (v) { i = 0; while ((v - ++i) % 24); codpts.unshift((i < 18 ? i : 1 + i) + 912); v = (v - i) / 24; } return String.fromCodePoint(...codpts || 913); }; ""
-clRnk1s = () => _.unsh.map( v => _.clrefs[_.tcx][ _.cxs.find( x => _.tovr < 0 ? x === 6 || v <= _.cval || (v % _.cval > 0 && v % _.cval <= _.cval - _.rval + 1) || (v > _.cval * (1 + x) - _.rval + (1 + x) && v <= _.cval * (1 + x)) || (v - (1 + x) - (_.cval - _.rval)) % _.cval === 0 : x === 6 || v - _.tovr <= _.tmax * (1 + x) || (v - (1 + x)) % _.tmax === 0 )]); ""
-clRnk2s = () => _.unsh.map( v => ( _.tovr < 0 ? v <= _.cval - _.rval || (v - 1 - (_.cval - _.rval)) % (1 + _.cval) !== 0 || v > 7 * _.cval : v - 1 < _.tovr || (v - 1 - _.tovr) % (1 + _.tmax) !== 0 || v - 1 - _.tovr > 7 * _.tmax ) ? 'White' : _.tcx < 5 ? 'Gold' : 'LimeGreen' ); ""
-nAlt = v => _.tnx == 2 ? _.utoRom(v) : _.tnx == 3 ? _.utoEng(v) : _.tnx == 4 ? _.utoGre(v) : v; ""
-isSolva = () => { let ctinvs = _.shxs.filter(e => e.v).map(e => e.i + 1).reduce((a, b, i, f) => a + f.slice(i + 1).reduce((c, d) => c + (d > b ? 0 : 1), 0), 0); return (ctinvs + (_.cval % 2 === 1 ? 0 : _.rval - Math.ceil((_.shuf.indexOf(0) + 1) / _.cval))) % 2 === 0; }; ""
-posSwap = (p0, p1) => [_.tarr[p0][p1], _.tarr[p0][p1 + 1]] = [_.tarr[p0][p1 + 1], _.tarr[p0][p1]]; ""
-gbdGen = () => g1board.innerHTML = _.tarr.map( (e, i) => "\\n<tr>" + e.map( (f, j) => f === 0 ? "<td class=blank> </td>" : \`<td class=gtile \${!_.cr1s ? "" : \`style="background:\${_.cr1s[f]};color:\${_.cr2s[f]};" \`}onclick=tileSli(\${i},\${j})>\${f}</td>\` ).join("") + "</tr>" ).join("") + "\\n"; ""
-
-window.c1Zero = () => (_.m1trk = []) && (g1movs.innerHTML = 0); ""
-window.g1Reset = () => { _.tnx = tnmrl.selectedIndex; _.tcx = tclrs.selectedIndex; _.psh = pshuf.checked; _.rval = +trows.value; _.cval = +tcols.value; _.tmax = _.rval <= _.cval ? _.rval : _.cval; _.tovr = (_.rval - _.cval) * _.tmax; c1Zero(); _.unsh = Array.from(Array(_.rval * _.cval).keys()); _.cxs = Array.from(Array(_.tmax > 7 ? 7 : _.tmax).keys()); [_.cr1s, _.cr2s] = _.tcx < 2 ? [0, 0] : [_.clRnk1s(), _.clRnk2s()]; _.unsh = _.unsh.slice(1).map(_.nAlt).concat(0); _.tcx < 2 || ([_.cr1s, _.cr2s] = [_.cr1s, _.cr2s].map(e => Object.fromEntries(_.unsh.map((v, i) => [v, e[i + 1]])))); _.shxs = _.unsh.map((v, i) => ({ i, v, o: Math.random() })).sort((a, b) => !_.psh || a.o - b.o); _.shuf = _.shxs.map(e => e.v); _.tarr = Array.from(Array(_.rval)).map(() => _.shuf.splice(0, _.cval)); _.shuf = _.tarr.flat(); _.isSolva() || (_.shuf[0] && _.shuf[1] ? _.posSwap(0, 0) : _.posSwap(_.rval - 1, _.cval - 2)); _.gbdGen(); }; ""
-window.tileSli = (rx, cx, bkup) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (_.tarr[p0] || "")[p1] === 0); !bl || (bkup || _.m1trk.push([bl[0], bl[1]])) && ([_.tarr[bl[0]][bl[1]], _.tarr[rx][cx]] = [_.tarr[rx][cx], 0]) && ( g1movs.innerHTML = "" + _.tarr !== "" + _.unsh ? _.m1trk.length + " moves" : "<em>Puzzle solved in " + _.m1trk.length + " moves!</em>" ) && _.gbdGen(); }; ""
-window.m1Rvrs = () => !(_.m1trk || "").length || tileSli(... _.m1trk.pop(), 1); ""
-g1Reset();
-
 /*
- 1. Design a game board -- or, __graphic user interface__ (GUI).
-    + Include: a block of styles (\`<style> … </style>\`), a title
-      block (\`<h4 class=cfield>Sliding Tiles</h4>\`), some game-board
-      controllers (\`<div><span class=ccntr> … </span></div>\`), and
-      the game-board display (\`<table id=g1board> … </table>\`).
     + The rendered GUI, below, is built from the leading block of
       code, above, in which strings of HTML/CSS text are cumulatively
       assigned to the GUI variable (\`g1ui += " … "\`).
@@ -284,27 +265,51 @@ g1Reset();
     __begin building a standalone web app__.
     + Un-comment the following two lines of code to generate the
       web-doc text that will be the app framework.
-    + Select and copy the orange text that appears above, overtop
-      the calculator.
-    + Paste the copied text into a new text file; Save the file under
-      any filename with an HTML extension (e.g., \`jsgame-tiles.html\`).
-    + *Note:* When opened up in a web browser, the web app will not
-      be responsive because it does not yet have any script code.
 */
 
 // dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"]; ""
 // respShow((dwrap[0] + g1wrap.outerHTML + dwrap[1] + dwrap[2]).replace(/\\n<hr>/, "").replace(/<(?=[!/?a-z])/gi, "&lt;"))
 
 /*
+    + Select and copy the orange text that appears above, overtop
+      the calculator.
+    + Paste the copied text into a new text file; Save the file under
+      any filename with an HTML extension (e.g., \`jsgame-tiles.html\`).
+    + *Note:* When opened up in a web browser, the web app will not
+      be responsive because it does not yet have any script code.
+
  3. Add in the puzzle's inner logic (its "script", extracted from the
     tutorial code) to __turn a static web doc into a dynamic web app__
     -- an interactive game.
     *Alert:* Read through all procedures of this step before starting.
-    + Select and copy the 3rd and 4th blocks of code, above --
+    + Select and copy the following two blocks of code --
       beginning with \`tnx = …\` and ending with \`g1Reset();\`.
+*/
+
+tnx = tcx = psh = rval = cval = tmax = tovr = m1trk = unsh = cxs = shxs = shuf = tarr = cr1s = cr2s = ""
+clrefs = [ "", "", ["#752424", "#9c3030", "#c33c3c", "#cf6363", "#db8a8a", "#e7b1b1", "#f3d8d8"], ["#856514", "#b1871b", "#dea821", "#e4ba4e", "#ebcb7a", "#f2dca6", "#f8eed3"], ["#2b506e", "#396a93", "#4785b8", "#6c9dc6", "#91b6d4", "#b6cee2", "#dae7f1"], ["#ff9999", "#ffcc99", "#fff099", "#99cc99", "#9999ff", "#cc99cc", "#d8bfd8"] ]; ""
+uara = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]; ""
+urom = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]; ""
+utoRom = v => { let s = ""; _.uara.forEach((ai, i) => { while (v % ai < v) { s += _.urom[i]; v -= ai; } }); return s; }; ""
+utoEng = v => { let i, codpts = []; while (v) { i = 0; while ((v - ++i) % 26); codpts.unshift(i + 64); v = (v - i) / 26; } return String.fromCodePoint(...codpts || 65); }; ""
+utoGre = v => { let i, codpts = []; while (v) { i = 0; while ((v - ++i) % 24); codpts.unshift((i < 18 ? i : 1 + i) + 912); v = (v - i) / 24; } return String.fromCodePoint(...codpts || 913); }; ""
+clRnk1s = () => _.unsh.map( v => _.clrefs[_.tcx][ _.cxs.find( x => _.tovr < 0 ? x === 6 || v <= _.cval || (v % _.cval > 0 && v % _.cval <= _.cval - _.rval + 1) || (v > _.cval * (1 + x) - _.rval + (1 + x) && v <= _.cval * (1 + x)) || (v - (1 + x) - (_.cval - _.rval)) % _.cval === 0 : x === 6 || v - _.tovr <= _.tmax * (1 + x) || (v - (1 + x)) % _.tmax === 0 )]); ""
+clRnk2s = () => _.unsh.map( v => ( _.tovr < 0 ? v <= _.cval - _.rval || (v - 1 - (_.cval - _.rval)) % (1 + _.cval) !== 0 || v > 7 * _.cval : v - 1 < _.tovr || (v - 1 - _.tovr) % (1 + _.tmax) !== 0 || v - 1 - _.tovr > 7 * _.tmax ) ? 'White' : _.tcx < 5 ? 'Gold' : 'LimeGreen' ); ""
+nAlt = v => _.tnx == 2 ? _.utoRom(v) : _.tnx == 3 ? _.utoEng(v) : _.tnx == 4 ? _.utoGre(v) : v; ""
+isSolva = () => { let ctinvs = _.shxs.filter(e => e.v).map(e => e.i + 1).reduce((a, b, i, f) => a + f.slice(i + 1).reduce((c, d) => c + (d > b ? 0 : 1), 0), 0); return (ctinvs + (_.cval % 2 === 1 ? 0 : _.rval - Math.ceil((_.shuf.indexOf(0) + 1) / _.cval))) % 2 === 0; }; ""
+posSwap = (p0, p1) => [_.tarr[p0][p1], _.tarr[p0][p1 + 1]] = [_.tarr[p0][p1 + 1], _.tarr[p0][p1]]; ""
+gbdGen = () => g1board.innerHTML = _.tarr.map( (e, i) => "\\n<tr>" + e.map( (f, j) => f === 0 ? "<td class=blank> </td>" : \`<td class=gtile \${!_.cr1s ? "" : \`style="background:\${_.cr1s[f]};color:\${_.cr2s[f]};" \`}onclick=tileSli(\${i},\${j})>\${f}</td>\` ).join("") + "</tr>" ).join("") + "\\n"; ""
+
+window.c1Zero = () => (_.m1trk = []) && (g1movs.innerHTML = 0); ""
+window.g1Reset = () => { _.tnx = tnmrl.selectedIndex; _.tcx = tclrs.selectedIndex; _.psh = pshuf.checked; _.rval = +trows.value; _.cval = +tcols.value; _.tmax = _.rval <= _.cval ? _.rval : _.cval; _.tovr = (_.rval - _.cval) * _.tmax; c1Zero(); _.unsh = Array.from(Array(_.rval * _.cval).keys()); _.cxs = Array.from(Array(_.tmax > 7 ? 7 : _.tmax).keys()); [_.cr1s, _.cr2s] = _.tcx < 2 ? [0, 0] : [_.clRnk1s(), _.clRnk2s()]; _.unsh = _.unsh.slice(1).map(_.nAlt).concat(0); _.tcx < 2 || ([_.cr1s, _.cr2s] = [_.cr1s, _.cr2s].map(e => Object.fromEntries(_.unsh.map((v, i) => [v, e[i + 1]])))); _.shxs = _.unsh.map((v, i) => ({ i, v, o: Math.random() })).sort((a, b) => !_.psh || a.o - b.o); _.shuf = _.shxs.map(e => e.v); _.tarr = Array.from(Array(_.rval)).map(() => _.shuf.splice(0, _.cval)); _.shuf = _.tarr.flat(); _.isSolva() || (_.shuf[0] && _.shuf[1] ? _.posSwap(0, 0) : _.posSwap(_.rval - 1, _.cval - 2)); _.gbdGen(); }; ""
+window.tileSli = (rx, cx, bkup) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (_.tarr[p0] || "")[p1] === 0); !bl || (bkup || _.m1trk.push([bl[0], bl[1]])) && ([_.tarr[bl[0]][bl[1]], _.tarr[rx][cx]] = [_.tarr[rx][cx], 0]) && ( g1movs.innerHTML = "" + _.tarr !== "" + _.unsh ? _.m1trk.length + " moves" : "<em>Puzzle solved in " + _.m1trk.length + " moves!</em>" ) && _.gbdGen(); }; ""
+window.m1Rvrs = () => !(_.m1trk || "").length || tileSli(... _.m1trk.pop(), 1); ""
+g1Reset();
+
+/*
     + Unload this tutorial (clear *ENTRY* field), and paste the copied
       text into the empty *ENTRY* field of the calculator app.
-    + Wrap the pasted text in JS block-comment tags (\`/* … */\`).
+    + Wrap the pasted text in JS block-comment tags \`/* … */\`.
       In other words, in the *ENTRY* field, type \`/*\` into a blank
       line before all of the text and \`*/\` into a blank line after
       all of the text.
@@ -312,13 +317,6 @@ g1Reset();
       the calculator), and tap *SAVE*.
     + Reload this tutorial, and un-comment the following three lines
       of code.
-    + Select and copy the orange text that appears above, overtop
-      the calculator.
-    + Paste the copied text inside the \`<script> … </script>\` tags of
-      the new HTML file created in step 2; Then re-save the file.
-    + *Note:* When opened up in a web browser, the web app should be
-      responsive and the game should work as expected; If not, try it
-      again: Start fresh, and repeat all procedures of steps 2 and 3.
 */
 
 // preresp.innerHTML = "" // clears any orange text (in case GUI text is still visible)
@@ -326,6 +324,14 @@ g1Reset();
 // localforage.getItem("tutor2js").then( rslt => respShow( _.scrGen(rslt).replace(/<(?=[!/?a-z])/gi, "&lt;") )).catch(respShow)
 
 /*
+    + Select and copy the orange text that appears above, overtop
+      the calculator.
+    + Paste the copied text inside the \`<script> … </script>\` tags of
+      the new HTML file created in step 2; Then re-save the file.
+    + *Note:* When opened up in a web browser, the web app should be
+      responsive and the game should work as expected; If not, try it
+      again: Start fresh, repeating all procedures of steps 2 and 3.
+
  4. See how __GUI design techniques__ get applied to multiple games.
     *Note:* For each of the following games, the GUI has not yet been
     displayed anywhere on this page.
@@ -358,7 +364,6 @@ g1Reset();
 */
 
 // __* * * LIGHTS OUT * * *__
-
 g2ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
 g2ui += "\\nhtml { box-sizing: border-box; }"; ""
 g2ui += "\\nhr { margin: 1.5rem 0; }"; ""
@@ -400,7 +405,6 @@ window.g2Reset = () => c2Zero() || [0, 1, 2, 3, 4].forEach( r => [0, 1, 2, 3, 4]
 window.litSwi = (rx, cx) => { u2tog.checked ? window["n" + rx + cx].classList.toggle("ldark") : [[rx - 1, cx], [rx, cx - 1], [rx, cx], [rx, cx + 1], [rx + 1, cx]].forEach( ([r, c]) => r < 0 || c < 0 || r > 4 || c > 4 || window["n" + r + c].classList.toggle("ldark") ); u2tog.checked || ( g2movs.innerHTML = [0, 1, 2, 3, 4].some( r => [0, 1, 2, 3, 4].some(c => !window["n" + r + c].classList.contains("ldark")) ) ? ++_.m2trk + " switches" : "<em>Puzzle solved with " + ++_.m2trk + " switches!</em>" ); }; ""
 
 // __* * * PEGS * * *__
-
 g3ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
 g3ui += "\\nhtml { box-sizing: border-box; }"; ""
 g3ui += "\\nhr { margin: 1.5rem 0; }"; ""
@@ -475,7 +479,7 @@ time-consuming, publishing tasks -- enabling ourselves to do any one
 or another of these kind of tasks instantaneously.
 
  Specifically, we will:
- 1) locate a string of text within a lengthy document,
+ 1) locate a substring of the text of a lengthy document,
  2) markup an article to display its structural parts
     meaningfully, and
  3) format a memo or report to fit any size screen.
@@ -491,16 +495,16 @@ __*Tutorial Three: Automating custom publishing tasks*__
       powerful manipulation tools for your data.
 
       string    | any sequence of characters wrapped in one of
-                  quotes (" … "), ticks (' … ') or backticks (\` … \`);
-                  (e.g., "The journey ahead seems long.");
-      number    | digits mostly, with or without a decimal or sign,
-                  or intertwined in other notations for various needs;
-                  (e.g., 25, -3, 4.8271, 0x3cd, 2.222e-6);
-      boolean   | one of two values only: true or false;
-      undefined | a one-of-a-kind data type, signaling the absense of
-                  any other data type;
-      null      | another one-of-a-kind, signaling that the intended
-                  "value" is no value;
+                  quotes (" … "), ticks (' … ') or backticks (\` … \`)
+                  (e.g., "The journey ahead seems long .....")
+      number    | digits mostly, with or without a decimal or sign or
+                  intertwining with other notations for various needs
+                  (e.g., 25, -3, 4.8271, 0x3cd, 2.222e-6)
+      boolean   | one of two values only: true or false
+      null      | a one-of-a-kind, single-value data type, signaling
+                  that the intended "value" is no value
+      undefined | another one-of-a-kind, signaling the absense of
+                  any other assigned data type
 
     + Here is an example of identifying these data types as each
       is, in turn, assigned to the variable \`foo\`.
@@ -513,16 +517,16 @@ foo = true   // foo is now a boolean
 foo = null   // foo is now a null "object"
 
 /*
-    + Following are, by far, the most useful of the JS
+    + Following are the most useful, by far, of all the JS
       data structures.
     + Note that, like data types, each structure also has its own
-      powerful set of data manipulating properties and methods.
+      powerful set of data manipulating tools.
 
       object | a group of keys and their assigned values --
                each of which can be any data type or structure;
                ordinarily wrapped in curly brackets \`{ … }\` and
                containing comma-separated, key-value pairs flanking
-               a colon each (e.g., \`{ a: 1, b: 2, c: "a string" }\`);
+               a colon (e.g., \`{ a: 1, b: 2, c: "a string" }\`);
                often packaged up and transmitted as a JSON string;
       array  | also called an "object" data structure;
                an ordered sequence of values --
@@ -535,7 +539,7 @@ foo = null   // foo is now a null "object"
 
     + Here are examples of assigning a data structure to a variable,
       then accessing data contained within that structure.
-      *Challenge:* Make changes to values within these structures;
+    + *Challenge:* Make changes to values within these structures;
       And confirm that the new values have been stored.
 */
 
@@ -561,7 +565,7 @@ arr[3]        // the returned value should be \`true\`
         assigned to the variable \`str\`.
     + In each example, two arguments are provided to the
       \`.replace( … , … )\` method -- a search string and a
-      replacement string.
+      replacement string, in that order.
 */
 
 "Controlled chaos."
@@ -573,7 +577,7 @@ str.replace("silence.", "SILENCE!")    // 2nd example
 /*
  3. Now, perform another search-and-replace on each string using
     __a regular expression__ (*RegExp*) __as the search pattern__.
-    + A *RegExp* pattern allows full control over a search.
+    + A *RegExp*-formatted pattern allows full control over a search.
     + The pattern is wrapped in a pair of forward slashes \`/ … /\`.
     + It is composed of simple characters, such as \`/abc/\`,
       or a combination of simple and special characters, such as
@@ -581,13 +585,13 @@ str.replace("silence.", "SILENCE!")    // 2nd example
     + Learning how to compose a *RegExp* can be an involved process,
       as evidenced at this reference link:
       developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Cheatsheet
-    + For quick-start, here are the most helpful special characters.
+    + For quick-startup, here are the most helpful special characters.
 
       .   | matches any character except NewLine \`\\n\`
       [^] | matches any character
       \\w  | matches any alphanumeric character (including \`_\`)
       \\d  | matches any digit (0 - 9)
-      \\n  | matches a NewLine
+      \\n  | matches a NewLine character (line break)
       \\s  | matches a white space character (including Tab &amp; NewLine)
       [x] | matches any of the items between the brackets
       [^x]| matches any item not found between the brackets
@@ -596,25 +600,25 @@ str.replace("silence.", "SILENCE!")    // 2nd example
       x?  | matches the preceding item "x" 0 or 1 times
       x*?
       x+? | stops looking for another match after the first one
-      \\?  | escapes (normalizes) a special character (* . ? etc.)
-      (x) | Capturing Group: matches "x" and remembers the match;
+      \\?  | escapes (normalizes) a special character (/ * + . ? etc.)
+      (x) | Capturing Group: matches "x" and remembers the match --
             "$1" in the replacement string returns the 1st CG,
             "$2" in the replacement string returns the 2nd CG, etc.;
-            "$&" in the replacement string returns the whole match,
-            even without a CG in the *RegExp*;
+            "$&" in the replacement string returns the whole match
+            (even without a CG in the *RegExp*);
 
     + To make a *RegExp* complete, any of three flag characters
       may optionally be added onto the end
       (e.g., \`/abc/i\` or \`/^abc/gim\`).
 
-      g | global flag: find every match encountered;
-          (otherwise, find only the first match encountered);
-      i | case insensitive flag: find either upper or lower cases;
-          (otherwise, find the same case of a specified character);
+      g | global flag: find every match encountered
+          (otherwise, find only the first encountered match)
+      i | case insensitive flag: find either upper or lower cases
+          (otherwise, find the same case of a specified letter)
       m | multiline flag: make alternate use of 2 special characters
-          -- \`^\` = start of a line, \`$\` = end of a line;
-          (otherwise, retain default use of special characters --
-          \`^\` = start of entire string, \`$\` = end of entire string);
+          -- \`^\` = start of a line, \`$\` = end of a line
+          (otherwise, retain default use of 2 special characters --
+           \`^\` = start of entire string, \`$\` = end of entire string)
 */
 
 "Controlled chaos.".replace(/ch?/gi, "K")          // 1st example
@@ -624,15 +628,15 @@ str.replace(/(deaf)\\w+ (\\w+)\\./i, "$1ness … $2 …") // 2nd example
 /*
  4. Now, perform another search-and-replace on each string using
     __a function to generate the replacement string__.
-    + The argument variables of a replacement function may
-      be arbitrarilly named.
-    + The first argument returns the entire matched string.
-    + The value of each subsequent argument aligns with a capturing
+    + The argument variables of a replacement function may be
+      arbitrarily named.
+    + The first argument variable equals the entire matched substring.
+    + The value of each subsequent variable aligns with a capturing
       group of the *RegExp* search pattern.
 
-      arg0 | returns the entire matched string
+      arg0 | returns the entire matched substring
       arg1 | returns 1st capturing group
-      arg2 | returns 2nd capturing group, and so on …
+      arg2 | returns 2nd capturing group, and so on ...
 */
 
 "Controlled chaos.".replace(/ch?/gi, m => m === "C" ? "K" : "k")
@@ -642,15 +646,15 @@ str.replace(/(deaf)\\w+ (\\w+)\\./i, (m, c1, c2) => \`\${c1} & \${c2.replace(/ce
  // 2nd example
 
 /*
- 5. Bring these elements together in a pursuit of higher convenience
-    and __build a search-and-replace web app__.
+ 5. In pursuit of higher convenience, pull these concepts together
+    to __build a search-and-replace web app__.
     + The elements of a minimal search-and-replace user interface (UI)
       are: "Source" and "Target" text fields, "Search" and "Replace"
       inputs, and a trigger ("PARSE" button) to activate the
       search/replace operation.
     + Un-comment the \`try { … } catch { … }\` line following the
-      next code block to display a basic search-and-replace UI,
-      down below.
+      next code block to display (down below) a basic search-and-
+      replace UI.
 */
 
 srui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
@@ -682,25 +686,26 @@ srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=replhelp c
 
 /*
     + The following "script" code that makes this UI functional hinges
-      on a standard \`.replace( … , … )\` method to manipulate the
-      source string -- taken from the "Source" text field of the UI.
-    + The arguments of the \`.replace( … , … )\` method are taken from
+      on a standard \`.replace( … , … )\` string-method to manipulate
+      a source string -- which is taken from the "Source" text field
+      of the UI.
+    + Arguments for the \`.replace( … , … )\` method are taken from
       the "Search" and "Replace" inputs of the UI:
       * A recognized search pattern will be either a string or a
-        *RegExp*, depending on whether or not the user entered a *RegExp* 
-        pattern (i.e., one wrapped in \`/ … /\`).
+        *RegExp*, depending on whether or not the user entered a
+        *RegExp*-formatted pattern (i.e., one wrapped in \`/ … /\`).
       * Recognized replacement code will be either a string or a
         function, depending on whether or not the user entered
-        (either) a function definition (with arrow notation \`=>\`) or
-        function name (of one that is defined elsewhere in the script).
+        one of a function definition (with arrow notation \`=>\`) or
+        function name (of one that is globally defined elsewhere).
     + The result of the \`.replace( … , … )\` method is then sent to
       the "Target" text field.
-    + Other assorted bells and whistles have been written into this
-      "script" code -- to display the replacement count, to allow for
+    + Some bells and whistles are also written into this "script"
+      code -- to display the replacement count, to allow for
       a one-click swapping of content between "Source" and "Target"
       text fields, and to turn the "Source" and "Target" labels
-      each into a live trigger for auto-selecting all of its
-      text-field's content.
+      each into a live trigger for auto-selecting all of the content
+      of its text field.
 */
 
 rx = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /(?:[$\\wÀ-Ͽ]+|\\(.*?\\)) *=>.|window\\.[\\w.]+/]; ""
@@ -721,8 +726,8 @@ respShow((dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(xstor["JScode"]["tutor
 */
 
 /*
- 6. Expand the use of the search-and-replace web app to be able to
-    __locate a specified string within a lengthy document__.
+ 6. Expand the use of the search-and-replace web app with ability to
+    __locate a specified substring of a lengthy document__.
 
     To be continued …
 
