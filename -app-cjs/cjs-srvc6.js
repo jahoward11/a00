@@ -626,7 +626,7 @@ str.replace("silence.", "SILENCE!")    // 2nd example
 str.replace(/(deaf)\\w+ (\\w+)\\./i, "$1ness … $2 …") // 2nd example
 
 /*
- 4. Now, perform another search-and-replace on each string using
+ 4. Now, perform one more search-and-replace on each string using
     __a function to generate the replacement string__.
     + The argument variables of a replacement function may be
       arbitrarily named.
@@ -658,10 +658,12 @@ str.replace(/(deaf)\\w+ (\\w+)\\./i, (m, c1, c2) => \`\${c1} & \${c2.replace(/ce
 */
 
 srui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
-srui += "\\nhtml { box-sizing: border-box; }"; ""
+srui += "\\nhtml { box-sizing: border-box; word-wrap: break-word; overflow-wrap: break-word; }"; ""
 srui += "\\nhr { margin: 1.5rem 0; }"; ""
 srui += "\\n#srwrap { font: normal medium Helvetica, Arial, sans-serif; margin: 16px 0; }"; ""
 srui += "\\n#srwrap textarea { display: block; font-size: medium; width: 100%; height: 288px; }"; ""
+srui += "\\n#srwrap pre { white-space: pre-wrap; }"; ""
+srui += "\\n#srwrap input[type=text] { width: 288px; }"; ""
 srui += "\\n#srwrap .iwarn { color: Orange; }"; ""
 srui += "\\n#srwrap .isucc { color: CornFlowerBlue; }"; ""
 srui += "\\n#srwrap textarea.iwarn { color: unset; border-color: Orange; }"; ""
@@ -676,10 +678,12 @@ srui += "\\n</style>\\n<hr>\\n<h4 class=cfield><span onclick=txtaSel(srctxta)>So
 srui += "\\n<div class=cfield><textarea id=srctxta></textarea></div>"; ""
 srui += "\\n<div class=cfield><label class=ccntr><input type=text id=sepainp> Search</label></div>"; ""
 srui += "\\n<div class=cfield><label class=ccntr><input type=text id=rfncinp> Replace</label></div>"; ""
-srui += "\\n<div class=cfield><span class=ccntr><input type=button value=\\"&rlhar; SWAP\\" onclick=txtSwap()></span>"; ""
-srui += "<span class=ccntr><input type=button value=\\"&#x2964; PARSE\\" onclick=strPars()></span></div>"; ""
+srui += "\\n<div class=cfield>\\n<span class=ccntr><select id=rnsel>\\n<option></option>\\n<option>PRE render</option>\\n<option>Normal render</option>\\n</select></span>"; ""
+srui += "<span class=ccntr><input type=button value=\\"&#x2964; PARSE\\" onclick=strPars()></span>"; ""
+srui += "<span class=ccntr><input type=button value=\\"&rlhar; SWAP\\" onclick=txtSwap()></span>\\n</div>"; ""
 srui += "\\n<h4 class=cfield><span onclick=txtaSel(trgtxta)>Target</span></h4>"; ""
-srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=replhelp class=help></div></div>\\n"; ""
+srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=replhelp class=help></div></div>"; ""
+srui += "\\n<div id=trgrndr class=cfield></div>\\n"; ""
 
 // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 // try { srwrap } catch { ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = srui; cmain.appendChild(ndiv); }
@@ -701,18 +705,19 @@ srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=replhelp c
     + The result of the \`.replace( … , … )\` method is then sent to
       the "Target" text field.
     + Some bells and whistles are also written into this "script"
-      code -- to display the replacement count, to allow for
-      a one-click swapping of content between "Source" and "Target"
-      text fields, and to turn the "Source" and "Target" labels
-      each into a live trigger for auto-selecting all of the content
-      of its text field.
+      code -- to display the match count; to provide styled render
+      options; to allow for a one-click swapping of content between
+      "Source" and "Target" text fields; and to turn the "Source" and
+      "Target" labels each into a live trigger for auto-selecting all
+      of its field's content.
 */
 
 rx = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /(?:[$\\wÀ-Ͽ]+|\\(.*?\\)) *=>.|window\\.[\\w.]+/]; ""
-msgClr = () => (replhelp.innerHTML = "") || [trgtxta, replhelp].forEach(e => e.classList.remove("iwarn", "isucc")); ""
-window.txtaSel = e => e.focus() || e.setSelectionRange(0, e.textLength); ""
+msgClr = () => (trgrndr.innerHTML = replhelp.innerHTML = "") || [trgtxta, replhelp].forEach(e => e.classList.remove("iwarn", "isucc")); ""
+rsltSh = rslt => { let ri = rnsel.selectedIndex; trgtxta.value = rslt; !ri || (trgrndr.innerHTML = (ri > 1 ? rslt : "\\n<pre>" + rslt + "</pre>\\n")); }; ""
+window.txtaSel = e => _.msgClr() || e.focus() || e.setSelectionRange(0, e.textLength); ""
 window.txtSwap = () => _.msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]); ""
-window.strPars = () => { let lm, sv = sepainp.value, rv = rfncinp.value.trim(); _.msgClr(); if (_.rx[0].test(sv)) { replhelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; [trgtxta, replhelp].forEach(e => e.classList.add(!lm ? "iwarn" : "isucc")); } trgtxta.value = srctxta.value.replace( !_.rx[1].test(sv) ? sv : eval(sv), window[rv] || (!_.rx[2].test(rv) ? rv : window.eval(rv)) ); }; ""
+window.strPars = () => { let lm, sv = sepainp.value, rv = rfncinp.value.trim(); _.msgClr(); if (_.rx[0].test(sv)) { replhelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; [trgtxta, replhelp].forEach(e => e.classList.add(!lm ? "iwarn" : "isucc")); } _.rsltSh( srctxta.value.replace( !_.rx[1].test(sv) ? sv : eval(sv), window[rv] || (!_.rx[2].test(rv) ? rv : window.eval(rv)) )); }; ""
 
 /*
    + Un-comment the following block of code to generate the
@@ -726,11 +731,64 @@ respShow((dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(xstor["JScode"]["tutor
 */
 
 /*
- 6. Expand the use of the search-and-replace web app with ability to
-    __locate a specified substring of a lengthy document__.
+ 6. Extend your use of the search-and-replace web app with some
+    know-how to __locate any substring of a lengthy document__.
+    + Before we can demo the new search-and-replace UI on this page
+      we must reload the page with a supplemental data module that
+      contains lengthy document texts -- called "sparknotes".
+    + Import the "sparknotes" data module and reload this tutorial
+      all at once by un-commenting the following one line of code.
+*/
 
-    To be continued …
+// window.location.search = "cmods=cjs-spark.js&dload=tutorial3"
 
+/*
+    + Having reloaded the page, ensure that the search-and-replace UI
+      is again displayed (down below) by un-commenting the
+      \`try { … } catch { … }\` line in step 5, above.
+    + With the search-and-replace UI displayed, inject demo data into
+      the UI fields by un-commenting the next block of code.
+*/
+
+/*
+srctxta.value = xstor["sparknotes"]["dune"].replace(/\\n\\*\\/$|^\\/\\*\\n/g, ""); ""
+sepainp.value = "/^.*?(\\\\bdune\\\\b).*\\\\n*|^.*\\\\n*/gim"; "" //
+rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); return !c1 ? \\"\\" : \\" \\" + ++itr + \\". \\" + m; }"; ""
+*/
+
+/*
+    + Tap on the "PARSE" button, then confirm that the search/replace
+      operation executed correctly; The result (found in the "Target"
+      text field) should be a numbered list of only those lines from
+      the source text that contain the word "dune".
+    + This result gives us the context of every "dune" substring in
+      the document. However, we want to know the locations of all
+      matches. So, we will generate a new result that pairs each
+      match with a line-number reference (instead of the match count).
+    + Un-comment the following one line of code, then tap "PARSE".
+*/
+
+// rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); ++itr; return !c1 ? \\"\\" : \\"[line \\" + itr + \\"]:\\\\n\\" + m; }"; ""
+
+/*
+    + This result gives us a helpful location reference for every
+      "dune" substring. But, we would also like to have a visual
+      reference of the matches. So we will generate one more result
+      that also highlights every match -- which can then be rendered
+      separately as a styled, PRE-formatted text block (beneath the
+      search-and-replace UI).
+    + Un-comment the following one line of code, choose the
+      "PRE render" option (of the select list, in front of the
+      "PARSE" button) and tap "PARSE".
+*/
+
+// rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); ++itr; return !c1 ? \\"\\" : \\"[line \\" + itr + \\"]:\\\\n\\" + m.replace(/\\\\bdune\\\\b/gi, \\"<mark>$&</mark>\\"); }"; ""
+
+/*
+ 7. Use search-and-replace to __apply HTML markup to an article__ --
+    such that its structural parts are displayed meaningfully.
+
+    To be continued ...
 */
 //`;
 
