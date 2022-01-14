@@ -357,10 +357,10 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     url || cnt || rjct("**Alert: Script content or URL was not provided.");
     let nscr = document.createElement('script');
     !url || (nscr.src = url);
-    nscr.type = typ || (/\.mjs$/.test(url) ? 'module' : 'text/javascript');
-    cnt || !/^http/.test(window.location.protocol) || !window.navigator.onLine
-    || nscr.setAttribute('crossorigin', 'use-credentials');
-    nscr.innerHTML = cnt || null;
+    nscr.type = typeof typ === 'string' && typ || (/\.mjs$/.test(url) ? 'module' : 'text/javascript');
+    !url || !/^http/.test(url) || !/^http/.test(window.location.protocol)
+    || !window.navigator.onLine || nscr.setAttribute('crossorigin', 'use-credentials');
+    nscr.innerHTML = !url && cnt ? cnt : null;
     nscr.onerror = err => rjct("**Alert: Script resource GET/load error occured.");
     nscr.onload = rslv;
     !(url || cnt) || document.body.appendChild(nscr);
@@ -636,7 +636,7 @@ window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
   : /^!zlock$/.test(qi) ? zoomTog(1)
   : /^!row1$/.test(qi) ? gridAdj(4)
   : /^!col1$/.test(qi) ? gridAdj(5) : 0 );
-Promise.all(jsrcs.map(scrInj)).catch(respShow).then(() => {
+Promise.all(jsrcs.map(e => scrInj(e))).catch(respShow).then(() => {
   !/^http/.test(window.location.protocol) ? slistRegen(dload)
   : Promise.all( (cmods.some(e => /^\d+$/.test(e)) ? cmods : [1,2,3,4,5,6,7].concat(cmods))
       .map(e => !/^\d+$/.test(e) ? e : `cjs-srvc${e}.js`)

@@ -9,51 +9,51 @@ const dune = `/*
 
 #### Key Facts
 
-full title  · Dune
+full title · Dune
 
-author  · Frank Herbert
+author · Frank Herbert
 
-type of work  · Novel
+type of work · Novel
 
-genre  · Science fiction, fantasy
+genre · Science fiction, fantasy
 
-language  · English
+language · English
 
-time and place written  · America, early 1960s
+time and place written · America, early 1960s
 
-date of first publication  · 1965
+date of first publication · 1965
 
-publisher  · Chilton Books
+publisher · Chilton Books
 
-narrator  · The third-person narrator is omniscient and anonymous. Some of the novel's main characters narrate their own feelings or emotions at different points throughout the book.
+narrator · The third-person narrator is omniscient and anonymous. Some of the novel's main characters narrate their own feelings or emotions at different points throughout the book.
 
-point of view  · The narrator maintains a third-person perspective through most of the novel. The narrator is omniscient and provides insight into the thoughts and plans of certain characters while also giving clues to the novel's social, cultural, and political background. The narration sometimes switches to first-person to reveal specific characters' inner feelings and motivations.
+point of view · The narrator maintains a third-person perspective through most of the novel. The narrator is omniscient and provides insight into the thoughts and plans of certain characters while also giving clues to the novel's social, cultural, and political background. The narration sometimes switches to first-person to reveal specific characters' inner feelings and motivations.
 
-tone  · The tone is fairly ominous and resigned. A feeling of melancholy pervades the presentation of some characters, particularly Paul. The narrator communicates an overwhelming sense that fate is immutable and that the characters are powerless to change events as they unfold.
+tone · The tone is fairly ominous and resigned. A feeling of melancholy pervades the presentation of some characters, particularly Paul. The narrator communicates an overwhelming sense that fate is immutable and that the characters are powerless to change events as they unfold.
 
-tense  · Immediate past, real-time narration
+tense · Immediate past, real-time narration
 
-setting (time)  · The future: 10,191
+setting (time) · The future: 10,191
 
-setting (place)  · Arrakis, a desert planet
+setting (place) · Arrakis, a desert planet
 
-protagonist  · Paul Atreides
+protagonist · Paul Atreides
 
-major conflict  · The Harkonnens, led by Baron Harkonnen, want to overthrow the emperor by taking over the melange supply on Arrakis. Paul, from the opposing house of Atreides, works with the Fremen to secure Arrakis and the universe from the greedy Harkonnens.
+major conflict · The Harkonnens, led by Baron Harkonnen, want to overthrow the emperor by taking over the melange supply on Arrakis. Paul, from the opposing house of Atreides, works with the Fremen to secure Arrakis and the universe from the greedy Harkonnens.
 
-rising action  · The Harkonnens kill Duke Leto and obliterate the Atreides. Baron Harkonnen uses the emperor's soldiers to attempt to take control of Arrakis and the melange supply while killing Kynes and Paul's son.
+rising action · The Harkonnens kill Duke Leto and obliterate the Atreides. Baron Harkonnen uses the emperor's soldiers to attempt to take control of Arrakis and the melange supply while killing Kynes and Paul's son.
 
-climax  · Paul and the Fremen succeed in defeating the forces of the emperor and the Harkonnens that are invading Arrakis; Alia kills Baron Harkonnen.
+climax · Paul and the Fremen succeed in defeating the forces of the emperor and the Harkonnens that are invading Arrakis; Alia kills Baron Harkonnen.
 
-falling action  · Paul arranges a marriage between himself and Princess Irulan, thus securing the imperial throne.
+falling action · Paul arranges a marriage between himself and Princess Irulan, thus securing the imperial throne.
 
-themes  · Religion and power; human control over ecology
+themes · Religion and power; human control over ecology
 
-motifs  · Inheritance and nepotism; precognition; loyalty; fanaticism
+motifs · Inheritance and nepotism; precognition; loyalty; fanaticism
 
-symbols  · melange; water
+symbols · melange; water
 
-foreshadowing  · Dune contains many instances of foreshadowing. Paul is constantly foreseeing events, often long before they occur: Paul's dream in which he is called Usul; Paul's vision of a jihad. Also, Reverend Mother Mohiam's warning that Duke Leto will die on Arrakis.
+foreshadowing · Dune contains many instances of foreshadowing. Paul is constantly foreseeing events, often long before they occur: Paul's dream in which he is called Usul; Paul's vision of a jihad. Also, Reverend Mother Mohiam's warning that Duke Leto will die on Arrakis.
 
 #### Context
 
@@ -109,7 +109,7 @@ Chani -- Daughter of Liet-Kynes. Chani is one of the Fremen and has some of the 
 
 Emperor Shaddam IV -- The ruler of the Imperium. The emperor is arguably the most powerful man in the known universe, although he is often at the mercy of the Spacing Guild, which has a monopoly on space travel.
 
-Liet-Kynes	 -- Planetologist for Arrakis, or an ecologist for planets. Unknown to the Harkonnens, Liet is also a member of the Fremen. He works with the Fremen to change Arrakis from a desert planet into a lush, green paradise.
+Liet-Kynes -- Planetologist for Arrakis, or an ecologist for planets. Unknown to the Harkonnens, Liet is also a member of the Fremen. He works with the Fremen to change Arrakis from a desert planet into a lush, green paradise.
 
 Alia -- Duke Leto and Jessica's daughter, and Paul's sister. Alia's mother took the "Water of Life" before she was born. Alia had a conscious awakening while in the womb and even at her birth was much more intelligent than most adults.
 
@@ -117,7 +117,7 @@ Shadout Mapes -- A Fremen and servant of the Atreides. Mapes is the first among 
 
 Princess Irulan -- The emperor's eldest daughter. In the future, the princess writes several books about the Muad'Dib, who is a vastly important figure in the universe's history.
 
-Esmar Tuek	 -- One of the head smugglers on Arrakis.
+Esmar Tuek -- One of the head smugglers on Arrakis.
 
 Staban Tuek -- The son of Esmar Tuek. Staban takes over for his father after his father's death.
 
@@ -127,7 +127,7 @@ Harah -- Jamis's wife. Harah becomes Paul's servant after Paul kills her husband
 
 Count Fenring -- A servant and friend of the emperor's. The count is married to Lady Fenring. He is a very skilled man, particularly at killing others, and he was almost the Kwisatz Haderach.
 
-Lady Fenring	 -- Married to Count Fenring. Lady Fenring is a member of the Bene Gesserit.
+Lady Fenring -- Married to Count Fenring. Lady Fenring is a member of the Bene Gesserit.
 
 Rabban Harkonnen -- A nephew of Baron Harkonnen's. Before the novel begins, Rabban is the ruler of Arrakis. When the Atreides take over Arrakis, he must step down. However, Rabban rules Arrakis again after the Harkonnens seize back Arrakis.
 
@@ -148,6 +148,12 @@ Jessica
     Jessica's character undergoes many changes. At the beginning of the novel, she is Duke Leto's concubine. The two are in love, but Leto will not marry her for political reasons. Leto knows that as long as he is unmarried, he has something to offer the other Great Houses. Despite her concubine status, both Leto and Jessica treat the relationship as a marriage, and Jessica is accustomed to her life as a wealthy duke's partner. Jessica's life changes once the Harkonnen kill Leto. She is forced to live in the harsh desert among the Fremen and use all her abilities to survive, including seducing her captors.
 
     Jessica resigns her wifelike role and becomes a reverend mother, serving as a matriarchal figure to thousands of people. Jessica has been preparing for such a role by training as a Bene Gesserit from birth. Throughout the novel, however, she is often troubled by emotions that intercede with her loyalty to the Bene Gesserit. Most significantly, she regrets that she groomed Paul so well for the messianic role of Kwisatz Haderach. She realizes that she has robbed Paul of his innocence -- he never has a childhood, a normal adulthood, or even the normal life as a duke's heir.
+
+Baron Harkonnen
+
+:   Baron Harkonnen appears infrequently in the novel, but he initiates an important sequence of events that changes the future of the universe. He deviously tries to murder the entire House of A-treides and hopes to control the empire by having a monopoly on spice. His grandiose plans even include becoming the new emperor. Ironically, the baron’s plans drive Paul to become the leader of the Fremen and eventually leader of the universe. The baron is clearly marked as the novel’s main antagonist from his very first appearance. He is ruthless, ambitious, cruel, and so fat that he requires antigravity devices to suspend his bulk.
+
+    The baron appears like an unrealistic caricature of a leader. On the surface, he is not very different from Duke Leto. Both men are ambitious and ruthless. Leto, however, genuinely cares about his own men and family and regrets many of the tactics he must use to protect them, such as poisoning his rivals and raiding their supplies. The baron seems to delight in the intricacies of political warfare, and his regard for his family extends no further than his beloved nephew Feyd-Rautha. The personalities of the leaders of the other houses fall somewhere between those of Leto and the baron.
 
 #### Themes, Motifs & Symbols
 
@@ -209,6 +215,40 @@ Water
 
 :   The Fremen refer to blood as "the body's water," suggesting that the Fremen view water as the blood of the environment. When Thufir Hawat agrees to join the Fremen, he enters the "bond of water," rather than a blood oath or blood brothers. People show their loyalty to each other by spitting or sharing water. Paul and Jessica, during their time with the Fremen, engage in countless rituals that involve water. For example, Paul accepts the water of Jamis's corpse after he kills him. After drinking this water, Paul is baptized into the culture of the Fremen, and he is reborn as a leader in their world. For the Fremen, water and life are one and the same.
 
+    <!-- -->
+
+#### Important Quotes Explained
+
+##### Quote 1
+
+> “Religion and law among our masses must be one and the same,” his father said. “An act of disobedience must be a sin and require religious penalties. This will have the dual benefit of bringing both greater obedience and greater bravery. We must depend not so much on the bravery of individuals, you see, as upon the bravery of a whole population.”
+
+Kynes’s dead father says these words in Book II, when Kynes is on the verge of death and hallucinating in the desert of Arrakis. Kynes’s father states that religion’s purpose is to steer a relatively ignorant impressionable population toward a particular goal. Kynes’s father used religion to help steer the Fremen, the indigent population of Arrakis, a people yearning for a leader. Kynes and his father used religion to earn the loyalty of the fierce Fremen with the purpose of transforming Arrakis from a desert world into a green paradise. In addition, they seek to use religion to end the crime that accompanies the illicit trade of melange.
+
+##### Quote 2
+
+> He found that he no longer could hate the Bene Gesserit or the Emperor or even the Harkonnens. They were all caught up in the need of their race to renew its scattered inheritance, to cross and mingle and infuse their bloodlines in a great new pooling of genes. And the race knew only one sure way for this—the ancient way . . . jihad.
+
+This passage from the end of Book I occurs when Paul and his mother, Jessica, are hiding in a tent, and she explains the forces behind what Paul calls his “terrible purpose.” The Bene Gesserit, a group of women with superhuman powers, create the Kwisatz Haderach, a person who provides the “shortening of the way” toward reinvigorating humanity’s stagnant gene pool. Paul realizes that the only way the human race knows how to diversify its gene pool is through bloody, fanatical warfare. The creation of a Kwisatz Haderach to help cross and mingle the bloodlines is ironic. After tens of thousands of years of technological development and human evolution, humans are still influenced first and foremost by the most primary human instinct: sex drive.
+
+##### Quote 3
+
+> “We will treat your comrade with the same reverence we treat our own,” the Fremen said. “This is the bond of water. We know the rites. A man’s flesh is his own; the water belongs to the tribe.”
+
+In the beginning of Book II, a member of the Fremen speaks these words to Thufir Hawat, a Mentat who served three generations of Atreides until he reluctantly joined the Harkonnens. Hawat allows the Fremen to take the dead body of one of his soldiers to be rendered down for water. For the Fremen, water is more important than blood. Alliances are secured with the “bond of water” rather than with blood oaths. Fremen remove the water from a body once it dies. They keep the water for the tribe, or they store it in wells, where it will eventually be used to alter the climate of Arrakis. Hawat, by allowing his own men’s corpses to be tapped for precious water, creates a strong bond between his men and the Fremen.
+
+##### Quote 4
+
+> “A duke’s son must know about poisons. . . . Here’s a new one for you: the gom jabbar. It kills only animals.”
+
+Reverend Mother Mohiam speaks these words in the beginning of Book I. Her statement reveals the distinction the novel makes between humans and animals. The Bene Gesserit believe that animals react only by instinct, their base emotions, and drives. They also believe that humans can use their self-awareness to combat instinct. A Mentat, for example, uses only logic and removes all emotional or irrational ideas from his decision-making process. Mother Mohiam tests whether Paul is an animal or a human being by putting his hand in a box that causes pain. Paul passes the test by resisting the urge to pull his hand away from the pain. He rationalizes that he will be poisoned if he moves his hand, and thus, he fights his instinctual drive to run from the pain. This test is the first of many that Paul must survive to become the Kwisatz Haderach.
+
+##### Quote 5
+
+> The drug had him again and he thought: So many times you’ve given me comfort and forgetfulness. He felt anew the hyperillumination with its high-relief imagery of time, sensed his future becoming memories—the tender indignities of physical love, the sharing and communion of selves, the softness and the violence.
+
+This passage occurs in Book II after Paul takes the drug melange, which significantly changes him. His senses become more acute, and he is suddenly able to “see through time.” Paul can now see infinite possibilities in future events, and he realizes his actions will cause a jihad (holy war) in the universe. Paul is also more sensitive to physical contact, particularly when he is with his love, Chani. Paul’s consumption of the melange is an important turning point in his development as a Kwisatz Haderach. Paul becomes dependent on the melange to see into the future, and the addictive substance in turn begins to shackle him. Paul needs the melange to live and to fulfill his role as a Kwisatz Haderach. The French word mélange means a mixture of diverse elements. Paul’s role as a Kwisatz Haderach is to mix the elements of the human gene pool—he needs melange to execute the mixture of gene pools that will ultimately save his species.
+
 */`;
 
 const mythology = `/*
@@ -218,39 +258,39 @@ const mythology = `/*
 
 #### Key Facts
 
-full title  ·  Mythology
+full title · Mythology
 
-author  · Edith Hamilton
+author · Edith Hamilton
 
-type of work  · Nonfiction
+type of work · Nonfiction
 
-genre  · Classical lore and legends, Norse legends
+genre · Classical lore and legends, Norse legends
 
 language · English
 
-time and place written  ·  1930s, United States
+time and place written · 1930s, United States
 
-date of first publication ·  1942
+date of first publication · 1942
 
-publisher  · Little, Brown and Company
+publisher · Little, Brown and Company
 
-narrator  · An omniscient narrator, suggestive of the author herself
+narrator · An omniscient narrator, suggestive of the author herself
 
-point of view  · Edith Hamilton's level and even-spirited scholarly voice provides the general point of view. The stories are told by omniscient narrators who are sympathetic to the protagonists yet instantly aware of their weaknesses or foolishness whenever it comes into play. Even these omniscient narrators have plenty of equanimity and are not terribly engaged in the stories they are telling.
+point of view · Edith Hamilton's level and even-spirited scholarly voice provides the general point of view. The stories are told by omniscient narrators who are sympathetic to the protagonists yet instantly aware of their weaknesses or foolishness whenever it comes into play. Even these omniscient narrators have plenty of equanimity and are not terribly engaged in the stories they are telling.
 
-tone  · Edith Hamilton clearly admires the greatness of antiquity, although at the same time posits myths as important mostly as progenitors of "us" and "our culture."
+tone · Edith Hamilton clearly admires the greatness of antiquity, although at the same time posits myths as important mostly as progenitors of "us" and "our culture."
 
-tense  · Past
+tense · Past
 
-setting (time)  · Ancient times
+setting (time) · Ancient times
 
-setting (place)  · Greece and Rome, and, at the very end, Northern Europe
+setting (place) · Greece and Rome, and, at the very end, Northern Europe
 
-themes  · The dominance of fate; bloodshed begets bloodshed; the danger of arrogance and hubris; reward for goodness and retribution for evil
+themes · The dominance of fate; bloodshed begets bloodshed; the danger of arrogance and hubris; reward for goodness and retribution for evil
 
-motifs  · The hero's quest; beauty; love
+motifs · The hero's quest; beauty; love
 
-symbols  · Cannibalism; art
+symbols · Cannibalism; art
 
 #### Context Overview
 
@@ -510,9 +550,11 @@ Art
 
     On a literary level, the symbol of art serves a glorifying purpose, staking a claim for the power of the text itself. This self-glorification is perhaps most obvious in Homer: Odysseus spares the poet, unlike the priest whom he has just dispatched, because he is loath to kill "such a man, taught by the gods to sing divinely." In a less than subtle way, Homer is hinting that he himself is one such sacred, divinely touched creature. In addition to this self-glorification, art is used to link men with their gods, as the gods not only appreciate art, but actually make it themselves. Apollo is proud of his lyre, Pan of his set of pipes, and Hephaestus of the artisanship of the fine products of his smithy. Art, then, is symbolically and literally a bridge between mortals and gods.
 
-#### Important Quotations Explained
+#### Important Quotes Explained
 
-1. Here Phaëthon lies, who drove the Sun-god's car.
+##### Quote 1
+
+> Here Phaëthon lies, who drove the Sun-god's car.
 
     Greatly he failed, but he had greatly dared.
 
@@ -520,43 +562,51 @@ In Part Two, Chapter IV, Hamilton tells the story of Phaëthon, the son of the S
 
 Yet these two brief lines also contain a second, brilliant counterpoint to the lesson of humility in the story of Phaëthon's tragic mistake. If the first line demonstrates the ill fate that overtakes him for overstepping himself, the second line subtly heroizes him. Phaëthon falls into disaster, but has striven equally far for greatness. As much as Greek and Roman myths caution humans against arrogance, they also pique our curiosity at, and celebrate those who have achieved, dazzling and original acts of triumph.
 
-2. [I]f I must slay
+##### Quote 2
 
-    The joy of my house, my daughter.
+> [I]f I must slay
 
-    A father's hands
+> The joy of my house, my daughter.
 
-    Stained with dark streams flowing
+> A father's hands
 
-    From blood of a girl
+> Stained with dark streams flowing
 
-    Slaughtered before the altar.
+> From blood of a girl
+
+> Slaughtered before the altar.
 
 Agamemnon speaks these anguished words -- quoted from Aeschylus in Part Four, Chapter I -- after learning that the Greek ships cannot sail for Troy unless his daughter, Iphigenia, is sacrificed to appease the angry Artemis. Though the very idea of the act is ghastly and repulsive to him, Agamemnon follows through with it, as it seems the only honorable way to perform his duty to his fellow Greeks and uphold the oath he has sworn to help his brother Menelaus reclaim his wife, Helen. Agamemnon's allegiance is with his social brotherhood more than his family, for he feels the dishonor of preventing the Greeks from sailing is greater than the dishonor of murdering his own child. Already, Agamemnon couches his response as something he "must" do, not as something asked of him. He believes that any mandated duty to a god is justified, even if it is entails a horrible crime like murdering one's own daughter.
 
 Clytemnestra, Agamemnon's wife, takes a violently different view when he returns home, slaughtering him in revenge. Yet paradoxically, the very principle by which Clytemnestra justifies her action is the same upon which Agamemnon based his, because she obviously feels the duty of avenging her daughter outweighs the crime of killing one's own husband. With this quote, thus, we see both the theme of the self-perpetuating nature of bloodshed as well as the complexity of the moral dilemmas that formed the subject of much Greek tragedy.
 
-3. We stand at the same point of pain.
+##### Quote 3
 
-    We too are slaves.
+> We stand at the same point of pain.
 
-    Our children are crying, calling to us with tears, "Mother, I am all alone.
+> We too are slaves.
 
-    To the dark ships now they drive me,
+> Our children are crying, calling to us with tears, "Mother, I am all alone.
 
-    And I cannot see you, Mother."
+> To the dark ships now they drive me,
+
+> And I cannot see you, Mother."
 
 These lines, spoken in Euripides' The Trojan Women at the fall of Troy, appear in Part Four, Chapter II. True to the sophistication of the Greek playwrights, Euripides does not, in his consideration of the Trojan War, rest with a simple glorification of the Greek military victory. Rather, he depicts the useless devastation and catastrophe that war brings alongside its glory. We feel the sorrow of the innocent -- a sorrow infinitely multiplied when we recall that the only cause of the war is a spat over the lovely Helen.
 
 Although Homer's Iliad does not address the sophisticated aftermath of the Trojan War in the way that The Trojan Women does, the Iliad does portray the conflict as more than just a simple struggle between good and evil. We see heroism, strength of character, wisdom, and honor on both the Greek and Trojan sides. The Iliad ends with the death of Hector, the brave Trojan, portraying his loss as a great tragedy equal to the tragic death of the Greek Achilles. Both Euripides' play and Homer's epic depict humans caught in a web of circumstances beyond their control, facing their difficult situations and making the only ethical decisions possible, even when the clear consequence is death. The quotation, then, captures this moral complexity of war with an insightful snapshot of the human condition beyond the glory and spoils of a proud battle.
 
-4. "What creature," the Sphinx asked him, "goes on four feet in the morning, on two at noonday, on three in the evening?"
+##### Quote 4
+
+> "What creature," the Sphinx asked him, "goes on four feet in the morning, on two at noonday, on three in the evening?"
 
 The answer Oedipus gives, in Part Five, Chapter II, is "[m]an." As a baby, man crawls; in maturity, he walks upright on his two feet; near the end of his life, he walks with a cane. Answering this riddle, Oedipus saves the city of Thebes from the curse of the Sphinx, who kills herself. Oedipus does not, however, realize the implications the riddle has for his own life.
 
 At this point, Oedipus is chronologically between the two major criminal acts that make up his tragedy, though he commits them unknowingly. He has just killed his father, Laius, and he is about to -- again unwittingly -- marry his mother Jocasta. These actions divide Oedipus's life into three stages of its own. First is the early part of his life in which he grows up as the adopted son of Polybus, from whom he flees in order to avoid fulfilling an oracle's prophecy and committing patricide. Second is his triumphal stage, as he becomes king of Thebes and marries its widowed queen, Jocasta, after defeating the Sphinx. Third is his blinded stage, as it is revealed that Jocasta is his mother and that he has inadvertently slain his true father, Laius, on his flight from Polybus. We see that Oedipus's life itself corresponds to the Sphinx's riddle. At his birth, his true parents abandon him because of another prophecy, and he is forced to rely on the kindness of Polybus. At the second stage, when man stands erect, Oedipus finds himself on top of the Theban world, glorified as a hero, deemed a king, and married with children. The last stage, when man needs a cane to aid his lameness in walking, corresponds to Oedipus's self-inflicted blindness, when he is disappointed and impaired but still alive to continue the last leg of his journey.
 
-5. [The Roman race] left to other nations such things as art and science, and ever remembered that they were destined to bring under their empire the peoples of earth, to impose the rule of submissive nonresistance, to spare the humbled and to crush the proud.
+##### Quote 5
+
+> [The Roman race] left to other nations such things as art and science, and ever remembered that they were destined to bring under their empire the peoples of earth, to impose the rule of submissive nonresistance, to spare the humbled and to crush the proud.
 
 Hamilton ends her account of the Aeneid in Part Four, Chapter IV, with this strange declaration of Virgil on the nature of "the Roman race." In order to understand it, we should bear in mind both the legacy to which Virgil is responding as well as the contemporary backdrop to which he addresses himself. The original Romans had a very indistinct and undeveloped religious worldview, in which deities were little more than barely personified forces. As a result, the Romans responded well to the colorful and engaging body of stories the Greeks had compiled. Consequently, when the Romans came in greater and greater contact with the Greeks, they took over the entire Greek system, only bothering to change some names to harmonize the new gods with existing traditions. They also adopted Greek philosophy, science, and artistic practices.
 

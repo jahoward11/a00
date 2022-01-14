@@ -152,7 +152,7 @@ ufrRom("MCXI", "Roman", "Arabic")
       patterns into a single, lookup array.
     + Use \`Object.assign( … , … )\` to combine corresponding sets of
       conversion formulas into a single, lookup object.
-    + *Challenge:* How would you allow for conversions of mass ...
+    + *Challenge:* How would we allow for conversions of mass ...
       or of volume ... or ... ?
 */
 
@@ -247,7 +247,7 @@ try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap";
     + The rendered GUI, below, is built from the leading block of
       code, above, in which strings of HTML/CSS text are cumulatively
       assigned to the GUI variable (\`g1ui += " … "\`).
-    + As you can see below, the entire GUI string was injected into
+    + As we can see below, the entire GUI string was injected into
       this web doc -- where it will remain as rendered (even after
       this tutorial is unloaded), unchanged from the way it was first
       designed, until it gets altered (overwritten) by another script.
@@ -492,7 +492,7 @@ __*Tutorial Three: Automating custom publishing tasks*__
     + Following is a short list of high-use data types.
     + Distinguishing between them is important; Each type has its
       own set of properties and methods, which, when mastered, are
-      powerful manipulation tools for your data.
+      powerful manipulation tools for our data.
 
       string    | any sequence of characters wrapped in one of
                   quotes (" … "), ticks (' … ') or backticks (\` … \`)
@@ -525,16 +525,16 @@ foo = null   // foo is now a null "object"
       object | a group of keys and their assigned values --
                each of which can be any data type or structure;
                ordinarily wrapped in curly brackets \`{ … }\` and
-               containing comma-separated, key-value pairs flanking
+               contains comma-separated, key-value pairs flanking
                a colon (e.g., \`{ a: 1, b: 2, c: "a string" }\`);
-               often packaged up and transmitted as a JSON string;
+               often packaged up for transmission as a JSON string;
       array  | also called an "object" data structure;
                an ordered sequence of values --
                each of which can be any data type or structure;
                ordinarily wrapped in square brackets \`[ … ]\` and
-               containing a sequential list of comma-separated values
+               contains a sequential list of comma-separated values
                (e.g., \`[1, 2, "a string", false, null]\`);
-               array values are numbered starting with zero;
+               array values are index-numbered starting with zero --
                the position of a value is its index number;
 
     + Here are examples of assigning a data structure to a variable,
@@ -584,7 +584,7 @@ str.replace("silence.", "SILENCE!")    // 2nd example
       \`/ab*c/\` or \`/Chapter (\\d+)\\.\\d*/\`.
     + Learning how to compose a *RegExp* can be an involved process,
       as evidenced at this reference link:
-      developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Cheatsheet
+      * developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Cheatsheet
     + For quick-startup, here are the most helpful special characters.
 
       .   | matches any character except NewLine \`\\n\`
@@ -607,9 +607,8 @@ str.replace("silence.", "SILENCE!")    // 2nd example
             "$&" in the replacement string returns the whole match
             (even without a CG in the *RegExp*);
 
-    + To make a *RegExp* complete, any of three flag characters
-      may optionally be added onto the end
-      (e.g., \`/abc/i\` or \`/^abc/gim\`).
+    + To make a *RegExp* complete, any of three flag characters are
+      optionally added onto the end (e.g., \`/abc/i\` or \`/^abc/gim\`).
 
       g | global flag: find every match encountered
           (otherwise, find only the first encountered match)
@@ -712,7 +711,7 @@ srui += "\\n<div id=trgrndr class=cfield></div>\\n"; ""
       of its field's content.
 */
 
-rx = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /(?:[$\\wÀ-Ͽ]+|\\(.*?\\)) *=>.|window\\.[\\w.]+/]; ""
+rx = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:[$\\wÀ-Ͽ]+|\\(.*?\\)) *=>.|^[\\w.]+$/]; ""
 msgClr = () => (trgrndr.innerHTML = replhelp.innerHTML = "") || [trgtxta, replhelp].forEach(e => e.classList.remove("iwarn", "isucc")); ""
 rsltSh = rslt => { let ri = rnsel.selectedIndex; trgtxta.value = rslt; !ri || (trgrndr.innerHTML = (ri > 1 ? rslt : "\\n<pre>" + rslt + "</pre>\\n")); }; ""
 window.txtaSel = e => _.msgClr() || e.focus() || e.setSelectionRange(0, e.textLength); ""
@@ -740,7 +739,7 @@ respShow((dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(xstor["JScode"]["tutor
       all at once by un-commenting the following one line of code.
 */
 
-// window.location.search = "cmods=cjs-spark.js&dload=tutorial3"
+// window.location.search = "cmods=cjs-spark.js&dload=tutorial3&jsrcs=../-res-js-mdit/markdown-it.min.js,../-res-js-mdit/markdown-it-deflist.min.js"
 
 /*
     + Having reloaded the page, ensure that the search-and-replace UI
@@ -787,8 +786,70 @@ rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); return !c1 ? \\"\\" : \\
 /*
  7. Use search-and-replace to __apply HTML markup to an article__ --
     such that its structural parts are displayed meaningfully.
+    + The "Dune" book-review document that we are using for demo
+      purposes is minimally marked up (with "markdown" syntax);
+      Even in its plain-text form, a reader can make distinctions
+      between a subtitle, a blockquote, a definition list and an
+      ordinary paragraph.
+    + But, in a browser display, the text-document's structural parts
+      would be merged all together and lost, unless they were first
+      marked up with HTML tags.
+    + Un-comment the following block of code, then tap "PARSE" to see
+      the document formatted with HTML markup.
+    + Select "Normal render" and tap "PARSE" again to confirm that
+      the rendered document's structure is still intact.
+*/
 
-    To be continued ...
+/*
+try { docMrkp } catch { markdownit && (window.docMrkp = md => markdownit({ html: 1, typographer: 1 }).use(markdownitDeflist).render(md)); "" }
+sepainp.value = "/[^]+/"; ""
+rfncinp.value = "docMrkp"; ""
+msgClr();
+*/
+
+/*
+    + In this scenario, we did not provide a function definition for
+      our "Replace" input; Instead, we provided the function name
+      (\`docMrkp\`) of a sophisticated parsing function that performs
+      multiple search/replace conversions algorithmically.
+    + Notice also that the simple *RegExp* provided for our "Search"
+      input serves the singular purpose of injecting the entire
+      document-as-a-string into our replacement function \`docMrkp\`.
+
+ 8. Use search-and-replace to __adjust the width of a quick memo or__
+    __report__ to the screen size in which it will be reviewed or edited.
+    + In our modern world, much of our communications are textual
+      messages displayed on a narrow, handheld screen.
+    + More often than we like, our memos or reports do not display
+      nicely within those dimensional constraints.
+    + As an example, special case, look at the tutorial text in the
+      *ENTRY* field of the JavaScript Calculator app; No matter what
+      size screen we are viewing it on, each line of commentary text
+      would get clipped and become unreadable if it wasn't wrapped
+      around before hitting 70 characters from the left edge
+      (70 cpl, or 70 characters per line).
+    + Un-comment the following block of code to activate a pair of
+      line-wraparound width adjuster tools -- which may be applied
+      using the search-and-replace web app.
+*/
+
+/*
+window.lineUnwr = str => str.replace(/(\\S ?)\\n(?!>|\\n|$)/g, "$1 "); ""
+window.lineWrap = str => { let cpl = 70, brk = "\\n", cut = 0, rx = ".{1," + cpl + "}(\\\\s|$)" + (cut ? "|.{" + cpl + "}|.+$" : "|\\\\S+?(\\\\s|$)"); return str.match(new RegExp(rx, "g")).join(brk); }; ""
+msgClr();
+*/
+
+/*
+    + Now, prepare the "Dune" article to become readable within the
+      *ENTRY* field of the JavaScript Calculator app by entering
+      \`lineWrap\` into the "Replace" input and tapping "PARSE".
+    + *Challenge:* Play with the value of the \`cpl\` variable
+      (your desired wraparound limit) in the \`lineWrap\` function
+      to visualize the "Dune" article at different wraparound widths.
+    + *Also:* After applying a different wraparound width, try undoing
+      it: Clear the "Source" text field, tap "SWAP" to swap the
+      "Source" and "Target" content, then use \`lineUnwr\` to restore
+      the article to its original state.
 */
 //`;
 
