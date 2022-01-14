@@ -476,7 +476,7 @@ practical algorithms -- the kind that refine and repackage for human
 consumption the raw data that we often encounter in our modern world.
 Applying __core JavaScript protocols__ only, we will automate some common,
 time-consuming, publishing tasks -- enabling ourselves to do any one
-or another of these kind of tasks instantaneously.
+or another of these kind of tasks in but an instant.
 
  Specifically, we will:
  1) locate a substring of the text of a lengthy document,
@@ -808,11 +808,11 @@ msgClr();
 */
 
 /*
-    + In this scenario, we did not provide a function definition for
+    + In this scenario, we did not provide a function definition as
       our "Replace" input; Instead, we provided the function name
       (\`docMrkp\`) of a sophisticated parsing function that performs
       multiple search/replace conversions algorithmically.
-    + Notice also that the simple *RegExp* provided for our "Search"
+    + Notice also that the simple *RegExp* provided as our "Search"
       input serves the singular purpose of injecting the entire
       document-as-a-string into our replacement function \`docMrkp\`.
 
@@ -834,13 +834,13 @@ msgClr();
 */
 
 /*
+msgClr();
 window.lineUnwr = str => str.replace(/(\\S ?)\\n(?!>|\\n|$)/g, "$1 "); ""
 window.lineWrap = str => { let cpl = 70, brk = "\\n", cut = 0, rx = ".{1," + cpl + "}(\\\\s|$)" + (cut ? "|.{" + cpl + "}|.+$" : "|\\\\S+?(\\\\s|$)"); return str.match(new RegExp(rx, "g")).join(brk); }; ""
-msgClr();
 */
 
 /*
-    + Now, prepare the "Dune" article to become readable within the
+    + Now, prepare the "Dune" article to be readable within the
       *ENTRY* panel of the JavaScript Calculator app by entering
       \`lineWrap\` into the "Replace" input and tapping "PARSE".
     + *Challenge:* Play with the value of the \`cpl\` variable
