@@ -556,7 +556,7 @@ Art
 
 > Here Phaëthon lies, who drove the Sun-god's car.
 
-    Greatly he failed, but he had greatly dared.
+> Greatly he failed, but he had greatly dared.
 
 In Part Two, Chapter IV, Hamilton tells the story of Phaëthon, the son of the Sun-god by a mortal woman. The doubtful Phaëthon goes to visit the Sun to verify his parentage and ends up joyriding on the Sun's chariot, only to be shot down after losing control of it. Like Icarus, who flies too high on wings of wax only to have them melt, Phaëthon is an archetypal case of overreaching one's place by an act of reckless arrogance. Tragedy inevitably befalls those mortals who confuse their position and worth with those of the gods.
 
