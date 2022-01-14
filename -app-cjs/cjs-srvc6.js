@@ -786,16 +786,16 @@ rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); return !c1 ? \\"\\" : \\
 /*
  7. Use search-and-replace to __apply HTML markup to an article__ --
     such that its structural parts are displayed meaningfully.
-    + The "Dune" book-review document that we are using for demo
+    + The "Dune" book-review article that we are using for demo
       purposes is minimally marked up (with "markdown" syntax);
       Even in its plain-text form, a reader can make distinctions
       between a subtitle, a blockquote, a definition list and an
       ordinary paragraph.
-    + But, in a browser display, the text-document's structural parts
-      would be merged all together and lost, unless they were first
-      marked up with HTML tags.
+    + But, displayed in a browser, the text-document's structural
+      parts would be mushed all together and lost to all recognition,
+      unless the document was first marked up with HTML tags.
     + Un-comment the following block of code, then tap "PARSE" to see
-      the document formatted with HTML markup.
+      the article reformatted with HTML markup tags.
     + Select "Normal render" and tap "PARSE" again to confirm that
       the rendered document's structure is still intact.
 */
@@ -820,17 +820,17 @@ msgClr();
     __report__ to the screen size in which it will be reviewed or edited.
     + In our modern world, much of our communications are textual
       messages displayed on a narrow, handheld screen.
-    + More often than we like, our memos or reports do not display
-      nicely within those dimensional constraints.
-    + As an example, special case, look at the tutorial text in the
-      *ENTRY* field of the JavaScript Calculator app; No matter what
-      size screen we are viewing it on, each line of commentary text
-      would get clipped and become unreadable if it wasn't wrapped
-      around before hitting 70 characters from the left edge
-      (70 cpl, or 70 characters per line).
+    + More often than we like, our memos and reports do not display
+      nicely within these prevailing dimensional constraints.
+    + As an example special case, inspect the tutorial text in the
+      *ENTRY* panel of the JavaScript Calculator app; Even if we
+      viewed it on a wide computer screen, each line of instructional
+      text would get clipped and become unreadable if it wasn't
+      wrapped around before hitting 70 characters from the left edge
+      (i.e., formatted at 70 characters per line -- or, 70 cpl).
     + Un-comment the following block of code to activate a pair of
-      line-wraparound width adjuster tools -- which may be applied
-      using the search-and-replace web app.
+      line-wrap width adjuster tools -- which may be applied using
+      the search-and-replace web app.
 */
 
 /*
@@ -841,11 +841,11 @@ msgClr();
 
 /*
     + Now, prepare the "Dune" article to become readable within the
-      *ENTRY* field of the JavaScript Calculator app by entering
+      *ENTRY* panel of the JavaScript Calculator app by entering
       \`lineWrap\` into the "Replace" input and tapping "PARSE".
     + *Challenge:* Play with the value of the \`cpl\` variable
-      (your desired wraparound limit) in the \`lineWrap\` function
-      to visualize the "Dune" article at different wraparound widths.
+      (your maximum desired width) in the \`lineWrap\` function to
+      visualize the "Dune" article in different line-wrapping states.
     + *Also:* After applying a different wraparound width, try undoing
       it: Clear the "Source" text field, tap "SWAP" to swap the
       "Source" and "Target" content, then use \`lineUnwr\` to restore
