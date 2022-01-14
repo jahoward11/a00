@@ -476,13 +476,13 @@ practical algorithms -- the kind that refine and repackage for human
 consumption the raw data that we often encounter in our modern world.
 Applying __core JavaScript protocols__ only, we will automate some common,
 time-consuming, publishing tasks -- enabling ourselves to do any one
-or another of these kind of tasks in but an instant.
+or another of these kind of tasks within but an instant.
 
  Specifically, we will:
  1) locate a substring of the text of a lengthy document,
- 2) markup an article to display its structural parts
-    meaningfully, and
- 3) format a memo or report to fit any size screen.
+ 2) prepare an article for meaningful display of its structural
+    parts, and
+ 3) format a text memo or report to fit any size screen.
 
 - - - - -
 __*Tutorial Three: Automating custom publishing tasks*__
@@ -677,11 +677,11 @@ srui += "\\n</style>\\n<hr>\\n<h4 class=cfield><span onclick=txtaSel(srctxta)>So
 srui += "\\n<div class=cfield><textarea id=srctxta></textarea></div>";
 srui += "\\n<div class=cfield><label class=ccntr><input type=text id=sepainp> Search</label></div>";
 srui += "\\n<div class=cfield><label class=ccntr><input type=text id=rfncinp> Replace</label></div>";
-srui += "\\n<div class=cfield>\\n<span class=ccntr><select id=rnsel>\\n<option></option>\\n<option>PRE render</option>\\n<option>Normal render</option>\\n</select></span>";
+srui += "\\n<div class=cfield>\\n<span class=ccntr><select id=rndrsel>\\n<option></option>\\n<option>PRE render</option>\\n<option>Normal render</option>\\n</select></span>";
 srui += "<span class=ccntr><input type=button value=\\"&#x2964; PARSE\\" onclick=strPars()></span>";
 srui += "<span class=ccntr><input type=button value=\\"&rlhar; SWAP\\" onclick=txtSwap()></span>\\n</div>";
 srui += "\\n<h4 class=cfield><span onclick=txtaSel(trgtxta)>Target</span></h4>";
-srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=replhelp class=help></div></div>";
+srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=trghelp class=help></div></div>";
 srui += "\\n<div id=trgrndr class=cfield></div>\\n";
 
 // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
@@ -711,12 +711,12 @@ srui += "\\n<div id=trgrndr class=cfield></div>\\n";
       of its field's content.
 */
 
-rx = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:[$\\wÀ-Ͽ]+|\\(.*?\\)) *=>.|^[\\w.]+$/];
-msgClr = () => (trgrndr.innerHTML = replhelp.innerHTML = "") || [trgtxta, replhelp].forEach(e => e.classList.remove("iwarn", "isucc"));
-rsltSh = rslt => { let ri = rnsel.selectedIndex; trgtxta.value = rslt; !ri || (trgrndr.innerHTML = (ri > 1 ? rslt : "\\n<pre>" + rslt + "</pre>\\n")); };
+rxs = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:[$\\wÀ-Ͽ]+|\\(.*?\\)) *=>.|^[\\w.]+$/];
+msgClr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc"));
+rsltSh = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; !ri || (trgrndr.innerHTML = (ri > 1 ? rslt : "\\n<pre>" + rslt + "</pre>\\n")); };
 window.txtaSel = e => _.msgClr() || e.focus() || e.setSelectionRange(0, e.textLength);
 window.txtSwap = () => _.msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
-window.strPars = () => { let lm, sv = sepainp.value, rv = rfncinp.value.trim(); _.msgClr(); if (_.rx[0].test(sv)) { replhelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; [trgtxta, replhelp].forEach(e => e.classList.add(!lm ? "iwarn" : "isucc")); } _.rsltSh( srctxta.value.replace( !_.rx[1].test(sv) ? sv : eval(sv), window[rv] || (!_.rx[2].test(rv) ? rv : window.eval(rv)) )); };
+window.strPars = () => { let lm, sv = sepainp.value, rv = rfncinp.value.trim(); _.msgClr(); if (_.rxs[0].test(sv)) { trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; [trgtxta, trghelp].forEach(e => e.classList.add(!lm ? "iwarn" : "isucc")); } _.rsltSh( srctxta.value.replace( !_.rxs[1].test(sv) ? sv : eval(sv), window[rv] || (!_.rxs[2].test(rv) ? rv : window.eval(rv)) )); };
 
 /*
    + *Optional:* Un-comment the following block of code to generate the
@@ -724,7 +724,7 @@ window.strPars = () => { let lm, sv = sepainp.value, rv = rfncinp.value.trim(); 
 */
 
 /*
-scrGen = src => "let " + src.match(/^rx = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,"); //
+scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,"); //
 dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
 respShow((dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(xstor["JScode"]["tutorial3"]) + dwrap[2]).replace(/\\n<hr>/, "").replace(/<(?=[!/?a-z])/gi, "&lt;"))
 */
@@ -788,20 +788,21 @@ rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); return !c1 ? \\"\\" : \\
     such that its structural parts are displayed meaningfully.
     + The "Dune" book-review article that we are using for demo
       purposes is minimally marked up (with "markdown" syntax);
-      Even in its plain-text form, a reader can make distinctions
-      between a subtitle, a blockquote, a definition list and an
-      ordinary paragraph.
+      So, even when viewing its plain-text form, a reader can make
+      distinctions between a subtitle, a blockquote, a definition
+      list and an ordinary paragraph.
     + But, displayed in a browser, the text-document's structural
-      parts would be mushed together and lost to all recognition,
+      parts would be mushed together and lost to all recognition --
       unless the document was first marked up with HTML tags.
     + Un-comment the following block of code, then tap "PARSE" to see
-      the same article now entwined with HTML markup tags.
+      the same article now intertwined with HTML markup tags.
     + Select "Normal render" and tap "PARSE" again to confirm that
       the rendered document's structure is appropriately kept intact.
 */
 
 /*
 try { docMrkp } catch { markdownit && (window.docMrkp = md => markdownit({ html: 1, typographer: 1 }).use(markdownitDeflist).render(md)); };
+rndrsel.selectedIndex = 0;
 sepainp.value = "/[^]+/";
 rfncinp.value = "docMrkp";
 msgClr()
@@ -812,20 +813,20 @@ msgClr()
       our "Replace" input; Instead, we provided the function name
       (\`docMrkp\`) of a sophisticated parsing function that performs
       multiple search/replace conversions algorithmically.
-    + Notice also that the simple *RegExp* provided as our "Search"
+    + Notice also that the short *RegExp* provided as our "Search"
       input serves the singular purpose of injecting the entire
       document-as-a-string into our replacement function \`docMrkp\`.
 
- 8. Use search-and-replace to __adjust the width of a quick memo or__
+ 8. Use search-and-replace to __readjust the width of a quick memo or__
     __report__ to the screen size in which it will be reviewed or edited.
     + In our modern world, much of our communications are textual
       messages displayed on a narrow, handheld screen.
-    + More often than we like, our memos and reports do not display
-      nicely within these prevailing dimensional constraints.
+    + Within these prevailing dimensional constraints, more often
+      than we like our memos and reports do not display nicely.
     + As an example special case, inspect the tutorial text in the
       *ENTRY* pane of the JavaScript Calculator app; Even if we viewed
-      it on a wide computer screen, each line of instructional text
-      would get clipped and become unreadable if it didn't wrap
+      it on a wide computer screen, each line of the instructional
+      text would get clipped and become unreadable if it didn't wrap
       around before hitting the 71^st^ position from the left edge
       (i.e., formatted at 70 characters per line -- or, 70 cpl).
     + Un-comment the following block of code to activate a pair of
@@ -834,17 +835,17 @@ msgClr()
 */
 
 /*
-msgClr()
-window.lineUnwr = str => str.replace(/(\\S ?)\\n(?!>|\\n|$)/g, "$1 ");
-window.lineWrap = str => { let cpl = 70, brk = "\\n", cut = 0, rx = ".{1," + cpl + "}(\\\\s|$)" + (cut ? "|.{" + cpl + "}|.+$" : "|\\\\S+?(\\\\s|$)"); return str.match(new RegExp(rx, "g")).join(brk); };
+rndrsel.selectedIndex = 1; rfncinp.value = trgtxta.value = ""; msgClr()
+window.lineUnwr = str => str.replace(/(\\S) *\\n(?!\\n|#|>|[:*+~-]? |\\d+\\.\\s|$)/g, "$1 "); //
+window.lineWrap = str => { let cpl = 70, cut = 0, brk = "\\n", rex = ".{1," + cpl + "}(\\\\s|$)" + (cut ? "|.{" + cpl + "}|.+$" : "|\\\\S+?(\\\\s|$)"); return str.match(new RegExp(rex, "g")).join(brk); };
 */
 
 /*
-    + Now, prepare the "Dune" article to be readable within the
-      *ENTRY* pane of the JavaScript Calculator app by entering
+    + Now, prepare the text of the "Dune" article to be readable in
+      the *ENTRY* pane of the JavaScript Calculator app by typing
       \`lineWrap\` into the "Replace" input and tapping "PARSE".
     + *Challenge:* Play with the value of the \`cpl\` variable
-      (your maximum desired width) in the \`lineWrap\` function to
+      (your desired maximum width) in the \`lineWrap\` function to
       visualize the "Dune" article in different line-wrapping states.
     + *Also:* After applying a different wraparound width, try undoing
       it: Clear the "Source" text field, tap "SWAP" to swap the
