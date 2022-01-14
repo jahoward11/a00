@@ -797,7 +797,7 @@ rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); return !c1 ? \\"\\" : \\
     + Un-comment the following block of code, then tap "PARSE" to see
       the same article now entwined with HTML markup tags.
     + Select "Normal render" and tap "PARSE" again to confirm that
-      the rendered document's structure is left intact.
+      the rendered document's structure is appropriately kept intact.
 */
 
 /*
