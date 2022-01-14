@@ -104,7 +104,7 @@ ucLen(3, "ft")   // calls function &amp; returns result of 3 * 12
       correct calculation formula.
 */
 
-ucLen = (n, u0, u1) => /^in/i.test(u0) && /^ft/i.test(u1) ? n / 12 : /^in/i.test(u0) && /^yd/i.test(u1) ? n / 36 : /^ft/i.test(u0) && /^in/i.test(u1) ? n * 12 : /^ft/i.test(u0) && /^yd/i.test(u1) ? n / 3 : /^yd/i.test(u0) && /^in/i.test(u1) ? n * 36 : /^yd/i.test(u0) && /^ft/i.test(u1) ? n * 3 : u0 === u1 ? n : "error"; ""
+ucLen = (n, u0, u1) => /^in/i.test(u0) && /^ft/i.test(u1) ? n / 12 : /^in/i.test(u0) && /^yd/i.test(u1) ? n / 36 : /^ft/i.test(u0) && /^in/i.test(u1) ? n * 12 : /^ft/i.test(u0) && /^yd/i.test(u1) ? n / 3 : /^yd/i.test(u0) && /^in/i.test(u1) ? n * 36 : /^yd/i.test(u0) && /^ft/i.test(u1) ? n * 3 : u0 === u1 ? n : "error";
  // makes conversion between any lengths in
  // inches (in), feet (ft) or yards (yd)
 ucLen(72, "in", "yd")   // converts 72 inches to yards
@@ -124,24 +124,24 @@ ucLen(1.5, "yd", "ft")  // converts 1.5 yards to feet
       loop statements (\`.forEach( … )\`, \`while ( … ) { … }\`).
 */
 
-ucSpd = (n, u0, u1) => /^mi?[/p]h/i.test(u0) && /^km?[/p]h/i.test(u1) ? n * 5280 * 12 * 0.0000254 : /^km?[/p]h/i.test(u0) && /^mi?[/p]h/i.test(u1) ? n / 0.0000254 / 12 / 5280 : u0 === u1 ? n : "error"; ""
+ucSpd = (n, u0, u1) => /^mi?[/p]h/i.test(u0) && /^km?[/p]h/i.test(u1) ? n * 5280 * 12 * 0.0000254 : /^km?[/p]h/i.test(u0) && /^mi?[/p]h/i.test(u1) ? n / 0.0000254 / 12 / 5280 : u0 === u1 ? n : "error";
  // makes conversion of speeds in either
  // miles-per-hour (mph) or kilometers-per-hour (km/h)
 ucSpd(101, "mph", "km/h")
 
-ucTmp = (n, u0, u1) => /^F/i.test(u0) && /^C/i.test(u1) ? (n - 32) * 5 / 9 : /^F/i.test(u0) && /^K/i.test(u1) ? (n - 32) * 5 / 9 + 273.15 : /^C/i.test(u0) && /^F/i.test(u1) ? n * 9 / 5 + 32 : /^C/i.test(u0) && /^K/i.test(u1) ? n + 273.15 : /^K/i.test(u0) && /^F/i.test(u1) ? (n - 273.15) * 9 / 5 + 32 : /^K/i.test(u0) && /^C/i.test(u1) ? n - 273.15 : u0 === u1 ? n : "error"; ""
+ucTmp = (n, u0, u1) => /^F/i.test(u0) && /^C/i.test(u1) ? (n - 32) * 5 / 9 : /^F/i.test(u0) && /^K/i.test(u1) ? (n - 32) * 5 / 9 + 273.15 : /^C/i.test(u0) && /^F/i.test(u1) ? n * 9 / 5 + 32 : /^C/i.test(u0) && /^K/i.test(u1) ? n + 273.15 : /^K/i.test(u0) && /^F/i.test(u1) ? (n - 273.15) * 9 / 5 + 32 : /^K/i.test(u0) && /^C/i.test(u1) ? n - 273.15 : u0 === u1 ? n : "error";
  // makes conversion between any temperatures in
  // Fahrenheit (F), Celsius (C) or Kelvin (K)
 ucTmp(110, "Fahrenheit", "Celsius")
 
-uara = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]; ""
-urom = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]; ""
+uara = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
+urom = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"];
 
-utoRom = val => { let str = ""; _.uara.forEach((ai, i) => { while (val % ai < val) { str += _.urom[i]; val -= ai; } }); return str; }; ""
+utoRom = val => { let str = ""; _.uara.forEach((ai, i) => { while (val % ai < val) { str += _.urom[i]; val -= ai; } }); return str; };
  // converts Arabic integer into Roman numeral
 utoRom(1111, "Arabic", "Roman")
 
-ufrRom = str => { let val = 0; str = str.toUpperCase(); _.uara.forEach((ai, i) => { while (!str.indexOf(_.urom[i])) { val += ai; str = str.replace(_.urom[i], ""); } }); return val; }; ""
+ufrRom = str => { let val = 0; str = str.toUpperCase(); _.uara.forEach((ai, i) => { while (!str.indexOf(_.urom[i])) { val += ai; str = str.replace(_.urom[i], ""); } }); return val; };
  // converts Roman numeral into Arabic integer
 ufrRom("MCXI", "Roman", "Arabic")
 
@@ -156,7 +156,7 @@ ufrRom("MCXI", "Roman", "Arabic")
       or of volume ... or ... ?
 */
 
-uxs = [/^$/, /^in(?:che?s?|)$/i, /^f(?:oo|ee|)t$/i, /^y(?:a?r?ds?|)$/i, /^mi(?:les?|)$/i, /^m(?:eters?|)$/i]; ""
+uxs = [/^$/, /^in(?:che?s?|)$/i, /^f(?:oo|ee|)t$/i, /^y(?:a?r?ds?|)$/i, /^mi(?:les?|)$/i, /^m(?:eters?|)$/i];
 uxs.push(/^ft?[/p]s$/i, /^mi?[/p]h$/i, /^m[/p]s$/i, /^km?[/p]h$/i)
 uxs.push(/^F(?:ahrenheit|)$/i, /^C(?:elsius|)$/i, /^K(?:elvin|)$/i)
 
@@ -164,7 +164,7 @@ ucs = { f12: n => n / 12, f13: n => n / 36, f14: n => n / 12 / 5280, f15: n => n
 Object.assign(ucs, { f67: n => n * 3600 / 5280, f68: n => n * 12 * 0.0254, f69: n => n * 3600 * 12 * 0.0000254, f76: n => n * 5280 / 3600, f78: n => n * 5280 * 12 * 0.0254 / 3600, f79: n => n * 5280 * 12 * 0.0000254, f86: n => n / 0.0254 / 12, f87: n => n * 3600 / 0.0254 / 12 / 5280, f89: n => n * 3600 / 1000, f96: n => n / 0.0000254 / 12 / 3600, f97: n => n / 0.0000254 / 12 / 5280, f98: n => n * 1000 / 3600 })
 Object.assign(ucs, { f1011: n => (n - 32) * 5 / 9, f1012: n => (n - 32) * 5 / 9 + 273.15, f1110: n => n * 9 / 5 + 32, f1112: n => +n + 273.15, f1210: n => (n - 273.15) * 9 / 5 + 32, f1211: n => n - 273.15 })
 
-uConv = (n, u0, u1) => { let [x0, x1] = [_.uxs.findIndex(r => r.test(u0)), _.uxs.findIndex(r => r.test(u1))]; return typeof n !== 'number' ? (!/^[cdilmvx]+$/i.test(n || "") || x0 > 0 ? "error" : _.ufrRom(n)) : x0 < 1 ? _.utoRom(n) : x1 < 1 ? "error" : x0 === x1 ? n : (_.ucs["f" + x0 + x1] || (() => "error"))(n); }; ""
+uConv = (n, u0, u1) => { let [x0, x1] = [_.uxs.findIndex(r => r.test(u0)), _.uxs.findIndex(r => r.test(u1))]; return typeof n !== 'number' ? (!/^[cdilmvx]+$/i.test(n || "") || x0 > 0 ? "error" : _.ufrRom(n)) : x0 < 1 ? _.utoRom(n) : x1 < 1 ? "error" : x0 === x1 ? n : (_.ucs["f" + x0 + x1] || (() => "error"))(n); };
 
 uConv(100, "yd", "m")
 uConv(101, "mph", "km/h")
@@ -179,12 +179,12 @@ uConv("MCXI")
     last two lines of the following block of code.
 */
 
-ucShow = () => ucout.value = _.uConv(!/^[+-]?(?:\\d+\\.?|\\d*\\.\\d+)(?:e[+-]?\\d+|)|^0x[\\da-f]+$/i.test(ucinp.value) ? ucinp.value : +ucinp.value, ulist0.value, ulist1.value); ""
-opts = ["", "inches", "feet", "yards", "miles", "meters", "ft/s", "mph", "m/s", "km/h", "Fahrenheit", "Celsius", "Kelvin"].map(e => "<option>" + e + "</option>").join("\\n"); ""
-ucui = "\\n<hr style=\\"margin: 1.5rem 0;\\">\\n<h4 class=cfield>Unit Converter</h4>"; ""
-ucui += "\\n<div class=cfield><span class=ccntr><input type=text id=ucinp placeholder=\\"Enter measurement…\\"></span><span class=ccntr><select id=ulist0>\\n"; ""
-ucui += opts + "\\n</select></span></div>\\n<div class=cfield><span class=ccntr><input type=text id=ucout readonly></span><span class=ccntr><select id=ulist1>\\n"; ""
-ucui += opts + "\\n</select></span></div>\\n"; ""
+ucShow = () => ucout.value = _.uConv(!/^[+-]?(?:\\d+\\.?|\\d*\\.\\d+)(?:e[+-]?\\d+|)|^0x[\\da-f]+$/i.test(ucinp.value) ? ucinp.value : +ucinp.value, ulist0.value, ulist1.value);
+opts = ["", "inches", "feet", "yards", "miles", "meters", "ft/s", "mph", "m/s", "km/h", "Fahrenheit", "Celsius", "Kelvin"].map(e => "<option>" + e + "</option>").join("\\n");
+ucui = "\\n<hr style=\\"margin: 1.5rem 0;\\">\\n<h4 class=cfield>Unit Converter</h4>";
+ucui += "\\n<div class=cfield><span class=ccntr><input type=text id=ucinp placeholder=\\"Enter measurement…\\"></span><span class=ccntr><select id=ulist0>\\n";
+ucui += opts + "\\n</select></span></div>\\n<div class=cfield><span class=ccntr><input type=text id=ucout readonly></span><span class=ccntr><select id=ulist1>\\n";
+ucui += opts + "\\n</select></span></div>\\n";
 // try { ucwrap } catch { ndiv = document.createElement('div'); ndiv.id = "ucwrap"; ndiv.innerHTML = ucui; cmain.appendChild(ndiv); }
 // [ucinp, ulist0, ulist1].forEach((e, i) => e[!i ? 'onblur' : 'onchange'] = _.ucShow)
 //`;
@@ -213,32 +213,32 @@ __*Tutorial Two: Building a sliding-tiles puzzle (and other games)*__
 */
 
 // __* * * SLIDING TILES * * *__
-g1ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
-g1ui += "\\nhtml { box-sizing: border-box; }"; ""
-g1ui += "\\nhr { margin: 1.5rem 0; }"; ""
-g1ui += "\\n#g1wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 16px 0; }"; ""
-g1ui += "\\n#g1wrap .cfield { max-width: 359px; }"; ""
-g1ui += "\\n#g1wrap .cfield:not(:last-child) { margin-bottom: 8px; }"; ""
-g1ui += "\\n#g1wrap .ccntr:not(:last-child) { margin-right: 8px; }"; ""
-g1ui += "\\n#g1wrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }"; ""
-g1ui += "\\n#g1wrap .blank, #g1wrap .gtile { width: 61px; height: 61px; border: 4px solid White; }"; ""
-g1ui += "\\n#g1wrap .gtile { background: LightSteelBlue; color: White; font-size: large; font-weight: bold; cursor: pointer; text-align: center; }"; ""
-g1ui += "\\n#trows, #tcols { max-width: 36px; }"; ""
-g1ui += "\\n#g1board { margin: 12px; border-collapse: collapse; }"; ""
-g1ui += "\\n#g1scor { position: relative; top: -8px; font-size: small; margin-left: 16px; }"; ""
-g1ui += "\\n#g1movs { font-weight: bold; }"; ""
-g1ui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Sliding Tiles</h4>"; ""
-g1ui += "\\n<div class=cfield><em>Objective:</em> Order the characters from least to greatest&mdash;starting at the top left&nbsp;corner.</div>"; ""
-g1ui += "\\n<div>\\n<span class=ccntr><select id=tnmrl>\\n<option disabled>Characters</option>\\n"; ""
-g1ui += ["1 2 3 4 …", "I II III IV …", "A B C D …", "Α Β Γ Δ …"].map(e => "<option>" + e + "</option>").join("\\n"); ""
-g1ui += "\\n</select></span><span class=ccntr><select id=tclrs>\\n<option disabled>Color Cascades</option>\\n"; ""
-g1ui += ["No gradient", "Red gradient", "Gold gradient", "Blue gradient", "Rainbow pattern"].map(e => "<option>" + e + "</option>").join("\\n"); ""
-g1ui += "\\n</select></span>\\n<label class=ccntr>Auto-shuffle <input type=checkbox id=pshuf checked></label>\\n</div>\\n<div>"; ""
-g1ui += "\\n<label class=ccntr>Rows <input type=text id=trows value=4 size=2></label>"; ""
-g1ui += "\\n<label class=ccntr>Columns <input type=text id=tcols value=4 size=2></label>"; ""
-g1ui += "\\n<span class=ccntr><input type=button value=\\"&#x21bb; NEW GAME\\" onclick=g1Reset()></span>\\n</div>"; ""
-g1ui += "\\n<table id=g1board></table>\\n<div id=g1scor class=cfield>Count: <span id=g1movs>0</span></div>"; ""
-g1ui += "\\n<div><span class=ccntr><input type=button value=\\"RETRACT MOVE\\" onclick=m1Rvrs()></span><span class=ccntr><input type=button value=\\"RESET COUNTER\\" onclick=c1Zero()></span></div>\\n"; ""
+g1ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
+g1ui += "\\nhtml { box-sizing: border-box; }";
+g1ui += "\\nhr { margin: 1.5rem 0; }";
+g1ui += "\\n#g1wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 16px 0; }";
+g1ui += "\\n#g1wrap .cfield { max-width: 359px; }";
+g1ui += "\\n#g1wrap .cfield:not(:last-child) { margin-bottom: 8px; }";
+g1ui += "\\n#g1wrap .ccntr:not(:last-child) { margin-right: 8px; }";
+g1ui += "\\n#g1wrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
+g1ui += "\\n#g1wrap .blank, #g1wrap .gtile { width: 61px; height: 61px; border: 4px solid White; }";
+g1ui += "\\n#g1wrap .gtile { background: LightSteelBlue; color: White; font-size: large; font-weight: bold; cursor: pointer; text-align: center; }";
+g1ui += "\\n#trows, #tcols { max-width: 36px; }";
+g1ui += "\\n#g1board { margin: 12px; border-collapse: collapse; }";
+g1ui += "\\n#g1scor { position: relative; top: -8px; font-size: small; margin-left: 16px; }";
+g1ui += "\\n#g1movs { font-weight: bold; }";
+g1ui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Sliding Tiles</h4>";
+g1ui += "\\n<div class=cfield><em>Objective:</em> Order the characters from least to greatest&mdash;starting at the top left&nbsp;corner.</div>";
+g1ui += "\\n<div>\\n<span class=ccntr><select id=tnmrl>\\n<option disabled>Characters</option>\\n";
+g1ui += ["1 2 3 4 …", "I II III IV …", "A B C D …", "Α Β Γ Δ …"].map(e => "<option>" + e + "</option>").join("\\n");
+g1ui += "\\n</select></span><span class=ccntr><select id=tclrs>\\n<option disabled>Color Cascades</option>\\n";
+g1ui += ["No gradient", "Red gradient", "Gold gradient", "Blue gradient", "Rainbow pattern"].map(e => "<option>" + e + "</option>").join("\\n");
+g1ui += "\\n</select></span>\\n<label class=ccntr>Auto-shuffle <input type=checkbox id=pshuf checked></label>\\n</div>\\n<div>";
+g1ui += "\\n<label class=ccntr>Rows <input type=text id=trows value=4 size=2></label>";
+g1ui += "\\n<label class=ccntr>Columns <input type=text id=tcols value=4 size=2></label>";
+g1ui += "\\n<span class=ccntr><input type=button value=\\"&#x21bb; NEW GAME\\" onclick=g1Reset()></span>\\n</div>";
+g1ui += "\\n<table id=g1board></table>\\n<div id=g1scor class=cfield>Count: <span id=g1movs>0</span></div>";
+g1ui += "\\n<div><span class=ccntr><input type=button value=\\"RETRACT MOVE\\" onclick=m1Rvrs()></span><span class=ccntr><input type=button value=\\"RESET COUNTER\\" onclick=c1Zero()></span></div>\\n";
 
 // g1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap"; ndiv.innerHTML = g1ui; cmain.appendChild(ndiv); }
@@ -267,7 +267,7 @@ try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap";
       web-doc text that will be the app framework.
 */
 
-// dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"]; ""
+// dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
 // respShow((dwrap[0] + g1wrap.outerHTML + dwrap[1] + dwrap[2]).replace(/\\n<hr>/, "").replace(/<(?=[!/?a-z])/gi, "&lt;"))
 
 /*
@@ -287,23 +287,23 @@ try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap";
 */
 
 tnx = tcx = psh = rval = cval = tmax = tovr = m1trk = unsh = cxs = shxs = shuf = tarr = cr1s = cr2s = ""
-clrefs = [ "", "", ["#752424", "#9c3030", "#c33c3c", "#cf6363", "#db8a8a", "#e7b1b1", "#f3d8d8"], ["#856514", "#b1871b", "#dea821", "#e4ba4e", "#ebcb7a", "#f2dca6", "#f8eed3"], ["#2b506e", "#396a93", "#4785b8", "#6c9dc6", "#91b6d4", "#b6cee2", "#dae7f1"], ["#ff9999", "#ffcc99", "#fff099", "#99cc99", "#9999ff", "#cc99cc", "#d8bfd8"] ]; ""
-uara = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]; ""
-urom = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]; ""
-utoRom = v => { let s = ""; _.uara.forEach((ai, i) => { while (v % ai < v) { s += _.urom[i]; v -= ai; } }); return s; }; ""
-utoEng = v => { let i, codpts = []; while (v) { i = 0; while ((v - ++i) % 26); codpts.unshift(i + 64); v = (v - i) / 26; } return String.fromCodePoint(...codpts || 65); }; ""
-utoGre = v => { let i, codpts = []; while (v) { i = 0; while ((v - ++i) % 24); codpts.unshift((i < 18 ? i : 1 + i) + 912); v = (v - i) / 24; } return String.fromCodePoint(...codpts || 913); }; ""
-clRnk1s = () => _.unsh.map( v => _.clrefs[_.tcx][ _.cxs.find( x => _.tovr < 0 ? x === 6 || v <= _.cval || (v % _.cval > 0 && v % _.cval <= _.cval - _.rval + 1) || (v > _.cval * (1 + x) - _.rval + (1 + x) && v <= _.cval * (1 + x)) || (v - (1 + x) - (_.cval - _.rval)) % _.cval === 0 : x === 6 || v - _.tovr <= _.tmax * (1 + x) || (v - (1 + x)) % _.tmax === 0 )]); ""
-clRnk2s = () => _.unsh.map( v => ( _.tovr < 0 ? v <= _.cval - _.rval || (v - 1 - (_.cval - _.rval)) % (1 + _.cval) !== 0 || v > 7 * _.cval : v - 1 < _.tovr || (v - 1 - _.tovr) % (1 + _.tmax) !== 0 || v - 1 - _.tovr > 7 * _.tmax ) ? 'White' : _.tcx < 5 ? 'Gold' : 'LimeGreen' ); ""
-nAlt = v => _.tnx == 2 ? _.utoRom(v) : _.tnx == 3 ? _.utoEng(v) : _.tnx == 4 ? _.utoGre(v) : v; ""
-isSolva = () => { let ctinvs = _.shxs.filter(e => e.v).map(e => e.i + 1).reduce((a, b, i, f) => a + f.slice(i + 1).reduce((c, d) => c + (d > b ? 0 : 1), 0), 0); return (ctinvs + (_.cval % 2 === 1 ? 0 : _.rval - Math.ceil((_.shuf.indexOf(0) + 1) / _.cval))) % 2 === 0; }; ""
-posSwap = (p0, p1) => [_.tarr[p0][p1], _.tarr[p0][p1 + 1]] = [_.tarr[p0][p1 + 1], _.tarr[p0][p1]]; ""
-gbdGen = () => g1board.innerHTML = _.tarr.map( (e, i) => "\\n<tr>" + e.map( (f, j) => f === 0 ? "<td class=blank> </td>" : \`<td class=gtile \${!_.cr1s ? "" : \`style="background:\${_.cr1s[f]};color:\${_.cr2s[f]};" \`}onclick=tileSli(\${i},\${j})>\${f}</td>\` ).join("") + "</tr>" ).join("") + "\\n"; ""
+clrefs = [ "", "", ["#752424", "#9c3030", "#c33c3c", "#cf6363", "#db8a8a", "#e7b1b1", "#f3d8d8"], ["#856514", "#b1871b", "#dea821", "#e4ba4e", "#ebcb7a", "#f2dca6", "#f8eed3"], ["#2b506e", "#396a93", "#4785b8", "#6c9dc6", "#91b6d4", "#b6cee2", "#dae7f1"], ["#ff9999", "#ffcc99", "#fff099", "#99cc99", "#9999ff", "#cc99cc", "#d8bfd8"] ];
+uara = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
+urom = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"];
+utoRom = v => { let s = ""; _.uara.forEach((ai, i) => { while (v % ai < v) { s += _.urom[i]; v -= ai; } }); return s; };
+utoEng = v => { let i, codpts = []; while (v) { i = 0; while ((v - ++i) % 26); codpts.unshift(i + 64); v = (v - i) / 26; } return String.fromCodePoint(...codpts || 65); };
+utoGre = v => { let i, codpts = []; while (v) { i = 0; while ((v - ++i) % 24); codpts.unshift((i < 18 ? i : 1 + i) + 912); v = (v - i) / 24; } return String.fromCodePoint(...codpts || 913); };
+clRnk1s = () => _.unsh.map( v => _.clrefs[_.tcx][ _.cxs.find( x => _.tovr < 0 ? x === 6 || v <= _.cval || (v % _.cval > 0 && v % _.cval <= _.cval - _.rval + 1) || (v > _.cval * (1 + x) - _.rval + (1 + x) && v <= _.cval * (1 + x)) || (v - (1 + x) - (_.cval - _.rval)) % _.cval === 0 : x === 6 || v - _.tovr <= _.tmax * (1 + x) || (v - (1 + x)) % _.tmax === 0 )]);
+clRnk2s = () => _.unsh.map( v => ( _.tovr < 0 ? v <= _.cval - _.rval || (v - 1 - (_.cval - _.rval)) % (1 + _.cval) !== 0 || v > 7 * _.cval : v - 1 < _.tovr || (v - 1 - _.tovr) % (1 + _.tmax) !== 0 || v - 1 - _.tovr > 7 * _.tmax ) ? 'White' : _.tcx < 5 ? 'Gold' : 'LimeGreen' );
+nAlt = v => _.tnx == 2 ? _.utoRom(v) : _.tnx == 3 ? _.utoEng(v) : _.tnx == 4 ? _.utoGre(v) : v;
+isSolva = () => { let ctinvs = _.shxs.filter(e => e.v).map(e => e.i + 1).reduce((a, b, i, f) => a + f.slice(i + 1).reduce((c, d) => c + (d > b ? 0 : 1), 0), 0); return (ctinvs + (_.cval % 2 === 1 ? 0 : _.rval - Math.ceil((_.shuf.indexOf(0) + 1) / _.cval))) % 2 === 0; };
+posSwap = (p0, p1) => [_.tarr[p0][p1], _.tarr[p0][p1 + 1]] = [_.tarr[p0][p1 + 1], _.tarr[p0][p1]];
+gbdGen = () => g1board.innerHTML = _.tarr.map( (e, i) => "\\n<tr>" + e.map( (f, j) => f === 0 ? "<td class=blank> </td>" : \`<td class=gtile \${!_.cr1s ? "" : \`style="background:\${_.cr1s[f]};color:\${_.cr2s[f]};" \`}onclick=tileSli(\${i},\${j})>\${f}</td>\` ).join("") + "</tr>" ).join("") + "\\n";
 
-window.c1Zero = () => (_.m1trk = []) && (g1movs.innerHTML = 0); ""
-window.g1Reset = () => { _.tnx = tnmrl.selectedIndex; _.tcx = tclrs.selectedIndex; _.psh = pshuf.checked; _.rval = +trows.value; _.cval = +tcols.value; _.tmax = _.rval <= _.cval ? _.rval : _.cval; _.tovr = (_.rval - _.cval) * _.tmax; c1Zero(); _.unsh = Array.from(Array(_.rval * _.cval).keys()); _.cxs = Array.from(Array(_.tmax > 7 ? 7 : _.tmax).keys()); [_.cr1s, _.cr2s] = _.tcx < 2 ? [0, 0] : [_.clRnk1s(), _.clRnk2s()]; _.unsh = _.unsh.slice(1).map(_.nAlt).concat(0); _.tcx < 2 || ([_.cr1s, _.cr2s] = [_.cr1s, _.cr2s].map(e => Object.fromEntries(_.unsh.map((v, i) => [v, e[i + 1]])))); _.shxs = _.unsh.map((v, i) => ({ i, v, o: Math.random() })).sort((a, b) => !_.psh || a.o - b.o); _.shuf = _.shxs.map(e => e.v); _.tarr = Array.from(Array(_.rval)).map(() => _.shuf.splice(0, _.cval)); _.shuf = _.tarr.flat(); _.isSolva() || (_.shuf[0] && _.shuf[1] ? _.posSwap(0, 0) : _.posSwap(_.rval - 1, _.cval - 2)); _.gbdGen(); }; ""
-window.tileSli = (rx, cx, bkup) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (_.tarr[p0] || "")[p1] === 0); !bl || (bkup || _.m1trk.push([bl[0], bl[1]])) && ([_.tarr[bl[0]][bl[1]], _.tarr[rx][cx]] = [_.tarr[rx][cx], 0]) && ( g1movs.innerHTML = "" + _.tarr !== "" + _.unsh ? _.m1trk.length + " moves" : "<em>Puzzle solved in " + _.m1trk.length + " moves!</em>" ) && _.gbdGen(); }; ""
-window.m1Rvrs = () => !(_.m1trk || "").length || tileSli(... _.m1trk.pop(), 1); ""
+window.c1Zero = () => (_.m1trk = []) && (g1movs.innerHTML = 0);
+window.g1Reset = () => { _.tnx = tnmrl.selectedIndex; _.tcx = tclrs.selectedIndex; _.psh = pshuf.checked; _.rval = +trows.value; _.cval = +tcols.value; _.tmax = _.rval <= _.cval ? _.rval : _.cval; _.tovr = (_.rval - _.cval) * _.tmax; c1Zero(); _.unsh = Array.from(Array(_.rval * _.cval).keys()); _.cxs = Array.from(Array(_.tmax > 7 ? 7 : _.tmax).keys()); [_.cr1s, _.cr2s] = _.tcx < 2 ? [0, 0] : [_.clRnk1s(), _.clRnk2s()]; _.unsh = _.unsh.slice(1).map(_.nAlt).concat(0); _.tcx < 2 || ([_.cr1s, _.cr2s] = [_.cr1s, _.cr2s].map(e => Object.fromEntries(_.unsh.map((v, i) => [v, e[i + 1]])))); _.shxs = _.unsh.map((v, i) => ({ i, v, o: Math.random() })).sort((a, b) => !_.psh || a.o - b.o); _.shuf = _.shxs.map(e => e.v); _.tarr = Array.from(Array(_.rval)).map(() => _.shuf.splice(0, _.cval)); _.shuf = _.tarr.flat(); _.isSolva() || (_.shuf[0] && _.shuf[1] ? _.posSwap(0, 0) : _.posSwap(_.rval - 1, _.cval - 2)); _.gbdGen(); };
+window.tileSli = (rx, cx, bkup) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (_.tarr[p0] || "")[p1] === 0); !bl || (bkup || _.m1trk.push([bl[0], bl[1]])) && ([_.tarr[bl[0]][bl[1]], _.tarr[rx][cx]] = [_.tarr[rx][cx], 0]) && ( g1movs.innerHTML = "" + _.tarr !== "" + _.unsh ? _.m1trk.length + " moves" : "<em>Puzzle solved in " + _.m1trk.length + " moves!</em>" ) && _.gbdGen(); };
+window.m1Rvrs = () => !(_.m1trk || "").length || tileSli(... _.m1trk.pop(), 1);
 g1Reset();
 
 /*
@@ -320,7 +320,7 @@ g1Reset();
 */
 
 // preresp.innerHTML = "" // clears any orange text (in case GUI text is still visible)
-// scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,")).join("\\n\\n"); "" //
+// scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,")).join("\\n\\n"); //
 // localforage.getItem("tutor2js").then( rslt => respShow( _.scrGen(rslt).replace(/<(?=[!/?a-z])/gi, "&lt;") )).catch(respShow)
 
 /*
@@ -364,102 +364,102 @@ g1Reset();
 */
 
 // __* * * LIGHTS OUT * * *__
-g2ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
-g2ui += "\\nhtml { box-sizing: border-box; }"; ""
-g2ui += "\\nhr { margin: 1.5rem 0; }"; ""
-g2ui += "\\n#g2wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 16px 0; }"; ""
-g2ui += "\\n#g2wrap .cfield { max-width: 359px; }"; ""
-g2ui += "\\n#g2wrap .cfield:not(:last-child) { margin-bottom: 8px; }"; ""
-g2ui += "\\n#g2wrap .ccntr:not(:last-child) { margin-right: 8px; }"; ""
-g2ui += "\\n#g2wrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }"; ""
-g2ui += "\\n#g2bcntr { position: relative; padding-top: 1px; }"; ""
-g2ui += "\\n#g2circt { margin: 48px; border-collapse: collapse; }"; ""
-g2ui += "\\n#g2circt td { width: 59px; height: 59px; border: 4px solid black; }"; ""
-g2ui += "\\n#g2board { position: absolute; top: 0; margin: 16px; border-spacing: 8px; }"; ""
-g2ui += "\\n#g2board td { background: MediumOrchid; width: 51px; height: 51px; border-radius: 26px; box-shadow: 0 0 16px 4px Orchid; cursor: pointer; }"; ""
-g2ui += "\\n#g2board td.ldark { background: Indigo; box-shadow: 0 0 16px 4px Grey; }"; ""
-g2ui += "\\n#g2scor { position: relative; top: -12px; font-size: small; margin-left: 16px; }"; ""
-g2ui += "\\n#g2movs { font-weight: bold; }"; ""
-g2ui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Lights Out</h4>"; ""
-g2ui += "\\n<div class=cfield><em>Objective:</em> Switch all matrix lights off.</div>"; ""
-g2ui += "\\n<div class=cfield><em>Game Action:</em> Switching a diode in this lighting matrix also switches any directly connected up-, down-, left- or right- diodes.</div>"; ""
-g2ui += "\\n<div>\\n<span class=ccntr><select id=lpatt>"; ""
-g2ui += ["&mdash;Startup Pattern&mdash;", "Treasure marker (in 4)", "Lucy's diamond (in 5)", "Eight-pocket table (in 5)", "Picasso emoji (in 5)", "Peep holes (in 6)", "Split screen (in 6)", "Square target (in 9)", "Bi-polar opposites (in 11)", "Central light out (in 12)", "Road caution marks (in 15)"].map(e => \`\\n<option>\${e}</option>\`).join(""); ""
-g2ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x21bb; RESTART\\" onclick=g2Reset()></span>\\n</div>"; ""
-g2ui += "\\n<div id=g2bcntr>\\n<table id=g2circt><tbody>"; ""
-g2ui += [0, 1, 2, 3].map(r => "\\n<tr>" + [0, 1, 2, 3].map(c => "<td></td>").join("") + "</tr>").join(""); ""
-g2ui += "\\n</tbody></table>\\n<table id=g2board><tbody>"; ""
-g2ui += [0, 1, 2, 3, 4].map(r => "\\n<tr>" + [0, 1, 2, 3, 4].map(c => \`<td id=n\${r}\${c} onclick=litSwi(\${r},\${c})></td>\`).join("") + "</tr>").join(""); ""
-g2ui += "\\n</tbody></table>\\n</div>"; ""
-g2ui += "\\n<div id=g2scor class=cfield>Count: <span id=g2movs>0</span></div>"; ""
-g2ui += "\\n<div class=cfield><span class=ccntr><input type=button value=\\"RESET COUNTER\\" onclick=c2Zero()></span></div>"; ""
-g2ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u2tog> Allow single-diode toggle&mdash;Suspend&nbsp;counter</label></div>\\n"; ""
+g2ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
+g2ui += "\\nhtml { box-sizing: border-box; }";
+g2ui += "\\nhr { margin: 1.5rem 0; }";
+g2ui += "\\n#g2wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 16px 0; }";
+g2ui += "\\n#g2wrap .cfield { max-width: 359px; }";
+g2ui += "\\n#g2wrap .cfield:not(:last-child) { margin-bottom: 8px; }";
+g2ui += "\\n#g2wrap .ccntr:not(:last-child) { margin-right: 8px; }";
+g2ui += "\\n#g2wrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
+g2ui += "\\n#g2bcntr { position: relative; padding-top: 1px; }";
+g2ui += "\\n#g2circt { margin: 48px; border-collapse: collapse; }";
+g2ui += "\\n#g2circt td { width: 59px; height: 59px; border: 4px solid black; }";
+g2ui += "\\n#g2board { position: absolute; top: 0; margin: 16px; border-spacing: 8px; }";
+g2ui += "\\n#g2board td { background: MediumOrchid; width: 51px; height: 51px; border-radius: 26px; box-shadow: 0 0 16px 4px Orchid; cursor: pointer; }";
+g2ui += "\\n#g2board td.ldark { background: Indigo; box-shadow: 0 0 16px 4px Grey; }";
+g2ui += "\\n#g2scor { position: relative; top: -12px; font-size: small; margin-left: 16px; }";
+g2ui += "\\n#g2movs { font-weight: bold; }";
+g2ui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Lights Out</h4>";
+g2ui += "\\n<div class=cfield><em>Objective:</em> Switch all matrix lights off.</div>";
+g2ui += "\\n<div class=cfield><em>Game Action:</em> Switching a diode in this lighting matrix also switches any directly connected up-, down-, left- or right- diodes.</div>";
+g2ui += "\\n<div>\\n<span class=ccntr><select id=lpatt>";
+g2ui += ["&mdash;Startup Pattern&mdash;", "Treasure marker (in 4)", "Lucy's diamond (in 5)", "Eight-pocket table (in 5)", "Picasso emoji (in 5)", "Peep holes (in 6)", "Split screen (in 6)", "Square target (in 9)", "Bi-polar opposites (in 11)", "Central light out (in 12)", "Road caution marks (in 15)"].map(e => \`\\n<option>\${e}</option>\`).join("");
+g2ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x21bb; RESTART\\" onclick=g2Reset()></span>\\n</div>";
+g2ui += "\\n<div id=g2bcntr>\\n<table id=g2circt><tbody>";
+g2ui += [0, 1, 2, 3].map(r => "\\n<tr>" + [0, 1, 2, 3].map(c => "<td></td>").join("") + "</tr>").join("");
+g2ui += "\\n</tbody></table>\\n<table id=g2board><tbody>";
+g2ui += [0, 1, 2, 3, 4].map(r => "\\n<tr>" + [0, 1, 2, 3, 4].map(c => \`<td id=n\${r}\${c} onclick=litSwi(\${r},\${c})></td>\`).join("") + "</tr>").join("");
+g2ui += "\\n</tbody></table>\\n</div>";
+g2ui += "\\n<div id=g2scor class=cfield>Count: <span id=g2movs>0</span></div>";
+g2ui += "\\n<div class=cfield><span class=ccntr><input type=button value=\\"RESET COUNTER\\" onclick=c2Zero()></span></div>";
+g2ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u2tog> Allow single-diode toggle&mdash;Suspend&nbsp;counter</label></div>\\n";
 
 // g2wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 // try { g2wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g2wrap"; ndiv.innerHTML = g2ui; cmain.appendChild(ndiv); }
 
-m2trk = 0; ""
-lit0s = [ "", ["0,0", "0,4", "1,1", "1,3", "2,2", "3,1", "3,3", "4,0", "4,4"], ["0,2", "1,1", "1,3", "2,0", "2,4", "3,1", "3,3", "4,2"], ["0,0", "0,2", "0,4", "2,0", "2,4", "4,0", "4,2", "4,4"], ["2,1", "2,3", "3,2", "4,1", "4,2", "4,3"], ["2,1", "2,3"], ["0,2", "1,2", "2,2", "3,2", "4,2"], ["1,1", "1,2", "1,3", "2,1", "2,3", "3,1", "3,2", "3,3"], ["0,4", "4,0"], ["2,2"], ["0,2", "1,1", "2,0", "2,4", "3,3", "4,2"] ]; ""
-window.c2Zero = () => g2movs.innerHTML = _.m2trk = 0; ""
-window.g2Reset = () => c2Zero() || [0, 1, 2, 3, 4].forEach( r => [0, 1, 2, 3, 4].forEach( c => window["n" + r + c].classList[_.lit0s[lpatt.selectedIndex].includes("" + [r, c]) ? "add" : "remove"]("ldark") ) ); ""
-window.litSwi = (rx, cx) => { u2tog.checked ? window["n" + rx + cx].classList.toggle("ldark") : [[rx - 1, cx], [rx, cx - 1], [rx, cx], [rx, cx + 1], [rx + 1, cx]].forEach( ([r, c]) => r < 0 || c < 0 || r > 4 || c > 4 || window["n" + r + c].classList.toggle("ldark") ); u2tog.checked || ( g2movs.innerHTML = [0, 1, 2, 3, 4].some( r => [0, 1, 2, 3, 4].some(c => !window["n" + r + c].classList.contains("ldark")) ) ? ++_.m2trk + " switches" : "<em>Puzzle solved with " + ++_.m2trk + " switches!</em>" ); }; ""
+m2trk = 0;
+lit0s = [ "", ["0,0", "0,4", "1,1", "1,3", "2,2", "3,1", "3,3", "4,0", "4,4"], ["0,2", "1,1", "1,3", "2,0", "2,4", "3,1", "3,3", "4,2"], ["0,0", "0,2", "0,4", "2,0", "2,4", "4,0", "4,2", "4,4"], ["2,1", "2,3", "3,2", "4,1", "4,2", "4,3"], ["2,1", "2,3"], ["0,2", "1,2", "2,2", "3,2", "4,2"], ["1,1", "1,2", "1,3", "2,1", "2,3", "3,1", "3,2", "3,3"], ["0,4", "4,0"], ["2,2"], ["0,2", "1,1", "2,0", "2,4", "3,3", "4,2"] ];
+window.c2Zero = () => g2movs.innerHTML = _.m2trk = 0;
+window.g2Reset = () => c2Zero() || [0, 1, 2, 3, 4].forEach( r => [0, 1, 2, 3, 4].forEach( c => window["n" + r + c].classList[_.lit0s[lpatt.selectedIndex].includes("" + [r, c]) ? "add" : "remove"]("ldark") ) );
+window.litSwi = (rx, cx) => { u2tog.checked ? window["n" + rx + cx].classList.toggle("ldark") : [[rx - 1, cx], [rx, cx - 1], [rx, cx], [rx, cx + 1], [rx + 1, cx]].forEach( ([r, c]) => r < 0 || c < 0 || r > 4 || c > 4 || window["n" + r + c].classList.toggle("ldark") ); u2tog.checked || ( g2movs.innerHTML = [0, 1, 2, 3, 4].some( r => [0, 1, 2, 3, 4].some(c => !window["n" + r + c].classList.contains("ldark")) ) ? ++_.m2trk + " switches" : "<em>Puzzle solved with " + ++_.m2trk + " switches!</em>" ); };
 
 // __* * * PEGS * * *__
-g3ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
-g3ui += "\\nhtml { box-sizing: border-box; }"; ""
-g3ui += "\\nhr { margin: 1.5rem 0; }"; ""
-g3ui += "\\n#g3wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 16px 0; }"; ""
-g3ui += "\\n#g3wrap .cfield { max-width: 359px; }"; ""
-g3ui += "\\n#g3wrap .cfield:not(:last-child) { margin-bottom: 8px; }"; ""
-g3ui += "\\n#g3wrap .ccntr:not(:last-child) { margin-right: 8px; }"; ""
-g3ui += "\\n#g3wrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }"; ""
-g3ui += "\\n#g3bcntr { position: relative; padding-top: 1px; }"; ""
-g3ui += "\\n#g3panel { box-sizing: content-box; margin: 15px 16px; border: 4px solid DarkKhaki; border-collapse: collapse; }"; ""
-g3ui += "\\n#g3panel td { background: beige; width: 40px; height: 40px; }"; ""
-g3ui += "\\n#g3panel td.chkr0 { background: LightSlateGrey; }"; ""
-g3ui += "\\n#g3panel td.chkr1 { background: Gainsboro; }"; ""
-g3ui += "\\n#g3panel td.jdest { box-shadow: inset 0 0 0 5px White; }"; ""
-g3ui += "\\n#g3board { position: absolute; top: 0; margin: 7px; border-spacing: 27px; }"; ""
-g3ui += "\\n#g3board td { background: Black; width: 15px; height: 15px; border-radius: 8px; box-shadow: inset 1px 0 3px 2px Grey; cursor: pointer; }"; ""
-g3ui += "\\n#g3board td.nohol { background: Transparent; box-shadow: none; }"; ""
-g3ui += "\\n#g3board td.phead { background: Red; box-shadow: -1px -1px 0 3px red, 1px 1px 8px 3px grey; }"; ""
-g3ui += "\\n#g3scor { position: relative; top: -8px; font-size: small; margin-left: 16px; }"; ""
-g3ui += "\\n#g3movs { font-weight: bold; }"; ""
-g3ui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Pegs</h4>"; ""
-g3ui += "\\n<div class=cfield><em>Objective:</em> Remove all board pegs but&nbsp;one.</div>"; ""
-g3ui += "\\n<div class=cfield><em>How to play:</em> A move is made by jumping one peg with an adjacent peg; The jumped peg is&nbsp;removed.<br>Tap on a peg to select it for jumping&mdash;Then, if you have a choice, tap on a highlighted hole to select it for that peg's&nbsp;destination.</div>"; ""
-g3ui += "\\n<div>\\n<span class=ccntr><select id=ppatt>\\n"; ""
-g3ui += ["&mdash;Startup Pattern&mdash;", "Cross Symbol", "Plus Sign", "North Tower", "Arrow in Flight", "Egyptian Pyramid", "Red Diamond", "Solitaire"].map(e => "<option>" + e + "</option>").join("\\n"); ""
-g3ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x21bb; RESTART\\" onclick=g3Reset()></span>"; ""
-g3ui += "\\n</div>\\n<div id=g3bcntr>\\n<table id=g3panel><tbody>"; ""
-g3ui += [0, 1, 2, 3, 4, 5, 6].map(r => "\\n<tr>" + [0, 1, 2, 3, 4, 5, 6].map(c => "<td></td>").join("") + "</tr>").join(""); ""
-g3ui += "\\n</tbody></table>\\n<table id=g3board><tbody>"; ""
-g3ui += [0, 1, 2, 3, 4, 5, 6].map(r => "\\n<tr>" + [0, 1, 2, 3, 4, 5, 6].map(c => "<td " + (["0,0", "0,1", "0,5", "0,6", "1,0", "1,1", "1,5", "1,6", "5,0", "5,1", "5,5", "5,6", "6,0", "6,1", "6,5", "6,6"].includes("" + [r, c]) ? "class=nohol" : \`id=h\${r}\${c} onclick=pegJmp(\${r},\${c})\`) + "></td>").join("") + "</tr>").join(""); ""
-g3ui += "\\n</tbody></table>\\n</div>"; ""
-g3ui += "\\n<div id=g3scor class=cfield>Count: <span id=g3movs>0</span></div>"; ""
-g3ui += "\\n<div class=cfield><span class=ccntr><input type=button value=\\"RETRACT MOVE\\" onclick=m3Rvrs()></span><input type=button value=\\"RESET COUNTER\\" onclick=c3Zero()></span></div>"; ""
-g3ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u3tog> Allow free peg placement&mdash;Suspend&nbsp;counter</label></div>\\n"; ""
+g3ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
+g3ui += "\\nhtml { box-sizing: border-box; }";
+g3ui += "\\nhr { margin: 1.5rem 0; }";
+g3ui += "\\n#g3wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 16px 0; }";
+g3ui += "\\n#g3wrap .cfield { max-width: 359px; }";
+g3ui += "\\n#g3wrap .cfield:not(:last-child) { margin-bottom: 8px; }";
+g3ui += "\\n#g3wrap .ccntr:not(:last-child) { margin-right: 8px; }";
+g3ui += "\\n#g3wrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
+g3ui += "\\n#g3bcntr { position: relative; padding-top: 1px; }";
+g3ui += "\\n#g3panel { box-sizing: content-box; margin: 15px 16px; border: 4px solid DarkKhaki; border-collapse: collapse; }";
+g3ui += "\\n#g3panel td { background: beige; width: 40px; height: 40px; }";
+g3ui += "\\n#g3panel td.chkr0 { background: LightSlateGrey; }";
+g3ui += "\\n#g3panel td.chkr1 { background: Gainsboro; }";
+g3ui += "\\n#g3panel td.jdest { box-shadow: inset 0 0 0 5px White; }";
+g3ui += "\\n#g3board { position: absolute; top: 0; margin: 7px; border-spacing: 27px; }";
+g3ui += "\\n#g3board td { background: Black; width: 15px; height: 15px; border-radius: 8px; box-shadow: inset 1px 0 3px 2px Grey; cursor: pointer; }";
+g3ui += "\\n#g3board td.nohol { background: Transparent; box-shadow: none; }";
+g3ui += "\\n#g3board td.phead { background: Red; box-shadow: -1px -1px 0 3px red, 1px 1px 8px 3px grey; }";
+g3ui += "\\n#g3scor { position: relative; top: -8px; font-size: small; margin-left: 16px; }";
+g3ui += "\\n#g3movs { font-weight: bold; }";
+g3ui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Pegs</h4>";
+g3ui += "\\n<div class=cfield><em>Objective:</em> Remove all board pegs but&nbsp;one.</div>";
+g3ui += "\\n<div class=cfield><em>How to play:</em> A move is made by jumping one peg with an adjacent peg; The jumped peg is&nbsp;removed.<br>Tap on a peg to select it for jumping&mdash;Then, if you have a choice, tap on a highlighted hole to select it for that peg's&nbsp;destination.</div>";
+g3ui += "\\n<div>\\n<span class=ccntr><select id=ppatt>\\n";
+g3ui += ["&mdash;Startup Pattern&mdash;", "Cross Symbol", "Plus Sign", "North Tower", "Arrow in Flight", "Egyptian Pyramid", "Red Diamond", "Solitaire"].map(e => "<option>" + e + "</option>").join("\\n");
+g3ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x21bb; RESTART\\" onclick=g3Reset()></span>";
+g3ui += "\\n</div>\\n<div id=g3bcntr>\\n<table id=g3panel><tbody>";
+g3ui += [0, 1, 2, 3, 4, 5, 6].map(r => "\\n<tr>" + [0, 1, 2, 3, 4, 5, 6].map(c => "<td></td>").join("") + "</tr>").join("");
+g3ui += "\\n</tbody></table>\\n<table id=g3board><tbody>";
+g3ui += [0, 1, 2, 3, 4, 5, 6].map(r => "\\n<tr>" + [0, 1, 2, 3, 4, 5, 6].map(c => "<td " + (["0,0", "0,1", "0,5", "0,6", "1,0", "1,1", "1,5", "1,6", "5,0", "5,1", "5,5", "5,6", "6,0", "6,1", "6,5", "6,6"].includes("" + [r, c]) ? "class=nohol" : \`id=h\${r}\${c} onclick=pegJmp(\${r},\${c})\`) + "></td>").join("") + "</tr>").join("");
+g3ui += "\\n</tbody></table>\\n</div>";
+g3ui += "\\n<div id=g3scor class=cfield>Count: <span id=g3movs>0</span></div>";
+g3ui += "\\n<div class=cfield><span class=ccntr><input type=button value=\\"RETRACT MOVE\\" onclick=m3Rvrs()></span><input type=button value=\\"RESET COUNTER\\" onclick=c3Zero()></span></div>";
+g3ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u3tog> Allow free peg placement&mdash;Suspend&nbsp;counter</label></div>\\n";
 
 // g3wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 // try { g3wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g3wrap"; ndiv.innerHTML = g3ui; cmain.appendChild(ndiv); }
 
 jopts = peg0s = ""
 m3trk = [];
-a0t6 = [0, 1, 2, 3, 4, 5, 6]; ""
-p3sol = a0t6.map(r => _.a0t6.map(c => "" + [r, c])).flat(); ""
-g3panel = window.g3panel || document.createElement('table'); ""
-p3tds = Array.from(g3panel.querySelectorAll('tr')).map(e => e.querySelectorAll('td')); ""
-osGen = (r, c) => [ [[r, c], [r - 1, c], [r - 2, c]], [[r, c], [r, c - 1], [r, c - 2]], [[r, c], [r, c + 1], [r, c + 2]], [[r, c], [r + 1, c], [r + 2, c]] ]; ""
-osClr = () => g3panel.querySelectorAll('.jdest').forEach(e => e.className = ""); ""
-pegsRplc = (jps, bkup) => _.osClr() || (_.jopts = 0) || (bkup || _.m3trk.push(jps)) && jps.forEach(([r, c]) => window["h" + r + c].classList.toggle("phead")) || u3tog.checked || ( g3movs.innerHTML = g3board.querySelectorAll('.phead').length !== 1 ? _.m3trk.length + " jumps" : "<em>Puzzle solved with " + _.m3trk.length + " jumps!</em>" ); ""
+a0t6 = [0, 1, 2, 3, 4, 5, 6];
+p3sol = a0t6.map(r => _.a0t6.map(c => "" + [r, c])).flat();
+g3panel = window.g3panel || document.createElement('table');
+p3tds = Array.from(g3panel.querySelectorAll('tr')).map(e => e.querySelectorAll('td'));
+osGen = (r, c) => [ [[r, c], [r - 1, c], [r - 2, c]], [[r, c], [r, c - 1], [r, c - 2]], [[r, c], [r, c + 1], [r, c + 2]], [[r, c], [r + 1, c], [r + 2, c]] ];
+osClr = () => g3panel.querySelectorAll('.jdest').forEach(e => e.className = "");
+pegsRplc = (jps, bkup) => _.osClr() || (_.jopts = 0) || (bkup || _.m3trk.push(jps)) && jps.forEach(([r, c]) => window["h" + r + c].classList.toggle("phead")) || u3tog.checked || ( g3movs.innerHTML = g3board.querySelectorAll('.phead').length !== 1 ? _.m3trk.length + " jumps" : "<em>Puzzle solved with " + _.m3trk.length + " jumps!</em>" );
 [ [0,0], [0,1], [], [0,5], [0,6], [1,0], [1,1], [], [1,5], [1,6], [], [5,0], [5,1], [], [5,5], [5,6], [6,0], [6,1], [], [6,5], [6,6] ].forEach( ([r, c], i) => r == null || !_.p3tds[r] || (_.p3tds[r][c].className = i % 2 === 0 ? "chkr0" : "chkr1") );
 [47, 42, 40, 35, 12, 7, 5, 0].forEach(e => _.p3sol.splice(e, 2));
-p3sol.splice(16, 1); ""
-peg0s = [ "", ["1,3", "2,2", "2,3", "2,4", "3,3", "4,3"], ["1,3", "2,3", "3,1", "3,2", "3,3", "3,4", "3,5", "4,3", "5,3"], ["0,2", "0,3", "0,4", "1,2", "1,3", "1,4", "2,2", "2,3", "2,4", "3,2", "3,4"], ["1,4", "2,0", "2,1", "2,4", "2,5", "3,0", "3,1", "3,2", "3,3", "3,4", "3,5", "3,6", "4,0", "4,1", "4,4", "4,5", "5,4"], ["1,3", "2,2", "2,3", "2,4", "3,1", "3,2", "3,3", "3,4", "3,5", "4,0", "4,1", "4,2", "4,3", "4,4", "4,5", "4,6"], p3sol.filter((e, i) => ![0, 2, 6, 12, 19, 25, 29, 31].includes(i)), _.p3sol ]; ""
-window.c3Zero = () => (_.m3trk = []) && (g3movs.innerHTML = 0); ""
-window.g3Reset = () => _.osClr() || c3Zero() || _.a0t6.forEach( r => _.a0t6.forEach( c => !window["h" + r + c] || window["h" + r + c].classList[_.peg0s[ppatt.selectedIndex].includes("" + [r, c]) ? "add" : "remove"]("phead") ) ); ""
-window.pegJmp = (rx, cx) => { let jx, ph1 = window["h" + rx + cx].classList.contains("phead"); _.jopts = !ph1 ? _.jopts : _.osGen(rx, cx); u3tog.checked ? _.osClr() || (_.jopts = 0) || window["h" + rx + cx].classList.toggle("phead") : !ph1 ? !_.p3tds[rx][cx].className || _.pegsRplc(_.jopts.find(e => "" + e[2] === "" + [rx, cx])) : _.osClr() || _.jopts.forEach( ([[], [r1, c1], [r2, c2]], i) => !window["h" + r1 + c1] || !window["h" + r1 + c1].classList.contains("phead") || !window["h" + r2 + c2] || window["h" + r2 + c2].className || (_.p3tds[r2][c2].className = "jdest") && (jx = i) ); return u3tog.checked || ( jx == null ? _.jopts = 0 : (_.p3tds[rx][cx].className = "jdest") && g3panel.querySelectorAll('.jdest').length > 2 || _.pegsRplc(_.jopts[jx]) ); }; ""
-window.m3Rvrs = () => !(_.m3trk || "").length || _.pegsRplc(_.m3trk.pop(), 1); ""
+p3sol.splice(16, 1);
+peg0s = [ "", ["1,3", "2,2", "2,3", "2,4", "3,3", "4,3"], ["1,3", "2,3", "3,1", "3,2", "3,3", "3,4", "3,5", "4,3", "5,3"], ["0,2", "0,3", "0,4", "1,2", "1,3", "1,4", "2,2", "2,3", "2,4", "3,2", "3,4"], ["1,4", "2,0", "2,1", "2,4", "2,5", "3,0", "3,1", "3,2", "3,3", "3,4", "3,5", "3,6", "4,0", "4,1", "4,4", "4,5", "5,4"], ["1,3", "2,2", "2,3", "2,4", "3,1", "3,2", "3,3", "3,4", "3,5", "4,0", "4,1", "4,2", "4,3", "4,4", "4,5", "4,6"], p3sol.filter((e, i) => ![0, 2, 6, 12, 19, 25, 29, 31].includes(i)), _.p3sol ];
+window.c3Zero = () => (_.m3trk = []) && (g3movs.innerHTML = 0);
+window.g3Reset = () => _.osClr() || c3Zero() || _.a0t6.forEach( r => _.a0t6.forEach( c => !window["h" + r + c] || window["h" + r + c].classList[_.peg0s[ppatt.selectedIndex].includes("" + [r, c]) ? "add" : "remove"]("phead") ) );
+window.pegJmp = (rx, cx) => { let jx, ph1 = window["h" + rx + cx].classList.contains("phead"); _.jopts = !ph1 ? _.jopts : _.osGen(rx, cx); u3tog.checked ? _.osClr() || (_.jopts = 0) || window["h" + rx + cx].classList.toggle("phead") : !ph1 ? !_.p3tds[rx][cx].className || _.pegsRplc(_.jopts.find(e => "" + e[2] === "" + [rx, cx])) : _.osClr() || _.jopts.forEach( ([[], [r1, c1], [r2, c2]], i) => !window["h" + r1 + c1] || !window["h" + r1 + c1].classList.contains("phead") || !window["h" + r2 + c2] || window["h" + r2 + c2].className || (_.p3tds[r2][c2].className = "jdest") && (jx = i) ); return u3tog.checked || ( jx == null ? _.jopts = 0 : (_.p3tds[rx][cx].className = "jdest") && g3panel.querySelectorAll('.jdest').length > 2 || _.pegsRplc(_.jopts[jx]) ); };
+window.m3Rvrs = () => !(_.m3trk || "").length || _.pegsRplc(_.m3trk.pop(), 1);
 //`;
 
 const tutorial3 = `/*
@@ -656,33 +656,33 @@ str.replace(/(deaf)\\w+ (\\w+)\\./i, (m, c1, c2) => \`\${c1} & \${c2.replace(/ce
       replace UI.
 */
 
-srui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }"; ""
-srui += "\\nhtml { box-sizing: border-box; word-wrap: break-word; overflow-wrap: break-word; }"; ""
-srui += "\\nhr { margin: 1.5rem 0; }"; ""
-srui += "\\n#srwrap { font: normal medium Helvetica, Arial, sans-serif; margin: 16px 0; }"; ""
-srui += "\\n#srwrap textarea { display: block; font-size: medium; width: 100%; height: 288px; }"; ""
-srui += "\\n#srwrap pre { white-space: pre-wrap; }"; ""
-srui += "\\n#srwrap input[type=text] { width: 288px; }"; ""
-srui += "\\n#srwrap .iwarn { color: Orange; }"; ""
-srui += "\\n#srwrap .isucc { color: CornFlowerBlue; }"; ""
-srui += "\\n#srwrap textarea.iwarn { color: unset; border-color: Orange; }"; ""
-srui += "\\n#srwrap textarea.isucc { color: unset; border-color: CornFlowerBlue; }"; ""
-srui += "\\n#srwrap .cfield { max-width: 720px; }"; ""
-srui += "\\n#srwrap .cfield:not(:last-child) { margin-bottom: 8px; }"; ""
-srui += "\\n#srwrap .ccntr:not(:last-child) { margin-right: 8px; }"; ""
-srui += "\\n#srwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }"; ""
-srui += "\\n#srwrap .cfield>.help { font-size: 12px; margin-top: 4px; }"; ""
-srui += "\\n#srwrap h4+.cfield:not(:last-child) { margin-bottom: 16px; }"; ""
-srui += "\\n</style>\\n<hr>\\n<h4 class=cfield><span onclick=txtaSel(srctxta)>Source</span></h4>"; ""
-srui += "\\n<div class=cfield><textarea id=srctxta></textarea></div>"; ""
-srui += "\\n<div class=cfield><label class=ccntr><input type=text id=sepainp> Search</label></div>"; ""
-srui += "\\n<div class=cfield><label class=ccntr><input type=text id=rfncinp> Replace</label></div>"; ""
-srui += "\\n<div class=cfield>\\n<span class=ccntr><select id=rnsel>\\n<option></option>\\n<option>PRE render</option>\\n<option>Normal render</option>\\n</select></span>"; ""
-srui += "<span class=ccntr><input type=button value=\\"&#x2964; PARSE\\" onclick=strPars()></span>"; ""
-srui += "<span class=ccntr><input type=button value=\\"&rlhar; SWAP\\" onclick=txtSwap()></span>\\n</div>"; ""
-srui += "\\n<h4 class=cfield><span onclick=txtaSel(trgtxta)>Target</span></h4>"; ""
-srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=replhelp class=help></div></div>"; ""
-srui += "\\n<div id=trgrndr class=cfield></div>\\n"; ""
+srui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
+srui += "\\nhtml { box-sizing: border-box; word-wrap: break-word; overflow-wrap: break-word; }";
+srui += "\\nhr { margin: 1.5rem 0; }";
+srui += "\\n#srwrap { font: normal medium Helvetica, Arial, sans-serif; margin: 16px 0; }";
+srui += "\\n#srwrap textarea { display: block; font-size: medium; width: 100%; height: 288px; }";
+srui += "\\n#srwrap pre { white-space: pre-wrap; }";
+srui += "\\n#srwrap input[type=text] { width: 288px; }";
+srui += "\\n#srwrap .iwarn { color: Orange; }";
+srui += "\\n#srwrap .isucc { color: CornFlowerBlue; }";
+srui += "\\n#srwrap textarea.iwarn { color: unset; border-color: Orange; }";
+srui += "\\n#srwrap textarea.isucc { color: unset; border-color: CornFlowerBlue; }";
+srui += "\\n#srwrap .cfield { max-width: 720px; }";
+srui += "\\n#srwrap .cfield:not(:last-child) { margin-bottom: 8px; }";
+srui += "\\n#srwrap .ccntr:not(:last-child) { margin-right: 8px; }";
+srui += "\\n#srwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
+srui += "\\n#srwrap .cfield>.help { font-size: 12px; margin-top: 4px; }";
+srui += "\\n#srwrap h4+.cfield:not(:last-child) { margin-bottom: 16px; }";
+srui += "\\n</style>\\n<hr>\\n<h4 class=cfield><span onclick=txtaSel(srctxta)>Source</span></h4>";
+srui += "\\n<div class=cfield><textarea id=srctxta></textarea></div>";
+srui += "\\n<div class=cfield><label class=ccntr><input type=text id=sepainp> Search</label></div>";
+srui += "\\n<div class=cfield><label class=ccntr><input type=text id=rfncinp> Replace</label></div>";
+srui += "\\n<div class=cfield>\\n<span class=ccntr><select id=rnsel>\\n<option></option>\\n<option>PRE render</option>\\n<option>Normal render</option>\\n</select></span>";
+srui += "<span class=ccntr><input type=button value=\\"&#x2964; PARSE\\" onclick=strPars()></span>";
+srui += "<span class=ccntr><input type=button value=\\"&rlhar; SWAP\\" onclick=txtSwap()></span>\\n</div>";
+srui += "\\n<h4 class=cfield><span onclick=txtaSel(trgtxta)>Target</span></h4>";
+srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=replhelp class=help></div></div>";
+srui += "\\n<div id=trgrndr class=cfield></div>\\n";
 
 // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 // try { srwrap } catch { ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = srui; cmain.appendChild(ndiv); }
@@ -711,21 +711,21 @@ srui += "\\n<div id=trgrndr class=cfield></div>\\n"; ""
       of its field's content.
 */
 
-rx = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:[$\\wÀ-Ͽ]+|\\(.*?\\)) *=>.|^[\\w.]+$/]; ""
-msgClr = () => (trgrndr.innerHTML = replhelp.innerHTML = "") || [trgtxta, replhelp].forEach(e => e.classList.remove("iwarn", "isucc")); ""
-rsltSh = rslt => { let ri = rnsel.selectedIndex; trgtxta.value = rslt; !ri || (trgrndr.innerHTML = (ri > 1 ? rslt : "\\n<pre>" + rslt + "</pre>\\n")); }; ""
-window.txtaSel = e => _.msgClr() || e.focus() || e.setSelectionRange(0, e.textLength); ""
-window.txtSwap = () => _.msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]); ""
-window.strPars = () => { let lm, sv = sepainp.value, rv = rfncinp.value.trim(); _.msgClr(); if (_.rx[0].test(sv)) { replhelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; [trgtxta, replhelp].forEach(e => e.classList.add(!lm ? "iwarn" : "isucc")); } _.rsltSh( srctxta.value.replace( !_.rx[1].test(sv) ? sv : eval(sv), window[rv] || (!_.rx[2].test(rv) ? rv : window.eval(rv)) )); }; ""
+rx = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:[$\\wÀ-Ͽ]+|\\(.*?\\)) *=>.|^[\\w.]+$/];
+msgClr = () => (trgrndr.innerHTML = replhelp.innerHTML = "") || [trgtxta, replhelp].forEach(e => e.classList.remove("iwarn", "isucc"));
+rsltSh = rslt => { let ri = rnsel.selectedIndex; trgtxta.value = rslt; !ri || (trgrndr.innerHTML = (ri > 1 ? rslt : "\\n<pre>" + rslt + "</pre>\\n")); };
+window.txtaSel = e => _.msgClr() || e.focus() || e.setSelectionRange(0, e.textLength);
+window.txtSwap = () => _.msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
+window.strPars = () => { let lm, sv = sepainp.value, rv = rfncinp.value.trim(); _.msgClr(); if (_.rx[0].test(sv)) { replhelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; [trgtxta, replhelp].forEach(e => e.classList.add(!lm ? "iwarn" : "isucc")); } _.rsltSh( srctxta.value.replace( !_.rx[1].test(sv) ? sv : eval(sv), window[rv] || (!_.rx[2].test(rv) ? rv : window.eval(rv)) )); };
 
 /*
-   + Un-comment the following block of code to generate the
+   + *Optional:* Un-comment the following block of code to generate the
      full source code (e.g., for building a standalone web app).
 */
 
 /*
-scrGen = src => "let " + src.match(/^rx = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,"); "" //
-dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"]; ""
+scrGen = src => "let " + src.match(/^rx = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,"); //
+dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
 respShow((dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(xstor["JScode"]["tutorial3"]) + dwrap[2]).replace(/\\n<hr>/, "").replace(/<(?=[!/?a-z])/gi, "&lt;"))
 */
 
@@ -750,9 +750,9 @@ respShow((dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(xstor["JScode"]["tutor
 */
 
 /*
-srctxta.value = xstor["sparknotes"]["dune"].replace(/\\n\\*\\/$|^\\/\\*\\n/g, ""); ""
-sepainp.value = "/^.*?(\\\\bdune\\\\b).*\\\\n*|^.*\\\\n*/gim"; "" //
-rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); return !c1 ? \\"\\" : \\" \\" + ++itr + \\". \\" + m; }"; ""
+srctxta.value = xstor["sparknotes"]["dune"].replace(/\\n\\*\\/$|^\\/\\*\\n/g, "");
+sepainp.value = "/^.*?(\\\\bdune\\\\b).*\\\\n*|^.*\\\\n*/gim"; //
+rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); return !c1 ? \\"\\" : \\" \\" + ++itr + \\". \\" + m; }";
 */
 
 /*
@@ -767,7 +767,7 @@ rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); return !c1 ? \\"\\" : \\
     + Un-comment the following one line of code, then tap "PARSE".
 */
 
-// rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); ++itr; return !c1 ? \\"\\" : \\"[line \\" + itr + \\"]:\\\\n\\" + m; }"; ""
+// rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); ++itr; return !c1 ? \\"\\" : \\"[line \\" + itr + \\"]:\\\\n\\" + m; }";
 
 /*
     + This result gives us a helpful location reference for every
@@ -781,7 +781,7 @@ rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); return !c1 ? \\"\\" : \\
       "PARSE" button) and tap "PARSE".
 */
 
-// rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); ++itr; return !c1 ? \\"\\" : \\"[line \\" + itr + \\"]:\\\\n\\" + m.replace(/\\\\bdune\\\\b/gi, \\"<mark>$&</mark>\\"); }"; ""
+// rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); ++itr; return !c1 ? \\"\\" : \\"[line \\" + itr + \\"]:\\\\n\\" + m.replace(/\\\\bdune\\\\b/gi, \\"<mark>$&</mark>\\"); }";
 
 /*
  7. Use search-and-replace to __apply HTML markup to an article__ --
@@ -792,19 +792,19 @@ rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); return !c1 ? \\"\\" : \\
       between a subtitle, a blockquote, a definition list and an
       ordinary paragraph.
     + But, displayed in a browser, the text-document's structural
-      parts would be mushed all together and lost to all recognition,
+      parts would be mushed together and lost to all recognition,
       unless the document was first marked up with HTML tags.
     + Un-comment the following block of code, then tap "PARSE" to see
-      the article reformatted with HTML markup tags.
+      the same article now entwined with HTML markup tags.
     + Select "Normal render" and tap "PARSE" again to confirm that
-      the rendered document's structure is still intact.
+      the rendered document's structure is left intact.
 */
 
 /*
-try { docMrkp } catch { markdownit && (window.docMrkp = md => markdownit({ html: 1, typographer: 1 }).use(markdownitDeflist).render(md)); "" }
-sepainp.value = "/[^]+/"; ""
-rfncinp.value = "docMrkp"; ""
-msgClr();
+try { docMrkp } catch { markdownit && (window.docMrkp = md => markdownit({ html: 1, typographer: 1 }).use(markdownitDeflist).render(md)); };
+sepainp.value = "/[^]+/";
+rfncinp.value = "docMrkp";
+msgClr()
 */
 
 /*
@@ -823,25 +823,25 @@ msgClr();
     + More often than we like, our memos and reports do not display
       nicely within these prevailing dimensional constraints.
     + As an example special case, inspect the tutorial text in the
-      *ENTRY* panel of the JavaScript Calculator app; Even if we
-      viewed it on a wide computer screen, each line of instructional
-      text would get clipped and become unreadable if it wasn't
-      wrapped around before hitting 70 characters from the left edge
+      *ENTRY* pane of the JavaScript Calculator app; Even if we viewed
+      it on a wide computer screen, each line of instructional text
+      would get clipped and become unreadable if it didn't wrap
+      around before hitting the 71^st^ position from the left edge
       (i.e., formatted at 70 characters per line -- or, 70 cpl).
     + Un-comment the following block of code to activate a pair of
-      line-wrap width adjuster tools -- which may be applied using
-      the search-and-replace web app.
+      line-wrapping width adjuster tools -- which may be applied
+      using the search-and-replace web app.
 */
 
 /*
-msgClr();
-window.lineUnwr = str => str.replace(/(\\S ?)\\n(?!>|\\n|$)/g, "$1 "); ""
-window.lineWrap = str => { let cpl = 70, brk = "\\n", cut = 0, rx = ".{1," + cpl + "}(\\\\s|$)" + (cut ? "|.{" + cpl + "}|.+$" : "|\\\\S+?(\\\\s|$)"); return str.match(new RegExp(rx, "g")).join(brk); }; ""
+msgClr()
+window.lineUnwr = str => str.replace(/(\\S ?)\\n(?!>|\\n|$)/g, "$1 ");
+window.lineWrap = str => { let cpl = 70, brk = "\\n", cut = 0, rx = ".{1," + cpl + "}(\\\\s|$)" + (cut ? "|.{" + cpl + "}|.+$" : "|\\\\S+?(\\\\s|$)"); return str.match(new RegExp(rx, "g")).join(brk); };
 */
 
 /*
     + Now, prepare the "Dune" article to be readable within the
-      *ENTRY* panel of the JavaScript Calculator app by entering
+      *ENTRY* pane of the JavaScript Calculator app by entering
       \`lineWrap\` into the "Replace" input and tapping "PARSE".
     + *Challenge:* Play with the value of the \`cpl\` variable
       (your maximum desired width) in the \`lineWrap\` function to

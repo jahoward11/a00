@@ -453,6 +453,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     let $ = {}, _ = {}, _ks = [], rslt,
       xprsns = (dinp2.value || "")
         .replace(/^\/\*(?:\s*?\n|)([^]*?)\s*\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
+        .replace(/^(?:[^\n\/]|\/(?!\/))+;(?= *\/\/$|$)/gm, "$& \"\"")
         .replace(/&Tab;/g, "\t").replace(/(?:[^$.\wÀ-Ͽ]|^)\$(?=[$_a-zÀ-Ͽ])/gi, "$&.")
         .split("\n"),
       reslts = xprsns.map(xpr => {

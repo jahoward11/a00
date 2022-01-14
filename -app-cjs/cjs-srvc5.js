@@ -94,10 +94,10 @@ __*Std. N.D., the 68-95-99.7 (empirical) rule, or the 3-sigma rule*__
 
  p = 0.995		// ensure  0.5 < p < 0.9998
 
- $z = 0; zmin = 0; zmax = 3.5; ""
- φz = () => 1 / (2 * Math.PI * Math.exp($z**2))**0.5; ""
- tz = () => 1 / (1 + _.b0 * $z); ""
- Φz = (φ, t) => 1 - φ * (_.b1*t + _.b2*t**2 + _.b3*t**3 + _.b4*t**4 + _.b5*t**5); ""
+ $z = 0; zmin = 0; zmax = 3.5;
+ φz = () => 1 / (2 * Math.PI * Math.exp($z**2))**0.5;
+ tz = () => 1 / (1 + _.b0 * $z);
+ Φz = (φ, t) => 1 - φ * (_.b1*t + _.b2*t**2 + _.b3*t**3 + _.b4*t**4 + _.b5*t**5);
  while (zmax - zmin > 1e-6) { Φz(φz(), tz()) > p ? zmax = $z : zmin = $z; $z = (zmax + zmin) / 2; }
 
 
@@ -166,7 +166,7 @@ __*Counting Methods, all possible scenarios*__
  n = 5
  k = 3
 
- fctl = c => Array.from(Array(c).keys()).reduce((a, b) => a * (1 + b), 1); ""
+ fctl = c => Array.from(Array(c).keys()).reduce((a, b) => a * (1 + b), 1);
  $Perms = fctl(n) / fctl(n - k)
  $Combs = fctl(n) / fctl(k) / fctl(n - k)
  perms = n**k
