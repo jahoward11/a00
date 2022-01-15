@@ -730,8 +730,8 @@ respShow((dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(xstor["JScode"]["tutor
 */
 
 /*
- 6. Extend your use of the search-and-replace web app with some
-    know-how to __locate any substring of a lengthy document__.
+ 6. Extend your use of the search-and-replace web app with the extra
+    know-how to __locate a substring of a lengthy document__.
     + Before we can demo the new search-and-replace UI on this page
       we must reload the page with a supplemental data module that
       contains lengthy document texts -- called "sparknotes".
@@ -746,7 +746,7 @@ respShow((dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(xstor["JScode"]["tutor
       is again displayed (down below) by un-commenting the
       \`try { … } catch { … }\` line in step 5, above.
     + With the search-and-replace UI displayed, inject demo data into
-      the UI fields by un-commenting the next block of code.
+      its fields by un-commenting the next block of code.
 */
 
 /*
@@ -785,7 +785,7 @@ rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); return !c1 ? \\"\\" : \\
 
 /*
  7. Use search-and-replace to __apply HTML markup to an article__ --
-    such that its structural parts are displayed meaningfully.
+    so that its structural parts are displayed meaningfully.
     + The "Dune" book-review article that we are using for demo
       purposes is minimally marked up (with "markdown" syntax);
       So, even when viewing its plain-text form, a reader can make
@@ -795,13 +795,13 @@ rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); return !c1 ? \\"\\" : \\
       parts would be mushed together and lost to all recognition --
       unless the document was first marked up with HTML tags.
     + Un-comment the following block of code, then tap "PARSE" to see
-      the same article now intertwined with HTML markup tags.
+      the same article text now decorated with HTML markup tags.
     + Select "Normal render" and tap "PARSE" again to confirm that
       the rendered document's structure is appropriately kept intact.
 */
 
 /*
-try { docMrkp } catch { markdownit && (window.docMrkp = md => markdownit({ html: 1, typographer: 1 }).use(markdownitDeflist).render(md)); };
+try { docMrkp } catch { markdownit && (window.docMrkp = md => markdownit({ html: 1, typographer: 1 }).use(markdownitDeflist).render(md.replace(/[^-](?=--[^-])/g, "$&-"))); };
 rndrsel.selectedIndex = 0;
 sepainp.value = "/[^]+/";
 rfncinp.value = "docMrkp";
