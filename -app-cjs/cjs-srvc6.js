@@ -480,9 +480,9 @@ or another of these kind of tasks within but an instant.
 
  Specifically, we will:
  1) locate a substring of the text of a lengthy document,
- 2) prepare an article for meaningful display of its structural
-    parts, and
- 3) format a text memo or report to fit any size screen.
+ 2) prepare an article for meaningful browser-display of its
+    structural parts, and
+ 3) format a text memo or report to fit a narrow screen.
 
 - - - - -
 __*Tutorial Three: Automating custom publishing tasks*__
@@ -622,7 +622,7 @@ str.replace("silence.", "SILENCE!")    // 2nd example
 
 "Controlled chaos.".replace(/ch?/gi, "K")          // 1st example
 
-str.replace(/(deaf)\\w+ (\\w+)\\./i, "$1ness … $2 …") // 2nd example
+str.replace(/(deaf)\\w+ (\\w+)\\./i, "$1ness… $2…") // 2nd example
 
 /*
  4. Now, perform one more search-and-replace on each string using
@@ -641,7 +641,7 @@ str.replace(/(deaf)\\w+ (\\w+)\\./i, "$1ness … $2 …") // 2nd example
 "Controlled chaos.".replace(/ch?/gi, m => m === "C" ? "K" : "k")
  // 1st example
 
-str.replace(/(deaf)\\w+ (\\w+)\\./i, (m, c1, c2) => \`\${c1} & \${c2.replace(/ce$/, "t")}?\`)
+str.replace(/(deaf)\\w+ (\\w+)\\./i, (m, c1, c2) => \`\${c1}? Or \${c2.replace(/ce$/, "t")}?\`)
  // 2nd example
 
 /*
