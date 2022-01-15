@@ -787,7 +787,7 @@ rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); return !c1 ? \\"\\" : \\
  7. Use search-and-replace to __apply HTML markup to an article__ --
     so that its structural parts are displayed meaningfully.
     + The "Dune" book-review article that we are using for demo
-      purposes is minimally marked up (with "markdown" syntax);
+      purposes is minimally marked up (with *Markdown* syntax);
       So, even when viewing its plain-text form, a reader can make
       distinctions between a subtitle, a blockquote, a definition
       list and an ordinary paragraph.
@@ -817,8 +817,8 @@ msgClr()
       input serves the singular purpose of injecting the entire
       document-as-a-string into our replacement function \`docMrkp\`.
 
- 8. Use search-and-replace to __readjust the width of a quick memo or__
-    __report__ to the screen size in which it will be reviewed or edited.
+ 8. Use search-and-replace to __adjust the width of your memo text__
+    to fit the screen size in which it will be reviewed or edited.
     + In our modern world, much of our communications are textual
       messages displayed on a narrow, handheld screen.
     + Within these prevailing dimensional constraints, more often
@@ -845,12 +845,12 @@ window.lineWrap = str => { let cpl = 70, cut = 0, brk = "\\n", rex = ".{1," + cp
       the *ENTRY* pane of the JavaScript Calculator app by typing
       \`lineWrap\` into the "Replace" input and tapping "PARSE".
     + *Challenge:* Play with the value of the \`cpl\` variable
-      (your desired maximum width) in the \`lineWrap\` function to
-      visualize the "Dune" article in different line-wrapping states.
+      (your desired maximum width) in the \`lineWrap\` function, and
+      reflow the text of the article at various cpl settings.
     + *Also:* After applying a different wraparound width, try undoing
       it: Clear the "Source" text field, tap "SWAP" to swap the
       "Source" and "Target" content, then use \`lineUnwr\` to restore
-      the article to its original state.
+      the "Dune" article text to its original state.
 */
 //`;
 
