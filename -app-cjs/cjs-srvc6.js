@@ -785,15 +785,15 @@ rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); return !c1 ? \\"\\" : \\
 
 /*
  7. Use search-and-replace to __apply HTML markup to an article__ --
-    so that its structural parts are displayed meaningfully.
+    so that its structural parts get displayed meaningfully.
     + The "Dune" book-review article that we are using for demo
       purposes is minimally marked up (with *Markdown* syntax);
-      So, even when viewing its plain-text form, a reader can make
+      So, even when viewing its plain-text form, the reader can make
       distinctions between a subtitle, a blockquote, a definition
       list and an ordinary paragraph.
-    + But, displayed in a browser, the text-document's structural
-      parts would be mushed together and lost to all recognition --
-      unless the document was first marked up with HTML tags.
+    + But, viewed in a browser, the text-document's structural parts
+      would be mushed together and lost to all recognition -- unless
+      the text was first marked up like an HTML web doc.
     + Un-comment the following block of code, then tap "PARSE" to see
       the same article text now decorated with HTML markup tags.
     + Select "Normal render" and tap "PARSE" again to confirm that
@@ -820,15 +820,15 @@ msgClr()
  8. Use search-and-replace to __adjust the width of your memo text__
     to fit the screen size in which it will be reviewed or edited.
     + In our modern world, much of our communications are textual
-      messages displayed on a narrow, handheld screen.
+      messages displayed on a narrow, palm-width screen.
     + Within these prevailing dimensional constraints, more often
       than we like our memos and reports do not display nicely.
-    + As an example special case, inspect the tutorial text in the
-      *ENTRY* pane of the JavaScript Calculator app; Even if we viewed
-      it on a wide computer screen, each line of the instructional
-      text would get clipped and become unreadable if it didn't wrap
-      around before hitting the 71^st^ position from the left edge
-      (i.e., formatted at 70 characters per line -- or, 70 cpl).
+    + For reference, notice: The tutorial text is framed by the *ENTRY*
+      pane of the JavaScript Calculator; Even if viewed on a wide
+      computer screen, each line of instruction could get clipped
+      and become unreadable if it didn't continually wrap around
+      again before hitting the 71^st^ position from its left edge
+      (i.e., reflow at 70 characters per line -- or, 70 cpl).
     + Un-comment the following block of code to activate a pair of
       line-wrapping width adjuster tools -- which may be applied
       using the search-and-replace web app.
@@ -847,7 +847,7 @@ window.lineWrap = str => { let cpl = 70, cut = 0, brk = "\\n", rex = ".{1," + cp
     + *Challenge:* Play with the value of the \`cpl\` variable
       (your desired maximum width) in the \`lineWrap\` function, and
       reflow the text of the article at various cpl settings.
-    + *Also:* After applying a different wraparound width, try undoing
+    + *Also:* After applying a random wraparound width, try undoing
       it: Clear the "Source" text field, tap "SWAP" to swap the
       "Source" and "Target" content, then use \`lineUnwr\` to restore
       the "Dune" article text to its original state.
