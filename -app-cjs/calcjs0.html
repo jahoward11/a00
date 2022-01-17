@@ -373,9 +373,9 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     !cgrid.classList.contains("xpndq2B") || qrys.push("!col1");
     cheadg.textContent === "JavaScript Calculator"
     || qrys.push("title=" + window.encodeURIComponent(cheadg.textContent));
-    !(xsetlist || {}).value || qrys.push("dload=" + window.encodeURIComponent(xsetlist.value));
+    !(xsetlist || "").value || qrys.push("dload=" + window.encodeURIComponent(xsetlist.value));
     quad2B.click();
-    (xsetinp || {}).value = quad2A.innerHTML = quad1B.innerHTML = quad1A.innerHTML = "";
+    (xsetinp || "").value = quad2A.innerHTML = quad1B.innerHTML = quad1A.innerHTML = "";
     quad2B.innerHTML = "// __To preserve view settings to URL:__"
     + "\n// 1. Edit &amp; un-comment settings, below --"
     + "\n   // combining desired parts into a one-line expression."
@@ -395,7 +395,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     + "\n  // jsrcs= | inject supplemental JavaScript resources\n\n// "
     + (dinp2.type ? "window_location_search" : "window.location.search") + " = \"" + qrys.join("&")
     + "\"\n // + \"" + (!qrys.length ? "" : "&") + "cmods=\" + encodeURIComponent(\"3,5,prj42.mjs\")"
-    + ((xsetlist || {}).value ? "" : "\n // + \"&dload=\" + encodeURIComponent(\"https://host/pathname\")")
+    + ((xsetlist || "").value ? "" : "\n // + \"&dload=\" + encodeURIComponent(\"https://host/pathname\")")
     + "\n // + \"&val0s=\" + encodeURIComponent(\"a:10,b:20,c:30\")"
     + "\n // + \"&jsrcs=\" + encodeURIComponent(\"../-res-js/jstat.js\")\n<br>";
     window.getSelection().setPosition(quad2B.firstChild, quad2B.textContent.length);
@@ -433,7 +433,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
       [cgrid, xctrls].forEach(e => e.classList.toggle("is-hidden"));
     } else if (/[45]/.test(evt.target.selectedIndex)) {
       gridAdj(evt.target.selectedIndex);
-    } else if (evt.target.selectedIndex == 6 && ((xsetlist || {}).value || !dinp2.value)) {
+    } else if (evt.target.selectedIndex == 6 && ((xsetlist || "").value || !dinp2.value)) {
       viewSet();
     } else if (evt.target.selectedIndex == 7) {
       calcCopy();
@@ -448,11 +448,11 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     evt.preventDefault();
   },
   xprsEval = () => {
-    rset ? (preresp.innerHTML = "") : ++rset && !val0s.length || ((xsetlist || {}).value = "")
+    rset ? (preresp.innerHTML = "") : ++rset && !val0s.length || ((xsetlist || "").value = "")
       || val0s.forEach(v => v && (dinp2.value = dinp2.value.replace(v[0], v[1])));
     let $ = {}, _ = {}, _ks = [], rslt,
       xprsns = (dinp2.value || "")
-        .replace(/^\/\*(?:\s*?\n|)([^]*?)\s*\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
+        .replace(/^\/\*(?:\s*?\n|)([^]*?)\n?[\t ]*\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
         .replace(/^(?:[^\n\/]|\/(?!\/))+;(?= *\/\/$|$)/gm, "$& \"\"")
         .replace(/&Tab;/g, "\t").replace(/(?:[^$.\wÀ-Ͽ]|^)\$(?=[$_a-zÀ-Ͽ])/gi, "$&.")
         .split("\n"),
@@ -556,7 +556,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
       quad2B.innerHTML = q2Bcopy;
       q2Bcopy = di2html = null;
     } else if (!plist.className) {
-      (xsetlist || {}).value = "";
+      (xsetlist || "").value = "";
       xsethlps.forEach(e => e.classList.add("is-hidden"));
       document.querySelector('#screenmask').className = plist.className = "is-hidden";
       q2Bcopy = di2html = null;

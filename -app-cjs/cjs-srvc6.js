@@ -87,7 +87,7 @@ ucLen(3)  // calls function &amp; returns result of 3 * 12
       (\`?\` = "if true", \`:\` = "if false") to invoke the
       correct directional formula.
     + If including multiple arguments in a *function* call, they are
-      separated with a comma \`,\`.
+      separated by a comma \`,\`.
     + If an argument is not a number, it is wrapped in quotes \`" … "\`.
 */
 
@@ -713,7 +713,7 @@ srui += "\\n<div id=trgrndr class=cfield></div>\\n";
 
 rxs = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:[$\\wÀ-Ͽ]+|\\(.*?\\)) *=>.|^[\\w.]+$/];
 msgClr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc"));
-rsltSh = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; !ri || (trgrndr.innerHTML = (ri > 1 ? rslt : "\\n<pre>" + rslt + "</pre>\\n")); };
+rsltSh = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 1 ? rslt : "\\n<pre>" + rslt + "</pre>\\n"; };
 window.txtaSel = e => _.msgClr() || e.focus() || e.setSelectionRange(0, e.textLength);
 window.txtSwap = () => _.msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
 window.strPars = () => { let lm, sv = sepainp.value, rv = rfncinp.value.trim(); _.msgClr(); if (_.rxs[0].test(sv)) { trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; [trgtxta, trghelp].forEach(e => e.classList.add(!lm ? "iwarn" : "isucc")); } _.rsltSh( srctxta.value.replace( !_.rxs[1].test(sv) ? sv : eval(sv), window[rv] || (!_.rxs[2].test(rv) ? rv : window.eval(rv)) )); };
@@ -732,8 +732,8 @@ respShow((dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(xstor["JScode"]["tutor
 /*
  6. Extend your use of the search-and-replace web app with the extra
     know-how to __locate a substring of a lengthy document__.
-    + Before we can demo the new search-and-replace UI on this page
-      we must reload the page with a supplemental data module that
+    + Before we demo the new search-and-replace UI on this page, we
+      will load the app page with a supplemental data module that
       contains lengthy document texts -- called "sparknotes".
     + Import the "sparknotes" data module and reload this tutorial
       all at once by un-commenting the following one line of code.
@@ -795,7 +795,7 @@ rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); return !c1 ? \\"\\" : \\
       would be mushed together and lost to all recognition -- unless
       the text was first marked up like an HTML web doc.
     + Un-comment the following block of code, then tap "PARSE" to see
-      the same article text now decorated with HTML markup tags.
+      the same article text now decorated throughout with HTML tags.
     + Select "Normal render" and tap "PARSE" again to confirm that
       the rendered document's structure is appropriately kept intact.
 */
@@ -809,13 +809,13 @@ msgClr()
 */
 
 /*
-    + In this scenario, we did not provide a function definition as
-      our "Replace" input; Instead, we provided the function name
-      (\`docMrkp\`) of a sophisticated parsing function that performs
-      multiple search/replace conversions algorithmically.
-    + Notice also that the short *RegExp* provided as our "Search"
-      input serves the singular purpose of injecting the entire
-      document-as-a-string into our replacement function \`docMrkp\`.
+    + *Notice:* In this scenario, we did not provide a function
+      definition as our "Replace" input; Instead, we provided the
+      function name \`docMrkp\`, a sophisticated parsing function that
+      performs multiple search/replace conversions algorithmically.
+    + *Notice also:* The short *RegExp* provided as our "Search" input
+      serves the singular purpose of injecting the entire document-
+      as-a-string into our replacement function \`docMrkp\`.
 
  8. Use search-and-replace to __adjust the width of your memo text__
     to fit the screen size in which it will be reviewed or edited.
@@ -837,7 +837,7 @@ msgClr()
 /*
 rndrsel.selectedIndex = 1; rfncinp.value = trgtxta.value = ""; msgClr()
 window.lineUnwr = str => str.replace(/(\\S) *\\n(?!\\n|#|>|[:*+~-]? |\\d+\\.\\s|$)/g, "$1 "); //
-window.lineWrap = str => { let cpl = 70, cut = 0, brk = "\\n", rex = ".{1," + cpl + "}(\\\\s|$)" + (cut ? "|.{" + cpl + "}|.+$" : "|\\\\S+?(\\\\s|$)"); return str.match(new RegExp(rex, "g")).join(brk); };
+window.lineWrap = str => { let cpl = 70, cut = 0, brk = "\\n", rex = ".{1," + cpl + "}(\\\\s|$)" + (cut ? "|.{" + cpl + "}|.+$" : "|\\\\S+?(\\\\s|$)"); return (str.match(new RegExp(rex, "g")) || "").join(brk); };
 */
 
 /*
@@ -847,10 +847,10 @@ window.lineWrap = str => { let cpl = 70, cut = 0, brk = "\\n", rex = ".{1," + cp
     + *Challenge:* Play with the value of the \`cpl\` variable
       (your desired maximum width) in the \`lineWrap\` function, and
       reflow the text of the article at various cpl settings.
-    + *Also:* After applying a random wraparound width, try undoing
-      it: Clear the "Source" text field, tap "SWAP" to swap the
-      "Source" and "Target" content, then use \`lineUnwr\` to restore
-      the "Dune" article text to its original state.
+    + *Also:* After applying a random wraparound width, try undoing it:
+      Clear the "Source" text field, tap "SWAP" to swap the "Source"
+      and "Target" content, then use \`lineUnwr\` to restore the "Dune"
+      article text to its original state.
 */
 //`;
 
