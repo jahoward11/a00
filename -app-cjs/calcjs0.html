@@ -61,7 +61,7 @@ body {
   appearance: none;
 }
 #cmain select.anone::-ms-expand { display: none; }
-#cmain pre {
+#cgrid pre, #cmain>#preresp {
   background-color: unset;
   color: unset;
   font: normal medium/1.25 monospace;
@@ -240,11 +240,11 @@ body {
   margin-bottom: 8px;
 }
 #cmain .addns>.ccntr { margin-right: 0; }
-#cmain .cfield>.help {
+#cmain .cfield>.chelp {
   font-size: 12px;
   margin-top: 4px;
 }
-#cmain .cfield>.help:not(.is-hidden) { display: block; }
+#cmain .cfield>.chelp:not(.is-hidden) { display: block; }
 #xctrls #xsetinp { width: 168px; }
 #xctrls #xsetlist {
   width: 24px;
@@ -301,8 +301,8 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
     </select></span></span><span class="ccntr"><button id="xbtnsav">
     <span class="isucc">&#x267a;</span> SAVE</button></span><span class="ccntr"><button id="xbtndel">
     <span class="iwarn">&#x2715;</span> DEL</button></span>
-  <span class="help isucc is-hidden">Expression set is saved in local storage.</span>
-  <span class="help iwarn is-hidden">Expression set is deleted from local storage.</span>
+  <span class="chelp isucc is-hidden">Expression set is saved in local storage.</span>
+  <span class="chelp iwarn is-hidden">Expression set is deleted from local storage.</span>
 </div>
 </main>
 <script type="text/javascript">
@@ -331,7 +331,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
   xsetlist = document.querySelector('#xctrls #xsetlist'),
   xbtnsav = document.querySelector('#xctrls #xbtnsav'),
   xbtndel = document.querySelector('#xctrls #xbtndel'),
-  xsethlps = document.querySelectorAll('#xctrls .help'),
+  xsethlps = document.querySelectorAll('#xctrls .chelp'),
   dinp2 = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
     || { value: dinput.innerHTML.replace(/\n+$|^\n+/g, "") },
   respShow = resp => { preresp.innerHTML
@@ -358,7 +358,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     let nscr = document.createElement('script');
     !url || (nscr.src = url);
     nscr.type = typeof typ === 'string' && typ || (/\.mjs$/.test(url) ? 'module' : 'text/javascript');
-    !url || !/^http/.test(url) || !/^http/.test(window.location.protocol)
+    !url || !/^https:\/\/\S+cloudant/.test(url) || !/^http/.test(window.location.protocol)
     || !window.navigator.onLine || nscr.setAttribute('crossorigin', 'use-credentials');
     nscr.innerHTML = !url && cnt ? cnt : null;
     nscr.onerror = err => rjct("**Alert: Script resource GET/load error occured.");

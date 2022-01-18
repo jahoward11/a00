@@ -62,8 +62,35 @@ const mditload = `
 // try { markdownit } catch { Promise.all(["", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-js-mdit/markdown-it" + e + ".min.js"))).then().catch(respShow) }
 `;
 
+const t3srpl = `
+t3x = xstor["JScode"]["tutorial3"];
+bodGen = src => src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui = /g, "").split(/;\\nsrui \\+= /).map(eval).join("").trim() + "\\n"; //
+scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,"); //
+uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
+
+// srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
+try { srwrap } catch { uiDspl(bodGen(t3x)); scrInj(null, 'module', scrGen(t3x)).catch(respShow); }
+
+/*
+github.com/beautify-web/js-beautify v1.14.0
+github.com/highlightjs/highlight.js v10.4.1
+highlightjs.org
+*/
+// window.js_beautify || window.hljs || (window.location.search = "cmods=prj10.js&dload=t3srpl&jsrcs=../-res-js/highlight.pack.js,https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.0/beautify.min.js");
+// window.bj1 = str => window.js_beautify(str.replace(/(?=\\.forEach\\(|\\.map\\(|\\.match\\(|\\.replace\\()/g, "\\n"), { "indent_size": 2, "space_after_anon_function": true });
+// window.hj1 = str => "<style>@import \\"../-res-css-hljs/atom-one-light.css\\";</style><pre class=hljs>" + window.hljs.highlightAuto(!window.bj1 ? str : window.bj1(str)).value + "</pre>";
+
+/*
+/spark/.test(window.location.search) || (window.location.search = "!displ&cmods=cjs-spark.js&dload=t3srpl");
+srctxta.value = xstor["sparknotes"]["mythology"].replace(/\\n\\*\\/$|^\\/\\*\\n/g, "");
+sepainp.value = "/^.*?(\\\\bmyth).*\\\\n*|^.*\\\\n*/gim"; //
+rfncinp.value = "(m, c1, i) => { i || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" <strong>\\" + ++it1 + \\".</strong> <em>[line \\" + it0 + \\"]</em>\\\\n\\" + m.replace(/\\\\bmyth/gi, \\"<mark>$&</mark>\\"); }";
+*/
+//`;
+
 export {
   groupname, vkeys, nformat,
   uiwidth, objloc, scripts,
-  caches, token, apptxt, mditload
+  caches, token, apptxt,
+  mditload, t3srpl
 };

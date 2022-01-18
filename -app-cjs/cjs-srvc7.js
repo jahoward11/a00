@@ -33,9 +33,9 @@ __TILT MAZE__
 */
 
 g4ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
-g4ui += "\\nhtml { box-sizing: border-box; }";
+g4ui += "\\nhtml { box-sizing: border-box; min-width: 375px; }";
 g4ui += "\\nhr { margin: 1.5rem 0; }";
-g4ui += "\\n#g4wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 16px 0; }";
+g4ui += "\\n#g4wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 24px 0; }";
 g4ui += "\\n#g4wrap .cfield { max-width: 359px; }";
 g4ui += "\\n#g4wrap .cfield:not(:last-child) { margin-bottom: 8px; }";
 g4ui += "\\n#g4wrap .ccntr:not(:last-child) { margin-right: 8px; }";
@@ -58,7 +58,7 @@ g4ui += "\\n<div class=cfield align=center><span class=ccntr><button onclick=pcM
 g4ui += "\\n<div class=cfield align=center><span class=ccntr><button onclick=pcMove(2)>&dtrif; BOTTOM</button></span></div>\\n";
 
 // g4wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
-try { g4wrap && (g4board.innerHTML = ""); } catch { ndiv = document.createElement('div'); ndiv.id = "g4wrap"; ndiv.innerHTML = g4ui; cmain.appendChild(ndiv); }
+try { g4wrap && (g4board.innerHTML = "") } catch { ndiv = document.createElement('div'); ndiv.id = "g4wrap"; ndiv.innerHTML = g4ui; cmain.appendChild(ndiv); }
 
 dbar = midx = gball = tstrk = t0trk = ""
 t1trk = 0;

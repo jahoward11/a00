@@ -214,9 +214,9 @@ __*Tutorial Two: Building a sliding-tiles puzzle (and other games)*__
 
 // __* * * SLIDING TILES * * *__
 g1ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
-g1ui += "\\nhtml { box-sizing: border-box; }";
+g1ui += "\\nhtml { box-sizing: border-box; min-width: 375px; }";
 g1ui += "\\nhr { margin: 1.5rem 0; }";
-g1ui += "\\n#g1wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 16px 0; }";
+g1ui += "\\n#g1wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 24px 0; }";
 g1ui += "\\n#g1wrap .cfield { max-width: 359px; }";
 g1ui += "\\n#g1wrap .cfield:not(:last-child) { margin-bottom: 8px; }";
 g1ui += "\\n#g1wrap .ccntr:not(:last-child) { margin-right: 8px; }";
@@ -365,9 +365,9 @@ g1Reset();
 
 // __* * * LIGHTS OUT * * *__
 g2ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
-g2ui += "\\nhtml { box-sizing: border-box; }";
+g2ui += "\\nhtml { box-sizing: border-box; min-width: 375px; }";
 g2ui += "\\nhr { margin: 1.5rem 0; }";
-g2ui += "\\n#g2wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 16px 0; }";
+g2ui += "\\n#g2wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 24px 0; }";
 g2ui += "\\n#g2wrap .cfield { max-width: 359px; }";
 g2ui += "\\n#g2wrap .cfield:not(:last-child) { margin-bottom: 8px; }";
 g2ui += "\\n#g2wrap .ccntr:not(:last-child) { margin-right: 8px; }";
@@ -406,9 +406,9 @@ window.litSwi = (rx, cx) => { u2tog.checked ? window["n" + rx + cx].classList.to
 
 // __* * * PEGS * * *__
 g3ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
-g3ui += "\\nhtml { box-sizing: border-box; }";
+g3ui += "\\nhtml { box-sizing: border-box; min-width: 375px; }";
 g3ui += "\\nhr { margin: 1.5rem 0; }";
-g3ui += "\\n#g3wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 16px 0; }";
+g3ui += "\\n#g3wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 24px 0; }";
 g3ui += "\\n#g3wrap .cfield { max-width: 359px; }";
 g3ui += "\\n#g3wrap .cfield:not(:last-child) { margin-bottom: 8px; }";
 g3ui += "\\n#g3wrap .ccntr:not(:last-child) { margin-right: 8px; }";
@@ -657,21 +657,21 @@ str.replace(/(deaf)\\w+ (\\w+)\\./i, (m, c1, c2) => \`\${c1}? Or \${c2.replace(/
 */
 
 srui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
-srui += "\\nhtml { box-sizing: border-box; word-wrap: break-word; overflow-wrap: break-word; }";
+srui += "\\nhtml { box-sizing: border-box; min-width: 375px; word-wrap: break-word; overflow-wrap: break-word; }";
 srui += "\\nhr { margin: 1.5rem 0; }";
-srui += "\\n#srwrap { font: normal medium Helvetica, Arial, sans-serif; margin: 16px 0; }";
+srui += "\\n#srwrap { font: normal medium Helvetica, Arial, sans-serif; margin: 24px 0; }";
 srui += "\\n#srwrap textarea { display: block; font-size: medium; width: 100%; height: 288px; }";
-srui += "\\n#srwrap pre { white-space: pre-wrap; }";
 srui += "\\n#srwrap input[type=text] { width: 288px; }";
 srui += "\\n#srwrap .iwarn { color: Orange; }";
 srui += "\\n#srwrap .isucc { color: CornFlowerBlue; }";
+srui += "\\n#srwrap .pwrap { white-space: pre-wrap; }";
 srui += "\\n#srwrap textarea.iwarn { color: unset; border-color: Orange; }";
 srui += "\\n#srwrap textarea.isucc { color: unset; border-color: CornFlowerBlue; }";
 srui += "\\n#srwrap .cfield { max-width: 720px; }";
 srui += "\\n#srwrap .cfield:not(:last-child) { margin-bottom: 8px; }";
 srui += "\\n#srwrap .ccntr:not(:last-child) { margin-right: 8px; }";
 srui += "\\n#srwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
-srui += "\\n#srwrap .cfield>.help { font-size: 12px; margin-top: 4px; }";
+srui += "\\n#srwrap .cfield>.chelp { font-size: 12px; margin-top: 4px; }";
 srui += "\\n#srwrap h4+.cfield:not(:last-child) { margin-bottom: 16px; }";
 srui += "\\n</style>\\n<hr>\\n<h4 class=cfield><span onclick=txtaSel(srctxta)>Source</span></h4>";
 srui += "\\n<div class=cfield><textarea id=srctxta></textarea></div>";
@@ -681,7 +681,7 @@ srui += "\\n<div class=cfield>\\n<span class=ccntr><select id=rndrsel>\\n<option
 srui += "<span class=ccntr><input type=button value=\\"&#x2964; PARSE\\" onclick=strPars()></span>";
 srui += "<span class=ccntr><input type=button value=\\"&rlhar; SWAP\\" onclick=txtSwap()></span>\\n</div>";
 srui += "\\n<h4 class=cfield><span onclick=txtaSel(trgtxta)>Target</span></h4>";
-srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=trghelp class=help></div></div>";
+srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=trghelp class=chelp></div></div>";
 srui += "\\n<div id=trgrndr class=cfield></div>\\n";
 
 // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
@@ -713,7 +713,7 @@ srui += "\\n<div id=trgrndr class=cfield></div>\\n";
 
 rxs = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:[$\\wÀ-Ͽ]+|\\(.*?\\)) *=>.|^[\\w.]+$/];
 msgClr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc"));
-rsltSh = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 1 ? rslt : "\\n<pre>" + rslt + "</pre>\\n"; };
+rsltSh = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 1 ? rslt : "\\n<pre class=pwrap>" + rslt + "</pre>\\n"; };
 window.txtaSel = e => _.msgClr() || e.focus() || e.setSelectionRange(0, e.textLength);
 window.txtSwap = () => _.msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
 window.strPars = () => { let lm, sv = sepainp.value, rv = rfncinp.value.trim(); _.msgClr(); if (_.rxs[0].test(sv)) { trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; [trgtxta, trghelp].forEach(e => e.classList.add(!lm ? "iwarn" : "isucc")); } _.rsltSh( srctxta.value.replace( !_.rxs[1].test(sv) ? sv : eval(sv), window[rv] || (!_.rxs[2].test(rv) ? rv : window.eval(rv)) )); };
@@ -801,7 +801,7 @@ rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); return !c1 ? \\"\\" : \\
 */
 
 /*
-try { docMrkp } catch { markdownit && (window.docMrkp = md => markdownit({ html: 1, typographer: 1 }).use(markdownitDeflist).render(md.replace(/[^-](?=--[^-])/g, "$&-"))); };
+try { docMrkp } catch { window.markdownit && (window.docMrkp = md => markdownit({ html: 1, typographer: 1 }).use(markdownitDeflist).render(md.replace(/[^-](?=--[^-])/g, "$&-"))); };
 rndrsel.selectedIndex = 0;
 sepainp.value = "/[^]+/";
 rfncinp.value = "docMrkp";
