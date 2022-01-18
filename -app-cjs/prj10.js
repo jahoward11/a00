@@ -58,8 +58,12 @@ dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</titl
 respShow((dwrap[0] + bodGen(t2x) + dwrap[1] + scrGen(t2x) + dwrap[2]).replace(/<(?=[!/?a-z])/gi, "&lt;"))
 */`;
 
+const mditload = `
+// try { markdownit } catch { Promise.all(["", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-js-mdit/markdown-it" + e + ".min.js"))).then().catch(respShow) }
+`;
+
 export {
   groupname, vkeys, nformat,
   uiwidth, objloc, scripts,
-  caches, token, apptxt
+  caches, token, apptxt, mditload
 };
