@@ -42,7 +42,7 @@ body {
 }
 #cmain sub { bottom: -0.25em; }
 #cmain sup { top: -0.5em; }
-#cmain button, #cmain input, #cmain select {
+#cmain button, #cmain input:not([type=checkbox]), #cmain select {
   background: #f9f9f9;
   color: Grey;
   font-size: 14px;
@@ -52,7 +52,7 @@ body {
   padding: 0 8px;
   border: 0;
   border-radius: 0;
-  vertical-align: top;
+  vertical-align: baseline;
 }
 #cmain input::placeholder { opacity: 0.5; }
 #cmain select.anone {
@@ -223,7 +223,7 @@ body {
 #cmain .slist { position: relative; }
 #cmain .slist::after {
   position: absolute;
-  top: 8px;
+  top: 6px;
   right: 8px;
   color: Grey;
   content: " ";

@@ -620,7 +620,7 @@ str.replace("silence.", "SILENCE!")    // 2nd example
            \`^\` = start of entire string, \`$\` = end of entire string)
 */
 
-"Controlled chaos.".replace(/ch?/gi, "K")          // 1st example
+"Controlled chaos.".replace(/ch?/gi, "K")        // 1st example
 
 str.replace(/(deaf)\\w+ (\\w+)\\./i, "$1ness… $2…") // 2nd example
 
