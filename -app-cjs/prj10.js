@@ -36,7 +36,7 @@ caches.keys().then(respShow)
 //`;
 
 const token = `/*
-Note: Token request fails because CORS is disabled at iam.cloud.ibm.com.
+*Note:* Token request fails because CORS is disabled at iam.cloud.ibm.com.
 
 hdrs = new Headers();
 hdrs.append("Content-Type", "application/x-www-form-urlencoded");
@@ -50,7 +50,7 @@ opts = { method: 'POST', headers: hdrs, body: uenc, redirect: 'follow' };
 fetch("https:/" + "/iam.cloud.ibm.com/identity/token", opts).then(resp => resp.text()).then(respShow).catch(respShow);
 */`;
 
-const apptxt = `/*
+const guitxt = `/*
 t2x = xstor["JScode"]["tutorial2"];
 bodGen = src => "\\n<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/;$|^g\\dui = /g, "").split(/;\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n") + "\\n"; //
 scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,")).join("\\n\\n"); //
@@ -73,16 +73,16 @@ try { srwrap } catch { uiDspl(bodGen(t3x)); scrInj(null, 'module', scrGen(t3x)).
 
 /*
 github.com/beautify-web/js-beautify v1.14.0
-github.com/highlightjs/highlight.js v10.4.1
+github.com/highlightjs/highlight.js/ v10.4.1
 highlightjs.org
 */
 // window.js_beautify || window.hljs || (window.location.search = "cmods=prj10.js&dload=t3srpl&jsrcs=../-res-js/highlight.pack.js,https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.0/beautify.min.js");
-// window.bj1 = str => window.js_beautify(str.replace(/(?=\\.forEach\\(|\\.map\\(|\\.match\\(|\\.replace\\()/g, "\\n"), { "indent_size": 2, "space_after_anon_function": true });
+// window.bj1 = str => window.js_beautify(str, { "indent_size": 2, "space_after_anon_function": 1, "keep-array-indentation": 1, "break-chained-methods": 1 }); //.replace(/(?=\\.concat\\(|\\.forEach\\(|\\.map\\(|\\.match\\(|\\.replace\\()/g, "\\n")
 // window.hj1 = str => "<style>@import \\"../-res-css-hljs/atom-one-light.css\\";</style><pre class=hljs>" + window.hljs.highlightAuto(!window.bj1 ? str : window.bj1(str)).value + "</pre>";
 
 /*
-/spark/.test(window.location.search) || (window.location.search = "!displ&cmods=cjs-spark.js&dload=t3srpl");
-srctxta.value = xstor["sparknotes"]["mythology"].replace(/\\n\\*\\/$|^\\/\\*\\n/g, "");
+/spark/.test(window.location.search) || (window.location.search = "!displ&cmods=cjs-spark.js,prj10.js&dload=t3srpl");
+srctxta.value = xstor["sparknotes"]["mythology"].replace(/\\n\\*\\/$|^\\/\\*\\n/g, ""); //
 sepainp.value = "/^.*?(\\\\bmyth).*\\\\n*|^.*\\\\n*/gim"; //
 rfncinp.value = "(m, c1, i) => { i || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" <strong>\\" + ++it1 + \\".</strong> <em>[line \\" + it0 + \\"]</em>\\\\n\\" + m.replace(/\\\\bmyth/gi, \\"<mark>$&</mark>\\"); }";
 */
@@ -91,6 +91,6 @@ rfncinp.value = "(m, c1, i) => { i || (window.it0 = window.it1 = 0); ++it0; retu
 export {
   groupname, vkeys, nformat,
   uiwidth, objloc, scripts,
-  caches, token, apptxt,
+  caches, token, guitxt,
   mditload, t3srpl
 };
