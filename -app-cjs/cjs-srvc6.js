@@ -739,7 +739,7 @@ respShow((dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(xstor["JScode"]["tutor
       all at once by un-commenting the following one line of code.
 */
 
-// window.location.search = "cmods=cjs-spark.js&dload=tutorial3&jsrcs=../-res-js-mdit/markdown-it.min.js,../-res-js-mdit/markdown-it-deflist.min.js"
+// window.location.search = "cmods=spark.js&dload=tutorial3&jsrcs=../-res-mdit/markdown-it.min.js,../-res-mdit/markdown-it-deflist.min.js"
 
 /*
     + Having reloaded the page, ensure that the search-and-replace UI
@@ -750,7 +750,7 @@ respShow((dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(xstor["JScode"]["tutor
 */
 
 /*
-srctxta.value = xstor["sparknotes"]["dune"].replace(/\\n\\*\\/$|^\\/\\*\\n/g, "");
+srctxta.value = xstor["sparknotes"]["dune"].replace(/\\n\\*\\/$|^\\/\\*\\n/g, ""); //
 sepainp.value = "/^.*?(\\\\bdune\\\\b).*\\\\n*|^.*\\\\n*/gim"; //
 rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); return !c1 ? \\"\\" : \\" \\" + ++itr + \\". \\" + m; }";
 */

@@ -307,7 +307,7 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
 </main>
 <script type="text/javascript">
 !/^http/.test(window.location.protocol) || !window.navigator.onLine || !window.navigator.serviceWorker
-|| window.navigator.serviceWorker.register("../-app-cjs/app-sw.js") //, { scope: "../" })
+|| window.navigator.serviceWorker.register("../-app-cjs/cjs-sw.js") //, { scope: "../" })
   .then(reg => window.console.log("SW registration succeeded. Scope: " + reg.scope))
   .catch(err => window.console.log("SW registration failed: " + err));
 </script>
@@ -358,7 +358,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     let nscr = document.createElement('script');
     !url || (nscr.src = url);
     nscr.type = typeof typ === 'string' && typ || (/\.mjs$/.test(url) ? 'module' : 'text/javascript');
-    !url || !/^https:\/\/\S+cloudant/.test(url) || !/^http/.test(window.location.protocol)
+    !url || !/^https:\/\/[^ \/]+cloud/.test(url) || !/^http/.test(window.location.protocol)
     || !window.navigator.onLine || nscr.setAttribute('crossorigin', 'use-credentials');
     nscr.innerHTML = !url && cnt ? cnt : null;
     nscr.onerror = err => rjct("**Alert: Script resource GET/load error occured.");
