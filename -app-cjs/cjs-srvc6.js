@@ -711,12 +711,12 @@ srui += "\\n<div id=trgrndr class=cfield></div>\\n";
       of its field's content.
 */
 
-rxs = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:[$\\wÀ-Ͽ]+|\\(.*?\\)) *=>.|^[\\w.]+$/];
+rxs = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:[$\\wÀ-Ͽ]+|\\(.*?\\)) *=>.|^[\\w.]+$|^".*"$/];
 msgClr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc"));
 rsltSh = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 1 ? rslt : "\\n<pre class=pwrap>" + rslt + "</pre>\\n"; };
 window.txtaSel = e => _.msgClr() || e.focus() || e.setSelectionRange(0, e.textLength);
 window.txtSwap = () => _.msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
-window.strPars = () => { let lm, sv = sepainp.value, rv = rfncinp.value.trim(); _.msgClr(); if (_.rxs[0].test(sv)) { trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; [trgtxta, trghelp].forEach(e => e.classList.add(!lm ? "iwarn" : "isucc")); } _.rsltSh( srctxta.value.replace( !_.rxs[1].test(sv) ? sv : eval(sv), window[rv] || (!_.rxs[2].test(rv) ? rv : window.eval(rv)) )); };
+window.strPars = () => { let lm, sv = sepainp.value, rv = rfncinp.value; _.msgClr(); if (_.rxs[0].test(sv)) { trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; [trgtxta, trghelp].forEach(e => e.classList.add(!lm ? "iwarn" : "isucc")); } _.rsltSh( srctxta.value.replace( !_.rxs[1].test(sv) ? sv : eval(sv), window[rv] || (!_.rxs[2].test(rv.trim()) ? rv.replace(/\\n/g, "\n").replace(/\\t/g, "\t").replace(/\\\\/g, "\\") : window.eval(rv)) )); };
 
 /*
    + *Optional:* Un-comment the following block of code to generate the
