@@ -23,8 +23,9 @@ const objloc = `//
 respShow(Object.fromEntries(Object.keys(location).map(e => [e, location[e]])));
 //`;
 
-const scripts = `//
-respShow(cheadg.outerHTML.replace(/</g, "&lt;"));
+const dscripts = `//
+// respShow(document.head.outerHTML.replace(/</g, "&lt;"));
+// respShow(cheadg.outerHTML.replace(/</g, "&lt;"));
 respShow(Array.from(document.querySelectorAll('script')).map(e => e.src));
 // respShow(document.querySelector('script:last-of-type').outerHTML.replace(/</g, "&lt;"));
 //`;
@@ -33,6 +34,13 @@ const bcaches = `//
 caches.keys().then(respShow)
 // caches.keys().then(keys => caches.open(keys[0])).then(cache => cache.keys()).then(keys => keys.map(k => ({ url: k.url, mode: k.mode, dest: k.destination }))).then(respShow)
 // caches.open("calcjs-v00.12").then(cache => cache.delete("https://jahoward11.github.io/a00/-res-js/jstat-tdist.js")).then(respShow)
+//`;
+
+const chisq02 = `//
+exp = [9, 44, 34, 63, 9, 44, 34, 63]
+obs = [8, 28, 39, 75, 10, 61, 29, 50]
+csq = obs.reduce((a, b, i) => a + (b - _.exp[i])**2/_.exp[i], 0)
+1 - jStat.chisquare.cdf(csq, 3)
 //`;
 
 const itoken = `/*
@@ -58,8 +66,9 @@ dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</titl
 respShow((dwrap[0] + bodGen(t2x) + dwrap[1] + scrGen(t2x) + dwrap[2]).replace(/<(?=[!/?a-z])/gi, "&lt;"))
 */`;
 
-const mditload = `
-// try { markdownit } catch { Promise.all(["", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).then().catch(respShow) }
+const scrsload = `
+// try { markdownit && "" } catch { Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).then(() => "").catch(respShow) }
+// try { hljs && js_beautify && "" } catch { Promise.all(["../-res-js/highlight.pack.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then(() => "").catch(respShow) }
 `;
 
 const t3srplc = `
@@ -71,27 +80,32 @@ uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; 
 // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 try { srwrap } catch { uiDspl(bodGen(t3x)); scrInj(null, 'module', scrGen(t3x)).catch(respShow); }
 
+// /spark/.test(window.location.search) || (window.location.search = "cmods=spark.js,../-dev/prj10.js&dload=t3srplc");
+
 /*
-github.com/beautify-web/js-beautify v1.14.0
+github.com/beautify-web/js-beautify/ v1.14.0
 github.com/highlightjs/highlight.js/ v10.4.1
 highlightjs.org
-//.replace(/(?=\\.concat\\(|\\.forEach\\(|\\.map\\(|\\.match\\(|\\.replace\\()/g, "\\n")
 */
-// window.js_beautify || window.hljs || (window.location.search = "cmods=spark.js,../-dev/prj10.js&dload=t3srplc&jsrcs=../-res-js/highlight.pack.js,../-res-js/jsbeautify1.14.0.js");
+// try { hljs && js_beautify && "" } catch { Promise.all(["../-res-js/highlight.pack.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then(() => "").catch(respShow) }
+// bpre = str => str.replace(/(?=\\.concat\\(|\\.forEach\\(|\\.map\\(|\\.match\\(|\\.replace\\()/g, "\\n");
 // window.bj1 = str => window.js_beautify(str, { "indent_size": 2, "space_after_anon_function": 1, "keep-array-indentation": 1, "break-chained-methods": 1 });
 // window.hj1 = str => "<style>@import \\"../-res-hljs/atom-one-light.css\\";</style><pre class=hljs>" + window.hljs.highlightAuto(!window.bj1 ? str : window.bj1(str)).value + "</pre>";
 
 /*
-/spark/.test(window.location.search) || (window.location.search = "!displ&cmods=spark.js,../-dev/prj10.js&dload=t3srplc");
-srctxta.value = xstor["sparknotes"]["mythology"].replace(/\\n\\*\\/$|^\\/\\*\\n/g, ""); //
-sepainp.value = "/^.*?(\\\\bmyth).*\\\\n*|^.*\\\\n*/gim"; //
-rfncinp.value = "(m, c1, i) => { i || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" <strong>\\" + ++it1 + \\".</strong> <em>[line \\" + it0 + \\"]</em>\\\\n\\" + m.replace(/\\\\bmyth/gi, \\"<mark>$&</mark>\\"); }";
+https://github.com/markdown-it/markdown-it/ v12.0.6
+https://markdown-it.github.io/markdown-it/
 */
+// try { markdownit && "" } catch { Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).catch(respShow) }
+// window.docMrkp = md => window.markdownit({ html: 1, typographer: 1 }).use(markdownItDecorate).use(markdownitDeflist).use(markdownItImplicitFigures).use(markdownitIns).use(markdownitMark).use(markdownitSub).use(markdownitSup).render(md.replace(/[^-](?=--[^-])/g, "$&-"));
+// srctxta.value = xstor["sparknotes"]["mythology"].replace(/\\n\\*\\/$|^\\/\\*\\n/g, ""); //
+// sepainp.value = "/^.*?(\\\\bmyth).*\\\\n*|^.*\\\\n*/gim"; //
+// rfncinp.value = "(m, c1, i) => { i || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" <strong>\\" + ++it1 + \\".</strong> <em>[line \\" + it0 + \\"]</em>\\\\n\\" + m.replace(/\\\\bmyth/gi, \\"<mark>$&</mark>\\"); }";
 //`;
 
 export {
   groupname, vkeys, nformat,
-  uiwidth, objloc, scripts,
-  bcaches, itoken, guictxt,
-  mditload, t3srplc
+  uiwidth, objloc, dscripts,
+  bcaches, chisq02, itoken,
+  guictxt, scrsload, t3srplc
 };
