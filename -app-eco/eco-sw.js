@@ -31,7 +31,7 @@ const hostibm = /\.cloudant\.com$/.test(location.host),
   ],
   rcvd1 = {},
   tstamp = Date.now(),
-  sepaupds = /\/a00\/(?:(?:-app-eco\/|)[\w.-]+\??|-res-css\/(?:reset|style)[\w.-]+|-res-js\/ebook-annos-fns\.js)$|\.cloudant\.com\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|-res-\w+\/u\d\d[\w.-]+$/,
+  sepaupds = /\/a00\/(?:(?:-app-eco\/|-dev.*?\/)[\w.-]+\??|-res-css\/(?:reset|style)[\w.-]+|-res-js\/ebook-annos-fns\.js)$|\.cloudant\.com\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|-res-\w+\/u\d\d[\w.-]+$/,
   sepakprs = /\/a00\/[\w/.-]+\??$|\.cloudant\.com\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|-res-\w+\/u\d\d[\w.-]+$|\/oauth\/v4\/.+\/(?:openid-configuration|publickeys)$|\/eco\/projects$|\/\/fonts\.gstatic\.com\/|\.gravatar\.com\/avatar\//;
 
 self.addEventListener('install', e => {
@@ -62,8 +62,7 @@ self.addEventListener('fetch', e => {
     } else {
       //console.log("[Service Worker] Fetching resource: " + e.request.url);
       return fetch(e.request).then( rsp2 =>
-        !rsp2.ok || e.request.method !== 'GET' || /\?rev=/.test(e.request.url)
-        || !sepakprs.test(e.request.url)
+        !rsp2.ok || e.request.method !== 'GET' || !sepakprs.test(e.request.url)
         ? rsp1.ok && rsp1 || rsp2
         : caches.open(cacheName).then(cache => {
             console.log( "[Service Worker] Caching new resource: " + e.request.url
@@ -77,5 +76,5 @@ self.addEventListener('fetch', e => {
   };
   e.respondWith(
     !caches ? fetch(e.request) //caches.match("../-res-img/icon-192.png"))
-    : caches.match(e.request).then(reqPrc).catch(reqPrc).catch(() => fetch(e.request)) );
+    : caches.match(e.request).then(reqPrc).catch(reqPrc).catch(console.warn) );
 });
