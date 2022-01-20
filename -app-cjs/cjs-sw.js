@@ -12,12 +12,12 @@ const cacheName = "calcjs-v00.13",
     "../-app-cjs/cjs-srvc3.js",
     "../-app-cjs/cjs-srvc4.js",
     "../-app-cjs/cjs-srvc5.js",
-    "../-app-cjs/cjs-srvc6.js"
+    "../-app-cjs/cjs-srvc6.js",
     "../-app-cjs/cjs-srvc7.js"
   ],
   rcvd1 = {},
   tstamp = Date.now(),
-  sepaupds = /\/a00\/(?:-app-cjs\/|-dev|)[\w.-]+\??$/,
+  sepaupds = /\/a00\/(?:-app-cjs\/|-dev.*?\/|)[\w.-]+\??$/,
   sepakprs = /\/a00\/[\w/.-]+\??$/;
 
 self.addEventListener('install', e => {
@@ -47,8 +47,7 @@ self.addEventListener('fetch', e => {
     } else {
       //console.log("[Service Worker] Fetching resource: " + e.request.url);
       return fetch(e.request).then( rsp2 =>
-        !rsp2.ok || e.request.method !== 'GET' || /\?rev=/.test(e.request.url)
-        || !sepakprs.test(e.request.url)
+        !rsp2.ok || e.request.method !== 'GET' || !sepakprs.test(e.request.url)
         ? rsp1.ok && rsp1 || rsp2
         : caches.open(cacheName).then(cache => {
             console.log( "[Service Worker] Caching new resource: " + e.request.url
@@ -62,5 +61,5 @@ self.addEventListener('fetch', e => {
   };
   e.respondWith(
     !caches ? fetch(e.request)
-    : caches.match(e.request).then(reqPrc).catch(reqPrc).catch(() => fetch(e.request)) );
+    : caches.match(e.request).then(reqPrc).catch(reqPrc).catch(console.warn) );
 });
