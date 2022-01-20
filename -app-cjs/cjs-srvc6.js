@@ -677,9 +677,8 @@ srui += "\\n</style>\\n<hr>\\n<h4 class=cfield><span onclick=txtaSel(srctxta)>So
 srui += "\\n<div class=cfield><textarea id=srctxta></textarea></div>";
 srui += "\\n<div class=cfield><label class=ccntr><input type=text id=sepainp> Search</label></div>";
 srui += "\\n<div class=cfield><label class=ccntr><input type=text id=rfncinp> Replace</label></div>";
-srui += "\\n<div class=cfield>\\n<span class=ccntr><select id=rndrsel>\\n<option></option>\\n<option>PRE render</option>\\n<option>Normal render</option>\\n</select></span>";
-srui += "<span class=ccntr><input type=button value=\\"&#x2964; PARSE\\" onclick=strPars()></span>";
-srui += "<span class=ccntr><input type=button value=\\"&rlhar; SWAP\\" onclick=txtSwap()></span>\\n</div>";
+srui += "\\n<div class=cfield>\\n<span class=ccntr><select id=rndrsel>\\n" + ["No render", "PRE render", "PRE-wrap render", "Normal render"].map(e => "<option>" + e + "</option>").join("\\n");
+srui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x2964; PARSE\\" onclick=strPars()></span><span class=ccntr><input type=button value=\\"&rlhar; SWAP\\" onclick=txtSwap()></span>\\n</div>";
 srui += "\\n<h4 class=cfield><span onclick=txtaSel(trgtxta)>Target</span></h4>";
 srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=trghelp class=chelp></div></div>";
 srui += "\\n<div id=trgrndr class=cfield></div>\\n";
@@ -713,10 +712,10 @@ srui += "\\n<div id=trgrndr class=cfield></div>\\n";
 
 rxs = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:[$\\wÀ-Ͽ]+|\\(.*?\\)) *=>.|^[\\w.]+$|^".*"$/];
 msgClr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc"));
-rsltSh = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 1 ? rslt : "\\n<pre class=pwrap>" + rslt + "</pre>\\n"; };
+rsltSh = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 2 ? rslt : "\\n<pre" + (ri < 2 ? ">" : " class=pwrap>") + rslt + "</pre>\\n"; };
 window.txtaSel = e => _.msgClr() || e.focus() || e.setSelectionRange(0, e.textLength);
 window.txtSwap = () => _.msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
-window.strPars = () => { let lm, sv = sepainp.value, rv = rfncinp.value; _.msgClr(); if (_.rxs[0].test(sv)) { trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; [trgtxta, trghelp].forEach(e => e.classList.add(!lm ? "iwarn" : "isucc")); } _.rsltSh( srctxta.value.replace( !_.rxs[1].test(sv) ? sv : eval(sv), window[rv] || window.eval(_.rxs[2].test(rv.trim()) ? rv : '"' + rv.replace(/(?=")/g, "\\\\") + '"') )); };
+window.strPars = () => { let lm, sv = sepainp.value, rv = rfncinp.value; _.msgClr(); if (_.rxs[0].test(sv)) { trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; [trgtxta, trghelp].forEach(e => e.classList.add(!lm ? "iwarn" : "isucc")); } _.rsltSh( srctxta.value.replace( !_.rxs[1].test(sv) ? sv : eval(sv), window[rv] || window.eval(_.rxs[2].test(rv.trim()) ? rv : '"' + rv.replace(/"|\\\\/g, "\\\\$&") + '"') )); };
 
 /*
    + *Optional:* Un-comment the following block of code to generate the
