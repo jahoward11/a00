@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang=en>
+<title>Search and Replace</title>
+<meta charset="utf-8">
+<meta name=viewport content="width=device-width, initial-scale=1">
+
+<div id="srwrap">
+<style>
+*, *::before, *::after { box-sizing: inherit; }
+html { box-sizing: border-box; min-width: 375px; word-wrap: break-word; overflow-wrap: break-word; }
+hr { margin: 1.5rem 0; }
+#srwrap { font: normal medium Helvetica, Arial, sans-serif; margin: 24px 0; }
+#srwrap textarea { display: block; font-size: medium; width: 100%; height: 288px; }
+#srwrap input[type=text] { width: 288px; }
+#srwrap .iwarn { color: Orange; }
+#srwrap .isucc { color: CornFlowerBlue; }
+#srwrap textarea.iwarn { color: unset; border-color: Orange; }
+#srwrap textarea.isucc { color: unset; border-color: CornFlowerBlue; }
+#srwrap .pwrap { white-space: pre-wrap; }
+#srwrap pre:not(.pwrap) { white-space: pre; word-wrap: normal; overflow-wrap: normal; overflow-x: auto; }
+#srwrap .cfield { max-width: 720px; }
+#srwrap .cfield:not(:last-child) { margin-bottom: 8px; }
+#srwrap .ccntr:not(:last-child) { margin-right: 8px; }
+#srwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }
+#srwrap .cfield>.chelp { font-size: 12px; margin-top: 4px; }
+#srwrap h4+.cfield:not(:last-child) { margin-bottom: 16px; }
+</style>
+<h4 class="cfield"><span onclick="txtaSel(srctxta)">Source</span></h4>
+<div class="cfield"><textarea id="srctxta"></textarea></div>
+<div class="cfield"><label class="ccntr"><input type="text" id="sepainp"> Search</label></div>
+<div class="cfield"><label class="ccntr"><input type="text" id="rfncinp"> Replace</label></div>
+<div class="cfield">
+<span class="ccntr"><select id="rndrsel">
+<option>No render</option>
+<option>PRE render</option>
+<option>PRE-wrap render</option>
+<option>Normal render</option>
+</select></span><span class="ccntr"><input type="button" value="⥤ PARSE" onclick="strPars()"></span><span class="ccntr"><input type="button" value="⇌ SWAP" onclick="txtSwap()"></span>
+</div>
+<h4 class="cfield"><span onclick="txtaSel(trgtxta)">Target</span></h4>
+<div class="cfield"><textarea id="trgtxta"></textarea><div id="trghelp" class="chelp"></div></div>
+<div id="trgrndr" class="cfield"></div>
+</div>
+
+<script type=module>
+let rxs = [/^\/.+\/[im]*g[im]*$/, /^\/.+\/[gim]*$/, /^(?:[$\wÀ-Ͽ]+|\(.*?\)) *=>.|^[\w.]+$|^".*"$/],
+  msgClr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc")),
+  rsltSh = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 2 ? rslt : "\n<pre" + (ri < 2 ? ">" : " class=pwrap>") + rslt + "</pre>\n"; };
+window.txtaSel = e => msgClr() || e.focus() || e.setSelectionRange(0, e.textLength);
+window.txtSwap = () => msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
+window.strPars = () => { let lm, sv = sepainp.value, rv = rfncinp.value; msgClr(); if (rxs[0].test(sv)) { trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; [trgtxta, trghelp].forEach(e => e.classList.add(!lm ? "iwarn" : "isucc")); } rsltSh( srctxta.value.replace( !rxs[1].test(sv) ? sv : eval(sv), window[rv] || window.eval(rxs[2].test(rv.trim()) ? rv : '"' + rv.replace(/"|\\/g, "\\$&") + '"') )); };
+</script>
+</html>
