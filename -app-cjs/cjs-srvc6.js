@@ -225,8 +225,7 @@ g1ui += "\\n#g1wrap .blank, #g1wrap .gtile { width: 61px; height: 61px; border: 
 g1ui += "\\n#g1wrap .gtile { background: LightSteelBlue; color: White; font-size: large; font-weight: bold; cursor: pointer; text-align: center; }";
 g1ui += "\\n#trows, #tcols { max-width: 36px; }";
 g1ui += "\\n#g1board { margin: 12px; border-collapse: collapse; }";
-g1ui += "\\n#g1scor { position: relative; top: -8px; font-size: small; margin-left: 16px; }";
-g1ui += "\\n#g1movs { font-weight: bold; }";
+g1ui += "\\n#g1scor { position: relative; top: -8px; font-size: small; margin-left: 16px; }\\n#g1movs { font-weight: bold; }";
 g1ui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Sliding Tiles</h4>";
 g1ui += "\\n<div class=cfield><em>Objective:</em> Order the characters from least to greatest&mdash;starting at the top left&nbsp;corner.</div>";
 g1ui += "\\n<div>\\n<span class=ccntr><select id=tnmrl>\\n<option disabled>Characters</option>\\n";
@@ -378,8 +377,7 @@ g2ui += "\\n#g2circt td { width: 59px; height: 59px; border: 4px solid black; }"
 g2ui += "\\n#g2board { position: absolute; top: 0; margin: 16px; border-spacing: 8px; }";
 g2ui += "\\n#g2board td { background: MediumOrchid; width: 51px; height: 51px; border-radius: 26px; box-shadow: 0 0 16px 4px Orchid; cursor: pointer; }";
 g2ui += "\\n#g2board td.ldark { background: Indigo; box-shadow: 0 0 16px 4px Grey; }";
-g2ui += "\\n#g2scor { position: relative; top: -12px; font-size: small; margin-left: 16px; }";
-g2ui += "\\n#g2movs { font-weight: bold; }";
+g2ui += "\\n#g2scor { position: relative; top: -12px; font-size: small; margin-left: 16px; }\\n#g2movs { font-weight: bold; }";
 g2ui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Lights Out</h4>";
 g2ui += "\\n<div class=cfield><em>Objective:</em> Switch all matrix lights off.</div>";
 g2ui += "\\n<div class=cfield><em>Game Action:</em> Switching a diode in this lighting matrix also switches any directly connected up-, down-, left- or right- diodes.</div>";
@@ -423,8 +421,7 @@ g3ui += "\\n#g3board { position: absolute; top: 0; margin: 7px; border-spacing: 
 g3ui += "\\n#g3board td { background: Black; width: 15px; height: 15px; border-radius: 8px; box-shadow: inset 1px 0 3px 2px Grey; cursor: pointer; }";
 g3ui += "\\n#g3board td.nohol { background: Transparent; box-shadow: none; }";
 g3ui += "\\n#g3board td.phead { background: Red; box-shadow: -1px -1px 0 3px red, 1px 1px 8px 3px grey; }";
-g3ui += "\\n#g3scor { position: relative; top: -8px; font-size: small; margin-left: 16px; }";
-g3ui += "\\n#g3movs { font-weight: bold; }";
+g3ui += "\\n#g3scor { position: relative; top: -8px; font-size: small; margin-left: 16px; }\\n#g3movs { font-weight: bold; }";
 g3ui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Pegs</h4>";
 g3ui += "\\n<div class=cfield><em>Objective:</em> Remove all board pegs but&nbsp;one.</div>";
 g3ui += "\\n<div class=cfield><em>How to play:</em> A move is made by jumping one peg with an adjacent peg; The jumped peg is&nbsp;removed.<br>Tap on a peg to select it for jumping&mdash;Then, if you have a choice, tap on a highlighted hole to select it for that peg's&nbsp;destination.</div>";
@@ -672,7 +669,7 @@ srui += "\\n#srwrap .cfield:not(:last-child) { margin-bottom: 8px; }";
 srui += "\\n#srwrap .ccntr:not(:last-child) { margin-right: 8px; }";
 srui += "\\n#srwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
 srui += "\\n#srwrap .cfield>.chelp { font-size: 12px; margin-top: 4px; }";
-srui += "\\n#srwrap h4+.cfield:not(:last-child) { margin-bottom: 16px; }";
+srui += "\\n#srwrap h4+.cfield:not(:last-child) { margin-bottom: 16px; }\\n#trgrndr { display: flow-root; }";
 srui += "\\n</style>\\n<hr>\\n<h4 class=cfield><span onclick=txtaSel(srctxta)>Source</span></h4>";
 srui += "\\n<div class=cfield><textarea id=srctxta></textarea></div>";
 srui += "\\n<div class=cfield><label class=ccntr><input type=text id=sepainp> Search</label></div>";
