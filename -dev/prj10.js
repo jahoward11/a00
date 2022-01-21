@@ -91,7 +91,7 @@ highlightjs.org
 // try { hljs && js_beautify && "" } catch { Promise.all(["../-res-js/highlight.pack.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then(() => "").catch(respShow) }
 // bpre = str => str.replace(/(?=\\.concat\\(|\\.forEach\\(|\\.map\\(|\\.match\\(|\\.replace\\()/g, "\\n");
 // window.bj1 = str => js_beautify(str, { "indent_size": 2, "space_after_anon_function": 1, "keep-array-indentation": 1, "break-chained-methods": 1 });
-// window.hj1 = str => "<style>@import \\"../-res-hljs/atom-one-light.css\\"; #srwrap pre>pre.hljs { white-space: inherit; }</style><pre class=hljs>" + hljs.highlightAuto(!window.bj1 ? str : bj1(str)).value + "</pre>";
+// window.hj1 = str => "<style>@import \\"../-res-hljs/atom-one-light.css\\"; #srwrap pre>pre.hljs { margin: 0; white-space: inherit; }</style><pre class=hljs>" + hljs.highlightAuto(!window.bj1 ? str : bj1(str)).value + "</pre>";
 
 /*
 https://github.com/markdown-it/markdown-it/ v12.0.6
