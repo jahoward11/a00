@@ -286,7 +286,7 @@ try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap";
       beginning with \`tnx = …\` and ending with \`g1Reset();\`.
 */
 
-tnx = tcx = psh = rval = cval = tmax = tovr = m1trk = unsh = cxs = shxs = shuf = tarr = cr1s = cr2s = ""
+tnx = tcx = psh = rval = cval = tmax = tovr = m1trk = unsh = cxs = shxs = shuf = tarr = cr1s = cr2s = "";
 clrefs = [ "", "", ["#752424", "#9c3030", "#c33c3c", "#cf6363", "#db8a8a", "#e7b1b1", "#f3d8d8"], ["#856514", "#b1871b", "#dea821", "#e4ba4e", "#ebcb7a", "#f2dca6", "#f8eed3"], ["#2b506e", "#396a93", "#4785b8", "#6c9dc6", "#91b6d4", "#b6cee2", "#dae7f1"], ["#ff9999", "#ffcc99", "#fff099", "#99cc99", "#9999ff", "#cc99cc", "#d8bfd8"] ];
 uara = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
 urom = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"];
@@ -320,7 +320,7 @@ g1Reset();
 */
 
 // preresp.innerHTML = "" // clears any orange text (in case GUI text is still visible)
-// scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,")).join("\\n\\n"); //
+// scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?(?: *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,\\n  ")).join("\\n\\n"); //
 // localforage.getItem("tutor2js").then( rslt => respShow( _.scrGen(rslt).replace(/<(?=[!/?a-z])/gi, "&lt;") )).catch(respShow)
 
 /*
@@ -443,7 +443,7 @@ g3ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u3tog> 
 // g3wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 // try { g3wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g3wrap"; ndiv.innerHTML = g3ui; cmain.appendChild(ndiv); }
 
-jopts = peg0s = ""
+jopts = peg0s = "";
 m3trk = [];
 a0t6 = [0, 1, 2, 3, 4, 5, 6];
 p3sol = a0t6.map(r => _.a0t6.map(c => "" + [r, c])).flat();
@@ -723,7 +723,7 @@ window.strPars = () => { let lm, sv = sepainp.value, rv = rfncinp.value; _.msgCl
 */
 
 /*
-scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,"); //
+scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?(?: *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,\\n  "); //
 dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
 respShow((dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(xstor["JScode"]["tutorial3"]) + dwrap[2]).replace(/\\n<hr>/, "").replace(/<(?=[!/?a-z])/gi, "&lt;"))
 */
