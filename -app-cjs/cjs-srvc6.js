@@ -669,7 +669,8 @@ srui += "\\n#srwrap .cfield:not(:last-child) { margin-bottom: 8px; }";
 srui += "\\n#srwrap .ccntr:not(:last-child) { margin-right: 8px; }";
 srui += "\\n#srwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
 srui += "\\n#srwrap .cfield>.chelp { font-size: 12px; margin-top: 4px; }";
-srui += "\\n#srwrap h4+.cfield:not(:last-child) { margin-bottom: 16px; }\\n#trgrndr { display: flow-root; }";
+srui += "\\n#srwrap h4+.cfield:not(:last-child) { margin-bottom: 16px; }";
+srui += "\\n#trgrndr { display: flow-root; }";
 srui += "\\n</style>\\n<hr>\\n<h4 class=cfield><span onclick=txtaSel(srctxta)>Source</span></h4>";
 srui += "\\n<div class=cfield><textarea id=srctxta></textarea></div>";
 srui += "\\n<div class=cfield><label class=ccntr><input type=text id=sepainp> Search</label></div>";
@@ -712,7 +713,7 @@ msgClr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp
 rsltSh = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 2 ? rslt : "\\n<pre" + (ri < 2 ? ">" : " class=pwrap>") + rslt + "</pre>\\n"; };
 window.txtaSel = e => _.msgClr() || e.focus() || e.setSelectionRange(0, e.textLength);
 window.txtSwap = () => _.msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
-window.strPars = () => { let lm, sv = sepainp.value, rv = rfncinp.value; _.msgClr(); if (_.rxs[0].test(sv)) { trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; [trgtxta, trghelp].forEach(e => e.classList.add(!lm ? "iwarn" : "isucc")); } _.rsltSh( srctxta.value.replace( !_.rxs[1].test(sv) ? sv : eval(sv), window[rv] || window.eval(_.rxs[2].test(rv.trim()) ? rv : '"' + rv.replace(/"|\\\\/g, "\\\\$&") + '"') )); };
+window.strPars = () => { let lm, sv = sepainp.value, rv = rfncinp.value; _.msgClr(); if (_.rxs[0].test(sv)) { trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; [trgtxta, trghelp].forEach(e => e.classList.add(!lm ? "iwarn" : "isucc")); } _.rsltSh( srctxta.value.replace( !_.rxs[1].test(sv) ? sv : eval(sv), window[rv] || window.eval(_.rxs[2].test(rv.trim()) ? rv : '"' + rv.replace(/(?=")/g, "\\\\") + '"') )); };
 
 /*
    + *Optional:* Un-comment the following block of code to generate the
@@ -728,27 +729,18 @@ respShow((dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(xstor["JScode"]["tutor
 /*
  6. Extend your use of the search-and-replace web app with the extra
     know-how to __locate a substring of a lengthy document__.
-    + Before we demo the new search-and-replace UI on this page, we
-      will load the app page with a supplemental data module that
-      contains lengthy document texts -- called "sparknotes".
-    + Import the "sparknotes" data module and reload this tutorial
-      all at once by un-commenting the following one line of code.
-*/
-
-// window.location.search = "cmods=spark.js&dload=tutorial3&jsrcs=../-res-mdit/markdown-it.min.js,../-res-mdit/markdown-it-deflist.min.js"
-
-/*
-    + Having reloaded the page, ensure that the search-and-replace UI
-      is again displayed (down below) by un-commenting the
-      \`try { … } catch { … }\` line in step 5, above.
-    + With the search-and-replace UI displayed, inject demo data into
-      its fields by un-commenting the next block of code.
+    + We will demo the new search-and-replace UI on this page using
+      the text of a lengthy document -- a *Sparknotes* book review.
+    + Un-comment the following block of code to load the text of a
+      _Dune_ book review into the "Source" field -- as well as some
+      custom data into the "Search" and "Replace" inputs.
 */
 
 /*
-srctxta.value = xstor["sparknotes"]["dune"].replace(/\\n\\*\\/$|^\\/\\*\\n/g, ""); //
+try { markdownit && "" } catch { Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).catch(respShow) }
+srctxta.value || import("../-app-cjs/spark.js").then(r => srctxta.value = r.dune.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(respShow);
 sepainp.value = "/^.*?(\\\\bdune\\\\b).*\\\\n*|^.*\\\\n*/gim"; //
-rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); return !c1 ? \\"\\" : \\" \\" + ++itr + \\". \\" + m; }";
+rfncinp.value = "(m, c1, i) => { i || (window.it0 = 0); return !c1 ? \\"\\" : \\" \\" + ++it0 + \\". \\" + m; }";
 */
 
 /*
@@ -759,11 +751,11 @@ rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); return !c1 ? \\"\\" : \\
     + This result gives us the context of every "dune" substring in
       the document. However, we want to know the locations of all
       matches. So, we will generate a new result that pairs each
-      match with a line-number reference (instead of the match count).
+      match with a line-number reference (as well as the match count).
     + Un-comment the following one line of code, then tap "PARSE".
 */
 
-// rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); ++itr; return !c1 ? \\"\\" : \\"[line \\" + itr + \\"]:\\\\n\\" + m; }";
+// rfncinp.value = "(m, c1, i) => { i || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" \\" + ++it1 + \\". [line \\" + it0 + \\"]\\\\n\\" + m; }";
 
 /*
     + This result gives us a helpful location reference for every
@@ -777,12 +769,12 @@ rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); return !c1 ? \\"\\" : \\
       "PARSE" button) and tap "PARSE".
 */
 
-// rfncinp.value = "(m, c1, i) => { i || (window.itr = 0); ++itr; return !c1 ? \\"\\" : \\"[line \\" + itr + \\"]:\\\\n\\" + m.replace(/\\\\bdune\\\\b/gi, \\"<mark>$&</mark>\\"); }";
+// rfncinp.value = "(m, c1, i) => { i || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" <strong>\\" + ++it1 + \\".</strong> <em>[line \\" + it0 + \\"]</em>\\\\n\\" + m.replace(/\\\\bdune\\\\b/gi, \\"<mark>$&</mark>\\"); }";
 
 /*
- 7. Use search-and-replace to __apply HTML markup to an article__ --
+ 7. Use search-and-replace to __apply HTML markup to an article__,
     so that its structural parts get displayed meaningfully.
-    + The "Dune" book-review article that we are using for demo
+    + The _Dune_ book-review article that we are using for demo
       purposes is minimally marked up (with *Markdown* syntax);
       So, even when viewing its plain-text form, the reader can make
       distinctions between a subtitle, a blockquote, a definition
@@ -817,10 +809,10 @@ msgClr()
     to fit the screen size in which it will be reviewed or edited.
     + In our modern world, much of our communications are textual
       messages displayed on a narrow, palm-width screen.
-    + Within these prevailing dimensional constraints, more often
-      than we like our memos and reports do not display nicely.
+    + Within these prevalent size constraints, more often than we
+      like our memos and reports do not display nicely.
     + For reference, notice: The tutorial text is framed by the *ENTRY*
-      pane of the JavaScript Calculator; Even if viewed on a wide
+      pane of the JavaScript Calculator; And even if viewed on a wide
       computer screen, each line of instruction could get clipped
       and become unreadable if it didn't continually wrap around
       again before hitting the 71^st^ position from its left edge
@@ -837,7 +829,7 @@ window.lineWrap = str => { let cpl = 70, cut = 0, brk = "\\n", rex = ".{1," + cp
 */
 
 /*
-    + Now, prepare the text of the "Dune" article to be readable in
+    + Now, prepare the text of the _Dune_ article to be readable in
       the *ENTRY* pane of the JavaScript Calculator app by typing
       \`lineWrap\` into the "Replace" input and tapping "PARSE".
     + *Challenge:* Play with the value of the \`cpl\` variable
@@ -845,7 +837,7 @@ window.lineWrap = str => { let cpl = 70, cut = 0, brk = "\\n", rex = ".{1," + cp
       reflow the text of the article at various cpl settings.
     + *Also:* After applying a random wraparound width, try undoing it:
       Clear the "Source" text field, tap "SWAP" to swap the "Source"
-      and "Target" content, then use \`lineUnwr\` to restore the "Dune"
+      and "Target" content, then use \`lineUnwr\` to restore the _Dune_
       article text to its original state.
 */
 //`;
