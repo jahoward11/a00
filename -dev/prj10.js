@@ -61,8 +61,8 @@ fetch("https:/" + "/iam.cloud.ibm.com/identity/token", opts).then(resp => resp.t
 const guictxt = `/*
 t2x = xstor["JScode"]["tutorial2"];
 bodGen = src => "\\n<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/;$|^g\\dui = /g, "").split(/;\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n") + "\\n"; //
-scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,")).join("\\n\\n"); //
-dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=pz1wrap>\\n", "\\n</div>\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
+scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?(?: *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,\\n  ")).join("\\n\\n"); //
+dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=pz1wrap>", "</div>\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
 respShow((dwrap[0] + bodGen(t2x) + dwrap[1] + scrGen(t2x) + dwrap[2]).replace(/<(?=[!/?a-z])/gi, "&lt;"))
 */`;
 
@@ -75,7 +75,7 @@ const scrsload = `//
 const t3srplc = `//
 t3x = xstor["JScode"]["tutorial3"];
 bodGen = src => src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui = /g, "").split(/;\\nsrui \\+= /).map(eval).join("").trim() + "\\n"; //
-scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+ =.+);(?=\\n\\w+ =)/gm, "$1,"); //
+scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?(?: *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,\\n  "); //
 uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
 // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
@@ -90,8 +90,8 @@ highlightjs.org
 */
 // try { hljs && js_beautify && "" } catch { Promise.all(["../-res-js/highlight.pack.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then(() => "").catch(respShow) }
 // bpre = str => str.replace(/(?=\\.concat\\(|\\.forEach\\(|\\.map\\(|\\.match\\(|\\.replace\\()/g, "\\n");
-// window.bj1 = str => window.js_beautify(str, { "indent_size": 2, "space_after_anon_function": 1, "keep-array-indentation": 1, "break-chained-methods": 1 });
-// window.hj1 = str => "<style>@import \\"../-res-hljs/atom-one-light.css\\"; #srwrap pre>pre.hljs { white-space: inherit; }</style><pre class=hljs>" + window.hljs.highlightAuto(!window.bj1 ? str : window.bj1(str)).value + "</pre>";
+// window.bj1 = str => js_beautify(str, { "indent_size": 2, "space_after_anon_function": 1, "keep-array-indentation": 1, "break-chained-methods": 1 });
+// window.hj1 = str => "<style>@import \\"../-res-hljs/atom-one-light.css\\"; #srwrap pre>pre.hljs { white-space: inherit; }</style><pre class=hljs>" + hljs.highlightAuto(!window.bj1 ? str : bj1(str)).value + "</pre>";
 
 /*
 https://github.com/markdown-it/markdown-it/ v12.0.6
