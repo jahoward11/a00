@@ -311,7 +311,7 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
   .then(reg => window.console.log("SW registration succeeded. Scope: " + reg.scope))
   .catch(err => window.console.log("SW registration failed: " + err));
 </script>
-<script src="../-res-js/localforage.nopromises.min.js" type="text/javascript"></script>
+<script src="../-res-js/localforage.min.js" type="text/javascript"></script>
 <script type="module">
 let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
   metavp = document.querySelector('#ecorender>meta[name=viewport]')
@@ -588,39 +588,37 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     !optg || ( optg !== "USERdata/"
     ? ( dinp2.value = ((xstor[optg.replace(/\/$/, "")] || "")[xsetlist.value] || "")
       .replace(/\n+$|^\n+/g, "") ) && xprsEval()
-    : !window.localforage || window.localforage.getItem(xsetinp.value)
+    : !window.localforage || localforage.getItem(xsetinp.value)
       .then(val => dinp2.value = val || "")
       .then(xprsEval)
       .catch(respShow) );
   },
   slistRegen = seln => !window.localforage
-  || window.localforage.keys((err, lfkeys) => {
-    if (err) { respShow(err);
-    } else {
-      xsetlist.innerHTML = "\n      <option></option>"
-      + [["USERdata", lfkeys]].concat(Object.entries(xstor)).map( (oe, i) => i && !oe[1] ? ""
-        : "\n      <optgroup label=\"" + oe[0] + "/\">\n        "
-          + (!i ? oe[1] : Object.keys(oe[1]).filter(e => e !== "groupname"))
-            .map(e => "<option>" + e + "</option>").join("\n        ")
-          + "\n      </optgroup>" ).join("") + "\n    ";
-      xsetlist.value = seln || "";
-      rset || !dload ? xprsEval() : xsetLoad();
-    }
-  }),
+  || localforage.keys().then(lfks => {
+    xsetlist.innerHTML = "\n      <option></option>"
+    + [["USERdata", lfks]].concat(Object.entries(xstor)).map( (oe, i) => i && !oe[1] ? ""
+      : "\n      <optgroup label=\"" + oe[0] + "/\">\n        "
+        + (!i ? oe[1] : Object.keys(oe[1]).filter(e => e !== "groupname"))
+          .map(e => "<option>" + e + "</option>").join("\n        ")
+        + "\n      </optgroup>" ).join("") + "\n    ";
+    xsetlist.value = seln || "";
+    rset || !dload ? xprsEval() : xsetLoad();
+  }).catch(respShow),
   xsetSave = () => {
     xsethlps.forEach(e => e.classList.add("is-hidden"));
     xsetinp.value = xsetinp.value.trim();
     !xsetinp.value || !window.localforage
-    || window.localforage.setItem( xsetinp.value, dinp2.value,
-      (err, _val) => err ? respShow(err)
-      : slistRegen(xsetinp.value) && xsethlps[0].classList.remove("is-hidden") );
+    || localforage.setItem(xsetinp.value, dinp2.value)
+      .then(() => slistRegen(xsetinp.value) && xsethlps[0].classList.remove("is-hidden"))
+      .catch(respShow);
   },
   xsetDel = () => {
     let optg = xsetlist.value && xsetlist.selectedOptions[0].parentElement.label;
     xsethlps.forEach(e => e.classList.add("is-hidden"));
     !optg || optg !== "USERdata/" || !window.localforage
-    || window.localforage.removeItem( xsetlist.value,
-      err => err ? respShow(err) : slistRegen() && xsethlps[1].classList.remove("is-hidden") );
+    || localforage.removeItem(xsetlist.value)
+      .then(() => slistRegen() && xsethlps[1].classList.remove("is-hidden"))
+      .catch(respShow);
   };
 window.xstor = {};
 window.location.search.replace(/^\?/, "").split("&").forEach( qi =>

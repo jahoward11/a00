@@ -101,7 +101,7 @@ __CHESS__
 *A JavaScript Puzzle GUI*
 */
 
-// &hellip; coming soon &hellip;
+// Coming soon&hellip;
 //`;
 
 export {

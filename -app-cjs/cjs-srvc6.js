@@ -649,8 +649,8 @@ str.replace(/(deaf)\\w+ (\\w+)\\./i, (m, c1, c2) => \`\${c1}? Or \${c2.replace(/
       inputs, and a trigger ("PARSE" button) to activate the
       search/replace operation.
     + Un-comment the \`try { … } catch { … }\` line following the
-      next code block to display (down below) a basic search-and-
-      replace UI.
+      next code block to display (below, beneath the calculator) a
+      basic search-and-replace UI.
 */
 
 srui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
@@ -678,6 +678,7 @@ srui += "\\n<div class=cfield>\\n<span class=ccntr><select id=rndrsel>\\n" + ["N
 srui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x2964; PARSE\\" onclick=strPars()></span><span class=ccntr><input type=button value=\\"&rlhar; SWAP\\" onclick=cntSwap()></span>\\n</div>";
 srui += "\\n<h4 class=cfield><span onclick=txtaSel(trgtxta)>Target</span></h4>";
 srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=trghelp class=chelp></div></div>";
+srui += "\\n<div class=cfield><span class=ccntr><input type=text id=lfinp list=pfiles placeholder=\\"USERdata filename&hellip;\\" onfocus=ms2Clr() /><datalist id=pfiles></datalist></span><span class=ccntr><button onclick=lfdMgr(2)>&uArr;</button></span><span class=ccntr><button onclick=lfdMgr(1)><span class=isucc>&#x267a;</span> SAVE</button></span><span class=ccntr><button onclick=lfdMgr()><span class=iwarn>&#x2715;</span> DEL</button></span><div id=lfhelp class=chelp></div></div>";
 srui += "\\n<div id=trgrndr class=cfield></div>\\n";
 
 // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
@@ -702,17 +703,21 @@ srui += "\\n<div id=trgrndr class=cfield></div>\\n";
     + Some bells and whistles are also written into this "script"
       code -- to display the match count; to provide styled render
       options; to allow for a one-click swapping of content between
-      "Source" and "Target" text fields; and to turn the "Source" and
+      "Source" and "Target" text fields; to turn the "Source" and
       "Target" labels each into a live trigger for auto-selecting all
-      of its field's content.
+      of its field's content; and to store "Target" data locally.
 */
 
 rxs = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:\\w+|\\(.*?\\)) *=>.|^".*"$|^\\b[\\w.]+$/, /^\\b[\\w.]+$/];
 msgClr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc"));
 rsltVw = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 2 ? rslt : "\\n<pre" + (ri < 2 ? ">" : " class=pwrap>") + rslt + "</pre>\\n"; };
+pfsRfr = () => localforage.keys().then(ks => pfiles.innerHTML = ks.map(k => "<option>" + k + "</option>")).catch(console.warn);
 window.txtaSel = e => _.msgClr() || e.focus() || e.setSelectionRange(0, e.textLength);
 window.cntSwap = () => _.msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
 window.strPars = () => { let lm, r3, sv = sepainp.value, rv = rfncinp.value, m1V = s => [trgtxta, trghelp].forEach(e => e.classList.add(!s ? "iwarn" : "isucc")); _.msgClr(); try { _.rxs[3].test(rv.trim()) && window.eval(rv) } catch (e) { trghelp.innerHTML = r3 = e; /* trgtxta.value = ""; return m1V(); */ } if (_.rxs[0].test(sv)) { trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; m1V(lm); } _.rsltVw(srctxta.value.replace(!_.rxs[1].test(sv) ? sv : eval(sv), window[rv] || window.eval(_.rxs[2].test(rv.trim()) && !r3 ? rv : '"' + rv.replace(/(?=")/g, "\\\\") + '"'))); };
+window.ms2Clr = () => (lfhelp.innerHTML = "") || lfhelp.classList.remove("iwarn", "isucc");
+window.lfdMgr = ox => { let fnm = lfinp.value.trim(); !fnm || !window.localforage || localforage[!ox ? "removeItem" : ox < 2 ? "setItem" : "getItem"](fnm, ox === 1 && "/*\\n" + trgtxta.value + "\\n*/").then(v => !v || ox < 2 || trgtxta.value || (trgtxta.value = v.replace(/\\n\\*\\/$|^\\/\\*\\n/g, ""))).then(() => _.pfsRfr() && ox > 1 || (lfhelp.innerHTML = "USERdata file is " + (!ox ? "deleted." : "saved locally.")) && lfhelp.classList.add(!ox ? "iwarn" : "isucc")).catch(console.warn); };
+!window.srwrap || !window.localforage || pfsRfr();
 
 /*
    + *Optional:* Un-comment the following block of code to generate the
@@ -721,7 +726,7 @@ window.strPars = () => { let lm, r3, sv = sepainp.value, rv = rfncinp.value, m1V
 
 /*
 scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?(?: *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,\\n  "); //
-dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
+dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
 respShow((dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(xstor["JScode"]["tutorial3"]) + dwrap[2]).replace(/\\n<hr>/, "").replace(/<(?=[!/?a-z])/gi, "&lt;"))
 */
 
@@ -736,7 +741,7 @@ respShow((dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(xstor["JScode"]["tutor
 */
 
 /*
-srctxta.value || import("./spark.js").then(r => srctxta.value = r.dune.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(respShow);
+srctxta.value || import("./spark.js").then(r => srctxta.value = r.dune.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(respShow); //
 sepainp.value = "/^.*?(\\\\bdune\\\\b).*\\\\n*|^.*\\\\n*/gim"; //
 rfncinp.value = "(m, c1, i) => { i || (window.it0 = 0); return !c1 ? \\"\\" : \\" \\" + ++it0 + \\". \\" + m; }";
 */
