@@ -74,24 +74,19 @@ const scrsload = `//
 
 const t3srplc = `//
 t3x = xstor["JScode"]["tutorial3"];
-ctrLF = "\\n<div class=cfield><span class=ccntr><input type=text id=lfinp list=pfiles placeholder=\\"USERdata filename&hellip;\\" onfocus=ms2Clr() /><datalist id=pfiles></datalist></span><span class=ccntr><button onclick=lfdMgr(2)>&uArr;</button></span><span class=ccntr><button onclick=lfdMgr(1)><span class=isucc>&#x267a;</span> SAVE</button></span><span class=ccntr><button onclick=lfdMgr()><span class=iwarn>&#x2715;</span> DEL</button></span><div id=lfhelp class=chelp></div></div>";
-scrLF = "\\nwindow.pkRfr = () => localforage.keys((e, ks) => e ? console.warn(e) : pfiles.innerHTML = ks.map(k => \\"<option>\\" + k + \\"</option>\\"));";
-scrLF += "\\nwindow.ms2Clr = () => (lfhelp.innerHTML = \\"\\") || lfhelp.classList.remove(\\"iwarn\\", \\"isucc\\");";
-scrLF += "\\nwindow.lfdMgr = ox => { let fnm = lfinp.value.trim(), cb2 = e => e ? console.warn(e) : pkRfr() && ox > 1 || (lfhelp.innerHTML = \\"USERdata file is \\" + (!ox ? \\"deleted.\\" : \\"saved locally.\\")) && lfhelp.classList.add(!ox ? \\"iwarn\\" : \\"isucc\\"); !fnm || !window.localforage || localforage[!ox ? \\"removeItem\\" : ox < 2 ? \\"setItem\\" : \\"getItem\\"](fnm, !ox ? cb2 : ox < 2 ? \\"/*\\\\n\\" + trgtxta.value + \\"\\\\n*/\\" : null, ox === 1 && cb2).then(v => !v || ox < 2 || trgtxta.value || (trgtxta.value = v.replace(/\\\\n\\\\*\\\\/$|^\\\\/\\\\*\\\\n/g, \\"\\"))).catch(console.warn); };";
-scrLF += "\\n!window.localforage || pkRfr();";
-bodGen = src => "\\n" + src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui = /g, "").split(/;\\nsrui \\+= /).map(eval).join("").trim().replace(/(?=\\n<div id=trgrndr )/, _.ctrLF) + "\\n"; //
-scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?(?: *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,\\n  ") + _.scrLF; //
+bodGen = src => "\\n" + src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui = /g, "").split(/;\\nsrui \\+= /).map(eval).join("").trim() + "\\n"; //
+scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?(?: *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,\\n  "); //
 uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
 // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 try { srwrap } catch { uiDspl(bodGen(t3x)); scrInj(null, 'module', scrGen(t3x)).catch(respShow); }
 
-// dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../-res-js/localforage.nopromises.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
+// dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
 // srctxta.value = dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(t3x) + dwrap[2];
 
 // /spark/.test(window.location.search) || (window.location.search = "cmods=spark.js,../-dev/prj10.js&dload=t3srplc");
 // srctxta.value = xstor["sparknotes"]["mythology"].replace(/\\n\\*\\/$|^\\/\\*\\n/g, ""); //
-// srctxta.value || import("./spark.js").then(r => srctxta.value = r.mythology.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(respShow);
+// srctxta.value || import("./spark.js").then(r => srctxta.value = r.mythology.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(respShow); //
 // sepainp.value = "/^.*?(\\\\bmyth).*\\\\n*|^.*\\\\n*/gim"; //
 // rfncinp.value = "(m, c1, i) => { i || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" <strong>\\" + ++it1 + \\".</strong> <em>[line \\" + it0 + \\"]</em>\\\\n\\" + m.replace(/\\\\bmyth/gi, \\"<mark>$&</mark>\\"); }";
 

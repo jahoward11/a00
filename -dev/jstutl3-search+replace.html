@@ -7,23 +7,24 @@
 <div id="srwrap">
 <style>
 *, *::before, *::after { box-sizing: inherit; }
-html { box-sizing: border-box; min-width: 375px; word-wrap: break-word; overflow-wrap: break-word; }
+html { box-sizing: border-box; min-width: 375px; overflow-wrap: break-word; }
 hr { margin: 1.5rem 0; }
+[list]::-webkit-calendar-picker-indicator { display: none !important; }
 #srwrap { font: normal medium Helvetica, Arial, sans-serif; margin: 24px 0; }
 #srwrap textarea { display: block; font-size: medium; width: 100%; height: 288px; }
-#srwrap input[type=text] { width: 288px; }
 #srwrap .iwarn { color: Orange; }
 #srwrap .isucc { color: CornFlowerBlue; }
 #srwrap textarea.iwarn { color: unset; border-color: Orange; }
 #srwrap textarea.isucc { color: unset; border-color: CornFlowerBlue; }
 #srwrap .pwrap { white-space: pre-wrap; }
-#srwrap pre:not(.pwrap) { white-space: pre; word-wrap: normal; overflow-wrap: normal; overflow-x: auto; }
+#srwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }
 #srwrap .cfield { max-width: 720px; }
 #srwrap .cfield:not(:last-child) { margin-bottom: 8px; }
 #srwrap .ccntr:not(:last-child) { margin-right: 8px; }
 #srwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }
 #srwrap .cfield>.chelp { font-size: 12px; margin-top: 4px; }
-#srwrap h4+.cfield:not(:last-child) { margin-bottom: 16px; }
+#sepainp, #rfncinp { width: 288px; }
+#trgrndr { display: flow-root; margin-top: 16px; border-top: dashed 1px gainsboro; }
 </style>
 <h4 class="cfield"><span onclick="txtaSel(srctxta)">Source</span></h4>
 <div class="cfield"><textarea id="srctxta"></textarea></div>
@@ -35,19 +36,25 @@ hr { margin: 1.5rem 0; }
 <option>PRE render</option>
 <option>PRE-wrap render</option>
 <option>Normal render</option>
-</select></span><span class="ccntr"><input type="button" value="⥤ PARSE" onclick="strPars()"></span><span class="ccntr"><input type="button" value="⇌ SWAP" onclick="txtSwap()"></span>
+</select></span><span class="ccntr"><input type="button" value="⥤ PARSE" onclick="strPars()"></span><span class="ccntr"><input type="button" value="⇌ SWAP" onclick="cntSwap()"></span>
 </div>
 <h4 class="cfield"><span onclick="txtaSel(trgtxta)">Target</span></h4>
 <div class="cfield"><textarea id="trgtxta"></textarea><div id="trghelp" class="chelp"></div></div>
+<div class="cfield"><span class="ccntr"><input type="text" id="lfinp" list="pfiles" placeholder="USERdata filename…" onfocus="ms2Clr()"><datalist id="pfiles"><option>srui11</option></datalist></span><span class="ccntr"><button onclick="lfdMgr(2)">⇑</button></span><span class="ccntr"><button onclick="lfdMgr(1)"><span class="isucc">♺</span> SAVE</button></span><span class="ccntr"><button onclick="lfdMgr()"><span class="iwarn">✕</span> DEL</button></span><div id="lfhelp" class="chelp"></div></div>
 <div id="trgrndr" class="cfield"></div>
 </div>
 
+<script src="../-res-js/localforage.min.js" type="text/javascript"></script>
 <script type=module>
-let rxs = [/^\/.+\/[im]*g[im]*$/, /^\/.+\/[gim]*$/, /^(?:[$\wÀ-Ͽ]+|\(.*?\)) *=>.|^[\w.]+$|^".*"$/],
+let rxs = [/^\/.+\/[im]*g[im]*$/, /^\/.+\/[gim]*$/, /^(?:\w+|\(.*?\)) *=>.|^".*"$|^\b[\w.]+$/, /^\b[\w.]+$/],
   msgClr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc")),
-  rsltSh = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 2 ? rslt : "\n<pre" + (ri < 2 ? ">" : " class=pwrap>") + rslt + "</pre>\n"; };
+  rsltVw = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 2 ? rslt : "\n<pre" + (ri < 2 ? ">" : " class=pwrap>") + rslt + "</pre>\n"; },
+  pfsRfr = () => localforage.keys().then(ks => pfiles.innerHTML = ks.map(k => "<option>" + k + "</option>")).catch(console.warn);
 window.txtaSel = e => msgClr() || e.focus() || e.setSelectionRange(0, e.textLength);
-window.txtSwap = () => msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
-window.strPars = () => { let lm, sv = sepainp.value, rv = rfncinp.value; msgClr(); if (rxs[0].test(sv)) { trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; [trgtxta, trghelp].forEach(e => e.classList.add(!lm ? "iwarn" : "isucc")); } rsltSh( srctxta.value.replace( !rxs[1].test(sv) ? sv : eval(sv), window[rv] || window.eval(rxs[2].test(rv.trim()) ? rv : '"' + rv.replace(/"|\\/g, "\\$&") + '"') )); };
+window.cntSwap = () => msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
+window.strPars = () => { let lm, r3, sv = sepainp.value, rv = rfncinp.value, m1V = s => [trgtxta, trghelp].forEach(e => e.classList.add(!s ? "iwarn" : "isucc")); msgClr(); try { rxs[3].test(rv.trim()) && window.eval(rv) } catch (e) { trghelp.innerHTML = r3 = e; /* trgtxta.value = ""; return m1V(); */ } if (rxs[0].test(sv)) { trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; m1V(lm); } rsltVw(srctxta.value.replace(!rxs[1].test(sv) ? sv : eval(sv), window[rv] || window.eval(rxs[2].test(rv.trim()) && !r3 ? rv : '"' + rv.replace(/(?=")/g, "\\") + '"'))); };
+window.ms2Clr = () => (lfhelp.innerHTML = "") || lfhelp.classList.remove("iwarn", "isucc");
+window.lfdMgr = ox => { let fnm = lfinp.value.trim(); !fnm || !window.localforage || localforage[!ox ? "removeItem" : ox < 2 ? "setItem" : "getItem"](fnm, ox === 1 && "/*\n" + trgtxta.value + "\n*/").then(v => !v || ox < 2 || trgtxta.value || (trgtxta.value = v.replace(/\n\*\/$|^\/\*\n/g, ""))).then(() => pfsRfr() && ox > 1 || (lfhelp.innerHTML = "USERdata file is " + (!ox ? "deleted." : "saved locally.")) && lfhelp.classList.add(!ox ? "iwarn" : "isucc")).catch(console.warn); };
+!window.srwrap || !window.localforage || pfsRfr();
 </script>
 </html>
