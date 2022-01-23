@@ -320,7 +320,7 @@ g1Reset();
 
 // preresp.innerHTML = "" // clears any orange text (in case GUI text is still visible)
 // scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?(?: *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,\\n  ")).join("\\n\\n"); //
-// localforage.getItem("tutor2js").then( rslt => respShow( _.scrGen(rslt).replace(/<(?=[!/?a-z])/gi, "&lt;") )).catch(respShow)
+// localforage.getItem("tutor2js").then(val => respShow(_.scrGen(val).replace(/<(?=[!/?a-z])/gi, "&lt;"))).catch(respShow)
 
 /*
     + Select and copy the orange text that appears above, overtop
@@ -655,10 +655,9 @@ str.replace(/(deaf)\\w+ (\\w+)\\./i, (m, c1, c2) => \`\${c1}? Or \${c2.replace(/
 
 srui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
 srui += "\\nhtml { box-sizing: border-box; min-width: 375px; word-wrap: break-word; overflow-wrap: break-word; }";
-srui += "\\nhr { margin: 1.5rem 0; }";
+srui += "\\nhr { margin: 1.5rem 0; }\\n[list]::-webkit-calendar-picker-indicator,\\n[list]::-webkit-list-button { display: none !important; }";
 srui += "\\n#srwrap { font: normal medium Helvetica, Arial, sans-serif; margin: 24px 0; }";
 srui += "\\n#srwrap textarea { display: block; font-size: medium; width: 100%; height: 288px; }";
-srui += "\\n#srwrap input[type=text] { width: 288px; }";
 srui += "\\n#srwrap .iwarn { color: Orange; }\\n#srwrap .isucc { color: CornFlowerBlue; }";
 srui += "\\n#srwrap textarea.iwarn { color: unset; border-color: Orange; }";
 srui += "\\n#srwrap textarea.isucc { color: unset; border-color: CornFlowerBlue; }";
@@ -669,14 +668,14 @@ srui += "\\n#srwrap .cfield:not(:last-child) { margin-bottom: 8px; }";
 srui += "\\n#srwrap .ccntr:not(:last-child) { margin-right: 8px; }";
 srui += "\\n#srwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
 srui += "\\n#srwrap .cfield>.chelp { font-size: 12px; margin-top: 4px; }";
-srui += "\\n#srwrap h4+.cfield:not(:last-child) { margin-bottom: 16px; }";
-srui += "\\n#trgrndr { display: flow-root; }";
+srui += "\\n#sepainp, #rfncinp { width: 288px; }";
+srui += "\\n#trgrndr { display: flow-root; margin-top: 16px; border-top: dashed 1px gainsboro; }";
 srui += "\\n</style>\\n<hr>\\n<h4 class=cfield><span onclick=txtaSel(srctxta)>Source</span></h4>";
 srui += "\\n<div class=cfield><textarea id=srctxta></textarea></div>";
 srui += "\\n<div class=cfield><label class=ccntr><input type=text id=sepainp> Search</label></div>";
 srui += "\\n<div class=cfield><label class=ccntr><input type=text id=rfncinp> Replace</label></div>";
 srui += "\\n<div class=cfield>\\n<span class=ccntr><select id=rndrsel>\\n" + ["No render", "PRE render", "PRE-wrap render", "Normal render"].map(e => "<option>" + e + "</option>").join("\\n");
-srui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x2964; PARSE\\" onclick=strPars()></span><span class=ccntr><input type=button value=\\"&rlhar; SWAP\\" onclick=txtSwap()></span>\\n</div>";
+srui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x2964; PARSE\\" onclick=strPars()></span><span class=ccntr><input type=button value=\\"&rlhar; SWAP\\" onclick=cntSwap()></span>\\n</div>";
 srui += "\\n<h4 class=cfield><span onclick=txtaSel(trgtxta)>Target</span></h4>";
 srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=trghelp class=chelp></div></div>";
 srui += "\\n<div id=trgrndr class=cfield></div>\\n";
@@ -708,12 +707,12 @@ srui += "\\n<div id=trgrndr class=cfield></div>\\n";
       of its field's content.
 */
 
-rxs = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:[$\\wÀ-Ͽ]+|\\(.*?\\)) *=>.|^[\\w.]+$|^".*"$/];
+rxs = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:\\w+|\\(.*?\\)) *=>.|^".*"$|^\\b[\\w.]+$/, /^\\b[\\w.]+$/];
 msgClr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc"));
 rsltSh = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 2 ? rslt : "\\n<pre" + (ri < 2 ? ">" : " class=pwrap>") + rslt + "</pre>\\n"; };
 window.txtaSel = e => _.msgClr() || e.focus() || e.setSelectionRange(0, e.textLength);
-window.txtSwap = () => _.msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
-window.strPars = () => { let lm, sv = sepainp.value, rv = rfncinp.value; _.msgClr(); if (_.rxs[0].test(sv)) { trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; [trgtxta, trghelp].forEach(e => e.classList.add(!lm ? "iwarn" : "isucc")); } _.rsltSh( srctxta.value.replace( !_.rxs[1].test(sv) ? sv : eval(sv), window[rv] || window.eval(_.rxs[2].test(rv.trim()) ? rv : '"' + rv.replace(/(?=")/g, "\\\\") + '"') )); };
+window.cntSwap = () => _.msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
+window.strPars = () => { let lm, sv = sepainp.value, rv = rfncinp.value, ms2 = s => [trgtxta, trghelp].forEach(e => e.classList.add(!s ? "iwarn" : "isucc")); _.msgClr(); try { _.rxs[3].test(rv.trim()) && window.eval(rv) } catch (e) { rv = '"' + rv + '"'; trghelp.innerHTML = e; /* trgtxta.value = ""; return ms2(); */ } if (_.rxs[0].test(sv)) { trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; ms2(lm); } _.rsltSh(srctxta.value.replace(!_.rxs[1].test(sv) ? sv : eval(sv), window[rv] || window.eval(_.rxs[2].test(rv.trim()) ? rv : '"' + rv.replace(/(?=")/g, "\\\\") + '"'))); };
 
 /*
    + *Optional:* Un-comment the following block of code to generate the
@@ -737,8 +736,7 @@ respShow((dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(xstor["JScode"]["tutor
 */
 
 /*
-try { markdownit && "" } catch { Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).catch(respShow) }
-srctxta.value || import("../-app-cjs/spark.js").then(r => srctxta.value = r.dune.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(respShow);
+srctxta.value || import("./spark.js").then(r => srctxta.value = r.dune.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(respShow);
 sepainp.value = "/^.*?(\\\\bdune\\\\b).*\\\\n*|^.*\\\\n*/gim"; //
 rfncinp.value = "(m, c1, i) => { i || (window.it0 = 0); return !c1 ? \\"\\" : \\" \\" + ++it0 + \\". \\" + m; }";
 */
@@ -789,7 +787,8 @@ rfncinp.value = "(m, c1, i) => { i || (window.it0 = 0); return !c1 ? \\"\\" : \\
 */
 
 /*
-try { docMrkp } catch { window.markdownit && (window.docMrkp = md => markdownit({ html: 1, typographer: 1 }).use(markdownitDeflist).render(md.replace(/[^-](?=--[^-])/g, "$&-"))); };
+try { markdownit && "" } catch { Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).catch(respShow) }
+window.docMrkp = md => markdownit({ html: 1, typographer: 1 }).use(markdownitDeflist).render(md.replace(/[^-](?=--[^-])/g, "$&-"));
 rndrsel.selectedIndex = 0;
 sepainp.value = "/[^]+/";
 rfncinp.value = "docMrkp";
