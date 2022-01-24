@@ -678,7 +678,7 @@ srui += "\\n<div class=cfield>\\n<span class=ccntr><select id=rndrsel>\\n" + ["N
 srui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x2964; PARSE\\" onclick=strPars()></span><span class=ccntr><input type=button value=\\"&rlhar; SWAP\\" onclick=cntSwap()></span>\\n</div>";
 srui += "\\n<h4 class=cfield><span onclick=txtaSel(trgtxta)>Target</span></h4>";
 srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=trghelp class=chelp></div></div>";
-srui += "\\n<div class=cfield><span class=ccntr><input type=text id=lfinp list=pfiles placeholder=\\"USERdata filename&hellip;\\" onfocus=ms2Clr() /><datalist id=pfiles></datalist></span><span class=ccntr><button onclick=lfdMgr(2)>&uArr;</button></span><span class=ccntr><button onclick=lfdMgr(1)><span class=isucc>&#x267a;</span> SAVE</button></span><span class=ccntr><button onclick=lfdMgr()><span class=iwarn>&#x2715;</span> DEL</button></span><div id=lfhelp class=chelp></div></div>";
+srui += "\\n<div class=cfield>\\n<span class=ccntr><input type=text id=lfinp list=pfiles placeholder=\\"USERdata filename&hellip;\\" onfocus=ms2Clr() /><datalist id=pfiles></datalist></span><span class=ccntr><button onclick=lfdMgr(2)>\\n<span>&uArr;</span></button></span><span class=ccntr><button onclick=lfdMgr(1)>\\n<span class=isucc>&#x267a;</span> SAVE</button></span><span class=ccntr><button onclick=lfdMgr()>\\n<span class=iwarn>&#x2715;</span> DEL</button></span>\\n<div id=lfhelp class=chelp></div>\\n</div>";
 srui += "\\n<div id=trgrndr class=cfield></div>\\n";
 
 // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above

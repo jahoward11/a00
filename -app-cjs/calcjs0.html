@@ -244,7 +244,6 @@ body {
   font-size: 12px;
   margin-top: 4px;
 }
-#cmain .cfield>.chelp:not(.is-hidden) { display: block; }
 #xctrls #xsetinp { width: 168px; }
 #xctrls #xsetlist {
   width: 24px;
@@ -301,8 +300,7 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
     </select></span></span><span class="ccntr"><button id="xbtnsav">
     <span class="isucc">&#x267a;</span> SAVE</button></span><span class="ccntr"><button id="xbtndel">
     <span class="iwarn">&#x2715;</span> DEL</button></span>
-  <span class="chelp isucc is-hidden">Expression set is saved in local storage.</span>
-  <span class="chelp iwarn is-hidden">Expression set is deleted from local storage.</span>
+  <div id="xcshelp" class="chelp"></div>
 </div>
 </main>
 <script type="text/javascript">
@@ -331,9 +329,10 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
   xsetlist = document.querySelector('#xctrls #xsetlist'),
   xbtnsav = document.querySelector('#xctrls #xbtnsav'),
   xbtndel = document.querySelector('#xctrls #xbtndel'),
-  xsethlps = document.querySelectorAll('#xctrls .chelp'),
+  xcshelp = document.querySelector('#xctrls #xcshelp'),
   dinp2 = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
     || { value: dinput.innerHTML.replace(/\n+$|^\n+/g, "") },
+  helpClr = () => !xcshelp || (xcshelp.innerHTML = "") || xcshelp.classList.remove("iwarn", "isucc"),
   respShow = resp => { preresp.innerHTML
     += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
       ? resp : JSON.stringify(resp, null, 2) ) + "\n\n" },
@@ -557,7 +556,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
       q2Bcopy = di2html = null;
     } else if (!plist.className) {
       (xsetlist || "").value = "";
-      xsethlps.forEach(e => e.classList.add("is-hidden"));
+      helpClr();
       document.querySelector('#screenmask').className = plist.className = "is-hidden";
       q2Bcopy = di2html = null;
       dinp2.value = quad2B.innerText.replace(/\n+$|^\n+/g, "")
@@ -567,7 +566,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
   },
   xsetLoad = (evt = { target: "" }) => {
     let optg;
-    xsethlps.forEach(e => e.classList.add("is-hidden"));
+    helpClr();
     if (!evt.target.id && /^https?:\/\/.+$/.test(dload)) {
       return initLoad();
     } else if (evt.target.id === "xsetlist" && !xsetlist.value) {
@@ -605,19 +604,23 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     rset || !dload ? xprsEval() : xsetLoad();
   }).catch(respShow),
   xsetSave = () => {
-    xsethlps.forEach(e => e.classList.add("is-hidden"));
+    helpClr();
     xsetinp.value = xsetinp.value.trim();
     !xsetinp.value || !window.localforage
     || localforage.setItem(xsetinp.value, dinp2.value)
-      .then(() => slistRegen(xsetinp.value) && xsethlps[0].classList.remove("is-hidden"))
+      .then( () => slistRegen(xsetinp.value)
+        && (xcshelp.innerHTML = "Expression set is saved in local storage.")
+        && xcshelp.classList.add("isucc") )
       .catch(respShow);
   },
   xsetDel = () => {
     let optg = xsetlist.value && xsetlist.selectedOptions[0].parentElement.label;
-    xsethlps.forEach(e => e.classList.add("is-hidden"));
+    helpClr();
     !optg || optg !== "USERdata/" || !window.localforage
     || localforage.removeItem(xsetlist.value)
-      .then(() => slistRegen() && xsethlps[1].classList.remove("is-hidden"))
+      .then( () => slistRegen()
+        && (xcshelp.innerHTML = "Expression set is deleted from local storage.")
+        && xcshelp.classList.add("iwarn") )
       .catch(respShow);
   };
 window.xstor = {};
