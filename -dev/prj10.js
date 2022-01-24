@@ -82,7 +82,7 @@ uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; 
 try { srwrap } catch { uiDspl(bodGen(t3x)); scrInj(null, 'module', scrGen(t3x)).catch(respShow); }
 
 // dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
-// srctxta.value = dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(t3x) + dwrap[2];
+// srctxta.value = (dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(t3x) + dwrap[2]);
 
 // /spark/.test(window.location.search) || (window.location.search = "cmods=spark.js,../-dev/prj10.js&dload=t3srplc");
 // srctxta.value = xstor["sparknotes"]["mythology"].replace(/\\n\\*\\/$|^\\/\\*\\n/g, ""); //
