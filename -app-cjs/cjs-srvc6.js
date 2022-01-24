@@ -711,7 +711,7 @@ srui += "\\n<div id=trgrndr class=cfield></div>\\n";
 rxs = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:\\w+|\\(.*?\\)) *=>.|^".*"$|^\\b[\\w.]+$/, /^\\b[\\w.]+$/];
 msgClr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc"));
 rsltVw = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 2 ? rslt : "\\n<pre" + (ri < 2 ? ">" : " class=pwrap>") + rslt + "</pre>\\n"; };
-pfsRfr = () => localforage.keys().then(ks => pfiles.innerHTML = ks.map(k => "<option>" + k + "</option>")).catch(console.warn);
+pfsRfr = () => localforage.keys().then(ks => pfiles.innerHTML = ks.map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(console.warn);
 window.txtaSel = e => _.msgClr() || e.focus() || e.setSelectionRange(0, e.textLength);
 window.cntSwap = () => _.msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
 window.strPars = () => { let lm, r3, sv = sepainp.value, rv = rfncinp.value, m1V = s => [trgtxta, trghelp].forEach(e => e.classList.add(!s ? "iwarn" : "isucc")); _.msgClr(); try { _.rxs[3].test(rv.trim()) && window.eval(rv) } catch (e) { trghelp.innerHTML = r3 = e; /* trgtxta.value = ""; return m1V(); */ } if (_.rxs[0].test(sv)) { trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; m1V(lm); } _.rsltVw(srctxta.value.replace(!_.rxs[1].test(sv) ? sv : eval(sv), window[rv] || window.eval(_.rxs[2].test(rv.trim()) && !r3 ? rv : '"' + rv.replace(/(?=")/g, "\\\\") + '"'))); };
