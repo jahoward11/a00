@@ -648,9 +648,9 @@ str.replace(/(deaf)\\w+ (\\w+)\\./i, (m, c1, c2) => \`\${c1}? Or \${c2.replace(/
       are: "Source" and "Target" text fields, "Search" and "Replace"
       inputs, and a trigger ("PARSE" button) to activate the
       search/replace operation.
-    + Un-comment the \`try { … } catch { … }\` line following the
-      next code block to display (below, beneath the calculator) a
-      basic search-and-replace UI.
+    + Un-comment the \`try { … } catch { … }\` line following the next
+      code block to display (below, beneath the calculator) a basic
+      search-and-replace UI.
 */
 
 srui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
@@ -708,7 +708,7 @@ srui += "\\n<div id=trgrndr class=cfield></div>\\n";
       of its field's content; and to store "Target" data locally.
 */
 
-rxs = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:\\w+|\\(.*?\\)) *=>.|^".*"$|^\\b[\\w.]+$/, /^\\b[\\w.]+$/];
+rxs = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:\\w+|\\(.*?\\)) *=>.|^".*"$|^\\b[\\w.]+$/, /^\\b[\\w.]+$/]; //
 msgClr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc"));
 rsltVw = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 2 ? rslt : "\\n<pre" + (ri < 2 ? ">" : " class=pwrap>") + rslt + "</pre>\\n"; };
 pfsRfr = () => localforage.keys().then(ks => pfiles.innerHTML = ks.map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(console.warn);
@@ -716,7 +716,7 @@ window.txtaSel = e => _.msgClr() || e.focus() || e.setSelectionRange(0, e.textLe
 window.cntSwap = () => _.msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
 window.strPars = () => { let lm, r3, sv = sepainp.value, rv = rfncinp.value, m1V = s => [trgtxta, trghelp].forEach(e => e.classList.add(!s ? "iwarn" : "isucc")); _.msgClr(); try { _.rxs[3].test(rv.trim()) && window.eval(rv) } catch (e) { trghelp.innerHTML = r3 = e; /* trgtxta.value = ""; return m1V(); */ } if (_.rxs[0].test(sv)) { trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; m1V(lm); } _.rsltVw(srctxta.value.replace(!_.rxs[1].test(sv) ? sv : eval(sv), window[rv] || window.eval(_.rxs[2].test(rv.trim()) && !r3 ? rv : '"' + rv.replace(/(?=")/g, "\\\\") + '"'))); };
 window.ms2Clr = () => (lfhelp.innerHTML = "") || lfhelp.classList.remove("iwarn", "isucc");
-window.lfdMgr = ox => { let fnm = lfinp.value.trim(); !fnm || !window.localforage || localforage[!ox ? "removeItem" : ox < 2 ? "setItem" : "getItem"](fnm, ox === 1 && "/*\\n" + trgtxta.value + "\\n*/").then(v => !v || ox < 2 || trgtxta.value || (trgtxta.value = v.replace(/\\n\\*\\/$|^\\/\\*\\n/g, ""))).then(() => _.pfsRfr() && ox > 1 || (lfhelp.innerHTML = "USERdata file is " + (!ox ? "deleted." : "saved locally.")) && lfhelp.classList.add(!ox ? "iwarn" : "isucc")).catch(console.warn); };
+window.lfdMgr = ox => { let fnm = lfinp.value.trim(); !fnm || !window.localforage || localforage[!ox ? "removeItem" : ox < 2 ? "setItem" : "getItem"](fnm, ox === 1 && "/*\\n" + trgtxta.value + "\\n*/").then(v => !v || ox < 2 || trgtxta.value || (trgtxta.value = v.replace(/\\n\\*\\/$|^\\/\\*\\n/g, ""))).then(() => _.pfsRfr() && ox > 1 || (lfhelp.innerHTML = "USERdata file is " + (!ox ? "deleted." : "saved locally.")) && lfhelp.classList.add(!ox ? "iwarn" : "isucc")).catch(console.warn); }; //
 !window.srwrap || !window.localforage || pfsRfr();
 
 /*
@@ -793,7 +793,7 @@ rfncinp.value = "(m, c1, i) => { i || (window.it0 = 0); return !c1 ? \\"\\" : \\
 
 /*
 try { markdownit && "" } catch { Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).catch(respShow) }
-window.docMrkp = md => markdownit({ html: 1, typographer: 1 }).use(markdownitDeflist).render(md.replace(/[^-](?=--[^-])/g, "$&-"));
+window.docMrkp = md => markdownit({ html: 1, typographer: 1 }).use(markdownitDeflist).render(md.replace(/[^-](?=--[^-])/g, "$&-")); //
 rndrsel.selectedIndex = 0;
 sepainp.value = "/[^]+/";
 rfncinp.value = "docMrkp";
