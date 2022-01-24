@@ -668,7 +668,7 @@ srui += "\\n#srwrap .cfield:not(:last-child) { margin-bottom: 8px; }";
 srui += "\\n#srwrap .ccntr:not(:last-child) { margin-right: 8px; }";
 srui += "\\n#srwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
 srui += "\\n#srwrap .cfield>.chelp { font-size: 12px; margin-top: 4px; }";
-srui += "\\n#sepainp, #rfncinp { width: 288px; }";
+srui += "\\n#sepainp, #rfncinp { width: 288px; }\\n#lfinp { max-width: 180px; }";
 srui += "\\n#trgrndr { display: flow-root; margin-top: 16px; border-top: dashed 1px gainsboro; }";
 srui += "\\n</style>\\n<hr>\\n<h4 class=cfield><span onclick=txtaSel(srctxta)>Source</span></h4>";
 srui += "\\n<div class=cfield><textarea id=srctxta></textarea></div>";
