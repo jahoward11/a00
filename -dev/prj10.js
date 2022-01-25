@@ -2,10 +2,6 @@
 
 const groupname = "util";
 
-const locobj = `//
-respShow(Object.fromEntries(Object.keys(location).map(e => [e, location[e]])));
-//`;
-
 const varkeys = `//
 { _ks = _ks.concat(["T1", "T2"]) };
 T3 = 3
@@ -20,7 +16,12 @@ fmt(Math.random())
 //`;
 
 const uiwidth = `//
+innerWidth
+document.documentElement.clientWidth
+screen.width
 getComputedStyle(cgrid).width
+getComputedStyle(document.documentElement).width
+getComputedStyle(document.documentElement).font
 //`;
 
 const publdims = `//
@@ -74,43 +75,70 @@ const publdims = `//
  hp / 5.8125
 
 // printing reference
- // w~sc~ | initial width of content in custom screen display
- // w~pg~ | max width of content on printed page (Chrome, letter-portrait)
+ // w_̃sc | initial width of content in custom screen display
+ // w_̃pg | max width of content on printed page (Chrome, letter-portrait)
 
  w_̃sc = 6.75 // in
  w_̃pg = 740  // px
 
  // final (adjusted) width of content on printed page
- w_̃sc * (w_̃pg / 768)  // w~pg~ + 28px
- w_̃sc * (w_̃pg / 780)  // w~pg~ + 40px
- w_̃sc * (w_̃pg / 788)  // w~pg~ + 0.5in
- w_̃sc * (w_̃pg / 800)  // w~pg~ + 60px
- w_̃sc * (w_̃pg / 833)  // w~pg~ + 93px
- w_̃sc * (w_̃pg / 836)  // w~pg~ + 1in
- w_̃sc * (w_̃pg / 884)  // w~pg~ + 1.5in
- w_̃sc * (w_̃pg / 932)  // w~pg~ + 2in
+ w_̃sc * (w_̃pg / 768)  // w_̃pg + 28px
+ w_̃sc * (w_̃pg / 780)  // w_̃pg + 40px
+ w_̃sc * (w_̃pg / 788)  // w_̃pg + 0.5in
+ w_̃sc * (w_̃pg / 800)  // w_̃pg + 60px
+ w_̃sc * (w_̃pg / 833)  // w_̃pg + 93px
+ w_̃sc * (w_̃pg / 836)  // w_̃pg + 1in
+ w_̃sc * (w_̃pg / 884)  // w_̃pg + 1.5in
+ w_̃sc * (w_̃pg / 932)  // w_̃pg + 2in
 
 980 / (740 / 833)
 6 / 6.75
+//`;
+
+const jscmds = `//
+encodeURI("abc !\\"#$%&amp;'()*+,-./:;<=>?@[\\\\]^_\`{|}~123")
+decodeURI("%22%20%22%25%3C%3E%5B%5C%5D%5E%60%7B%7C%7D")
+Array.from(Array(5).keys())
+
+// respShow(Object.fromEntries(Object.keys(location).map(e => [e, location[e]])))
+// respShow(Object.fromEntries(["appCodeName", "appName", "platform", "product", "vendor"].map(e => [e, navigator[e]])))
+
+// respShow(Array.from(Array(64).keys()).map(e => [0, 64, 128, 192].map(d => "0x" + (d + e).toString(16) + (!d && e < 16 ? "  " : " " + String.fromCodePoint(d + e))).join("\\t")).join("\\n"))
+// respShow(Array.from(Array(25).keys()).map(e => (913 + e) + "/" + (945 + e) + " " + [913, 945].map(d => String.fromCodePoint(d + e)).join(" ")).join("\\n"))
 //`;
 
 const bcaches = `//
 caches.keys().then(respShow)
 // caches.keys().then(keys => caches.open(keys[0])).then(cache => cache.keys()).then(keys => keys.map(k => ({ url: k.url, mode: k.mode, dest: k.destination }))).then(respShow)
 // caches.open("calcjs-v00.12").then(cache => cache.delete("https://jahoward11.github.io/a00/-res-js/jstat-tdist.js")).then(respShow)
+
+// indexedDB.databases().then(respShow)
+// respShow(Object.keys(localStorage).filter(e => !/mrview-/.test(e)))
+// localStorage["key"] = "value"
+// localStorage.removeItem("key")
 //`;
 
 const dscripts = `//
 // respShow(document.head.outerHTML.replace(/</g, "&lt;"));
 // respShow(cheadg.outerHTML.replace(/</g, "&lt;"));
+
 respShow(Array.from(document.querySelectorAll('script')).map(e => e.src));
 // respShow(document.querySelector('script:last-of-type').outerHTML.replace(/</g, "&lt;"));
+
+// respShow(Array.from(document.styleSheets).map(ss => ss.href))
+// respShow(Array.from(document.styleSheets[0].rules).map(r => r.cssText))
 //`;
 
 const scrsload = `//
 // try { jStat } catch { scrInj("../-res-js/jstat-tdist.js").then(xprsEval).catch(respShow) }
 // try { markdownit && "" } catch { Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).then(() => "").catch(respShow) }
 // try { hljs && js_beautify && "" } catch { Promise.all(["../-res-js/highlight.pack.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then(() => "").catch(respShow) }
+
+// import("../-dev/ebook-annos.mjs").then(r => window["tocNavLtGen"] = r.tocNavLtGen).catch(respShow)
+// import("../-dev/prj10.js").then(r => respShow(r.jscmds)).catch(respShow)
+// fetch("../-res-js/ebook-annos-fns.js").then(r => r.text()).then(r => respShow(r.replace(/<(?=[!/?a-z])/gi, "&lt;"))).catch(respShow)
+// localforage.getItem("tutor2js").then(val => respShow(val.replace(/<(?=[!/?a-z])/gi, "&lt;"))).catch(respShow)
+// PouchDB("mydb1").get("myfile").then(doc => doc.filefrags[0].contenttxt).then(respShow).catch(respShow)
 //`;
 
 const jstatqs = `//
@@ -120,6 +148,8 @@ csq = obs.reduce((a, b, i) => a + (b - _.exp[i])**2/_.exp[i], 0)
 1 - jStat.chisquare.cdf(csq, 3)
 
 respShow(Object.keys(jStat))
+// respShow(Object.getOwnPropertyNames(Math))
+// respShow(Object.getOwnPropertyNames(Number))
 //`;
 
 const itoken = `/*
@@ -186,8 +216,8 @@ try { srwrap } catch { uiDspl(bodGen(t3x)); scrInj(null, 'module', scrGen(t3x)).
 //`;
 
 export {
-  groupname, locobj, varkeys,
-  nformat, uiwidth, publdims,
+  groupname, varkeys, nformat,
+  uiwidth, publdims, jscmds,
   bcaches, dscripts, scrsload,
   jstatqs, itoken, guipuzls, t3search
 };
