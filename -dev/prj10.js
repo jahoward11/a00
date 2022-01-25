@@ -134,7 +134,7 @@ const scrsload = `//
 // try { markdownit && "" } catch { Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).then(() => "").catch(respShow) }
 // try { hljs && js_beautify && "" } catch { Promise.all(["../-res-js/highlight.pack.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then(() => "").catch(respShow) }
 
-// import("../-dev/ebook-annos.mjs").then(r => window["tocNavLtGen"] = r.tocNavLtGen).catch(respShow)
+// import("../-res-js/ebook-annos.mjs").then(r => window["tocNavLtGen"] = r.tocNavLtGen).catch(respShow)
 // import("../-dev/prj10.js").then(r => respShow(r.jscmds)).catch(respShow)
 // fetch("../-res-js/ebook-annos-fns.js").then(r => r.text()).then(r => respShow(r.replace(/<(?=[!/?a-z])/gi, "&lt;"))).catch(respShow)
 // localforage.getItem("tutor2js").then(val => respShow(val.replace(/<(?=[!/?a-z])/gi, "&lt;"))).catch(respShow)
