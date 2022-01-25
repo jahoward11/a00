@@ -24,21 +24,71 @@ getComputedStyle(cgrid).width
 //`;
 
 const publdims = `//
-// W~sc~ | initial width of content in custom screen display
-// W~pg~ | max width of content on printed page (Chrome, letter-portrait)
+// px-to-in reference points
+ 12 / 96	// 1/8 in
+ 16 / 96	// 1/6 in (1em)
+ 24 / 96	// 1/4 in
+ 32 / 96	// 1/3 in (2em)
+ 36 / 96	// 3/8 in
+ 48 / 96	// 1/2 in (3em)
+ 60 / 96	// 5/8 in
+ 64 / 96	// 2/3 in (4em)
+ 72 / 96	// 3/4 in
+ 80 / 96	// 5/6 in (5em)
+ 84 / 96	// 7/8 in
 
-W_̃sc = 6.75 // in
-W_̃pg = 740  // px
+ 96 / 96	// in (6em)
+ 192 / 96	// in
+ 288 / 96	// in
+ 384 / 96	// in
+ 480 / 96	// in
+ 576 / 96	// in
+ 672 / 96	// in
+ 768 / 96	// in
+ 864 / 96	// in
+ 960 / 96	// in
 
-// final (adjusted) width of content on printed page
-W_̃sc * (W_̃pg / 768)  // W~pg~ + 28px
-W_̃sc * (W_̃pg / 780)  // W~pg~ + 40px
-W_̃sc * (W_̃pg / 788)  // W~pg~ + 0.5in
-W_̃sc * (W_̃pg / 800)  // W~pg~ + 60px
-W_̃sc * (W_̃pg / 833)  // W~pg~ + 93px
-W_̃sc * (W_̃pg / 836)  // W~pg~ + 1in
-W_̃sc * (W_̃pg / 884)  // W~pg~ + 1.5in
-W_̃sc * (W_̃pg / 932)  // W~pg~ + 2in
+ 108 / 96	// 9/8 in
+ 216 / 96	// 9/4 in
+ 432 / 96	// 9/2 in
+ 864 / 96	// 9 in
+
+ 128 / 96	// 4/3 in
+ 256 / 96	// 8/3 in
+ 512 / 96	// 16/3 in
+ 1024 / 96	// 32/3 in
+
+// ipad effective page width (in)
+ wp = 1024 / 96
+// ipad effective page height (in)
+ hp = 768 / 96
+
+// ratio, screen-to-page width
+ rsp = 7.75 / wp // rsp : std reduction
+// ratio, screen-to-page height
+ 5.8125 / hp
+
+// ratio, page-to-screen width
+ wp / 7.75
+// ratio, page-to-screen height
+ hp / 5.8125
+
+// printing reference
+ // w~sc~ | initial width of content in custom screen display
+ // w~pg~ | max width of content on printed page (Chrome, letter-portrait)
+
+ w_̃sc = 6.75 // in
+ w_̃pg = 740  // px
+
+ // final (adjusted) width of content on printed page
+ w_̃sc * (w_̃pg / 768)  // w~pg~ + 28px
+ w_̃sc * (w_̃pg / 780)  // w~pg~ + 40px
+ w_̃sc * (w_̃pg / 788)  // w~pg~ + 0.5in
+ w_̃sc * (w_̃pg / 800)  // w~pg~ + 60px
+ w_̃sc * (w_̃pg / 833)  // w~pg~ + 93px
+ w_̃sc * (w_̃pg / 836)  // w~pg~ + 1in
+ w_̃sc * (w_̃pg / 884)  // w~pg~ + 1.5in
+ w_̃sc * (w_̃pg / 932)  // w~pg~ + 2in
 
 980 / (740 / 833)
 6 / 6.75
