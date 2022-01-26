@@ -330,8 +330,6 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
   xbtnsav = document.querySelector('#xctrls #xbtnsav'),
   xbtndel = document.querySelector('#xctrls #xbtndel'),
   xcshelp = document.querySelector('#xctrls #xcshelp'),
-  dinp2 = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
-    || { value: dinput.innerHTML.replace(/\n+$|^\n+/g, "") },
   helpClr = () => !xcshelp || (xcshelp.innerHTML = "") || xcshelp.classList.remove("iwarn", "isucc"),
   respShow = resp => { preresp.innerHTML
     += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
@@ -624,6 +622,8 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
       .catch(respShow);
   };
 window.xstor = {};
+window.dinp2 = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
+  || { value: dinput.innerHTML.replace(/\n+$|^\n+/g, "") };
 window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
   /^jsrcs=./.test(qi) ? (jsrcs = window.decodeURIComponent(qi.replace(/^jsrcs=/, "")).split(/[ ,]+/))
   : /^cmods=./.test(qi) ? (cmods = window.decodeURIComponent(qi.replace(/^cmods=/, "")).split(/[ ,]+/))
