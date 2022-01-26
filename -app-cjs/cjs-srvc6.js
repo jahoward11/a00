@@ -319,7 +319,7 @@ g1Reset();
 */
 
 // preresp.innerHTML = "" // clears any orange text (in case GUI text is still visible)
-// scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+$/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?( *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
+// scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?( *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
 // localforage.getItem("tutor2js").then(val => respShow(_.scrGen(val).replace(/<(?=[!/?a-z])/gi, "&lt;"))).catch(respShow)
 
 /*
@@ -677,7 +677,7 @@ srui += "\\n<div class=cfield>\\n<span class=ccntr><select id=rndrsel>\\n" + ["N
 srui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x2964; PARSE\\" onclick=strPars()></span><span class=ccntr><input type=button value=\\"&rlhar; SWAP\\" onclick=cntSwap()></span>\\n</div>";
 srui += "\\n<h4 class=cfield><span onclick=txtaSel(trgtxta)>Target</span></h4>";
 srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=trghelp class=chelp></div></div>";
-srui += "\\n<div class=cfield>\\n<span class=ccntr><input type=text id=lfinp list=pfiles placeholder=\\"USERdata filename&hellip;\\" onfocus=ms2Clr() /><datalist id=pfiles></datalist></span><span class=ccntr><button onclick=lfdMgr(2)>\\n<span>&uArr;</span></button></span><span class=ccntr><button onclick=lfdMgr(1)>\\n<span class=isucc>&#x267a;</span> SAVE</button></span><span class=ccntr><button onclick=lfdMgr()>\\n<span class=iwarn>&#x2715;</span> DEL</button></span>\\n<div id=lfhelp class=chelp></div>\\n</div>";
+srui += "\\n<div class=cfield>\\n<span class=ccntr><input type=text id=lfinp list=pfiles placeholder=\\"filename/key/CMD&hellip;\\" onfocus=ms2Clr() /><datalist id=pfiles></datalist></span><span class=ccntr><button onclick=lfdMgr(2)>\\n<span>&uArr;</span></button></span><span class=ccntr><button onclick=lfdMgr(1)>\\n<span class=isucc>&#x267a;</span> SAVE</button></span><span class=ccntr><button onclick=lfdMgr()>\\n<span class=iwarn>&#x2715;</span> DEL</button></span>\\n<div id=lfhelp class=chelp></div>\\n</div>";
 srui += "\\n<div id=trgrndr class=cfield></div>\\n";
 
 // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
@@ -710,13 +710,14 @@ srui += "\\n<div id=trgrndr class=cfield></div>\\n";
 rxs = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:\\w+|\\(.*?\\)) *=>.|^".*"$|^\\b[\\w.]+$/, /^\\b[\\w.]+$/]; //
 msgClr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc"));
 rsltVw = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 2 ? rslt : "\\n<pre" + (ri < 2 ? ">" : " class=pwrap>") + rslt + "</pre>\\n"; };
-pfsRfr = () => localforage.keys().then(ks => pfiles.innerHTML = ks.map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(console.warn);
+pfsRfr = () => !window.localforage || localforage.keys().then(ks => pfiles.innerHTML = ks.map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(console.warn);
+datLoad = k => Promise.resolve().then(() => { try { return window.eval(k); } catch { return localStorage.getItem(k) || !window.localforage || localforage.getItem(k); }}).then(v => { try { return !v ? v : typeof v === 'object' ? JSON.stringify(v, null, 2) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(JSON.parse(v), null, 2); } catch { return v; }}).then(v => trgtxta.value = v.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(console.warn);
 window.txtaSel = e => _.msgClr() || e.focus() || e.setSelectionRange(0, e.textLength);
 window.cntSwap = () => _.msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
 window.strPars = () => { let lm, r3, sv = sepainp.value, rv = rfncinp.value, m1V = s => [trgtxta, trghelp].forEach(e => e.classList.add(!s ? "iwarn" : "isucc")); _.msgClr(); try { _.rxs[3].test(rv.trim()) && window.eval(rv) } catch (e) { trghelp.innerHTML = r3 = e; /* trgtxta.value = ""; return m1V(); */ } if (_.rxs[0].test(sv)) { trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made."; m1V(lm); } _.rsltVw(srctxta.value.replace(!_.rxs[1].test(sv) ? sv : eval(sv), window[rv] || window.eval(_.rxs[2].test(rv.trim()) && !r3 ? rv : '"' + rv.replace(/(?=")/g, "\\\\") + '"'))); };
 window.ms2Clr = () => (lfhelp.innerHTML = "") || lfhelp.classList.remove("iwarn", "isucc");
-window.lfdMgr = ox => { let fnm = lfinp.value.trim(); !fnm || !window.localforage || localforage[!ox ? "removeItem" : ox < 2 ? "setItem" : "getItem"](fnm, ox === 1 && "/*\\n" + trgtxta.value + "\\n*/").then(v => !v || ox < 2 || trgtxta.value || (trgtxta.value = v.replace(/\\n\\*\\/$|^\\/\\*\\n/g, ""))).then(() => _.pfsRfr() && ox > 1 || (lfhelp.innerHTML = "USERdata file is " + (!ox ? "deleted." : "saved locally.")) && lfhelp.classList.add(!ox ? "iwarn" : "isucc")).catch(console.warn); }; //
-!window.srwrap || !window.localforage || pfsRfr();
+window.lfdMgr = ox => { let key = lfinp.value.trim(); if (ox === 2) return !key || trgtxta.value || datLoad(key); !key || !window.localforage || localforage[!ox ? "removeItem" : "setItem"](key, ox && "/*\\n" + trgtxta.value + "\\n*/").then(() => _.pfsRfr() && (lfhelp.innerHTML = "USERdata file is " + (!ox ? "deleted." : "saved locally.")) && lfhelp.classList.add(!ox ? "iwarn" : "isucc")).catch(console.warn); }; //
+!window.srwrap || pfsRfr();
 
 /*
    + *Optional:* Un-comment the following block of code to generate the
@@ -724,9 +725,9 @@ window.lfdMgr = ox => { let fnm = lfinp.value.trim(); !fnm || !window.localforag
 */
 
 /*
-scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+$/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?( *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,$2\\n  "); //
+scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?( *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,$2\\n  "); //
 dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
-respShow((dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(xstor["JScode"]["tutorial3"]) + dwrap[2]).replace(/\\n<hr>/, "").replace(/<(?=[!/?a-z])/gi, "&lt;"))
+respShow((dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(xstor.JScode.tutorial3) + dwrap[2]).replace(/\\n<hr>/, "").replace(/<(?=[!/?a-z])/gi, "&lt;"))
 */
 
 /*
