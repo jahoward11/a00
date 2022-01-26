@@ -10,7 +10,7 @@
 html { box-sizing: border-box; min-width: 375px; overflow-wrap: break-word; }
 hr { margin: 1.5rem 0; }
 [list]::-webkit-calendar-picker-indicator { display: none !important; }
-#srwrap { font: normal medium Helvetica, Arial, sans-serif; margin: 24px 0; }
+#srwrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }
 #srwrap textarea { display: block; font-size: medium; width: 100%; height: 288px; }
 #srwrap .iwarn { color: Orange; }
 #srwrap .isucc { color: CornFlowerBlue; }
@@ -18,13 +18,12 @@ hr { margin: 1.5rem 0; }
 #srwrap textarea.isucc { color: unset; border-color: CornFlowerBlue; }
 #srwrap .pwrap { white-space: pre-wrap; }
 #srwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }
-#srwrap .cfield { max-width: 720px; }
 #srwrap .cfield:not(:last-child) { margin-bottom: 8px; }
-#srwrap .ccntr:not(:last-child) { margin-right: 8px; }
+#srwrap .ccntr:not(:last-of-type) { margin-right: 8px; }
 #srwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }
 #srwrap .cfield>.chelp { font-size: 12px; margin-top: 4px; }
 #sepainp, #rfncinp { width: 288px; }
-#lfinp { max-width: 176px; }
+#lfinp { width: 176px; }
 #trgrndr { display: flow-root; margin-top: 16px; border-top: dashed 1px gainsboro; }
 </style>
 <h4 class="cfield"><span onclick="txtaSel(srctxta)">Source</span></h4>
@@ -42,7 +41,8 @@ hr { margin: 1.5rem 0; }
 <h4 class="cfield"><span onclick="txtaSel(trgtxta)">Target</span></h4>
 <div class="cfield"><textarea id="trgtxta"></textarea><div id="trghelp" class="chelp"></div></div>
 <div class="cfield">
-<span class="ccntr"><input type="text" id="lfinp" list="pfiles" placeholder="USERdata filename…" onfocus="ms2Clr()"><datalist id="pfiles"></datalist></span><span class="ccntr"><button onclick="lfdMgr(2)">
+<span class="ccntr"><input type="text" id="lfinp" list="pfiles" placeholder="USERdata filename…" onfocus="ms2Clr()"><datalist id="pfiles">
+</datalist></span><span class="ccntr"><button onclick="lfdMgr(2)">
 <span>⇑</span></button></span><span class="ccntr"><button onclick="lfdMgr(1)">
 <span class="isucc">♺</span> SAVE</button></span><span class="ccntr"><button onclick="lfdMgr()">
 <span class="iwarn">✕</span> DEL</button></span>

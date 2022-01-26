@@ -131,6 +131,7 @@ respShow(Array.from(document.querySelectorAll('script')).map(e => e.src));
 
 const scrsload = `//
 // try { jStat } catch { scrInj("../-res-js/jstat-tdist.js").then(xprsEval).catch(respShow) }
+// try { SourceDiff } catch { scrInj("../-res-js/srcdiff.js").catch(respShow) }
 // try { markdownit && "" } catch { Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).then(() => "").catch(respShow) }
 // try { hljs && js_beautify && "" } catch { Promise.all(["../-res-js/highlight.pack.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then(() => "").catch(respShow) }
 
@@ -172,7 +173,7 @@ const guipuzls = `/*
 
 t2x = xstor["JScode"]["tutorial2"];
 bodGen = src => "\\n<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/;$|^g\\dui = /g, "").split(/;\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n") + "\\n"; //
-scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?( *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
+scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+$/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?( *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
 dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=pz1wrap>", "</div>\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
 respShow((dwrap[0] + bodGen(t2x) + dwrap[1] + scrGen(t2x) + dwrap[2]).replace(/<(?=[!/?a-z])/gi, "&lt;"))
 */`;
@@ -180,7 +181,7 @@ respShow((dwrap[0] + bodGen(t2x) + dwrap[1] + scrGen(t2x) + dwrap[2]).replace(/<
 const t3search = `//
 t3x = xstor["JScode"]["tutorial3"];
 bodGen = src => "\\n" + src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui = /g, "").split(/;\\nsrui \\+= /).map(eval).join("").trim() + "\\n"; //
-scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^.+/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?( *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,$2\\n  "); //
+scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+$/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?( *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,$2\\n  "); //
 uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
 // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
@@ -215,9 +216,60 @@ try { srwrap } catch { uiDspl(bodGen(t3x)); scrInj(null, 'module', scrGen(t3x)).
 // window.jh1 = str => "<pre class=hljs>" + hljs.highlightAuto(!window.bj1 ? str : bj1(str)).value + "</pre><style>@import \\"../-res-hljs/atom-one-light.css\\"; #srwrap pre>pre.hljs { margin: 0; white-space: inherit; }</style>";
 //`;
 
+const srcdiff = `//
+sdui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
+sdui += "\\nhtml { box-sizing: border-box; min-width: 375px; overflow-wrap: break-word; }";
+sdui += "\\nhr { margin: 1.5rem 0; }";
+sdui += "\\n#diffwr { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
+sdui += "\\n#diffwr h4 { margin: 0 0 8px; }";
+sdui += "\\n#diffwr input[type=text] { width: 144px; }";
+sdui += "\\n#diffwr pre { height: 240px; margin: 0 0 16px; overflow: auto; }";
+sdui += "\\n#diffwr pre.ht0 { height: 0; }";
+sdui += "\\n#diffwr pre.ht2x { height: 480px; }";
+sdui += "\\n#diffwr .iwarn { color: Orange; }";
+sdui += "\\n#diffwr .isucc { color: CornFlowerBlue; }";
+sdui += "\\n#diffwr .fltrt { float: right; }";
+sdui += "\\n#diffwr .cfield:not(:last-child) { margin-bottom: 8px; }";
+sdui += "\\n#diffwr .cfield.fltrt:not(:last-child) { margin: 0; }";
+sdui += "\\n#diffwr .ccntr:not(:last-of-type) { margin-right: 8px; }";
+sdui += "\\n#diffwr :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
+sdui += "\\n#diffwr .inserted { background-color: #9E9; display: inline-block; min-width: 100%; }";
+sdui += "\\n#diffwr .deleted { background-color: #E99; display: inline-block; min-width: 100%; }";
+sdui += "\\n#diffwr .modified { background-color: #FD8; display: inline-block; min-width: 100%; }";
+sdui += "\\n#diffwr .modified-light { background-color: #fcffb6; /* display: inline-block; */ /* min-width: 100%; */ }";
+sdui += "\\n#diffwr .padding { background-color: LightGrey; display: inline-block; min-width: 100%; }";
+sdui += "\\n@media screen and (min-height: 864px), print and (max-width: 734px),";
+sdui += "\\nprint and (min-width: 738px) and (max-width: 785px) { #diffwr pre { height: 384px; } #diffwr pre.ht2x { height: 768px; } }";
+sdui += "\\n</style>\\n<hr>";
+sdui += "\\n<span class=\\"cfield fltrt\\"><label class=ccntr><input type=text id=s1finp placeholder=\\"filename/variable&hellip;\\" /></label><label class=\\"ccntr isucc\\"><input type=checkbox id=s1chkb />hide</label></span>";
+sdui += "\\n<h4>SOURCE1 (edited)</h4>";
+sdui += "\\n<pre id=s1rslt></pre>";
+sdui += "\\n<span class=\\"cfield fltrt\\"><label class=ccntr><input type=text id=s2finp placeholder=\\"filename/variable&hellip;\\" /></label><label class=\\"ccntr isucc\\"><input type=checkbox id=s2chkb />hide</label></span>";
+sdui += "\\n<h4>SOURCE2 (original)</h4>";
+sdui += "\\n<pre id=s2rslt></pre>\\n";
+
+// srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
+try { diffwr } catch { ndiv = document.createElement('div'); ndiv.id = "diffwr"; ndiv.innerHTML = sdui; cmain.appendChild(ndiv); }
+try { SourceDiff } catch { scrInj("../-res-js/srcdiff.js").catch(respShow) }
+
+diffExe = ([s1txt, s2txt]) => { if (!window.localforage || !window.SourceDiff || !s1txt || !s2txt) { return s1rslt.innerHTML = s2rslt.innerHTML = ""; } let sdiff = new SourceDiff.Diff(true), frmtr = new SourceDiff.DiffFormatter(sdiff); [s2rslt.innerHTML, s1rslt.innerHTML] = frmtr.formattedDiff(s2txt, s1txt); };
+pfsPrep = () => Promise.all( [s1finp.value, s2finp.value].map( k => { try { return window.eval(k); } catch { return localStorage.getItem(k) || localforage.getItem(k); } } )).then( vs => vs.map( v => { try { return !v ? v : typeof v === 'object' ? JSON.stringify(v, null, 2) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(JSON.parse(v), null, 2); } catch { return v; } })).then(_.diffExe).catch(console.warn);
+[s1chkb, s2chkb].forEach( e => e.onchange = () => { [s1rslt, s2rslt].forEach(e => e.classList.remove("ht0", "ht2x")); if (s1chkb.checked && s2chkb.checked) { s1rslt.classList.add("ht0"); s2rslt.classList.add("ht0"); } else if (s1chkb.checked) { s1rslt.classList.add("ht0"); s2rslt.classList.add("ht2x") } else if (s2chkb.checked) { s1rslt.classList.add("ht2x"); s2rslt.classList.add("ht0"); } });
+s1rslt.onscroll = () => { s2rslt.scrollLeft = s1rslt.scrollLeft; s2rslt.scrollTop = s1rslt.scrollTop; };
+s2rslt.onscroll = () => { s1rslt.scrollLeft = s2rslt.scrollLeft; s1rslt.scrollTop = s2rslt.scrollTop; };
+[s1finp, s2finp].forEach(e => e.onblur = _.pfsPrep);
+//
+
+usd = xstor["util"]["srcdiff"];
+scrGen = src => "let " + src.match(/^diffExe = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+$/, m => m.replace(/ *=(?= *[a-z]|$)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?( *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,$2\\n  "); //
+// dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Source-Text Diffs</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script src=\\"../-res-js/srcdiff.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
+// respShow((dwrap[0] + diffwr.outerHTML + dwrap[1] + scrGen(usd) + dwrap[2]).replace(/<(?=[!/?a-z])/gi, "&lt;"));
+//`;
+
 export {
   groupname, varkeys, nformat,
   uiwidth, publdims, jscmds,
   bcaches, dscripts, scrsload,
-  jstatqs, itoken, guipuzls, t3search
+  jstatqs, itoken, guipuzls,
+  t3search, srcdiff
 };
