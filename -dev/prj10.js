@@ -98,6 +98,7 @@ const publdims = `//
 const jscmds = `//
 encodeURI("abc !\\"#$%&amp;'()*+,-./:;<=>?@[\\\\]^_\`{|}~123")
 decodeURI("%22%20%22%25%3C%3E%5B%5C%5D%5E%60%7B%7C%7D")
+
 Array.from(Array(5).keys())
 
 // respShow(Object.fromEntries(Object.keys(location).map(e => [e, location[e]])))
@@ -105,6 +106,11 @@ Array.from(Array(5).keys())
 
 // respShow(Array.from(Array(64).keys()).map(e => [0, 64, 128, 192].map(d => "0x" + (d + e).toString(16) + (!d && e < 16 ? "  " : " " + String.fromCodePoint(d + e))).join("\\t")).join("\\n"))
 // respShow(Array.from(Array(25).keys()).map(e => (913 + e) + "/" + (945 + e) + " " + [913, 945].map(d => String.fromCodePoint(d + e)).join(" ")).join("\\n"))
+
+// { let k, keys = []; for (k in document.documentElement) keys.push(k); respShow(keys.filter(k => !/^on|^aria/.test(k)).sort()); }
+// respShow(Array.from(document.querySelectorAll('[id]')).map(e => e.id))
+// respShow( Object.keys(window).filter( pty => Object.entries(Object.getOwnPropertyDescriptor(window, pty) || "").filter(e => ['value', 'writable', 'enumerable'].includes(e[0]) && e[1]).length === 3 ))
+// respShow( Object.fromEntries( Object.entries(SourceDiff).map(oe => [oe[0], oe[1].toString()]) ))
 //`;
 
 const bcaches = `//
@@ -185,7 +191,7 @@ scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[
 uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
 // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
-try { srwrap } catch { uiDspl(bodGen(t3x)); scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(respShow); }
+try { srwrap } catch { uiDspl(bodGen(t3x)); window.strPars || scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(respShow); }
 
 // dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
 // srctxta.value = (dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(t3x) + dwrap[2]);
@@ -222,6 +228,7 @@ sdui += "\\nhtml { box-sizing: border-box; min-width: 375px; overflow-wrap: brea
 sdui += "\\nhr { margin: 1.5rem 0; }\\n[list]::-webkit-calendar-picker-indicator { display: none !important; }";
 sdui += "\\n#sdwrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
 sdui += "\\n#sdwrap h4 { margin: 0 0 8px; }";
+sdui += "\\n#sdwrap button, #sdwrap input:not([type=checkbox]), #sdwrap select { height: 24px; vertical-align: bottom; }";
 sdui += "\\n#sdwrap input[type=text] { width: 144px; }";
 sdui += "\\n#sdwrap pre { height: 240px; margin: 0 0 16px; overflow: auto; }";
 sdui += "\\n#sdwrap pre.ht0 { height: 0; }";
@@ -258,7 +265,7 @@ datPrep = () => Promise.all([s1finp.value, s2finp.value].map(k => { if (k) try {
 s1rslt.onscroll = () => { s2rslt.scrollLeft = s1rslt.scrollLeft; s2rslt.scrollTop = s1rslt.scrollTop; };
 s2rslt.onscroll = () => { s1rslt.scrollLeft = s2rslt.scrollLeft; s1rslt.scrollTop = s2rslt.scrollTop; };
 [s1finp, s2finp].forEach(e => e.onblur = _.datPrep);
-!window.sdwrap || !window.localforage || localforage.keys().then(ks => pfile2.innerHTML = ks.map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(console.warn);
+!window.sdwrap || !window.localforage || localforage.keys().then(ks => pfile2.innerHTML = ["dinp2.value", "preresp.textContent"].concat(ks).map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(console.warn);
 //
 
 scrGen = src => "let " + src.match(/^diffGen = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?( *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,$2\\n  "); //

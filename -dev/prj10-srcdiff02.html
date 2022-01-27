@@ -12,6 +12,7 @@ hr { margin: 1.5rem 0; }
 [list]::-webkit-calendar-picker-indicator { display: none !important; }
 #sdwrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }
 #sdwrap h4 { margin: 0 0 8px; }
+#sdwrap button, #sdwrap input:not([type=checkbox]), #sdwrap select { height: 24px; vertical-align: bottom; }
 #sdwrap input[type=text] { width: 144px; }
 #sdwrap pre { height: 240px; margin: 0 0 16px; overflow: auto; }
 #sdwrap pre.ht0 { height: 0; }
@@ -89,7 +90,8 @@ s2rslt.onscroll = () => {
 };
 [s1finp, s2finp].forEach(e => e.onblur = datPrep);
 !window.sdwrap || !window.localforage || localforage.keys()
-  .then(ks => pfile2.innerHTML = ks.map(k => "\n<option>" + k + "</option>").join("") + "\n")
+  .then( ks => pfile2.innerHTML = ["dinp2.value", "preresp.textContent"].concat(ks)
+    .map(k => "\n<option>" + k + "</option>").join("") + "\n" )
   .catch(console.warn);
 </script>
 </html>
