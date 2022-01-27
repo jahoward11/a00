@@ -219,27 +219,27 @@ try { srwrap } catch { uiDspl(bodGen(t3x)); scrInj(null, 'module', "\\n" + scrGe
 const srcdiff = `//
 sdui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
 sdui += "\\nhtml { box-sizing: border-box; min-width: 375px; overflow-wrap: break-word; }";
-sdui += "\\nhr { margin: 1.5rem 0; }";
-sdui += "\\n#diffwr { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
-sdui += "\\n#diffwr h4 { margin: 0 0 8px; }";
-sdui += "\\n#diffwr input[type=text] { width: 144px; }";
-sdui += "\\n#diffwr pre { height: 240px; margin: 0 0 16px; overflow: auto; }";
-sdui += "\\n#diffwr pre.ht0 { height: 0; }";
-sdui += "\\n#diffwr pre.ht2x { height: 480px; }";
-sdui += "\\n#diffwr .iwarn { color: Orange; }";
-sdui += "\\n#diffwr .isucc { color: CornFlowerBlue; }";
-sdui += "\\n#diffwr .fltrt { float: right; }";
-sdui += "\\n#diffwr .cfield:not(:last-child) { margin-bottom: 8px; }";
-sdui += "\\n#diffwr .cfield.fltrt:not(:last-child) { margin: 0; }";
-sdui += "\\n#diffwr .ccntr:not(:last-of-type) { margin-right: 8px; }";
-sdui += "\\n#diffwr :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
-sdui += "\\n#diffwr .inserted { background-color: #9E9; display: inline-block; min-width: 100%; }";
-sdui += "\\n#diffwr .deleted { background-color: #E99; display: inline-block; min-width: 100%; }";
-sdui += "\\n#diffwr .modified { background-color: #FD8; display: inline-block; min-width: 100%; }";
-sdui += "\\n#diffwr .modified-light { background-color: #fcffb6; /* display: inline-block; */ /* min-width: 100%; */ }";
-sdui += "\\n#diffwr .padding { background-color: LightGrey; display: inline-block; min-width: 100%; }";
+sdui += "\\nhr { margin: 1.5rem 0; }\\n[list]::-webkit-calendar-picker-indicator { display: none !important; }";
+sdui += "\\n#sdwrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
+sdui += "\\n#sdwrap h4 { margin: 0 0 8px; }";
+sdui += "\\n#sdwrap input[type=text] { width: 144px; }";
+sdui += "\\n#sdwrap pre { height: 240px; margin: 0 0 16px; overflow: auto; }";
+sdui += "\\n#sdwrap pre.ht0 { height: 0; }";
+sdui += "\\n#sdwrap pre.ht2x { height: 480px; }";
+sdui += "\\n#sdwrap .iwarn { color: Orange; }";
+sdui += "\\n#sdwrap .isucc { color: CornFlowerBlue; }";
+sdui += "\\n#sdwrap .fltrt { float: right; }";
+sdui += "\\n#sdwrap .cfield:not(:last-child) { margin-bottom: 8px; }";
+sdui += "\\n#sdwrap .cfield.fltrt:not(:last-child) { margin: 0; }";
+sdui += "\\n#sdwrap .ccntr:not(:last-of-type) { margin-right: 8px; }";
+sdui += "\\n#sdwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
+sdui += "\\n#sdwrap .inserted { background-color: #9E9; display: inline-block; min-width: 100%; }";
+sdui += "\\n#sdwrap .deleted { background-color: #E99; display: inline-block; min-width: 100%; }";
+sdui += "\\n#sdwrap .modified { background-color: #FD8; display: inline-block; min-width: 100%; }";
+sdui += "\\n#sdwrap .modified-light { background-color: #fcffb6; /* display: inline-block; */ /* min-width: 100%; */ }";
+sdui += "\\n#sdwrap .padding { background-color: LightGrey; display: inline-block; min-width: 100%; }";
 sdui += "\\n@media screen and (min-height: 864px), print and (max-width: 734px),";
-sdui += "\\nprint and (min-width: 738px) and (max-width: 785px) { #diffwr pre { height: 384px; } #diffwr pre.ht2x { height: 768px; } }";
+sdui += "\\nprint and (min-width: 738px) and (max-width: 785px) { #sdwrap pre { height: 384px; } #sdwrap pre.ht2x { height: 768px; } }";
 sdui += "\\n</style>\\n<hr>\\n<datalist id=pfile2></datalist>";
 sdui += "\\n<span class=\\"cfield fltrt\\"><label class=ccntr><input type=text id=s1finp list=pfile2 placeholder=\\"filename/key/CMD&hellip;\\" /></label><label class=\\"ccntr isucc\\"><input type=checkbox id=s1chkb />hide</label></span>";
 sdui += "\\n<h4>SOURCE1 (edited)</h4>";
@@ -249,7 +249,7 @@ sdui += "\\n<h4>SOURCE2 (original)</h4>";
 sdui += "\\n<pre id=s2rslt></pre>\\n";
 
 // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
-try { diffwr } catch { ndiv = document.createElement('div'); ndiv.id = "diffwr"; ndiv.innerHTML = sdui; cmain.appendChild(ndiv); }
+try { sdwrap } catch { ndiv = document.createElement('div'); ndiv.id = "sdwrap"; ndiv.innerHTML = sdui; cmain.appendChild(ndiv); }
 try { SourceDiff } catch { scrInj("../-res-js/srcdiff.js").catch(respShow) }
 
 diffGen = ([s1txt, s2txt]) => { if (!window.SourceDiff || !s1txt || !s2txt) { return s1rslt.innerHTML = s2rslt.innerHTML = ""; } let sdiff = new SourceDiff.Diff(true), frmtr = new SourceDiff.DiffFormatter(sdiff); [s2rslt.innerHTML, s1rslt.innerHTML] = frmtr.formattedDiff(s2txt, s1txt); };
@@ -258,12 +258,12 @@ datPrep = () => Promise.all([s1finp.value, s2finp.value].map(k => { if (k) try {
 s1rslt.onscroll = () => { s2rslt.scrollLeft = s1rslt.scrollLeft; s2rslt.scrollTop = s1rslt.scrollTop; };
 s2rslt.onscroll = () => { s1rslt.scrollLeft = s2rslt.scrollLeft; s1rslt.scrollTop = s2rslt.scrollTop; };
 [s1finp, s2finp].forEach(e => e.onblur = _.datPrep);
-!window.diffwr || !window.localforage || localforage.keys().then(ks => pfile2.innerHTML = ks.map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(console.warn);
+!window.sdwrap || !window.localforage || localforage.keys().then(ks => pfile2.innerHTML = ks.map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(console.warn);
 //
 
 scrGen = src => "let " + src.match(/^diffGen = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?( *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,$2\\n  "); //
 // dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Source-Text Diffs</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script src=\\"../-res-js/srcdiff.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
-// respShow((dwrap[0] + diffwr.outerHTML + dwrap[1] + scrGen(xstor.util.srcdiff) + dwrap[2]).replace(/<(?=[!/?a-z])/gi, "&lt;"));
+// respShow((dwrap[0] + sdwrap.outerHTML + dwrap[1] + scrGen(xstor.util.srcdiff) + dwrap[2]).replace(/<(?=[!/?a-z])/gi, "&lt;"));
 //`;
 
 export {
