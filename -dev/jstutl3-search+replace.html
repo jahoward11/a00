@@ -56,7 +56,7 @@ hr { margin: 1.5rem 0; }
 let rxs = [/^\/.+\/[im]*g[im]*$/, /^\/.+\/[gim]*$/, /^(?:\w+|\(.*?\)) *=>.|^".*"$|^\b[\w.]+$/, /^\b[\w.]+$/], //
   msgClr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc")),
   rsltVw = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 2 ? rslt : "\n<pre" + (ri < 2 ? ">" : " class=pwrap>") + rslt + "</pre>\n"; },
-  pfsRfr = () => !window.localforage || localforage.keys().then(ks => pfiles.innerHTML = ["dinp2.value", "preresp.textContent"].concat(ks).map(k => "\n<option>" + k + "</option>").join("") + "\n").catch(console.warn),
+  pfsRfr = () => !window.localforage || localforage.keys().then(ks => pfiles.innerHTML = ["trgtxta.value", "srctxta.value", "dentry.value", "respcon.textContent"].concat(ks).map(k => "\n<option>" + k + "</option>").join("") + "\n").catch(console.warn),
   datLoad = k => Promise.resolve().then(() => { try { return window.eval(k); } catch { return localStorage.getItem(k) || !window.localforage || localforage.getItem(k); }}).then(v => { try { return !v ? v : typeof v === 'object' ? JSON.stringify(v, null, 2) : typeof v !== 'string' ? "" + v : !/^{\s*['"][^]+}$|^\[[^]+\]$/.test(v.trim()) ? v : JSON.stringify(JSON.parse(v), null, 2); } catch { return v; }}).then(v => trgtxta.value = v.replace(/\n\*\/$|^\/\*\n/g, "")).catch(console.warn);
 window.txtaSel = e => msgClr() || e.focus() || e.setSelectionRange(0, e.textLength);
 window.cntSwap = () => msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);

@@ -89,8 +89,8 @@ s2rslt.onscroll = () => {
   s1rslt.scrollTop = s2rslt.scrollTop;
 };
 [s1finp, s2finp].forEach(e => e.onblur = datPrep);
-!window.sdwrap || !window.localforage || localforage.keys()
-  .then( ks => pfile2.innerHTML = ["dinp2.value", "preresp.textContent"].concat(ks)
+!window.sdwrap || !window.localforage || localforage.keys().then( ks => pfile2.innerHTML
+    = ["trgtxta.value", "srctxta.value", "dentry.value", "respcon.textContent"].concat(ks)
     .map(k => "\n<option>" + k + "</option>").join("") + "\n" )
   .catch(console.warn);
 </script>
