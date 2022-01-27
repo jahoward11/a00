@@ -61,7 +61,7 @@ body {
   appearance: none;
 }
 #cmain select.anone::-ms-expand { display: none; }
-#cgrid pre, #cmain>#preresp {
+#cgrid pre, #cmain>#respcon {
   background-color: unset;
   color: unset;
   font: normal medium/1.25 monospace;
@@ -110,7 +110,7 @@ body {
   line-height: 1;
   vertical-align: bottom;
 }
-#cmain>#preresp {
+#cmain>#respcon {
   color: Orange;
   padding: 0;
 }
@@ -274,11 +274,11 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
 <body>
 <div id="screenmask" class="is-hidden"></div>
 <main id="cmain">
-<xmp id="dinput" class="is-hidden">
+<xmp id="datxmp" class="is-hidden">
 
 </xmp>
 <h4 id="cheadg">JavaScript Calculator</h4>
-<pre id="preresp"></pre>
+<pre id="respcon"></pre>
 <span id="mctnr"><select id="menulist" class="anone" title="CalcJS View Options">
   <option></option>
   <option>&nbsp;&pm; Lock/unlock screen zoom</option>
@@ -314,9 +314,9 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
 let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
   metavp = document.querySelector('#ecorender>meta[name=viewport]')
     || document.querySelector('head>meta[name=viewport]'),
-  dinput = document.querySelector('#cmain>#dinput'),
+  datxmp = document.querySelector('#cmain>#datxmp'),
   cheadg = document.querySelector('#cmain>#cheadg'),
-  preresp = document.querySelector('#cmain>#preresp'),
+  respcon = document.querySelector('#cmain>#respcon'),
   menulist = document.querySelector('#cmain>#mctnr>#menulist'),
   cgrid = document.querySelector('#cmain>#cgrid'),
   quad1A = document.querySelector('#cgrid>#quad1A'),
@@ -331,7 +331,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
   xbtndel = document.querySelector('#xctrls #xbtndel'),
   xcshelp = document.querySelector('#xctrls #xcshelp'),
   helpClr = () => !xcshelp || (xcshelp.innerHTML = "") || xcshelp.classList.remove("iwarn", "isucc"),
-  respShow = resp => { preresp.innerHTML
+  respShow = resp => { respcon.innerHTML
     += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
       ? resp : JSON.stringify(resp, null, 2) ) + "\n\n" },
   zoomTog = zoff => metavp.setAttribute( 'content', "width=device-width, "
@@ -390,7 +390,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     + "\n  // dload= | load specified data set into *ENTRY* field"
     + "\n  // val0s= | re-assign initial values of pre-loaded data set"
     + "\n  // jsrcs= | inject supplemental JavaScript resources\n\n// "
-    + (dinp2.type ? "window_location_search" : "window.location.search") + " = \"" + qrys.join("&")
+    + (dentry.type ? "window_location_search" : "window.location.search") + " = \"" + qrys.join("&")
     + "\"\n // + \"" + (!qrys.length ? "" : "&") + "cmods=\" + encodeURIComponent(\"3,5,prj42.mjs\")"
     + ((xsetlist || "").value ? "" : "\n // + \"&dload=\" + encodeURIComponent(\"https://host/pathname\")")
     + "\n // + \"&val0s=\" + encodeURIComponent(\"a:10,b:20,c:30\")"
@@ -403,8 +403,8 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
       + (document.querySelector('#ecorender') || document.documentElement).innerHTML
         .replace(/\n+$|^\n+|^<head>\n?|^#cmain \.iwarn[^]+?\n(?=@media print {\n)|,\n *xsetLoad = [^]+?(?=;\nwindow\.xstor =)|^ *!\/\^http.+slistRegen[^]+?;\n|\n*<script\b.*><\/script>(?=$|<\/body>)|\n?<\/body>$/gim, "")
         .replace(/^(<\/style>)[^]*?(?=<div .+><\/div>$)/im, "$1\n</head>\n<body>\n")
-        .replace(/^(<xmp id="dinput".*?>)[^]*?(?=<\/xmp>)/im, (m, c1) => c1 + "\n" + dinp2.value + "\n")
-        .replace(/^(<pre id="preresp">)[^]*?(?=<\/pre>)/im, "$1")
+        .replace(/^(<xmp id="datxmp".*?>)[^]*?(?=<\/xmp>)/im, (m, c1) => c1 + "\n" + dentry.value + "\n")
+        .replace(/^(<pre id="respcon">)[^]*?(?=<\/pre>)/im, "$1")
         .replace( /^(<div id="cgrid".*?>\n *<pre id="quad1A".*?>)[^]*?(<\/pre><pre id="quad1B".*?>)[^]*?(<\/pre>\n *<pre id="quad2A".*?>)[^]+?(?=\n<\/div>)/im,
           '$1$2$3</pre><pre id="quad2B" contenteditable=true></pre>\n  <ul id="plist" class="is-hidden"></ul>' )
         .replace(/^<div id="xctrls".*?>[^]+?\n(?=let di2html,)/im, "</main>\n<script type=\"text/javascript\">\n(function () {\n'use strict';\n")
@@ -430,7 +430,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
       [cgrid, xctrls].forEach(e => e.classList.toggle("is-hidden"));
     } else if (/[45]/.test(evt.target.selectedIndex)) {
       gridAdj(evt.target.selectedIndex);
-    } else if (evt.target.selectedIndex == 6 && ((xsetlist || "").value || !dinp2.value)) {
+    } else if (evt.target.selectedIndex == 6 && ((xsetlist || "").value || !dentry.value)) {
       viewSet();
     } else if (evt.target.selectedIndex == 7) {
       calcCopy();
@@ -445,10 +445,10 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     evt.preventDefault();
   },
   xprsEval = () => {
-    rset ? (preresp.innerHTML = "") : ++rset && !val0s.length || ((xsetlist || "").value = "")
-      || val0s.forEach(v => v && (dinp2.value = dinp2.value.replace(v[0], v[1])));
+    rset ? (respcon.innerHTML = "") : ++rset && !val0s.length || ((xsetlist || "").value = "")
+      || val0s.forEach(v => v && (dentry.value = dentry.value.replace(v[0], v[1])));
     let $ = {}, _ = {}, _ks = [], rslt,
-      xprsns = (dinp2.value || "")
+      xprsns = (dentry.value || "")
         .replace(/^\/\*(?:\s*?\n|)([^]*?)\n?[\t ]*\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
         .replace(/^(?:[^\n\/]|\/(?!\/))+;(?= *\/\/$|$)/gm, "$& \"\"")
         .replace(/&Tab;/g, "\t").replace(/(?:[^$.\wÀ-Ͽ]|^)\$(?=[$_a-zÀ-Ͽ])/gi, "$&.")
@@ -522,7 +522,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     : window.fetch(dload, { credentials: 'omit' })
     .then( resp => /\.json$|^https?:\/\/\w[\w.:-]*\/\w[\w-]*\/\w[\w!.*+~-]*$/.test(dload)
       ? resp.json() : resp.text() )
-    .then(val => dinp2.value = val.content || (typeof val !== 'object' ? val : "// " + JSON.stringify(val)))
+    .then(val => dentry.value = val.content || (typeof val !== 'object' ? val : "// " + JSON.stringify(val)))
     .then(xprsEval).catch(respShow),
   dinpRegen = evt => {
     let eobj = evt.target, rnge, seln;
@@ -542,8 +542,8 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
         rnge = rnge < 0.15 ? 0 : rnge > 0.85 ? 1 : rnge;
         document.querySelector('#screenmask').className = plist.className = "";
         q2Bcopy = quad2B.innerHTML;
-        quad2B.innerHTML = (dinp2.value || "").replace(/&(?=#?\w+;)/g, "&amp;")
-        .replace(/<(?=[!/?a-z])/gi, "&lt;") + (!dinp2.value ? "" : "\n<br>");
+        quad2B.innerHTML = (dentry.value || "").replace(/&(?=#?\w+;)/g, "&amp;")
+        .replace(/<(?=[!/?a-z])/gi, "&lt;") + (!dentry.value ? "" : "\n<br>");
         !(di2html = quad2B.innerHTML)
         || window.getSelection().setPosition( quad2B.firstChild, !rnge ? 0
           : quad2B.textContent.indexOf("\n", quad2B.textContent.length * rnge - 1) + 1 );
@@ -557,7 +557,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
       helpClr();
       document.querySelector('#screenmask').className = plist.className = "is-hidden";
       q2Bcopy = di2html = null;
-      dinp2.value = quad2B.innerText.replace(/\n+$|^\n+/g, "")
+      dentry.value = quad2B.innerText.replace(/\n+$|^\n+/g, "")
       .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/\\t/g, "\t"));
       xprsEval();
     }
@@ -568,9 +568,9 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     if (!evt.target.id && /^https?:\/\/.+$/.test(dload)) {
       return initLoad();
     } else if (evt.target.id === "xsetlist" && !xsetlist.value) {
-      xsetlist.value = xsetinp.value = dinp2.value = "";
+      xsetlist.value = xsetinp.value = dentry.value = "";
       return xprsEval();
-    } else if (evt.target.id === "xsetinp" && dinp2.value) {
+    } else if (evt.target.id === "xsetinp" && dentry.value) {
       return xsetlist.value === xsetinp.value.replace(/.+\//, "")
       || xsetlist.value === xsetinp.value
       || (xsetlist.value = "");
@@ -583,10 +583,10 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     xsetinp.value && (!xsetlist.value || xsetlist.value === xsetinp.value.replace(/.+\//, ""))
     || (xsetinp.value = (optg === "USERdata/" ? "" : optg) + xsetlist.value);
     !optg || ( optg !== "USERdata/"
-    ? ( dinp2.value = ((xstor[optg.replace(/\/$/, "")] || "")[xsetlist.value] || "")
+    ? ( dentry.value = ((xstor[optg.replace(/\/$/, "")] || "")[xsetlist.value] || "")
       .replace(/\n+$|^\n+/g, "") ) && xprsEval()
     : !window.localforage || localforage.getItem(xsetinp.value)
-      .then(val => dinp2.value = val || "")
+      .then(val => dentry.value = val || "")
       .then(xprsEval)
       .catch(respShow) );
   },
@@ -605,7 +605,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     helpClr();
     xsetinp.value = xsetinp.value.trim();
     !xsetinp.value || !window.localforage
-    || localforage.setItem(xsetinp.value, dinp2.value)
+    || localforage.setItem(xsetinp.value, dentry.value)
       .then( () => slistRegen(xsetinp.value)
         && (xcshelp.innerHTML = "Expression set is saved in local storage.")
         && xcshelp.classList.add("isucc") )
@@ -622,8 +622,8 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
       .catch(respShow);
   };
 window.xstor = {};
-window.dinp2 = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
-  || { value: dinput.innerHTML.replace(/\n+$|^\n+/g, "") };
+window.dentry = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
+  || { value: datxmp.innerHTML.replace(/\n+$|^\n+/g, "") };
 window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
   /^jsrcs=./.test(qi) ? (jsrcs = window.decodeURIComponent(qi.replace(/^jsrcs=/, "")).split(/[ ,]+/))
   : /^cmods=./.test(qi) ? (cmods = window.decodeURIComponent(qi.replace(/^cmods=/, "")).split(/[ ,]+/))
