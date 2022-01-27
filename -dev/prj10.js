@@ -241,10 +241,10 @@ sdui += "\\n#diffwr .padding { background-color: LightGrey; display: inline-bloc
 sdui += "\\n@media screen and (min-height: 864px), print and (max-width: 734px),";
 sdui += "\\nprint and (min-width: 738px) and (max-width: 785px) { #diffwr pre { height: 384px; } #diffwr pre.ht2x { height: 768px; } }";
 sdui += "\\n</style>\\n<hr>\\n<datalist id=pfile2></datalist>";
-sdui += "\\n<span class=\\"cfield fltrt\\"><label class=ccntr><input type=text id=s1finp placeholder=\\"filename/key/CMD&hellip;\\" /></label><label class=\\"ccntr isucc\\"><input type=checkbox id=s1chkb />hide</label></span>";
+sdui += "\\n<span class=\\"cfield fltrt\\"><label class=ccntr><input type=text id=s1finp list=pfile2 placeholder=\\"filename/key/CMD&hellip;\\" /></label><label class=\\"ccntr isucc\\"><input type=checkbox id=s1chkb />hide</label></span>";
 sdui += "\\n<h4>SOURCE1 (edited)</h4>";
 sdui += "\\n<pre id=s1rslt></pre>";
-sdui += "\\n<span class=\\"cfield fltrt\\"><label class=ccntr><input type=text id=s2finp placeholder=\\"filename/key/CMD&hellip;\\" /></label><label class=\\"ccntr isucc\\"><input type=checkbox id=s2chkb />hide</label></span>";
+sdui += "\\n<span class=\\"cfield fltrt\\"><label class=ccntr><input type=text id=s2finp list=pfile2 placeholder=\\"filename/key/CMD&hellip;\\" /></label><label class=\\"ccntr isucc\\"><input type=checkbox id=s2chkb />hide</label></span>";
 sdui += "\\n<h4>SOURCE2 (original)</h4>";
 sdui += "\\n<pre id=s2rslt></pre>\\n";
 
