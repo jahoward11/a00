@@ -657,6 +657,7 @@ srui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
 srui += "\\nhtml { box-sizing: border-box; min-width: 375px; overflow-wrap: break-word; }";
 srui += "\\nhr { margin: 1.5rem 0; }\\n[list]::-webkit-calendar-picker-indicator { display: none !important; }";
 srui += "\\n#srwrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
+srui += "\\n#srwrap button, #srwrap input:not([type=checkbox]), #srwrap select { height: 24px; vertical-align: bottom; }";
 srui += "\\n#srwrap textarea { display: block; font-size: medium; width: 100%; height: 288px; }";
 srui += "\\n#srwrap .iwarn { color: Orange; }\\n#srwrap .isucc { color: CornFlowerBlue; }";
 srui += "\\n#srwrap textarea.iwarn { color: unset; border-color: Orange; }";
@@ -673,8 +674,9 @@ srui += "\\n</style>\\n<hr>\\n<h4 class=cfield><span onclick=txtaSel(srctxta)>So
 srui += "\\n<div class=cfield><textarea id=srctxta></textarea></div>";
 srui += "\\n<div class=cfield><label class=ccntr><input type=text id=sepainp> Search</label></div>";
 srui += "\\n<div class=cfield><label class=ccntr><input type=text id=rfncinp> Replace</label></div>";
-srui += "\\n<div class=cfield>\\n<span class=ccntr><select id=rndrsel>\\n" + ["No render", "PRE render", "PRE-wrap render", "Normal render"].map(e => "<option>" + e + "</option>").join("\\n");
-srui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x2964; PARSE\\" onclick=strPars()></span><span class=ccntr><input type=button value=\\"&rlhar; SWAP\\" onclick=cntSwap()></span>\\n</div>";
+srui += "\\n<div class=cfield>\\n<span class=ccntr><input type=button value=\\"&rlhar; SWAP\\" onclick=cntSwap()></span><span class=ccntr><select id=rndrsel>\\n";
+srui += ["No render", "PRE render", "PRE-wrap render", "Normal render"].map(e => "<option>" + e + "</option>").join("\\n");
+srui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x2964; PARSE\\" onclick=strPars()></span>\\n</div>";
 srui += "\\n<h4 class=cfield><span onclick=txtaSel(trgtxta)>Target</span></h4>";
 srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=trghelp class=chelp></div></div>";
 srui += "\\n<div class=cfield>\\n<span class=ccntr><input type=text id=lfinp list=pfiles placeholder=\\"filename/key/CMD&hellip;\\" onfocus=ms2Clr() /><datalist id=pfiles></datalist></span><span class=ccntr><button onclick=lfdMgr(2)>\\n<span>&uArr;</span></button></span><span class=ccntr><button onclick=lfdMgr(1)>\\n<span class=isucc>&#x267a;</span> SAVE</button></span><span class=ccntr><button onclick=lfdMgr()>\\n<span class=iwarn>&#x2715;</span> DEL</button></span>\\n<div id=lfhelp class=chelp></div>\\n</div>";
@@ -710,7 +712,7 @@ srui += "\\n<div id=trgrndr class=cfield></div>\\n";
 rxs = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:\\w+|\\(.*?\\)) *=>.|^".*"$|^\\b[\\w.]+$/, /^\\b[\\w.]+$/]; //
 msgClr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc"));
 rsltVw = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 2 ? rslt : "\\n<pre" + (ri < 2 ? ">" : " class=pwrap>") + rslt + "</pre>\\n"; };
-pfsRfr = () => !window.localforage || localforage.keys().then(ks => pfiles.innerHTML = ks.map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(console.warn);
+pfsRfr = () => !window.localforage || localforage.keys().then(ks => pfiles.innerHTML = ["dinp2.value", "preresp.textContent"].concat(ks).map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(console.warn);
 datLoad = k => Promise.resolve().then(() => { try { return window.eval(k); } catch { return localStorage.getItem(k) || !window.localforage || localforage.getItem(k); }}).then(v => { try { return !v ? v : typeof v === 'object' ? JSON.stringify(v, null, 2) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(JSON.parse(v), null, 2); } catch { return v; }}).then(v => trgtxta.value = v.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(console.warn);
 window.txtaSel = e => _.msgClr() || e.focus() || e.setSelectionRange(0, e.textLength);
 window.cntSwap = () => _.msgClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
