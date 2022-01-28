@@ -42,7 +42,8 @@ hr { margin: 1.5rem 0; }
 <h4 class="cfield"><span onclick="txtaSel(trgtxta)">Target</span></h4>
 <div class="cfield"><textarea id="trgtxta"></textarea><div id="trghelp" class="chelp"></div></div>
 <div class="cfield">
-<span class="ccntr"><input type="text" id="lfinp" list="pfiles" placeholder="filename/key/CMD…" onfocus="hl2Clr()"><datalist id="pfiles"></datalist></span><span class="ccntr"><button onclick="dataMgr(2)">
+<datalist id="pfiles"></datalist>
+<span class="ccntr"><input type="text" id="lfinp" list="pfiles" placeholder="filename/key/CMD…" onfocus="hl2Clr()"></span><span class="ccntr"><button onclick="dataMgr(2)">
 <span>&uArr;</span></button></span><span class="ccntr"><button onclick="dataMgr(1)">
 <span class="isucc">&#x267a;</span> SAVE</button></span><span class="ccntr"><button onclick="dataMgr()">
 <span class="iwarn">&#x2715;</span> DEL</button></span>
