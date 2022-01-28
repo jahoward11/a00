@@ -104,10 +104,11 @@ Array.from(Array(5).keys())
 // respShow(Object.fromEntries(Object.keys(location).map(e => [e, location[e]])))
 // respShow(Object.fromEntries(["appCodeName", "appName", "platform", "product", "vendor"].map(e => [e, navigator[e]])))
 
-// respShow(Array.from(Array(64).keys()).map(e => [0, 64, 128, 192].map(d => "0x" + (d + e).toString(16) + (!d && e < 16 ? "  " : " " + String.fromCodePoint(d + e))).join("\\t")).join("\\n"))
-// respShow(Array.from(Array(25).keys()).map(e => (913 + e) + "/" + (945 + e) + " " + [913, 945].map(d => String.fromCodePoint(d + e)).join(" ")).join("\\n"))
+// respShow(Array.from(Array(64).keys()).map(n => [0, 64, 128, 192].map(d => "0x" + (n + d).toString(16) + (!d && n < 16 ? "  " : " " + String.fromCodePoint(n + d))).join("\\t")).join("\\n"))
+// respShow(Array.from(Array(64).keys()).map(n => (n += 0x2000) && [0, 64, 128, 192].map(d => "0x" + (n + d).toString(16) + " " + String.fromCodePoint(n + d)).join("  \\t")).join("\\n"))
+// respShow(Array.from(Array(25).keys()).map(n => (n + 913) + "/" + (n + 945) + " " + [913, 945].map(d => String.fromCodePoint(n + d)).join(" ")).join("\\n"))
 
-// { let k, keys = []; for (k in document.documentElement) keys.push(k); respShow(keys.filter(k => !/^on|^aria/.test(k)).sort()); } //
+// { let k, keys = [], k2s; for (k in document.documentElement) keys.push(k); respShow(k2s = keys.filter(k => !/^on|^aria/.test(k)).sort()); k2s.length; } //
 // respShow(Array.from(document.querySelectorAll('[id]')).map(e => e.id))
 // respShow( Object.keys(window).filter( pty => Object.entries(Object.getOwnPropertyDescriptor(window, pty) || "").filter(e => ['value', 'writable', 'enumerable'].includes(e[0]) && e[1]).length === 3 ))
 // respShow( Object.fromEntries( Object.entries(SourceDiff).map(oe => [oe[0], oe[1].toString()]) ))
@@ -126,11 +127,12 @@ caches.keys().then(respShow)
 //`;
 
 const dscripts = `//
-// respShow(document.head.outerHTML.replace(/</g, "&lt;"));
-// respShow(cheadg.outerHTML.replace(/</g, "&lt;"));
+// respShow(document.head.outerHTML)
+// respShow(cheadg.outerHTML)
+// respShow(plist.textContent.replace(/&(?=#?\\w+;)/g, "&amp;"))
 
-respShow(Array.from(document.querySelectorAll('script')).map(e => e.src));
-// respShow(document.querySelector('script:last-of-type').outerHTML.replace(/</g, "&lt;"));
+respShow(Array.from(document.querySelectorAll('script')).map(e => e.src))
+// respShow(document.querySelector('script:last-of-type').outerHTML)
 
 // respShow(Array.from(document.styleSheets).map(ss => ss.href))
 // respShow(Array.from(document.styleSheets[0].rules).map(r => r.cssText))
@@ -144,8 +146,8 @@ const scrsload = `//
 
 // import("../-res-js/ebook-annos.mjs").then(r => window["tocNavLtGen"] = r.tocNavLtGen).catch(respShow)
 // import("../-dev/prj10.js").then(r => respShow(r.jscmds)).catch(respShow)
-// fetch("../-res-js/ebook-annos-fns.js").then(r => r.text()).then(r => respShow(r.replace(/<(?=[!/?a-z])/gi, "&lt;"))).catch(respShow)
-// localforage.getItem("tutor2js").then(val => respShow(val.replace(/<(?=[!/?a-z])/gi, "&lt;"))).catch(respShow)
+// fetch("../-res-js/ebook-annos-fns.js").then(r => r.text()).then(respShow).catch(respShow)
+// localforage.getItem("tutor2js").then(respShow).catch(respShow)
 // PouchDB("mydb1").get("myfile").then(doc => doc.filefrags[0].contenttxt).then(respShow).catch(respShow)
 //`;
 
@@ -182,7 +184,7 @@ t2x = xstor["JScode"]["tutorial2"];
 bodGen = src => "\\n<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/;$|^g\\dui = /g, "").split(/;\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n") + "\\n"; //
 scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?( *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
 dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=pz1wrap>", "</div>\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
-respShow((dwrap[0] + bodGen(t2x) + dwrap[1] + scrGen(t2x) + dwrap[2]).replace(/<(?=[!/?a-z])/gi, "&lt;"))
+respShow(dwrap[0] + bodGen(t2x) + dwrap[1] + scrGen(t2x) + dwrap[2])
 */`;
 
 const t3srepl = `//
@@ -272,7 +274,14 @@ s2rslt.onscroll = () => { s1rslt.scrollLeft = s2rslt.scrollLeft; s1rslt.scrollTo
 
 scrGen = src => "let " + src.match(/^diffGen = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?( *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,$2\\n  "); //
 // dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Source-Text Diffs</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script src=\\"../-res-js/srcdiff.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
-// respShow((dwrap[0] + sdwrap.outerHTML + dwrap[1] + scrGen(xstor.util.srcdiff) + dwrap[2]).replace(/<(?=[!/?a-z])/gi, "&lt;"));
+// respShow(dwrap[0] + sdwrap.outerHTML + dwrap[1] + scrGen(xstor.util.srcdiff) + dwrap[2])
+//`;
+
+const srtools = `//
+// to find misapplied emphasis/superscript markers in cmods
+ // srctxta.value = JSON.stringify(xstor.util, null, 2);
+ // sepainp.value = "/.+/g";
+ // rfncinp.value = 'm => m.replace(/&(?=#?\\\\w+;)/g, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;").replace(/(?<!\\\\\\\\)\\\\\\\\n/g, "\\\\n").replace(/\\\\*.+?\\\\*|\\\\^.+?\\\\^/g, "<mark>$&</mark>")'; //
 //`;
 
 export {
@@ -280,5 +289,5 @@ export {
   uiwidth, publdims, jscmds,
   bcaches, dscripts, scrsload,
   jstatqs, itoken, t2puzls,
-  t3srepl, srcdiff
+  t3srepl, srcdiff, srtools
 };
