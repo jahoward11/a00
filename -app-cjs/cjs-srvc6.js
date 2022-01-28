@@ -500,7 +500,7 @@ __*Tutorial Three: Automating custom publishing tasks*__
       boolean   | one of two values only: true or false
       null      | a one-of-a-kind, single-value data type, signaling
                   that the intended "value" is no value
-      undefined | another one-of-a-kind, signaling the absense of
+      undefined | another one-of-a-kind, signaling the absence of
                   any other assigned data type
 
     + Here is an example of identifying these data types as each
@@ -678,7 +678,7 @@ srui += ["No render", "PRE render", "PRE-wrap render", "Normal render"].map(e =>
 srui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x2964; PARSE\\" onclick=strPars()></span>\\n</div>";
 srui += "\\n<h4 class=cfield><span onclick=txtaSel(trgtxta)>Target</span></h4>";
 srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=trghelp class=chelp></div></div>";
-srui += "\\n<div class=cfield>\\n<span class=ccntr><input type=text id=lfinp list=pfiles placeholder=\\"filename/key/CMD&hellip;\\" onfocus=hl2Clr() /><datalist id=pfiles></datalist></span><span class=ccntr><button onclick=dataMgr(2)>\\n<span>&uArr;</span></button></span><span class=ccntr><button onclick=dataMgr(1)>\\n<span class=isucc>&#x267a;</span> SAVE</button></span><span class=ccntr><button onclick=dataMgr()>\\n<span class=iwarn>&#x2715;</span> DEL</button></span>\\n<div id=lfhelp class=chelp></div>\\n</div>";
+srui += "\\n<div class=cfield>\\n<datalist id=pfiles></datalist>\\n<span class=ccntr><input type=text id=lfinp list=pfiles placeholder=\\"filename/key/CMD&hellip;\\" onfocus=hl2Clr() /></span><span class=ccntr><button onclick=dataMgr(2)>\\n<span>&uArr;</span></button></span><span class=ccntr><button onclick=dataMgr(1)>\\n<span class=isucc>&#x267a;</span> SAVE</button></span><span class=ccntr><button onclick=dataMgr()>\\n<span class=iwarn>&#x2715;</span> DEL</button></span>\\n<div id=lfhelp class=chelp></div>\\n</div>";
 srui += "\\n<div id=trgrndr class=cfield></div>\\n";
 
 // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
