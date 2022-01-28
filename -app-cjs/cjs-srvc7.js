@@ -24,7 +24,7 @@ try { pz1wrap } catch { uiDspl(bodGen(t2x)); !!window.g1Reset || scrInj(null, 'm
 // full source code (e.g., for building a standalone web app).
 
 // dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
-// respShow((dwrap[0] + pz1wrap.outerHTML + dwrap[1] + scrGen(t2x) + dwrap[2]).replace(/<(?=[!/?a-z])/gi, "&lt;"))
+// respShow(dwrap[0] + pz1wrap.outerHTML + dwrap[1] + scrGen(t2x) + dwrap[2])
 //`;
 
 const tiltmaze = `/*
@@ -92,7 +92,7 @@ g4Start();
 /*
 scrGen = src => "let " + src.match(/^dbar = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?( *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,$2\\n  "); //
 dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Tilt Maze</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
-respShow((dwrap[0] + g4wrap.outerHTML + dwrap[1] + scrGen(xstor.puzzle.tiltmaze) + dwrap[2]).replace(/\\n<hr>/, "").replace(/<(?=[!/?a-z])/gi, "&lt;"))
+respShow(dwrap[0] + g4wrap.outerHTML.replace(/\\n<hr>/, "") + dwrap[1] + scrGen(xstor.puzzle.tiltmaze) + dwrap[2])
 */
 //`;
 

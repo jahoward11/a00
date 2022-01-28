@@ -332,8 +332,8 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
   xcshelp = document.querySelector('#xctrls #xcshelp'),
   helpClr = () => !xcshelp || (xcshelp.innerHTML = "") || xcshelp.classList.remove("iwarn", "isucc"),
   respShow = resp => { respcon.innerHTML
-    += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
-      ? resp : JSON.stringify(resp, null, 2) ) + "\n\n" },
+    += (( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
+      ? resp : JSON.stringify(resp, null, 2) ) + "\n\n").replace(/<(?=[!/?a-z])/gi, "&lt;") },
   zoomTog = zoff => metavp.setAttribute( 'content', "width=device-width, "
     + (zoff || /maximum-/.test(metavp.content) ? "initial-scale=1" : "maximum-scale=1") ),
   titSave = (evt, tnew) => {
