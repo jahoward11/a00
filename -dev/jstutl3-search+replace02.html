@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang=en>
+<title>Search and Replace</title>
+<meta charset="utf-8">
+<meta name=viewport content="width=device-width, initial-scale=1">
+
+<div id="srwrap">
+<style>
+*, *::before, *::after { box-sizing: inherit; }
+html { box-sizing: border-box; min-width: 375px; overflow-wrap: break-word; }
+hr { margin: 1.5rem 0; }
+[list]::-webkit-calendar-picker-indicator { display: none !important; }
+#srwrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }
+#srwrap button, #srwrap input:not([type=checkbox]), #srwrap select { height: 24px; vertical-align: bottom; }
+#srwrap textarea { display: block; font-size: medium; width: 100%; height: 288px; }
+#srwrap .iwarn { color: Orange; }
+#srwrap .isucc { color: CornFlowerBlue; }
+#srwrap textarea.iwarn { color: unset; border-color: Orange; }
+#srwrap textarea.isucc { color: unset; border-color: CornFlowerBlue; }
+#srwrap .pwrap { white-space: pre-wrap; }
+#srwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }
+#srwrap .cfield:not(:last-child) { margin-bottom: 8px; }
+#srwrap .ccntr:not(:last-of-type) { margin-right: 8px; }
+#srwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }
+#srwrap .cfield>.chelp { font-size: 12px; margin-top: 4px; }
+#sepainp, #rfncinp { width: 288px; }
+#lfinp { width: 176px; }
+#trgrndr { display: flow-root; margin-top: 16px; border-top: dashed 1px gainsboro; }
+</style>
+<h4 class="cfield"><span onclick="txtaSel(srctxta)">Source</span></h4>
+<div class="cfield"><textarea id="srctxta"></textarea></div>
+<div class="cfield"><label class="ccntr"><input type="text" id="sepainp"> Search</label></div>
+<div class="cfield"><label class="ccntr"><input type="text" id="rfncinp"> Replace</label></div>
+<div class="cfield">
+<span class="ccntr"><input type="button" value="&rlhar; SWAP" onclick="cntSwap()"></span><span class="ccntr"><select id="rndrsel">
+<option>No render</option>
+<option>PRE render</option>
+<option>PRE-wrap render</option>
+<option>Normal render</option>
+</select></span><span class="ccntr"><input type="button" value="&#x2964; PARSE" onclick="strPars()"></span>
+</div>
+<h4 class="cfield"><span onclick="txtaSel(trgtxta)">Target</span></h4>
+<div class="cfield"><textarea id="trgtxta"></textarea><div id="trghelp" class="chelp"></div></div>
+<div class="cfield">
+<span class="ccntr"><input type="text" id="lfinp" list="pfiles" placeholder="filename/key/CMD…" onfocus="hl2Clr()"><datalist id="pfiles"></datalist></span><span class="ccntr"><button onclick="dataMgr(2)">
+<span>&uArr;</span></button></span><span class="ccntr"><button onclick="dataMgr(1)">
+<span class="isucc">&#x267a;</span> SAVE</button></span><span class="ccntr"><button onclick="dataMgr()">
+<span class="iwarn">&#x2715;</span> DEL</button></span>
+<div id="lfhelp" class="chelp"></div>
+</div>
+<div id="trgrndr" class="cfield"></div>
+</div>
+
+<script src="../-res-js/localforage.min.js" type="text/javascript"></script>
+<script type=module>
+let rxs = [/^\/.+\/[im]*g[im]*$/, /^\/.+\/[gim]*$/, /^(?:\w+|\(.*?\)) *=> *\S|^".*"$|^\b[\w.]+$/], //
+  fncTry = (a, fnc, e) => { try { return fnc(a) } catch (err) { return e ? err : undefined }},
+  hlpClr = () => (trghelp.innerHTML = trgrndr.innerHTML = "")
+    || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc")),
+  rsltVw = rslt => {
+    let ri = rndrsel.selectedIndex;
+    trgtxta.value = rslt;
+    trgrndr.innerHTML = !ri ? "" : ri > 2 ? rslt : "\n<pre" + (ri < 2 ? ">" : " class=pwrap>") + rslt + "</pre>\n";
+  },
+  pfsRfr = () => !window.localforage || localforage.keys()
+    .then(ks => pfiles.innerHTML
+      = ["trgtxta.value", "srctxta.value", "dentry.value", "respcon.textContent"].concat(ks)
+      .map(k => "\n<option>" + k + "</option>").join("") + "\n")
+    .catch(console.warn),
+  datLoad = k => Promise.resolve(fncTry(k, window.eval))
+    .then(v => v != null ? v
+      : localStorage.getItem(k) || window.localforage && localforage.getItem(k))
+    .then(v => v == null ? ""
+      : typeof v === 'object' ? JSON.stringify(v, null, 2)
+      : typeof v !== 'string' ? "" + v
+      : !/^{\s*['"][^]+}$|^\[[^]+\]$/.test(v.trim()) ? v
+      : JSON.stringify(fncTry(v, JSON.parse), null, 2) || v)
+    .then(v => trgtxta.value = v.replace(/\n\*\/$|^\/\*\n/g, ""))
+    .catch(console.warn);
+window.txtaSel = e => hlpClr() || e.focus() || e.setSelectionRange(0, e.textLength);
+window.cntSwap = () => hlpClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
+window.strPars = () => {
+  let lm, r2,
+    sv = sepainp.value,
+    rv = rfncinp.value,
+    h1P = y => [trgtxta, trghelp].forEach(e => e.classList.add(!y ? "iwarn" : "isucc"));
+  hlpClr();
+  !rxs[2].test(rv.trim()) || (r2 = fncTry(rv, window.eval, 1)) instanceof Error
+  && (trghelp.innerHTML = r2) && (r2 = null) /* !(trgtxta.value = r2 = "") && h1P() */;
+  !rxs[0].test(sv) || ( trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length)
+    + " replacements have been made." ) && h1P(lm);
+  rsltVw( srctxta.value.replace( !rxs[1].test(sv) ? sv : eval(sv),
+    r2 || window.eval('"' + rv.replace(/(?=")/g, "\\") + '"') ));
+};
+window.hl2Clr = () => (lfhelp.innerHTML = "") || lfhelp.classList.remove("iwarn", "isucc");
+window.dataMgr = ox => {
+  let key = lfinp.value.trim();
+  if (ox === 2) return !key || trgtxta.value || hlpClr() || datLoad(key);
+  !key || !window.localforage
+  || localforage[!ox ? "removeItem" : "setItem"](key, ox && "/*\n" + trgtxta.value + "\n*/")
+    .then(() => pfsRfr() && (lfhelp.innerHTML = "USERdata file is " + (!ox ? "deleted." : "saved locally."))
+      && lfhelp.classList.add(!ox ? "iwarn" : "isucc"))
+    .catch(console.warn);
+}; //
+!window.srwrap || pfsRfr();
+</script>
+</html>

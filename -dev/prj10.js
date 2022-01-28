@@ -119,6 +119,7 @@ caches.keys().then(respShow)
 // caches.open("calcjs-v00.12").then(cache => cache.delete("https://jahoward11.github.io/a00/-res-js/jstat-tdist.js")).then(respShow)
 
 // indexedDB.databases().then(respShow)
+
 // respShow(Object.keys(localStorage).filter(e => !/mrview-/.test(e)))
 // localStorage["key"] = "value"
 // localStorage.removeItem("key")
@@ -219,7 +220,7 @@ try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.strPars || scrInj(null, 'mo
 // try { !!(hljs && js_beautify) } catch { Promise.all(["../-res-js/highlight.pack.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then().catch(respShow) }
 // bpre = str => str.replace(/(?=\\.concat\\(|\\.forEach\\(|\\.map\\(|\\.match\\(|\\.replace\\()/g, "\\n");
 // window.jb1 = str => js_beautify(str, { "indent_size": 2, "space_after_anon_function": 1, "break-chained-methods": 1, "keep-array-indentation": 1 });
-// window.jh1 = str => "<pre class=hljs>" + hljs.highlightAuto(!window.bj1 ? str : bj1(str)).value + "</pre><style>@import \\"../-res-hljs/atom-one-light.css\\"; #srwrap pre>pre.hljs { margin: 0; white-space: inherit; }</style>";
+// window.jh1 = str => "<pre class=hljs>" + hljs.highlightAuto(!window.jb1 ? str : jb1(str)).value + "</pre><style>@import \\"../-res-hljs/atom-one-light.css\\"; #srwrap pre>pre.hljs { margin: 0; white-space: inherit; }</style>";
 //`;
 
 const srcdiff = `//
@@ -259,13 +260,14 @@ sdui += "\\n<pre id=s2rslt></pre>\\n";
 try { sdwrap } catch { ndiv = document.createElement('div'); ndiv.id = "sdwrap"; ndiv.innerHTML = sdui; cmain.appendChild(ndiv); }
 try { SourceDiff } catch { scrInj("../-res-js/srcdiff.js").catch(respShow) }
 
-diffGen = ([s1txt, s2txt]) => { if (!window.SourceDiff || !s1txt || !s2txt) { return s1rslt.innerHTML = s2rslt.innerHTML = ""; } let sdiff = new SourceDiff.Diff(true), frmtr = new SourceDiff.DiffFormatter(sdiff); [s2rslt.innerHTML, s1rslt.innerHTML] = frmtr.formattedDiff(s2txt, s1txt); };
-datPrep = () => Promise.all([s1finp.value, s2finp.value].map(k => { if (k) try { return window.eval(k); } catch { return localStorage.getItem(k) || !window.localforage || localforage.getItem(k); }})).then(vs => vs.map(v => { try { return !v ? v : typeof v === 'object' ? JSON.stringify(v, null, 2) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(JSON.parse(v), null, 2); } catch { return v; }})).then(_.diffGen).catch(console.warn);
+fncTry = (a, fnc, e) => { try { return fnc(a) } catch (err) { return e ? err : undefined }};
+diffGen = ([s1txt, s2txt]) => { if (!window.SourceDiff || !s1txt || !s2txt) { return s1rslt.innerHTML = s2rslt.innerHTML = ""; } let sdff = new SourceDiff.Diff(true), fmtr = new SourceDiff.DiffFormatter(sdff); [s2rslt.innerHTML, s1rslt.innerHTML] = fmtr.formattedDiff(s2txt, s1txt); };
+datPrep = () => Promise.all( [s1finp.value, s2finp.value] .map( k => Promise.resolve(_.fncTry(k, window.eval)).then(v => v != null ? v : localStorage.getItem(k) || window.localforage && localforage.getItem(k)).then(v => v == null ? "" : typeof v === 'object' ? JSON.stringify(v, null, 2) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(_.fncTry(v, JSON.parse), null, 2) || v) )).then(_.diffGen).catch(console.warn);
 [s1chkb, s2chkb].forEach( e => e.onchange = () => { [s1rslt, s2rslt].forEach(e => e.classList.remove("ht0", "ht2x")); if (s1chkb.checked && s2chkb.checked) { s1rslt.classList.add("ht0"); s2rslt.classList.add("ht0"); } else if (s1chkb.checked) { s1rslt.classList.add("ht0"); s2rslt.classList.add("ht2x") } else if (s2chkb.checked) { s1rslt.classList.add("ht2x"); s2rslt.classList.add("ht0"); } });
 s1rslt.onscroll = () => { s2rslt.scrollLeft = s1rslt.scrollLeft; s2rslt.scrollTop = s1rslt.scrollTop; };
 s2rslt.onscroll = () => { s1rslt.scrollLeft = s2rslt.scrollLeft; s1rslt.scrollTop = s2rslt.scrollTop; };
 [s1finp, s2finp].forEach(e => e.onblur = _.datPrep);
-!window.sdwrap || !window.localforage || localforage.keys().then(ks => pfile2.innerHTML = ["trgtxta.value", "srctxta.value", "dentry.value", "respcon.textContent"].concat(ks).map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(console.warn);
+!window.sdwrap || !window.localforage || localforage.keys().then( ks => pfile2.innerHTML = ["trgtxta.value", "srctxta.value", "dentry.value", "respcon.textContent"].concat(ks).map(k => "\\n<option>" + k + "</option>").join("") + "\\n" ).catch(console.warn);
 //
 
 scrGen = src => "let " + src.match(/^diffGen = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?( *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,$2\\n  "); //
