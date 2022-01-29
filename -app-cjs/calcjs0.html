@@ -522,7 +522,8 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     : window.fetch(dload, { credentials: 'omit' })
     .then( resp => /\.json$|^https?:\/\/\w[\w.:-]*\/\w[\w-]*\/\w[\w!.*+~-]*$/.test(dload)
       ? resp.json() : resp.text() )
-    .then(val => dentry.value = val.content || (typeof val !== 'object' ? val : "// " + JSON.stringify(val)))
+    .then( val => dentry.value = val == null ? "" : val.content
+      || (typeof val !== 'object' ? val : "// " + JSON.stringify(val)) )
     .then(xprsEval).catch(respShow),
   dinpRegen = evt => {
     let eobj = evt.target, rnge, seln;
@@ -586,7 +587,8 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     ? ( dentry.value = ((xstor[optg.replace(/\/$/, "")] || "")[xsetlist.value] || "")
       .replace(/\n+$|^\n+/g, "") ) && xprsEval()
     : !window.localforage || localforage.getItem(xsetinp.value)
-      .then(val => dentry.value = val || "")
+      .then( val => dentry.value = val == null ? "" : val.content
+        || (typeof val !== 'object' ? val : "// " + JSON.stringify(val)) )
       .then(xprsEval)
       .catch(respShow) );
   },
@@ -594,9 +596,9 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
   || localforage.keys().then(lfks => {
     xsetlist.innerHTML = "\n      <option></option>"
     + [["USERdata", lfks]].concat(Object.entries(xstor)).map( (oe, i) => i && !oe[1] ? ""
-      : "\n      <optgroup label=\"" + oe[0] + "/\">\n        "
+      : "\n      <optgroup label=\"" + oe[0] + "/\">"
         + (!i ? oe[1] : Object.keys(oe[1]).filter(e => e !== "groupname"))
-          .map(e => "<option>" + e + "</option>").join("\n        ")
+          .map(e => "\n        <option>" + e + "</option>").join("")
         + "\n      </optgroup>" ).join("") + "\n    ";
     xsetlist.value = seln || "";
     rset || !dload ? xprsEval() : xsetLoad();

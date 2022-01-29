@@ -678,7 +678,7 @@ srui += ["No render", "PRE render", "PRE-wrap render", "Normal render"].map(e =>
 srui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x2964; PARSE\\" onclick=strPars()></span>\\n</div>";
 srui += "\\n<h4 class=cfield><span onclick=txtaSel(trgtxta)>Target</span></h4>";
 srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=trghelp class=chelp></div></div>";
-srui += "\\n<div class=cfield>\\n<datalist id=pfiles></datalist>\\n<span class=ccntr><input type=text id=lfinp list=pfiles placeholder=\\"filename/key/CMD&hellip;\\" onfocus=hl2Clr() /></span><span class=ccntr><button onclick=dataMgr(2)>\\n<span>&uArr;</span></button></span><span class=ccntr><button onclick=dataMgr(1)>\\n<span class=isucc>&#x267a;</span> SAVE</button></span><span class=ccntr><button onclick=dataMgr()>\\n<span class=iwarn>&#x2715;</span> DEL</button></span>\\n<div id=lfhelp class=chelp></div>\\n</div>";
+srui += "\\n<div class=cfield>\\n<datalist id=pfiles></datalist>\\n<span class=ccntr><input type=text id=lfinp list=pfiles placeholder=\\"filename/key/CMD&hellip;\\" onfocus=hlp3Clr() /></span><span class=ccntr><button onclick=dataMgr(2)>\\n<span>&uArr;</span></button></span><span class=ccntr><button onclick=dataMgr(1)>\\n<span class=isucc>&#x267a;</span> SAVE</button></span><span class=ccntr><button onclick=dataMgr()>\\n<span class=iwarn>&#x2715;</span> DEL</button></span>\\n<div id=lfhelp class=chelp></div>\\n</div>";
 srui += "\\n<div id=trgrndr class=cfield></div>\\n";
 
 // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
@@ -710,15 +710,15 @@ srui += "\\n<div id=trgrndr class=cfield></div>\\n";
 
 rxs = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:\\w+|\\(.*?\\)) *=> *\\S|^".*"$|^\\b[\\w.]+$/]; //
 fncTry = (a, fnc, e) => { try { return fnc(a) } catch (err) { return e ? err : undefined }};
-hlpClr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc"));
+hlp2Clr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc"));
 rsltVw = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 2 ? rslt : "\\n<pre" + (ri < 2 ? ">" : " class=pwrap>") + rslt + "</pre>\\n"; };
 pfsRfr = () => !window.localforage || localforage.keys().then(ks => pfiles.innerHTML = ["trgtxta.value", "srctxta.value", "dentry.value", "respcon.textContent"].concat(ks).map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(console.warn);
 datLoad = k => Promise.resolve(_.fncTry(k, window.eval)).then(v => v != null ? v : localStorage.getItem(k) || window.localforage && localforage.getItem(k)).then(v => v == null ? "" : typeof v === 'object' ? JSON.stringify(v, null, 2) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(_.fncTry(v, JSON.parse), null, 2) || v).then(v => trgtxta.value = v.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(console.warn);
-window.txtaSel = e => _.hlpClr() || e.focus() || e.setSelectionRange(0, e.textLength);
-window.cntSwap = () => _.hlpClr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
-window.strPars = () => { let lm, r2, sv = sepainp.value, rv = rfncinp.value, h1P = y => [trgtxta, trghelp].forEach(e => e.classList.add(!y ? "iwarn" : "isucc")); _.hlpClr(); !_.rxs[2].test(rv.trim()) || (r2 = _.fncTry(rv, window.eval, 1)) instanceof Error && (trghelp.innerHTML = r2) && (r2 = null) /* !(trgtxta.value = r2 = "") && h1P() */; !_.rxs[0].test(sv) || ( trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made." ) && h1P(lm); _.rsltVw( srctxta.value.replace( !_.rxs[1].test(sv) ? sv : eval(sv), r2 || window.eval('"' + rv.replace(/(?=")/g, "\\\\") + '"') )); };
-window.hl2Clr = () => (lfhelp.innerHTML = "") || lfhelp.classList.remove("iwarn", "isucc");
-window.dataMgr = ox => { let key = lfinp.value.trim(); if (ox === 2) return !key || trgtxta.value || _.hlpClr() || _.datLoad(key); !key || !window.localforage || localforage[!ox ? "removeItem" : "setItem"](key, ox && "/*\\n" + trgtxta.value + "\\n*/").then(() => _.pfsRfr() && (lfhelp.innerHTML = "USERdata file is " + (!ox ? "deleted." : "saved locally.")) && lfhelp.classList.add(!ox ? "iwarn" : "isucc")).catch(console.warn); }; //
+window.txtaSel = e => _.hlp2Clr() || e.focus() || e.setSelectionRange(0, e.textLength);
+window.cntSwap = () => _.hlp2Clr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
+window.strPars = () => { let lm, r2, sv = sepainp.value, rv = rfncinp.value, h1P = y => [trgtxta, trghelp].forEach(e => e.classList.add(!y ? "iwarn" : "isucc")); _.hlp2Clr(); !_.rxs[2].test(rv.trim()) || (r2 = _.fncTry(rv, window.eval, 1)) instanceof Error && (trghelp.innerHTML = r2) && (r2 = null) /* !(trgtxta.value = r2 = "") && h1P() */; !_.rxs[0].test(sv) || ( trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made." ) && h1P(lm); _.rsltVw( srctxta.value.replace( !_.rxs[1].test(sv) ? sv : eval(sv), r2 || window.eval('"' + rv.replace(/(?=")/g, "\\\\") + '"') )); };
+window.hlp3Clr = () => (lfhelp.innerHTML = "") || lfhelp.classList.remove("iwarn", "isucc");
+window.dataMgr = ox => { let key = lfinp.value.trim(); if (ox === 2) return !key || trgtxta.value || _.hlp2Clr() || _.datLoad(key); !key || !window.localforage || localforage[!ox ? "removeItem" : "setItem"](key, ox && "/*\\n" + trgtxta.value + "\\n*/").then(() => _.pfsRfr() && (lfhelp.innerHTML = "USERdata file is " + (!ox ? "deleted." : "saved locally.")) && lfhelp.classList.add(!ox ? "iwarn" : "isucc")).catch(console.warn); }; //
 !window.srwrap || pfsRfr();
 
 /*
@@ -799,7 +799,7 @@ window.docMrkp = md => markdownit({ html: 1, typographer: 1 }).use(markdownitDef
 rndrsel.selectedIndex = 0;
 sepainp.value = "/[^]+/";
 rfncinp.value = "docMrkp";
-hlpClr()
+hlp2Clr()
 */
 
 /*
@@ -829,7 +829,7 @@ hlpClr()
 */
 
 /*
-rndrsel.selectedIndex = 1; rfncinp.value = trgtxta.value = ""; hlpClr()
+rndrsel.selectedIndex = 1; rfncinp.value = trgtxta.value = ""; hlp2Clr()
 window.lineUnwr = str => str.replace(/(\\S) *\\n(?!\\n|#|>|[:*+~-]? |\\d+\\.\\s|$)/g, "$1 "); //
 window.lineWrap = str => { let cpl = 70, cut = 0, brk = "\\n", rex = ".{1," + cpl + "}(\\\\s|$)" + (cut ? "|.{" + cpl + "}|.+$" : "|\\\\S+?(\\\\s|$)"); return (str.match(new RegExp(rex, "g")) || "").join(brk); };
 */
