@@ -144,8 +144,8 @@ const scrsload = `//
 // try { !!markdownit } catch { Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).then().catch(respShow) }
 // try { !!(hljs && js_beautify) } catch { Promise.all(["../-res-js/highlight.pack.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then().catch(respShow) }
 
-// import("../-res-js/ebook-annos.mjs").then(r => window["tocNavLtGen"] = r.tocNavLtGen).catch(respShow)
 // import("../-dev/prj10.js").then(r => respShow(r.jscmds)).catch(respShow)
+// import("../-res-js/ebook-annos.mjs").then(r => window["tocNavLtGen"] = r.tocNavLtGen).catch(respShow)
 // fetch("../-res-js/ebook-annos-fns.js").then(r => r.text()).then(respShow).catch(respShow)
 // localforage.getItem("tutor2js").then(respShow).catch(respShow)
 // PouchDB("mydb1").get("myfile").then(doc => doc.filefrags[0].contenttxt).then(respShow).catch(respShow)
