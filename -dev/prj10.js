@@ -108,7 +108,7 @@ Array.from(Array(5).keys())
 // respShow(Array.from(Array(64).keys()).map(n => (n += 0x2000) && [0, 64, 128, 192].map(d => "0x" + (n + d).toString(16) + " " + String.fromCodePoint(n + d)).join("  \\t")).join("\\n"))
 // respShow(Array.from(Array(25).keys()).map(n => (n + 913) + "/" + (n + 945) + " " + [913, 945].map(d => String.fromCodePoint(n + d)).join(" ")).join("\\n"))
 
-// { let k, keys = [], k2s; for (k in document.documentElement) keys.push(k); respShow(k2s = keys.filter(k => !/^on|^aria/.test(k)).sort()); k2s.length; } //
+// { let k, k2s, keys = []; for (k in document.documentElement) keys.push(k); respShow(k2s = keys.filter(k => !/^on|^aria/.test(k)).sort()); k2s.length; } //
 // respShow(Array.from(document.querySelectorAll('[id]')).map(e => e.id))
 // respShow( Object.keys(window).filter( pty => Object.entries(Object.getOwnPropertyDescriptor(window, pty) || "").filter(e => ['value', 'writable', 'enumerable'].includes(e[0]) && e[1]).length === 3 ))
 // respShow( Object.fromEntries( Object.entries(SourceDiff).map(oe => [oe[0], oe[1].toString()]) ))
@@ -144,6 +144,7 @@ const scrsload = `//
 // try { !!markdownit } catch { Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).then().catch(respShow) }
 // try { !!(hljs && js_beautify) } catch { Promise.all(["../-res-js/highlight.pack.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then().catch(respShow) }
 
+// import("../-dev/prj10.js").then(r => xstor[r.groupname] = r).catch(respShow)
 // import("../-dev/prj10.js").then(r => respShow(r.jscmds)).catch(respShow)
 // import("../-res-js/ebook-annos.mjs").then(r => window["tocNavLtGen"] = r.tocNavLtGen).catch(respShow)
 // fetch("../-res-js/ebook-annos-fns.js").then(r => r.text()).then(respShow).catch(respShow)
