@@ -23,14 +23,14 @@ hr { margin: 1.5rem 0; }
 #srwrap .ccntr:not(:last-of-type) { margin-right: 8px; }
 #srwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }
 #srwrap .cfield>.chelp { font-size: 12px; margin-top: 4px; }
-#sepainp, #rfncinp { width: 288px; }
+#sepainp, #rtrminp { width: 288px; }
 #lfinp { width: 176px; }
 #trgrndr { display: flow-root; margin-top: 16px; border-top: dashed 1px gainsboro; }
 </style>
 <h4 class="cfield"><span onclick="txtaSel(srctxta)">Source</span></h4>
 <div class="cfield"><textarea id="srctxta"></textarea></div>
 <div class="cfield"><label class="ccntr"><input type="text" id="sepainp"> Search</label></div>
-<div class="cfield"><label class="ccntr"><input type="text" id="rfncinp"> Replace</label></div>
+<div class="cfield"><label class="ccntr"><input type="text" id="rtrminp"> Replace</label></div>
 <div class="cfield">
 <span class="ccntr"><input type="button" value="&rlhar; SWAP" onclick="cntSwap()"></span><span class="ccntr"><select id="rndrsel">
 <option>No render</option>
@@ -83,7 +83,7 @@ window.cntSwap = () => hlpClr() || ([trgtxta.value, srctxta.value] = [srctxta.va
 window.strPars = () => {
   let lm, r2,
     sv = sepainp.value,
-    rv = rfncinp.value,
+    rv = rtrminp.value,
     h1P = y => [trgtxta, trghelp].forEach(e => e.classList.add(!y ? "iwarn" : "isucc"));
   hlpClr();
   !rxs[2].test(rv.trim()) || (r2 = fncTry(rv, window.eval, 1)) instanceof Error
