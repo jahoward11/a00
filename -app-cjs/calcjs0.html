@@ -311,7 +311,7 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
 </script>
 <script src="../-res-js/localforage.min.js" type="text/javascript"></script>
 <script type="module">
-let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
+let q2Bcopy, q2Bhtml, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
   metavp = document.querySelector('#ecorender>meta[name=viewport]')
     || document.querySelector('head>meta[name=viewport]'),
   datxmp = document.querySelector('#cmain>#datxmp'),
@@ -407,7 +407,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
         .replace(/^(<pre id="respcon">)[^]*?(?=<\/pre>)/im, "$1")
         .replace( /^(<div id="cgrid".*?>\n *<pre id="quad1A".*?>)[^]*?(<\/pre><pre id="quad1B".*?>)[^]*?(<\/pre>\n *<pre id="quad2A".*?>)[^]+?(?=\n<\/div>)/im,
           '$1$2$3</pre><pre id="quad2B" contenteditable=true></pre>\n  <ul id="plist" class="is-hidden"></ul>' )
-        .replace(/^<div id="xctrls".*?>[^]+?\n(?=let di2html,)/im, "</main>\n<script type=\"text/javascript\">\n(function () {\n'use strict';\n")
+        .replace(/^<div id="xctrls".*?>[^]+?\n(?=let q2Bcopy,)/im, "</main>\n<script type=\"text/javascript\">\n(function () {\n'use strict';\n")
         .replace(/^( *cheadg\.textContent === ").+/m, "$1" + cheadg.textContent + "\"")
         .replace(/^xsetinp\.addEventListener\([^]+?(?=\n<\/script>)/im, "})();")
       + "\n</body>\n</html>\n";
@@ -538,19 +538,19 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
         q2Bcopy = quad2B.innerHTML;
         quad2B.innerHTML = (dentry.value || "").replace(/&(?=#?\w+;)/g, "&amp;")
         .replace(/<(?=[!/?a-z])/gi, "&lt;") + (!dentry.value ? "" : "\n<br>");
-        !(di2html = quad2B.innerHTML)
+        !(q2Bhtml = quad2B.innerHTML)
         || window.getSelection().setPosition( quad2B.firstChild, !rnge ? 0
           : quad2B.textContent.indexOf("\n", quad2B.textContent.length * rnge - 1) + 1 );
       }
-    } else if (!plist.className && quad2B.innerHTML === di2html) {
+    } else if (!plist.className && quad2B.innerHTML === q2Bhtml) {
       document.querySelector('#screenmask').className = plist.className = "is-hidden";
       quad2B.innerHTML = q2Bcopy;
-      q2Bcopy = di2html = null;
+      q2Bcopy = q2Bhtml = null;
     } else if (!plist.className) {
       (xsetlist || "").value = "";
       helpClr();
       document.querySelector('#screenmask').className = plist.className = "is-hidden";
-      q2Bcopy = di2html = null;
+      q2Bcopy = q2Bhtml = null;
       dentry.value = quad2B.innerText.replace(/\n+$|^\n+/g, "")
       .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/\\t/g, "\t"));
       xprsEval();
