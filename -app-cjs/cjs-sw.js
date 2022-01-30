@@ -4,7 +4,7 @@ const cacheName = "calcjs-v00.13",
   cacheKeeplist = [cacheName],
   appShellFiles = [
     "../-app-cjs/calcjs0.html",
-    "../-res-js/localforage.nopromises.min.js"
+    "../-res-js/localforage.min.js"
   ],
   appContent = [
     "../-app-cjs/cjs-srvc1.js",
