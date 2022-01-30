@@ -712,7 +712,7 @@ rxs = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:\\w+|\\(.*?\\)) *=> *\\
 fncTry = (a, fnc, e) => { try { return fnc(a) } catch (err) { return e ? err : undefined }};
 hlp2Clr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc"));
 rsltVw = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 2 ? rslt : "\\n<pre" + (ri < 2 ? ">" : " class=pwrap>") + rslt + "</pre>\\n"; };
-pfsRfr = () => !window.localforage || localforage.keys().then(ks => pfiles.innerHTML = ["trgtxta.value", "srctxta.value", "dentry.value", "respcon.textContent"].concat(ks).map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(console.warn);
+pfsRfr = () => !window.localforage || localforage.keys().then(ks => pfiles.innerHTML = ["trgtxta.value", "srctxta.value", "dentry.value", "respcon.textContent", "respcon.innerHTML"].concat(ks).map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(console.warn);
 datLoad = k => Promise.resolve(_.fncTry(k, window.eval)).then(v => v != null ? v : localStorage.getItem(k) || window.localforage && localforage.getItem(k)).then(v => v == null ? "" : typeof v === 'object' ? JSON.stringify(v, null, 2) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(_.fncTry(v, JSON.parse), null, 2) || v).then(v => trgtxta.value = v.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(console.warn);
 window.txtaSel = e => _.hlp2Clr() || e.focus() || e.setSelectionRange(0, e.textLength);
 window.cntSwap = () => _.hlp2Clr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
