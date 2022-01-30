@@ -518,14 +518,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
     .replace( /(.*)(?:\x0c|\\f|&#x0*[Cc];)(<\/span> |)$|^(.*<span class=dnote>|)(?:\x0c|\\f|&#x0*[Cc];)/gm,
       "<div class=pagebb></div>$1$2$3" );
   },
-  initLoad = () => !/^https?:\/\/.+$/.test(dload) ? xprsEval()
-    : window.fetch(dload, { credentials: 'omit' })
-    .then( resp => /\.json$|^https?:\/\/\w[\w.:-]*\/\w[\w-]*\/\w[\w!.*+~-]*$/.test(dload)
-      ? resp.json() : resp.text() )
-    .then( val => dentry.value = val == null ? "" : val.content
-      || (typeof val !== 'object' ? val : "// " + JSON.stringify(val)) )
-    .then(xprsEval).catch(respShow),
-  dinpRegen = evt => {
+  dentRegen = evt => {
     let eobj = evt.target, rnge, seln;
     if ( eobj.parentElement.id === "plist" || eobj.id !== "screenmask" && [0, 1, 2, 3, 4, 5, 6]
     .some(i => (eobj = !i ? eobj : eobj["parentElement"] || eobj).id === "quad2B") ) {
@@ -563,6 +556,13 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
       xprsEval();
     }
   },
+  initLoad = () => !/^https?:\/\/.+$/.test(dload) ? xprsEval()
+    : window.fetch(dload, { credentials: 'omit' })
+    .then( resp => /\.json$|^https?:\/\/\w[\w.:-]*\/\w[\w-]*\/\w[\w!.*+~-]*$/.test(dload)
+      ? resp.json() : resp.text() )
+    .then( val => dentry.value = val == null ? "" : val.content
+      || (typeof val !== 'object' ? "" + val : "// " + JSON.stringify(val)) )
+    .then(xprsEval).catch(respShow),
   xsetLoad = (evt = { target: "" }) => {
     let optg;
     helpClr();
@@ -588,7 +588,7 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
       .replace(/\n+$|^\n+/g, "") ) && xprsEval()
     : !window.localforage || localforage.getItem(xsetinp.value)
       .then( val => dentry.value = val == null ? "" : val.content
-        || (typeof val !== 'object' ? val : "// " + JSON.stringify(val)) )
+        || (typeof val !== 'object' ? "" + val : "// " + JSON.stringify(val)) )
       .then(xprsEval)
       .catch(respShow) );
   },
@@ -600,8 +600,8 @@ let di2html, q2Bcopy, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
         + (!i ? oe[1] : Object.keys(oe[1]).filter(e => e !== "groupname"))
           .map(e => "\n        <option>" + e + "</option>").join("")
         + "\n      </optgroup>" ).join("") + "\n    ";
-    xsetlist.value = seln || "";
-    rset || !dload ? xprsEval() : xsetLoad();
+    (xsetlist.value = seln || "") && xsetlist.value
+    && (rset || !dload ? xprsEval() : xsetLoad());
   }).catch(respShow),
   xsetSave = () => {
     helpClr();
@@ -666,7 +666,7 @@ plist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
     "- - -", "&brvbar;", "&uml;", "&macr;", "&deg;", "&pm;", "&sup2;", "&sup3;", "&acute;", "&micro;", "&sup1;", "&frac14;", "&frac12;", "&frac34;", "&times;", "&divide;", "&fnof;", "&tilde;", "(low tilde &#x2f7;)", "(combining circumflex &#x302;)", "(combining tilde &#x303;)", "(combining macron &#x304;)", "(combining overline &#x305;)", "(combining low line &#x332;)", "&horbar;", "&Vert;", "&bull;", "(triangular bullet &#x2023;)", "&hellip;", "&permil;", "&pertenk;", "&prime;", "&Prime;", "&tprime;", "&backprime;", "&oline;", "&frasl;", "&qprime;", "(superscript 0 &#x2070;)", "(superscript 4 &#x2074;)", "(superscript 5 &#x2075;)", "(superscript 6 &#x2076;)", "(superscript 7 &#x2077;)", "(superscript 8 &#x2078;)", "(superscript 9 &#x2079;)", "(superscript '+' &#x207a;)", "(superscript '-' &#x207b;)", "(superscript '=' &#x207c;)", "(superscript '(' &#x207d;)", "(superscript ')' &#x207e;)", "(subscript 0 &#x2080;)", "(subscript 1 &#x2081;)", "(subscript 2 &#x2082;)", "(subscript 3 &#x2083;)", "(subscript 4 &#x2084;)", "(subscript 5 &#x2085;)", "(subscript 6 &#x2086;)", "(subscript 7 &#x2087;)", "(subscript 8 &#x2088;)", "(subscript 9 &#x2089;)", "(subscript '+' &#x208a;)", "(subscript '-' &#x208b;)", "(subscript '=' &#x208c;)", "(subscript '(' &#x208d;)", "(subscript ')' &#x208e;)", "&Copf; (complexes)", "(Euler constant &#x2107;)", "&Hopf; (quaternions)", "&Nopf; (naturals)", "&numero;", "&Popf; (primes)", "&Qopf; (rationals)", "&Ropf; (reals)", "&Zopf; (integers)", "&escr;", "&ee;", "&ii;", "(frac 1-7th &#x2150;)", "(frac 1-9th &#x2151;)", "(frac 1-10th &#x2152;)", "&frac13;", "&frac23;", "&frac15;", "&frac25;", "&frac35;", "&frac45;", "&frac16;", "&frac56;", "&frac18;", "&frac38;", "&frac58;", "&frac78;", "(numerator 1 &#x215f;)", "&larr;", "&uarr;", "&rarr;", "&darr;", "&harr;", "&lArr;", "&uArr;", "&rArr;", "&dArr;", "&hArr;",
     "&forall;", "&part;", "&exist;", "&nexist;", "&empty;", "&nabla;", "&in;", "&notin;", "&ni;", "&notni;", "&prod;", "&sum;", "&minus;", "(division slash &#x2215;)", "&setmn;", "&lowast;", "&radic;", "&prop;", "&infin;", "&angrt;", "&ang;", "&mid;", "&nmid;", "&par;", "&npar;", "&and;", "&or;", "&cap;", "&cup;", "&int;", "&there4;", "&becaus;", "&ratio;", "&Colon;", "&sim;", "&nsim;", "&cong;", "&ap;", "&nap;", "&ne;", "&equiv;", "&nequiv;", "&le;", "&ge;", "&ll;", "&gg;", "&sub;", "&sup;", "&nsub;", "&nsup;", "&sube;", "&supe;", "&nsube;", "&nsupe;", "&subne;", "&supne;", "&oplus;", "&ominus;", "&otimes;", "&osol;", "&odot;", "&ocir;", "&oast;", "&odash;", "&plusb;", "&minusb;", "&timesb;", "&sdotb;", "&vdash;", "&dashv;", "&top;", "&bot;", "&sdot;", "&check;", "(multiplication X &#x2715;)", "&cross;", "(math diagonal &#x27cb;)", "(long division &#x27cc;)", "&lang;", "&rang;", "&Lang;", "&Rang;", "&xoplus;", "&xotime;" ]
   .map(e => `<li>${e.replace(/(.*)&(#?\w+;)/, "&$2 $1&amp;$2")}</li>`).join("\n    ") + "\n  ";
-['#screenmask', '#cmain'].forEach(e => document.querySelector(e).addEventListener('click', dinpRegen));
+['#screenmask', '#cmain'].forEach(e => document.querySelector(e).addEventListener('click', dentRegen));
 cheadg.addEventListener('blur', titSave);
 menulist.addEventListener('change', menuSel);
 quad2B.addEventListener('paste', txtPste);
