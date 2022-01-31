@@ -668,7 +668,7 @@ srui += "\\n#srwrap .ccntr:not(:last-of-type) { margin-right: 8px; }";
 srui += "\\n#srwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
 srui += "\\n#srwrap .cfield>.chelp { font-size: 12px; margin-top: 4px; }";
 srui += "\\n#sepainp, #rtrminp { width: 288px; }\\n#lfinp { width: 176px; }";
-srui += "\\n#trgrndr { display: flow-root; margin-top: 16px; border-top: dashed 1px gainsboro; }";
+srui += "\\n#trgrndr { display: flow-root; margin-top: 16px; border: dashed gainsboro; border-width: 1px 0; }";
 srui += "\\n</style>\\n<hr>\\n<h4 class=cfield><span onclick=txtaSel(srctxta)>Source</span></h4>";
 srui += "\\n<div class=cfield><textarea id=srctxta></textarea></div>";
 srui += "\\n<div class=cfield><label class=ccntr><input type=text id=sepainp> Search</label></div>";

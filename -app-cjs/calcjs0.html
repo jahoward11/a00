@@ -201,7 +201,7 @@ body {
   top: 0;
   color: Grey;
 }
-#cgrid>#plist {
+#cgrid>#symlist {
   position: absolute;
   top: 0;
   background: Black;
@@ -217,7 +217,7 @@ body {
   -webkit-overflow-scrolling: touch;
   white-space: nowrap;
 }
-#cgrid.xpndq2B>#plist { display: none; }
+#cgrid.xpndq2B>#symlist { display: none; }
 #cmain .iwarn { color: Orange; }
 #cmain .isucc { color: CornFlowerBlue; }
 #cmain .slist { position: relative; }
@@ -292,7 +292,7 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
 <div id="cgrid" class="cfield">
   <pre id="quad1A"></pre><pre id="quad1B"></pre>
   <pre id="quad2A"></pre><pre id="quad2B" contenteditable=true></pre>
-  <ul id="plist" class="is-hidden"></ul>
+  <ul id="symlist" class="is-hidden"></ul>
 </div>
 <div id="xctrls" class="cfield">
   <span class="addns ccntr"><span class="ccntr">
@@ -311,7 +311,8 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
 </script>
 <script src="../-res-js/localforage.min.js" type="text/javascript"></script>
 <script type="module">
-let q2Bcopy, q2Bhtml, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
+let q2Bcopy, q2Bhtml,
+  cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
   metavp = document.querySelector('#ecorender>meta[name=viewport]')
     || document.querySelector('head>meta[name=viewport]'),
   datxmp = document.querySelector('#cmain>#datxmp'),
@@ -323,7 +324,7 @@ let q2Bcopy, q2Bhtml, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
   quad1B = document.querySelector('#cgrid>#quad1B'),
   quad2A = document.querySelector('#cgrid>#quad2A'),
   quad2B = document.querySelector('#cgrid>#quad2B'),
-  plist = document.querySelector('#cgrid>#plist'),
+  symlist = document.querySelector('#cgrid>#symlist'),
   xctrls = document.querySelector('#cmain>#xctrls'),
   xsetinp = document.querySelector('#xctrls #xsetinp'),
   xsetlist = document.querySelector('#xctrls #xsetlist'),
@@ -331,9 +332,9 @@ let q2Bcopy, q2Bhtml, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
   xbtndel = document.querySelector('#xctrls #xbtndel'),
   xcshelp = document.querySelector('#xctrls #xcshelp'),
   helpClr = () => !xcshelp || (xcshelp.innerHTML = "") || xcshelp.classList.remove("iwarn", "isucc"),
-  respShow = resp => { respcon.innerHTML
-    += (( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
-      ? resp : JSON.stringify(resp, null, 2) ) + "\n\n").replace(/<(?=[!/?a-z])/gi, "&lt;") },
+  respShow = resp => { respcon.textContent
+    += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
+      ? resp : JSON.stringify(resp, null, 2) ) + "\n\n" },
   zoomTog = zoff => metavp.setAttribute( 'content', "width=device-width, "
     + (zoff || /maximum-/.test(metavp.content) ? "initial-scale=1" : "maximum-scale=1") ),
   titSave = (evt, tnew) => {
@@ -406,7 +407,7 @@ let q2Bcopy, q2Bhtml, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
         .replace(/^(<xmp id="datxmp".*?>)[^]*?(?=<\/xmp>)/im, (m, c1) => c1 + "\n" + dentry.value + "\n")
         .replace(/^(<pre id="respcon">)[^]*?(?=<\/pre>)/im, "$1")
         .replace( /^(<div id="cgrid".*?>\n *<pre id="quad1A".*?>)[^]*?(<\/pre><pre id="quad1B".*?>)[^]*?(<\/pre>\n *<pre id="quad2A".*?>)[^]+?(?=\n<\/div>)/im,
-          '$1$2$3</pre><pre id="quad2B" contenteditable=true></pre>\n  <ul id="plist" class="is-hidden"></ul>' )
+          '$1$2$3</pre><pre id="quad2B" contenteditable=true></pre>\n  <ul id="symlist" class="is-hidden"></ul>' )
         .replace(/^<div id="xctrls".*?>[^]+?\n(?=let q2Bcopy,)/im, "</main>\n<script type=\"text/javascript\">\n(function () {\n'use strict';\n")
         .replace(/^( *cheadg\.textContent === ").+/m, "$1" + cheadg.textContent + "\"")
         .replace(/^xsetinp\.addEventListener\([^]+?(?=\n<\/script>)/im, "})();")
@@ -456,11 +457,11 @@ let q2Bcopy, q2Bhtml, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
       reslts = xprsns.map(xpr => {
         try {
           xpr = xpr && xpr
-          .replace( /^(?=[\t ]*{)|^.*?(?=\/\/|<\/?\b[ \w\\,;:'"#=()-]+>|\(? *function\b[ \w]*\(.*?\) *{|\(? *(?:[$\wÀ-Ͽ]+|\(.*?\)) *=>|$)/g,
-            m0 => m0.replace( /( |^)(?:_\.|)([$_a-zÀ-Ͽ][$\wÀ-Ͽ]*)(?=\s*=\s*(?:$|[$\wÀ-Ͽ'"`([{.+-]))/gi,
-              (m1, c1, c2) => _ks.push(c2) && c1 + "_." + c2 )
-            .replace( /([\t =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([$_](?!\.)[$\wÀ-Ͽ]*|[A-Za-zÀ-Ͽ][$\wÀ-Ͽ]*)(?! *=)/g,
-              (m1, c1, c2) => window[c2] || !_ks.some(k => k === c2) ? m1 : c1 + "_." + c2 ) );
+            .replace( /^(?=[\t ]*{)|^.*?(?=\/\/|<\/?\b[ \w\\,;:'"#=()-]+>|\(? *function\b[ \w]*\(.*?\) *{|\(? *(?:[$\wÀ-Ͽ]+|\(.*?\)) *=>|$)/g,
+              m0 => m0.replace( /( |^)(?:_\.|)([$_a-zÀ-Ͽ][$\wÀ-Ͽ]*)(?=\s*=\s*(?:$|[$\wÀ-Ͽ'"`([{.+-]))/gi,
+                (m1, c1, c2) => _ks.push(c2) && c1 + "_." + c2 )
+              .replace( /([\t =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([$_](?!\.)[$\wÀ-Ͽ]*|[A-Za-zÀ-Ͽ][$\wÀ-Ͽ]*)(?! *=)/g,
+                (m1, c1, c2) => window[c2] || !_ks.some(k => k === c2) ? m1 : c1 + "_." + c2 ) );
           rslt = eval(xpr.replace(/\x0c$|\\f$|&#x0*[Cc];$|^\x0c|^\\f|^&#x0*[Cc];/g, ""));
           return ( !/\x0c$|\\f$|&#x0*[Cc];$|^\x0c|^\\f|^&#x0*[Cc];/.test(xpr) ? ""
             : "<div class=pagebb></div>" )
@@ -520,49 +521,49 @@ let q2Bcopy, q2Bhtml, cmods = [], dload = "", jsrcs = [], rset = 0, val0s = [],
   },
   dentRegen = evt => {
     let eobj = evt.target, rnge, seln;
-    if ( eobj.parentElement.id === "plist" || eobj.id !== "screenmask" && [0, 1, 2, 3, 4, 5, 6]
+    if ( eobj.parentElement.id === "symlist" || eobj.id !== "screenmask" && [0, 1, 2, 3, 4, 5, 6]
     .some(i => (eobj = !i ? eobj : eobj["parentElement"] || eobj).id === "quad2B") ) {
     //&& evt.path[evt.path.length - (!window.EC1 ? 7 : 8)].id === "quad2B" ) {
-      if (evt.target.parentElement.id === "plist") {
+      if (evt.target.parentElement.id === "symlist") {
         seln = window.getSelection();
         seln.removeAllRanges();
         rnge = document.createRange();
         rnge.selectNodeContents(evt.target);
         seln.addRange(rnge);
-      } else if (plist.className) {
+      } else if (symlist.className) {
         rnge = Array.from(quad2B.childNodes)
           .findIndex(e => e.isSameNode(seln = window.getSelection().focusNode) || e.contains(seln))
           / quad2B.childNodes.length;
         rnge = rnge < 0.15 ? 0 : rnge > 0.85 ? 1 : rnge;
-        document.querySelector('#screenmask').className = plist.className = "";
+        document.querySelector('#screenmask').className = symlist.className = "";
         q2Bcopy = quad2B.innerHTML;
         quad2B.innerHTML = (dentry.value || "").replace(/&(?=#?\w+;)/g, "&amp;")
-        .replace(/<(?=[!/?a-z])/gi, "&lt;") + (!dentry.value ? "" : "\n<br>");
+          .replace(/<(?=[!/?a-z])/gi, "&lt;") + (!dentry.value ? "" : "\n<br>");
         !(q2Bhtml = quad2B.innerHTML)
         || window.getSelection().setPosition( quad2B.firstChild, !rnge ? 0
           : quad2B.textContent.indexOf("\n", quad2B.textContent.length * rnge - 1) + 1 );
       }
-    } else if (!plist.className && quad2B.innerHTML === q2Bhtml) {
-      document.querySelector('#screenmask').className = plist.className = "is-hidden";
+    } else if (!symlist.className && quad2B.innerHTML === q2Bhtml) {
+      document.querySelector('#screenmask').className = symlist.className = "is-hidden";
       quad2B.innerHTML = q2Bcopy;
       q2Bcopy = q2Bhtml = null;
-    } else if (!plist.className) {
+    } else if (!symlist.className) {
       (xsetlist || "").value = "";
       helpClr();
-      document.querySelector('#screenmask').className = plist.className = "is-hidden";
+      document.querySelector('#screenmask').className = symlist.className = "is-hidden";
       q2Bcopy = q2Bhtml = null;
       dentry.value = quad2B.innerText.replace(/\n+$|^\n+/g, "")
-      .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/\\t/g, "\t"));
+        .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/\\t/g, "\t"));
       xprsEval();
     }
   },
   initLoad = () => !/^https?:\/\/.+$/.test(dload) ? xprsEval()
     : window.fetch(dload, { credentials: 'omit' })
-    .then( resp => /\.json$|^https?:\/\/\w[\w.:-]*\/\w[\w-]*\/\w[\w!.*+~-]*$/.test(dload)
-      ? resp.json() : resp.text() )
-    .then( val => dentry.value = val == null ? "" : val.content
-      || (typeof val !== 'object' ? "" + val : "// " + JSON.stringify(val)) )
-    .then(xprsEval).catch(respShow),
+      .then( resp => /\.json$|^https?:\/\/\w[\w.:-]*\/\w[\w-]*\/\w[\w!.*+~-]*$/.test(dload)
+        ? resp.json() : resp.text() )
+      .then( val => dentry.value = val == null ? "" : val.content
+        || (typeof val !== 'object' ? "" + val : "// " + JSON.stringify(val)) )
+      .then(xprsEval).catch(respShow),
   xsetLoad = (evt = { target: "" }) => {
     let optg;
     helpClr();
@@ -651,7 +652,7 @@ Promise.all(jsrcs.map(e => scrInj(e))).catch(respShow).then(() => {
     .catch(respShow);
   xsetinp || initLoad();
 });
-plist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
+symlist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
   .map((e, i) => `<li>Math.${e}${/^[A-Z]/.test(e) ? "" : "()"}</li>`).join("\n    ")
   + "\n    " + Object.getOwnPropertyNames(Number)
   .map((e, i) => `<li>Number.${e}${!/^is|^parse/.test(e) ? "" : "()"}</li>`).join("\n    ")
