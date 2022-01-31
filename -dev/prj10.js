@@ -129,7 +129,10 @@ caches.keys().then(respShow)
 const dscripts = `//
 // respShow(document.head.outerHTML)
 // respShow(cheadg.outerHTML)
-// respShow(plist.textContent.replace(/&(?=#?\\w+;)/g, "&amp;"))
+// respShow(menulist.outerHTML)
+// respShow(menulist.textContent.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\\xa0/g, "&nbsp;"))
+// respShow(symlist.textContent)
+// respShow(symlist.textContent.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\\xa0/g, "&nbsp;"))
 
 respShow(Array.from(document.querySelectorAll('script')).map(e => e.src))
 // respShow(document.querySelector('script:last-of-type').outerHTML)
@@ -280,9 +283,13 @@ scrGen = src => "let " + src.match(/^diffGen = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))
 
 const srtools = `//
 // to find misapplied emphasis/superscript markers in cmods
- // srctxta.value = JSON.stringify(xstor.util, null, 2);
- // sepainp.value = "/.+/g";
- // rtrminp.value = 'm => m.replace(/&(?=#?\\\\w+;)/g, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;").replace(/(?<!\\\\\\\\)\\\\\\\\n/g, "\\\\n").replace(/\\\\*.+?\\\\*|\\\\^.+?\\\\^/g, "<mark>$&</mark>")'; //
+/*
+ srctxta.textContent = JSON.stringify(xstor.util, null, 2);
+ srctxta.value = srctxta.innerHTML;
+ sepainp.value = "/.+/g";
+ rtrminp.value = 'm => m.replace(/(?<!\\\\\\\\)\\\\\\\\n/g, "\\\\n").replace(/\\\\*.+?\\\\*|\\\\^.+?\\\\^/g, "<mark>$&</mark>")'; //
+ // rtrminp.value = 'm => m.replace(/([^\\\\\\\\])\\\\\\\\n/g, "$1\\\\n").replace(/([^\\\\\\\\])\\\\\\\\n/g, "$1\\\\n").replace(/\\\\*.+?\\\\*|\\\\^.+?\\\\^/g, "<mark>$&</mark>")'; //
+*/
 //`;
 
 export {
