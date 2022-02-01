@@ -96,22 +96,25 @@ const publdims = `//
 //`;
 
 const jscmds = `//
-encodeURI("abc !\\"#$%&amp;'()*+,-./:;<=>?@[\\\\]^_\`{|}~123")
+encodeURI("abc !\\"#$%&'()*+,-./:;<=>?@[\\\\]^_\`{|}~123")
 decodeURI("%22%20%22%25%3C%3E%5B%5C%5D%5E%60%7B%7C%7D")
 
 Array.from(Array(5).keys())
-
-// respShow(Object.fromEntries(Object.keys(location).map(e => [e, location[e]])))
-// respShow(Object.fromEntries(["appCodeName", "appName", "platform", "product", "vendor"].map(e => [e, navigator[e]])))
 
 // respShow(Array.from(Array(64).keys()).map(n => [0, 64, 128, 192].map(d => "0x" + (n + d).toString(16) + (!d && n < 16 ? "  " : " " + String.fromCodePoint(n + d))).join("\\t")).join("\\n"))
 // respShow(Array.from(Array(64).keys()).map(n => (n += 0x2000) && [0, 64, 128, 192].map(d => "0x" + (n + d).toString(16) + " " + String.fromCodePoint(n + d)).join("  \\t")).join("\\n"))
 // respShow(Array.from(Array(25).keys()).map(n => (n + 913) + "/" + (n + 945) + " " + [913, 945].map(d => String.fromCodePoint(n + d)).join(" ")).join("\\n"))
 
 // { let k, k2s, keys = []; for (k in document.documentElement) keys.push(k); respShow(k2s = keys.filter(k => !/^on|^aria/.test(k)).sort()); k2s.length; } //
-// respShow(Array.from(document.querySelectorAll('[id]')).map(e => e.id))
 // respShow( Object.keys(window).filter( pty => Object.entries(Object.getOwnPropertyDescriptor(window, pty) || "").filter(e => ['value', 'writable', 'enumerable'].includes(e[0]) && e[1]).length === 3 ))
+// respShow(Object.fromEntries(Object.keys(location).map(e => [e, location[e]])))
+// respShow(Object.fromEntries(["appCodeName", "appName", "platform", "product", "vendor"].map(e => [e, navigator[e]])))
+// respShow(Object.getOwnPropertyNames(Math))
+// respShow(Object.getOwnPropertyNames(Number.prototype))
+
 // respShow( Object.fromEntries( Object.entries(SourceDiff).map(oe => [oe[0], oe[1].toString()]) ))
+// respShow(Array.from(document.querySelectorAll('[id]')).map(e => e.id))
+// respShow( document.querySelector('script:nth-of-type(3)').textContent.replace( /^ *(?:const|let|var|) *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)\\n|(.*\\n|.+)/gim, (m, c1) => c1 ? "" : m.replace(/(?:[^=a-z]|= *(?=\\d+[,;]|""|''|\\[\\]|\\{\\})|[a-z](?!\\w* *[,;=]))*(?:\\n|=.+|(\\w+.))/gi, "$1") ).trim().split(/\\W/) )
 //`;
 
 const bcaches = `//
@@ -186,7 +189,7 @@ const t2puzls = `/*
 
 t2x = xstor["JScode"]["tutorial2"];
 bodGen = src => "\\n<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/;$|^g\\dui = /g, "").split(/;\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n") + "\\n"; //
-scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?( *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
+scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *=.+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *=.+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
 dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=pz1wrap>", "</div>\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
 respShow(dwrap[0] + bodGen(t2x) + dwrap[1] + scrGen(t2x) + dwrap[2])
 */`;
@@ -194,7 +197,7 @@ respShow(dwrap[0] + bodGen(t2x) + dwrap[1] + scrGen(t2x) + dwrap[2])
 const t3srepl = `//
 t3x = xstor["JScode"]["tutorial3"];
 bodGen = src => "\\n" + src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui = /g, "").split(/;\\nsrui \\+= /).map(eval).join("").trim() + "\\n"; //
-scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?( *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,$2\\n  "); //
+scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *=.+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *=.+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
 uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
 // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
@@ -276,7 +279,7 @@ s2rslt.onscroll = () => { s1rslt.scrollLeft = s2rslt.scrollLeft; s1rslt.scrollTo
 !window.sdwrap || !window.localforage || localforage.keys().then( ks => pfile2.innerHTML = ["trgtxta.value", "srctxta.value", "dentry.value", "respcon.textContent", "respcon.innerHTML"].concat(ks).map(k => "\\n<option>" + k + "</option>").join("") + "\\n" ).catch(console.warn);
 //
 
-scrGen = src => "let " + src.match(/^diffGen = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?( *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,$2\\n  "); //
+scrGen = src => "let " + src.match(/^diffGen = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *=.+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *=.+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
 // dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Source-Text Diffs</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script src=\\"../-res-js/srcdiff.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
 // respShow(dwrap[0] + sdwrap.outerHTML + dwrap[1] + scrGen(xstor.util.srcdiff) + dwrap[2])
 //`;
