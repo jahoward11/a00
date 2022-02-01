@@ -14,7 +14,7 @@ that are already written in the \`JScode\` module's data files:
 
 t2x = xstor["JScode"]["tutorial2"];
 bodGen = src => "\\n<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/;$|^g\\dui = /g, "").split(/;\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n") + "\\n"; //
-scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?( *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
+scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *=.+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *=.+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
 uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "pz1wrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
 // pz1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
@@ -60,7 +60,7 @@ g4ui += "\\n<div class=cfield align=center><span class=ccntr><button onclick=pcM
 // g4wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 try { g4wrap && (g4board.innerHTML = "") } catch { ndiv = document.createElement('div'); ndiv.id = "g4wrap"; ndiv.innerHTML = g4ui; cmain.appendChild(ndiv); }
 
-dbar = midx = gball = tstrk = t0trk = "";
+dbar = gball = midx = tstrk = t0trk = "";
 t1trk = 0;
 g4sets = [""];
 g4trgs = [ "", [[280, 280]], [[182, 182]], [[288, 129]], [[289, 199]], [[109, 244]], [[118, 189]], [[28, 28], [280, 28], [154, 154], [28, 280], [280, 280]], [[91, 28], [217, 28], [28, 91], [280, 91], [28, 217], [280, 217], [91, 280], [217, 280]], [[28, 28], [280, 28], [91, 91], [217, 91], [91, 217], [217, 217], [28, 280], [280, 280]], [[182, 23], [23, 76], [288, 182], [23, 235], [288, 235], [182, 288]], [[55, 16], [211, 16], [289, 16], [133, 55], [250, 94], [16, 133], [94, 133], [172, 133], [250, 172], [55, 211], [133, 211], [172, 250], [16, 289], [94, 289], [250, 289]] ];
@@ -90,7 +90,7 @@ g4Start();
 // full source code (e.g., for building a standalone web app).
 
 /*
-scrGen = src => "let " + src.match(/^dbar = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^(\\w+(?: *[,=].+?|))[,;]?( *\\/\\/|)\\n(?=\\w+ =)/gm, "$1,$2\\n  "); //
+scrGen = src => "let " + src.match(/^dbar = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *=.+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *=.+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
 dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Tilt Maze</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
 respShow(dwrap[0] + g4wrap.outerHTML.replace(/\\n<hr>/, "") + dwrap[1] + scrGen(xstor.puzzle.tiltmaze) + dwrap[2])
 */
