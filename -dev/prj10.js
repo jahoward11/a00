@@ -114,7 +114,7 @@ Array.from(Array(5).keys())
 
 // respShow( Object.fromEntries( Object.entries(SourceDiff).map(oe => [oe[0], oe[1].toString()]) ))
 // respShow(Array.from(document.querySelectorAll('[id]')).map(e => e.id))
-// respShow( document.querySelector('script:nth-of-type(3)').textContent.replace( /^ *(?:const|let|var|) *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)\\n|(.*\\n|.+)/gim, (m, c1) => c1 ? "" : m.replace(/(?:[^=a-z]|= *(?=\\d+[,;]|""|''|\\[\\]|\\{\\})|[a-z](?!\\w* *[,;=]))*(?:\\n|=.+|(\\w+.))/gi, "$1") ).trim().split(/\\W/) )
+// respShow( document.querySelector('script:nth-of-type(3)').textContent.replace( /^ *(?:const|let|var|) *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)\\n|(.*\\n|.+)/gim, (m, c1) => c1 ? "" : m.replace(/(?:[^=a-z]|= *(?=\\d+[,;]|""|''|\\[\\]|\\{\\})|[a-z](?!\\w* *[,;=]))*(?:\\n|=.+|(\\w+.))/gi, "$1") ).trim().split(/\\W/) ) //
 //`;
 
 const bcaches = `//
@@ -150,7 +150,7 @@ const scrsload = `//
 // try { !!markdownit } catch { Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).then().catch(respShow) }
 // try { !!(hljs && js_beautify) } catch { Promise.all(["../-res-js/highlight.pack.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then().catch(respShow) }
 
-// import("../-dev/prj10.js").then(r => (xstor[r.groupname] = r) && slistRegen()).catch(respShow)
+// import("../-dev/prj10.js").then(r => (xstor[r.groupname] = r) && xlstRegen()).catch(respShow)
 // import("../-dev/prj10.js").then(r => respShow(r.jscmds)).catch(respShow)
 // import("../-res-js/ebook-annos.mjs").then(r => window["tocNavLtGen"] = r.tocNavLtGen).catch(respShow)
 // fetch("../-res-js/ebook-annos-fns.js").then(r => r.text()).then(respShow).catch(respShow)
@@ -271,7 +271,7 @@ try { SourceDiff } catch { scrInj("../-res-js/srcdiff.js").catch(respShow) }
 
 fncTry = (a, fnc, e) => { try { return fnc(a) } catch (err) { return e ? err : undefined }};
 diffGen = ([s1txt, s2txt]) => { if (!window.SourceDiff || !s1txt || !s2txt) { return s1rslt.innerHTML = s2rslt.innerHTML = ""; } let sdff = new SourceDiff.Diff(true), fmtr = new SourceDiff.DiffFormatter(sdff); [s2rslt.innerHTML, s1rslt.innerHTML] = fmtr.formattedDiff(s2txt, s1txt); };
-datPrep = () => Promise.all( [s1finp.value, s2finp.value] .map( k => Promise.resolve(_.fncTry(k, window.eval)).then(v => v != null ? v : localStorage.getItem(k) || window.localforage && localforage.getItem(k)).then(v => v == null ? "" : typeof v === 'object' ? JSON.stringify(v, null, 2) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(_.fncTry(v, JSON.parse), null, 2) || v) )).then(_.diffGen).catch(console.warn);
+datPrep = () => Promise.all( [s1finp.value, s2finp.value].map( k => Promise.resolve(_.fncTry(k, window.eval)).then(v => v != null ? v : localStorage.getItem(k) || window.localforage && localforage.getItem(k)).then(v => v == null ? "" : typeof v === 'object' ? JSON.stringify(v, null, 2) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(_.fncTry(v, JSON.parse), null, 2) || v) )).then(_.diffGen).catch(console.warn);
 [s1chkb, s2chkb].forEach( e => e.onchange = () => { [s1rslt, s2rslt].forEach(e => e.classList.remove("ht0", "ht2x")); if (s1chkb.checked && s2chkb.checked) { s1rslt.classList.add("ht0"); s2rslt.classList.add("ht0"); } else if (s1chkb.checked) { s1rslt.classList.add("ht0"); s2rslt.classList.add("ht2x") } else if (s2chkb.checked) { s1rslt.classList.add("ht2x"); s2rslt.classList.add("ht0"); } });
 s1rslt.onscroll = () => { s2rslt.scrollLeft = s1rslt.scrollLeft; s2rslt.scrollTop = s1rslt.scrollTop; };
 s2rslt.onscroll = () => { s1rslt.scrollLeft = s2rslt.scrollLeft; s1rslt.scrollTop = s2rslt.scrollTop; };
