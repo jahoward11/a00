@@ -114,7 +114,7 @@ Array.from(Array(5).keys())
 
 // respShow( Object.fromEntries( Object.entries(SourceDiff).map(oe => [oe[0], oe[1].toString()]) ))
 // respShow(Array.from(document.querySelectorAll('[id]')).map(e => e.id))
-// respShow( document.querySelector('script:nth-of-type(3)').textContent.replace( /^ *(?:const|let|var|) *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)\\n|(.*\\n|.+)/gim, (m, c1) => c1 ? "" : m.replace(/(?:[^=a-z]|= *(?=\\d+[,;]|""|''|\\[\\]|\\{\\})|[a-z](?!\\w* *[,;=]))*(?:\\n|=.+|(\\w+.))/gi, "$1") ).trim().split(/\\W/) ) //
+// respShow( document.querySelector('script:nth-of-type(3)').textContent.replace( /^(?:const|let|var|)  ?\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)\\n|(.*\\n|.+)/gim, (m, c1) => c1 ? "" : m.replace(/(?:[^=a-z]|= *(?=\\d+[,;]|""|''|\\[\\]|\\{\\})|[a-z](?!\\w* *[,;=]))*(?:\\n|=.+|(\\w+.))/gi, "$1") ).trim().split(/\\W/) ) //
 //`;
 
 const bcaches = `//
@@ -144,7 +144,7 @@ respShow(Array.from(document.querySelectorAll('script')).map(e => e.src))
 // respShow(Array.from(document.styleSheets[0].rules).map(r => r.cssText))
 //`;
 
-const scrsload = `//
+const scrload = `//
 // try { jStat } catch { scrInj("../-res-js/jstat-tdist.js").then(xprsEval).catch(respShow) }
 // try { SourceDiff } catch { scrInj("../-res-js/srcdiff.js").catch(respShow) }
 // try { !!markdownit } catch { Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).then().catch(respShow) }
@@ -189,7 +189,7 @@ const t2puzls = `/*
 
 t2x = xstor["JScode"]["tutorial2"];
 bodGen = src => "\\n<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/;$|^g\\dui = /g, "").split(/;\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n") + "\\n"; //
-scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *=.+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *=.+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
+scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
 dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=pz1wrap>", "</div>\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
 respShow(dwrap[0] + bodGen(t2x) + dwrap[1] + scrGen(t2x) + dwrap[2])
 */`;
@@ -197,7 +197,7 @@ respShow(dwrap[0] + bodGen(t2x) + dwrap[1] + scrGen(t2x) + dwrap[2])
 const t3srepl = `//
 t3x = xstor["JScode"]["tutorial3"];
 bodGen = src => "\\n" + src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui = /g, "").split(/;\\nsrui \\+= /).map(eval).join("").trim() + "\\n"; //
-scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *=.+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *=.+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
+scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
 uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
 // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
@@ -279,7 +279,7 @@ s2rslt.onscroll = () => { s1rslt.scrollLeft = s2rslt.scrollLeft; s1rslt.scrollTo
 !window.sdwrap || !window.localforage || localforage.keys().then( ks => pfile2.innerHTML = ["trgtxta.value", "srctxta.value", "dentry.value", "respcon.textContent", "respcon.innerHTML"].concat(ks).map(k => "\\n<option>" + k + "</option>").join("") + "\\n" ).catch(console.warn);
 //
 
-scrGen = src => "let " + src.match(/^diffGen = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *=.+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *=.+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
+scrGen = src => "let " + src.match(/^diffGen = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
 // dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Source-Text Diffs</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script src=\\"../-res-js/srcdiff.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
 // respShow(dwrap[0] + sdwrap.outerHTML + dwrap[1] + scrGen(xstor.util.srcdiff) + dwrap[2])
 //`;
@@ -298,7 +298,7 @@ const srtools = `//
 export {
   groupname, varkeys, nformat,
   uiwidth, publdims, jscmds,
-  bcaches, dscripts, scrsload,
+  bcaches, dscripts, scrload,
   jstatqs, itoken, t2puzls,
   t3srepl, srcdiff, srtools
 };
