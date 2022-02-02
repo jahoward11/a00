@@ -56,9 +56,9 @@ and repurposed as needed to build an original, standalone app.
       the same kind of measurement.
 
     E.G.: The app should function in a similar way that unit
-    conversions are made by Google.
+    conversions are made by *Google*.
 
-    In the Google search bar, type | In the result list, expect
+    In the *Google* search bar, type | In the result list, expect
     "100 yards to meters"          | "91.44 meters"
     "101 mph to km/h"              | "162.544 kilometers per hour"
     "110 Fahrenheit to Celsius"    | "43.3333 Celsius"
@@ -319,7 +319,7 @@ g1Reset();
 */
 
 // respcon.innerHTML = "" // clears any orange text (in case GUI text is still visible)
-// scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *=.+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *=.+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
+// scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
 // localforage.getItem("tutor2js").then(val => respShow(_.scrGen(val))).catch(respShow)
 
 /*
@@ -727,7 +727,7 @@ window.dataMgr = ox => { let key = lfinp.value.trim(); if (ox === 2) return !key
 */
 
 /*
-scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *=.+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *=.+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
+scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
 dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
 respShow(dwrap[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwrap[1] + scrGen(xstor.JScode.tutorial3) + dwrap[2])
 */
@@ -848,6 +848,93 @@ window.lineWrap = str => { let cpl = 70, cut = 0, brk = "\\n", rex = ".{1," + cp
 */
 //`;
 
+const tutorial4 = `/*
+__JavaScript Coding Tutorials, Part 4__
+
+ In *Parts 1, 2 and 3*, we've incrementally acquired enough
+understanding of web-doc structures, JS keywords and JS building
+blocks to be able to develop an unlimited variety of new,
+rudimentary-yet-functional web apps.
+
+ In *Part 4*, we will strive to outwardly expand our comprehension of
+the living, JavaScript ecosystem to a higher plane of code
+organization -- an organization level we shall call, __Application__
+__Programming Interfaces__ (APIs).
+
+ Previously, we had begun building upon different API foundations
+already -- without identifying them as such. Notably, the following
+table lists the API elements that had appeared within one of the
+first three tutorials.
+
+ __tutorial1&Tab;&Tab;tutorial2&Tab;       tutorial3__
+ .value&Tab;&Tab;&Tab;.remove()&Tab;       localStorage.keys()
+ docu&hellip;.createElement()&Tab;.outerHTML&Tab;       localStorage.getItem()
+ .id&Tab;&Tab;&Tab;.onclick&Tab;       localStorage.setItem()
+ .innerHTML&Tab;&Tab;.checked&Tab;       localStorage.removeItem()
+ .appendChild()&Tab;&Tab;.then()&Tab;&Tab;       Promise.resolve()
+ .onblur&Tab;&Tab;.catch()&Tab;       Promise.all()
+ .onchange&Tab;&Tab;.classList.add()       .focus()
+ &Tab;&Tab;&Tab;.classList.remove()    .setSelectionRange()
+ &Tab;&Tab;&Tab;.classList.toggle()    import
+ &Tab;&Tab;&Tab;.classList.contains()  markdownit()&hellip;.render()
+ &Tab;&Tab;&Tab;.querySelectorAll()
+ &Tab;&Tab;&Tab;.className
+
+*What purpose do all API commands serve?*
+- API commands make fundamental networking and interactional tasks
+  more coder-human friendly.
+- API commands are generally simpler, more intuitive alternatives to
+  common-use, yet complex, coding algorithms.
+
+*What are the most useful categories (classes) of client-side web APIs?*
+- Document Object Model (DOM) manipulation
+  (i.e., turning a static into a dynamic web page by making real-time
+  changes to various parts of the page document)
+- Data fetching
+  (i.e., requesting and/or submitting information from/to a "public
+  resource" server, as when texting, emailing or just sharing photos,
+  music, etc.)
+- Graphics drawing
+  (e.g., when playing an arcade-like video game)
+- Media playing/processing
+  (e.g., when cropping and stylizing photos, or when combining music
+  with a video)
+- Device component triggering
+  (e.g., when sending a notification to a phone screen along with an
+  alert sound or vibration)
+- Data storage
+  (i.e., saving, organizing and deleting local files that are viewable
+  or accessible only within a certain web app of one kind or another)
+
+*Do any other API classes exist?*
+- Yes -- not only for additional web-browsing tasks (beyond those
+  already described, above) but also for commercial, and other
+  organizational, interfacing tasks (e.g., as when accessing a
+  proprietary service on *IBM* or *Amazon*).
+- Furthermore, APIs (the existing ones as well as many more that do
+  not yet exist) will continually evolve as world needs and public
+  demands for information continue to change over time.
+- *Aside:* In order to use any of the abundant, non-browser-built-in
+  APIs, a custom script must first be imported into the web app. This
+  is why we could use the (unrecognizable-to-a-browser) \`markdownit()\`
+  command in *Tutorial Part 3* (which had allowed us to generate HTML
+  markup on a plain-text article). In other words, without having
+  previously imported the associated, third-party-managed script
+  known as "Markdown-it", we could not have called the \`markdownit()\`
+  function within our code.
+
+ To get more familiar with client-side web APIs, we will create a
+simple, local database for storing and organizing our personal
+contacts (or other textual notes, such as for journaling, fitness
+logging, etc.).
+
+- - - - -
+__*Tutorial Four: Building a "contacts" web app*__
+
+*/
+//`;
+
 export {
-  groupname, tutorial1, tutorial2, tutorial3
+  groupname, tutorial1, tutorial2,
+  tutorial3, tutorial4
 };
