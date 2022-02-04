@@ -72,7 +72,7 @@ const calcdemo1 = `
  Math.SQRT1_2	// Returns the square root of 1/2 (approx. 0.707)
  Math.SQRT2	// Returns the square root of 2 (approx. 1.414)
 
-// __Method		Description__
+// __Method  	Description__
  Math.sin(x)	// Returns the sine of _x_ (_x_ is in radians)
  Math.cos(x)	// Returns the cosine of _x_ (_x_ is in radians)
  Math.tan(x)	// Returns the tangent of an angle
@@ -121,7 +121,7 @@ const calcdemo1 = `
  Number.prototype
 		// Allows you to add properties and methods to an object
 
-// __Method		Description__
+// __Method  	Description__
  Number.isFinite(q)
 		// Checks whether a value is a finite number
  Number.isInteger(q)

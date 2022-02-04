@@ -8,7 +8,7 @@ __AP^®^ BIOLOGY EQUATIONS AND FORMULAS__
 
 *―――Metric Prefixes―――*
 
- __Factor	Prefix	Symbol__
+ __Factor Prefix  Symbol__
  10⁹	giga	G
  10⁶	mega	M
  10³	kilo	k

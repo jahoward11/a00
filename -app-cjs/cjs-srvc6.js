@@ -182,7 +182,7 @@ uConv("MCXI")
 ucShow = () => ucout.value = _.uConv(!/^[+-]?(?:\\d+\\.?|\\d*\\.\\d+)(?:e[+-]?\\d+|)|^0x[\\da-f]+$/i.test(ucinp.value) ? ucinp.value : +ucinp.value, ulist0.value, ulist1.value);
 opts = ["", "inches", "feet", "yards", "miles", "meters", "ft/s", "mph", "m/s", "km/h", "Fahrenheit", "Celsius", "Kelvin"].map(e => "<option>" + e + "</option>").join("\\n");
 ucui = "\\n<hr style=\\"margin: 1.5rem 0;\\">\\n<h4 class=cfield>Unit Converter</h4>";
-ucui += "\\n<div class=cfield><span class=ccntr><input type=text id=ucinp placeholder=\\"Enter measurement…\\"></span><span class=ccntr><select id=ulist0>\\n";
+ucui += "\\n<div class=cfield><span class=ccntr><input type=text id=ucinp placeholder=\\"Enter measurement&hellip;\\"></span><span class=ccntr><select id=ulist0>\\n";
 ucui += opts + "\\n</select></span></div>\\n<div class=cfield><span class=ccntr><input type=text id=ucout readonly></span><span class=ccntr><select id=ulist1>\\n";
 ucui += opts + "\\n</select></span></div>\\n";
 // try { ucwrap } catch { ndiv = document.createElement('div'); ndiv.id = "ucwrap"; ndiv.innerHTML = ucui; cmain.appendChild(ndiv); }
@@ -866,19 +866,17 @@ foundations already -- without identifying them as such. Notably, the
 following table lists the API elements that appear within the first
 three tutorials.
 
- __tutorial1&Tab;&Tab;tutorial2&Tab;       tutorial3__
- docu&hellip;.createElement()&Tab;.remove()&Tab;       localStorage.keys()
- .value&Tab;&Tab;&Tab;.outerHTML&Tab;       localStorage.getItem()
- .id&Tab;&Tab;&Tab;.onclick&Tab;       localStorage.setItem()
- .innerHTML&Tab;&Tab;.checked&Tab;       localStorage.removeItem()
- .appendChild()&Tab;&Tab;.then()&Tab;&Tab;       Promise.resolve()
- .onblur&Tab;&Tab;.catch()&Tab;       Promise.all()
- .onchange&Tab;&Tab;.classList.add()       .focus()
- &Tab;&Tab;&Tab;.classList.remove()    .setSelectionRange()
- &Tab;&Tab;&Tab;.classList.toggle()    import
- &Tab;&Tab;&Tab;.classList.contains()  markdownit()&hellip;.render()
- &Tab;&Tab;&Tab;.querySelectorAll()
- &Tab;&Tab;&Tab;.className
+ __tutorial1		tutorial2	       tutorial3__
+ docu….createElement()	.remove()	       localStorage.keys()
+ .id			.outerHTML	       localStorage.getItem()
+ .value			.onclick	       localStorage.setItem()
+ .innerHTML		.checked	       localStorage.removeItem()
+ .appendChild()		.classList.add()       .then().catch()
+ .onblur		.classList.remove()    .focus()
+ .onchange		.classList.toggle()    .setSelectionRange()
+ 			.classList.contains()  console.warn()
+ 			.querySelectorAll()    markdownit()….render()
+ 			.className
 
 *What purpose do all API commands serve?*
 - API commands make fundamental networking and interactional tasks
@@ -931,8 +929,8 @@ recipe book, a fitness log, etc.).
 - - - - -
 __*Tutorial Four: Building a "contacts" web app*__
 
+ Coming soon …
 */
- // Coming soon &hellip;
 //`;
 
 export {

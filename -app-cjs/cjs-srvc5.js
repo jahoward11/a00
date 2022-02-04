@@ -31,7 +31,7 @@ __*Normal Distribution, Probability Density Function (PDF)*__
 
        =   ⬚͏  1 ⟋ *σ*√2*π*ℯ^*z*²^
 
- *φ*(*x*)  =    ⬚͏ 1 ⟋ √2*π*ℯ^*z*²^		PDF for a std. &#x6e;.d.
+ *φ*(*x*)  =    ⬚͏ 1 ⟋ √2*π*ℯ^*z*²^     	PDF for a std. &#x6e;.d.
 
 */
  μ = 0
@@ -156,11 +156,11 @@ __*Counting Methods, all possible scenarios*__
 
        ~_n_~*P*~_k_~ =   ⬚͏  _n_! ⟋ (_n_ - _k_)!		ordered (Permutations)
 
- (^_n_^~_k_~ ) = ~_n_~*C*~_k_~ = ⬚͏   _n_! ⟋ _k_!(_n_ - _k_)!		unordered (Combinations)
+ (^_n_^~_k_~ ) = ~_n_~*C*~_k_~ = ⬚͏   _n_! ⟋ _k_!(_n_ - _k_)!   	unordered (Combinations)
 
  Selection with resupply (repeats allowed)
    _n_^_k_^			ordered (permutations)
-  (^_n_ + _k_ - 1^   ~_k_~	  ) 		unordered (combinations)
+  (^_n_ + _k_ - 1^   ~_k_~	  )		unordered (combinations)
 */
 
  n = 5
@@ -283,7 +283,7 @@ __*Hypothesis Testing &amp; Statistical Significance*__
       expression of inequality; a call-to-action trigger (a.k.a., *H*~a~)
 */
 
- $α = (1 - 0.950).toFixed(3)	// for a 95% confidence level
+ $α = (1 - 0.950).toFixed(3)  // for a 95% confidence level
 
  n = 16
  df = n - 1
@@ -320,7 +320,7 @@ __*Hypothesis Testing &amp; Statistical Significance*__
 *Significance Test, with 1-sample test statistic _z_*
  *H*~0~: *p* = 0.8	*H*~1~: *p* > 0.8
 
- _z_ =  ⬚͏   _p̂_ - _p_₀ ⟋ √_p_₀(1 - _p_₀)/_n_			=  ~statistic - parameter~ ⟋ ^std. dev. of statistic^
+ _z_ =  ⬚͏   _p̂_ - _p_₀ ⟋ √_p_₀(1 - _p_₀)/_n_  		=  ~statistic - parameter~ ⟋ ^std. dev. of statistic^
 
 */
  $z = (p̂ - p0) / Math.sqrt(p0 * (1 - p0) / n)

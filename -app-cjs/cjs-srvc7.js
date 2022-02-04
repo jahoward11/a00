@@ -99,9 +99,9 @@ respShow(dwrap[0] + g4wrap.outerHTML.replace(/\\n<hr>/, "") + dwrap[1] + scrGen(
 const chess = `/*
 __CHESS__
 *A JavaScript Puzzle GUI*
-*/
 
- // Coming soon &hellip;
+ Coming soon …
+*/
 //`;
 
 export {
