@@ -229,13 +229,13 @@ g1ui += "\\n#g1scor { position: relative; top: -8px; font-size: small; margin-le
 g1ui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Sliding Tiles</h4>";
 g1ui += "\\n<div class=cfield><em>Objective:</em> Order the characters from least to greatest&mdash;starting at the top left&nbsp;corner.</div>";
 g1ui += "\\n<div>\\n<span class=ccntr><select id=tnmrl>\\n<option disabled>Characters</option>\\n";
-g1ui += ["1 2 3 4 …", "I II III IV …", "A B C D …", "Α Β Γ Δ …"].map(e => "<option>" + e + "</option>").join("\\n");
+g1ui += ["1 2 3 4 &hellip;", "I II III IV &hellip;", "A B C D &hellip;", "Α Β Γ Δ &hellip;"].map(e => "<option>" + e + "</option>").join("\\n");
 g1ui += "\\n</select></span><span class=ccntr><select id=tclrs>\\n<option disabled>Color Cascades</option>\\n";
 g1ui += ["No gradient", "Red gradient", "Gold gradient", "Blue gradient", "Rainbow pattern"].map(e => "<option>" + e + "</option>").join("\\n");
 g1ui += "\\n</select></span>\\n<label class=ccntr>Auto-shuffle <input type=checkbox id=pshuf checked></label>\\n</div>\\n<div>";
 g1ui += "\\n<label class=ccntr>Rows <input type=text id=trows value=4 size=2></label>";
 g1ui += "\\n<label class=ccntr>Columns <input type=text id=tcols value=4 size=2></label>";
-g1ui += "\\n<span class=ccntr><input type=button value=\\"&#x21bb; NEW GAME\\" onclick=g1Reset()></span>\\n</div>";
+g1ui += "\\n<span class=ccntr><input type=button value=\\"&orarr; NEW GAME\\" onclick=g1Reset()></span>\\n</div>";
 g1ui += "\\n<table id=g1board></table>\\n<div id=g1scor class=cfield>Count: <span id=g1movs>0</span></div>";
 g1ui += "\\n<div><span class=ccntr><input type=button value=\\"RETRACT MOVE\\" onclick=m1Rvrs()></span><span class=ccntr><input type=button value=\\"RESET COUNTER\\" onclick=c1Zero()></span></div>\\n";
 
@@ -383,7 +383,7 @@ g2ui += "\\n<div class=cfield><em>Objective:</em> Switch all matrix lights off.<
 g2ui += "\\n<div class=cfield><em>Game Action:</em> Switching a diode in this lighting matrix also switches any directly connected up-, down-, left- or right- diodes.</div>";
 g2ui += "\\n<div>\\n<span class=ccntr><select id=lpatt>";
 g2ui += ["&mdash;Startup Pattern&mdash;", "Treasure marker (in 4)", "Lucy's diamond (in 5)", "Eight-pocket table (in 5)", "Picasso emoji (in 5)", "Peep holes (in 6)", "Split screen (in 6)", "Square target (in 9)", "Bi-polar opposites (in 11)", "Central light out (in 12)", "Road caution marks (in 15)"].map(e => \`\\n<option>\${e}</option>\`).join("");
-g2ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x21bb; RESTART\\" onclick=g2Reset()></span>\\n</div>";
+g2ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&orarr; RESTART\\" onclick=g2Reset()></span>\\n</div>";
 g2ui += "\\n<div id=g2bcntr>\\n<table id=g2circt><tbody>";
 g2ui += [0, 1, 2, 3].map(r => "\\n<tr>" + [0, 1, 2, 3].map(c => "<td></td>").join("") + "</tr>").join("");
 g2ui += "\\n</tbody></table>\\n<table id=g2board><tbody>";
@@ -427,7 +427,7 @@ g3ui += "\\n<div class=cfield><em>Objective:</em> Remove all board pegs but&nbsp
 g3ui += "\\n<div class=cfield><em>How to play:</em> A move is made by jumping one peg with an adjacent peg; The jumped peg is&nbsp;removed.<br>Tap on a peg to select it for jumping&mdash;Then, if you have a choice, tap on a highlighted hole to select it for that peg's&nbsp;destination.</div>";
 g3ui += "\\n<div>\\n<span class=ccntr><select id=ppatt>\\n";
 g3ui += ["&mdash;Startup Pattern&mdash;", "Cross Symbol", "Plus Sign", "North Tower", "Arrow in Flight", "Egyptian Pyramid", "Red Diamond", "Solitaire"].map(e => "<option>" + e + "</option>").join("\\n");
-g3ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x21bb; RESTART\\" onclick=g3Reset()></span>";
+g3ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&orarr; RESTART\\" onclick=g3Reset()></span>";
 g3ui += "\\n</div>\\n<div id=g3bcntr>\\n<table id=g3panel><tbody>";
 g3ui += [0, 1, 2, 3, 4, 5, 6].map(r => "\\n<tr>" + [0, 1, 2, 3, 4, 5, 6].map(c => "<td></td>").join("") + "</tr>").join("");
 g3ui += "\\n</tbody></table>\\n<table id=g3board><tbody>";
@@ -851,24 +851,24 @@ window.lineWrap = str => { let cpl = 70, cut = 0, brk = "\\n", rex = ".{1," + cp
 const tutorial4 = `/*
 __JavaScript Coding Tutorials, Part 4__
 
- In *Parts 1, 2 and 3*, we've incrementally acquired enough
+ From *Parts 1, 2 and 3*, we've incrementally acquired enough
 understanding of web-doc structures, JS keywords and JS building
 blocks to be able to develop an unlimited variety of new,
 rudimentary-yet-functional web apps.
 
  In *Part 4*, we will strive to outwardly expand our comprehension of
-the living, JavaScript ecosystem to a higher plane of code
+the living, JavaScript ecosystem to the next, higher level of code
 organization -- an organization level we shall call, __Application__
 __Programming Interfaces__ (APIs).
 
- Previously, we had begun building upon different API foundations
-already -- without identifying them as such. Notably, the following
-table lists the API elements that had appeared within one of the
-first three tutorials.
+ Note that, previously, we had begun building upon different API
+foundations already -- without identifying them as such. Notably, the
+following table lists the API elements that appear within the first
+three tutorials.
 
  __tutorial1&Tab;&Tab;tutorial2&Tab;       tutorial3__
- .value&Tab;&Tab;&Tab;.remove()&Tab;       localStorage.keys()
- docu&hellip;.createElement()&Tab;.outerHTML&Tab;       localStorage.getItem()
+ docu&hellip;.createElement()&Tab;.remove()&Tab;       localStorage.keys()
+ .value&Tab;&Tab;&Tab;.outerHTML&Tab;       localStorage.getItem()
  .id&Tab;&Tab;&Tab;.onclick&Tab;       localStorage.setItem()
  .innerHTML&Tab;&Tab;.checked&Tab;       localStorage.removeItem()
  .appendChild()&Tab;&Tab;.then()&Tab;&Tab;       Promise.resolve()
@@ -886,7 +886,7 @@ first three tutorials.
 - API commands are generally simpler, more intuitive alternatives to
   common-use, yet complex, coding algorithms.
 
-*What are the most useful categories (classes) of client-side web APIs?*
+*What are the most useful kinds (classes) of client-side web APIs?*
 - Document Object Model (DOM) manipulation
   (i.e., turning a static into a dynamic web page by making real-time
   changes to various parts of the page document)
@@ -910,28 +910,29 @@ first three tutorials.
 - Yes -- not only for additional web-browsing tasks (beyond those
   already described, above) but also for commercial, and other
   organizational, interfacing tasks (e.g., as when accessing a
-  proprietary service on *IBM* or *Amazon*).
-- Furthermore, APIs (the existing ones as well as many more that do
-  not yet exist) will continually evolve as world needs and public
-  demands for information continue to change over time.
-- *Aside:* In order to use any of the abundant, non-browser-built-in
-  APIs, a custom script must first be imported into the web app. This
-  is why we could use the (unrecognizable-to-a-browser) \`markdownit()\`
-  command in *Tutorial Part 3* (which had allowed us to generate HTML
-  markup on a plain-text article). In other words, without having
-  previously imported the associated, third-party-managed script
-  known as "Markdown-it", we could not have called the \`markdownit()\`
-  function within our code.
+  proprietary service on the *IBM* or *Amazon* website).
+- Furthermore, APIs (existing ones, as well as many others still to
+  come) will continually evolve as world needs and public demands for
+  information continue to change over time.
+- *Aside:* In order to use one of the abundant, non-browser-included
+  APIs, its defining script must first be imported into the web app.
+  This is why, near the end of *Tutorial Part 3*, we could use the
+  (unrecognizable-to-a-browser) \`markdownit()\` command (which had
+  allowed us to generate HTML markup on a plain-text article). In
+  other words, if we had not previously imported the associated,
+  third-party-managed script known as "Markdown-it", we could not
+  have called the \`markdownit()\` function within our code.
 
- To get more familiar with client-side web APIs, we will create a
-simple, local database for storing and organizing our personal
-contacts (or other textual notes, such as for journaling, fitness
-logging, etc.).
+ To make us more familiar with client-side web APIs, we will create
+a simple, local database for storing and organizing our personal
+contacts (or other collection of notes, such as for a journal, a 
+recipe book, a fitness log, etc.).
 
 - - - - -
 __*Tutorial Four: Building a "contacts" web app*__
 
 */
+ // Coming soon &hellip;
 //`;
 
 export {

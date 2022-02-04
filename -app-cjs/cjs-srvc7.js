@@ -51,7 +51,7 @@ g4ui += "\\n<div>\\n<span class=ccntr><select id=mpatt>\\n<option disabled>Maze 
 g4ui += ["Level I (single)", "Level II (single)", "Level III (single)", "Level IV (single)", "Level V (single)", "Level VI (single)", "Level VII (multi)", "Level VIII (multi)", "Level IX (multi)", "Level X (multi)", "Level XI (multi)"].map(e => "<option>" + e + "</option>").join("\\n");
 g4ui += "\\n</select></span><span class=ccntr><select id=gscrg>";
 g4ui += "\\n<option disabled>Game Scoring</option>\\n<option>reset counter</option>\\n<option selected>add up total</option>";
-g4ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x21bb; NEW MAZE\\" onclick=g4Start()></span>\\n</div>";
+g4ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&orarr; NEW MAZE\\" onclick=g4Start()></span>\\n</div>";
 g4ui += "\\n<div id=g4board></div>";
 g4ui += "\\n<div id=g4scor class=cfield>Score: <span id=g4movs>0</span></div>";
 g4ui += "\\n<div class=cfield align=center><span class=ccntr><button onclick=pcMove(3)>&ltrif; LEFT</button></span><span class=ccntr><button onclick=pcMove(1)>&utrif; TOP</button></span><span class=ccntr><button onclick=pcMove(4)>RIGHT &rtrif;</button></span></div>";
