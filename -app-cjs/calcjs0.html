@@ -54,6 +54,7 @@ body {
   border-radius: 0;
   vertical-align: bottom;
 }
+#cmain button, #cmain input[type=button], #cmain select { cursor: pointer; }
 #cmain input::placeholder { opacity: 0.5; }
 #cmain select.anone {
   -webkit-appearance: none;
@@ -245,10 +246,7 @@ body {
   margin-top: 4px;
 }
 #xctrls #xsetinp { width: 168px; }
-#xctrls #xsetlist {
-  width: 24px;
-  cursor: pointer;
-}
+#xctrls #xsetlist { width: 24px; }
 @media print {
   body { padding: 0; }
   #cgrid>#quad1A { box-shadow: inset 0 -1px LightGrey; }
@@ -403,7 +401,7 @@ let q2Bcopy, q2Bhtml,
     let nanc = document.createElement('a'),
       chtml = '<!DOCTYPE html>\n<html lang="en">\n<head>\n'
       + (document.querySelector('#ecorender') || document.documentElement).innerHTML
-        .replace(/\n+$|^\n+|^<head>\n?|^#cmain \.iwarn[^]+?\n(?=@media print {\n)|,\n *xsetLoad = [^]+?(?=;\nwindow\.xstor =)|^ *!\/\^http.+xlstRegen[^]+?;\n|\n*<script\b.*><\/script>(?=$|<\/body>)|\n?<\/body>$/gim, "")
+        .replace(/\n+$|^\n+|^<head>\n?|^#cmain \.iwarn[^]+?\n(?=@media print {\n)|,\n *xsetLoad = [^]+?(?=;\nwindow\.xstor =)|^ *!\/\^http.+xlstGen[^]+?;\n|\n*<script\b.*><\/script>(?=$|<\/body>)|\n?<\/body>$/gim, "")
         .replace(/^(<\/style>)[^]*?(?=<div .+><\/div>$)/im, "$1\n</head>\n<body>\n")
         .replace(/^(<xmp id="datxmp".*?>)[^]*?(?=<\/xmp>)/im, (m, c1) => c1 + "\n" + dentry.value + "\n")
         .replace(/^(<pre id="respcon">)[^]*?(?=<\/pre>)/im, "$1")
@@ -449,7 +447,7 @@ let q2Bcopy, q2Bhtml,
     evt.preventDefault();
   },
   xprsEval = () => {
-    v0set ? (respcon.innerHTML = "") : ++v0set && !val0s.length || ((xsetlist || "").value = "")
+    v0set ? (respcon.textContent = "") : ++v0set && !val0s.length || ((xsetlist || "").value = "")
       || val0s.forEach(v => v && (dentry.value = dentry.value.replace(v[0], v[1])));
     let $ = {}, _ = {}, _ks = [], rslt,
       xprsns = (dentry.value || "")
@@ -522,7 +520,7 @@ let q2Bcopy, q2Bhtml,
     .replace( /(.*)(?:\x0c|\\f|&#x0*[Cc];)(<\/span> |)$|^(.*<span class=dnote>|)(?:\x0c|\\f|&#x0*[Cc];)/gm,
       "<div class=pagebb></div>$1$2$3" );
   },
-  dentRegen = evt => {
+  dentGen = evt => {
     let eobj = evt.target, rnge, seln;
     if ( eobj.parentElement.id === "symlist" || eobj.id !== "screenmask" && [0, 1, 2, 3, 4, 5, 6]
     .some(i => (eobj = !i ? eobj : eobj["parentElement"] || eobj).id === "quad2B") ) {
@@ -596,7 +594,7 @@ let q2Bcopy, q2Bhtml,
       .then(xprsEval)
       .catch(respShow) );
   },
-  xlstRegen = seln => !window.localforage
+  xlstGen = seln => !window.localforage
   || localforage.keys().then(lfks => {
     xsetlist.innerHTML = "\n      <option></option>"
     + [["USERdata", lfks]].concat(Object.entries(xstor)).map( (oe, i) => i && !oe[1] ? ""
@@ -612,7 +610,7 @@ let q2Bcopy, q2Bhtml,
     xsetinp.value = xsetinp.value.trim();
     !xsetinp.value || !window.localforage
     || localforage.setItem(xsetinp.value, dentry.value)
-      .then( () => xlstRegen(xsetinp.value)
+      .then( () => xlstGen(xsetinp.value)
         && (xcshelp.innerHTML = "Expression set is saved in local storage.")
         && xcshelp.classList.add("isucc") )
       .catch(respShow);
@@ -622,7 +620,7 @@ let q2Bcopy, q2Bhtml,
     helpClr();
     !optg || optg !== "USERdata/" || !window.localforage
     || localforage.removeItem(xsetlist.value)
-      .then( () => xlstRegen()
+      .then( () => xlstGen()
         && (xcshelp.innerHTML = "Expression set is deleted from local storage.")
         && xcshelp.classList.add("iwarn") )
       .catch(respShow);
@@ -645,13 +643,13 @@ window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
   : /^!row1$/.test(qi) ? gridAdj(4)
   : /^!col1$/.test(qi) ? gridAdj(5) : 0 );
 Promise.all(jsrcs.map(e => scrInj(e))).catch(respShow).then(() => {
-  !/^http/.test(window.location.protocol) ? xlstRegen(dload)
+  !/^http/.test(window.location.protocol) ? xlstGen(dload)
   : Promise.all( (cmods.some(e => /^\d+$/.test(e)) ? cmods : [1,2,3,4,5,6,7].concat(cmods))
       .map(e => !/^\d+$/.test(e) ? e : `cjs-srvc${e}.js`)
       .map(fnm => fnm && import(/\//.test(fnm) ? fnm : "../-app-cjs/" + fnm).catch(respShow)) )
     .then( rs => rs.forEach( (r, i) => !r || typeof r !== 'object'
       || (xstor[r.groupname || "group" + (1 + i)] = r) ))
-    .then(() => xlstRegen(dload))
+    .then(() => xlstGen(dload))
     .catch(respShow);
   xsetinp || initLoad();
 });
@@ -670,7 +668,7 @@ symlist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
     "- - -", "&brvbar;", "&uml;", "&macr;", "&deg;", "&pm;", "&sup2;", "&sup3;", "&acute;", "&micro;", "&sup1;", "&frac14;", "&frac12;", "&frac34;", "&times;", "&divide;", "&fnof;", "&tilde;", "(low tilde &#x2f7;)", "(combining circumflex &#x302;)", "(combining tilde &#x303;)", "(combining macron &#x304;)", "(combining overline &#x305;)", "(combining low line &#x332;)", "&horbar;", "&Vert;", "&bull;", "(triangular bullet &#x2023;)", "&hellip;", "&permil;", "&pertenk;", "&prime;", "&Prime;", "&tprime;", "&backprime;", "&oline;", "&frasl;", "&qprime;", "(superscript 0 &#x2070;)", "(superscript 4 &#x2074;)", "(superscript 5 &#x2075;)", "(superscript 6 &#x2076;)", "(superscript 7 &#x2077;)", "(superscript 8 &#x2078;)", "(superscript 9 &#x2079;)", "(superscript '+' &#x207a;)", "(superscript '-' &#x207b;)", "(superscript '=' &#x207c;)", "(superscript '(' &#x207d;)", "(superscript ')' &#x207e;)", "(subscript 0 &#x2080;)", "(subscript 1 &#x2081;)", "(subscript 2 &#x2082;)", "(subscript 3 &#x2083;)", "(subscript 4 &#x2084;)", "(subscript 5 &#x2085;)", "(subscript 6 &#x2086;)", "(subscript 7 &#x2087;)", "(subscript 8 &#x2088;)", "(subscript 9 &#x2089;)", "(subscript '+' &#x208a;)", "(subscript '-' &#x208b;)", "(subscript '=' &#x208c;)", "(subscript '(' &#x208d;)", "(subscript ')' &#x208e;)", "&Copf; (complexes)", "(Euler constant &#x2107;)", "&Hopf; (quaternions)", "&Nopf; (naturals)", "&numero;", "&Popf; (primes)", "&Qopf; (rationals)", "&Ropf; (reals)", "&Zopf; (integers)", "&escr;", "&ee;", "&ii;", "(frac 1-7th &#x2150;)", "(frac 1-9th &#x2151;)", "(frac 1-10th &#x2152;)", "&frac13;", "&frac23;", "&frac15;", "&frac25;", "&frac35;", "&frac45;", "&frac16;", "&frac56;", "&frac18;", "&frac38;", "&frac58;", "&frac78;", "(numerator 1 &#x215f;)", "&larr;", "&uarr;", "&rarr;", "&darr;", "&harr;", "&lArr;", "&uArr;", "&rArr;", "&dArr;", "&hArr;",
     "&forall;", "&part;", "&exist;", "&nexist;", "&empty;", "&nabla;", "&in;", "&notin;", "&ni;", "&notni;", "&prod;", "&sum;", "&minus;", "(division slash &#x2215;)", "&setmn;", "&lowast;", "&radic;", "&prop;", "&infin;", "&angrt;", "&ang;", "&mid;", "&nmid;", "&par;", "&npar;", "&and;", "&or;", "&cap;", "&cup;", "&int;", "&there4;", "&becaus;", "&ratio;", "&Colon;", "&sim;", "&nsim;", "&cong;", "&ap;", "&nap;", "&ne;", "&equiv;", "&nequiv;", "&le;", "&ge;", "&ll;", "&gg;", "&sub;", "&sup;", "&nsub;", "&nsup;", "&sube;", "&supe;", "&nsube;", "&nsupe;", "&subne;", "&supne;", "&oplus;", "&ominus;", "&otimes;", "&osol;", "&odot;", "&ocir;", "&oast;", "&odash;", "&plusb;", "&minusb;", "&timesb;", "&sdotb;", "&vdash;", "&dashv;", "&top;", "&bot;", "&sdot;", "&check;", "(multiplication X &#x2715;)", "&cross;", "(math diagonal &#x27cb;)", "(long division &#x27cc;)", "&lang;", "&rang;", "&Lang;", "&Rang;", "&xoplus;", "&xotime;" ]
   .map(e => `<li>${e.replace(/(.*)&(#?\w+;)/, "&$2 $1&amp;$2")}</li>`).join("\n    ") + "\n  ";
-['#screenmask', '#cmain'].forEach(e => document.querySelector(e).addEventListener('click', dentRegen));
+['#screenmask', '#cmain'].forEach(e => document.querySelector(e).addEventListener('click', dentGen));
 cheadg.addEventListener('blur', titSave);
 menulist.addEventListener('change', menuSel);
 quad2B.addEventListener('paste', txtPste);
