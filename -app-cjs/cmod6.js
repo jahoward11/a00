@@ -831,7 +831,7 @@ hlp2Clr()
 /*
 rndrsel.selectedIndex = 1; rtrminp.value = trgtxta.value = ""; hlp2Clr()
 window.lineUnwr = str => str.replace(/(\\S) *\\n(?!\\n|#|>|[:*+~-]? |\\d+\\.\\s|$)/g, "$1 "); //
-window.lineWrap = str => { let cpl = 70, cut = 0, brk = "\\n", rex = "^$" + (cut ? "|.{" + cpl + "}|\\\\S.*$" : "|(^\\\\n*|)\\\\S.{0," + (cpl - 1) + "}(?= |$)"); return str.match(new RegExp(rex, "gm")).join(brk); };
+window.lineWrap = str => { let cpl = 70, cut = 0, brk = "\\n", rex = "^$" + (cut ? "|.{" + cpl + "}|\\\\S.*$" : "|(^\\\\n*|)\\\\S.{0," + (cpl - 1) + "}(?= |$)"); return str.match(new RegExp(rex, "gm")).join(brk); }; //
 */
 
 /*
