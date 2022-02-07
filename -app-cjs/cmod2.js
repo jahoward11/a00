@@ -2,7 +2,7 @@
 
 const groupname = "engineering"
 
-const dimensions1 = `/*
+const dimensions = `/*
 __Dimensions of Common Use__
 - _angle_ of a slope or incline
 - _length_ of a side, distance or boundary
@@ -173,7 +173,7 @@ __KEY__\\f
  $Vco = (1 / 3) * Math.PI * rn**2 * hn // cu-ft
 //`;
 
-const triangles1 = `
+const triangles = `
 // __Right Triangle, Basic Metrics__
  // _θ_ | theta (reference angle, in radians)
  // _a_ | adjacent side (to theta)
@@ -211,5 +211,5 @@ $c3 = c
 //`;
 
 export {
-  groupname, dimensions1, triangles1
+  groupname, dimensions, triangles
 };

@@ -69,9 +69,9 @@ and repurposed as needed to build an original, standalone app.
       an arbitrary function name, the assignment operator \`=\`,
       input variable(s), the arrow notation \`=>\`, and manipulations
       or calculations (formulas) to be done on the input.
-    + A *function* is called (executed) by writing the function name
-      followed by a set of parentheses. Input data (arguments) are
-      written within the parentheses.
+    + A *function* is called (a.k.a., executed or invoked) by writing
+      the function name followed by a set of parentheses. Input data
+      (arguments) are written within the parentheses.
 */
 
 ucLen = n => n * 12  // converts a length in feet to inches
@@ -206,7 +206,7 @@ we can appreciate just why layout and design matter when coding.
 __*Tutorial Two: Building a sliding-tiles puzzle (and other games)*__
 
  1. Design a game board -- or, __graphic user interface__ (GUI).
-    + Include: a block of styles (\`<style> … </style>\`), a title
+    + *Include:* a block of styles (\`<style> … </style>\`), a title
       block (\`<h4 class=cfield>Sliding Tiles</h4>\`), some game-board
       controllers (\`<div><span class=ccntr> … </span></div>\`), and
       the game-board display (\`<table id=g1board> … </table>\`).
@@ -333,7 +333,7 @@ g1Reset();
 
  4. See how __GUI design techniques__ get applied to multiple games.
     *Note:* For each of the following games, the GUI has not yet been
-    displayed anywhere on this page.
+    rendered (displayed) anywhere on this page.
     + Un-comment an associated \`try { … } catch { … }\` line of code
       (following each block of HTML/CSS text) to inject into this web
       doc, and display (down below), another game's GUI.
@@ -831,7 +831,7 @@ hlp2Clr()
 /*
 rndrsel.selectedIndex = 1; rtrminp.value = trgtxta.value = ""; hlp2Clr()
 window.lineUnwr = str => str.replace(/(\\S) *\\n(?!\\n|#|>|[:*+~-]? |\\d+\\.\\s|$)/g, "$1 "); //
-window.lineWrap = str => { let cpl = 70, cut = 0, brk = "\\n", rex = "(^\\\\n*|)\\\\S.{0," + (cpl - 1) + "}(?= |$)" + (cut ? "|.{" + (cpl - 1) + "}|.+$" : "|\\\\S+?(?= |$)"); return (str.match(new RegExp(rex, "gm")) || "").join(brk); };
+window.lineWrap = str => { let cpl = 70, cut = 0, brk = "\\n", rex = "^$" + (cut ? "|.{" + cpl + "}|\\\\S.*$" : "|(^\\\\n*|)\\\\S.{0," + (cpl - 1) + "}(?= |$)"); return str.match(new RegExp(rex, "gm")).join(brk); };
 */
 
 /*

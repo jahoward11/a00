@@ -2,7 +2,7 @@
 
 const groupname = "lifescience";
 
-const biology1 = `/*
+const biology = `/*
 __AP^®^ BIOLOGY EQUATIONS AND FORMULAS__
 
 
@@ -204,5 +204,5 @@ __pH Value__
 */`;
 
 export {
-  groupname, biology1
+  groupname, biology
 };

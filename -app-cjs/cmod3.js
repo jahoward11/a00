@@ -2,7 +2,7 @@
 
 const groupname = "finance"
 
-const homeloan1 = `
+const homeloan = `
 // __Home Loan Scenarios__
 
 // __KEY__
@@ -70,5 +70,5 @@ const homeloan1 = `
 //`;
 
 export {
-  groupname, homeloan1
+  groupname, homeloan
 };
