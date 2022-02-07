@@ -7,13 +7,14 @@ const cacheName = "calcjs-v00.13",
     "../-res-js/localforage.min.js"
   ],
   appContent = [
-    "../-app-cjs/cjs-srvc1.js",
-    "../-app-cjs/cjs-srvc2.js",
-    "../-app-cjs/cjs-srvc3.js",
-    "../-app-cjs/cjs-srvc4.js",
-    "../-app-cjs/cjs-srvc5.js",
-    "../-app-cjs/cjs-srvc6.js",
-    "../-app-cjs/cjs-srvc7.js"
+    "../-app-cjs/cmod1.js",
+    "../-app-cjs/cmod2.js",
+    "../-app-cjs/cmod3.js",
+    "../-app-cjs/cmod4.js",
+    "../-app-cjs/cmod5.js",
+    "../-app-cjs/cmod6.js",
+    "../-app-cjs/cmod7.js",
+    "../-app-cjs/cmod8.js"
   ],
   rcvd1 = {},
   tstamp = Date.now(),

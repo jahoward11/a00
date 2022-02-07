@@ -644,8 +644,8 @@ window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
   : /^!col1$/.test(qi) ? gridAdj(5) : 0 );
 Promise.all(jsrcs.map(e => scrInj(e))).catch(respShow).then(() => {
   !/^http/.test(window.location.protocol) ? xlstGen(dload)
-  : Promise.all( (cmods.some(e => /^\d+$/.test(e)) ? cmods : [1,2,3,4,5,6,7].concat(cmods))
-      .map(e => !/^\d+$/.test(e) ? e : `cjs-srvc${e}.js`)
+  : Promise.all( (cmods.some(e => /^\d+$/.test(e)) ? cmods : [1,2,3,4,5,6,7,8].concat(cmods))
+      .map(e => !/^\d+$/.test(e) ? e : `cmod${e}.js`)
       .map(fnm => fnm && import(/\//.test(fnm) ? fnm : "../-app-cjs/" + fnm).catch(respShow)) )
     .then( rs => rs.forEach( (r, i) => !r || typeof r !== 'object'
       || (xstor[r.groupname || "group" + (1 + i)] = r) ))
