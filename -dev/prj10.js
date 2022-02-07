@@ -150,7 +150,7 @@ const scrload = `//
 // try { !!markdownit } catch { Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).then().catch(respShow) }
 // try { !!(hljs && js_beautify) } catch { Promise.all(["../-res-js/highlight.pack.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then().catch(respShow) }
 
-// import("../-dev/prj10.js").then(r => (xstor[r.groupname] = r) && xlstRegen()).catch(respShow)
+// import("../-dev/prj10.js").then(r => (xstor[r.groupname] = r) && xlstGen()).catch(respShow)
 // import("../-dev/prj10.js").then(r => respShow(r.jscmds)).catch(respShow)
 // import("../-res-js/ebook-annos.mjs").then(r => window["tocNavLtGen"] = r.tocNavLtGen).catch(respShow)
 // fetch("../-res-js/ebook-annos-fns.js").then(r => r.text()).then(respShow).catch(respShow)
@@ -194,7 +194,7 @@ dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</titl
 respShow(dwrap[0] + bodGen(t2x) + dwrap[1] + scrGen(t2x) + dwrap[2])
 */`;
 
-const t3srepl = `//
+const t3serepl = `//
 t3x = xstor["JScode"]["tutorial3"];
 bodGen = src => "\\n" + src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui = /g, "").split(/;\\nsrui \\+= /).map(eval).join("").trim() + "\\n"; //
 scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
@@ -248,5 +248,5 @@ export {
   uiwidth, publdims, jscmds,
   bcaches, dscripts, scrload,
   jstatqs, itoken, t2puzls,
-  t3srepl, srtools
+  t3serepl, srtools
 };
