@@ -2,7 +2,7 @@
 
 const groupname = "JStool";
 
-const serepl = `/*
+const search = `/*
 __Search and Replace: from JS Tutorial 3__
  This module option functions only to render a Search-&amp;-Replace UI
 from the code written in the \`JScode\` module's data files.
@@ -23,7 +23,7 @@ try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.strPars || scrInj(null, 'mo
 // srctxta.value = (dwrap[0] + srwrap.outerHTML + dwrap[1] + scrGen(t3x) + dwrap[2]);
 //`;
 
-const srcdiff = `/*
+const textdiff = `/*
 __Source-Text Diffs__
  Reveals differences between two text sources.
 
@@ -96,5 +96,5 @@ respShow(dwrap[0] + sdwrap.outerHTML + dwrap[1] + scrGen(xstor.JStool.srcdiff) +
 //`;
 
 export {
-  groupname, serepl, srcdiff
+  groupname, search, textdiff
 };
