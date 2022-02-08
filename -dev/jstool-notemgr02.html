@@ -81,7 +81,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap button, #nmwrap input[type=button], #nmwrap select { cursor: pointer; }
 #nmwrap input[type=text], #nmwrap select { width: 90px; }
 #nmwrap input::placeholder { opacity: 0.5; }
-#nmwrap textarea { display: block; font-size: medium; width: 100%; height: 288px; }
+#nmwrap textarea { display: block; font: normal medium monospace; width: 100%; }
 #nmwrap .hwarnl { background-color: #fff6e6; }
 #nmwrap .hsuccl { background-color: #e8effc; }
 #nmwrap .iwarn { color: Orange; }
@@ -115,14 +115,18 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   color: Orange;
   font: normal medium/1.25 monospace;
   margin: 0;
-  padding: 2px;
+  padding: 0;
   word-wrap: normal;
   overflow-wrap: normal;
   overflow-x: hidden;
   white-space: pre;
 }
 #nmwrap #pdbssel, #nmwrap #filtinp { width: 144px; }
+#nmwrap #viewsel { width: 24px; }
 #nmwrap #moveinp { width: 96px; }
+@media screen and (min-width: 730px) and (max-width: 762px), print {
+  #nmwrap #pdbssel { width: 112px; }
+}
 </style>
 <h4 class=cfield>Note Manager</h4>
 <pre id=rsp2con></pre>
@@ -130,6 +134,11 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   <div class="level-item">
     <div class="level cfield">
       <span class=ccntr><select id=pdbssel>
+      </select></span><span class=ccntr><select id=viewsel>
+        <option>V1:organized</option>
+        <option>V2:mutables</option>
+        <option>V3:statics</option>
+        <option>V4:deleted</option>
       </select></span><span class=ccntr>Total:
       <span id=ftotal>0</span></span>
     </div>
@@ -153,7 +162,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     </div>
   </div>
 </nav>
-<div class=dfroot>
+<div class="cfield dfroot">
 <table id=nmtbl class=table>
   <thead>
     <tr>
@@ -162,18 +171,18 @@ strong, mark, table th, .table, .table thead td, .table thead th,
         <input type=checkbox class=dnone />
       </td>
       <td>Subdir</td>
-      <td>Filename</td>
-      <td>File Type</td>
+      <td>Note ID</td>
+      <td>Type</td>
       <td>Updated</td>
       <td>Up'd By</td>
       <td>Up'd Ver</td>
-      <td>Up'd Notes</td>
+      <td>Up'd Misc</td>
       <td>Created</td>
       <td>Cr'd By</td>
       <td>Cr'd Ver</td>
-      <td>Cr'd Notes</td>
+      <td>Cr'd Misc</td>
       <td>Cntrbtrs</td>
-      <td>User Name</td>
+      <td>Username</td>
       <td>Image</td>
       <td>Link Ref</td>
       <td>From</td>
@@ -186,8 +195,8 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     <tr>
       <td># <input type=checkbox class=dnone /></td>
       <td>Chg Seq</td>
-      <td>DB File ID</td>
-      <td>Revision #</td>
+      <td>DBNoteID</td>
+      <td>Revision#</td>
     </tr>
   </thead>
   <tbody></tbody>
@@ -198,18 +207,18 @@ strong, mark, table th, .table, .table thead td, .table thead th,
         <input type=checkbox class=dnone />
       </td>
       <td>Subdir</td>
-      <td>Filename</td>
-      <td>File Type</td>
+      <td>Note ID</td>
+      <td>Type</td>
       <td>Updated</td>
       <td>Up'd By</td>
       <td>Up'd Ver</td>
-      <td>Up'd Notes</td>
+      <td>Up'd Misc</td>
       <td>Created</td>
       <td>Cr'd By</td>
       <td>Cr'd Ver</td>
-      <td>Cr'd Notes</td>
+      <td>Cr'd Misc</td>
       <td>Cntrbtrs</td>
-      <td>User Name</td>
+      <td>Username</td>
       <td>Image</td>
       <td>Link Ref</td>
       <td>From</td>
@@ -222,20 +231,20 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     <tr>
       <td># <input type=checkbox class=dnone /></td>
       <td>Chg Seq</td>
-      <td>DB File ID</td>
-      <td>Revision #</td>
+      <td>DBNoteID</td>
+      <td>Revision#</td>
     </tr>
   </tfoot>
 </table>
 </div>
-
+<div id=ndepty class=cfield></div>
 </div>
 
 <script src="../../a00/-res-js/pouchdb.min.js" type="text/javascript"></script>
 <script src="../../a00/-res-js/pouchdb.all-dbs.min.js" type="text/javascript"></script>
 <script type=module>
-let j = 0, rva0, rval, vidx = 0,
-  txdata = {
+let fwg, j = 0, rva0, rval, vidx = 0,
+  txd1 = {
     DBNAME:  "",
     FILEID:  "_design/ecosorter",
     VIEW:    "files-idxlist",
@@ -243,18 +252,18 @@ let j = 0, rva0, rval, vidx = 0,
   },
   sellists = [`
           <option value="file_updated.subdir">Subdir</option>
-          <option value="id" selected>Filename</option>
-          <option value="file_type" selected>File Type</option>
+          <option value="id" selected>Note ID</option>
+          <option value="file_type" selected>Type</option>
           <option value="file_updated.timestamp" selected>Updated</option>
           <option value="file_updated.username" selected>Up'd By</option>
           <option value="file_updated.version" selected>Up'd Ver</option>
-          <option value="file_updated.notes">Up'd Notes</option>
+          <option value="file_updated.notes || file_updated.misc">Up'd Misc</option>
           <option value="file_created.timestamp">Created</option>
           <option value="file_created.username">Cr'd By</option>
           <option value="file_created.version">Cr'd Ver</option>
-          <option value="file_created.notes">Cr'd Notes</option>
+          <option value="file_created.notes || file_created.misc">Cr'd Misc</option>
           <option value="contributors">Cntrbtrs</option>
-          <option value="name_user">User Name</option>
+          <option value="name_user">Username</option>
           <option value="image_src">Image</option>
           <option value="linkref">Link Ref</option>
           <option value="from">From</option>
@@ -263,8 +272,8 @@ let j = 0, rva0, rval, vidx = 0,
           <option value="_attachments">Att's</option>
         `, `
           <option value="seq" selected>Chg Seq</option>
-          <option value="id" selected>DB File ID</option>
-          <option value="rev" selected>Revision #</option>
+          <option value="id" selected>DBNoteID</option>
+          <option value="rev" selected>Revision#</option>
         `],
   strslrs = [
     '#nmwrap #colssel>option:nth-of-type(2), '
@@ -300,7 +309,7 @@ let j = 0, rva0, rval, vidx = 0,
     += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
       ? resp : JSON.stringify(resp, null, 2) ) + "\n\n",
   pdbsGen = (dbs = []) => pdbssel.innerHTML
-    = ["\n      <option></option>", "<option>&plus; Create new DB</option>"]
+    = ["\n      <option></option>", "<option>&plus; New DB</option>"]
       .concat(dbs.map(e => "<option>" + e + "</option>")).join("\n      ") + "\n      ",
   ordFlip = arr => !descswi.checked ? arr.sort() : arr.sort().reverse(),
   date0Fmt = nbr => !nbr ? "" : new Date(nbr).toISOString().replace(/T.+$/, ""),
@@ -316,12 +325,12 @@ let j = 0, rva0, rval, vidx = 0,
         || rval.file_updated && rval.file_updated.timestamp) }</td>
       <td>${ rval.file_updated && rval.file_updated.username || "" }</td>
       <td>${ rval.file_updated && rval.file_updated.version || "" }</td>
-      <td>${ rval.file_updated && rval.file_updated.notes || "" }</td>
+      <td>${ rval.file_updated && (rval.file_updated.notes || rval.file_updated.misc) || "" }</td>
       <td>${ date0Fmt(rval.ts_created
         || rval.file_created && rval.file_created.timestamp) }</td>
       <td>${ rval.file_created && rval.file_created.username || "" }</td>
       <td>${ rval.file_created && rval.file_created.version || "" }</td>
-      <td>${ rval.file_created && rval.file_created.notes || "" }</td>
+      <td>${ rval.file_created && (rval.file_created.notes || rval.file_created.misc) || "" }</td>
       <td>${ (rval.contributors || []).join(", ") || "" }</td>
       <td>${ rval.name_user || "" }</td>
       <td>${ rval.image_src || "" }</td>
@@ -382,7 +391,7 @@ let j = 0, rva0, rval, vidx = 0,
     let anti = /^-/.test(filtinp.value),
       sepa = /^\/.+\/[gim]*$/.test(filtinp.value.trim()) ? eval(filtinp.value)
         : new RegExp(filtinp.value.replace(/^-/, "") || "^$", "g");
-    rsp2con.textContent = "";
+    rsp2con.textContent = ndepty.textContent = "";
     document.querySelectorAll(strslrs[4]).forEach(inp => inp.checked = false);
     document.querySelectorAll('#nmtbl tbody>tr:not([id])').forEach(tr => {
       tr.classList.remove("dnone", "match");
@@ -417,7 +426,7 @@ let j = 0, rva0, rval, vidx = 0,
           && /^(?:anno|post|prjid|publmgr|srcdoc)$/
           .test(inp.parentElement.parentElement.children[3].textContent) ),
       txd2 = {
-        DBNAME:  txdata.DBNAME,
+        DBNAME:  txd1.DBNAME,
         FILEID:  "_all_docs",
         OPTIONS: {
           keys: chkaf2.map(inp => inp.parentElement.parentElement.children[2].textContent),
@@ -439,7 +448,7 @@ let j = 0, rva0, rval, vidx = 0,
         docs:   (rslt.rows || rslt.results).map(row1Tfm) //.filter(d => !d._deleted)
       },
       dbq = txd2.DBNAME && window.PouchDB && new PouchDB(txd2.DBNAME);
-    rsp2con.textContent = "";
+    rsp2con.textContent = ndepty.textContent = "";
     !fmove || Array.from(chks).forEach(inp => inp.parentElement.parentElement.className = "");
     chkaf2.forEach( inp => inp.parentElement.parentElement.className
       = fmove ? "hsuccl" : "hwarnl" );
@@ -451,20 +460,40 @@ let j = 0, rva0, rval, vidx = 0,
     .catch(rsp2Show);
   },
   fileLoad = evt => {
-    let td1txt = evt.target.parentElement.parentElement.children[1].textContent,
+    let //td1txt = evt.target.parentElement.parentElement.children[1].textContent,
       //attlist = document.querySelector('#econav0 #attlist'),
       //qcontxta = document.querySelector('#econav0 #qcontxta'),
       //fwinflux = document.querySelector('#ecoguides .button[disabled]'),
       txd2 = {
-        DBNAME:  txdata.DBNAME,
+        DBNAME:  txd1.DBNAME,
         FILEID:  evt.target.textContent,
         OPTIONS: {
-          rev: vidx !== 3 ? null : evt.target.parentElement.parentElement.children[3].textContent,
-          revs_info: true
+          rev: vidx !== 3 ? null : evt.target.parentElement.parentElement.children[3].textContent
+          //revs_info: true
         }
       };
-    rsp2con.textContent = "";
-    rsp2Show(txd2);
+    rsp2con.textContent = ndepty.textContent = "";
+    !txd2.DBNAME || !window.PouchDB || new PouchDB(txd2.DBNAME)
+    .get(txd2.FILEID, txd2.OPTIONS).then(doc => {
+      let lnl, str,
+        v2Str = k => ( lnl = (( str = fwg[k] == null ? "" : typeof fwg[k] !== 'object' ? "" + fwg[k]
+          : JSON.stringify(fwg[k], null, 2) ).match(/\n/g) || "" ).length ) > 8 || str.length > 600
+        ? 16 : lnl > 2 || str.length > 300 ? 8 : 2;
+      fwg = doc;
+      ndepty.innerHTML = "\n<div class=cfield><span class=ccntr>Note ID: <input type=text value='"
+      + fwg._id + "' disabled /></span><span class=ccntr><button>UPDATE</button></span>"
+      + "<span class=ccntr><button>CANCEL</button></span></div>"
+      + Object.keys(fwg).map(k => /^_id$|^_rev$/.test(k) ? "" : `
+<div class="cfield is-horizontal">
+  <div class="field-label">
+    <label class="label">${k}</label>
+  </div>
+  <div id="${'pty-' + k}" class="field-body">
+    <textarea class="textarea is-family-code is-size-7" rows=${v2Str(k)}>${str}</textarea>
+  </div>
+</div>`).join("") + "\n";
+    }).catch(rsp2Show);
+    //rsp2Show(txd2);
 /*
     /^[.-]\w/.test(td1txt)
     ? !window.EC1 || !attlist
@@ -484,7 +513,7 @@ let j = 0, rva0, rval, vidx = 0,
   },
   fileActv = evt => {
     let td2 = evt.target.parentElement.parentElement.children[2];
-    rsp2con.textContent = "";
+    rsp2con.textContent = ndepty.textContent = "";
     evt.target.checked || (evt.target.parentElement.parentElement.className = "");
     //evt.target.checked ? ancAdd1(td2) : td2.innerHTML = td2.textContent;
     blk2Tog();
@@ -496,7 +525,7 @@ let j = 0, rva0, rval, vidx = 0,
       r2idx = rsidx[rsidx.findIndex(n => n === r1idx) + 1]
         || ((document.querySelector('#nmtbl tbody>tr:last-of-type') || "").rowIndex - 1),
       trows = document.querySelectorAll('#nmtbl tbody>tr');
-    rsp2con.textContent = "";
+    rsp2con.textContent = ndepty.textContent = "";
     if (!evt.target.parentElement.parentElement.id) {
       evt.target.checked
       || document.querySelectorAll('#nmtbl tbody>tr:not([id])').forEach(tr => tr.className = "");
@@ -547,7 +576,7 @@ let j = 0, rva0, rval, vidx = 0,
     sortsel.value = Array.from(sortsel.options).some(o => o.value === resel) ? resel : "id";
   },
   tblGen = evt => {
-    if (!window.PouchDB || !txdata.DBNAME) {
+    if (!window.PouchDB || !txd1.DBNAME) {
       ftotal.textContent = "0";
       cmtbody.innerHTML = "";
       return rsp2con.textContent ? null
@@ -568,14 +597,14 @@ let j = 0, rva0, rval, vidx = 0,
         document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:first-of-type>input')
         .forEach(inp => inp.onchange = fileActv);
       };
-    rsp2con.textContent = "";
-    !evt || evt.target.id !== "descswi" || ( txdata.OPTIONS = {
+    rsp2con.textContent = ndepty.textContent = "";
+    !evt || evt.target.id !== "descswi" || ( txd1.OPTIONS = {
       //startkey: descswi.checked ? "~~~" : "",
       //endkey: descswi.checked ? "" : "~~~",
       descending: descswi.checked
     });
-    vidx !== 3 || new PouchDB(txdata.DBNAME)
-    .changes(txdata.OPTIONS || {})
+    vidx !== 3 || new PouchDB(txd1.DBNAME)
+    .changes(txd1.OPTIONS || {})
     .then(rslt => {
       let dels = rslt.results.filter(r => r.deleted);
       ftotal.textContent = dels.length;
@@ -586,13 +615,13 @@ let j = 0, rva0, rval, vidx = 0,
       chksRstr();
       sortsel.innerHTML = `
           <option value="seq">Chg Seq</option>
-          <option value="id">DB File ID</option>
+          <option value="id">DBNoteID</option>
 `;
       sortsel.value = /^(?:id|seq)$/.test(ss[0]) ? ss[0] : "id";
     }).catch(rsp2Show);
-    vidx === 3 || new PouchDB(txdata.DBNAME)
-    .query(txdata.FILEID.replace(/^_design\//, "") + "/" + txdata.VIEW, txdata.OPTIONS || {})
-    .catch( () => new PouchDB(txdata.DBNAME).allDocs({
+    vidx === 3 || new PouchDB(txd1.DBNAME)
+    .query(txd1.FILEID.replace(/^_design\//, "") + "/" + txd1.VIEW, txd1.OPTIONS || {})
+    .catch( () => new PouchDB(txd1.DBNAME).allDocs({
       startkey: descswi.checked != (vidx === 2) ? "~a" : undefined,
       endkey: descswi.checked != (vidx === 2) ? undefined : "~a",
       descending: descswi.checked,
@@ -632,13 +661,13 @@ let j = 0, rva0, rval, vidx = 0,
       document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:nth-of-type(3)').forEach(ancAdd1);
     }).catch(rsp2Show);
   },
-  pdbOpen = () => { txdata.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value; tblGen(); },
+  pdbOpen = () => { txd1.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value; tblGen(); },
   viewTog = evt => {
-    rsp2con.textContent = "";
-    vidx = evt.currentTarget.value; //evt.target.parentElement.dataset.vidx
+    rsp2con.textContent = ndepty.textContent = "";
+    vidx = evt.currentTarget.selectedIndex; //evt.target.parentElement.dataset.vidx
     //cmtabs.forEach(li => li.classList.remove("is-active"));
     //cmtabs[vidx].classList.add("is-active");
-    txdata.VIEW = vidx === 2 ? "files-static" : "files-idxlist";
+    txd1.VIEW = vidx === 2 ? "files-static" : "files-idxlist";
     colssel.innerHTML = sellists[vidx === 3 ? 1 : 0];
     vidx !== 1 || (colssel.options[18].selected = colssel.options[0].selected = true);
     if (vidx === 2) {
@@ -647,11 +676,11 @@ let j = 0, rva0, rval, vidx = 0,
       sortsel.value = "";
     }
     document.querySelectorAll(strslrs[0])
-    .forEach(td => td.textContent = vidx ? "DB File ID" : "Filename");
+    .forEach(td => td.textContent = vidx ? "DBNoteID" : "Note ID");
     //colsTog();
     tblGen();
   };
-//cmtabs.forEach(li => li.onclick = viewTog);
+viewsel.onchange = viewTog;
 pdbssel.onchange = pdbOpen;
 colssel.onchange = colsTog;
 sortsel.onchange = tblGen;
