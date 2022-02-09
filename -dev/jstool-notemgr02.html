@@ -202,7 +202,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap textarea.isucc { color: unset; border-color: CornFlowerBlue; }
 #nmwrap button.iwarn { background: transparent; border: solid 1px Orange; }
 #nmwrap button.isucc { background: transparent; border: solid 1px CornFlowerBlue; }
-#nmwrap button.isclr { background: transparent; max-width: 168px; }
+#nmwrap button.isclr { background: transparent; max-width: 240px; }
 #nmwrap .dnone { display: none; }
 #nmwrap .dfroot { display: flow-root; overflow-x: auto; }
 #nmwrap .pwrap { word-wrap: normal; overflow-wrap: normal; white-space: pre-wrap; }
@@ -612,10 +612,10 @@ let fwg, j = 0, rva0, rval, vidx = 3,
         ? 16 : lnl > 2 || str.length > 200 ? 8 : 2;
       fwg = doc;
       ndepty.innerHTML = "\n<div class=cfield>\n"
-      + "<span class=ccntr><button class=isucc onclick=viewBk()><strong>&lang;</strong></button></span>"
-      + "<span class=ccntr><button class=isclr disabled>" + txd2.DBNAME + " <strong>&rang;</strong> "
+      + "<span><button id=btnbk class=isclr><strong class=isucc>&lang;</strong> "
+      + txd2.DBNAME + "</button></span><button class=isclr disabled><strong>&rang;</strong> "
       + (!(fwg.file_updated || "").subdir ? "" : fwg.file_updated.subdir + " <strong>&rang;</strong> ")
-      + fwg._id + "</button></span><span class=ccntr><button onclick=fwgUpd()>"
+      + fwg._id + "</button></span><span><button id=btnupd>"
       + "<span class=isucc>&#x267a;</span> UPDATE</button></span>\n<div id=ndhelp></div>\n</div>"
       + Object.keys(fwg).map(k => /^_id$|^_rev$/.test(k) ? "" : `
 <div class="cfield is-horizontal">
@@ -627,6 +627,8 @@ let fwg, j = 0, rva0, rval, vidx = 3,
       str.replace(/&(?=#?\w+;)/g, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;")}</textarea>
   </div>
 </div>`).join("") + "\n";
+      btnbk.onclick = viewBk;
+      btnupd.onclick = fwgUpd;
     }).catch(rsp2Show);
     //rsp2Show(txd2);
 /*
