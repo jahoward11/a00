@@ -8,11 +8,42 @@
 <style>
 *, *::before, *::after { box-sizing: inherit; }
 html { box-sizing: border-box; color: DimGrey; min-width: 375px; overflow-wrap: break-word; text-rendering: optimizeLegibility; -moz-osx-font-smoothing: grayscale; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; -moz-text-size-adjust: 100%; text-size-adjust: 100%; }
-hr { margin: 1.5rem 0; }
+hr {
+  display: block;
+  background-color: Gainsboro;
+  height: 2px;
+  margin: 1.5em 0;
+  border: none;
+}
 button, input, select, textarea { margin: 0; }
 input[type="checkbox"], input[type="radio"] { vertical-align: baseline; }
 strong, mark, table th, .table, .table thead td, .table thead th,
 .table tfoot td, .table tfoot th { color: inherit; }
+.image {
+  display: block;
+  position: relative;
+}
+.image img {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+.image.is-48x48 {
+  height: 48px;
+  width: 48px;
+}
+.image.is-64x64 {
+  height: 64px;
+  width: 64px;
+}
+.image.is-96x96 {
+  height: 96px;
+  width: 96px;
+}
+.image.is-128x128 {
+  height: 128px;
+  width: 128px;
+}
 .table {
   background-color: white;
 //color: #363636;
@@ -40,11 +71,65 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 .table tbody { background-color: transparent; }
 .table tbody tr:last-child td,
 .table tbody tr:last-child th { border-bottom-width: 0; }
+.textarea {
+  background-color: white;
+  border-color: #dbdbdb;
+  border-radius: 4px;
+//color: #363636;
+  display: block;
+  max-width: 100%;
+  min-width: 100%;
+  padding: calc(0.75em - 1px);
+  resize: vertical;
+}
+.textarea:not([rows]) {
+  max-height: 40em;
+  min-height: 8em;
+}
+.textarea[rows] { height: initial; }
+.checkbox, .radio {
+  cursor: pointer;
+  display: inline-block;
+  line-height: 1.25;
+  position: relative;
+}
+.label {
+//color: #363636;
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+}
+.label:not(:last-child) { margin-bottom: 0.5em; }
+.field-label .label { font-size: inherit; }
+.field-body .cfield .cfield { margin-bottom: 0; }
+@media screen and (max-width: 719px) {
+  .field-label { margin-bottom: 0.5rem; }
+}
+@media screen and (min-width: 720px), print {
+  .cfield.is-horizontal { display: flex; }
+  .field-label {
+    flex-basis: 0;
+    flex-grow: 1;
+    flex-shrink: 0;
+    margin-right: 1.5rem;
+    text-align: right;
+  }
+  .field-body {
+    display: flex;
+    flex-basis: 0;
+    flex-grow: 5;
+    flex-shrink: 1;
+  }
+  .field-body .cfield { margin-bottom: 0; }
+  .field-body > .cfield { flex-shrink: 1; }
+  .field-body > .cfield:not(.is-narrow) { flex-grow: 1; }
+  .field-body > .cfield:not(:last-child) { margin-right: 0.75rem; }
+}
 .level {
   align-items: center;
   justify-content: space-between;
 }
-@media screen and (min-width: 730px), print {
+@media screen and (min-width: 720px), print {
   .level { display: flex; }
   .level > .level-item:not(.is-narrow) { flex-grow: 1; }
 }
@@ -56,16 +141,43 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   flex-shrink: 0;
   justify-content: center;
 }
-@media screen and (max-width: 729px) {
+@media screen and (max-width: 719px) {
   .level-item:not(:last-child) { margin-bottom: 8px; }
   .level-item > .level { display: flex; }
 }
+.media {
+  align-items: flex-start;
+  display: flex;
+  text-align: inherit;
+}
+.media + .media {
+  border-top: 1px solid rgba(219, 219, 219, 0.5);
+  margin-top: 1rem;
+  padding-top: 1rem;
+}
+.media-left, .media-right {
+  flex-basis: auto;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+.media-left { margin-right: 1rem; }
+.media-right { margin-left: 1rem; }
+.media-content {
+  flex-basis: auto;
+  flex-grow: 1;
+  flex-shrink: 1;
+  text-align: inherit;
+}
+@media screen and (max-width: 719px) {
+  .media-content { overflow-x: auto; }
+}
 #nmwrap { font: normal 14px BlinkMacSystemFont, -apple-system, Helvetica, Arial, sans-serif; max-width: 960px; margin: 24px auto; }
 #nmwrap a {
-    color: #485fc7;
-    cursor: pointer;
-    text-decoration: none;
+  color: #485fc7;
+  cursor: pointer;
+  text-decoration: none;
 }
+#nmwrap a:active, #nmwrap button:active { box-shadow: 0 0 0 0.125em rgb(50 152 220 / 25%); }
 #nmwrap button, #nmwrap input:not([type=checkbox]), #nmwrap select {
   background: #f9f9f9;
   color: Grey;
@@ -81,7 +193,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap button, #nmwrap input[type=button], #nmwrap select { cursor: pointer; }
 #nmwrap input[type=text], #nmwrap select { width: 90px; }
 #nmwrap input::placeholder { opacity: 0.5; }
-#nmwrap textarea { display: block; font: normal medium monospace; width: 100%; }
+#nmwrap textarea { display: block; font: normal 10.5px monospace; width: 100%; }
 #nmwrap .hwarnl { background-color: #fff6e6; }
 #nmwrap .hsuccl { background-color: #e8effc; }
 #nmwrap .iwarn { color: Orange; }
@@ -90,9 +202,12 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap textarea.isucc { color: unset; border-color: CornFlowerBlue; }
 #nmwrap button.iwarn { background: transparent; border: solid 1px Orange; }
 #nmwrap button.isucc { background: transparent; border: solid 1px CornFlowerBlue; }
+#nmwrap button.isclr { background: transparent; max-width: 168px; }
 #nmwrap .dnone { display: none; }
-#nmwrap .pwrap { white-space: pre-wrap; }
 #nmwrap .dfroot { display: flow-root; overflow-x: auto; }
+#nmwrap .pwrap { word-wrap: normal; overflow-wrap: normal; white-space: pre-wrap; }
+#nmwrap .fltrt { float: right; }
+#nmwrap .mtup4 { margin-top: -4px; }
 #nmwrap .cfield:not(:last-child) { margin-bottom: 8px; }
 #nmwrap .ccntr:not(:last-of-type) { margin-right: 8px; }
 #nmwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }
@@ -124,8 +239,11 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap #pdbssel, #nmwrap #filtinp { width: 144px; }
 #nmwrap #viewsel { width: 24px; }
 #nmwrap #moveinp { width: 96px; }
-@media screen and (min-width: 730px) and (max-width: 762px), print {
-  #nmwrap #pdbssel { width: 112px; }
+@media screen and (min-width: 720px) and (max-width: 754px), print {
+  #nmwrap #pdbssel { width: 104px; }
+}
+@media screen and (max-width: 719px) {
+  #nmwrap .media-left>.image { margin: 0; }
 }
 </style>
 <h4 class=cfield>Note Manager</h4>
@@ -135,10 +253,13 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     <div class="level cfield">
       <span class=ccntr><select id=pdbssel>
       </select></span><span class=ccntr><select id=viewsel>
-        <option>V1:organized</option>
-        <option>V2:mutables</option>
-        <option>V3:statics</option>
-        <option>V4:deleted</option>
+        <option>&plus; New Note</option>
+        <option>DB:config</option>
+        <option>V1:noteclips</option>
+        <option selected>V2:organized</option>
+        <option>V3:mutables</option>
+        <option>V4:statics</option>
+        <option>V5:deleted</option>
       </select></span><span class=ccntr>Total:
       <span id=ftotal>0</span></span>
     </div>
@@ -148,7 +269,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
       <span class=ccntr><select id=colssel multiple size=1>
       </select></span><span class=ccntr><select id=sortsel>
       </select></span><span class=ccntr><label><input type=checkbox id=descswi />
-      Z-A</label></span>
+      <a>Z-A</a></label></span>
     </div>
   </div>
   <div class="level-item">
@@ -162,6 +283,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     </div>
   </div>
 </nav>
+<div id=nclips class=cfield></div>
 <div class="cfield dfroot">
 <table id=nmtbl class=table>
   <thead>
@@ -195,7 +317,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     <tr>
       <td># <input type=checkbox class=dnone /></td>
       <td>Chg Seq</td>
-      <td>DBNoteID</td>
+      <td>Note ID</td>
       <td>Revision#</td>
     </tr>
   </thead>
@@ -231,7 +353,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     <tr>
       <td># <input type=checkbox class=dnone /></td>
       <td>Chg Seq</td>
-      <td>DBNoteID</td>
+      <td>Note ID</td>
       <td>Revision#</td>
     </tr>
   </tfoot>
@@ -243,14 +365,14 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 <script src="../../a00/-res-js/pouchdb.min.js" type="text/javascript"></script>
 <script src="../../a00/-res-js/pouchdb.all-dbs.min.js" type="text/javascript"></script>
 <script type=module>
-let fwg, j = 0, rva0, rval, vidx = 0,
+let fwg, j = 0, rva0, rval, vidx = 3,
   txd1 = {
     DBNAME:  "",
     FILEID:  "_design/ecosorter",
     VIEW:    "files-idxlist",
     OPTIONS: { since: 0 }
   },
-  sellists = [`
+  sopts = [`
           <option value="file_updated.subdir">Subdir</option>
           <option value="id" selected>Note ID</option>
           <option value="file_type" selected>Type</option>
@@ -272,10 +394,10 @@ let fwg, j = 0, rva0, rval, vidx = 0,
           <option value="_attachments">Att's</option>
         `, `
           <option value="seq" selected>Chg Seq</option>
-          <option value="id" selected>DBNoteID</option>
+          <option value="id" selected>Note ID</option>
           <option value="rev" selected>Revision#</option>
         `],
-  strslrs = [
+  qslrs = [
     '#nmwrap #colssel>option:nth-of-type(2), '
     + '#nmtbl thead:first-of-type td:nth-of-type(3), '
     + '#nmtbl tfoot:first-of-type td:nth-of-type(3)',
@@ -290,7 +412,7 @@ let fwg, j = 0, rva0, rval, vidx = 0,
     + '#nmtbl tfoot:not(.dnone) td:first-of-type>input'
   ],
 /*
-  cmtabs = document.querySelectorAll('#nmwrap>nav.tabs li'),
+  nmtabs = document.querySelectorAll('#nmwrap>nav.tabs li'),
   ftotal = document.querySelector('#nmwrap #ftotal'),
   colssel = document.querySelector('#nmwrap #colssel'),
   sortsel = document.querySelector('#nmwrap #sortsel'),
@@ -302,9 +424,9 @@ let fwg, j = 0, rva0, rval, vidx = 0,
   blktrig = document.querySelector('#nmwrap #blktrig'),
   rsp2con = document.querySelector('#nmwrap>#rsp2con'),
 */
-  cmtheads = document.querySelectorAll('#nmtbl thead'),
-  cmtbody = document.querySelector('#nmtbl tbody'),
-  cmtfoots = document.querySelectorAll('#nmtbl tfoot'),
+  nmthds = document.querySelectorAll('#nmtbl thead'),
+  nmtbod = document.querySelector('#nmtbl tbody'),
+  nmtfts = document.querySelectorAll('#nmtbl tfoot'),
   rsp2Show = resp => rsp2con.textContent
     += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
       ? resp : JSON.stringify(resp, null, 2) ) + "\n\n",
@@ -314,7 +436,7 @@ let fwg, j = 0, rva0, rval, vidx = 0,
   ordFlip = arr => !descswi.checked ? arr.sort() : arr.sort().reverse(),
   date0Fmt = nbr => !nbr ? "" : new Date(nbr).toISOString().replace(/T.+$/, ""),
   tr0Gen = (r, i) =>
-`    <tr${ vidx ? "" : " hidden"}>
+`    <tr${ vidx !== 3 ? "" : " hidden"}>
       <td>${ 1 + i - j } <input type="checkbox" class="dnone" /></td>
       <td>${ (rval = r.doc || r.value).file_updated
         ? (rval.file_updated.subdir || ".") + "/" : "" }</td>
@@ -371,14 +493,14 @@ let fwg, j = 0, rva0, rval, vidx = 0,
       <td>${ d.changes[0].rev }</td>
     </tr>` ).join("\n") + "\n  ",
   blk2Tog = () => {
-    if (vidx === 3) { return; }
+    if (vidx === 6) { return; }
     let chks = document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:first-of-type>input:checked');
     (chks.length ? filtctrl : bulkctrl).classList.add("dnone");
     (chks.length ? bulkctrl : filtctrl).classList.remove("dnone");
   },
   bulkTog = () => {
     let hid = document.querySelector('#nmtbl thead:not(.dnone) td:first-of-type>input.dnone');
-    document.querySelectorAll(strslrs[4])
+    document.querySelectorAll(qslrs[4])
     .forEach(inp => inp.className = hid ? "" : "dnone");
     if (hid) {
       blk2Tog();
@@ -391,8 +513,8 @@ let fwg, j = 0, rva0, rval, vidx = 0,
     let anti = /^-/.test(filtinp.value),
       sepa = /^\/.+\/[gim]*$/.test(filtinp.value.trim()) ? eval(filtinp.value)
         : new RegExp(filtinp.value.replace(/^-/, "") || "^$", "g");
-    rsp2con.textContent = ndepty.textContent = "";
-    document.querySelectorAll(strslrs[4]).forEach(inp => inp.checked = false);
+    rsp2con.textContent = nclips.innerHTML = ndepty.textContent = "";
+    document.querySelectorAll(qslrs[4]).forEach(inp => inp.checked = false);
     document.querySelectorAll('#nmtbl tbody>tr:not([id])').forEach(tr => {
       tr.classList.remove("dnone", "match");
       Array.from(tr.children)
@@ -415,7 +537,7 @@ let fwg, j = 0, rva0, rval, vidx = 0,
     }
   },
   filesChg = evt => {
-    if (vidx === 3) { return; }
+    if (vidx === 6) { return; }
     let fmove = evt.target.id === "movebtn",
       //qcontxta = document.querySelector('#econav0 #qcontxta'),
       moveinp = document.querySelector('#nmwrap #moveinp'),
@@ -448,7 +570,7 @@ let fwg, j = 0, rva0, rval, vidx = 0,
         docs:   (rslt.rows || rslt.results).map(row1Tfm) //.filter(d => !d._deleted)
       },
       dbq = txd2.DBNAME && window.PouchDB && new PouchDB(txd2.DBNAME);
-    rsp2con.textContent = ndepty.textContent = "";
+    rsp2con.textContent = nclips.innerHTML = ndepty.textContent = "";
     !fmove || Array.from(chks).forEach(inp => inp.parentElement.parentElement.className = "");
     chkaf2.forEach( inp => inp.parentElement.parentElement.className
       = fmove ? "hsuccl" : "hwarnl" );
@@ -468,28 +590,29 @@ let fwg, j = 0, rva0, rval, vidx = 0,
         DBNAME:  txd1.DBNAME,
         FILEID:  evt.target.textContent,
         OPTIONS: {
-          rev: vidx !== 3 ? null : evt.target.parentElement.parentElement.children[3].textContent
+          rev: vidx !== 6 ? null : evt.target.parentElement.parentElement.children[3].textContent
           //revs_info: true
         }
       };
-    rsp2con.textContent = ndepty.textContent = "";
+    rsp2con.textContent = nclips.innerHTML = ndepty.textContent = "";
     !txd2.DBNAME || !window.PouchDB || new PouchDB(txd2.DBNAME)
     .get(txd2.FILEID, txd2.OPTIONS).then(doc => {
       let lnl, str,
         v2Str = k => ( lnl = (( str = fwg[k] == null ? "" : typeof fwg[k] !== 'object' ? "" + fwg[k]
-          : JSON.stringify(fwg[k], null, 2) ).match(/\n/g) || "" ).length ) > 8 || str.length > 600
-        ? 16 : lnl > 2 || str.length > 300 ? 8 : 2;
+          : JSON.stringify(fwg[k], null, 2) ).match(/\n/g) || "" ).length ) > 8 || str.length > 400
+        ? 16 : lnl > 2 || str.length > 200 ? 8 : 2;
       fwg = doc;
-      ndepty.innerHTML = "\n<div class=cfield><span class=ccntr>Note ID: <input type=text value='"
-      + fwg._id + "' disabled /></span><span class=ccntr><button>UPDATE</button></span>"
-      + "<span class=ccntr><button>CANCEL</button></span></div>"
+      ndepty.innerHTML = "\n<div class=cfield><span class=ccntr><button class=isclr><strong>ID:</strong> "
+      + fwg._id + "</button></span><span class=ccntr><button><span class=isucc>&#x267a;</span> UPDATE</button></span>"
+      + "<span class=ccntr><button><span class=isucc>&Lang;</span> RETURN</button></span></div>"
       + Object.keys(fwg).map(k => /^_id$|^_rev$/.test(k) ? "" : `
 <div class="cfield is-horizontal">
   <div class="field-label">
     <label class="label">${k}</label>
   </div>
   <div id="${'pty-' + k}" class="field-body">
-    <textarea class="textarea is-family-code is-size-7" rows=${v2Str(k)}>${str}</textarea>
+    <textarea class="textarea is-family-code is-size-7" rows=${v2Str(k)}>${
+      str.replace(/&(?=#?\w+;)/g, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;")}</textarea>
   </div>
 </div>`).join("") + "\n";
     }).catch(rsp2Show);
@@ -513,10 +636,46 @@ let fwg, j = 0, rva0, rval, vidx = 0,
   },
   fileActv = evt => {
     let td2 = evt.target.parentElement.parentElement.children[2];
-    rsp2con.textContent = ndepty.textContent = "";
+    rsp2con.textContent = nclips.innerHTML = ndepty.textContent = "";
     evt.target.checked || (evt.target.parentElement.parentElement.className = "");
     //evt.target.checked ? ancAdd1(td2) : td2.innerHTML = td2.textContent;
     blk2Tog();
+  },
+  clipsGen = () => {
+    let aurlGen = isrc => isrc,
+      date1Fmt = str => !str ? ""
+        : new Date(str).toUTCString().replace(/.+(\d{2} [a-z]{3} \d{4}).+/i, "$1");
+    new PouchDB(txd1.DBNAME)
+    .query(txd1.FILEID.replace(/^_design\//, "") + "/" + txd1.VIEW, txd1.OPTIONS || {})
+    .catch( () => new PouchDB(txd1.DBNAME).allDocs({
+      startkey: descswi.checked ? "~a" : undefined,
+      endkey: descswi.checked ? undefined : "~a",
+      descending: descswi.checked,
+      include_docs: true })
+    ).then(rslt => {
+      nclips.innerHTML = "\n<span class=\"fltrt mtup4\">&ensp;Show all:&ensp;"
+      + "<label><input type=checkbox id=s1chkb /> <a>headers</a></label>&ensp;"
+      + "<label><input type=checkbox id=s1chkb /> <a>bodies</a></label></span>\n<hr>"
+      + rslt.rows.filter(r => r && (r.doc || r.value).name_user).map( r => `
+<article class="media">
+  <div class="media-left">
+    <figure class="image is-128x128"><img src="${ aurlGen((rval = r.doc || r.value).image_src || "") }" />
+    <figcaption><em>${ rval.name_user }</em></figcaption></figure>
+  </div>
+  <div class="media-content">
+    <div class=pwrap><strong>${ rval.name_full }</strong>
+<em>${ rval.roles.join(", ") }</em>
+${ rval.bio_short }</div>
+    <div class=pwrap><details><strong>Birthdate:</strong> ${ date1Fmt(rval.birthdate) }
+<strong>Emails:</strong> ${ rval.emails.join(", ") }
+<strong>Phones:</strong> ${ rval.phones.join(", ") }
+<strong>Social profiles:</strong> ${ rval.social_profiles.join(", ") }
+<strong>Project urls:</strong> ${ rval.project_urls.join(", ") }
+<strong>Joined team:</strong> ${ date1Fmt(rval.ts_created) }
+<strong>Last updated:</strong> ${ date1Fmt(rval.ts_updated) }</details></div>
+  </div>
+</article>` ).join("") + "\n";
+    }).catch(rsp2Show);
   },
   chksTog = evt => {
     let r1idx = evt.target.parentElement.parentElement.rowIndex - 2,
@@ -525,11 +684,11 @@ let fwg, j = 0, rva0, rval, vidx = 0,
       r2idx = rsidx[rsidx.findIndex(n => n === r1idx) + 1]
         || ((document.querySelector('#nmtbl tbody>tr:last-of-type') || "").rowIndex - 1),
       trows = document.querySelectorAll('#nmtbl tbody>tr');
-    rsp2con.textContent = ndepty.textContent = "";
+    rsp2con.textContent = nclips.innerHTML = ndepty.textContent = "";
     if (!evt.target.parentElement.parentElement.id) {
       evt.target.checked
       || document.querySelectorAll('#nmtbl tbody>tr:not([id])').forEach(tr => tr.className = "");
-      document.querySelectorAll(strslrs[4]).forEach(inp => inp.checked = evt.target.checked);
+      document.querySelectorAll(qslrs[4]).forEach(inp => inp.checked = evt.target.checked);
       //document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:nth-of-type(3)')
       //.forEach(td2 => evt.target.checked ? ancAdd1(td2) : td2.innerHTML = td2.textContent);
     } else {
@@ -557,7 +716,7 @@ let fwg, j = 0, rva0, rval, vidx = 0,
       evt.target.innerHTML = !xpd ? "&#x25b6;" : "&#x25bc;";
       while (++r1idx < r2idx) { trows[r1idx].hidden = !xpd; }
     } else {
-      document.querySelectorAll(strslrs[2])
+      document.querySelectorAll(qslrs[2])
       .forEach(a => a.innerHTML = !xpd ? "&#x25b6;" : "&#x25bc;");
       document.querySelectorAll('#nmtbl tbody>tr[id]>td:first-of-type>a')
       .forEach(a => a.innerHTML = !xpd ? "&#x25b6;" : "&#x25bc;");
@@ -576,19 +735,13 @@ let fwg, j = 0, rva0, rval, vidx = 0,
     sortsel.value = Array.from(sortsel.options).some(o => o.value === resel) ? resel : "id";
   },
   tblGen = evt => {
-    if (!window.PouchDB || !txd1.DBNAME) {
-      ftotal.textContent = "0";
-      cmtbody.innerHTML = "";
-      return rsp2con.textContent ? null
-      : rsp2Show("Alert: No database has been selected or PouchDB is not loaded.");
-    }
     let ss = sortsel.value.split("."),
       chksRstr = () => {
         bulkctrl.classList.add("dnone");
         filtctrl.classList.remove("dnone");
         filtinp.value = moveinp.value = "";
-        document.querySelectorAll(strslrs[2]).forEach(a => a.innerHTML = "&#x25b6;");
-        document.querySelectorAll(strslrs[3]).forEach(inp => {
+        document.querySelectorAll(qslrs[2]).forEach(a => a.innerHTML = "&#x25b6;");
+        document.querySelectorAll(qslrs[3]).forEach(inp => {
           inp.checked = false;
           inp.className = "dnone";
         });
@@ -597,46 +750,45 @@ let fwg, j = 0, rva0, rval, vidx = 0,
         document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:first-of-type>input')
         .forEach(inp => inp.onchange = fileActv);
       };
-    rsp2con.textContent = ndepty.textContent = "";
     !evt || evt.target.id !== "descswi" || ( txd1.OPTIONS = {
       //startkey: descswi.checked ? "~~~" : "",
       //endkey: descswi.checked ? "" : "~~~",
       descending: descswi.checked
     });
-    vidx !== 3 || new PouchDB(txd1.DBNAME)
+    vidx !== 6 || new PouchDB(txd1.DBNAME)
     .changes(txd1.OPTIONS || {})
     .then(rslt => {
       let dels = rslt.results.filter(r => r.deleted);
       ftotal.textContent = dels.length;
-      [cmtheads[0], cmtfoots[0]].forEach(e => e.classList.add("dnone"));
-      [cmtheads[1], cmtfoots[1]].forEach(e => e.classList.remove("dnone"));
-      cmtbody.innerHTML = qd3Fmt( ss[0] === "seq" ? dels
+      [nmthds[0], nmtfts[0]].forEach(e => e.classList.add("dnone"));
+      [nmthds[1], nmtfts[1]].forEach(e => e.classList.remove("dnone"));
+      nmtbod.innerHTML = qd3Fmt( ss[0] === "seq" ? dels
         : ordFlip(dels.map(r => [r.id, r])).map(sr => sr[1]) );
       chksRstr();
       sortsel.innerHTML = `
           <option value="seq">Chg Seq</option>
-          <option value="id">DBNoteID</option>
+          <option value="id">Note ID</option>
 `;
       sortsel.value = /^(?:id|seq)$/.test(ss[0]) ? ss[0] : "id";
     }).catch(rsp2Show);
-    vidx === 3 || new PouchDB(txd1.DBNAME)
+    vidx === 6 || new PouchDB(txd1.DBNAME)
     .query(txd1.FILEID.replace(/^_design\//, "") + "/" + txd1.VIEW, txd1.OPTIONS || {})
     .catch( () => new PouchDB(txd1.DBNAME).allDocs({
-      startkey: descswi.checked != (vidx === 2) ? "~a" : undefined,
-      endkey: descswi.checked != (vidx === 2) ? undefined : "~a",
+      startkey: descswi.checked != (vidx === 5) ? "~a" : undefined,
+      endkey: descswi.checked != (vidx === 5) ? undefined : "~a",
       descending: descswi.checked,
       include_docs: true })
     ).then(rslt => {
       let calcSum = arr => !arr.length ? 0 : arr.reduce((s, v) => s + v);
       j = 0;
-      ftotal.textContent = vidx ? rslt.total_rows
+      ftotal.textContent = vidx !== 3 ? rslt.total_rows
         : rslt.rows.filter(r => (r.doc || r.value).file_updated).length
           + calcSum( rslt.rows.filter(r => (r.doc || r.value)._attachments)
             .map(r => Object.keys((r.doc || r.value)._attachments).length) );
-      [cmtheads[1], cmtfoots[1]].forEach(e => e.classList.add("dnone"));
-      [cmtheads[0], cmtfoots[0]].forEach(e => e.classList.remove("dnone"));
-      cmtbody.innerHTML = vidx
-      ? qd1Fmt( !ss[0] || vidx !== 2 && ss[0] === "id" || vidx === 2 && ss[1] === "timestamp"
+      [nmthds[1], nmtfts[1]].forEach(e => e.classList.add("dnone"));
+      [nmthds[0], nmtfts[0]].forEach(e => e.classList.remove("dnone"));
+      nmtbod.innerHTML = vidx !== 3
+      ? qd1Fmt( !ss[0] || vidx !== 5 && ss[0] === "id" || vidx === 5 && ss[1] === "timestamp"
         ? rslt.rows
         : ordFlip( !ss[1] ? rslt.rows.map(r => [(r.doc || r.value)[ss[0]], r.id, r])
           : ss[1] !== "timestamp"
@@ -651,48 +803,63 @@ let fwg, j = 0, rva0, rval, vidx = 0,
             !ss[1] ? rval[ss[0] || "id"] : (rval[ss[0]] || "")[ss[1]], r.id, r ]) )
         .map(sr => sr[3]) );
       colsTog(null, sortsel.value || "file_created.timestamp");
-      document.querySelectorAll(strslrs[1])
-      .forEach(spn => spn.className = vidx ? "" : "dnone");
-      document.querySelectorAll(strslrs[2])
-      .forEach(a => a.className = !vidx ? "" : "dnone");
+      document.querySelectorAll(qslrs[1])
+      .forEach(spn => spn.className = vidx !== 3 ? "" : "dnone");
+      document.querySelectorAll(qslrs[2])
+      .forEach(a => a.className = vidx === 3 ? "" : "dnone");
       document.querySelectorAll('#nmtbl tbody>tr[id]>td:first-of-type>a')
       .forEach(a => a.onclick = sdirXpd);
       chksRstr();
       document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:nth-of-type(3)').forEach(ancAdd1);
     }).catch(rsp2Show);
   },
-  pdbOpen = () => { txd1.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value; tblGen(); },
+  viewRte = evt => {
+    rsp2con.textContent = nclips.innerHTML = ndepty.textContent = "";
+    if (!window.PouchDB || !txd1.DBNAME) {
+      ftotal.textContent = "0";
+      nmtbod.innerHTML = "";
+      rsp2con.textContent ? null
+      : rsp2Show("Alert: No database has been selected or PouchDB is not loaded.");
+    } else if (vidx < 3) {
+      vidx < 2 ? null
+      : (nmtbod.innerHTML = "") || nmtbl.classList.add("dnone") || clipsGen();
+    } else {
+      nmtbl.classList.remove("dnone");
+      tblGen(evt);
+    }
+  },
   viewTog = evt => {
-    rsp2con.textContent = ndepty.textContent = "";
+    rsp2con.textContent = nclips.innerHTML = ndepty.textContent = "";
     vidx = evt.currentTarget.selectedIndex; //evt.target.parentElement.dataset.vidx
-    //cmtabs.forEach(li => li.classList.remove("is-active"));
-    //cmtabs[vidx].classList.add("is-active");
-    txd1.VIEW = vidx === 2 ? "files-static" : "files-idxlist";
-    colssel.innerHTML = sellists[vidx === 3 ? 1 : 0];
-    vidx !== 1 || (colssel.options[18].selected = colssel.options[0].selected = true);
-    if (vidx === 2) {
+    //nmtabs.forEach(li => li.classList.remove("is-active"));
+    //nmtabs[vidx].classList.add("is-active");
+    txd1.VIEW = vidx === 5 ? "files-static" : vidx === 2 ? "files-contact" : "files-idxlist";
+    colssel.innerHTML = sopts[vidx === 6 ? 1 : 0];
+    vidx !== 4 || (colssel.options[18].selected = colssel.options[0].selected = true);
+    if (vidx === 5) {
       Array.from(colssel.options).forEach(o => o.selected = false);
       [1, 2, 7, 8, 14, 15, 16, 17].forEach(i => colssel.options[i].selected = true);
       sortsel.value = "";
     }
-    document.querySelectorAll(strslrs[0])
-    .forEach(td => td.textContent = vidx ? "DBNoteID" : "Note ID");
+    //document.querySelectorAll(qslrs[0])
+    //.forEach(td => td.textContent = vidx ? "Note ID" : "Note ID");
     //colsTog();
-    tblGen();
-  };
+    viewRte();
+  },
+  pdbOpen = () => { txd1.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value; viewRte(); };
 viewsel.onchange = viewTog;
 pdbssel.onchange = pdbOpen;
 colssel.onchange = colsTog;
-sortsel.onchange = tblGen;
-descswi.onchange = tblGen;
+sortsel.onchange = viewRte;
+descswi.onchange = viewRte;
 filtbtn.onclick = filtExe;
 blktrig.onclick = bulkTog;
-document.querySelectorAll(strslrs[2]).forEach(a => a.onclick = sdirXpd);
+document.querySelectorAll(qslrs[2]).forEach(a => a.onclick = sdirXpd);
 document.querySelectorAll('#nmtbl td:first-of-type>input').forEach(inp => inp.onchange = chksTog);
 document.querySelectorAll('#nmwrap #movebtn, #nmwrap #delbtn').forEach(btn => btn.onclick = filesChg);
-colssel.innerHTML = sellists[0];
+colssel.innerHTML = sopts[0];
 !window.PouchDB || !PouchDB.allDbs ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(console.warn);
 colsTog();
-tblGen();
+viewRte();
 </script>
 </html>
