@@ -248,7 +248,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 </style>
 <h4 class=cfield>Note Manager</h4>
 <pre id=rsp2con></pre>
-<nav class="level cfield">
+<nav id=vcntls class="level cfield">
   <div class="level-item">
     <div class="level cfield">
       <span class=ccntr><select id=pdbssel>
@@ -277,7 +277,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
       <span id=filtctrl class=ccntr>
       <input type=text id=filtinp placeholder="Search pattern&hellip;" /><button id=filtbtn>
       FILTER</button></span><span id=bulkctrl class="ccntr dnone"><span class=cfield>
-      <span class=ccntr><input type=text id=moveinp placeholder="Enter subdir&hellip;" /><button id=movebtn class=isucc>
+      <span class=ccntr><input type=text id=moveinp placeholder="New subdir&hellip;" /><button id=movebtn class=isucc>
       MOVE</button></span><span class=ccntr><button id=delbtn class=iwarn>
       DEL</button></span></span></span><span class=ccntr><a id=blktrig>&#x2611;</a></span>
     </div>
@@ -434,7 +434,10 @@ let fwg, j = 0, rva0, rval, vidx = 3,
     = ["\n      <option></option>", "<option>&plus; New DB</option>"]
       .concat(dbs.map(e => "<option>" + e + "</option>")).join("\n      ") + "\n      ",
   ordFlip = arr => !descswi.checked ? arr.sort() : arr.sort().reverse(),
+  aurlGen = isrc => isrc,
   date0Fmt = nbr => !nbr ? "" : new Date(nbr).toISOString().replace(/T.+$/, ""),
+  date1Fmt = str => !str ? ""
+    : new Date(str).toUTCString().replace(/.+(\d{2} [a-z]{3} \d{4}).+/i, "$1"),
   tr0Gen = (r, i) =>
 `    <tr${ vidx !== 3 ? "" : " hidden"}>
       <td>${ 1 + i - j } <input type="checkbox" class="dnone" /></td>
@@ -581,6 +584,11 @@ let fwg, j = 0, rva0, rval, vidx = 3,
       : dbq.get(txd2.FILEID, txd2.OPTIONS).then(rsp2Show) )
     .catch(rsp2Show);
   },
+  viewBk = () => (ndepty.textContent = "") || [vctrls, nmtbl].forEach(e => e.classList.remove("dnone")),
+  fwgUpd = () => {
+    ndhelp.classList.add("isucc");
+    ndhelp.innerHTML = "Note is updated in local storage.";
+  },
   fileLoad = evt => {
     let //td1txt = evt.target.parentElement.parentElement.children[1].textContent,
       //attlist = document.querySelector('#econav0 #attlist'),
@@ -595,6 +603,7 @@ let fwg, j = 0, rva0, rval, vidx = 3,
         }
       };
     rsp2con.textContent = nclips.innerHTML = ndepty.textContent = "";
+    [vctrls, nmtbl].forEach(e => e.classList.add("dnone"));
     !txd2.DBNAME || !window.PouchDB || new PouchDB(txd2.DBNAME)
     .get(txd2.FILEID, txd2.OPTIONS).then(doc => {
       let lnl, str,
@@ -602,9 +611,12 @@ let fwg, j = 0, rva0, rval, vidx = 3,
           : JSON.stringify(fwg[k], null, 2) ).match(/\n/g) || "" ).length ) > 8 || str.length > 400
         ? 16 : lnl > 2 || str.length > 200 ? 8 : 2;
       fwg = doc;
-      ndepty.innerHTML = "\n<div class=cfield><span class=ccntr><button class=isclr><strong>ID:</strong> "
-      + fwg._id + "</button></span><span class=ccntr><button><span class=isucc>&#x267a;</span> UPDATE</button></span>"
-      + "<span class=ccntr><button><span class=isucc>&Lang;</span> RETURN</button></span></div>"
+      ndepty.innerHTML = "\n<div class=cfield>\n"
+      + "<span class=ccntr><button class=isucc onclick=viewBk()><strong>&lang;</strong></button></span>"
+      + "<span class=ccntr><button class=isclr disabled>" + txd2.DBNAME + " <strong>&rang;</strong> "
+      + (!(fwg.file_updated || "").subdir ? "" : fwg.file_updated.subdir + " <strong>&rang;</strong> ")
+      + fwg._id + "</button></span><span class=ccntr><button onclick=fwgUpd()>"
+      + "<span class=isucc>&#x267a;</span> UPDATE</button></span>\n<div id=ndhelp></div>\n</div>"
       + Object.keys(fwg).map(k => /^_id$|^_rev$/.test(k) ? "" : `
 <div class="cfield is-horizontal">
   <div class="field-label">
@@ -642,9 +654,6 @@ let fwg, j = 0, rva0, rval, vidx = 3,
     blk2Tog();
   },
   clipsGen = () => {
-    let aurlGen = isrc => isrc,
-      date1Fmt = str => !str ? ""
-        : new Date(str).toUTCString().replace(/.+(\d{2} [a-z]{3} \d{4}).+/i, "$1");
     new PouchDB(txd1.DBNAME)
     .query(txd1.FILEID.replace(/^_design\//, "") + "/" + txd1.VIEW, txd1.OPTIONS || {})
     .catch( () => new PouchDB(txd1.DBNAME).allDocs({
