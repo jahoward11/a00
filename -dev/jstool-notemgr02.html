@@ -202,7 +202,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap textarea.isucc { color: unset; border-color: CornFlowerBlue; }
 #nmwrap button.iwarn { background: transparent; border: solid 1px Orange; }
 #nmwrap button.isucc { background: transparent; border: solid 1px CornFlowerBlue; }
-#nmwrap button.isclr { background: transparent; max-width: 240px; }
+#nmwrap button.isclr { background: transparent; }
 #nmwrap .dnone { display: none; }
 #nmwrap .dfroot { display: flow-root; overflow-x: auto; }
 #nmwrap .pwrap { word-wrap: normal; overflow-wrap: normal; white-space: pre-wrap; }
@@ -211,6 +211,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap .cfield:not(:last-child) { margin-bottom: 8px; }
 #nmwrap .ccntr:not(:last-of-type) { margin-right: 8px; }
 #nmwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }
+#nmwrap .ndhelp { font-size: 10.5px; margin-top: -4px; }
 #nmwrap input[type=text]+button:not(.ccntr):not(.iwarn):not(.isucc) {
   background: transparent;
   border: solid 1px Gainsboro;
@@ -611,11 +612,11 @@ let fwg, j = 0, rva0, rval, vidx = 3,
           : JSON.stringify(fwg[k], null, 2) ).match(/\n/g) || "" ).length ) > 8 || str.length > 400
         ? 16 : lnl > 2 || str.length > 200 ? 8 : 2;
       fwg = doc;
-      ndepty.innerHTML = "\n<div class=cfield>\n"
-      + "<span><button id=btnbk class=isclr><strong class=isucc>&lang;</strong> "
-      + txd2.DBNAME + "</button></span><span><button class=isclr disabled>&sol; "
+      ndepty.innerHTML = "\n<div>\n"
+      + "<span class=ccntr><button id=btnbk><strong class=isucc>&lang;</strong> "
+      + txd2.DBNAME + "</button></span><span class=ccntr><button class=isclr disabled>&sol; "
       + (!(fwg.file_updated || "").subdir ? "" : fwg.file_updated.subdir + " &sol; ")
-      + fwg._id + "</button></span><span><button id=btnupd>"
+      + fwg._id + "</button></span><span class=ccntr><button id=btnupd>"
       + "<span class=isucc>&#x267a;</span> UPDATE</button></span>\n<div id=ndhelp></div>\n</div>"
       + Object.keys(fwg).map(k => /^_id$|^_rev$/.test(k) ? "" : `
 <div class="cfield is-horizontal">
