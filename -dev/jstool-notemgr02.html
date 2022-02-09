@@ -613,8 +613,8 @@ let fwg, j = 0, rva0, rval, vidx = 3,
       fwg = doc;
       ndepty.innerHTML = "\n<div class=cfield>\n"
       + "<span><button id=btnbk class=isclr><strong class=isucc>&lang;</strong> "
-      + txd2.DBNAME + "</button></span><button class=isclr disabled><strong>&rang;</strong> "
-      + (!(fwg.file_updated || "").subdir ? "" : fwg.file_updated.subdir + " <strong>&rang;</strong> ")
+      + txd2.DBNAME + "</button></span><span><button class=isclr disabled>&sol; "
+      + (!(fwg.file_updated || "").subdir ? "" : fwg.file_updated.subdir + " &sol; ")
       + fwg._id + "</button></span><span><button id=btnupd>"
       + "<span class=isucc>&#x267a;</span> UPDATE</button></span>\n<div id=ndhelp></div>\n</div>"
       + Object.keys(fwg).map(k => /^_id$|^_rev$/.test(k) ? "" : `
