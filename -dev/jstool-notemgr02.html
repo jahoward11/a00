@@ -248,7 +248,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 </style>
 <h4 class=cfield>Note Manager</h4>
 <pre id=rsp2con></pre>
-<nav id=vcntls class="level cfield">
+<nav id=vctrls class="level cfield">
   <div class="level-item">
     <div class="level cfield">
       <span class=ccntr><select id=pdbssel>
@@ -587,7 +587,7 @@ let fwg, j = 0, rva0, rval, vidx = 3,
   viewBk = () => (ndepty.textContent = "") || [vctrls, nmtbl].forEach(e => e.classList.remove("dnone")),
   fwgUpd = () => {
     ndhelp.classList.add("isucc");
-    ndhelp.innerHTML = "Note is updated in local storage.";
+    ndhelp.innerHTML = "Note is updated in local database.";
   },
   fileLoad = evt => {
     let //td1txt = evt.target.parentElement.parentElement.children[1].textContent,
