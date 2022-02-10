@@ -186,20 +186,15 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap textarea { display: block; font: normal 10.5px monospace; width: 100%; }
 #nmwrap .hwarnl { background-color: #fff6e6; }
 #nmwrap .hsuccl { background-color: #e8effc; }
+#nmwrap .hgreyl { background-color: Gainsboro; }
 #nmwrap .iwarn { color: Orange; }
 #nmwrap .isucc { color: CornFlowerBlue; }
 #nmwrap textarea.iwarn { color: unset; border-color: Orange; }
 #nmwrap textarea.isucc { color: unset; border-color: CornFlowerBlue; }
-#nmwrap button.iwarn { background: transparent; border: solid 1px Orange; }
-#nmwrap button.isucc { background: transparent; border: solid 1px CornFlowerBlue; }
 #nmwrap button.isclr { background: transparent; max-width: 359px; padding: 0 2px; overflow: hidden; text-overflow: ellipsis; }
 #nmwrap .cfield:not(:last-child) { margin-bottom: 8px; }
 #nmwrap .ccntr:not(:last-of-type) { margin-right: 8px; }
 #nmwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }
-#nmwrap input[type=text]+button:not(.ccntr):not(.iwarn):not(.isucc) {
-  background: transparent;
-  border: solid 1px Gainsboro;
-}
 #nmwrap .cfield>.chelp { font-size: 12px; margin-top: 4px; }
 #nmwrap .fltrt { float: right; }
 #nmwrap .pwrap { word-wrap: normal; overflow-wrap: normal; white-space: pre-wrap; }
@@ -216,9 +211,11 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   overflow-x: hidden;
   white-space: pre;
 }
-#nmwrap #pdbssel, #nmwrap #filtinp { width: 144px; }
+#nmwrap #pdbssel { width: 136px; }
+#nmwrap #ftotal { display: inline-block; min-width: 20px; }
 #nmwrap #viewsel { width: 24px; }
-#nmwrap #moveinp { width: 96px; }
+#nmwrap #filtinp { width: 168px; }
+#nmwrap #moveinp { width: 114px; }
 #nmtbl thead, #nmtbl tfoot { font-weight: bold; }
 #nmtbl td:first-of-type { white-space: nowrap; }
 #nmtbl td:nth-of-type(1), #nmtbl td:nth-of-type(2) { text-align: right; }
@@ -238,14 +235,16 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   min-height: 128px;
   cursor: pointer;
 }
-#nmdata .media-left>.image>figcaption { text-align: center; }
+#nmdata .media-left>.image>figcaption { font-style: italic; text-align: center; }
 @media screen and (max-width: 575px) {
   #nmdata .media-left>.image.rspv128 { width: 48px; margin: 0; }
   #nmdata .media-left>.image.rspv128 img { min-height: 48px; }
   #nmdata .media-left>.image>figcaption { float: right; font-size: x-small; }
 }
 @media screen and (min-width: 720px) and (max-width: 754px), print {
-  #nmwrap #pdbssel { width: 104px; }
+  #nmwrap #pdbssel { width: 120px; }
+  #nmwrap #filtinp { width: 150px; }
+  #nmwrap #moveinp { width: 96px; }
 }
 @media screen and (max-width: 719px) {
   #nmwrap .media-left>.media-left>.image { margin: 0; }
@@ -280,10 +279,10 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   <div class="level-item">
     <div class="level cfield">
       <span id=filtctrl class=ccntr>
-      <input type=text id=filtinp placeholder="Search pattern&hellip;" /><button id=filtbtn>
-      FILTER</button></span><span id=bulkctrl class="ccntr dnone"><span class=cfield>
-      <span class=ccntr><input type=text id=moveinp placeholder="New subdir&hellip;" /><button id=movebtn class=isucc>
-      MOVE</button></span><span class=ccntr><button id=delbtn class=iwarn>
+      <input type=text id=filtinp placeholder="Search pattern&hellip;" /><button id=filtbtn class=hgreyl>
+      FILT</button></span><span id=bulkctrl class="ccntr dnone"><span class=cfield>
+      <span class=ccntr><input type=text id=moveinp placeholder="New subdir&hellip;" /><button id=movebtn class="isucc hsuccl">
+      MOV</button></span><span class=ccntr><button id=delbtn class="iwarn hwarnl">
       DEL</button></span></span></span><span class=ccntr><a id=blktrig>&#x2611;</a></span>
     </div>
   </div>
@@ -414,7 +413,7 @@ let fwg, j = 0, rva0, rval, vidx = 3,
     '#nmtbl thead:not(.dnone) td:first-of-type>input, '
     + '#nmtbl tbody>tr>td:first-of-type>input, '
     + '#nmtbl tfoot:not(.dnone) td:first-of-type>input',
-    '#nmdata .media-left figcaption>em,'
+    '#nmdata .media-left figcaption,'
     + '#nmdata .media-content>.pwrap>strong,'
     + '#nmdata .media-content>.pwrap>em,'
     + '#nmdata .media-content>.pwrap>details'
@@ -438,16 +437,13 @@ let fwg, j = 0, rva0, rval, vidx = 3,
   rsp2Show = resp => rsp2con.textContent
     += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
       ? resp : JSON.stringify(resp, null, 2) ) + "\n\n",
-  pdbsGen = (dbs = []) => pdbssel.innerHTML
-    = ["\n      <option></option>", "<option>&plus; New DB</option>"]
-      .concat(dbs.map(e => "<option>" + e + "</option>")).join("\n      ") + "\n      ",
   ordFlip = arr => !descswi.checked ? arr.sort() : arr.sort().reverse(),
   aurlGen = isrc => isrc,
   date0Fmt = nbr => !nbr ? "" : new Date(nbr).toISOString().replace(/T.+$/, ""),
   date1Fmt = str => !str ? ""
     : new Date(str).toUTCString().replace(/.+(\d{2} [a-z]{3} \d{4}).+/i, "$1"),
-  tr0Gen = (r, i) =>
-`    <tr${ vidx !== 3 ? "" : " hidden"}>
+  tr0Gen = (r, i) => `
+    <tr${ vidx !== 3 ? "" : " hidden"}>
       <td>${ 1 + i - j } <input type=checkbox class=dnone /></td>
       <td>${ (rval = r.doc || r.value).file_updated
         ? (rval.file_updated.subdir || ".") + "/" : "" }</td>
@@ -473,36 +469,36 @@ let fwg, j = 0, rva0, rval, vidx = 3,
       <td>${ rval.subject || "" }</td>
       <td>${ Object.keys(rval._attachments || "").length || "" }</td>
     </tr>`,
-  qd0Fmt = rows => "\n" + rows.map( (r, i) =>
+  qd3Fmt = rows => rows.map( (r, i) =>
     !(rval = r.doc || r.value)._attachments && /^\./.test(r.id) ? ""
-    : /^[.-]/.test(r.id) ? (!i || (j = i)) &&
-`    <tr id="${ r.id.replace(/^[.-]/, "_") }">
+    : /^[.-]/.test(r.id) ? (!i || (j = i)) && `
+    <tr id="${ r.id.replace(/^[.-]/, "_") }">
       <td colspan=20><a>&#x25b6;</a> <input type=checkbox class=dnone /> ${
         r.id.replace( /^[.-].+$/, m => m + " ("
           + (/^eco-assets$/.test(rval.file_type || "") ? "eco-" : "app ") + "assets)" ) }</td>
-    </tr>\n` + ordFlip(Object.keys(rval._attachments || "")).map( (k, i2) =>
-`    <tr hidden>
+    </tr>\n` + ordFlip(Object.keys(rval._attachments || "")).map( (k, i2) => `
+    <tr hidden>
       <td>${ 1 + i2 } <input type=checkbox class=dnone /></td>
       <td>${ r.id + "/" }</td>
       <td colspan=18>${ !rval._attachments[k] ? k
         : k + " (" + Math.ceil(+rval._attachments[k].length / 1000) + "k)" }</td>
-    </tr>` ).join("\n")
+    </tr>` ).join("")
     : !i || !(rva0 = rows[i - 1].doc || rows[i - 1].value).file_updated
       || rval.file_updated.subdir !== rva0.file_updated.subdir
-    ? (!i || (j = i)) &&
-`    <tr id="${ rval.file_updated.subdir || "_" }">
+    ? (!i || (j = i)) && `
+    <tr id="${ rval.file_updated.subdir || "_" }">
       <td colspan=20><a>&#x25b6;</a> <input type=checkbox class=dnone /> ${
         rval.file_updated.subdir || "/" }</td>
-    </tr>\n` + tr0Gen(r, i)
-    : tr0Gen(r, i) ).join("\n") + "\n  ",
-  qd1Fmt = rows => "\n" + rows.map(tr0Gen).join("\n") + "\n  ",
-  qd3Fmt = dels => "\n" + dels.map( (d, i) =>
-`    <tr>
+    </tr>` + tr0Gen(r, i)
+    : tr0Gen(r, i) ).join("") + "\n  ",
+  qd4Fmt = rows => rows.map(tr0Gen).join("") + "\n  ",
+  qd6Fmt = dels => dels.map( (d, i) => `
+    <tr>
       <td>${ 1 + i } <input type=checkbox class=dnone /></td>
       <td>${ d.seq }</td>
       <td>${ d.id }</td>
       <td>${ d.changes[0].rev }</td>
-    </tr>` ).join("\n") + "\n  ",
+    </tr>` ).join("") + "\n  ",
   blk2Tog = () => {
     if (vidx === 6) { return; }
     let chks = vidx !== 2
@@ -512,7 +508,8 @@ let fwg, j = 0, rva0, rval, vidx = 3,
     (chks.length ? bulkctrl : filtctrl).classList.remove("dnone");
   },
   bulkTog = () => {
-    let hid = vidx !== 2 ? document.querySelector('#nmtbl thead:not(.dnone) td:first-of-type>input.dnone')
+    let hid = vidx !== 2
+        ? document.querySelector('#nmtbl thead:not(.dnone) td:first-of-type>input.dnone')
         : document.querySelector('#nmdata .media-content>.pwrap>span.dnone');
     ( vidx !== 2 ? document.querySelectorAll(qslrs[4])
       : document.querySelectorAll('#nmdata .media-content>.pwrap>span') )
@@ -525,7 +522,7 @@ let fwg, j = 0, rva0, rval, vidx = 3,
     }
   },
   filtExe = () => {
-    let anti = /^-/.test(filtinp.value),
+    let negs = /^-/.test(filtinp.value),
       sepa = /^\/.+\/[gim]*$/.test(filtinp.value.trim()) ? eval(filtinp.value)
         : new RegExp(filtinp.value.replace(/^-/, "") || "^$", "gi");
     rsp2con.textContent = "";
@@ -547,11 +544,11 @@ let fwg, j = 0, rva0, rval, vidx = 3,
       .forEach( tr => Array.from(tr.children).forEach( (td, i) => {
         if (i && !td.classList.contains("dnone")) {
           sepa.lastIndex = 0;
-          !anti ? tr.classList.contains("match")
+          !negs ? tr.classList.contains("match")
             || (tr.className = sepa.test(td.textContent) ? "match" : "dnone")
           : tr.classList.contains("dnone")
             || (tr.className = !sepa.test(td.textContent) ? "match" : "dnone");
-          anti || ( (i !== 2 ? td : td.firstChild).innerHTML
+          negs || ( (i !== 2 ? td : td.firstChild).innerHTML
             = (i !== 2 ? td : td.firstChild).innerHTML.replace(sepa, "<mark>$&</mark>") );
         }
       }));
@@ -559,7 +556,7 @@ let fwg, j = 0, rva0, rval, vidx = 3,
       document.querySelectorAll(qslrs[5])
       .forEach(e => e.innerHTML = e.innerHTML.replace(sepa, "<mark>$&</mark>"));
       document.querySelectorAll('#nmdata .media')
-      .forEach(e => (/<mark>/.test(e.innerHTML) ? !anti : anti) || e.classList.add("dnone"));
+      .forEach(e => /<mark>/.test(e.innerHTML) != negs || e.classList.add("dnone"));
     }
   },
   filesChg = evt => {
@@ -596,7 +593,8 @@ let fwg, j = 0, rva0, rval, vidx = 3,
         docs:   (rslt.rows || rslt.results).map(row1Tfm) //.filter(d => !d._deleted)
       },
       dbq = txd2.DBNAME && window.PouchDB && new PouchDB(txd2.DBNAME);
-    rsp2con.textContent = nmdata.innerHTML = "";
+    rsp2con.textContent = "";
+    vidx === 2 || (nmdata.innerHTML = "");
     !fmove || Array.from(chks).forEach(inp => inp.parentElement.parentElement.className = "");
     chkaf2.forEach( inp => inp.parentElement.parentElement.className
       = fmove ? "hsuccl" : "hwarnl" );
@@ -665,23 +663,6 @@ let fwg, j = 0, rva0, rval, vidx = 3,
       || (qcontxta.value = JSON.stringify(txd2, null, 2)); //|| !window.EC2 ...&& EC2.qconRetrvD();
 */
   },
-  ancAdd1 = td2 => {
-    //let nanc = document.createElement('a');
-    td2.innerHTML = td2.textContent.replace(/.+?(?= \(\d+k\)$|$)/, "<a>$&</a>");
-    //nanc.innerHTML = td2.firstChild.innerHTML;
-    //nanc.appendChild(td2.firstChild);
-    td2.firstChild.onclick = fileLoad;
-    //td2.firstChild.replaceWith(nanc);
-  },
-/*
-  fileActv = evt => {
-    let td2 = evt.target.parentElement.parentElement.children[2];
-    rsp2con.textContent = nmdata.innerHTML = "";
-    evt.target.checked || (evt.target.parentElement.parentElement.className = "");
-    //evt.target.checked ? ancAdd1(td2) : td2.innerHTML = td2.textContent;
-    blk2Tog();
-  },
-*/
   clipsGen = () => {
     new PouchDB(txd1.DBNAME)
     .query(txd1.FILEID.replace(/^_design\//, "") + "/" + txd1.VIEW, txd1.OPTIONS || {})
@@ -691,19 +672,27 @@ let fwg, j = 0, rva0, rval, vidx = 3,
       descending: descswi.checked,
       include_docs: true })
     ).then(rslt => {
+      let nsX = nam => nam
+          .replace(/(.*?)((?:\bde +|\bvon +|)['‘’\w-]+)([ ,]*\b[js]r\.?|[ ,]*\b[ivx]+|)$/i, "$2, $1$3"),
+        rrs = rslt.rows.filter(r => r && (r.doc || r.value).name_user)
+          .sort( (a, b) => !(rval = a.doc || a.value).name_full ? 0
+            : ( nsX(rval.name_full).replace(/[.,;:/]/g, "")
+                < nsX((b.doc || b.value).name_full).replace(/[.,;:/]/g, "") )
+              == descswi.checked ? 1 : -1 );
+      ftotal.textContent = rrs.length;
       nmdata.innerHTML = "\n<span class=\"fltrt mtup4\">&ensp;Show all:&ensp;"
       + "<label><input type=checkbox id=cbxhdrs /> <a>headers</a></label>&ensp;"
       + "<label><input type=checkbox id=cbxbods /> <a>bodies</a></label></span>\n<hr>"
-      + rslt.rows.filter(r => r && (r.doc || r.value).name_user).map( r => `
+      + rrs.map( r => `
 <article class=media>
   <div class="media-left">
     <figure class="image rspv128"><img src="${
       aurlGen((rval = r.doc || r.value).image_src || "") }" data-fileid="${ r.id }" />
-    <figcaption><em>${ rval.name_user }</em></figcaption></figure>
+    <figcaption>${ rval.name_user }</figcaption></figure>
   </div>
   <div class="media-content">
     <div class=pwrap><span class=dnone><input type=checkbox /> </span><strong>${
-      rval.name_full }</strong>
+      nsX(rval.name_full) }</strong>
 <em>${ rval.roles.join(", ") }</em>
 <details><summary>Short Bio</summary>${ rval.bio_short }</details></div>
     <div class=pwrap><details><strong>Birthdate:</strong> ${ date1Fmt(rval.birthdate) }
@@ -729,6 +718,23 @@ let fwg, j = 0, rva0, rval, vidx = 3,
       cbxhdrs.click();
     }).catch(rsp2Show);
   },
+  ancAdd1 = td2 => {
+    //let nanc = document.createElement('a');
+    td2.innerHTML = td2.textContent.replace(/.+?(?= \(\d+k\)$|$)/, "<a>$&</a>");
+    //nanc.innerHTML = td2.firstChild.innerHTML;
+    //nanc.appendChild(td2.firstChild);
+    td2.firstChild.onclick = fileLoad;
+    //td2.firstChild.replaceWith(nanc);
+  },
+/*
+  fileActv = evt => {
+    let td2 = evt.target.parentElement.parentElement.children[2];
+    rsp2con.textContent = nmdata.innerHTML = "";
+    evt.target.checked || (evt.target.parentElement.parentElement.className = "");
+    //evt.target.checked ? ancAdd1(td2) : td2.innerHTML = td2.textContent;
+    blk2Tog();
+  },
+*/
   chksTog = evt => {
     let r1idx = evt.target.parentElement.parentElement.rowIndex - 2,
       sdtrs = document.querySelectorAll('#nmtbl tbody>tr[id]'),
@@ -814,13 +820,12 @@ let fwg, j = 0, rva0, rval, vidx = 3,
       ftotal.textContent = dels.length;
       [nmthds[0], nmtfts[0]].forEach(e => e.classList.add("dnone"));
       [nmthds[1], nmtfts[1]].forEach(e => e.classList.remove("dnone"));
-      nmtbod.innerHTML = qd3Fmt( ss[0] === "seq" ? dels
+      nmtbod.innerHTML = qd6Fmt( ss[0] === "seq" ? dels
         : ordFlip(dels.map(r => [r.id, r])).map(sr => sr[1]) );
       chksRstr();
       sortsel.innerHTML = `
           <option value=seq>Chg Seq</option>
-          <option value=id>Note ID</option>
-`;
+          <option value=id>Note ID</option>\n`;
       sortsel.value = /^(?:id|seq)$/.test(ss[0]) ? ss[0] : "id";
     }).catch(rsp2Show);
     vidx === 6 || new PouchDB(txd1.DBNAME)
@@ -840,7 +845,7 @@ let fwg, j = 0, rva0, rval, vidx = 3,
       [nmthds[1], nmtfts[1]].forEach(e => e.classList.add("dnone"));
       [nmthds[0], nmtfts[0]].forEach(e => e.classList.remove("dnone"));
       nmtbod.innerHTML = vidx !== 3
-      ? qd1Fmt( !ss[0] || vidx !== 5 && ss[0] === "id" || vidx === 5 && ss[1] === "timestamp"
+      ? qd4Fmt( !ss[0] || vidx !== 5 && ss[0] === "id" || vidx === 5 && ss[1] === "timestamp"
         ? rslt.rows
         : ordFlip( !ss[1] ? rslt.rows.map(r => [(r.doc || r.value)[ss[0]], r.id, r])
           : ss[1] !== "timestamp"
@@ -849,7 +854,7 @@ let fwg, j = 0, rva0, rval, vidx = 3,
             ? rval[ss[0]][ss[1]]
             : rval[ss[0].replace(/^file/, "ts")], r.id, r ]) )
         .map(sr => sr[2]) )
-      : qd0Fmt( ordFlip( rslt.rows.filter(r => /^[.-]/.test(r.id) || (r.doc || r.value).file_updated)
+      : qd3Fmt( ordFlip( rslt.rows.filter(r => /^[.-]/.test(r.id) || (r.doc || r.value).file_updated)
         .map( r => /^[.-]/.test(r.id) ? [r.id.replace(/^\.(.+)$/, "$1_"), null, r.id, r]
           : [ (rval = r.doc || r.value).file_updated.subdir || ".",
             !ss[1] ? rval[ss[0] || "id"] : (rval[ss[0]] || "")[ss[1]], r.id, r ]) )
@@ -898,7 +903,10 @@ let fwg, j = 0, rva0, rval, vidx = 3,
     //colsTog();
     viewRte();
   },
-  pdbOpen = () => { txd1.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value; viewRte(); };
+  pdbOpen = () => { txd1.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value; viewRte(); },
+  pdbsGen = (dbs = []) => pdbssel.innerHTML
+    = ["\n      <option></option>", "<option>&plus; New DB</option>"]
+      .concat(dbs.map(e => "<option>" + e + "</option>")).join("\n      ") + "\n      ";
 viewsel.onchange = viewTog;
 pdbssel.onchange = pdbOpen;
 colssel.onchange = colsTog;
@@ -910,8 +918,8 @@ document.querySelectorAll(qslrs[2]).forEach(a => a.onclick = sdirXpd);
 document.querySelectorAll('#nmtbl td:first-of-type>input').forEach(inp => inp.onchange = chksTog);
 document.querySelectorAll('#nmwrap #movebtn, #nmwrap #delbtn').forEach(btn => btn.onclick = filesChg);
 colssel.innerHTML = sopts[0];
-!window.PouchDB || !PouchDB.allDbs ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(console.warn);
+!window.PouchDB || !PouchDB.allDbs ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(rsp2Show);
 colsTog();
-viewRte();
+//viewRte();
 </script>
 </html>
