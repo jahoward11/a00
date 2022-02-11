@@ -15,7 +15,7 @@ hr {
   margin: 1.5em 0;
   border: none;
 }
-button, input, select, textarea { margin: 0; }
+button, input, select, textarea, pre { margin: 0; }
 input[type=checkbox], input[type=radio] { vertical-align: baseline; }
 strong, mark, table th, .table, .table thead td, .table thead th,
 .table tfoot td, .table tfoot th { color: inherit; }
@@ -223,7 +223,10 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   background: Whitesmoke;
   text-align: left;
 }
+#nmdata .cfield { line-height: 1.5; }
 #nmdata .cfield:not(:last-child) { margin-bottom: 10.5px; }
+#nmdata h4.cfield:not(:last-child) { margin-bottom: 7px; }
+#nmdata h5.cfield:not(:last-child) { margin-bottom: 3.5px; }
 #nmdata #ndhelp { font-size: 10.5px; text-align: right; }
 #nmdata .media-left>.image.rspv128 {
   width: 128px;
@@ -287,7 +290,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     </div>
   </div>
 </nav>
-<div id=nmflow class="cfield dflow">
+<div id=nmflow class="cfield dflow dnone">
 <table id=nmtbl class=table>
   <thead>
     <tr>
@@ -362,7 +365,12 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </tfoot>
 </table>
 </div>
-<div id=nmdata class=cfield></div>
+<div id=nmdata class=cfield>
+<hr>
+<h4 class=cfield>Just getting started?</h4>
+<div class=cfield>&emsp;Add a new <em>database</em> using
+the 1<sup>st</sup> select list in the controls&nbsp;above.</div>
+</div>
 </div>
 
 <script src="../../a00/-res-js/pouchdb.min.js" type="text/javascript"></script>
@@ -877,46 +885,97 @@ let fwg, j = 0, rva3, rval, vidx = 3,
     nmdata.innerHTML = `
 <hr>
 <h4 class=cfield>Database Setup</h4>
-<pre>
-### DB Info
-DB name:     ________
-Notes total: ________
-Created:     ________
-Created by:  ________
+<div class=cfield>
+&emsp;Switch to any previously created, local database using
+the 1<sup>st</sup> select list in the controls above.
+<br>&emsp;To <em>destroy</em> an existing database&mdash;or to <em>compact</em> it
+(i.e., remove all versions of each <em>note</em> but the last one)&mdash;enter
+the same name as the currently selected DB and tap the appropriate button.
+</div>
+<pre class=cfield>
+  Sel'd DB name: "________"
+  [COMPACT] [DESTROY]
+</pre>
+<div class=cfield>
+&emsp;To <em>create</em> a new local database, enter your username,
+a short description of purpose and a new DB name
+(and, optionally, set your own DB configurations, below);
+Then, tap the associated button.
+</div>
+<pre class=cfield>
+  Username:      "________"
+  New DB name:   "________"
+  New DB descr:  "________"
+  [CREATE]
+</pre>
+<h4 class=cfield>About Local DB (Selected)</h4>
+<pre class=cfield>
+  DB name:       ________
+  Notes total:   ________
+  Created:       ________
+  Created by:    ________
+  Description:   ________
 
-Code: "________" [CLEANUP] [DESTROY]
+  [ ] set as default DB
+      (to be directly opened on next startup)
+</pre>
+<h5 class=cfield>"New Note" Template</h5>
+<div class=cfield>
+&emsp;Add a new <em>note</em> to the database using the 2<sup>nd</sup> select list in the controls above.
+<br>&emsp;Be aware that a database <em>note</em>
+(a.k.a., <em>file</em> or <em>document</em> or <em>entry</em>) is actually
+a stored JavaScript object (with arbitrary <em>keys</em> and <em>values</em>).
+<br>&emsp;Furthermore, a database is most manageable when all of the <em>notes</em> in it
+share a common structure (i.e., have the same set of object-property <em>keys</em>).
+<br>&emsp;Therefore, to keep a new database manageable, decide in advance
+what its function is by commiting to one <em>note</em>-object structure
+(either a preset <em>note</em> type or a creation of your own)
+and selecting it, below, as the default template.
+</div>
+<pre class=cfield>
+  Default note type: "contact"
 
-### Note List Views
-- V1-custom1 : descriptionV1
-- V2-custom1 : descriptionV2
-- V3-custom1 : descriptionV3
-- V4-custom1 : descriptionV4
-- V5-custom1 : descriptionV5
-[+ Add View]
+ Note-obj-pty KEY | VALUE datatype| VALUE pre-fill
+ _id              | string        | \`cidGen()\`
+ file_type        | string        | contact
+ ts_created       | number        | \`Date()\`
+ ts_updated       | number        | \`Date()\`
+ name_full        | string        | 
+ name_user        | string        | 
+ birthdate        | string        | 
+ roles            | string        | 
+ emails           | arr of str    | []
+ phones           | arr of str    | []
+ locations        | arr of obj    | [ { "label": "home", "street": "", ... } ]
+ social_profiles  | arr of str    | []
+ project_urls     | arr of str    | []
+ team_groups      | arr of str    | []
+ image_src        | string        | 
+ bio_short        | string        | 
+ miscellany       | string        | 
+</pre>
+<h5 class=cfield>Notelist Views</h5>
+<div class=cfield>
+&emsp;Switch to any notelist <em>view</em> using the 2<sup>nd</sup> select list in the controls above.
+<br>&emsp;Five different <em>views</em> are available.
+<br>&emsp;Customize and preserve any one or more of the five <em>views</em> by selecting one,
+adjusting the subsequent view controls, above, and adding the resulting new <em>view</em>, below.
+</div>
+<pre class=cfield>
+  - V1-custom1 : descriptionV1
+  - V2-custom1 : descriptionV2
+  - V3-custom1 : descriptionV3
+  - V4-custom1 : descriptionV4
+  - V5-custom1 : descriptionV5
 
-Default view: "V1-custom1"
-
-### New Note Template
-Note type: "________"
-
- Note-obj pty   | Data type   | Pre-filled data
- _id            | str         | \`cidGen()\`
- file_type      | str         | contact
- ts_created     | number      | \`Date()\`
- ts_updated     | number      | \`Date()\`
- name_full      | str         | 
- name_user      | str         | 
- birthdate      | str         | 
- roles          | str         | 
- emails         | arr of str  | []
- phones         | arr of str  | []
- locations      | arr of obj  | [ { "label": "home", "street": "", ... } ]
- bio_short      | str         | 
- image_src      | str         | 
- social_profiles| arr of str  | []
- project_urls   | arr of str  | []
- team_groups    | arr of str  | []
- miscellany     | str         | 
+  [+ Add View]
+</pre>
+<div class=cfield>
+&emsp;Also, select one (either a preset or one of your own) as the default <em>view</em>&mdash;i.e.,
+the <em>view</em> that will be displayed first each time the database is opened.
+</div>
+<pre class=cfield>
+  Default view: "V1:noteclips"
 </pre>
 `;
   },
@@ -931,7 +990,8 @@ Note type: "________"
     } else if (vidx < 3) {
       rsp2con.textContent = nmtbod.innerHTML = "";
       nmflow.classList.add("dnone");
-      !vidx ? fileLoad() : vidx < 2 ? pdbCfg() : clipsGen();
+      !vidx ? nmdata.innerHTML = "\n<hr>\n<p>Coming soon &hellip;</p>\n"
+      : vidx < 2 ? pdbCfg() : clipsGen();
     } else {
       rsp2con.textContent = nmdata.innerHTML = "";
       nmflow.classList.remove("dnone");
@@ -972,6 +1032,6 @@ document.querySelectorAll('#nmwrap #movebtn, #nmwrap #delbtn').forEach(btn => bt
 colssel.innerHTML = sopts[0];
 !window.PouchDB || !PouchDB.allDbs ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(rsp2Show);
 colsTog();
-viewRte();
+//viewRte();
 </script>
 </html>
