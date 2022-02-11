@@ -368,7 +368,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 <script src="../../a00/-res-js/pouchdb.min.js" type="text/javascript"></script>
 <script src="../../a00/-res-js/pouchdb.all-dbs.min.js" type="text/javascript"></script>
 <script type=module>
-let fwg, j = 0, rva0, rval, vidx = 3,
+let fwg, j = 0, rva3, rval, vidx = 3,
   txd1 = {
     DBNAME:  "",
     FILEID:  "_design/ecosorter",
@@ -483,8 +483,8 @@ let fwg, j = 0, rva0, rval, vidx = 3,
       <td colspan=18>${ !rval._attachments[k] ? k
         : k + " (" + Math.ceil(+rval._attachments[k].length / 1000) + "k)" }</td>
     </tr>` ).join("")
-    : !i || !(rva0 = rows[i - 1].doc || rows[i - 1].value).file_updated
-      || rval.file_updated.subdir !== rva0.file_updated.subdir
+    : !i || !(rva3 = rows[i - 1].doc || rows[i - 1].value).file_updated
+      || rval.file_updated.subdir !== rva3.file_updated.subdir
     ? (!i || (j = i)) && `
     <tr id="${ rval.file_updated.subdir || "_" }">
       <td colspan=20><a>&#x25b6;</a> <input type=checkbox class=dnone /> ${
@@ -526,7 +526,7 @@ let fwg, j = 0, rva0, rval, vidx = 3,
       sepa = /^\/.+\/[gim]*$/.test(filtinp.value.trim()) ? eval(filtinp.value)
         : new RegExp(filtinp.value.replace(/^-/, "") || "^$", "gi");
     rsp2con.textContent = "";
-    vidx === 2 || (nmdata.innerHTML = "");
+    //vidx === 2 || (nmdata.innerHTML = "");
     ( vidx !== 2 ? document.querySelectorAll(qslrs[4])
       : document.querySelectorAll('#nmdata .media-content>.pwrap>span>input') )
       .forEach(inp => inp.checked = false);
@@ -594,7 +594,7 @@ let fwg, j = 0, rva0, rval, vidx = 3,
       },
       dbq = txd2.DBNAME && window.PouchDB && new PouchDB(txd2.DBNAME);
     rsp2con.textContent = "";
-    vidx === 2 || (nmdata.innerHTML = "");
+    //vidx === 2 || (nmdata.innerHTML = "");
     !fmove || Array.from(chks).forEach(inp => inp.parentElement.parentElement.className = "");
     chkaf2.forEach( inp => inp.parentElement.parentElement.className
       = fmove ? "hsuccl" : "hwarnl" );
@@ -612,13 +612,13 @@ let fwg, j = 0, rva0, rval, vidx = 3,
       //fwinflux = document.querySelector('#ecoguides .button[disabled]'),
       txd2 = {
         DBNAME:  txd1.DBNAME,
-        FILEID:  evt.target.textContent || evt.target.dataset.fileid,
+        FILEID:  !evt ? "" : evt.target.textContent || evt.target.dataset.fileid,
         OPTIONS: {
           rev: vidx !== 6 ? null : evt.target.parentElement.parentElement.children[3].textContent
           //revs_info: true
         }
       };
-    rsp2con.textContent = nmdata.innerHTML = "";
+    rsp2con.textContent = "";
     [vctrls, nmflow].forEach(e => e.classList.add("dnone"));
     !txd2.DBNAME || !window.PouchDB || new PouchDB(txd2.DBNAME)
     .get(txd2.FILEID, txd2.OPTIONS).then(doc => {
@@ -663,61 +663,6 @@ let fwg, j = 0, rva0, rval, vidx = 3,
       || (qcontxta.value = JSON.stringify(txd2, null, 2)); //|| !window.EC2 ...&& EC2.qconRetrvD();
 */
   },
-  clipsGen = () => {
-    new PouchDB(txd1.DBNAME)
-    .query(txd1.FILEID.replace(/^_design\//, "") + "/" + txd1.VIEW, txd1.OPTIONS || {})
-    .catch( () => new PouchDB(txd1.DBNAME).allDocs({
-      startkey: descswi.checked ? "~a" : undefined,
-      endkey: descswi.checked ? undefined : "~a",
-      descending: descswi.checked,
-      include_docs: true })
-    ).then(rslt => {
-      let nsX = nam => nam
-          .replace(/(.*?)((?:\bde +|\bvon +|)['‘’\w-]+)([ ,]*\b[js]r\.?|[ ,]*\b[ivx]+|)$/i, "$2, $1$3"),
-        rrs = rslt.rows.filter(r => r && (r.doc || r.value).name_user)
-          .sort( (a, b) => !(rval = a.doc || a.value).name_full ? 0
-            : ( nsX(rval.name_full).replace(/[.,;:/]/g, "")
-                < nsX((b.doc || b.value).name_full).replace(/[.,;:/]/g, "") )
-              == descswi.checked ? 1 : -1 );
-      ftotal.textContent = rrs.length;
-      nmdata.innerHTML = "\n<span class=\"fltrt mtup4\">&ensp;Show all:&ensp;"
-      + "<label><input type=checkbox id=cbxhdrs /> <a>headers</a></label>&ensp;"
-      + "<label><input type=checkbox id=cbxbods /> <a>bodies</a></label></span>\n<hr>"
-      + rrs.map( r => `
-<article class=media>
-  <div class="media-left">
-    <figure class="image rspv128"><img src="${
-      aurlGen((rval = r.doc || r.value).image_src || "") }" data-fileid="${ r.id }" />
-    <figcaption>${ rval.name_user }</figcaption></figure>
-  </div>
-  <div class="media-content">
-    <div class=pwrap><span class=dnone><input type=checkbox /> </span><strong>${
-      nsX(rval.name_full) }</strong>
-<em>${ rval.roles.join(", ") }</em>
-<details><summary>Short Bio</summary>${ rval.bio_short }</details></div>
-    <div class=pwrap><details><strong>Birthdate:</strong> ${ date1Fmt(rval.birthdate) }
-<strong>Emails:</strong> ${ rval.emails.join(", ") }
-<strong>Phones:</strong> ${ rval.phones.join(", ") }${
-      !rval.social_profiles.length ? ""
-        : "\n<strong>Social profiles:</strong> " + rval.social_profiles.join(", ") }${
-      !rval.project_urls.length ? ""
-        : "\n<strong>Project urls:</strong> " + rval.project_urls.join(", ") }${
-      !rval.ts_created ? ""
-        : "\n<strong>Joined team:</strong> " + date1Fmt(rval.ts_created) }${
-      !rval.ts_updated ? ""
-        : "\n<strong>Last updated:</strong> " + date1Fmt(rval.ts_updated) }</details></div>
-  </div>
-</article>` ).join("") + "\n";
-      cbxhdrs.onchange = evt => document.querySelectorAll('#nmdata .media-content>:first-child>details')
-        .forEach(e => e.open = evt.target.checked);
-      cbxbods.onchange = evt => document.querySelectorAll('#nmdata .media-content>:last-child>details')
-        .forEach(e => e.open = evt.target.checked);
-      document.querySelectorAll('#nmdata .media-left>.image>img').forEach(e => e.onclick = fileLoad);
-      document.querySelectorAll('#nmdata .media-content>.pwrap>span>input')
-      .forEach(inp => inp.onchange = blk2Tog);
-      cbxhdrs.click();
-    }).catch(rsp2Show);
-  },
   ancAdd1 = td2 => {
     //let nanc = document.createElement('a');
     td2.innerHTML = td2.textContent.replace(/.+?(?= \(\d+k\)$|$)/, "<a>$&</a>");
@@ -742,7 +687,7 @@ let fwg, j = 0, rva0, rval, vidx = 3,
       r2idx = rsidx[rsidx.findIndex(n => n === r1idx) + 1]
         || ((document.querySelector('#nmtbl tbody>tr:last-of-type') || "").rowIndex - 1),
       trows = document.querySelectorAll('#nmtbl tbody>tr');
-    rsp2con.textContent = nmdata.innerHTML = "";
+    rsp2con.textContent = "";
     if (!evt.target.parentElement.parentElement.id) {
       evt.target.checked
       || document.querySelectorAll('#nmtbl tbody>tr:not([id])').forEach(tr => tr.className = "");
@@ -775,9 +720,9 @@ let fwg, j = 0, rva0, rval, vidx = 3,
       while (++r1idx < r2idx) { trows[r1idx].hidden = !xpd; }
     } else {
       document.querySelectorAll(qslrs[2])
-      .forEach(a => a.innerHTML = !xpd ? "&#x25b6;" : "&#x25bc;");
+      .forEach(anc => anc.innerHTML = !xpd ? "&#x25b6;" : "&#x25bc;");
       document.querySelectorAll('#nmtbl tbody>tr[id]>td:first-of-type>a')
-      .forEach(a => a.innerHTML = !xpd ? "&#x25b6;" : "&#x25bc;");
+      .forEach(anc => anc.innerHTML = !xpd ? "&#x25b6;" : "&#x25bc;");
       document.querySelectorAll('#nmtbl tbody>tr:not([id])').forEach(tr => tr.hidden = !xpd);
     }
   },
@@ -798,7 +743,7 @@ let fwg, j = 0, rva0, rval, vidx = 3,
         bulkctrl.classList.add("dnone");
         filtctrl.classList.remove("dnone");
         filtinp.value = moveinp.value = "";
-        document.querySelectorAll(qslrs[2]).forEach(a => a.innerHTML = "&#x25b6;");
+        document.querySelectorAll(qslrs[2]).forEach(anc => anc.innerHTML = "&#x25b6;");
         document.querySelectorAll(qslrs[3]).forEach(inp => {
           inp.checked = false;
           inp.className = "dnone";
@@ -863,30 +808,137 @@ let fwg, j = 0, rva0, rval, vidx = 3,
       document.querySelectorAll(qslrs[1])
       .forEach(spn => spn.className = vidx !== 3 ? "" : "dnone");
       document.querySelectorAll(qslrs[2])
-      .forEach(a => a.className = vidx === 3 ? "" : "dnone");
+      .forEach(anc => anc.className = vidx === 3 ? "" : "dnone");
       document.querySelectorAll('#nmtbl tbody>tr[id]>td:first-of-type>a')
-      .forEach(a => a.onclick = sdirXpd);
+      .forEach(anc => anc.onclick = sdirXpd);
       chksRstr();
       document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:nth-of-type(3)').forEach(ancAdd1);
     }).catch(rsp2Show);
   },
+  clipsGen = () => {
+    new PouchDB(txd1.DBNAME)
+    .query(txd1.FILEID.replace(/^_design\//, "") + "/" + txd1.VIEW, txd1.OPTIONS || {})
+    .catch( () => new PouchDB(txd1.DBNAME).allDocs({
+      startkey: descswi.checked ? "~a" : undefined,
+      endkey: descswi.checked ? undefined : "~a",
+      descending: descswi.checked,
+      include_docs: true })
+    ).then(rslt => {
+      let na, nb, ra, rb,
+        nsX = nf => nf.trim()
+          .replace(/(.*?) *((?:\bde +|\bvon +|)['‘’\w-]+)([ ,]*\b[js]r\.?|[ ,]*\b[ivx]+|)$/i, "$2, $1$3"),
+        rrs = rslt.rows.filter(r => r && ( /contact|phone/.test((r.doc || r.value).file_type || "")
+            || (ra = a.doc || a.value).name_full || ra.name_user || ra.name ))
+          .sort( (a, b) => !(na = (ra = a.doc || a.value).name_full || ra.name_user || ra.name || ra._id)
+              || !(nb = (rb = b.doc || b.value).name_full || rb.name_user || rb.name || rb._id) ? 0
+            : (nsX(na).replace(/[.,;:/]/g, "") < nsX(nb).replace(/[.,;:/]/g, ""))
+              == descswi.checked ? 1 : -1 );
+      ftotal.textContent = rrs.length;
+      nmdata.innerHTML = "\n<span class=\"fltrt mtup4\">&ensp;Show all:&ensp;"
+      + "<label><input type=checkbox id=cbxhdrs /> <a>headers</a></label>&ensp;"
+      + "<label><input type=checkbox id=cbxbods /> <a>bodies</a></label></span>\n<hr>"
+      + rrs.map( r => `
+<article class=media>
+  <div class="media-left">
+    <figure class="image rspv128"><img src="${
+      aurlGen((ra = r.doc || r.value).image_src || "") }" data-fileid="${ r.id }" />
+    <figcaption>${ ra.name_user || "" }</figcaption></figure>
+  </div>
+  <div class="media-content">
+    <div class=pwrap><span class=dnone><input type=checkbox /> </span><strong>${
+      nsX(ra.name_full || ra.name_user || ra.name || ra._id) }</strong>
+<em>${ ra.roles.join(", ") }</em>
+<details><summary>Short Bio</summary>${ ra.bio_short }</details></div>
+    <div class=pwrap><details><strong>Birthdate:</strong> ${ date1Fmt(ra.birthdate) }
+<strong>Emails:</strong> ${ ra.emails.join(", ") }
+<strong>Phones:</strong> ${ ra.phones.join(", ") }${
+      !ra.social_profiles.length ? ""
+        : "\n<strong>Social profiles:</strong> " + ra.social_profiles.join(", ") }${
+      !ra.project_urls.length ? ""
+        : "\n<strong>Project urls:</strong> " + ra.project_urls.join(", ") }${
+      !ra.ts_created ? ""
+        : "\n<strong>Joined team:</strong> " + date1Fmt(ra.ts_created) }${
+      !ra.ts_updated ? ""
+        : "\n<strong>Last updated:</strong> " + date1Fmt(ra.ts_updated) }</details></div>
+  </div>
+</article>` ).join("") + "\n";
+      cbxhdrs.onchange = evt => document.querySelectorAll('#nmdata .media-content>:first-child>details')
+        .forEach(e => e.open = evt.target.checked);
+      cbxbods.onchange = evt => document.querySelectorAll('#nmdata .media-content>:last-child>details')
+        .forEach(e => e.open = evt.target.checked);
+      document.querySelectorAll('#nmdata .media-left>.image>img').forEach(e => e.onclick = fileLoad);
+      document.querySelectorAll('#nmdata .media-content>.pwrap>span>input')
+      .forEach(inp => inp.onchange = blk2Tog);
+      cbxhdrs.click();
+    }).catch(rsp2Show);
+  },
+  pdbCfg = () => {
+    //[vctrls, nmflow].forEach(e => e.classList.add("dnone"));
+    nmdata.innerHTML = `
+<hr>
+<h4 class=cfield>Database Setup</h4>
+<pre>
+### DB Info
+DB name:     ________
+Notes total: ________
+Created:     ________
+Created by:  ________
+
+Code: "________" [CLEANUP] [DESTROY]
+
+### Note List Views
+- V1-custom1 : descriptionV1
+- V2-custom1 : descriptionV2
+- V3-custom1 : descriptionV3
+- V4-custom1 : descriptionV4
+- V5-custom1 : descriptionV5
+[+ Add View]
+
+Default view: "V1-custom1"
+
+### New Note Template
+Note type: "________"
+
+ Note-obj pty   | Data type   | Pre-filled data
+ _id            | str         | \`cidGen()\`
+ file_type      | str         | contact
+ ts_created     | number      | \`Date()\`
+ ts_updated     | number      | \`Date()\`
+ name_full      | str         | 
+ name_user      | str         | 
+ birthdate      | str         | 
+ roles          | str         | 
+ emails         | arr of str  | []
+ phones         | arr of str  | []
+ locations      | arr of obj  | [ { "label": "home", "street": "", ... } ]
+ bio_short      | str         | 
+ image_src      | str         | 
+ social_profiles| arr of str  | []
+ project_urls   | arr of str  | []
+ team_groups    | arr of str  | []
+ miscellany     | str         | 
+</pre>
+`;
+  },
   viewRte = evt => {
-    rsp2con.textContent = nmdata.innerHTML = "";
     if (!window.PouchDB || !txd1.DBNAME) {
       ftotal.textContent = "0";
-      nmtbod.innerHTML = "";
-      rsp2con.textContent ? null
-      : rsp2Show("Alert: No database has been selected or PouchDB is not loaded.");
+      nmtbod.innerHTML = nmdata.innerHTML = "";
+      nmflow.classList.add("dnone");
+      window.PouchDB || !txd1.DBNAME || rsp2con.textContent
+      || rsp2Show("Alert: PouchDB is not loaded. Database is inaccessible.");
+      pdbssel.selectedIndex !== 1 || pdbCfg();
     } else if (vidx < 3) {
-      vidx < 2 ? null
-      : (nmtbod.innerHTML = "") || nmflow.classList.add("dnone") || clipsGen();
+      rsp2con.textContent = nmtbod.innerHTML = "";
+      nmflow.classList.add("dnone");
+      !vidx ? fileLoad() : vidx < 2 ? pdbCfg() : clipsGen();
     } else {
+      rsp2con.textContent = nmdata.innerHTML = "";
       nmflow.classList.remove("dnone");
       tblGen(evt);
     }
   },
   viewTog = evt => {
-    rsp2con.textContent = nmdata.innerHTML = "";
     vidx = evt.currentTarget.selectedIndex; //evt.target.parentElement.dataset.vidx
     //nmtabs.forEach(li => li.classList.remove("is-active"));
     //nmtabs[vidx].classList.add("is-active");
@@ -895,7 +947,7 @@ let fwg, j = 0, rva0, rval, vidx = 3,
     vidx !== 4 || (colssel.options[18].selected = colssel.options[0].selected = true);
     if (vidx === 5) {
       Array.from(colssel.options).forEach(o => o.selected = false);
-      [1, 2, 7, 8, 14, 15, 16, 17].forEach(i => colssel.options[i].selected = true);
+      [1, 2, 7, 8, 14, 15, 16, 17].forEach(n => colssel.options[n].selected = true);
       sortsel.value = "";
     }
     //document.querySelectorAll(qslrs[0])
@@ -907,19 +959,19 @@ let fwg, j = 0, rva0, rval, vidx = 3,
   pdbsGen = (dbs = []) => pdbssel.innerHTML
     = ["\n      <option></option>", "<option>&plus; New DB</option>"]
       .concat(dbs.map(e => "<option>" + e + "</option>")).join("\n      ") + "\n      ";
-viewsel.onchange = viewTog;
 pdbssel.onchange = pdbOpen;
+viewsel.onchange = viewTog;
 colssel.onchange = colsTog;
 sortsel.onchange = viewRte;
 descswi.onchange = viewRte;
 filtbtn.onclick = filtExe;
 blktrig.onclick = bulkTog;
-document.querySelectorAll(qslrs[2]).forEach(a => a.onclick = sdirXpd);
+document.querySelectorAll(qslrs[2]).forEach(anc => anc.onclick = sdirXpd);
 document.querySelectorAll('#nmtbl td:first-of-type>input').forEach(inp => inp.onchange = chksTog);
 document.querySelectorAll('#nmwrap #movebtn, #nmwrap #delbtn').forEach(btn => btn.onclick = filesChg);
 colssel.innerHTML = sopts[0];
 !window.PouchDB || !PouchDB.allDbs ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(rsp2Show);
 colsTog();
-//viewRte();
+viewRte();
 </script>
 </html>
