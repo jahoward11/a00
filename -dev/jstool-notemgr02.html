@@ -15,7 +15,7 @@ hr {
   margin: 1.5em 0;
   border: none;
 }
-button, input, select, textarea, pre { margin: 0; }
+ol, ul, li, button, input, select, textarea, pre { margin: 0; }
 input[type=checkbox], input[type=radio] { vertical-align: baseline; }
 strong, mark, table th, .table, .table thead td, .table thead th,
 .table tfoot td, .table tfoot th { color: inherit; }
@@ -155,13 +155,64 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 @media screen and (max-width: 719px) {
   .media-content { overflow-x: auto; }
 }
+.tabs {
+  -webkit-overflow-scrolling: touch;
+  align-items: stretch;
+  display: flex;
+//font-size: 1rem;
+  justify-content: space-between;
+  overflow: hidden;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.tabs a {
+  align-items: center;
+  border-bottom-color: #dbdbdb;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  color: #4a4a4a;
+  display: flex;
+  justify-content: center;
+  margin-bottom: -1px;
+  padding: 0.5em 1em;
+  vertical-align: top;
+}
+.tabs a:hover {
+  border-bottom-color: #363636;
+  color: #363636;
+}
+.tabs li { display: block; }
+.tabs li.is-active a {
+  border-bottom-color: #485fc7;
+  color: #485fc7;
+}
+.tabs ul {
+  align-items: center;
+  border-bottom-color: #dbdbdb;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  display: flex;
+  flex-grow: 1;
+  flex-shrink: 0;
+  justify-content: flex-start;
+}
+.tabs .icon:first-child { margin-right: 0.5em; }
+.tabs .icon:last-child { margin-left: 0.5em; }
+.tabs.is-centered ul { justify-content: center; }
+/*
+#nmwrap .tabs>ul, #nmwrap .tabs li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+*/
 #nmwrap { font: normal 14px BlinkMacSystemFont, -apple-system, Helvetica, Arial, sans-serif; max-width: 960px; margin: 24px auto; }
 #nmwrap a {
   color: #485fc7;
   cursor: pointer;
   text-decoration: none;
 }
-#nmwrap a:hover, #nmwrap a.has-text-link:hover, #nmwrap label.has-text-link:hover {
+#nmwrap a:hover {
   color: CornFlowerBlue !important;
 }
 #nmwrap a:active, #nmwrap button:active { box-shadow: 0 0 0 0.125em rgb(50 152 220 / 25%); }
@@ -184,9 +235,11 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap input[type=text], #nmwrap select { width: 90px; }
 #nmwrap input::placeholder { opacity: 0.5; }
 #nmwrap textarea { display: block; font: normal 10.5px monospace; width: 100%; }
+#nmwrap .hwsmok { background-color: Whitesmoke; }
+#nmwrap .hgains { background-color: Gainsboro; }
 #nmwrap .hwarnl { background-color: #fff6e6; }
 #nmwrap .hsuccl { background-color: #e8effc; }
-#nmwrap .hgreyl { background-color: Gainsboro; }
+#nmwrap .igreyd { color: DarkGrey; }
 #nmwrap .iwarn { color: Orange; }
 #nmwrap .isucc { color: CornFlowerBlue; }
 #nmwrap textarea.iwarn { color: unset; border-color: Orange; }
@@ -211,6 +264,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   overflow-x: hidden;
   white-space: pre;
 }
+#nmwrap #vctrls { margin-bottom: 21px; }
 #nmwrap #pdbssel { width: 136px; }
 #nmwrap #ftotal { display: inline-block; min-width: 20px; }
 #nmwrap #viewsel { width: 24px; }
@@ -255,20 +309,20 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 </style>
 <h4 class=cfield>Note Manager</h4>
 <pre id=rsp2con></pre>
-<nav id=vctrls class="level cfield">
+<nav id=vctrls class="level">
   <div class="level-item">
     <div class="level cfield">
       <span class=ccntr><select id=pdbssel>
       </select></span><span class=ccntr><select id=viewsel>
         <option>&plus; New Note</option>
-        <option>DB:config</option>
+        <option>&check;&thinsp;DB Config</option>
+        <option>&#x2699; Settings</option>
         <option>V1:noteclips</option>
         <option selected>V2:organized</option>
         <option>V3:mutables</option>
         <option>V4:statics</option>
         <option>V5:deleted</option>
-      </select></span><span class=ccntr>Total:
-      <span id=ftotal>0</span></span>
+      </select></span><span class=ccntr>Total: <span id=ftotal>0</span></span>
     </div>
   </div>
   <div class="level-item">
@@ -282,7 +336,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   <div class="level-item">
     <div class="level cfield">
       <span id=filtctrl class=ccntr>
-      <input type=text id=filtinp placeholder="Search pattern&hellip;" /><button id=filtbtn class=hgreyl>
+      <input type=text id=filtinp placeholder="Search pattern&hellip;" /><button id=filtbtn class=hgains>
       FILT</button></span><span id=bulkctrl class="ccntr dnone"><span class=cfield>
       <span class=ccntr><input type=text id=moveinp placeholder="New subdir&hellip;" /><button id=movebtn class="isucc hsuccl">
       MOV</button></span><span class=ccntr><button id=delbtn class="iwarn hwarnl">
@@ -365,18 +419,46 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </tfoot>
 </table>
 </div>
-<div id=nmdata class=cfield>
 <hr>
+<div id=nmopps class=tabs>
+  <ul>
+    <li class="is-active">
+      <a onclick="">
+        <span class="icon is-small is-size-4">&bull;</span>
+        <span>Mgr Tips</span>
+      </a>
+    </li>
+    <li>
+      <a class=igreyd onclick="">
+        <span class="icon is-small is-size-4">&plus;</span>
+        <span>New Note</span>
+      </a>
+    </li>
+    <li>
+      <a class=igreyd onclick="">
+        <span class="icon is-small is-size-4">&check;</span>
+        <span>DB Config</span>
+      </a>
+    </li>
+    <li>
+      <a class=igreyd onclick="">
+        <span class="icon is-small is-size-4">&#x2699;</span>
+        <span>Settings</span>
+      </a>
+    </li>
+  </ul>
+</div>
+<div id=nmdata class=cfield>
 <h4 class=cfield>Just getting started?</h4>
-<div class=cfield>&emsp;Add a new <em>database</em> using
-the 1<sup>st</sup> select list in the controls&nbsp;above.</div>
+<div class=cfield>&emsp;Add a new <em>database</em> ( <span class=hwsmok>&plus; New DB</span> )
+using the 1<sup>st</sup> select list in the controls&nbsp;above.</div>
 </div>
 </div>
 
 <script src="../../a00/-res-js/pouchdb.min.js" type="text/javascript"></script>
 <script src="../../a00/-res-js/pouchdb.all-dbs.min.js" type="text/javascript"></script>
 <script type=module>
-let fwg, j = 0, rva3, rval, vidx = 3,
+let fwg, j = 0, rva3, rval, vidx = 4,
   txd1 = {
     DBNAME:  "",
     FILEID:  "_design/ecosorter",
@@ -451,7 +533,7 @@ let fwg, j = 0, rva3, rval, vidx = 3,
   date1Fmt = str => !str ? ""
     : new Date(str).toUTCString().replace(/.+(\d{2} [a-z]{3} \d{4}).+/i, "$1"),
   tr0Gen = (r, i) => `
-    <tr${ vidx !== 3 ? "" : " hidden"}>
+    <tr${ vidx !== 4 ? "" : " hidden"}>
       <td>${ 1 + i - j } <input type=checkbox class=dnone /></td>
       <td>${ (rval = r.doc || r.value).file_updated
         ? (rval.file_updated.subdir || ".") + "/" : "" }</td>
@@ -508,18 +590,18 @@ let fwg, j = 0, rva3, rval, vidx = 3,
       <td>${ d.changes[0].rev }</td>
     </tr>` ).join("") + "\n  ",
   blk2Tog = () => {
-    if (vidx === 6) { return; }
-    let chks = vidx !== 2
+    if (vidx === 7) { return; }
+    let chks = vidx !== 3
         ? document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:first-of-type>input:checked')
         : document.querySelectorAll('#nmdata .media-content>.pwrap>span>input:checked');
     (chks.length ? filtctrl : bulkctrl).classList.add("dnone");
     (chks.length ? bulkctrl : filtctrl).classList.remove("dnone");
   },
   bulkTog = () => {
-    let hid = vidx !== 2
+    let hid = vidx !== 3
         ? document.querySelector('#nmtbl thead:not(.dnone) td:first-of-type>input.dnone')
         : document.querySelector('#nmdata .media-content>.pwrap>span.dnone');
-    ( vidx !== 2 ? document.querySelectorAll(qslrs[4])
+    ( vidx !== 3 ? document.querySelectorAll(qslrs[4])
       : document.querySelectorAll('#nmdata .media-content>.pwrap>span') )
       .forEach(e => e.className = hid ? "" : "dnone");
     if (hid) {
@@ -534,8 +616,8 @@ let fwg, j = 0, rva3, rval, vidx = 3,
       sepa = /^\/.+\/[gim]*$/.test(filtinp.value.trim()) ? eval(filtinp.value)
         : new RegExp(filtinp.value.replace(/^-/, "") || "^$", "gi");
     rsp2con.textContent = "";
-    //vidx === 2 || (nmdata.innerHTML = "");
-    ( vidx !== 2 ? document.querySelectorAll(qslrs[4])
+    //vidx === 3 || (nmdata.innerHTML = "");
+    ( vidx !== 3 ? document.querySelectorAll(qslrs[4])
       : document.querySelectorAll('#nmdata .media-content>.pwrap>span>input') )
       .forEach(inp => inp.checked = false);
     document.querySelectorAll('#nmtbl tbody>tr:not([id])').forEach(tr => {
@@ -547,7 +629,7 @@ let fwg, j = 0, rva3, rval, vidx = 3,
     document.querySelectorAll(qslrs[5])
     .forEach(e => e.innerHTML = e.innerHTML.replace(/<\/?mark>/g, ""));
     document.querySelectorAll('#nmdata .media').forEach(e => e.classList.remove("dnone"));
-    if (vidx !== 2 && filtinp.value) {
+    if (vidx !== 3 && filtinp.value) {
       document.querySelectorAll('#nmtbl tbody>tr:not([id]):not([hidden])')
       .forEach( tr => Array.from(tr.children).forEach( (td, i) => {
         if (i && !td.classList.contains("dnone")) {
@@ -568,7 +650,7 @@ let fwg, j = 0, rva3, rval, vidx = 3,
     }
   },
   filesChg = evt => {
-    if (vidx === 6) { return; }
+    if (vidx === 7) { return; }
     let fmove = evt.target.id === "movebtn",
       //qcontxta = document.querySelector('#econav0 #qcontxta'),
       moveinp = document.querySelector('#nmwrap #moveinp'),
@@ -602,7 +684,7 @@ let fwg, j = 0, rva3, rval, vidx = 3,
       },
       dbq = txd2.DBNAME && window.PouchDB && new PouchDB(txd2.DBNAME);
     rsp2con.textContent = "";
-    //vidx === 2 || (nmdata.innerHTML = "");
+    //vidx === 3 || (nmdata.innerHTML = "");
     !fmove || Array.from(chks).forEach(inp => inp.parentElement.parentElement.className = "");
     chkaf2.forEach( inp => inp.parentElement.parentElement.className
       = fmove ? "hsuccl" : "hwarnl" );
@@ -622,7 +704,7 @@ let fwg, j = 0, rva3, rval, vidx = 3,
         DBNAME:  txd1.DBNAME,
         FILEID:  !evt ? "" : evt.target.textContent || evt.target.dataset.fileid,
         OPTIONS: {
-          rev: vidx !== 6 ? null : evt.target.parentElement.parentElement.children[3].textContent
+          rev: vidx !== 7 ? null : evt.target.parentElement.parentElement.children[3].textContent
           //revs_info: true
         }
       };
@@ -654,8 +736,8 @@ let fwg, j = 0, rva3, rval, vidx = 3,
   </div>
 </div>`).join("") + "\n";
       btnbk.onclick = () => (nmdata.textContent = "")
-        || [vctrls, vidx > 2 && nmflow].forEach(e => e && e.classList.remove("dnone"))
-        || vidx !== 2 || clipsGen(); //viewBk
+        || [vctrls, vidx > 3 && nmflow].forEach(e => e && e.classList.remove("dnone"))
+        || vidx !== 3 || clipsGen(); //viewBk
       btnupd.onclick = () => {
         ndhelp.classList.add("isucc");
         ndhelp.innerHTML = "Note is updated in local database.";
@@ -766,7 +848,7 @@ let fwg, j = 0, rva3, rval, vidx = 3,
       //endkey: descswi.checked ? "" : "~~~",
       descending: descswi.checked
     });
-    vidx !== 6 || new PouchDB(txd1.DBNAME)
+    vidx !== 7 || new PouchDB(txd1.DBNAME)
     .changes(txd1.OPTIONS || {})
     .then(rslt => {
       let dels = rslt.results.filter(r => r.deleted);
@@ -781,24 +863,24 @@ let fwg, j = 0, rva3, rval, vidx = 3,
           <option value=id>Note ID</option>\n`;
       sortsel.value = /^(?:id|seq)$/.test(ss[0]) ? ss[0] : "id";
     }).catch(rsp2Show);
-    vidx === 6 || new PouchDB(txd1.DBNAME)
+    vidx === 7 || new PouchDB(txd1.DBNAME)
     .query(txd1.FILEID.replace(/^_design\//, "") + "/" + txd1.VIEW, txd1.OPTIONS || {})
     .catch( () => new PouchDB(txd1.DBNAME).allDocs({
-      startkey: descswi.checked != (vidx === 5) ? "~a" : undefined,
-      endkey: descswi.checked != (vidx === 5) ? undefined : "~a",
+      startkey: descswi.checked != (vidx === 6) ? "~a" : undefined,
+      endkey: descswi.checked != (vidx === 6) ? undefined : "~a",
       descending: descswi.checked,
       include_docs: true })
     ).then(rslt => {
       let calcSum = arr => !arr.length ? 0 : arr.reduce((s, v) => s + v);
       j = 0;
-      ftotal.textContent = vidx !== 3 ? rslt.total_rows
+      ftotal.textContent = vidx !== 4 ? rslt.total_rows
         : rslt.rows.filter(r => (r.doc || r.value).file_updated).length
           + calcSum( rslt.rows.filter(r => (r.doc || r.value)._attachments)
             .map(r => Object.keys((r.doc || r.value)._attachments).length) );
       [nmthds[1], nmtfts[1]].forEach(e => e.classList.add("dnone"));
       [nmthds[0], nmtfts[0]].forEach(e => e.classList.remove("dnone"));
-      nmtbod.innerHTML = vidx !== 3
-      ? qd4Fmt( !ss[0] || vidx !== 5 && ss[0] === "id" || vidx === 5 && ss[1] === "timestamp"
+      nmtbod.innerHTML = vidx !== 4
+      ? qd4Fmt( !ss[0] || vidx !== 6 && ss[0] === "id" || vidx === 6 && ss[1] === "timestamp"
         ? rslt.rows
         : ordFlip( !ss[1] ? rslt.rows.map(r => [(r.doc || r.value)[ss[0]], r.id, r])
           : ss[1] !== "timestamp"
@@ -814,9 +896,9 @@ let fwg, j = 0, rva3, rval, vidx = 3,
         .map(sr => sr[3]) );
       colsTog(null, sortsel.value || "file_created.timestamp");
       document.querySelectorAll(qslrs[1])
-      .forEach(spn => spn.className = vidx !== 3 ? "" : "dnone");
+      .forEach(spn => spn.className = vidx !== 4 ? "" : "dnone");
       document.querySelectorAll(qslrs[2])
-      .forEach(anc => anc.className = vidx === 3 ? "" : "dnone");
+      .forEach(anc => anc.className = vidx === 4 ? "" : "dnone");
       document.querySelectorAll('#nmtbl tbody>tr[id]>td:first-of-type>a')
       .forEach(anc => anc.onclick = sdirXpd);
       chksRstr();
@@ -883,10 +965,9 @@ let fwg, j = 0, rva3, rval, vidx = 3,
   pdbCfg = () => {
     //[vctrls, nmflow].forEach(e => e.classList.add("dnone"));
     nmdata.innerHTML = `
-<hr>
 <h4 class=cfield>Database Setup</h4>
 <div class=cfield>
-&emsp;Switch to any previously created, local database using
+&emsp;Switch to any previously created, local database by using
 the 1<sup>st</sup> select list in the controls above.
 <br>&emsp;To <em>destroy</em> an existing database&mdash;or to <em>compact</em> it
 (i.e., remove all versions of each <em>note</em> but the last one)&mdash;enter
@@ -917,20 +998,20 @@ Then, tap the associated button.
   Description:   ________
 
   [ ] set as default DB
-      (to be directly opened on next startup)
+      (open this DB directly on next startup)
 </pre>
 <h5 class=cfield>"New Note" Template</h5>
 <div class=cfield>
-&emsp;Add a new <em>note</em> to the database using the 2<sup>nd</sup> select list in the controls above.
+&emsp;Add a new <em>note</em> ( <span class=hwsmok>&plus; New Note</span> ) to the database by using the 2<sup>nd</sup> select list in the controls above (or, by tapping the corresponding tab under a notelist, when visible).
 <br>&emsp;Be aware that a database <em>note</em>
 (a.k.a., <em>file</em> or <em>document</em> or <em>entry</em>) is actually
 a stored JavaScript object (with arbitrary <em>keys</em> and <em>values</em>).
-<br>&emsp;Furthermore, a database is most manageable when all of the <em>notes</em> in it
+<br>&emsp;Furthermore, a database is most manageable when all of its <em>notes</em>
 share a common structure (i.e., have the same set of object-property <em>keys</em>).
 <br>&emsp;Therefore, to keep a new database manageable, decide in advance
-what its function is by commiting to one <em>note</em>-object structure
-(either a preset <em>note</em> type or a creation of your own)
-and selecting it, below, as the default template.
+what its function is by commiting to one object structure as the default template for
+every new <em>note</em>&mdash;and selecting it (either a preset <em>note</em> type
+or a creation of your own), below.
 </div>
 <pre class=cfield>
   Default note type: "contact"
@@ -956,10 +1037,11 @@ and selecting it, below, as the default template.
 </pre>
 <h5 class=cfield>Notelist Views</h5>
 <div class=cfield>
-&emsp;Switch to any notelist <em>view</em> using the 2<sup>nd</sup> select list in the controls above.
-<br>&emsp;Five different <em>views</em> are available.
-<br>&emsp;Customize and preserve any one or more of the five <em>views</em> by selecting one,
-adjusting the subsequent view controls, above, and adding the resulting new <em>view</em>, below.
+&emsp;Switch to any notelist <em>view</em> by using the 2<sup>nd</sup> select list in the controls above.
+<br>&emsp;Five different <em>views</em> are available (<span class=hwsmok>V1</span>&ndash;<span class=hwsmok>V5</span>).
+<br>&emsp;Customize and preserve any one or more of the five <em>views</em> by selecting one and
+adjusting the subsequent view controls, above&mdash;then, returning directly back here to add
+the resulting new <em>view</em>, below.
 </div>
 <pre class=cfield>
   - V1-custom1 : descriptionV1
@@ -967,7 +1049,6 @@ adjusting the subsequent view controls, above, and adding the resulting new <em>
   - V3-custom1 : descriptionV3
   - V4-custom1 : descriptionV4
   - V5-custom1 : descriptionV5
-
   [+ Add View]
 </pre>
 <div class=cfield>
@@ -987,11 +1068,12 @@ the <em>view</em> that will be displayed first each time the database is opened.
       window.PouchDB || !txd1.DBNAME || rsp2con.textContent
       || rsp2Show("Alert: PouchDB is not loaded. Database is inaccessible.");
       pdbssel.selectedIndex !== 1 || pdbCfg();
-    } else if (vidx < 3) {
+    } else if (vidx < 4) {
       rsp2con.textContent = nmtbod.innerHTML = "";
       nmflow.classList.add("dnone");
       !vidx ? nmdata.innerHTML = "\n<hr>\n<p>Coming soon &hellip;</p>\n"
-      : vidx < 2 ? pdbCfg() : clipsGen();
+      : vidx < 2 ? pdbCfg() : vidx < 3
+      ? nmdata.innerHTML = "\n<hr>\n<p>Coming soon &hellip;</p>\n" : clipsGen();
     } else {
       rsp2con.textContent = nmdata.innerHTML = "";
       nmflow.classList.remove("dnone");
@@ -1002,10 +1084,10 @@ the <em>view</em> that will be displayed first each time the database is opened.
     vidx = evt.currentTarget.selectedIndex; //evt.target.parentElement.dataset.vidx
     //nmtabs.forEach(li => li.classList.remove("is-active"));
     //nmtabs[vidx].classList.add("is-active");
-    txd1.VIEW = vidx === 5 ? "files-static" : vidx === 2 ? "files-contact" : "files-idxlist";
-    colssel.innerHTML = sopts[vidx === 6 ? 1 : 0];
-    vidx !== 4 || (colssel.options[18].selected = colssel.options[0].selected = true);
-    if (vidx === 5) {
+    txd1.VIEW = vidx === 6 ? "files-static" : vidx === 3 ? "files-contact" : "files-idxlist";
+    colssel.innerHTML = sopts[vidx === 7 ? 1 : 0];
+    vidx !== 5 || (colssel.options[18].selected = colssel.options[0].selected = true);
+    if (vidx === 6) {
       Array.from(colssel.options).forEach(o => o.selected = false);
       [1, 2, 7, 8, 14, 15, 16, 17].forEach(n => colssel.options[n].selected = true);
       sortsel.value = "";
