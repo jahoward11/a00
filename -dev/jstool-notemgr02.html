@@ -207,6 +207,8 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 }
 */
 #nmwrap { font: normal 14px BlinkMacSystemFont, -apple-system, Helvetica, Arial, sans-serif; max-width: 960px; margin: 24px auto; }
+#nmwrap h4 { margin-bottom: 7px; }
+#nmwrap h5 { margin-bottom: 3.5px; }
 #nmwrap a {
   color: #485fc7;
   cursor: pointer;
@@ -245,6 +247,8 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap textarea.iwarn { color: unset; border-color: Orange; }
 #nmwrap textarea.isucc { color: unset; border-color: CornFlowerBlue; }
 #nmwrap button.isclr { background: transparent; max-width: 359px; padding: 0 2px; overflow: hidden; text-overflow: ellipsis; }
+#nmwrap .cblock { line-height: 1.5; }
+#nmwrap .cblock:not(:last-child) { margin-bottom: 21px; }
 #nmwrap .cfield:not(:last-child) { margin-bottom: 8px; }
 #nmwrap .ccntr:not(:last-of-type) { margin-right: 8px; }
 #nmwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }
@@ -264,7 +268,6 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   overflow-x: hidden;
   white-space: pre;
 }
-#nmwrap #vctrls { margin-bottom: 21px; }
 #nmwrap #pdbssel { width: 136px; }
 #nmwrap #ftotal { display: inline-block; min-width: 20px; }
 #nmwrap #viewsel { width: 24px; }
@@ -277,10 +280,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   background: Whitesmoke;
   text-align: left;
 }
-#nmdata .cfield { line-height: 1.5; }
 #nmdata .cfield:not(:last-child) { margin-bottom: 10.5px; }
-#nmdata h4.cfield:not(:last-child) { margin-bottom: 7px; }
-#nmdata h5.cfield:not(:last-child) { margin-bottom: 3.5px; }
 #nmdata #ndhelp { font-size: 10.5px; text-align: right; }
 #nmdata .media-left>.image.rspv128 {
   width: 128px;
@@ -309,7 +309,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 </style>
 <h4 class=cfield>Note Manager</h4>
 <pre id=rsp2con></pre>
-<nav id=vctrls class="level">
+<nav id=vctrls class="level cblock">
   <div class="level-item">
     <div class="level cfield">
       <span class=ccntr><select id=pdbssel>
@@ -419,39 +419,141 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </tfoot>
 </table>
 </div>
-<hr>
-<div id=nmopps class=tabs>
+<div id=nmdata class="cblock dnone"></div>
+<nav id=nmopps class=tabs>
+  <hr>
   <ul>
     <li class="is-active">
       <a onclick="">
-        <span class="icon is-small is-size-4">&bull;</span>
+        <span class=icon>&bull;</span>
         <span>Mgr Tips</span>
       </a>
     </li>
     <li>
       <a class=igreyd onclick="">
-        <span class="icon is-small is-size-4">&plus;</span>
+        <span class=icon>&plus;</span>
         <span>New Note</span>
       </a>
     </li>
     <li>
       <a class=igreyd onclick="">
-        <span class="icon is-small is-size-4">&check;</span>
+        <span class=icon>&check;</span>
         <span>DB Config</span>
       </a>
     </li>
     <li>
       <a class=igreyd onclick="">
-        <span class="icon is-small is-size-4">&#x2699;</span>
+        <span class=icon>&#x2732;</span>
         <span>Settings</span>
       </a>
     </li>
   </ul>
+</nav>
+<div id=nmtips class=cblock>
+  <h4>Just getting started?</h4>
+  <div class=cblock>&emsp;Add a new <em>database</em> ( <span class=hwsmok>&plus; New DB</span> )
+  using the 1<sup>st</sup> select list in the controls&nbsp;above.</div>
 </div>
-<div id=nmdata class=cfield>
-<h4 class=cfield>Just getting started?</h4>
-<div class=cfield>&emsp;Add a new <em>database</em> ( <span class=hwsmok>&plus; New DB</span> )
-using the 1<sup>st</sup> select list in the controls&nbsp;above.</div>
+<div id=pnadd1 class="cblock dnone">
+  <p>Coming soon &hellip;</p>
+</div>
+<div id=pdbcfg class="cblock dnone">
+<h4>Database Setup</h4>
+<div class=cblock>
+&emsp;Switch to any previously created, local database by using
+the 1<sup>st</sup> select list in the controls above.
+<br>&emsp;To <em>destroy</em> an existing database&mdash;or to <em>compact</em> it
+(i.e., remove all versions of each <em>note</em> but the last one)&mdash;enter
+the same name as the currently selected DB and tap the appropriate button.
+</div>
+<pre class=cblock>
+  Sel'd DB name: "________"
+  [COMPACT] [DESTROY]
+</pre>
+<div class=cblock>
+&emsp;To <em>create</em> a new local database, enter your username,
+a short description of purpose and a new DB name
+(and, optionally, set your own DB configurations, below);
+Then, tap the associated button.
+</div>
+<pre class=cblock>
+  Username:      "________"
+  New DB name:   "________"
+  New DB descr:  "________"
+  [CREATE]
+</pre>
+<h4>About Local DB (Selected)</h4>
+<pre class=cblock>
+  DB name:       ________
+  Notes total:   ________
+  Created:       ________
+  Created by:    ________
+  Description:   ________
+
+  [ ] set as default DB
+      (open this DB directly on next startup)
+</pre>
+<h5>"New Note" Template</h5>
+<div class=cblock>
+&emsp;Add a new <em>note</em> ( <span class=hwsmok>&plus; New Note</span> ) to the database by using the 2<sup>nd</sup> select list in the controls above (or, by tapping the corresponding tab under a notelist, when visible).
+<br>&emsp;Be aware that a database <em>note</em>
+(a.k.a., <em>file</em> or <em>document</em> or <em>entry</em>) is actually
+a stored JavaScript object (with arbitrary <em>keys</em> and <em>values</em>).
+<br>&emsp;Furthermore, a database is most manageable when all of its <em>notes</em>
+share a common structure (i.e., have the same set of object-property <em>keys</em>).
+<br>&emsp;Therefore, to keep a new database manageable, decide in advance
+what its function is by commiting to one object structure as the default template for
+every new <em>note</em>&mdash;and selecting it (either a preset <em>note</em> type
+or a creation of your own), below.
+</div>
+<pre class=cblock>
+  Default note type: "contact"
+
+ Note-obj-pty KEY | VALUE datatype| VALUE pre-fill
+ _id              | string        | \`cidGen()\`
+ file_type        | string        | contact
+ ts_created       | number        | \`Date()\`
+ ts_updated       | number        | \`Date()\`
+ name_full        | string        | 
+ name_user        | string        | 
+ birthdate        | string        | 
+ roles            | string        | 
+ emails           | arr of str    | []
+ phones           | arr of str    | []
+ locations        | arr of obj    | [ { "label": "home", "street": "", ... } ]
+ social_profiles  | arr of str    | []
+ project_urls     | arr of str    | []
+ team_groups      | arr of str    | []
+ image_src        | string        | 
+ bio_short        | string        | 
+ miscellany       | string        | 
+</pre>
+<h5>Notelist Views</h5>
+<div class=cblock>
+&emsp;Switch to any notelist <em>view</em> by using the 2<sup>nd</sup> select list in the controls above.
+<br>&emsp;Five different <em>views</em> are available (<span class=hwsmok>V1</span>&ndash;<span class=hwsmok>V5</span>).
+<br>&emsp;Customize and preserve any one or more of the five <em>views</em> by selecting one and
+adjusting the subsequent view controls, above&mdash;then, returning directly back here to add
+the resulting new <em>view</em>, below.
+</div>
+<pre class=cblock>
+  - V1-custom1 : descriptionV1
+  - V2-custom1 : descriptionV2
+  - V3-custom1 : descriptionV3
+  - V4-custom1 : descriptionV4
+  - V5-custom1 : descriptionV5
+  [+ Add View]
+</pre>
+<div class=cblock>
+&emsp;Also, select one (either a preset or one of your own) as the default <em>view</em>&mdash;i.e.,
+the <em>view</em> that will be displayed first each time the database is opened.
+</div>
+<pre class=cblock>
+  Default view: "V1:noteclips"
+</pre>
+</div>
+<div id=nmsets class="cblock dnone">
+  <p>Coming soon &hellip;</p>
 </div>
 </div>
 
@@ -962,121 +1064,23 @@ let fwg, j = 0, rva3, rval, vidx = 4,
       cbxhdrs.click();
     }).catch(rsp2Show);
   },
-  pdbCfg = () => {
-    //[vctrls, nmflow].forEach(e => e.classList.add("dnone"));
-    nmdata.innerHTML = `
-<h4 class=cfield>Database Setup</h4>
-<div class=cfield>
-&emsp;Switch to any previously created, local database by using
-the 1<sup>st</sup> select list in the controls above.
-<br>&emsp;To <em>destroy</em> an existing database&mdash;or to <em>compact</em> it
-(i.e., remove all versions of each <em>note</em> but the last one)&mdash;enter
-the same name as the currently selected DB and tap the appropriate button.
-</div>
-<pre class=cfield>
-  Sel'd DB name: "________"
-  [COMPACT] [DESTROY]
-</pre>
-<div class=cfield>
-&emsp;To <em>create</em> a new local database, enter your username,
-a short description of purpose and a new DB name
-(and, optionally, set your own DB configurations, below);
-Then, tap the associated button.
-</div>
-<pre class=cfield>
-  Username:      "________"
-  New DB name:   "________"
-  New DB descr:  "________"
-  [CREATE]
-</pre>
-<h4 class=cfield>About Local DB (Selected)</h4>
-<pre class=cfield>
-  DB name:       ________
-  Notes total:   ________
-  Created:       ________
-  Created by:    ________
-  Description:   ________
-
-  [ ] set as default DB
-      (open this DB directly on next startup)
-</pre>
-<h5 class=cfield>"New Note" Template</h5>
-<div class=cfield>
-&emsp;Add a new <em>note</em> ( <span class=hwsmok>&plus; New Note</span> ) to the database by using the 2<sup>nd</sup> select list in the controls above (or, by tapping the corresponding tab under a notelist, when visible).
-<br>&emsp;Be aware that a database <em>note</em>
-(a.k.a., <em>file</em> or <em>document</em> or <em>entry</em>) is actually
-a stored JavaScript object (with arbitrary <em>keys</em> and <em>values</em>).
-<br>&emsp;Furthermore, a database is most manageable when all of its <em>notes</em>
-share a common structure (i.e., have the same set of object-property <em>keys</em>).
-<br>&emsp;Therefore, to keep a new database manageable, decide in advance
-what its function is by commiting to one object structure as the default template for
-every new <em>note</em>&mdash;and selecting it (either a preset <em>note</em> type
-or a creation of your own), below.
-</div>
-<pre class=cfield>
-  Default note type: "contact"
-
- Note-obj-pty KEY | VALUE datatype| VALUE pre-fill
- _id              | string        | \`cidGen()\`
- file_type        | string        | contact
- ts_created       | number        | \`Date()\`
- ts_updated       | number        | \`Date()\`
- name_full        | string        | 
- name_user        | string        | 
- birthdate        | string        | 
- roles            | string        | 
- emails           | arr of str    | []
- phones           | arr of str    | []
- locations        | arr of obj    | [ { "label": "home", "street": "", ... } ]
- social_profiles  | arr of str    | []
- project_urls     | arr of str    | []
- team_groups      | arr of str    | []
- image_src        | string        | 
- bio_short        | string        | 
- miscellany       | string        | 
-</pre>
-<h5 class=cfield>Notelist Views</h5>
-<div class=cfield>
-&emsp;Switch to any notelist <em>view</em> by using the 2<sup>nd</sup> select list in the controls above.
-<br>&emsp;Five different <em>views</em> are available (<span class=hwsmok>V1</span>&ndash;<span class=hwsmok>V5</span>).
-<br>&emsp;Customize and preserve any one or more of the five <em>views</em> by selecting one and
-adjusting the subsequent view controls, above&mdash;then, returning directly back here to add
-the resulting new <em>view</em>, below.
-</div>
-<pre class=cfield>
-  - V1-custom1 : descriptionV1
-  - V2-custom1 : descriptionV2
-  - V3-custom1 : descriptionV3
-  - V4-custom1 : descriptionV4
-  - V5-custom1 : descriptionV5
-  [+ Add View]
-</pre>
-<div class=cfield>
-&emsp;Also, select one (either a preset or one of your own) as the default <em>view</em>&mdash;i.e.,
-the <em>view</em> that will be displayed first each time the database is opened.
-</div>
-<pre class=cfield>
-  Default view: "V1:noteclips"
-</pre>
-`;
-  },
   viewRte = evt => {
+    [nmflow, nmdata, nmtips, pnadd1, pdbcfg, nmsets].forEach(e => e.classList.add("dnone"));
     if (!window.PouchDB || !txd1.DBNAME) {
       ftotal.textContent = "0";
-      nmtbod.innerHTML = nmdata.innerHTML = "";
-      nmflow.classList.add("dnone");
+      nmtbod.innerHTML = "";
       window.PouchDB || !txd1.DBNAME || rsp2con.textContent
       || rsp2Show("Alert: PouchDB is not loaded. Database is inaccessible.");
       pdbssel.selectedIndex !== 1 || pdbCfg();
     } else if (vidx < 4) {
       rsp2con.textContent = nmtbod.innerHTML = "";
-      nmflow.classList.add("dnone");
-      !vidx ? nmdata.innerHTML = "\n<hr>\n<p>Coming soon &hellip;</p>\n"
-      : vidx < 2 ? pdbCfg() : vidx < 3
-      ? nmdata.innerHTML = "\n<hr>\n<p>Coming soon &hellip;</p>\n" : clipsGen();
+      !vidx ? pnadd1.classList.remove("dnone")
+      : vidx < 2 ? pdbcfg.classList.remove("dnone")
+      : vidx < 3 ? nmsets.classList.remove("dnone")
+      : nmdata.classList.remove("dnone") || clipsGen();
     } else {
-      rsp2con.textContent = nmdata.innerHTML = "";
-      nmflow.classList.remove("dnone");
+      rsp2con.textContent = "";
+      [vctrls, nmflow].forEach(e => e.classList.remove("dnone"));
       tblGen(evt);
     }
   },
