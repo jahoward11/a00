@@ -1087,6 +1087,7 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
     if (vidx > 3 && evt && evt.currentTarget.localName === 'a') { return tabActv(evt); }
     vidx = !evt || evt.currentTarget.localName !== 'a' ? viewsel.selectedIndex
       : evt.currentTarget.parentElement.dataset.tabidx;
+    if (vidx < 4 && evt && nmflow.classList.contains('dnone')) { return tabActv(evt); }
     vidx < 4 || txd1.DBNAME || pdbssel.selectedIndex === 1 || (viewsel.selectedIndex = vidx = 0);
     //evt.target.selectedIndex //evt.target.parentElement.dataset.vidx
     //nmtabs.forEach(li => li.classList.remove("is-active"));
