@@ -15,7 +15,9 @@ hr {
   margin: 1.5em 0;
   border: none;
 }
-ol, ul, li, button, input, select, textarea, pre { margin: 0; }
+p, dl, ol, ul, li, button, input, select, textarea, pre { margin: 0; }
+p:not(:last-child), dl:not(:last-child), ol:not(:last-child), ul:not(:last-child),
+blockquote:not(:last-child), pre:not(:last-child), table:not(:last-child) { margin-bottom: 1em; }
 input[type=checkbox], input[type=radio] { vertical-align: baseline; }
 strong, mark, table th, .table, .table thead td, .table thead th,
 .table tfoot td, .table tfoot th { color: inherit; }
@@ -155,6 +157,11 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 @media screen and (max-width: 719px) {
   .media-content { overflow-x: auto; }
 }
+.tabs>ul, .tabs li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 .tabs {
   -webkit-overflow-scrolling: touch;
   align-items: stretch;
@@ -170,7 +177,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   border-bottom-color: #dbdbdb;
   border-bottom-style: solid;
   border-bottom-width: 1px;
-  color: #4a4a4a;
+//color: #4a4a4a;
   display: flex;
   justify-content: center;
   margin-bottom: -1px;
@@ -199,23 +206,24 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 .tabs .icon:first-child { margin-right: 0.5em; }
 .tabs .icon:last-child { margin-left: 0.5em; }
 .tabs.is-centered ul { justify-content: center; }
-/*
-#nmwrap .tabs>ul, #nmwrap .tabs li {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-*/
-#nmwrap { font: normal 14px BlinkMacSystemFont, -apple-system, Helvetica, Arial, sans-serif; max-width: 960px; margin: 24px auto; }
-#nmwrap h4 { margin-bottom: 7px; }
-#nmwrap h5 { margin-bottom: 3.5px; }
+#nmwrap { font: normal 14px BlinkMacSystemFont, -apple-system, Helvetica, Arial, sans-serif; max-width: 960px; margin: 24px auto; line-height: 1.5; }
+#nmwrap h4, #nmwrap h5 { margin-bottom: 7px; }
 #nmwrap a {
   color: #485fc7;
   cursor: pointer;
   text-decoration: none;
 }
 #nmwrap a:hover {
-  color: CornFlowerBlue !important;
+  color: CornFlowerBlue;
+}
+#nmwrap .tabs a { color: DarkGrey; }
+#nmwrap .tabs a:hover {
+  border-bottom-color: #363636;
+  color: #363636;
+}
+#nmwrap .tabs li.is-active a {
+  border-bottom-color: #485fc7;
+  color: #485fc7;
 }
 #nmwrap a:active, #nmwrap button:active { box-shadow: 0 0 0 0.125em rgb(50 152 220 / 25%); }
 #nmwrap button, #nmwrap input:not([type=checkbox]), #nmwrap select {
@@ -237,7 +245,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap input[type=text], #nmwrap select { width: 90px; }
 #nmwrap input::placeholder { opacity: 0.5; }
 #nmwrap textarea { display: block; font: normal 10.5px monospace; width: 100%; }
-#nmwrap .hwsmok { background-color: Whitesmoke; }
+#nmwrap .hwhsmk { background-color: Whitesmoke; }
 #nmwrap .hgains { background-color: Gainsboro; }
 #nmwrap .hwarnl { background-color: #fff6e6; }
 #nmwrap .hsuccl { background-color: #e8effc; }
@@ -247,7 +255,6 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap textarea.iwarn { color: unset; border-color: Orange; }
 #nmwrap textarea.isucc { color: unset; border-color: CornFlowerBlue; }
 #nmwrap button.isclr { background: transparent; max-width: 359px; padding: 0 2px; overflow: hidden; text-overflow: ellipsis; }
-#nmwrap .cblock { line-height: 1.5; }
 #nmwrap .cblock:not(:last-child) { margin-bottom: 21px; }
 #nmwrap .cfield:not(:last-child) { margin-bottom: 8px; }
 #nmwrap .ccntr:not(:last-of-type) { margin-right: 8px; }
@@ -312,11 +319,11 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 <nav id=vctrls class="level cblock">
   <div class="level-item">
     <div class="level cfield">
-      <span class=ccntr><select id=pdbssel>
-      </select></span><span class=ccntr><select id=viewsel>
+      <span class=ccntr><select id=pdbssel title="DB-open select list">
+      </select></span><span class=ccntr><select id=viewsel title="List-view select list">
         <option>&plus; New Note</option>
         <option>&check;&thinsp;DB Config</option>
-        <option>&#x2699; Settings</option>
+        <option>&#x2732; Settings</option>
         <option>V1:noteclips</option>
         <option selected>V2:organized</option>
         <option>V3:mutables</option>
@@ -327,24 +334,24 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </div>
   <div class="level-item">
     <div class="level cfield">
-      <span class=ccntr><select id=colssel multiple size=1>
-      </select></span><span class=ccntr><select id=sortsel>
-      </select></span><span class=ccntr><label><input type=checkbox id=descswi />
+      <span class=ccntr><select id=colssel multiple size=1 title="Show/hide-columns select list">
+      </select></span><span class=ccntr><select id=sortsel title="Sort-column select list">
+      </select></span><span class=ccntr><label title="Notelist sort order"><input type=checkbox id=descswi />
       <a>Z-A</a></label></span>
     </div>
   </div>
   <div class="level-item">
     <div class="level cfield">
       <span id=filtctrl class=ccntr>
-      <input type=text id=filtinp placeholder="Search pattern&hellip;" /><button id=filtbtn class=hgains>
+      <input type=text id=filtinp placeholder="Search pattern&hellip;" /><button id=filtbtn class=hgains title="Notelist filter">
       FILT</button></span><span id=bulkctrl class="ccntr dnone"><span class=cfield>
-      <span class=ccntr><input type=text id=moveinp placeholder="New subdir&hellip;" /><button id=movebtn class="isucc hsuccl">
-      MOV</button></span><span class=ccntr><button id=delbtn class="iwarn hwarnl">
-      DEL</button></span></span></span><span class=ccntr><a id=blktrig>&#x2611;</a></span>
+      <span class=ccntr><input type=text id=moveinp placeholder="New subdir&hellip;" /><button id=movebtn class="isucc hsuccl" title="Note subdirectory reassignment">
+      MOV</button></span><span class=ccntr><button id=delbtn class="iwarn hwarnl" title="Note delete">
+      DEL</button></span></span></span><span class=ccntr><a id=blktrig title="Checkboxes toggle">&#x2611;</a></span>
     </div>
   </div>
 </nav>
-<div id=nmflow class="cfield dflow dnone">
+<div id=nmflow class="cblock dflow dnone">
 <table id=nmtbl class=table>
   <thead>
     <tr>
@@ -420,70 +427,54 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 </table>
 </div>
 <div id=nmdata class="cblock dnone"></div>
-<nav id=nmopps class=tabs>
-  <hr>
+<nav id=nmtabs class="cblock tabs">
   <ul>
-    <li class="is-active">
-      <a onclick="">
-        <span class=icon>&bull;</span>
-        <span>Mgr Tips</span>
-      </a>
+    <li data-tabidx=0 class="is-active">
+      <a><span class=icon>&bull;</span><span>Mgr Tips</span></a>
     </li>
-    <li>
-      <a class=igreyd onclick="">
-        <span class=icon>&plus;</span>
-        <span>New Note</span>
-      </a>
+    <li data-tabidx=1>
+      <a><span class=icon>&plus;</span><span>New Note</span></a>
     </li>
-    <li>
-      <a class=igreyd onclick="">
-        <span class=icon>&check;</span>
-        <span>DB Config</span>
-      </a>
+    <li data-tabidx=2>
+      <a><span class=icon>&check;</span><span>DB Config</span></a>
     </li>
-    <li>
-      <a class=igreyd onclick="">
-        <span class=icon>&#x2732;</span>
-        <span>Settings</span>
-      </a>
+    <li data-tabidx=3>
+      <a><span class=icon>&#x2732;</span><span>Settings</span></a>
     </li>
   </ul>
 </nav>
 <div id=nmtips class=cblock>
   <h4>Just getting started?</h4>
-  <div class=cblock>&emsp;Add a new <em>database</em> ( <span class=hwsmok>&plus; New DB</span> )
-  using the 1<sup>st</sup> select list in the controls&nbsp;above.</div>
+  <p>&emsp;Add a new <em>database</em> ( <span class=hwhsmk>&plus; New DB</span> )
+  using the 1<sup>st</sup> select list of the control panel&nbsp;above.</p>
 </div>
 <div id=pnadd1 class="cblock dnone">
   <p>Coming soon &hellip;</p>
 </div>
 <div id=pdbcfg class="cblock dnone">
 <h4>Database Setup</h4>
-<div class=cblock>
-&emsp;Switch to any previously created, local database by using
-the 1<sup>st</sup> select list in the controls above.
-<br>&emsp;To <em>destroy</em> an existing database&mdash;or to <em>compact</em> it
+<p>&emsp;You can switch to any previously created, local database by using
+the 1<sup>st</sup> select list of the top control panel.</p>
+<p>&emsp;To <em>destroy</em> an existing database&mdash;or to <em>compact</em> it
 (i.e., remove all versions of each <em>note</em> but the last one)&mdash;enter
-the same name as the currently selected DB and tap the appropriate button.
-</div>
-<pre class=cblock>
+the same name as the currently selected DB and tap the appropriate button, here.</p>
+<pre>
   Sel'd DB name: "________"
+  <em>Alert:</em> This operation cannot be reversed.
   [COMPACT] [DESTROY]
 </pre>
-<div class=cblock>
-&emsp;To <em>create</em> a new local database, enter your username,
-a short description of purpose and a new DB name
+<p>&emsp;To <em>create</em> a new local database, enter your username,
+a new DB name and a short description of its intended purpose
 (and, optionally, set your own DB configurations, below);
-Then, tap the associated button.
-</div>
-<pre class=cblock>
+Then, tap the associated button, here.</p>
+<pre>
   Username:      "________"
   New DB name:   "________"
   New DB descr:  "________"
   [CREATE]
 </pre>
-<h4>About Local DB (Selected)</h4>
-<pre class=cblock>
+<h4>About the Selected, Local DB</h4>
+<pre>
   DB name:       ________
   Notes total:   ________
   Created:       ________
@@ -494,19 +485,17 @@ Then, tap the associated button.
       (open this DB directly on next startup)
 </pre>
 <h5>"New Note" Template</h5>
-<div class=cblock>
-&emsp;Add a new <em>note</em> ( <span class=hwsmok>&plus; New Note</span> ) to the database by using the 2<sup>nd</sup> select list in the controls above (or, by tapping the corresponding tab under a notelist, when visible).
-<br>&emsp;Be aware that a database <em>note</em>
+<p>&emsp;You can add a new <em>note</em> ( <span class=hwhsmk>&plus; New Note</span> ) to the database by using the 2<sup>nd</sup> select list of the top control panel (or, by activating the corresponding tab that appears down, beneath the notelist <em>view</em>).</p>
+<p>&emsp;Be aware that a database <em>note</em>
 (a.k.a., <em>file</em> or <em>document</em> or <em>entry</em>) is actually
 a stored JavaScript object (with arbitrary <em>keys</em> and <em>values</em>).
-<br>&emsp;Furthermore, a database is most manageable when all of its <em>notes</em>
+<br>&emsp;As such, the database is more manageable when all of its <em>notes</em>
 share a common structure (i.e., have the same set of object-property <em>keys</em>).
 <br>&emsp;Therefore, to keep a new database manageable, decide in advance
 what its function is by commiting to one object structure as the default template for
 every new <em>note</em>&mdash;and selecting it (either a preset <em>note</em> type
-or a creation of your own), below.
-</div>
-<pre class=cblock>
+or a new creation of your own), here.</p>
+<pre>
   Default note type: "contact"
 
  Note-obj-pty KEY | VALUE datatype| VALUE pre-fill
@@ -529,14 +518,12 @@ or a creation of your own), below.
  miscellany       | string        | 
 </pre>
 <h5>Notelist Views</h5>
-<div class=cblock>
-&emsp;Switch to any notelist <em>view</em> by using the 2<sup>nd</sup> select list in the controls above.
-<br>&emsp;Five different <em>views</em> are available (<span class=hwsmok>V1</span>&ndash;<span class=hwsmok>V5</span>).
+<p>&emsp;You can switch to any notelist <em>view</em> by using the 2<sup>nd</sup> select list of the top control panel.</p>
+<p>&emsp;Five different <em>views</em> are available (<span class=hwhsmk>V1</span>&ndash;<span class=hwhsmk>V5</span>).
 <br>&emsp;Customize and preserve any one or more of the five <em>views</em> by selecting one and
 adjusting the subsequent view controls, above&mdash;then, returning directly back here to add
-the resulting new <em>view</em>, below.
-</div>
-<pre class=cblock>
+the resulting new <em>view</em>, below.</p>
+<pre>
   - V1-custom1 : descriptionV1
   - V2-custom1 : descriptionV2
   - V3-custom1 : descriptionV3
@@ -544,11 +531,9 @@ the resulting new <em>view</em>, below.
   - V5-custom1 : descriptionV5
   [+ Add View]
 </pre>
-<div class=cblock>
-&emsp;Also, select one (either a preset or one of your own) as the default <em>view</em>&mdash;i.e.,
-the <em>view</em> that will be displayed first each time the database is opened.
-</div>
-<pre class=cblock>
+<p>&emsp;Also, select one (either a preset or one of your own) as the default <em>view</em>&mdash;i.e.,
+the <em>view</em> that will be displayed first each time the database is opened.</p>
+<pre>
   Default view: "V1:noteclips"
 </pre>
 </div>
@@ -560,7 +545,7 @@ the <em>view</em> that will be displayed first each time the database is opened.
 <script src="../../a00/-res-js/pouchdb.min.js" type="text/javascript"></script>
 <script src="../../a00/-res-js/pouchdb.all-dbs.min.js" type="text/javascript"></script>
 <script type=module>
-let fwg, j = 0, rva3, rval, vidx = 4,
+let fwg, j = 0, rva3, rval, tidx = 0, vidx = 4,
   txd1 = {
     DBNAME:  "",
     FILEID:  "_design/ecosorter",
@@ -626,6 +611,7 @@ let fwg, j = 0, rva3, rval, vidx = 4,
   nmthds = document.querySelectorAll('#nmtbl thead'),
   nmtbod = document.querySelector('#nmtbl tbody'),
   nmtfts = document.querySelectorAll('#nmtbl tfoot'),
+  tbancs = document.querySelectorAll('#nmtabs li>a'),
   rsp2Show = resp => rsp2con.textContent
     += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
       ? resp : JSON.stringify(resp, null, 2) ) + "\n\n",
@@ -1064,20 +1050,24 @@ let fwg, j = 0, rva3, rval, vidx = 4,
       cbxhdrs.click();
     }).catch(rsp2Show);
   },
+  tabActv = evt => {
+    tidx = !evt ? (vidx > 2 ? 0 : vidx + 1) : evt.currentTarget.parentElement.dataset.tabidx;
+    tbancs.forEach(anc => anc.parentElement.classList.remove('is-active'));
+    (!evt ? tbancs[tidx] : evt.currentTarget).parentElement.classList.add('is-active');
+    [nmtips, pnadd1, pdbcfg, nmsets].forEach(e => e.classList.add("dnone"));
+    [nmtips, pnadd1, pdbcfg, nmsets][tidx].classList.remove("dnone");
+  },
   viewRte = evt => {
-    [nmflow, nmdata, nmtips, pnadd1, pdbcfg, nmsets].forEach(e => e.classList.add("dnone"));
+    [nmflow, nmdata].forEach(e => e.classList.add("dnone"));
     if (!window.PouchDB || !txd1.DBNAME) {
       ftotal.textContent = "0";
       nmtbod.innerHTML = "";
       window.PouchDB || !txd1.DBNAME || rsp2con.textContent
       || rsp2Show("Alert: PouchDB is not loaded. Database is inaccessible.");
-      pdbssel.selectedIndex !== 1 || pdbCfg();
+      //tabActv();
     } else if (vidx < 4) {
       rsp2con.textContent = nmtbod.innerHTML = "";
-      !vidx ? pnadd1.classList.remove("dnone")
-      : vidx < 2 ? pdbcfg.classList.remove("dnone")
-      : vidx < 3 ? nmsets.classList.remove("dnone")
-      : nmdata.classList.remove("dnone") || clipsGen();
+      vidx < 3 ? tabActv() : nmdata.classList.remove("dnone") || clipsGen();
     } else {
       rsp2con.textContent = "";
       [vctrls, nmflow].forEach(e => e.classList.remove("dnone"));
@@ -1085,7 +1075,8 @@ let fwg, j = 0, rva3, rval, vidx = 4,
     }
   },
   viewTog = evt => {
-    vidx = evt.currentTarget.selectedIndex; //evt.target.parentElement.dataset.vidx
+    evt ? (vidx = viewsel.selectedIndex) : (viewsel.selectedIndex = vidx = 4);
+    //evt.target.selectedIndex //evt.target.parentElement.dataset.vidx
     //nmtabs.forEach(li => li.classList.remove("is-active"));
     //nmtabs[vidx].classList.add("is-active");
     txd1.VIEW = vidx === 6 ? "files-static" : vidx === 3 ? "files-contact" : "files-idxlist";
@@ -1099,9 +1090,14 @@ let fwg, j = 0, rva3, rval, vidx = 4,
     //document.querySelectorAll(qslrs[0])
     //.forEach(td => td.textContent = vidx ? "Note ID" : "Note ID");
     //colsTog();
-    viewRte();
+    evt ? viewRte() : [nmflow, nmdata].forEach(e => e.classList.add("dnone"));
   },
-  pdbOpen = () => { txd1.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value; viewRte(); },
+  pdbOpen = () => {
+    txd1.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value;
+    pdbssel.selectedIndex > 1 ? viewRte() : viewTog();
+    pdbssel.selectedIndex !== 1 || (viewsel.selectedIndex = vidx = 1);
+    pdbssel.selectedIndex > 1 || tabActv();
+  },
   pdbsGen = (dbs = []) => pdbssel.innerHTML
     = ["\n      <option></option>", "<option>&plus; New DB</option>"]
       .concat(dbs.map(e => "<option>" + e + "</option>")).join("\n      ") + "\n      ";
@@ -1112,10 +1108,11 @@ sortsel.onchange = viewRte;
 descswi.onchange = viewRte;
 filtbtn.onclick = filtExe;
 blktrig.onclick = bulkTog;
+colssel.innerHTML = sopts[0];
+document.querySelectorAll('#nmwrap #movebtn, #nmwrap #delbtn').forEach(btn => btn.onclick = filesChg);
 document.querySelectorAll(qslrs[2]).forEach(anc => anc.onclick = sdirXpd);
 document.querySelectorAll('#nmtbl td:first-of-type>input').forEach(inp => inp.onchange = chksTog);
-document.querySelectorAll('#nmwrap #movebtn, #nmwrap #delbtn').forEach(btn => btn.onclick = filesChg);
-colssel.innerHTML = sopts[0];
+tbancs.forEach(anc => anc.onclick = tabActv);
 !window.PouchDB || !PouchDB.allDbs ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(rsp2Show);
 colsTog();
 //viewRte();
