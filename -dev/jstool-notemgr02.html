@@ -330,7 +330,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
         <option>V3:mutables</option>
         <option>V4:statics</option>
         <option>V5:deleted</option>
-      </select></span><span class=ccntr>Total: <span id=ftotal>0</span></span>
+      </select></span><span class=ccntr>Total: <span id=ftotal>_</span></span>
     </div>
   </div>
   <div class="level-item">
@@ -455,6 +455,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 <h4>Database Setup</h4>
 <p>&emsp;You can switch to any previously created, local database by using
 the 1<sup>st</sup> select list of the top control panel.</p>
+<h5>Old Data Destruction</h5>
 <p>&emsp;To <em>destroy</em> an existing database&mdash;or to <em>compact</em> it
 (i.e., remove all versions of each <em>note</em> but the last one)&mdash;enter
 the same name as the currently selected DB and tap the appropriate button, here.</p>
@@ -463,6 +464,7 @@ the same name as the currently selected DB and tap the appropriate button, here.
   <em>Alert:</em> This operation cannot be reversed.
   [COMPACT] [DESTROY]
 </pre>
+<h5>New Database Creation</h5>
 <p>&emsp;To <em>create</em> a new local database, enter your username,
 a new DB name and a short description of its intended purpose;
 (And, optionally, set your own DB configurations, below;)
@@ -503,19 +505,19 @@ or a new creation of your own), here.</p>
  file_type        | string        | contact
  ts_created       | number        | \`Date()\`
  ts_updated       | number        | \`Date()\`
- name_full        | string        | 
- name_user        | string        | 
- birthdate        | string        | 
- roles            | string        | 
+ name_full        | string        |
+ name_user        | string        |
+ birthdate        | string        |
+ roles            | string        |
  emails           | arr of str    | []
  phones           | arr of str    | []
  locations        | arr of obj    | [ { "label": "home", "street": "", ... } ]
  social_profiles  | arr of str    | []
  project_urls     | arr of str    | []
  team_groups      | arr of str    | []
- image_src        | string        | 
- bio_short        | string        | 
- miscellany       | string        | 
+ image_src        | string        |
+ bio_short        | string        |
+ miscellany       | string        |
 </pre>
 <h5>Notelist Views</h5>
 <p>&emsp;You can switch to any notelist <em>view</em> by using the 2<sup>nd</sup> select list of the top control panel.</p>
@@ -611,7 +613,7 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
   nmthds = document.querySelectorAll('#nmtbl thead'),
   nmtbod = document.querySelector('#nmtbl tbody'),
   nmtfts = document.querySelectorAll('#nmtbl tfoot'),
-  tbancs = document.querySelectorAll('#nmtabs li>a'),
+  tabans = document.querySelectorAll('#nmtabs li>a'),
   rsp2Show = resp => rsp2con.textContent
     += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
       ? resp : JSON.stringify(resp, null, 2) ) + "\n\n",
@@ -797,7 +799,7 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
         }
       };
     rsp2con.textContent = "";
-    [vctrls, nmflow].forEach(e => e.classList.add("dnone"));
+    [vctrls, nmflow, nmtabs, [nmtips, pnadd1, pdbcfg, nmsets][tidx]].forEach(e => e.classList.add("dnone"));
     !txd2.DBNAME || !window.PouchDB || new PouchDB(txd2.DBNAME)
     .get(txd2.FILEID, txd2.OPTIONS).then(doc => {
       let lnl, str,
@@ -823,9 +825,13 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
       str.replace(/&(?=#?\w+;)/g, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;")}</textarea>
   </div>
 </div>`).join("") + "\n";
-      btnbk.onclick = () => (nmdata.textContent = "")
+      btnbk.onclick = () => [vctrls, nmtabs, [nmtips, pnadd1, pdbcfg, nmsets][tidx]]
+        .forEach(e => e.classList.remove("dnone")) || (nmdata.innerHTML = "") || viewChg();
+/*
+        (nmdata.textContent = "")
         || [vctrls, vidx > 4 && nmflow].forEach(e => e && e.classList.remove("dnone"))
         || vidx !== 4 || clipsGen(); //viewBk
+*/
       btnupd.onclick = () => {
         ndhelp.classList.add("isucc");
         ndhelp.innerHTML = "Note is updated in local database.";
@@ -1055,31 +1061,33 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
   tabActv = evt => {
     !evt || evt.currentTarget.localName === 'a' || (evt = null);
     tidx = !evt ? (vidx > 3 ? 0 : vidx) : evt.currentTarget.parentElement.dataset.tabidx;
-    !nmflow.classList.contains('dnone') || (viewsel.selectedIndex = vidx = tidx);
+    [nmflow, nmdata].some(e => !e.classList.contains('dnone')) || (viewsel.selectedIndex = vidx = tidx);
     pdbssel.selectedIndex > 1 || vidx === 2 || (pdbssel.selectedIndex = 0);
-    !/0|1|3/.test(vidx) || (ftotal.textContent = "");
-    tbancs.forEach(anc => anc.parentElement.classList.remove('is-active'));
-    (!evt ? tbancs[tidx] : evt.currentTarget).parentElement.classList.add('is-active');
+    !/0|1|3/.test(vidx) || (ftotal.textContent = "_");
+    tabans.forEach(anc => anc.parentElement.classList.remove('is-active'));
+    (!evt ? tabans[tidx] : evt.currentTarget).parentElement.classList.add('is-active');
     [nmtips, pnadd1, pdbcfg, nmsets].forEach(e => e.classList.add("dnone"));
     [nmtips, pnadd1, pdbcfg, nmsets][tidx].classList.remove("dnone");
   },
   viewRte = evt => {
     [nmflow, nmdata].forEach(e => e.classList.add("dnone"));
+    nmtbod.innerHTML = nmdata.innerHTML = "";
     if (!window.PouchDB || !txd1.DBNAME) {
-      ftotal.textContent = "";
-      nmtbod.innerHTML = "";
+      ftotal.textContent = "_";
       window.PouchDB || !txd1.DBNAME || rsp2con.textContent
       || rsp2Show("Alert: PouchDB is not loaded. Database is inaccessible.");
       //pdbssel.selectedIndex > 1 || vidx === 2 || (pdbssel.selectedIndex = 0);
       //vidx > 3 || (pdbssel.selectedIndex === 1 && (!evt || evt.currentTarget.id === 'pdbssel'))
-      pdbssel.selectedIndex === 1 || !nmflow.classList.contains('dnone') || tabActv();
+      pdbssel.selectedIndex === 1
+      || [nmflow, nmdata].some(e => !e.classList.contains('dnone')) || tabActv();
     } else if (vidx < 5) {
-      rsp2con.textContent = nmtbod.innerHTML = "";
+      rsp2con.textContent = "";
       vidx < 4 ? tabActv()
       : nmdata.classList.remove("dnone") || clipsGen();
     } else {
       rsp2con.textContent = "";
-      [vctrls, nmflow].forEach(e => e.classList.remove("dnone"));
+      nmflow.classList.remove("dnone");
+      //[vctrls, nmflow].forEach(e => e.classList.remove("dnone"));
       tblGen(evt);
     }
   },
@@ -1087,7 +1095,6 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
     if (vidx > 3 && evt && evt.currentTarget.localName === 'a') { return tabActv(evt); }
     vidx = !evt || evt.currentTarget.localName !== 'a' ? viewsel.selectedIndex
       : evt.currentTarget.parentElement.dataset.tabidx;
-    if (vidx < 4 && evt && nmflow.classList.contains('dnone')) { return tabActv(evt); }
     vidx < 4 || txd1.DBNAME || pdbssel.selectedIndex === 1 || (viewsel.selectedIndex = vidx = 0);
     //evt.target.selectedIndex //evt.target.parentElement.dataset.vidx
     //nmtabs.forEach(li => li.classList.remove("is-active"));
@@ -1096,6 +1103,9 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
     vidx === 2 || (colssel.innerHTML = vidx < 4 ? "" : sopts[vidx === 8 ? 1 : 0]);
     vidx === 2 || vidx > 3 || (sortsel.innerHTML = "");
     vidx === 2 || (descswi.checked = false);
+    if (vidx < 4 && evt && [nmflow, nmdata].every(e => e.classList.contains('dnone'))) {
+      return tabActv(evt);
+    }
     vidx !== 6 || (colssel.options[18].selected = colssel.options[0].selected = true);
     if (vidx === 7) {
       Array.from(colssel.options).forEach(o => o.selected = false);
@@ -1131,7 +1141,7 @@ blktrig.onclick = bulkTog;
 document.querySelectorAll('#nmwrap #movebtn, #nmwrap #delbtn').forEach(btn => btn.onclick = filesChg);
 document.querySelectorAll(qslrs[2]).forEach(anc => anc.onclick = sdirXpd);
 document.querySelectorAll('#nmtbl td:first-of-type>input').forEach(inp => inp.onchange = chksTog);
-tbancs.forEach(anc => anc.onclick = viewChg);
+tabans.forEach(anc => anc.onclick = viewChg);
 !window.PouchDB || !PouchDB.allDbs ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(rsp2Show);
 //colsTog();
 //viewRte();
