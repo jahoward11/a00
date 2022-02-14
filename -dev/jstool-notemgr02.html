@@ -18,7 +18,7 @@ hr {
 p, dl, ol, ul, li, button, input, select, textarea, pre { margin: 0; }
 p:not(:last-child), dl:not(:last-child), ol:not(:last-child), ul:not(:last-child),
 blockquote:not(:last-child), pre:not(:last-child), table:not(:last-child) { margin-bottom: 1em; }
-input[type=checkbox], input[type=radio] { margin: 0 2px 0 0; vertical-align: baseline; }
+input[type=checkbox], input[type=radio] { margin: 0 3px 0 0; vertical-align: baseline; }
 strong, mark, table th, .table, .table thead td, .table thead th,
 .table tfoot td, .table tfoot th { color: inherit; }
 .image {
@@ -300,6 +300,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   cursor: pointer;
 }
 #nmdata .media-left>.image>figcaption { font-style: italic; text-align: center; }
+#nmtabs li:first-child>a { letter-spacing: -3px; }
 @media screen and (max-width: 575px) {
   #nmdata .media-left>.image.rspv128 { width: 48px; margin: 0; }
   #nmdata .media-left>.image.rspv128 img { min-height: 48px; }
@@ -452,6 +453,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   <p>Coming soon &hellip;</p>
 </div>
 <div id=pdbcfg class="cblock dnone">
+<span class=fltrt><label><input type=checkbox id=cfgcbx checked /> <a>Show use guides</a></label></span>
 <h4>Database Setup</h4>
 <p>&emsp;You can switch to any previously created, local database by using
 the 1<sup>st</sup> select list of the top control panel.</p>
@@ -614,6 +616,7 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
   nmtbod = document.querySelector('#nmtbl tbody'),
   nmtfts = document.querySelectorAll('#nmtbl tfoot'),
   tabans = document.querySelectorAll('#nmtabs li>a'),
+  nmpans = [nmtips, pnadd1, pdbcfg, nmsets],
   rsp2Show = resp => rsp2con.textContent
     += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
       ? resp : JSON.stringify(resp, null, 2) ) + "\n\n",
@@ -649,7 +652,7 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
       <td>${ rval.subject || "" }</td>
       <td>${ Object.keys(rval._attachments || "").length || "" }</td>
     </tr>`,
-  qd3Fmt = rows => rows.map( (r, i) =>
+  qd5Fmt = rows => rows.map( (r, i) =>
     !(rval = r.doc || r.value)._attachments && /^\./.test(r.id) ? ""
     : /^[.-]/.test(r.id) ? (!i || (j = i)) && `
     <tr id="${ r.id.replace(/^[.-]/, "_") }">
@@ -671,8 +674,8 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
         rval.file_updated.subdir || "/" }</td>
     </tr>` + tr0Gen(r, i)
     : tr0Gen(r, i) ).join("") + "\n  ",
-  qd4Fmt = rows => rows.map(tr0Gen).join("") + "\n  ",
-  qd6Fmt = dels => dels.map( (d, i) => `
+  qd6Fmt = rows => rows.map(tr0Gen).join("") + "\n  ",
+  qd8Fmt = dels => dels.map( (d, i) => `
     <tr>
       <td>${ 1 + i } <input type=checkbox class=dnone /></td>
       <td>${ d.seq }</td>
@@ -799,7 +802,7 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
         }
       };
     rsp2con.textContent = "";
-    [vctrls, nmflow, nmtabs, [nmtips, pnadd1, pdbcfg, nmsets][tidx]].forEach(e => e.classList.add("dnone"));
+    [vctrls, nmflow, nmtabs, nmpans[tidx]].forEach(e => e.classList.add("dnone"));
     !txd2.DBNAME || !window.PouchDB || new PouchDB(txd2.DBNAME)
     .get(txd2.FILEID, txd2.OPTIONS).then(doc => {
       let lnl, str,
@@ -808,8 +811,8 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
         ? 16 : lnl > 2 || str.length > 200 ? 8 : 2;
       fwg = doc;
       nmdata.innerHTML = "\n<div class=cfield>"
-      + "\n<span class=fltrt><button id=btnupd><span class=isucc>&#x267a;</span> UPDATE</button></span>"
-      + "\n<button id=btnbk><strong class=isucc>&lang;</strong></button>"
+      + "\n<span class=fltrt><button id=updbtn><span class=isucc>&#x267a;</span> UPDATE</button></span>"
+      + "\n<button id=bckbtn><strong class=isucc>&lang;</strong></button>"
       + " <button class=isclr disabled>" + txd2.DBNAME + " &sol;</button>"
       + ( !(fwg.file_updated || "").subdir ? ""
         : "<button class=isclr disabled>" + fwg.file_updated.subdir + " &sol;</button>" )
@@ -825,14 +828,14 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
       str.replace(/&(?=#?\w+;)/g, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;")}</textarea>
   </div>
 </div>`).join("") + "\n";
-      btnbk.onclick = () => [vctrls, nmtabs, [nmtips, pnadd1, pdbcfg, nmsets][tidx]]
-        .forEach(e => e.classList.remove("dnone")) || (nmdata.innerHTML = "") || viewChg();
+      bckbtn.onclick = () => [vctrls, nmtabs, nmpans[tidx]]
+        .forEach(e => e.classList.remove("dnone")) || viewChg();
 /*
         (nmdata.textContent = "")
         || [vctrls, vidx > 4 && nmflow].forEach(e => e && e.classList.remove("dnone"))
         || vidx !== 4 || clipsGen(); //viewBk
 */
-      btnupd.onclick = () => {
+      updbtn.onclick = () => {
         ndhelp.classList.add("isucc");
         ndhelp.innerHTML = "Note is updated in local database.";
       }; //fwgUpd;
@@ -952,7 +955,7 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
       ftotal.textContent = dels.length;
       [nmthds[0], nmtfts[0]].forEach(e => e.classList.add("dnone"));
       [nmthds[1], nmtfts[1]].forEach(e => e.classList.remove("dnone"));
-      nmtbod.innerHTML = qd6Fmt( ss[0] === "seq" ? dels
+      nmtbod.innerHTML = qd8Fmt( ss[0] === "seq" ? dels
         : ordFlip(dels.map(r => [r.id, r])).map(sr => sr[1]) );
       chksRstr();
       colsTog(null, /^(?:id|seq)$/.test(ss[0]) ? ss[0] : "id");
@@ -975,7 +978,7 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
       [nmthds[1], nmtfts[1]].forEach(e => e.classList.add("dnone"));
       [nmthds[0], nmtfts[0]].forEach(e => e.classList.remove("dnone"));
       nmtbod.innerHTML = vidx !== 5
-      ? qd4Fmt( !ss[0] || vidx !== 7 && ss[0] === "id" || vidx === 7 && ss[1] === "timestamp"
+      ? qd6Fmt( !ss[0] || vidx !== 7 && ss[0] === "id" || vidx === 7 && ss[1] === "timestamp"
         ? rslt.rows
         : ordFlip( !ss[1] ? rslt.rows.map(r => [(r.doc || r.value)[ss[0]], r.id, r])
           : ss[1] !== "timestamp"
@@ -984,7 +987,7 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
             ? rval[ss[0]][ss[1]]
             : rval[ss[0].replace(/^file/, "ts")], r.id, r ]) )
         .map(sr => sr[2]) )
-      : qd3Fmt( ordFlip( rslt.rows.filter(r => /^[.-]/.test(r.id) || (r.doc || r.value).file_updated)
+      : qd5Fmt( ordFlip( rslt.rows.filter(r => /^[.-]/.test(r.id) || (r.doc || r.value).file_updated)
         .map( r => /^[.-]/.test(r.id) ? [r.id.replace(/^\.(.+)$/, "$1_"), null, r.id, r]
           : [ (rval = r.doc || r.value).file_updated.subdir || ".",
             !ss[1] ? rval[ss[0] || "id"] : (rval[ss[0]] || "")[ss[1]], r.id, r ]) )
@@ -1066,8 +1069,8 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
     !/0|1|3/.test(vidx) || (ftotal.textContent = "_");
     tabans.forEach(anc => anc.parentElement.classList.remove('is-active'));
     (!evt ? tabans[tidx] : evt.currentTarget).parentElement.classList.add('is-active');
-    [nmtips, pnadd1, pdbcfg, nmsets].forEach(e => e.classList.add("dnone"));
-    [nmtips, pnadd1, pdbcfg, nmsets][tidx].classList.remove("dnone");
+    nmpans.forEach(e => e.classList.add("dnone"));
+    nmpans[tidx].classList.remove("dnone");
   },
   viewRte = evt => {
     [nmflow, nmdata].forEach(e => e.classList.add("dnone"));
@@ -1100,9 +1103,14 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
     //nmtabs.forEach(li => li.classList.remove("is-active"));
     //nmtabs[vidx].classList.add("is-active");
     txd1.VIEW = vidx === 7 ? "files-static" : vidx === 4 ? "files-contact" : "files-idxlist";
-    vidx === 2 || (colssel.innerHTML = vidx < 4 ? "" : sopts[vidx === 8 ? 1 : 0]);
-    vidx === 2 || vidx > 3 || (sortsel.innerHTML = "");
-    vidx === 2 || (descswi.checked = false);
+    if (vidx !== 2) {
+      (colssel.innerHTML = vidx < 4 ? "" : sopts[vidx === 8 ? 1 : 0]);
+      vidx > 3 || (sortsel.innerHTML = "");
+      descswi.checked = false;
+      bulkctrl.classList.add("dnone");
+      filtctrl.classList.remove("dnone");
+      filtinp.value = moveinp.value = "";
+    }
     if (vidx < 4 && evt && [nmflow, nmdata].every(e => e.classList.contains('dnone'))) {
       return tabActv(evt);
     }
@@ -1142,6 +1150,8 @@ document.querySelectorAll('#nmwrap #movebtn, #nmwrap #delbtn').forEach(btn => bt
 document.querySelectorAll(qslrs[2]).forEach(anc => anc.onclick = sdirXpd);
 document.querySelectorAll('#nmtbl td:first-of-type>input').forEach(inp => inp.onchange = chksTog);
 tabans.forEach(anc => anc.onclick = viewChg);
+cfgcbx.onclick = () => pdbcfg.querySelectorAll('p')
+  .forEach(e => e.classList[!cfgcbx.checked ? "add" : "remove"]("dnone"));
 !window.PouchDB || !PouchDB.allDbs ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(rsp2Show);
 //colsTog();
 //viewRte();
