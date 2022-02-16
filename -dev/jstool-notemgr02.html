@@ -7,7 +7,18 @@
 <div id=nmwrap>
 <style>
 *, *::before, *::after { box-sizing: inherit; }
-html { box-sizing: border-box; color: DimGrey; min-width: 375px; overflow-wrap: break-word; text-rendering: optimizeLegibility; -moz-osx-font-smoothing: grayscale; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; -moz-text-size-adjust: 100%; text-size-adjust: 100%; }
+html {
+  box-sizing: border-box;
+  color: DimGrey;
+  min-width: 375px;
+  overflow-wrap: break-word;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
 hr {
   display: block;
   background-color: Gainsboro;
@@ -18,7 +29,7 @@ hr {
 p, dl, ol, ul, li, button, input, select, textarea, pre { margin: 0; }
 p:not(:last-child), dl:not(:last-child), ol:not(:last-child), ul:not(:last-child),
 blockquote:not(:last-child), pre:not(:last-child), table:not(:last-child) { margin-bottom: 1em; }
-input[type=checkbox], input[type=radio] { margin: 0 3px 0 0; vertical-align: baseline; }
+input[type=checkbox], input[type=radio] { margin: 0; vertical-align: baseline; }
 strong, mark, table th, .table, .table thead td, .table thead th,
 .table tfoot td, .table tfoot th { color: inherit; }
 .image {
@@ -82,17 +93,18 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 .label {
 //color: #363636;
   display: block;
-  font-size: 14px; /* 1rem */
+//font-size: 14px; /* 1rem */
   font-weight: 700;
 }
 .label:not(:last-child) { margin-bottom: 0.5em; }
 .field-label .label { font-size: inherit; }
+.field-body .field .field,
 .field-body .cfield .cfield { margin-bottom: 0; }
 @media screen and (max-width: 719px) {
   .field-label { margin-bottom: 7px; /* 0.5rem */ }
 }
 @media screen and (min-width: 720px), print {
-  .cfield.is-horizontal { display: flex; }
+  .field.is-horizontal, .cfield.is-horizontal { display: flex; }
   .field-label {
     flex-basis: 0;
     flex-grow: 1;
@@ -106,9 +118,11 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     flex-grow: 5;
     flex-shrink: 1;
   }
-  .field-body .cfield { margin-bottom: 0; }
-  .field-body > .cfield { flex-shrink: 1; }
+  .field-body .field, .field-body .cfield { margin-bottom: 0; }
+  .field-body > .field, .field-body > .cfield { flex-shrink: 1; }
+  .field-body > .field:not(.is-narrow),
   .field-body > .cfield:not(.is-narrow) { flex-grow: 1; }
+  .field-body > .field:not(:last-child),
   .field-body > .cfield:not(:last-child) { margin-right: 10.5px; /* 0.75rem */ }
 }
 .level {
@@ -128,7 +142,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   justify-content: center;
 }
 @media screen and (max-width: 719px) {
-  .level-item:not(:last-child) { margin-bottom: 8px; }
+  .level-item:not(:last-child) { margin-bottom: 8px; } /* not Bulma */
   .level-item > .level { display: flex; }
 }
 .media {
@@ -206,8 +220,14 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 .tabs .icon:first-child { margin-right: 0.5em; }
 .tabs .icon:last-child { margin-left: 0.5em; }
 .tabs.is-centered ul { justify-content: center; }
-#nmwrap { font: normal 14px BlinkMacSystemFont, -apple-system, Helvetica, Arial, sans-serif; max-width: 960px; margin: 24px auto; line-height: 1.5; }
+#nmwrap {
+  font: normal 14px BlinkMacSystemFont, -apple-system, Helvetica, Arial, sans-serif;
+  max-width: 960px;
+  margin: 24px auto;
+  line-height: 1.5;
+}
 #nmwrap h4, #nmwrap h5 { margin-bottom: 7px; }
+#nmwrap h4+h5 { margin-top: 14px; }
 #nmwrap a {
   color: #485fc7;
   cursor: pointer;
@@ -227,7 +247,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 }
 #nmwrap a:active, #nmwrap button:active { box-shadow: 0 0 0 0.125em rgb(50 152 220 / 25%); }
 #nmwrap button, #nmwrap input:not([type=checkbox]), #nmwrap select {
-  background: #f9f9f9;
+  background: #f8f8f8;
   color: Grey;
 //font-size: 14px;
   line-height: 0;
@@ -242,11 +262,11 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   cursor: pointer;
   white-space: nowrap;
 }
-#nmwrap input[type=text], #nmwrap select { width: 90px; }
 #nmwrap input::placeholder { opacity: 0.5; }
 #nmwrap textarea { display: block; font: normal 10.5px monospace; width: 100%; }
+#nmwrap .fsiz75 { font-size: 0.75em; }
 #nmwrap .hwhsmk { background-color: Whitesmoke; }
-#nmwrap .hgains { background-color: Gainsboro; }
+#nmwrap .hgainl { background-color: #ececec; } /* Gainsboro #dcdcdc */
 #nmwrap .hwarnl { background-color: #fff6e6; }
 #nmwrap .hsuccl { background-color: #e8effc; }
 #nmwrap .igreyd { color: DarkGrey; }
@@ -254,10 +274,25 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap .isucc { color: CornFlowerBlue; }
 #nmwrap textarea.iwarn { color: unset; border-color: Orange; }
 #nmwrap textarea.isucc { color: unset; border-color: CornFlowerBlue; }
-#nmwrap button.isclr { background: transparent; max-width: 359px; padding: 0 2px; overflow: hidden; text-overflow: ellipsis; }
+#nmwrap button.isclr {
+  background: transparent;
+  max-width: 359px;
+  padding: 0 2px;
+  overflow: hidden;
+  text-overflow: ellipsis; }
 #nmwrap .cblock:not(:last-child) { margin-bottom: 21px; }
 #nmwrap .cfield:not(:last-child) { margin-bottom: 8px; }
 #nmwrap .ccntr:not(:last-of-type) { margin-right: 8px; }
+#nmwrap label.ccntr {
+  display: inline-block;
+  width: 126px;
+  margin-right: 8px;
+  line-height: 24px;
+  text-align: right;
+  white-space: nowrap;
+}
+#nmwrap label.ccntr+.ccntr>input[type=text],
+#nmwrap label.ccntr+.ccntr>select { width: 216px; }
 #nmwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }
 #nmwrap .cfield>.chelp { font-size: 12px; margin-top: 4px; }
 #nmwrap .fltrt { float: right; }
@@ -275,11 +310,13 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   overflow-x: hidden;
   white-space: pre;
 }
-#nmwrap #pdbssel { width: 136px; }
-#nmwrap #ftotal { display: inline-block; min-width: 20px; }
-#nmwrap #viewsel { width: 24px; }
-#nmwrap #filtinp { width: 168px; }
-#nmwrap #moveinp { width: 114px; }
+#vctrls #pdbssel { width: 136px; }
+#vctrls #ftotal { display: inline-block; min-width: 20px; }
+#vctrls #viewsel { width: 24px; }
+#vctrls #colssel, #vctrls #sortsel { width: 100px; }
+#vctrls #descswi { margin-right: 2px; }
+#vctrls #filtinp { width: 168px; }
+#vctrls #moveinp { width: 114px; }
 #nmtbl thead, #nmtbl tfoot { font-weight: bold; }
 #nmtbl td:first-of-type { white-space: nowrap; }
 #nmtbl td:nth-of-type(1), #nmtbl td:nth-of-type(2) { text-align: right; }
@@ -301,18 +338,30 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 }
 #nmdata .media-left>.image>figcaption { font-style: italic; text-align: center; }
 #nmtabs li:first-child>a { letter-spacing: -3px; }
+#pdbcfg .table {
+  min-width: 350px;
+  margin-left: 8px;
+}
+#pdbcfg #typtbl td { padding: 5px; }
+#pdbcfg #typtbl td:nth-of-type(1)>input { width: 28vw; max-width: 120px; } /* 105/375px=28vw */
+#pdbcfg #typtbl td:nth-of-type(2)>select { width: 84px; padding: 0 3px; } /* 84/375px=22vw */
+#pdbcfg #typtbl td:nth-of-type(3)>input { width: 34vw; } /* 131/375px=34vw */
+#pdbcfg #t0tbod td:nth-of-type(1),
+#pdbcfg #v0tbod td:nth-of-type(1) { white-space: nowrap; }
+/* #pdbcfg #typtbl th:nth-of-type(3) { min-width: 132px; } */
 @media screen and (max-width: 575px) {
   #nmdata .media-left>.image.rspv128 { width: 48px; margin: 0; }
   #nmdata .media-left>.image.rspv128 img { min-height: 48px; }
   #nmdata .media-left>.image>figcaption { float: right; font-size: x-small; }
 }
-@media screen and (min-width: 720px) and (max-width: 754px), print {
-  #nmwrap #pdbssel { width: 120px; }
-  #nmwrap #filtinp { width: 150px; }
-  #nmwrap #moveinp { width: 96px; }
-}
 @media screen and (max-width: 719px) {
-  #nmwrap .media-left>.media-left>.image { margin: 0; }
+  #nmdata .media-left>.media-left>.image { margin: 0; }
+}
+@media screen and (min-width: 720px) and (max-width: 767px), print {
+  #vctrls #pdbssel { width: 120px; }
+  #vctrls #colssel, #vctrls #sortsel { width: 90px; }
+  #vctrls #filtinp { width: 150px; }
+  #vctrls #moveinp { width: 96px; }
 }
 </style>
 <h4 class=cfield>Note Manager</h4>
@@ -321,7 +370,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   <div class="level-item">
     <div class="level cfield">
       <span class=ccntr><select id=pdbssel title="DB-open select list">
-      </select></span><span class=ccntr><select id=viewsel title="List-view select list">
+      </select></span><span class=ccntr><select id=viewsel title="Notelist-view select list">
         <option></option>
         <option>&plus; New Note</option>
         <option>&check;&thinsp;DB Config</option>
@@ -344,7 +393,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   <div class="level-item">
     <div class="level cfield">
       <span id=filtctrl class=ccntr>
-      <input type=text id=filtinp placeholder="Search pattern&hellip;" /><button id=filtbtn class=hgains title="Notelist filter">
+      <input type=text id=filtinp placeholder="Search pattern&hellip;" /><button id=filtbtn class=hgainl title="Notelist filter">
       FILT</button></span><span id=bulkctrl class="ccntr dnone"><span class=cfield>
       <span class=ccntr><input type=text id=moveinp placeholder="New subdir&hellip;" /><button id=movebtn class="isucc hsuccl" title="Note subdirectory reassignment">
       MOV</button></span><span class=ccntr><button id=delbtn class="iwarn hwarnl" title="Note delete">
@@ -378,7 +427,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
       <td>From</td>
       <td>To</td>
       <td>Subject</td>
-      <td>Att's</td>
+      <td>Attach's</td>
     </tr>
   </thead>
   <thead class=dnone>
@@ -414,7 +463,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
       <td>From</td>
       <td>To</td>
       <td>Subject</td>
-      <td>Att's</td>
+      <td>Attach's</td>
     </tr>
   </tfoot>
   <tfoot class=dnone>
@@ -450,99 +499,227 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   using the 1<sup>st</sup> select list of the control panel&nbsp;above.</p>
 </div>
 <div id=pnadd1 class="cblock dnone">
-  <p>Coming soon &hellip;</p>
+  <h4>New Note</h4>
+  <div id=pnahlp>
+    <p>&emsp;<em>Use Tip:</em> You must first create/open a DB before you can add a new <em>note</em>.</p>
+  </div>
+  <div id=pnacnt class=dnone>
+    <p>&emsp;Coming soon &hellip;</p>
+  </div>
 </div>
 <div id=pdbcfg class="cblock dnone">
-<span class=fltrt><label><input type=checkbox id=cfgcbx checked /> <a>Show use guides</a></label></span>
-<h4>Database Setup</h4>
-<p>&emsp;You can switch to any previously created, local database by using
-the 1<sup>st</sup> select list of the top control panel.</p>
-<h5>Old Data Destruction</h5>
-<p>&emsp;To <em>destroy</em> an existing database&mdash;or to <em>compact</em> it
-(i.e., remove all versions of each <em>note</em> but the last one)&mdash;enter
-the same name as the currently selected DB and tap the appropriate button, here.</p>
-<pre>
-  Sel'd DB name: "________"
-  <em>Alert:</em> This operation cannot be reversed.
-  [COMPACT] [DESTROY]
-</pre>
-<h5>New Database Creation</h5>
-<p>&emsp;To <em>create</em> a new local database, enter your username,
-a new DB name and a short description of its intended purpose;
-(And, optionally, set your own DB configurations, below;)
-Then, tap the associated button, here.</p>
-<pre>
-  Username:      "________"
-  New DB name:   "________"
-  New DB descr:  "________"
-  [CREATE]
-</pre>
-<h4>About the Selected, Local DB</h4>
-<pre>
-  DB name:       ________
-  Notes total:   ________
-  Created:       ________
-  Created by:    ________
-  Description:   ________
-
-  [ ] set as default DB
-      (open this DB directly on next startup)
-</pre>
-<h5>"New Note" Template</h5>
-<p>&emsp;You can add a new <em>note</em> ( <span class=hwhsmk>&plus; New Note</span> ) to the database by using the 2<sup>nd</sup> select list of the top control panel (or, by activating the corresponding tab beneath the notelist <em>view</em>).</p>
-<p>&emsp;Be aware that a database <em>note</em>
-(a.k.a., <em>file</em> or <em>document</em> or <em>entry</em>) is actually
-a stored JavaScript object (with arbitrary <em>keys</em> and <em>values</em>).</p>
-<p>&emsp;As such, the database is more manageable when all of its <em>notes</em>
-share a common structure (i.e., have the same set of object-property <em>keys</em>).</p>
-<p>&emsp;Therefore, to keep a new database manageable, decide in advance
-what its function is by commiting to one object structure as the default template for
-every new <em>note</em>&mdash;and selecting it (either a preset <em>note</em> type
-or a new creation of your own), here.</p>
-<pre>
-  Default note type: "contact"
-
- Note-obj-pty KEY | VALUE datatype| VALUE pre-fill
- _id              | string        | \`cidGen()\`
- file_type        | string        | contact
- ts_created       | number        | \`Date()\`
- ts_updated       | number        | \`Date()\`
- name_full        | string        |
- name_user        | string        |
- birthdate        | string        |
- roles            | string        |
- emails           | arr of str    | []
- phones           | arr of str    | []
- locations        | arr of obj    | [ { "label": "home", "street": "", ... } ]
- social_profiles  | arr of str    | []
- project_urls     | arr of str    | []
- team_groups      | arr of str    | []
- image_src        | string        |
- bio_short        | string        |
- miscellany       | string        |
-</pre>
-<h5>Notelist Views</h5>
-<p>&emsp;You can switch to any notelist <em>view</em> by using the 2<sup>nd</sup> select list of the top control panel.</p>
-<p>&emsp;Five different <em>views</em> are available (<span class=hwhsmk>V1</span>&ndash;<span class=hwhsmk>V5</span>).</p>
-<p>&emsp;Customize and preserve any one or more of the five <em>views</em> by selecting one and
-adjusting the subsequent view controls, above&mdash;then, returning directly back here to add
-the resulting new <em>view</em>, below.</p>
-<pre>
-  - V1-custom1 : descriptionV1
-  - V2-custom1 : descriptionV2
-  - V3-custom1 : descriptionV3
-  - V4-custom1 : descriptionV4
-  - V5-custom1 : descriptionV5
-  [+ Add View]
-</pre>
-<p>&emsp;Also, select one (either a preset or one of your own) as the default <em>view</em>&mdash;i.e.,
-the <em>view</em> that will be displayed first each time the database is opened.</p>
-<pre>
-  Default view: "V1:noteclips"
-</pre>
+  <span class=fltrt><label><input type=checkbox id=cfgcbx checked /> <a class=fsiz75>Show use guides</a></label></span>
+  <h4>Database Setup &plus; Configuration</h4>
+  <h5>Old Data Destruction</h5>
+  <p>&emsp;To <em>destroy</em> an existing database&mdash;or to <em>compact</em> it
+  (i.e., remove all versions of each <em>note</em> but the last one)&mdash;enter
+  the same name as the currently selected DB and tap the appropriate button, here.</p>
+  <div id=olddctrl class=cblock>
+    <div class=cfield>
+      <div class=chelp><em>Alert:</em> This operation cannot be reversed.</div>
+      <label class=ccntr>Selected DB name</label><span class=ccntr><input type=text id=dbdeinp /></span>
+    </div>
+    <div class=cfield>
+      <label class=ccntr>
+      </label><span class=ccntr><button id=dbd0btn class="isucc hsuccl">
+      COMPACT</button></span><span class=ccntr><button id=dbd1btn class="iwarn hwarnl">
+      DESTROY</button></span>
+      <div class="chelp isucc dnone">Old data destruction is successful.</div>
+      <div class="chelp iwarn dnone">Old data destruction failed.</div>
+    </div>
+  </div>
+  <h5>New Database Creation</h5>
+  <p>&emsp;To <em>create</em> a new local database, enter your username,
+  a new DB name and a short description of its intended purpose;
+  (And, optionally, set your own DB configurations, below;)
+  Then, tap the associated button, here.</p>
+  <div class=cblock>
+    <div class=cfield>
+      <label class=ccntr>Username</label><span class=ccntr><input type=text id=una2inp /></span>
+    </div>
+    <div class=cfield>
+      <label class=ccntr>New DB name</label><span class=ccntr><input type=text id=pdb0inp /></span>
+    </div>
+    <div class=cfield>
+      <label class=ccntr>DB description</label><span class=ccntr><input type=text id=pdb1inp /></span>
+    </div>
+    <div class=cfield>
+      <label class=ccntr>
+      </label><span class=ccntr><button id=pdb0btn class="isucc hsuccl">CREATE</button></span>
+      <div class="chelp isucc dnone">New DB creation is successful.</div>
+      <div class="chelp iwarn dnone">New DB creation failed.</div>
+    </div>
+  </div>
+  <h4>About the Selected, Local DB</h4>
+  <p>&emsp;You can switch to any previously created, local database by using
+  the 1<sup>st</sup> select list of the top control&nbsp;panel.</p>
+  <table class="table cfield">
+    <tbody id=pdbtbod>
+      <tr><td>DB name:</td><td></td></tr>
+      <tr><td>Notes total:</td><td></td></tr>
+      <tr><td>Created:</td><td></td></tr>
+      <tr><td>Created by:</td><td></td></tr>
+      <tr><td>Description:</td><td></td></tr>
+    </tbody>
+  </table>
+  <div class=cfield>
+    &emsp;<label><input type=checkbox /> <a>Set as default DB</a></label>
+    <br /><span class=chelp>&emsp;&emsp;&ensp;(Open this DB directly on next startup.)</span>
+  </div>
+  <h5>"New Note" Type-Template</h5>
+  <p>&emsp;You can add a new <em>note</em> ( <span class=hwhsmk>&plus; New Note</span> ) to the database by using the 2<sup>nd</sup> select list of the top control panel (or, by activating the corresponding tab beneath the notelist <em>view</em>).</p>
+  <p>&emsp;Be aware that a database <em>note</em>
+  (a.k.a., <em>file</em> or <em>document</em> or <em>entry</em>) is actually
+  a stored JavaScript object (with arbitrary <em>keys</em> and <em>values</em>).</p>
+  <p>&emsp;As such, the database is more manageable when all of its <em>notes</em>
+  share a common structure (i.e., have the same set of object-property <em>keys</em>).</p>
+  <p>&emsp;Therefore, to keep a new database manageable, decide in advance
+  what its function is by committing to one object structure as the default template for
+  every new <em>note</em>&mdash;and selecting it (either a preset <em>note</em> type
+  or a new creation of your own), here.</p>
+  <div class=cfield>
+    <label class=ccntr>Default note type</label><span class=ccntr><select id=t00sel></select></span>
+  </div>
+  <table id=typtbl class="cfield table">
+    <thead>
+      <tr><th>Note-object-<br />property KEY</th><th>VALUE<br />datatype</th><th>VALUE<br />pre-fill</th></tr>
+    </thead>
+    <tbody id=t1tbod>
+      <tr><td>_id</td><td>string</td><td>`cidGen()`</td></tr>
+      <tr><td>locations</td><td>arr of obj</td><td>[ { "label": "" } ]</td></tr>
+      <tr><td>social_profiles</td><td>arr of str</td><td>[]</td></tr>
+    </tbody>
+  </table>
+  <pre class=dnone>
+   Note-obj-pty KEY | VALUE datatype| VALUE pre-fill
+   _id              | string        | `cidGen()`
+   file_type        | string        | contact
+   ts_created       | number        | `Date()`
+   ts_updated       | number        | `Date()`
+   name_full        | string        |
+   name_user        | string        |
+   birthdate        | string        |
+   roles            | string        |
+   emails           | arr of str    | []
+   phones           | arr of str    | []
+   locations        | arr of obj    | [ { "label": "home", "street": "", ... } ]
+   social_profiles  | arr of str    | []
+   project_urls     | arr of str    | []
+   team_groups      | arr of str    | []
+   image_src        | string        |
+   bio_short        | string        |
+   miscellany       | string        |
+  </pre>
+  <div class=cfield>
+    <label class=ccntr>Custom type label</label><span class=ccntr><input type=text id=t01inp /></span>
+  </div>
+  <div class=cfield>
+    <label class=ccntr>Type description</label><span class=ccntr><input type=text id=t02inp /></span>
+  </div>
+  <div class=cfield>
+    <label class=ccntr>
+    </label><span class=ccntr><button id=t0abtn class=hgainl><span class=isucc>&plus;</span>
+    NEW TYPE</button></span>
+    <div class="chelp isucc dnone">Add-new-type operation is successful.</div>
+    <div class="chelp iwarn dnone">Add-new-type operation failed.</div>
+  </div>
+  <table class="cfield table">
+    <tbody id=t0tbod></tbody>
+  </table>
+  <div class=cfield>
+    <label class=ccntr>
+    </label><span class=ccntr><button id=t0dbtn class=hgainl><span class=iwarn>&#x2715;</span>
+    DEL TYPE</button></span>
+    <div class="chelp isucc dnone">Delete-type operation is successful.</div>
+    <div class="chelp iwarn dnone">Delete-type operation failed.</div>
+  </div>
+  <h5>Notelist Views</h5>
+  <p>&emsp;You can switch to any notelist <em>view</em> by using the 2<sup>nd</sup> select list of the top control panel.</p>
+  <p>&emsp;Five different <em>views</em> are available (<span class=hwhsmk>V1</span>&ndash;<span class=hwhsmk>V5</span>).</p>
+  <p>&emsp;Customize and preserve any one or more of the five <em>views</em> by selecting one and
+  adjusting the subsequent view controls, above&mdash;then, returning directly back here to add
+  the resulting new <em>view</em>, below.</p>
+  <p>&emsp;Also, select one (either a preset or one of your own) as the default <em>view</em>&mdash;i.e.,
+  the <em>view</em> that will be displayed first each time the database is opened.</p>
+  <div class=cblock>
+    <div class=cfield>
+      <label class=ccntr>Default view</label><span class=ccntr><select id=v00sel></select></span>
+    </div>
+  </div>
+  <div class=cfield>
+    <label class=ccntr>Custom view label</label><span class=ccntr><input type=text id=v01inp /></span>
+  </div>
+  <div class=cfield>
+    <label class=ccntr>View description</label><span class=ccntr><input type=text id=v02inp /></span>
+  </div>
+  <div class=cfield>
+    <label class=ccntr>
+    </label><span class=ccntr><button id=v0abtn class=hgainl><span class=isucc>&plus;</span>
+    NEW VIEW</button></span>
+    <div class="chelp isucc dnone">Add-new-view operation is successful.</div>
+    <div class="chelp iwarn dnone">Add-new-view operation failed.</div>
+  </div>
+  <table class="cfield table">
+    <tbody id=v0tbod></tbody>
+  </table>
+  <div class=cfield>
+    <label class=ccntr>
+    </label><span class=ccntr><button id=v0dbtn class=hgainl><span class=iwarn>&#x2715;</span>
+    DEL VIEW</button></span>
+    <div class="chelp isucc dnone">Delete-view operation is successful.</div>
+    <div class="chelp iwarn dnone">Delete-view operation failed.</div>
+  </div>
 </div>
 <div id=nmsets class="cblock dnone">
-  <p>Coming soon &hellip;</p>
+  <span class=fltrt><label><input type=checkbox id=setcbx /> <a class=fsiz75>Show use guides</a></label></span>
+  <h4><em>Note Mgr</em> App Settings</h4>
+  <p class=dnone>&emsp;For convenience, choose a default database, and associated <em>view</em>, that will be directly opened and displayed at each start-up.</p>
+  <p class=dnone>
+    &emsp;Also, optionally, identify yourself by username and/or email, which will be associated with every DB you create. This becomes useful if, for example, your DB data is ever synced to a cloud server and/or consolidated with other user's data; User identities facilitate a team's management of multiple DBs.
+  </p>
+  <div class=cblock>
+    <div class=cfield>
+      <label class=ccntr>Default DB</label><span class=ccntr><select id=dbossel></select></span>
+    </div>
+    <div class=cfield>
+      <label class=ccntr>Default View</label><span class=ccntr><select id=v0ssel></select></span>
+    </div>
+    <div class=cfield>
+      <label class=ccntr>Username</label><span class=ccntr><input type=text id=unaminp /></span>
+    </div>
+    <div class=cfield>
+      <label class=ccntr>User Email</label><span class=ccntr><input type=text id=uemlinp /></span>
+    </div>
+  </div>
+  <hr />
+  <h4>Wipe user data stored on device</h4>
+  <p class=dnone>&emsp;App settings and DB configurations are stored in the browser's <em>Local Storage</em>.</p>
+  <p class=dnone>&emsp;Each DB's collection of notes is stored in the browser's <em>IndexedDB Storage</em>.</p>
+  <p class=dnone>&emsp;Be aware that these data stores are not secure; They may be viewed by any prying person who is allowed access to the device, even without the use of the <em>Note&nbsp;Mgr</em>&nbsp;app.</p>
+  <p class=dnone>&emsp;Select the appropriate checkbox(es) and tap the button to completely destroy either one or both stores of user data.</p>
+  <p class=dnone>&emsp;<em>Use Tip:</em> To destroy just one DB without affecting any other DB, use the <em class=hwhsmk>DB Config</em> control panel instead.</p>
+  <div id=wipectrl class=cblock>
+    <div class=cfield>
+      <div class=chelp><em>Alert:</em> This operation cannot be reversed.</div>
+      &emsp;<label class=iwarn><input type=checkbox /> Empty local storage</label>
+      <br />&emsp;<label class=iwarn><input type=checkbox /> Purge all local DBs</label>
+    </div>
+    <div class=cfield>
+      <label class=ccntr>
+      </label><span class=ccntr><button class="iwarn hwarnl">
+      WIPE DATA</button></span>
+      <div class="chelp isucc dnone">Data wipe is successful.</div>
+      <div class="chelp iwarn dnone">Data wipe failed.</div>
+    </div>
+  </div>
+  <hr />
+  <h4>Browser Command UI</h4>
+  <p class=dnone>&emsp;<em>How it works:</em>
+    The "<code>&gt;</code>" symbol in the following text field is a <em>command prompt</em>. The prompt accepts any JavaScript command or expression. When a command or an expression is entered on the <em>command line</em> (i.e., after the prompt) and the field is de-focused (by tapping outside the field), the command or expression is executed by the browser and the final result is then displayed in the next line(s) of the text field.
+  </p>
+  <div class=cblock>
+    <textarea id=jsctxta class=textarea rows=31>&gt; </textarea>
+  </div>
 </div>
 </div>
 
@@ -575,14 +752,14 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
           <option value="from">From</option>
           <option value="to">To</option>
           <option value="subject">Subject</option>
-          <option value="_attachments">Att's</option>
+          <option value="_attachments">Attach's</option>
         `, `
           <option value="seq" selected>Chg Seq</option>
           <option value="id" selected>Note ID</option>
           <option value="rev" selected>Revision#</option>
         `],
   qslrs = [
-    '#nmwrap #colssel>option:nth-of-type(2), '
+    '#vctrls #colssel>option:nth-of-type(2), '
     + '#nmtbl thead:first-of-type td:nth-of-type(3), '
     + '#nmtbl tfoot:first-of-type td:nth-of-type(3)',
     '#nmtbl thead:first-of-type td:first-of-type>span, '
@@ -615,8 +792,92 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
   nmthds = document.querySelectorAll('#nmtbl thead'),
   nmtbod = document.querySelector('#nmtbl tbody'),
   nmtfts = document.querySelectorAll('#nmtbl tfoot'),
-  tabans = document.querySelectorAll('#nmtabs li>a'),
+  tabncs = document.querySelectorAll('#nmtabs li>a'),
   nmpans = [nmtips, pnadd1, pdbcfg, nmsets],
+  notyps = {
+    new: {
+      _id: "",
+      key2: "",
+      key3: ""
+    },
+    srcdoc: {
+      _id: "",
+      _rev: "",
+      file_type: "srcdoc",
+      file_created: {
+        username: "",
+        timestamp: 0,
+        dborigin: "",
+        dbname: "",
+        subdir: "",
+        notes: ""
+      },
+      file_updated: {
+        username: "",
+        timestamp: 0,
+        dborigin: "",
+        dbname: "",
+        subdir: "",
+        notes: ""
+      },
+      media_type: "text/plain",
+      content: ""
+    },
+    scrap: {
+      _id: "",
+      _rev: "",
+      file_type: "scrap",
+      ts_created: 0,
+      ts_updated: 0,
+      media_type: "text/plain",
+      content: ""
+    },
+    memo: {
+      _id: "",
+      _rev: "",
+      file_type: "memo",
+      file_created: {
+        username: "",
+        timestamp: 0,
+        dborigin: "",
+        dbname: "",
+        subdir: ""
+      },
+      linkref: "",
+      from: "",
+      to: [""],
+      subject: "",
+      body: ""
+    },
+    contact: {
+      _id: "",
+      _rev: "",
+      file_type: "contact",
+      ts_created: 0,
+      ts_updated: 0,
+      name_full: "",
+      name_user: "",
+      birthdate: "",
+      roles: [""],
+      emails: [""],
+      phones: [""],
+      locations: [
+        {
+          label: "home",
+          street: "",
+          city: "",
+          state: "",
+          zip: ""
+        }
+      ],
+      social_profiles: [""],
+      project_urls: [""],
+      team_groups: [""],
+      image_src: "",
+      bio_short: "",
+      miscellany: ""
+    }
+  },
   rsp2Show = resp => rsp2con.textContent
     += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
       ? resp : JSON.stringify(resp, null, 2) ) + "\n\n",
@@ -751,7 +1012,7 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
       chkaf2 = !fmove ? Array.from(chks)
           .filter(inp => !/^[.-]\w/.test(inp.parentElement.parentElement.children[1].textContent))
         : Array.from(chks).filter( inp => inp.parentElement.parentElement.children[3]
-          && /^(?:anno|post|prjid|publmgr|srcdoc)$/
+          && /^(?:anno|memo|post|prjid|publmgr|srcdoc)$/
           .test(inp.parentElement.parentElement.children[3].textContent) ),
       txd2 = {
         DBNAME:  txd1.DBNAME,
@@ -802,7 +1063,6 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
         }
       };
     rsp2con.textContent = "";
-    [vctrls, nmflow, nmtabs, nmpans[tidx]].forEach(e => e.classList.add("dnone"));
     !txd2.DBNAME || !window.PouchDB || new PouchDB(txd2.DBNAME)
     .get(txd2.FILEID, txd2.OPTIONS).then(doc => {
       let lnl, str,
@@ -810,9 +1070,11 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
           : JSON.stringify(fwg[k], null, 2) ).match(/\n/g) || "" ).length ) > 8 || str.length > 400
         ? 16 : lnl > 2 || str.length > 200 ? 8 : 2;
       fwg = doc;
+      [vctrls, nmflow, nmtabs, nmpans[tidx]].forEach(e => e.classList.add("dnone"));
+      nmdata.classList.remove("dnone");
       nmdata.innerHTML = "\n<div class=cfield>"
-      + "\n<span class=fltrt><button id=updbtn><span class=isucc>&#x267a;</span> UPDATE</button></span>"
-      + "\n<button id=bckbtn><strong class=isucc>&lang;</strong></button>"
+      + "\n<span class=fltrt><button id=updbtn class=hgainl><span class=isucc>&#x267a;</span>"
+      + " UPDATE</button></span>\n<button id=bckbtn class=hgainl><strong class=isucc>&lang;</strong></button>"
       + " <button class=isclr disabled>" + txd2.DBNAME + " &sol;</button>"
       + ( !(fwg.file_updated || "").subdir ? ""
         : "<button class=isclr disabled>" + fwg.file_updated.subdir + " &sol;</button>" )
@@ -1024,8 +1286,8 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
       ftotal.textContent = rrs.length;
       nmdata.innerHTML = "\n<span class=\"fltrt mtup4\">&ensp;Show all:&ensp;"
       + "<label><input type=checkbox id=cbxhdrs /> <a>headers</a></label>&ensp;"
-      + "<label><input type=checkbox id=cbxbods /> <a>bodies</a></label></span>\n<hr>"
-      + (rrs.length ? "" : "\n<p class=igreyd><em>[No results found &hellip;]</em><p>")
+      + "<label><input type=checkbox id=cbxbods /> <a>bodies</a></label></span>\n<hr />"
+      + (rrs.length ? "" : "\n<p class=igreyd>&emsp;<em>[No results found &hellip;]</em><p>")
       + rrs.map( r => `
 <article class=media>
   <div class="media-left">
@@ -1061,14 +1323,53 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
       cbxhdrs.click();
     }).catch(rsp2Show);
   },
+  t1sChg = () => {
+    let dtOpts = v => ["string", "number", "boolean", "object",
+        "arr of str", "arr of nbr", "arr of bln", "arr of obj", "arr of any", "other"].map(e =>
+          "\n      <option" + (e !== v ? ">" : " selected>") + e + "</option>").join("") + "\n      ",
+      fncTry = (a, fnc, e) => { try { return fnc(a) } catch (err) { return e ? err : undefined }},
+      inpStr = v => v == null ? "" : typeof v === 'object' ? JSON.stringify(v)
+        : typeof v !== 'string' ? "" + v : !/^{\s*['"][^]+}$|^\[[^]+\]$/.test(v.trim()) ? v
+        : JSON.stringify(fncTry(v, JSON.parse)) || v;
+    t1tbod.innerHTML = Object.entries(notyps[t00sel.value] || notyps.new)
+      .concat([["", ""]]).map( ([k, v]) => k === "_rev" ? ""
+      : "\n      <tr><td><input type=text value=\"" + k
+        + "\" /></td><td><select>" + dtOpts(typeof v)
+        + "</select></td><td><input type=text value='"
+        + inpStr(v) + "' /></td></tr>" ).join("") + "\n      ";
+  },
+  t0sChg = () => {
+    let t0s = [ ["srcdoc", "Web source document"], ["scrap", "No-frills, plain-text note"],
+        ["memo", "Short memorandum or text msg"], ["contact", "Person's contact information"] ]
+        .concat([["mytype2", "<em>[mytype2 description]</em>"]]);
+    t00sel.innerHTML = t0s.map( ([k, v], i) => "\n      <option" + (i !== 1 ? "" : " selected")
+      + ">" + k + "</option>" ).join("") + "\n      ";
+    t0tbod.innerHTML = t0s.map( ([k, v], i) =>
+      "\n      <tr><td><input type=checkbox" + (i > 3 ? "" : " disabled")
+        + " />&ensp;" + k + "</td><td>" + v + "</td></tr>" ).join("") + "\n      ";
+  },
+  v0sChg = () => {
+    let v0s = [ ["V1:noteclips", "Previews of <em>memo</em>s or <em>contact</em>s"],
+      ["V2:organized", "Notes/attach's by subdirectory"], ["V3:mutables", "All updatable notes"],
+      ["V4:statics", "All one-off memos/text-posts"], ["V5:deleted", "All discarded note IDs"] ]
+      .concat([["V1-myview2", "<em>[myview2 description]</em>"]]);
+    v00sel.innerHTML = v0s.map( ([k, v], i) => "\n      <option" + (i !== 1 ? "" : " selected")
+      + ">" + k + "</option>" ).join("") + "\n      ";
+    v0tbod.innerHTML = v0s.map( ([k, v], i) =>
+      "\n      <tr><td><input type=checkbox" + (i > 4 ? "" : " disabled")
+      + " />&ensp;" + k + "</td><td>" + v + "</td></tr>" ).join("") + "\n      ";
+    v0ssel.innerHTML = v0s.map( ([k, v], i) => "\n      <option" + (i !== 1 ? "" : " selected")
+      + ">" + k + "</option>" ).join("") + "\n      ";
+  },
   tabActv = evt => {
     !evt || evt.currentTarget.localName === 'a' || (evt = null);
     tidx = !evt ? (vidx > 3 ? 0 : vidx) : evt.currentTarget.parentElement.dataset.tabidx;
     [nmflow, nmdata].some(e => !e.classList.contains('dnone')) || (viewsel.selectedIndex = vidx = tidx);
     pdbssel.selectedIndex > 1 || vidx === 2 || (pdbssel.selectedIndex = 0);
+    pdbssel.selectedIndex === 1 || !cfgcbx.checked || cfgcbx.click();
     !/0|1|3/.test(vidx) || (ftotal.textContent = "_");
-    tabans.forEach(anc => anc.parentElement.classList.remove('is-active'));
-    (!evt ? tabans[tidx] : evt.currentTarget).parentElement.classList.add('is-active');
+    tabncs.forEach(anc => anc.parentElement.classList.remove('is-active'));
+    (!evt ? tabncs[tidx] : evt.currentTarget).parentElement.classList.add('is-active');
     nmpans.forEach(e => e.classList.add("dnone"));
     nmpans[tidx].classList.remove("dnone");
   },
@@ -1105,7 +1406,7 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
     txd1.VIEW = vidx === 7 ? "files-static" : vidx === 4 ? "files-contact" : "files-idxlist";
     if (vidx !== 2) {
       (colssel.innerHTML = vidx < 4 ? "" : sopts[vidx === 8 ? 1 : 0]);
-      vidx > 3 || (sortsel.innerHTML = "");
+      vidx > 3 || (sortsel.innerHTML = "") || (colssel.selectedIndex = -1);
       descswi.checked = false;
       bulkctrl.classList.add("dnone");
       filtctrl.classList.remove("dnone");
@@ -1128,16 +1429,26 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
     viewRte(evt);
   },
   pdbOpen = () => {
+    !pdbssel.options[3] || (nmtips.innerHTML = "");
     txd1.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value;
     pdbssel.selectedIndex < 2 ? (viewsel.selectedIndex = 0)
-    : vidx > 3 || (viewsel.selectedIndex = vidx = 5); //|| viewRte();
+      || pnahlp.classList.remove("dnone") || pnacnt.classList.add("dnone")
+    : pnahlp.classList.add("dnone") || pnacnt.classList.remove("dnone")
+      || vidx > 3 || (viewsel.selectedIndex = vidx = 5); //|| viewRte();
     viewChg();
-    pdbssel.selectedIndex !== 1 || (viewsel.selectedIndex = vidx = 2);
+    pdbssel.selectedIndex !== 1 || !(viewsel.selectedIndex = vidx = 2)
+    || cfgcbx.checked || cfgcbx.click();
     pdbssel.selectedIndex > 1 || tabActv();
   },
-  pdbsGen = (dbs = []) => pdbssel.innerHTML
-    = ["\n      <option></option>", "<option>&plus; New DB</option>"]
+  pdbsGen = (dbs = []) => {
+    pdbssel.innerHTML = ["\n      <option></option>", "<option>&plus; New DB</option>"]
       .concat(dbs.map(e => "<option>" + e + "</option>")).join("\n      ") + "\n      ";
+    dbossel.innerHTML = ["\n      <option></option>"]
+      .concat(dbs.map(e => "<option>" + e + "</option>")).join("\n      ") + "\n      ";
+    t0sChg();
+    v0sChg();
+    t1sChg();
+  };
 pdbssel.onchange = pdbOpen;
 viewsel.onchange = viewChg;
 colssel.onchange = colsTog;
@@ -1149,9 +1460,12 @@ blktrig.onclick = bulkTog;
 document.querySelectorAll('#nmwrap #movebtn, #nmwrap #delbtn').forEach(btn => btn.onclick = filesChg);
 document.querySelectorAll(qslrs[2]).forEach(anc => anc.onclick = sdirXpd);
 document.querySelectorAll('#nmtbl td:first-of-type>input').forEach(inp => inp.onchange = chksTog);
-tabans.forEach(anc => anc.onclick = viewChg);
-cfgcbx.onclick = () => pdbcfg.querySelectorAll('p')
-  .forEach(e => e.classList[!cfgcbx.checked ? "add" : "remove"]("dnone"));
+tabncs.forEach(anc => anc.onclick = viewChg);
+//cfgcbx.onclick = () => pdbcfg.querySelectorAll('p')
+  //.forEach(p => p.classList[!cfgcbx.checked ? "add" : "remove"]("dnone")) );
+[[cfgcbx, pdbcfg], [setcbx, nmsets]].forEach( ([c, e]) => c.onclick = () => e.querySelectorAll('p')
+  .forEach(p => p.classList[!c.checked ? "add" : "remove"]("dnone")) );
+t00sel.onchange = t1sChg;
 !window.PouchDB || !PouchDB.allDbs ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(rsp2Show);
 //colsTog();
 //viewRte();
