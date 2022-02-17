@@ -342,13 +342,18 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   min-width: 350px;
   margin-left: 8px;
 }
-#pdbcfg #typtbl td { padding: 5px; }
+#pdbcfg #pdbtbl td:nth-of-type(1),
+#pdbcfg #t0tbod td:nth-of-type(1),
+#pdbcfg #v0tbod td:nth-of-type(1) {
+  width: 100px;
+  max-width: 165px;
+  overflow-x: clip;
+  white-space: nowrap;
+}
+#pdbcfg #typtbl td { padding: 5.5px; }
 #pdbcfg #typtbl td:nth-of-type(1)>input { width: 28vw; max-width: 120px; } /* 105/375px=28vw */
 #pdbcfg #typtbl td:nth-of-type(2)>select { width: 84px; padding: 0 3px; } /* 84/375px=22vw */
 #pdbcfg #typtbl td:nth-of-type(3)>input { width: 34vw; } /* 131/375px=34vw */
-#pdbcfg #t0tbod td:nth-of-type(1),
-#pdbcfg #v0tbod td:nth-of-type(1) { white-space: nowrap; }
-/* #pdbcfg #typtbl th:nth-of-type(3) { min-width: 132px; } */
 @media screen and (max-width: 575px) {
   #nmdata .media-left>.image.rspv128 { width: 48px; margin: 0; }
   #nmdata .media-left>.image.rspv128 img { min-height: 48px; }
@@ -553,10 +558,10 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   <h4>About the Selected, Local DB</h4>
   <p>&emsp;You can switch to any previously created, local database by using
   the 1<sup>st</sup> select list of the top control&nbsp;panel.</p>
-  <table class="table cfield">
-    <tbody id=pdbtbod>
-      <tr><td>DB name:</td><td></td></tr>
-      <tr><td>Notes total:</td><td></td></tr>
+  <table id=pdbtbl class="table cfield">
+    <tbody>
+      <tr><td>DB name:</td><td id=pdbnam></td></tr>
+      <tr><td>Notes total:</td><td id=pdbtot></td></tr>
       <tr><td>Created:</td><td></td></tr>
       <tr><td>Created by:</td><td></td></tr>
       <tr><td>Description:</td><td></td></tr>
@@ -643,14 +648,14 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   the <em>view</em> that will be displayed first each time the database is opened.</p>
   <div class=cblock>
     <div class=cfield>
-      <label class=ccntr>Default view</label><span class=ccntr><select id=v00sel></select></span>
+      <label class=ccntr>Default <em>view</em></label><span class=ccntr><select id=v00sel></select></span>
     </div>
   </div>
   <div class=cfield>
-    <label class=ccntr>Custom view label</label><span class=ccntr><input type=text id=v01inp /></span>
+    <label class=ccntr>Custom <em>view</em> label</label><span class=ccntr><input type=text id=v01inp /></span>
   </div>
   <div class=cfield>
-    <label class=ccntr>View description</label><span class=ccntr><input type=text id=v02inp /></span>
+    <label class=ccntr><em>View</em> description</label><span class=ccntr><input type=text id=v02inp /></span>
   </div>
   <div class=cfield>
     <label class=ccntr>
@@ -673,22 +678,22 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 <div id=nmsets class="cblock dnone">
   <span class=fltrt><label><input type=checkbox id=setcbx /> <a class=fsiz75>Show use guides</a></label></span>
   <h4><em>Note Mgr</em> App Settings</h4>
-  <p class=dnone>&emsp;For convenience, choose a default database, and associated <em>view</em>, that will be directly opened and displayed at each start-up.</p>
+  <p class=dnone>&emsp;For convenience, choose a default database, and associated <em>view</em>, that will be directly opened and displayed at each start&#x2011;up.</p>
   <p class=dnone>
     &emsp;Also, optionally, identify yourself by username and/or email, which will be associated with every DB you create. This becomes useful if, for example, your DB data is ever synced to a cloud server and/or consolidated with other user's data; User identities facilitate a team's management of multiple DBs.
   </p>
   <div class=cblock>
     <div class=cfield>
-      <label class=ccntr>Default DB</label><span class=ccntr><select id=dbossel></select></span>
+      <label class=ccntr>Default DB</label><span class=ccntr><select id=dbopsel></select></span>
     </div>
     <div class=cfield>
-      <label class=ccntr>Default View</label><span class=ccntr><select id=v0ssel></select></span>
+      <label class=ccntr>Default <em>view</em></label><span class=ccntr><select id=v0ssel></select></span>
     </div>
     <div class=cfield>
       <label class=ccntr>Username</label><span class=ccntr><input type=text id=unaminp /></span>
     </div>
     <div class=cfield>
-      <label class=ccntr>User Email</label><span class=ccntr><input type=text id=uemlinp /></span>
+      <label class=ccntr>User email</label><span class=ccntr><input type=text id=uemlinp /></span>
     </div>
   </div>
   <hr />
@@ -719,6 +724,11 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </p>
   <div class=cblock>
     <textarea id=jsctxta class=textarea rows=31>&gt; </textarea>
+    <pre>
+
+
+
+    </pre>
   </div>
 </div>
 </div>
@@ -726,14 +736,15 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 <script src="../../a00/-res-js/pouchdb.min.js" type="text/javascript"></script>
 <script src="../../a00/-res-js/pouchdb.all-dbs.min.js" type="text/javascript"></script>
 <script type=module>
-let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
+let fwg, nm0cfgs, nm0sets, rva3, rval,
+  j = 0,  tidx = 0, vidx = 0,
   txd1 = {
     DBNAME:  "",
     FILEID:  "_design/ecosorter",
     VIEW:    "files-idxlist",
     OPTIONS: { since: 0 }
   },
-  sopts = [`
+  copts = [`
           <option value="file_updated.subdir">Subdir</option>
           <option value="id" selected>Note ID</option>
           <option value="file_type" selected>Type</option>
@@ -776,25 +787,13 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
     + '#nmdata .media-content>.pwrap>em,'
     + '#nmdata .media-content>.pwrap>details'
   ],
-/*
-  nmtabs = document.querySelectorAll('#nmwrap>nav.tabs li'),
-  ftotal = document.querySelector('#nmwrap #ftotal'),
-  colssel = document.querySelector('#nmwrap #colssel'),
-  sortsel = document.querySelector('#nmwrap #sortsel'),
-  descswi = document.querySelector('#nmwrap #descswi'),
-  filtinp = document.querySelector('#nmwrap #filtinp'),
-  filtbtn = document.querySelector('#nmwrap #filtbtn'),
-  filtctrl = document.querySelector('#nmwrap #filtctrl'),
-  bulkctrl = document.querySelector('#nmwrap #bulkctrl'),
-  blktrig = document.querySelector('#nmwrap #blktrig'),
-  rsp2con = document.querySelector('#nmwrap>#rsp2con'),
-*/
   nmthds = document.querySelectorAll('#nmtbl thead'),
   nmtbod = document.querySelector('#nmtbl tbody'),
   nmtfts = document.querySelectorAll('#nmtbl tfoot'),
   tabncs = document.querySelectorAll('#nmtabs li>a'),
   nmpans = [nmtips, pnadd1, pdbcfg, nmsets],
-  notyps = {
+  sctrls = [dbopsel, v0ssel, unaminp, uemlinp],
+  pntyps = {
     new: {
       _id: "",
       key2: "",
@@ -881,6 +880,7 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
   rsp2Show = resp => rsp2con.textContent
     += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
       ? resp : JSON.stringify(resp, null, 2) ) + "\n\n",
+  fncTry = (a, fnc, e) => { try { return fnc(a) } catch (err) { return e ? err : undefined }},
   ordFlip = arr => !descswi.checked ? arr.sort() : arr.sort().reverse(),
   aurlGen = isrc => isrc,
   date0Fmt = nbr => !nbr ? "" : new Date(nbr).toISOString().replace(/T.+$/, ""),
@@ -1323,50 +1323,12 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
       cbxhdrs.click();
     }).catch(rsp2Show);
   },
-  t1sChg = () => {
-    let dtOpts = v => ["string", "number", "boolean", "object",
-        "arr of str", "arr of nbr", "arr of bln", "arr of obj", "arr of any", "other"].map(e =>
-          "\n      <option" + (e !== v ? ">" : " selected>") + e + "</option>").join("") + "\n      ",
-      fncTry = (a, fnc, e) => { try { return fnc(a) } catch (err) { return e ? err : undefined }},
-      inpStr = v => v == null ? "" : typeof v === 'object' ? JSON.stringify(v)
-        : typeof v !== 'string' ? "" + v : !/^{\s*['"][^]+}$|^\[[^]+\]$/.test(v.trim()) ? v
-        : JSON.stringify(fncTry(v, JSON.parse)) || v;
-    t1tbod.innerHTML = Object.entries(notyps[t00sel.value] || notyps.new)
-      .concat([["", ""]]).map( ([k, v]) => k === "_rev" ? ""
-      : "\n      <tr><td><input type=text value=\"" + k
-        + "\" /></td><td><select>" + dtOpts(typeof v)
-        + "</select></td><td><input type=text value='"
-        + inpStr(v) + "' /></td></tr>" ).join("") + "\n      ";
-  },
-  t0sChg = () => {
-    let t0s = [ ["srcdoc", "Web source document"], ["scrap", "No-frills, plain-text note"],
-        ["memo", "Short memorandum or text msg"], ["contact", "Person's contact information"] ]
-        .concat([["mytype2", "<em>[mytype2 description]</em>"]]);
-    t00sel.innerHTML = t0s.map( ([k, v], i) => "\n      <option" + (i !== 1 ? "" : " selected")
-      + ">" + k + "</option>" ).join("") + "\n      ";
-    t0tbod.innerHTML = t0s.map( ([k, v], i) =>
-      "\n      <tr><td><input type=checkbox" + (i > 3 ? "" : " disabled")
-        + " />&ensp;" + k + "</td><td>" + v + "</td></tr>" ).join("") + "\n      ";
-  },
-  v0sChg = () => {
-    let v0s = [ ["V1:noteclips", "Previews of <em>memo</em>s or <em>contact</em>s"],
-      ["V2:organized", "Notes/attach's by subdirectory"], ["V3:mutables", "All updatable notes"],
-      ["V4:statics", "All one-off memos/text-posts"], ["V5:deleted", "All discarded note IDs"] ]
-      .concat([["V1-myview2", "<em>[myview2 description]</em>"]]);
-    v00sel.innerHTML = v0s.map( ([k, v], i) => "\n      <option" + (i !== 1 ? "" : " selected")
-      + ">" + k + "</option>" ).join("") + "\n      ";
-    v0tbod.innerHTML = v0s.map( ([k, v], i) =>
-      "\n      <tr><td><input type=checkbox" + (i > 4 ? "" : " disabled")
-      + " />&ensp;" + k + "</td><td>" + v + "</td></tr>" ).join("") + "\n      ";
-    v0ssel.innerHTML = v0s.map( ([k, v], i) => "\n      <option" + (i !== 1 ? "" : " selected")
-      + ">" + k + "</option>" ).join("") + "\n      ";
-  },
   tabActv = evt => {
     !evt || evt.currentTarget.localName === 'a' || (evt = null);
     tidx = !evt ? (vidx > 3 ? 0 : vidx) : evt.currentTarget.parentElement.dataset.tabidx;
     [nmflow, nmdata].some(e => !e.classList.contains('dnone')) || (viewsel.selectedIndex = vidx = tidx);
     pdbssel.selectedIndex > 1 || vidx === 2 || (pdbssel.selectedIndex = 0);
-    pdbssel.selectedIndex === 1 || !cfgcbx.checked || cfgcbx.click();
+    pdbssel.selectedIndex === 1 || nm0sets.usecfg || !cfgcbx.checked || cfgcbx.click();
     !/0|1|3/.test(vidx) || (ftotal.textContent = "_");
     tabncs.forEach(anc => anc.parentElement.classList.remove('is-active'));
     (!evt ? tabncs[tidx] : evt.currentTarget).parentElement.classList.add('is-active');
@@ -1405,7 +1367,7 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
     //nmtabs[vidx].classList.add("is-active");
     txd1.VIEW = vidx === 7 ? "files-static" : vidx === 4 ? "files-contact" : "files-idxlist";
     if (vidx !== 2) {
-      (colssel.innerHTML = vidx < 4 ? "" : sopts[vidx === 8 ? 1 : 0]);
+      (colssel.innerHTML = vidx < 4 ? "" : copts[vidx === 8 ? 1 : 0]);
       vidx > 3 || (sortsel.innerHTML = "") || (colssel.selectedIndex = -1);
       descswi.checked = false;
       bulkctrl.classList.add("dnone");
@@ -1430,24 +1392,99 @@ let fwg, j = 0, rva3, rval, tidx = 0, vidx = 0,
   },
   pdbOpen = () => {
     !pdbssel.options[3] || (nmtips.innerHTML = "");
-    txd1.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value;
+    pdbnam.innerHTML = txd1.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value;
+    !window.PouchDB || !txd1.DBNAME ? (pdbtot.innerHTML = "")
+    : new PouchDB(txd1.DBNAME).info().then(r => pdbtot.innerHTML = r.doc_count).catch(rsp2Show);
     pdbssel.selectedIndex < 2 ? (viewsel.selectedIndex = 0)
       || pnahlp.classList.remove("dnone") || pnacnt.classList.add("dnone")
     : pnahlp.classList.add("dnone") || pnacnt.classList.remove("dnone")
-      || vidx > 3 || (viewsel.selectedIndex = vidx = 5); //|| viewRte();
+      || vidx > 3 || (viewsel.selectedIndex = vidx = 4 + v0ssel.selectedIndex); //|| viewRte();
     viewChg();
     pdbssel.selectedIndex !== 1 || !(viewsel.selectedIndex = vidx = 2)
     || cfgcbx.checked || cfgcbx.click();
     pdbssel.selectedIndex > 1 || tabActv();
   },
+  t1sChg = () => {
+    let dtOpts = v => ["string", "number", "boolean", "object",
+        "arr of str", "arr of nbr", "arr of bln", "arr of obj", "arr of any", "other"].map(e =>
+          "\n      <option" + (e !== v ? ">" : " selected>") + e + "</option>").join("") + "\n      ",
+      inpStr = v => v == null ? "" : typeof v === 'object' ? JSON.stringify(v)
+        : typeof v !== 'string' ? "" + v : !/^{\s*['"][^]+}$|^\[[^]+\]$/.test(v.trim()) ? v
+        : JSON.stringify(fncTry(v, JSON.parse)) || v;
+    t1tbod.innerHTML = Object.entries(pntyps[t00sel.value] || pntyps.new)
+      .concat([["", ""]]).map( ([k, v]) => k === "_rev" ? ""
+      : "\n      <tr><td><input type=text value=\"" + k
+        + "\" /></td><td><select>" + dtOpts(typeof v)
+        + "</select></td><td><input type=text value='"
+        + inpStr(v) + "' /></td></tr>" ).join("") + "\n      ";
+  },
+  v0sChg = () => {
+    let v0s = [ ["V1:noteclips", "Previews of <em>memo</em>s or <em>contact</em>s"],
+      ["V2:organized", "Notes/attach's by subdirectory"], ["V3:mutables", "All updatable notes"],
+      ["V4:statics", "All one-off memos/text-posts"], ["V5:deleted", "All discarded-note IDs"] ]
+      .concat(Object.values(nm0sets.u2vws).map(vo => vo.v0));
+    v00sel.innerHTML = v0s.map( ([k, v], i) => "\n      <option"
+      + (i !== 1 ? ">" : " selected>") + k + "</option>" ).join("") + "\n      ";
+    v0tbod.innerHTML = v0s.map( ([k, v], i) =>
+      "\n      <tr><td><input type=checkbox" + (i > 4 ? "" : " disabled")
+      + " />&ensp;" + k + "</td><td>" + v + "</td></tr>" ).join("") + "\n      ";
+    v0ssel.innerHTML = v0s.map( ([k, v]) => "\n      <option"
+      + (k.replace(/^(V\d):.+/, "$1") !== nm0sets.vwdflt ? ">" : " selected>")
+      + k + "</option>" ).join("") + "\n      ";
+  },
+  t0sChg = () => {
+    let t0s = [ ["", ""], ["srcdoc", "Web source document"], ["scrap", "No-frills, plain-text note"],
+        ["memo", "Short memorandum or text msg"], ["contact", "Person's contact information"] ]
+        .concat(Object.values(nm0sets.u2typs).map(vo => vo.t0));
+    t00sel.innerHTML = t0s.map( ([k, v], i) => "\n      <option"
+      + (i !== 2 ? ">" : " selected>") + k + "</option>" ).join("") + "\n      ";
+    t0tbod.innerHTML = t0s.map( ([k, v], i) => !i ? ""
+      : "\n      <tr><td><input type=checkbox" + (i > 4 ? "" : " disabled")
+        + " />&ensp;" + k + "</td><td>" + v + "</td></tr>" ).join("") + "\n      ";
+  },
+  setsUpd = evt => {
+    let ps = ["dbdflt", "vwdflt", "uname", "uemail", "usecfg", "useset"],
+      idx = evt && sctrls.concat([cfgcbx, setcbx, t0abtn, v0abtn, t0dbtn, v0dbtn])
+        .findIndex(e => e.id === evt.target.id);
+    if (typeof idx === 'number' && idx > -1) {
+      idx < 6 ? ( nm0sets[ps[idx]] = idx > 3 ? evt.target.checked : idx !== 1
+        ? evt.target.value : evt.target.value.replace(/^(V\d):.+/, "$1") )
+      : idx < 7 && t01inp.value ? (nm0sets.u2typs[t01inp.value] = {})
+      : idx < 8 && v01inp.value ? (nm0sets.u2vws[v01inp.value] = {})
+      : idx < 9 ? t0tbod.querySelectorAll('[type=checkbox]:checked')
+        .map(e => delete nm0sets.u2typs[e.parentElement.textContent.replace(/^\s/, "")])
+      : v0tbod.querySelectorAll('[type=checkbox]:checked')
+        .map(e => delete nm0sets.u2vws[e.parentElement.textContent.replace(/^\s?V\d-/, "")]);
+      localStorage._nm0sets = JSON.stringify(nm0sets);
+    }
+  },
   pdbsGen = (dbs = []) => {
+    !/^{['"].+}$/.test(localStorage._nm0cfgs || "")
+    || (nm0cfgs = fncTry(localStorage._nm0cfgs, JSON.parse) || {});
+    !/^{['"].+}$/.test(localStorage._nm0sets || "")
+    || (nm0sets = fncTry(localStorage._nm0sets, JSON.parse));
+    nm0sets //&& ["uemail", "uname", "dbdflt", "vwdflt", "usecfg", "useset", "u2typs", "u2vws"]
+      //.every(pty => nm0sets.hasOwnProperty(pty))
+    || ( localStorage._nm0sets = JSON.stringify( nm0sets = Object.assign(
+      { uemail: "", uname: "", dbdflt: "", vwdflt: "V2", usecfg: 0, useset: 0,
+        u2typs: { mytype2: { t0: ["mytype2", "<em>[mytype2 description]</em>"],
+            t1: { _id: "", key2: "", key3: "" } }},
+        u2vws: { myview2: { v0: ["V1-myview2", "<em>[myview2 description]</em>"],
+            base: 1, cols: [], sort: "", desc: 0, filt: "", cbxs: 0 }} },
+      nm0sets || {} )));
     pdbssel.innerHTML = ["\n      <option></option>", "<option>&plus; New DB</option>"]
       .concat(dbs.map(e => "<option>" + e + "</option>")).join("\n      ") + "\n      ";
-    dbossel.innerHTML = ["\n      <option></option>"]
-      .concat(dbs.map(e => "<option>" + e + "</option>")).join("\n      ") + "\n      ";
+    dbopsel.innerHTML = ["\n      <option></option>"]
+      .concat(dbs.map(e => "<option" + (e !== nm0sets.dbdflt ? ">" : " selected>")
+        + e + "</option>")).join("\n      ") + "\n      ";
+    unaminp.value = una2inp.value = nm0sets.uname;
+    uemlinp.value = nm0sets.uemail;
+    !nm0sets.useset || setcbx.checked || setcbx.click();
     t0sChg();
     v0sChg();
     t1sChg();
+    pdbssel.value = nm0sets.dbdflt;
+    !pdbssel.value || pdbOpen();
   };
 pdbssel.onchange = pdbOpen;
 viewsel.onchange = viewChg;
@@ -1456,18 +1493,14 @@ sortsel.onchange = viewRte;
 descswi.onchange = viewRte;
 filtbtn.onclick = filtExe;
 blktrig.onclick = bulkTog;
-//colssel.innerHTML = sopts[0];
-document.querySelectorAll('#nmwrap #movebtn, #nmwrap #delbtn').forEach(btn => btn.onclick = filesChg);
+document.querySelectorAll('#vctrls #movebtn, #vctrls #delbtn').forEach(btn => btn.onclick = filesChg);
 document.querySelectorAll(qslrs[2]).forEach(anc => anc.onclick = sdirXpd);
 document.querySelectorAll('#nmtbl td:first-of-type>input').forEach(inp => inp.onchange = chksTog);
 tabncs.forEach(anc => anc.onclick = viewChg);
-//cfgcbx.onclick = () => pdbcfg.querySelectorAll('p')
-  //.forEach(p => p.classList[!cfgcbx.checked ? "add" : "remove"]("dnone")) );
-[[cfgcbx, pdbcfg], [setcbx, nmsets]].forEach( ([c, e]) => c.onclick = () => e.querySelectorAll('p')
-  .forEach(p => p.classList[!c.checked ? "add" : "remove"]("dnone")) );
 t00sel.onchange = t1sChg;
+sctrls.forEach(elm => elm.onchange = setsUpd);
+[[cfgcbx, pdbcfg], [setcbx, nmsets]].forEach( ([c, e]) => c.onclick = evt => e.querySelectorAll('p')
+  .forEach(p => p.classList[!c.checked ? "add" : "remove"]("dnone")) || setsUpd(evt) );
 !window.PouchDB || !PouchDB.allDbs ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(rsp2Show);
-//colsTog();
-//viewRte();
 </script>
 </html>
