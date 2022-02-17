@@ -271,16 +271,21 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap .hwarnl { background-color: #fff6e6; }
 #nmwrap .hsuccl { background-color: #e8effc; }
 #nmwrap .igreyd { color: DarkGrey; }
+#nmwrap .ilink { color: #485fc7; }
 #nmwrap .iwarn { color: Orange; }
-#nmwrap .isucc { color: CornFlowerBlue; }
+#nmwrap .isucc, #nmwrap .ilink:hover { color: CornFlowerBlue; }
 #nmwrap textarea.iwarn { color: unset; border-color: Orange; }
 #nmwrap textarea.isucc { color: unset; border-color: CornFlowerBlue; }
-#nmwrap button.isclr {
+#nmwrap button.opq0 {
   background: transparent;
   max-width: 359px;
   padding: 0 2px;
   overflow: hidden;
   text-overflow: ellipsis; }
+#nmwrap button.bsml {
+  height: 16px;
+  padding: 4px;
+}
 #nmwrap .cblock:not(:last-child) { margin-bottom: 21px; }
 #nmwrap .cfield:not(:last-child) { margin-bottom: 8px; }
 #nmwrap .ccntr:not(:last-of-type) { margin-right: 8px; }
@@ -298,7 +303,8 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap .cfield>.chelp { font-size: 12px; margin-top: 4px; }
 #nmwrap .fltrt { float: right; }
 #nmwrap .pwrap { word-wrap: normal; overflow-wrap: normal; white-space: pre-wrap; }
-#nmwrap .mtup4 { margin-top: -3px; }
+#nmwrap .mtup3 { margin-top: -3px; }
+#nmwrap .mup28 { margin: -28px 8px 0 0; }
 #nmwrap .dflow { display: flow-root; overflow-x: auto; }
 #nmwrap .dnone { display: none; }
 #nmwrap>#rsp2con {
@@ -338,6 +344,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   cursor: pointer;
 }
 #nmdata .media-left>.image>figcaption { font-style: italic; text-align: center; }
+#nmdata .field-label>.label:not(:last-child) { margin-bottom: 0; }
 #nmtabs li:first-child>a { letter-spacing: -3px; }
 #pdbcfg .table {
   min-width: 350px;
@@ -362,6 +369,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 }
 @media screen and (max-width: 719px) {
   #nmdata .media-left>.media-left>.image { margin: 0; }
+  #nmdata .field-label>.mup16 { margin: -16px 8px 0 0; }
 }
 @media screen and (min-width: 720px) and (max-width: 767px), print {
   #vctrls #pdbssel { width: 120px; }
@@ -501,8 +509,10 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 </nav>
 <div id=nmtips class=cblock>
   <h4>Just getting started?</h4>
-  <p>&emsp;Add a new <em>database</em> ( <span class=hwhsmk>&plus; New DB</span> )
-  using the 1<sup>st</sup> select list of the control panel&nbsp;above.</p>
+  <p>
+    &emsp;Add a new <em>database</em> ( <span class=hwhsmk>&plus; New DB</span> )
+    using the 1<sup>st</sup> select list of the control panel&nbsp;above.
+  </p>
 </div>
 <div id=pnadd1 class="cblock dnone">
   <h4>New Note</h4>
@@ -514,12 +524,15 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </div>
 </div>
 <div id=pdbcfg class="cblock dnone">
-  <span class="fltrt fsiz75 lnht1"><label><input type=checkbox id=cfgcbx checked /> <a>Show<br />use guides</a></label></span>
+  <span class="fltrt fsiz75 lnht1"><label><input type=checkbox id=cfgcbx checked />
+  <a>Show<br />use guides</a></label></span>
   <h4>Database Setup &plus; Configuration</h4>
   <h5>Old Data Destruction</h5>
-  <p>&emsp;To <em>destroy</em> an existing database&mdash;or to <em>compact</em> it
-  (i.e., remove all versions of each <em>note</em> but the last one)&mdash;enter
-  the same name as the currently selected DB and tap the appropriate button, here.</p>
+  <p>
+    &emsp;To <em>destroy</em> an existing database&mdash;or to <em>compact</em> it
+    (i.e., remove all versions of each <em>note</em> but the last one)&mdash;enter
+    the same name as the currently selected DB and tap the appropriate button, here.
+  </p>
   <div id=olddctrl class=cblock>
     <div class=cfield>
       <div class=chelp><em>Alert:</em> This operation cannot be reversed.</div>
@@ -535,10 +548,12 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     </div>
   </div>
   <h5>New Database Creation</h5>
-  <p>&emsp;To <em>create</em> a new local database, enter your username,
-  a new DB name and a short description of its intended purpose;
-  (And, optionally, set your own DB configurations, below;)
-  Then, tap the associated button, here.</p>
+  <p>
+    &emsp;To <em>create</em> a new local database, enter your username,
+    a new DB name and a short description of its intended purpose;
+    (And, optionally, set your own DB configurations, below;)
+    Then, tap the associated button, here.
+  </p>
   <div class=cblock>
     <div class=cfield>
       <label class=ccntr>Username</label><span class=ccntr><input type=text id=una2inp /></span>
@@ -557,8 +572,10 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     </div>
   </div>
   <h4>About the Selected, Local DB</h4>
-  <p>&emsp;You can switch to any previously created, local database by using
-  the 1<sup>st</sup> select list of the top control&nbsp;panel.</p>
+  <p>
+    &emsp;You can switch to any previously created, local database by using
+    the 1<sup>st</sup> select list of the top control&nbsp;panel.
+  </p>
   <table id=pdbtbl class="table cfield">
     <tbody>
       <tr><td>DB name:</td><td id=pdbnam></td></tr>
@@ -574,22 +591,31 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     <br /><span class=chelp>&emsp;&emsp;&ensp;(Open this DB directly on next startup.)</span>
   </div>
   <h5>"New Note" Type-Template</h5>
-  <p>&emsp;You can add a new <em>note</em> ( <span class=hwhsmk>&plus; New Note</span> ) to the database by using the 2<sup>nd</sup> select list of the top control panel (or, by activating the corresponding tab beneath the notelist <em>view</em>).</p>
-  <p>&emsp;Be aware that a database <em>note</em>
-  (a.k.a., <em>file</em> or <em>document</em> or <em>entry</em>) is actually
-  a stored JavaScript object (with arbitrary <em>keys</em> and <em>values</em>).</p>
-  <p>&emsp;As such, the database is more manageable when all of its <em>notes</em>
-  share a common structure (i.e., have the same set of object-property <em>keys</em>).</p>
-  <p>&emsp;Therefore, to keep a new database manageable, decide in advance
-  what its function is by committing to one object structure as the default template for
-  every new <em>note</em>&mdash;and selecting it (either a preset <em>note</em> type
-  or a new creation of your own), here.</p>
+  <p>
+    &emsp;You can add a new <em>note</em> ( <span class=hwhsmk>&plus; New Note</span> ) to the database by using the 2<sup>nd</sup> select list of the top control panel (or, by activating the corresponding tab beneath the notelist <em>view</em>).
+  </p>
+  <p>
+    &emsp;Be aware that a database <em>note</em>
+    (a.k.a., <em>file</em> or <em>document</em> or <em>entry</em>) is actually
+    a stored JavaScript object (with arbitrary <em>keys</em> and <em>values</em>).
+  </p>
+  <p>
+    &emsp;As such, the database is more manageable when all of its <em>notes</em>
+    share a common structure (i.e., have the same set of object-property <em>keys</em>).
+  </p>
+  <p>
+    &emsp;Therefore, to keep a new database manageable, decide in advance
+    what its function is by committing to one object structure as the default template for
+    every new <em>note</em>&mdash;and selecting it (either a preset <em>note</em> type
+    or a new creation of your own), here.
+  </p>
   <div class=cfield>
     <label class=ccntr>Default note type</label><span class=ccntr><select id=t00sel></select></span>
   </div>
   <table id=typtbl class="cfield table">
     <thead>
-      <tr><th>Note-object-<br />property KEY</th><th>VALUE<br />datatype</th><th>VALUE<br />pre-fill</th></tr>
+      <tr><th>Note-object-<br />property KEY</th>
+      <th>VALUE<br />datatype</th><th>VALUE<br />pre-fill</th></tr>
     </thead>
     <tbody id=t1tbod></tbody>
   </table>
@@ -637,13 +663,21 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     <div class="chelp iwarn dnone">Delete-type operation failed.</div>
   </div>
   <h5>Notelist Views</h5>
-  <p>&emsp;You can switch to any notelist <em>view</em> by using the 2<sup>nd</sup> select list of the top control panel.</p>
-  <p>&emsp;Five different <em>views</em> are available (<span class=hwhsmk>V1</span>&ndash;<span class=hwhsmk>V5</span>).</p>
-  <p>&emsp;Customize and preserve any one or more of the five <em>views</em> by selecting one and
-  adjusting the subsequent view controls, above&mdash;then, returning directly back here to add
-  the resulting new <em>view</em>, below.</p>
-  <p>&emsp;Also, select one (either a preset or one of your own) as the default <em>view</em>&mdash;i.e.,
-  the <em>view</em> that will be displayed first each time the database is opened.</p>
+  <p>
+    &emsp;You can switch to any notelist <em>view</em> by using the 2<sup>nd</sup> select list of the top control panel.
+  </p>
+  <p>
+    &emsp;Five different <em>views</em> are available (<span class=hwhsmk>V1</span>&ndash;<span class=hwhsmk>V5</span>).
+  </p>
+  <p>
+    &emsp;Customize and preserve any one or more of the five <em>views</em> by selecting one and
+    adjusting the subsequent view controls, above&mdash;then, returning directly back here to add
+    the resulting new <em>view</em>, below.
+  </p>
+  <p>
+    &emsp;Also, select one (either a preset or one of your own) as the default <em>view</em>&mdash;i.e.,
+    the <em>view</em> that will be displayed first each time the database is opened.
+  </p>
   <div class=cblock>
     <div class=cfield>
       <label class=ccntr>Default <em>view</em></label><span class=ccntr><select id=v00sel></select></span>
@@ -674,11 +708,14 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </div>
 </div>
 <div id=nmsets class="cblock dnone">
-  <span class="fltrt fsiz75 lnht1"><label><input type=checkbox id=setcbx /> <a>Show<br />use guides</a></label></span>
+  <span class="fltrt fsiz75 lnht1"><label><input type=checkbox id=setcbx />
+  <a>Show<br />use guides</a></label></span>
   <h4><em>Note Mgr</em> App Settings</h4>
-  <p class=dnone>&emsp;For convenience, choose a default database, and associated <em>view</em>, that will be directly opened and displayed at each start&#x2011;up.</p>
   <p class=dnone>
-    &emsp;Also, optionally, identify yourself by username and/or email, which will be associated with every DB you create. This becomes useful if, for example, your DB data is ever synced to a cloud server and/or consolidated with other user's data; User identities facilitate a team's management of multiple DBs.
+    &emsp;For convenience, choose a default database, and associated <em>view</em>, that will be directly opened and displayed at each start&#x2011;up.
+  </p>
+  <p class=dnone>
+    &emsp;Also, optionally, identify yourself by username and/or email, which will be associated with every DB you create. This becomes useful if, for example, your DB data is ever synced to a cloud server and/or consolidated with other user's data; User identities facilitate a team's management of multiple&nbsp;DBs.
   </p>
   <div class=cblock>
     <div class=cfield>
@@ -696,11 +733,21 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </div>
   <hr />
   <h4>Wipe user data stored on device</h4>
-  <p class=dnone>&emsp;App settings and DB configurations are stored in the browser's <em>Local Storage</em>.</p>
-  <p class=dnone>&emsp;Each DB's collection of notes is stored in the browser's <em>IndexedDB Storage</em>.</p>
-  <p class=dnone>&emsp;Be aware that these data stores are not secure; They may be viewed by any prying person who is allowed access to the device, even without the use of the <em>Note&nbsp;Mgr</em>&nbsp;app.</p>
-  <p class=dnone>&emsp;To completely destroy either one or both stores of user data, select the appropriate checkbox(es), enter the same username as above and tap the <em>WIPE&nbsp;DATA</em> button.</p>
-  <p class=dnone>&emsp;<em>Use Tip:</em> To destroy just one DB without affecting any other DB, use the <em class=hwhsmk>DB Config</em> control panel instead.</p>
+  <p class=dnone>
+    &emsp;App settings and DB configurations are stored in the browser's <em>Local&nbsp;Storage</em>.
+  </p>
+  <p class=dnone>
+    &emsp;Each DB's collection of notes is stored in the browser's <em>IndexedDB&nbsp;Storage</em>.
+  </p>
+  <p class=dnone>
+    &emsp;Be aware that these data stores are not secure; They may be viewed by any prying person who is allowed access to the device, even without the use of the <em>Note&nbsp;Mgr</em>&nbsp;app.
+  </p>
+  <p class=dnone>
+    &emsp;To completely destroy either one or both stores of user data, select the appropriate checkbox(es), enter the same username as above and tap the <em>WIPE&nbsp;DATA</em> button.
+  </p>
+  <p class=dnone>
+    &emsp;<em>Use Tip:</em> To destroy just one DB without affecting any other DB, use the <em class=hwhsmk>DB Config</em> control panel instead.
+  </p>
   <div id=wipectrl class=cblock>
     <div class=cfield>
       <div class=chelp><em>Alert:</em> This operation cannot be reversed.</div>
@@ -723,6 +770,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   <p class=dnone>&emsp;<em>How it works:</em>
     The "<code>&gt;</code>" symbol in the following text field is a <em>command prompt</em>. The prompt accepts any JavaScript command or expression. When a command or an expression is entered on the <em>command line</em> (i.e., after the prompt) and the field is de-focused (by tapping outside the field), the command or expression is executed by the browser and the final result is then displayed in the next line(s) of the text field.
   </p>
+  <span class="fltrt mup28"><button id=jselbtn class="bsml ilink" data-seltrg=jsctxta>sel</button></span>
   <div class=cblock>
     <textarea id=jsctxta class=textarea rows=31>&gt; </textarea>
     <pre>
@@ -893,6 +941,8 @@ let fwg, nm0cfgs, nm0sets, rva3, rval,
       rsltShow = r => jsctxta.value += "\n" + vtoStr(r, 2) + "\n> ";
     !fncexp || Promise.resolve(fncTry(fncexp, window.eval, 1)).then(rsltShow).catch(rsltShow);
   },
+  txtaSel = e => !(e.focus || (e = window.eval(e.target.dataset.seltrg)))
+    || e.focus() || e.setSelectionRange(0, e.textLength),
   ordFlip = arr => !descswi.checked ? arr.sort() : arr.sort().reverse(),
   aurlGen = isrc => isrc,
   date0Fmt = nbr => !nbr ? "" : new Date(nbr).toISOString().replace(/T.+$/, ""),
@@ -1084,26 +1134,28 @@ let fwg, nm0cfgs, nm0sets, rva3, rval,
       fwg = doc;
       [vctrls, nmflow, nmtabs, nmpans[tidx]].forEach(e => e.classList.add("dnone"));
       nmdata.classList.remove("dnone");
-      nmdata.innerHTML = "\n<div class=cfield>"
-      + "\n<span class=fltrt><button id=updbtn class=hgainl><span class=isucc>&#x267a;</span>"
-      + " UPDATE</button></span>\n<button id=bckbtn class=hgainl><strong class=isucc>&lang;</strong></button>"
-      + " <button class=isclr disabled>" + txd2.DBNAME + " &sol;</button>"
+      nmdata.innerHTML = "\n<div class=cfield>\n<span class=fltrt>"
+      + "<button id=updbtn class=hgainl><span class=isucc>&#x267a;</span> UPDATE</button></span>"
+      + "\n<button id=bckbtn class=hgainl><strong class=ilink>&lang;</strong></button>"
+      + " <button class=opq0 disabled>" + txd2.DBNAME + " &sol;</button>"
       + ( !(fwg.file_updated || "").subdir ? ""
-        : "<button class=isclr disabled>" + fwg.file_updated.subdir + " &sol;</button>" )
-      + "<button class=isclr disabled>" + fwg._id + "</button>"
+        : "<button class=opq0 disabled>" + fwg.file_updated.subdir + " &sol;</button>" )
+      + "<button class=opq0 disabled>" + fwg._id + "</button>"
       + "\n<div id=ndhelp class=chelp></div>\n</div>"
       + Object.keys(fwg).map(k => /^_id$|^_rev$/.test(k) ? "" : `
 <div class="cfield is-horizontal">
   <div class="field-label">
-    <label class=label>${k}</label>
+    <span class=label>${k}</span>
+    <button class="fltrt mup16 bsml ilink" data-seltrg=${"pty0" + k}>sel</button>
   </div>
-  <div id="${"pty-" + k}" class="field-body">
-    <textarea class=textarea rows=${v2Str(k)}>${
+  <div class="field-body">
+    <textarea id=${"pty0" + k} class=textarea rows=${v2Str(k)}>${
       str.replace(/&(?=#?\w+;)/g, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;")}</textarea>
   </div>
 </div>`).join("") + "\n";
       bckbtn.onclick = () => [vctrls, nmtabs, nmpans[tidx]]
         .forEach(e => e.classList.remove("dnone")) || viewChg();
+      nmdata.querySelectorAll('.field-label button').forEach(e => e.onclick = txtaSel);
 /*
         (nmdata.textContent = "")
         || [vctrls, vidx > 4 && nmflow].forEach(e => e && e.classList.remove("dnone"))
@@ -1196,9 +1248,9 @@ let fwg, nm0cfgs, nm0sets, rva3, rval,
     sortsel.innerHTML = vidx === 8 ? `
         <option value=seq>Chg Seq</option>
         <option value=id>Note ID</option>\n`
-      : "\n          " + Array.from(colssel.selectedOptions)
-        .map(o => `<option value="${ o.value }">${ o.textContent }</option>`)
-        .join("\n          ") + "\n        ";
+      : Array.from(colssel.selectedOptions)
+        .map(o => `\n          <option value="${ o.value }">${ o.textContent }</option>`)
+        .join("") + "\n        ";
     sortsel.value = Array.from(sortsel.options).some(o => o.value === resel) ? resel : "id";
   },
   tblGen = evt => {
@@ -1296,7 +1348,7 @@ let fwg, nm0cfgs, nm0sets, rva3, rval,
             : (nsX(na).replace(/[.,;:/]/g, "") < nsX(nb).replace(/[.,;:/]/g, ""))
               == descswi.checked ? 1 : -1 );
       ftotal.textContent = rrs.length;
-      nmdata.innerHTML = "\n<span class=\"fltrt mtup4\">&ensp;Show all:&ensp;"
+      nmdata.innerHTML = "\n<span class=\"fltrt mtup3\">&ensp;Show all:&ensp;"
       + "<label><input type=checkbox id=cbxhdrs /> <a>headers</a></label>&ensp;"
       + "<label><input type=checkbox id=cbxbods /> <a>bodies</a></label></span>\n<hr />"
       + (rrs.length ? "" : "\n<p class=igreyd>&emsp;<em>[No results found &hellip;]</em><p>")
@@ -1433,7 +1485,7 @@ let fwg, nm0cfgs, nm0sets, rva3, rval,
     let v0s = [ ["V1:noteclips", "Previews of <em>memo</em>s or <em>contact</em>s"],
       ["V2:organized", "Notes/attach's by subdirectory"], ["V3:mutables", "All updatable notes"],
       ["V4:statics", "All one-off memos/text-posts"], ["V5:deleted", "All discarded-note IDs"] ]
-      .concat(Object.values(nm0sets.u2vws).map(vo => vo.v0));
+      .concat(Object.values(nm0sets.p2vws).map(vo => vo.v0));
     v00sel.innerHTML = v0s.map( ([k, v], i) => "\n      <option"
       + (i !== 1 ? ">" : " selected>") + k + "</option>" ).join("") + "\n      ";
     v0tbod.innerHTML = v0s.map( ([k, v], i) =>
@@ -1448,7 +1500,7 @@ let fwg, nm0cfgs, nm0sets, rva3, rval,
   t0sChg = () => {
     let t0s = [ ["", ""], ["srcdoc", "Web source document"], ["scrap", "No-frills, plain-text note"],
         ["memo", "Short memorandum or text msg"], ["contact", "Person's contact information"] ]
-        .concat(Object.values(nm0sets.u2typs).map(vo => vo.t0));
+        .concat(Object.values(nm0sets.p2typs).map(vo => vo.t0));
     t00sel.innerHTML = t0s.map( ([k, v], i) => "\n      <option"
       + (i !== 2 ? ">" : " selected>") + k + "</option>" ).join("") + "\n      ";
     t0tbod.innerHTML = t0s.map( ([k, v], i) => !i ? ""
@@ -1465,12 +1517,12 @@ let fwg, nm0cfgs, nm0sets, rva3, rval,
       idx || (opensel.value = !opencbx.checked ? "" : txd1.DBNAME);
       idx < 7 ? ( nm0sets[ps[idx]] = !idx ? opensel.value : idx > 4 ? evt.target.checked
         : idx !== 2 ? evt.target.value : evt.target.value.replace(/^(V\d):.+/, "$1") )
-      : idx < 8 && t01inp.value ? (nm0sets.u2typs[t01inp.value] = {})
-      : idx < 9 && v01inp.value ? (nm0sets.u2vws[v01inp.value] = {})
+      : idx < 8 && t01inp.value ? (nm0sets.p2typs[t01inp.value] = {})
+      : idx < 9 && v01inp.value ? (nm0sets.p2vws[v01inp.value] = {})
       : idx < 10 ? t0tbod.querySelectorAll('[type=checkbox]:checked')
-        .map(e => delete nm0sets.u2typs[e.parentElement.textContent.replace(/^\s/, "")])
+        .map(e => delete nm0sets.p2typs[e.parentElement.textContent.replace(/^\s/, "")])
       : v0tbod.querySelectorAll('[type=checkbox]:checked')
-        .map(e => delete nm0sets.u2vws[e.parentElement.textContent.replace(/^\s?V\d-/, "")]);
+        .map(e => delete nm0sets.p2vws[e.parentElement.textContent.replace(/^\s?V\d-/, "")]);
       localStorage._nm0sets = JSON.stringify(nm0sets);
     }
   },
@@ -1479,27 +1531,25 @@ let fwg, nm0cfgs, nm0sets, rva3, rval,
     || (nm0cfgs = fncTry(localStorage._nm0cfgs, JSON.parse) || {});
     !/^{['"].+}$/.test(localStorage._nm0sets || "")
     || (nm0sets = fncTry(localStorage._nm0sets, JSON.parse));
-    nm0sets && ["uemail", "uname", "dbdflt", "vwdflt", "usecfg", "useset", "u2typs", "u2vws"]
+    nm0sets && ["uemail", "uname", "dbdflt", "vwdflt", "usecfg", "useset", "p2typs", "p2vws"]
       .every(pty => nm0sets.hasOwnProperty(pty))
     || ( localStorage._nm0sets = JSON.stringify( nm0sets = Object.assign(
       { uemail: "", uname: "", dbdflt: "", vwdflt: "V2", usecfg: 0, useset: 0,
-        u2typs: { mytype2: { t0: ["mytype2", "<em>[mytype2 description]</em>"],
+        p2typs: { mytype2: { t0: ["mytype2", "<em>[mytype2 description]</em>"],
             t1: { _id: "", key2: "", key3: "" } }},
-        u2vws: { myview2: { v0: ["V1-myview2", "<em>[myview2 description]</em>"],
-            base: 1, cols: [], sort: "", desc: 0, filt: "", cbxs: 0 }} },
+        p2vws: { myview2: { v0: ["V1-myview2", "<em>[myview2 description]</em>"],
+            base: 1, cols: [], sort: "", desc: 0, filt: "", cbxs: 0, hdrs: 1, bods: 0 }} },
       nm0sets || {} )));
-    pdbssel.innerHTML = ["\n      <option></option>", "<option>&plus; New DB</option>"]
-      .concat(dbs.map(e => "<option>" + e + "</option>")).join("\n      ") + "\n      ";
-    opensel.innerHTML = ["\n      <option></option>"]
-      .concat(dbs.map(e => "<option" + (e !== nm0sets.dbdflt ? ">" : " selected>")
-        + e + "</option>")).join("\n      ") + "\n      ";
+    [pdbssel, opensel].forEach( (e, i) => e.innerHTML
+      = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
+        .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
     unaminp.value = una2inp.value = nm0sets.uname;
     uemlinp.value = nm0sets.uemail;
     !nm0sets.useset || setcbx.checked || setcbx.click();
     t0sChg();
     v0sChg();
     t1sChg();
-    pdbssel.value = nm0sets.dbdflt;
+    opensel.value = pdbssel.value = nm0sets.dbdflt;
     !pdbssel.value || pdbOpen();
   };
 pdbssel.onchange = pdbOpen;
@@ -1517,6 +1567,7 @@ t00sel.onchange = t1sChg;
 actrls.forEach(elm => elm.onchange = setsUpd);
 [[cfgcbx, pdbcfg], [setcbx, nmsets]].forEach( ([c, e]) => c.onclick = evt => e.querySelectorAll('p')
   .forEach(p => p.classList[!c.checked ? "add" : "remove"]("dnone")) || setsUpd(evt) );
+jselbtn.onclick = txtaSel;
 jsctxta.onblur = jscEval;
 !window.PouchDB || !PouchDB.allDbs ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(rsp2Show);
 </script>
