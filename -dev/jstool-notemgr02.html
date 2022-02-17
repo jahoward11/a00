@@ -792,7 +792,7 @@ let fwg, nm0cfgs, nm0sets, rva3, rval,
   nmtfts = document.querySelectorAll('#nmtbl tfoot'),
   tabncs = document.querySelectorAll('#nmtabs li>a'),
   nmpans = [nmtips, pnadd1, pdbcfg, nmsets],
-  sctrls = [dbopsel, v0ssel, unaminp, uemlinp],
+  actrls = [dbopsel, v0ssel, unaminp, uemlinp],
   pntyps = {
     new: {
       _id: "",
@@ -881,6 +881,15 @@ let fwg, nm0cfgs, nm0sets, rva3, rval,
     += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
       ? resp : JSON.stringify(resp, null, 2) ) + "\n\n",
   fncTry = (a, fnc, e) => { try { return fnc(a) } catch (err) { return e ? err : undefined }},
+  vtoStr = (v, sp) => v == null ? "" : typeof v === 'object' ? JSON.stringify(v, null, sp)
+    : typeof v !== 'string' ? "" + v : !/^{\s*['"][^]+}$|^\[[^]+\]$/.test(v.trim()) ? v
+    : JSON.stringify(fncTry(v, JSON.parse), null, sp) || v,
+  jscEval = () => {
+    let fncexp = jsctxta.value.trim().replace(/(?:[^]*\n|^)>\s*(?=(?:.|\n(?!>))*$)/, ""),
+      rsltShow = r => jsctxta.value += "\n" + vtoStr(r, 2) + "\n> ";
+    try { !fncexp || Promise.resolve(window.eval(fncexp)).then(rsltShow).catch(rsltShow);
+    } catch (err) { rsltShow(err); }
+  },
   ordFlip = arr => !descswi.checked ? arr.sort() : arr.sort().reverse(),
   aurlGen = isrc => isrc,
   date0Fmt = nbr => !nbr ? "" : new Date(nbr).toISOString().replace(/T.+$/, ""),
@@ -1407,16 +1416,13 @@ let fwg, nm0cfgs, nm0sets, rva3, rval,
   t1sChg = () => {
     let dtOpts = v => ["string", "number", "boolean", "object",
         "arr of str", "arr of nbr", "arr of bln", "arr of obj", "arr of any", "other"].map(e =>
-          "\n      <option" + (e !== v ? ">" : " selected>") + e + "</option>").join("") + "\n      ",
-      inpStr = v => v == null ? "" : typeof v === 'object' ? JSON.stringify(v)
-        : typeof v !== 'string' ? "" + v : !/^{\s*['"][^]+}$|^\[[^]+\]$/.test(v.trim()) ? v
-        : JSON.stringify(fncTry(v, JSON.parse)) || v;
+          "\n      <option" + (e !== v ? ">" : " selected>") + e + "</option>").join("") + "\n      ";
     t1tbod.innerHTML = Object.entries(pntyps[t00sel.value] || pntyps.new)
       .concat([["", ""]]).map( ([k, v]) => k === "_rev" ? ""
       : "\n      <tr><td><input type=text value=\"" + k
         + "\" /></td><td><select>" + dtOpts(typeof v)
         + "</select></td><td><input type=text value='"
-        + inpStr(v) + "' /></td></tr>" ).join("") + "\n      ";
+        + vtoStr(v) + "' /></td></tr>" ).join("") + "\n      ";
   },
   v0sChg = () => {
     let v0s = [ ["V1:noteclips", "Previews of <em>memo</em>s or <em>contact</em>s"],
@@ -1426,8 +1432,10 @@ let fwg, nm0cfgs, nm0sets, rva3, rval,
     v00sel.innerHTML = v0s.map( ([k, v], i) => "\n      <option"
       + (i !== 1 ? ">" : " selected>") + k + "</option>" ).join("") + "\n      ";
     v0tbod.innerHTML = v0s.map( ([k, v], i) =>
-      "\n      <tr><td><input type=checkbox" + (i > 4 ? "" : " disabled")
-      + " />&ensp;" + k + "</td><td>" + v + "</td></tr>" ).join("") + "\n      ";
+      "\n      <tr><td>" + (i < 5 ? "" : "<label>")
+      + "<input type=checkbox" + (i > 4 ? "" : " disabled")
+      + " />&ensp;" + k + (i < 5 ? "" : "</label>")
+      + "</td><td>" + v + "</td></tr>" ).join("") + "\n      ";
     v0ssel.innerHTML = v0s.map( ([k, v]) => "\n      <option"
       + (k.replace(/^(V\d):.+/, "$1") !== nm0sets.vwdflt ? ">" : " selected>")
       + k + "</option>" ).join("") + "\n      ";
@@ -1439,12 +1447,14 @@ let fwg, nm0cfgs, nm0sets, rva3, rval,
     t00sel.innerHTML = t0s.map( ([k, v], i) => "\n      <option"
       + (i !== 2 ? ">" : " selected>") + k + "</option>" ).join("") + "\n      ";
     t0tbod.innerHTML = t0s.map( ([k, v], i) => !i ? ""
-      : "\n      <tr><td><input type=checkbox" + (i > 4 ? "" : " disabled")
-        + " />&ensp;" + k + "</td><td>" + v + "</td></tr>" ).join("") + "\n      ";
+      : "\n      <tr><td>" + (i < 5 ? "" : "<label>")
+        + "<input type=checkbox" + (i > 4 ? "" : " disabled")
+        + " />&ensp;" + k + (i < 5 ? "" : "</label>")
+        + "</td><td>" + v + "</td></tr>" ).join("") + "\n      ";
   },
   setsUpd = evt => {
     let ps = ["dbdflt", "vwdflt", "uname", "uemail", "usecfg", "useset"],
-      idx = evt && sctrls.concat([cfgcbx, setcbx, t0abtn, v0abtn, t0dbtn, v0dbtn])
+      idx = evt && actrls.concat([cfgcbx, setcbx, t0abtn, v0abtn, t0dbtn, v0dbtn])
         .findIndex(e => e.id === evt.target.id);
     if (typeof idx === 'number' && idx > -1) {
       idx < 6 ? ( nm0sets[ps[idx]] = idx > 3 ? evt.target.checked : idx !== 1
@@ -1498,9 +1508,10 @@ document.querySelectorAll(qslrs[2]).forEach(anc => anc.onclick = sdirXpd);
 document.querySelectorAll('#nmtbl td:first-of-type>input').forEach(inp => inp.onchange = chksTog);
 tabncs.forEach(anc => anc.onclick = viewChg);
 t00sel.onchange = t1sChg;
-sctrls.forEach(elm => elm.onchange = setsUpd);
+actrls.forEach(elm => elm.onchange = setsUpd);
 [[cfgcbx, pdbcfg], [setcbx, nmsets]].forEach( ([c, e]) => c.onclick = evt => e.querySelectorAll('p')
   .forEach(p => p.classList[!c.checked ? "add" : "remove"]("dnone")) || setsUpd(evt) );
+jsctxta.onblur = jscEval;
 !window.PouchDB || !PouchDB.allDbs ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(rsp2Show);
 </script>
 </html>
