@@ -264,6 +264,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 }
 #nmwrap input::placeholder { opacity: 0.5; }
 #nmwrap textarea { display: block; font: normal 10.5px monospace; width: 100%; }
+#nmwrap .lnht1 { line-height: 1; }
 #nmwrap .fsiz75 { font-size: 0.75em; }
 #nmwrap .hwhsmk { background-color: Whitesmoke; }
 #nmwrap .hgainl { background-color: #ececec; } /* Gainsboro #dcdcdc */
@@ -513,7 +514,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </div>
 </div>
 <div id=pdbcfg class="cblock dnone">
-  <span class=fltrt><label><input type=checkbox id=cfgcbx checked /> <a class=fsiz75>Show use guides</a></label></span>
+  <span class="fltrt fsiz75 lnht1"><label><input type=checkbox id=cfgcbx checked /> <a>Show<br />use guides</a></label></span>
   <h4>Database Setup &plus; Configuration</h4>
   <h5>Old Data Destruction</h5>
   <p>&emsp;To <em>destroy</em> an existing database&mdash;or to <em>compact</em> it
@@ -522,7 +523,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   <div id=olddctrl class=cblock>
     <div class=cfield>
       <div class=chelp><em>Alert:</em> This operation cannot be reversed.</div>
-      <label class=ccntr>Selected DB name</label><span class=ccntr><input type=text id=dbdeinp /></span>
+      <label class=ccntr>Selected DB name</label><span class=ccntr><input type=text id=ddelinp /></span>
     </div>
     <div class=cfield>
       <label class=ccntr>
@@ -562,13 +563,14 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     <tbody>
       <tr><td>DB name:</td><td id=pdbnam></td></tr>
       <tr><td>Notes total:</td><td id=pdbtot></td></tr>
+      <tr><td>Update seq#:</td><td id=pdbseq></td></tr>
       <tr><td>Created:</td><td></td></tr>
       <tr><td>Created by:</td><td></td></tr>
       <tr><td>Description:</td><td></td></tr>
     </tbody>
   </table>
   <div class=cfield>
-    &emsp;<label><input type=checkbox /> <a>Set as default DB</a></label>
+    &emsp;<label><input type=checkbox id=opencbx disabled /> <a>Set as default DB</a></label>
     <br /><span class=chelp>&emsp;&emsp;&ensp;(Open this DB directly on next startup.)</span>
   </div>
   <h5>"New Note" Type-Template</h5>
@@ -589,11 +591,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     <thead>
       <tr><th>Note-object-<br />property KEY</th><th>VALUE<br />datatype</th><th>VALUE<br />pre-fill</th></tr>
     </thead>
-    <tbody id=t1tbod>
-      <tr><td>_id</td><td>string</td><td>`cidGen()`</td></tr>
-      <tr><td>locations</td><td>arr of obj</td><td>[ { "label": "" } ]</td></tr>
-      <tr><td>social_profiles</td><td>arr of str</td><td>[]</td></tr>
-    </tbody>
+    <tbody id=t1tbod></tbody>
   </table>
   <pre class=dnone>
    Note-obj-pty KEY | VALUE datatype| VALUE pre-fill
@@ -676,7 +674,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </div>
 </div>
 <div id=nmsets class="cblock dnone">
-  <span class=fltrt><label><input type=checkbox id=setcbx /> <a class=fsiz75>Show use guides</a></label></span>
+  <span class="fltrt fsiz75 lnht1"><label><input type=checkbox id=setcbx /> <a>Show<br />use guides</a></label></span>
   <h4><em>Note Mgr</em> App Settings</h4>
   <p class=dnone>&emsp;For convenience, choose a default database, and associated <em>view</em>, that will be directly opened and displayed at each start&#x2011;up.</p>
   <p class=dnone>
@@ -684,7 +682,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </p>
   <div class=cblock>
     <div class=cfield>
-      <label class=ccntr>Default DB</label><span class=ccntr><select id=dbopsel></select></span>
+      <label class=ccntr>Default DB</label><span class=ccntr><select id=opensel></select></span>
     </div>
     <div class=cfield>
       <label class=ccntr>Default <em>view</em></label><span class=ccntr><select id=v0ssel></select></span>
@@ -701,13 +699,16 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   <p class=dnone>&emsp;App settings and DB configurations are stored in the browser's <em>Local Storage</em>.</p>
   <p class=dnone>&emsp;Each DB's collection of notes is stored in the browser's <em>IndexedDB Storage</em>.</p>
   <p class=dnone>&emsp;Be aware that these data stores are not secure; They may be viewed by any prying person who is allowed access to the device, even without the use of the <em>Note&nbsp;Mgr</em>&nbsp;app.</p>
-  <p class=dnone>&emsp;Select the appropriate checkbox(es) and tap the button to completely destroy either one or both stores of user data.</p>
+  <p class=dnone>&emsp;To completely destroy either one or both stores of user data, select the appropriate checkbox(es), enter the same username as above and tap the <em>WIPE&nbsp;DATA</em> button.</p>
   <p class=dnone>&emsp;<em>Use Tip:</em> To destroy just one DB without affecting any other DB, use the <em class=hwhsmk>DB Config</em> control panel instead.</p>
   <div id=wipectrl class=cblock>
     <div class=cfield>
       <div class=chelp><em>Alert:</em> This operation cannot be reversed.</div>
       &emsp;<label class=iwarn><input type=checkbox /> Empty local storage</label>
       <br />&emsp;<label class=iwarn><input type=checkbox /> Purge all local DBs</label>
+    </div>
+    <div class=cfield>
+      <label class=ccntr>Username</label><span class=ccntr><input type=text id=wipeinp /></span>
     </div>
     <div class=cfield>
       <label class=ccntr>
@@ -792,7 +793,7 @@ let fwg, nm0cfgs, nm0sets, rva3, rval,
   nmtfts = document.querySelectorAll('#nmtbl tfoot'),
   tabncs = document.querySelectorAll('#nmtabs li>a'),
   nmpans = [nmtips, pnadd1, pdbcfg, nmsets],
-  actrls = [dbopsel, v0ssel, unaminp, uemlinp],
+  actrls = [opencbx, opensel, v0ssel, unaminp, uemlinp],
   pntyps = {
     new: {
       _id: "",
@@ -877,18 +878,20 @@ let fwg, nm0cfgs, nm0sets, rva3, rval,
       miscellany: ""
     }
   },
-  rsp2Show = resp => rsp2con.textContent
-    += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
-      ? resp : JSON.stringify(resp, null, 2) ) + "\n\n",
+  rsp2Show = r => rsp2con.textContent
+    += ( !r || typeof r !== 'object' || r instanceof Error && r.constructor && !r.reason
+      ? r : JSON.stringify(r, null, 2) ) + "\n\n",
   fncTry = (a, fnc, e) => { try { return fnc(a) } catch (err) { return e ? err : undefined }},
-  vtoStr = (v, sp) => v == null ? "" : typeof v === 'object' ? JSON.stringify(v, null, sp)
-    : typeof v !== 'string' ? "" + v : !/^{\s*['"][^]+}$|^\[[^]+\]$/.test(v.trim()) ? v
+  vtoStr = (v, sp) => v == null ? ""
+    : v instanceof Error && v.constructor && !v.reason ? v
+    : typeof v === 'object' ? JSON.stringify(v, null, sp)
+    : typeof v !== 'string' ? "" + v
+    : !/^{\s*['"][^]+}$|^\[[^]+\]$/.test(v.trim()) ? v
     : JSON.stringify(fncTry(v, JSON.parse), null, sp) || v,
   jscEval = () => {
     let fncexp = jsctxta.value.trim().replace(/(?:[^]*\n|^)>\s*(?=(?:.|\n(?!>))*$)/, ""),
       rsltShow = r => jsctxta.value += "\n" + vtoStr(r, 2) + "\n> ";
-    try { !fncexp || Promise.resolve(window.eval(fncexp)).then(rsltShow).catch(rsltShow);
-    } catch (err) { rsltShow(err); }
+    !fncexp || Promise.resolve(fncTry(fncexp, window.eval, 1)).then(rsltShow).catch(rsltShow);
   },
   ordFlip = arr => !descswi.checked ? arr.sort() : arr.sort().reverse(),
   aurlGen = isrc => isrc,
@@ -1402,12 +1405,14 @@ let fwg, nm0cfgs, nm0sets, rva3, rval,
   pdbOpen = () => {
     !pdbssel.options[3] || (nmtips.innerHTML = "");
     pdbnam.innerHTML = txd1.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value;
-    !window.PouchDB || !txd1.DBNAME ? (pdbtot.innerHTML = "")
-    : new PouchDB(txd1.DBNAME).info().then(r => pdbtot.innerHTML = r.doc_count).catch(rsp2Show);
-    pdbssel.selectedIndex < 2 ? (viewsel.selectedIndex = 0)
-      || pnahlp.classList.remove("dnone") || pnacnt.classList.add("dnone")
-    : pnahlp.classList.add("dnone") || pnacnt.classList.remove("dnone")
-      || vidx > 3 || (viewsel.selectedIndex = vidx = 4 + v0ssel.selectedIndex); //|| viewRte();
+    !window.PouchDB || !txd1.DBNAME ? (pdbseq.innerHTML = pdbtot.innerHTML = "")
+    : new PouchDB(txd1.DBNAME).info()
+      .then(r => { pdbtot.innerHTML = r.doc_count; pdbseq.innerHTML = r.update_seq }).catch(rsp2Show);
+    pdbssel.selectedIndex < 2 ? (opencbx.checked = viewsel.selectedIndex = 0)
+      || pnahlp.classList.remove("dnone") || pnacnt.classList.add("dnone") || (opencbx.disabled = 1)
+    : pnahlp.classList.add("dnone") || pnacnt.classList.remove("dnone") || (opencbx.disabled = 0)
+      || vidx > 3 || (viewsel.selectedIndex = vidx = 4 + v0ssel.selectedIndex);
+    opencbx.disabled || (opencbx.checked = (txd1.DBNAME === nm0sets.dbdflt));
     viewChg();
     pdbssel.selectedIndex !== 1 || !(viewsel.selectedIndex = vidx = 2)
     || cfgcbx.checked || cfgcbx.click();
@@ -1453,15 +1458,16 @@ let fwg, nm0cfgs, nm0sets, rva3, rval,
         + "</td><td>" + v + "</td></tr>" ).join("") + "\n      ";
   },
   setsUpd = evt => {
-    let ps = ["dbdflt", "vwdflt", "uname", "uemail", "usecfg", "useset"],
+    let ps = ["dbdflt", "dbdflt", "vwdflt", "uname", "uemail", "usecfg", "useset"],
       idx = evt && actrls.concat([cfgcbx, setcbx, t0abtn, v0abtn, t0dbtn, v0dbtn])
         .findIndex(e => e.id === evt.target.id);
     if (typeof idx === 'number' && idx > -1) {
-      idx < 6 ? ( nm0sets[ps[idx]] = idx > 3 ? evt.target.checked : idx !== 1
-        ? evt.target.value : evt.target.value.replace(/^(V\d):.+/, "$1") )
-      : idx < 7 && t01inp.value ? (nm0sets.u2typs[t01inp.value] = {})
-      : idx < 8 && v01inp.value ? (nm0sets.u2vws[v01inp.value] = {})
-      : idx < 9 ? t0tbod.querySelectorAll('[type=checkbox]:checked')
+      idx || (opensel.value = !opencbx.checked ? "" : txd1.DBNAME);
+      idx < 7 ? ( nm0sets[ps[idx]] = !idx ? opensel.value : idx > 4 ? evt.target.checked
+        : idx !== 2 ? evt.target.value : evt.target.value.replace(/^(V\d):.+/, "$1") )
+      : idx < 8 && t01inp.value ? (nm0sets.u2typs[t01inp.value] = {})
+      : idx < 9 && v01inp.value ? (nm0sets.u2vws[v01inp.value] = {})
+      : idx < 10 ? t0tbod.querySelectorAll('[type=checkbox]:checked')
         .map(e => delete nm0sets.u2typs[e.parentElement.textContent.replace(/^\s/, "")])
       : v0tbod.querySelectorAll('[type=checkbox]:checked')
         .map(e => delete nm0sets.u2vws[e.parentElement.textContent.replace(/^\s?V\d-/, "")]);
@@ -1473,8 +1479,8 @@ let fwg, nm0cfgs, nm0sets, rva3, rval,
     || (nm0cfgs = fncTry(localStorage._nm0cfgs, JSON.parse) || {});
     !/^{['"].+}$/.test(localStorage._nm0sets || "")
     || (nm0sets = fncTry(localStorage._nm0sets, JSON.parse));
-    nm0sets //&& ["uemail", "uname", "dbdflt", "vwdflt", "usecfg", "useset", "u2typs", "u2vws"]
-      //.every(pty => nm0sets.hasOwnProperty(pty))
+    nm0sets && ["uemail", "uname", "dbdflt", "vwdflt", "usecfg", "useset", "u2typs", "u2vws"]
+      .every(pty => nm0sets.hasOwnProperty(pty))
     || ( localStorage._nm0sets = JSON.stringify( nm0sets = Object.assign(
       { uemail: "", uname: "", dbdflt: "", vwdflt: "V2", usecfg: 0, useset: 0,
         u2typs: { mytype2: { t0: ["mytype2", "<em>[mytype2 description]</em>"],
@@ -1484,7 +1490,7 @@ let fwg, nm0cfgs, nm0sets, rva3, rval,
       nm0sets || {} )));
     pdbssel.innerHTML = ["\n      <option></option>", "<option>&plus; New DB</option>"]
       .concat(dbs.map(e => "<option>" + e + "</option>")).join("\n      ") + "\n      ";
-    dbopsel.innerHTML = ["\n      <option></option>"]
+    opensel.innerHTML = ["\n      <option></option>"]
       .concat(dbs.map(e => "<option" + (e !== nm0sets.dbdflt ? ">" : " selected>")
         + e + "</option>")).join("\n      ") + "\n      ";
     unaminp.value = una2inp.value = nm0sets.uname;
