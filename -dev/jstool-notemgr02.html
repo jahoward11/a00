@@ -223,7 +223,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap {
   font: normal 14px BlinkMacSystemFont, -apple-system, Helvetica, Arial, sans-serif;
   max-width: 960px;
-  margin: 24px auto;
+  margin: 24px auto 96px;
   line-height: 1.5;
 }
 #nmwrap h4, #nmwrap h5 { margin-bottom: 7px; }
@@ -266,6 +266,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap textarea { display: block; font: normal 10.5px monospace; width: 100%; }
 #nmwrap .lnht1 { line-height: 1; }
 #nmwrap .fsiz75 { font-size: 0.75em; }
+#nmwrap .alnrt { text-align: right; }
 #nmwrap .hwhsmk { background-color: Whitesmoke; }
 #nmwrap .hgainl { background-color: #ececec; } /* Gainsboro #dcdcdc */
 #nmwrap .hwarnl { background-color: #fff6e6; }
@@ -300,7 +301,8 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap label.ccntr+.ccntr>input[type=text],
 #nmwrap label.ccntr+.ccntr>select { width: 216px; }
 #nmwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }
-#nmwrap .cfield>.chelp { font-size: 12px; margin-top: 4px; }
+#nmwrap .cfield .chelp { font-size: 12px; margin-top: 4px; line-height: 21px; }
+#nmwrap .cfield .lnh14, #nmwrap .lnh14 { line-height: 1.4; }
 #nmwrap .fltrt { float: right; }
 #nmwrap .pwrap { word-wrap: normal; overflow-wrap: normal; white-space: pre-wrap; }
 #nmwrap .mtup3 { margin-top: -3px; }
@@ -332,7 +334,6 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   text-align: left;
 }
 #nmdata .cfield:not(:last-child) { margin-bottom: 10.5px; }
-#nmdata #ndhelp { font-size: 10.5px; text-align: right; }
 #nmdata .media-left>.image.rspv128 {
   width: 128px;
   height: unset;
@@ -347,7 +348,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmdata .field-label>.label:not(:last-child) { margin-bottom: 0; }
 #nmtabs li:first-child>a { letter-spacing: -3px; }
 #pdbcfg .table {
-  min-width: 350px;
+  min-width: calc(238px + 30vw); /* 238/375px=63vw, 350/375px=93vw */
   margin-left: 8px;
 }
 #pdbcfg #pdbtbl td:nth-of-type(1),
@@ -359,9 +360,9 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   white-space: nowrap;
 }
 #pdbcfg #typtbl td { padding: 5.5px; }
-#pdbcfg #typtbl td:nth-of-type(1)>input { width: 28vw; max-width: 120px; } /* 105/375px=28vw */
+#pdbcfg #typtbl td:nth-of-type(1)>input { width: 30vw; max-width: 120px; } /* 120/375px=32vw */
 #pdbcfg #typtbl td:nth-of-type(2)>select { width: 84px; padding: 0 3px; } /* 84/375px=22vw */
-#pdbcfg #typtbl td:nth-of-type(3)>input { width: 34vw; } /* 131/375px=34vw */
+#pdbcfg #typtbl td:nth-of-type(3)>input { width: 30vw; } /* 113/375px=30vw */
 @media screen and (max-width: 575px) {
   #nmdata .media-left>.image.rspv128 { width: 48px; margin: 0; }
   #nmdata .media-left>.image.rspv128 img { min-height: 48px; }
@@ -575,6 +576,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
       <div class="chelp iwarn dnone">New DB creation failed.</div>
     </div>
   </div>
+  <hr />
   <h4>About the Selected, Local DB</h4>
   <p>
     &emsp;You can switch to any previously created, local database by using
@@ -590,11 +592,11 @@ strong, mark, table th, .table, .table thead td, .table thead th,
       <tr><td>Description:</td><td></td></tr>
     </tbody>
   </table>
-  <div class=cfield>
+  <div class="cfield lnh14">
     &emsp;<label><input type=checkbox id=opencbx disabled /> <a>Set as default DB</a></label>
-    <br /><span class=chelp>&emsp;&emsp;&ensp;(Open this DB directly on next startup.)</span>
+    <br />&emsp;&emsp; <span class=chelp>(Open this DB directly on next startup.)</span>
   </div>
-  <h5>"New Note" Type-Template</h5>
+  <h5>"New Note" Type/Template</h5>
   <p>
     &emsp;You can add a new <em>note</em> ( <span class=hwhsmk>&plus; New Note</span> ) to the database by using the 2<sup>nd</sup> select list of the top control panel (or, by activating the corresponding tab beneath the notelist <em>view</em>).
   </p>
@@ -716,7 +718,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   Show<br />use guides</label>
   <h4><em>Note Mgr</em> App Settings</h4>
   <p class=dnone>
-    &emsp;For convenience, choose a default database, and associated <em>view</em>, that will be directly opened and displayed at each start&#x2011;up.
+    &emsp;For convenience, choose a default database, and associated <em>view</em>, that will be directly opened and displayed at each&nbsp;startup.
   </p>
   <p class=dnone>
     &emsp;Also, optionally, identify yourself by username and/or email, which will be associated with every DB you create. This becomes useful if, for example, your DB data is ever synced to a cloud server and/or consolidated with other user's data; User identities facilitate a team's management of multiple&nbsp;DBs.
@@ -778,11 +780,6 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   <span class="fltrt mup28"><button id=jselbtn class="bsml ilink" data-seltrg=jsctxta>sel</button></span>
   <div class=cblock>
     <textarea id=jsctxta class=textarea rows=31>&gt; </textarea>
-    <pre>
-
-
-
-    </pre>
   </div>
 </div>
 </div>
@@ -1129,7 +1126,9 @@ let fwg, nm0cfgs, nm0sets, rva3, rval, vbas, vusr,
     !txd2.DBNAME || !window.PouchDB || new PouchDB(txd2.DBNAME)
     .get(txd2.FILEID, txd2.OPTIONS).then(doc => {
       let lnl, str,
-        txtaHt = k => (lnl = ((str = vtoStr(fwg[k])).match(/\n/g) || "").length) > 8 || str.length > 400
+        txtaHt = k => ( lnl = ( ( str = vtoStr( fwg[k],
+              !Array.isArray(fwg[k]) || typeof fwg[k][0] === 'object' ? 2 : null ))
+            .match(/\n/g) || "" ).length ) > 8 || str.length > 400
           ? 16 : lnl > 2 || str.length > 200 ? 8 : 2;
       fwg = doc;
       [vctrls, nmflow, nmtabs, nmpans[tidx]].forEach(e => e.classList.add("dnone"));
@@ -1141,7 +1140,8 @@ let fwg, nm0cfgs, nm0sets, rva3, rval, vbas, vusr,
       + ( !(fwg.file_updated || "").subdir ? ""
         : "<button class=opq0 disabled>" + fwg.file_updated.subdir + " &sol;</button>" )
       + "<button class=opq0 disabled>" + fwg._id + "</button>"
-      + "\n<div id=ndhelp class=chelp></div>\n</div>"
+      + "\n<div class=\"chelp isucc alnrt lnh14 dnone\">Note is updated in local database.</div>"
+      + "\n<div class=\"chelp iwarn alnrt lnh14 dnone\">Note update failed.</div>\n</div>"
       + Object.keys(fwg).map(k => /^_id$|^_rev$/.test(k) ? "" : `
 <div class="cfield is-horizontal">
   <div class="field-label">
@@ -1162,8 +1162,9 @@ let fwg, nm0cfgs, nm0sets, rva3, rval, vbas, vusr,
         || vidx !== 4 || clipsGen(); //viewBk
 */
       updbtn.onclick = () => {
-        ndhelp.classList.add("isucc");
-        ndhelp.innerHTML = "Note is updated in local database.";
+        let hlps = nmdata.querySelectorAll('.chelp');
+        hlps.forEach(e => e.classList.add("dnone"));
+        hlps[0].classList.remove("dnone");
       }; //fwgUpd;
     }).catch(rsp2Show);
     //rsp2Show(txd2);
@@ -1460,7 +1461,7 @@ let fwg, nm0cfgs, nm0sets, rva3, rval, vbas, vusr,
     !window.PouchDB || !txd1.DBNAME ? (pdbseq.innerHTML = pdbtot.innerHTML = "")
     : new PouchDB(txd1.DBNAME).info()
       .then(r => { pdbtot.innerHTML = r.doc_count; pdbseq.innerHTML = r.update_seq }).catch(rsp2Show);
-    pdbssel.selectedIndex < 2 ? (opencbx.checked = viewsel.selectedIndex = 0)
+    pdbssel.selectedIndex < 2 ? (opencbx.checked = viewsel.selectedIndex = vidx = 0)
       || pnahlp.classList.remove("dnone") || pnacnt.classList.add("dnone") || (opencbx.disabled = 1)
     : pnahlp.classList.add("dnone") || pnacnt.classList.remove("dnone") || (opencbx.disabled = 0)
       || vidx > 3 || (viewsel.selectedIndex = vidx = 4 + v0ssel.selectedIndex);
@@ -1521,7 +1522,7 @@ let fwg, nm0cfgs, nm0sets, rva3, rval, vbas, vusr,
         .concat(vw2s.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      ";
       viewsel.value = add;
     }
-    !txd1.DBNAME || viewsel.selectedIndex > 3 || !(viewsel.selectedIndex = 5) || viewChg();
+    !txd1.DBNAME || viewsel.selectedIndex > 3 || !(viewsel.selectedIndex = vidx = 5) || viewChg();
   },
   setsUpd = evt => {
     let hid = !vbas || ( vbas !== 1
