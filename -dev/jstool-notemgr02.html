@@ -437,13 +437,16 @@ strong, mark, table th, .table, .table thead td, .table thead th,
       <td>Cr'd By</td>
       <td>Cr'd Ver</td>
       <td>Cr'd Misc</td>
-      <td>Cntrbtrs</td>
+      <td>People</td>
       <td>Username</td>
       <td>Image</td>
       <td>Link Ref</td>
       <td>From</td>
       <td>To</td>
       <td>Subject</td>
+      <td>Headline</td>
+      <td>Time</td>
+      <td>Place</td>
       <td>Attach's</td>
     </tr>
   </thead>
@@ -473,13 +476,16 @@ strong, mark, table th, .table, .table thead td, .table thead th,
       <td>Cr'd By</td>
       <td>Cr'd Ver</td>
       <td>Cr'd Misc</td>
-      <td>Cntrbtrs</td>
+      <td>People</td>
       <td>Username</td>
       <td>Image</td>
       <td>Link Ref</td>
       <td>From</td>
       <td>To</td>
       <td>Subject</td>
+      <td>Headline</td>
+      <td>Time</td>
+      <td>Place</td>
       <td>Attach's</td>
     </tr>
   </tfoot>
@@ -518,10 +524,10 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </p>
 </div>
 <div id=pnadd1 class="cblock dnone">
-  <h4>New Note</h4>
   <div id=pnahlp>
+    <h4>New Note</h4>
     <p>
-      &emsp;<em>Use Tip:</em> You must first create/open a DB before you can add a new <em>note</em>.
+      &emsp;<em>Use Tip:</em> You must first create/open a database before you can add a new <em>note</em>.
     </p>
   </div>
   <div id=pnacnt class=dnone></div>
@@ -534,7 +540,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   <p>
     &emsp;To <em>destroy</em> an existing database&mdash;or to <em>compact</em> it
     (i.e., remove all versions of each <em>note</em> but the last one)&mdash;enter
-    the same name as the currently selected DB and tap the appropriate button, here.
+    the same name as the currently selected database and tap the appropriate button, here.
   </p>
   <div id=olddctrl class=cblock>
     <div class=cfield>
@@ -719,7 +725,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     &emsp;For convenience, choose a default database, and associated <em>view</em>, that will be directly opened and displayed at each&nbsp;startup.
   </p>
   <p class=dnone>
-    &emsp;Also, optionally, identify yourself by username and/or email, which will be associated with every DB you create. This becomes useful if, for example, your DB data is ever synced to a cloud server and/or consolidated with other user's data; User identities facilitate a team's management of multiple&nbsp;DBs.
+    &emsp;Also, optionally, identify yourself by username and/or email, which will be associated with every database that you create. This becomes useful if, for example, your DB data is ever synced to a cloud server and/or consolidated with other users' data; User identities facilitate a team's management of multiple&nbsp;DBs.
   </p>
   <div class=cblock>
     <div class=cfield>
@@ -741,13 +747,13 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     &emsp;App settings and DB configurations are stored in the browser's <em>Local&nbsp;Storage</em>.
   </p>
   <p class=dnone>
-    &emsp;Each DB's collection of notes is stored in the browser's <em>IndexedDB&nbsp;Storage</em>.
+    &emsp;Each database's collection of notes is stored in the browser's <em>IndexedDB&nbsp;Storage</em>.
   </p>
   <p class=dnone>
     &emsp;Be aware that these data stores are not secure; They may be viewed by any prying person who is allowed access to the device, even without the use of the <em>Note&nbsp;Mgr</em>&nbsp;app.
   </p>
   <p class=dnone>
-    &emsp;To completely destroy either one or both stores of user data, select the appropriate checkbox(es), enter the same username as above and tap the <em>WIPE&nbsp;DATA</em> button.
+    &emsp;To completely destroy either one or both stores of user data, select the appropriate checkbox(es), enter the same username as above and tap the associated button, here.
   </p>
   <p class=dnone>
     &emsp;<em>Use Tip:</em> To destroy just one DB without affecting any other DB, use the <em class=hwhsmk>DB Config</em> control panel instead.
@@ -766,7 +772,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
       </label><span class=ccntr><button class="iwarn hwarnl">
       WIPE DATA</button></span>
       <div class="chelp isucc dnone">Data wipe is successful.</div>
-      <div class="chelp iwarn dnone">Data wipe failed.</div>
+      <div class="chelp iwarn dnone">Data-wipe attempt failed.</div>
     </div>
   </div>
   <hr />
@@ -794,24 +800,27 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
     OPTIONS: { since: 0 }
   },
   copts = [`
-          <option value="file_updated.subdir">Subdir</option>
+          <option value="loc_subdir || (file_updated || file_created).subdir">Subdir</option>
           <option value="id">Note ID</option>
           <option value="file_type">Type</option>
           <option value="file_updated.timestamp">Updated</option>
           <option value="file_updated.username">Up'd By</option>
           <option value="file_updated.version">Up'd Ver</option>
-          <option value="file_updated.notes || file_updated.misc">Up'd Misc</option>
+          <option value="file_updated.misc || file_updated.notes">Up'd Misc</option>
           <option value="file_created.timestamp">Created</option>
           <option value="file_created.username">Cr'd By</option>
           <option value="file_created.version">Cr'd Ver</option>
-          <option value="file_created.notes || file_created.misc">Cr'd Misc</option>
-          <option value="contributors">Cntrbtrs</option>
+          <option value="file_created.misc || file_created.notes">Cr'd Misc</option>
+          <option value="people">People</option>
           <option value="name_user">Username</option>
           <option value="image_src">Image</option>
           <option value="linkref">Link Ref</option>
           <option value="from">From</option>
           <option value="to">To</option>
           <option value="subject">Subject</option>
+          <option value="headline">Headline</option>
+          <option value="time">Time</option>
+          <option value="place">Place</option>
           <option value="_attachments">Attach's</option>
         `, `
           <option value="seq">Chg Seq</option>
@@ -845,8 +854,7 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
   pntyps = {
     new: {
       _id: "",
-      _rev: "",
-      key2: ""
+      _rev: ""
     },
     srcdoc: {
       _id: "",
@@ -858,7 +866,7 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
         dborigin: "",
         dbname: "",
         subdir: "",
-        notes: ""
+        misc: ""
       },
       file_updated: {
         username: "",
@@ -866,7 +874,7 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
         dborigin: "",
         dbname: "",
         subdir: "",
-        notes: ""
+        misc: ""
       },
       media_type: "text/plain",
       content: ""
@@ -877,8 +885,33 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
       file_type: "scrap",
       ts_created: 0,
       ts_updated: 0,
-      media_type: "text/plain",
+      loc_subdir: "",
       content: ""
+    },
+    event: {
+      _id: "",
+      _rev: "",
+      file_type: "event",
+      file_created: {
+        username: "",
+        timestamp: 0,
+        dborigin: "",
+        dbname: "",
+        subdir: ""
+      },
+      file_updated: {
+        username: "",
+        timestamp: 0,
+        dborigin: "",
+        dbname: "",
+        subdir: ""
+      },
+      people: [""],
+      headline: "",
+      time: "",
+      place: "",
+      map_refs: [""],
+      description: "",
     },
     memo: {
       _id: "",
@@ -903,6 +936,7 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
       file_type: "contact",
       ts_created: 0,
       ts_updated: 0,
+      loc_subdir: "",
       name_full: "",
       name_user: "",
       birthdate: "",
@@ -966,13 +1000,16 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
       <td>${ rval.file_created && rval.file_created.username || "" }</td>
       <td>${ rval.file_created && rval.file_created.version || "" }</td>
       <td>${ rval.file_created && (rval.file_created.notes || rval.file_created.misc) || "" }</td>
-      <td>${ (rval.contributors || []).join(", ") || "" }</td>
+      <td>${ (rval.people || rval.contributors || []).join(", ") || "" }</td>
       <td>${ rval.name_user || "" }</td>
       <td>${ rval.image_src || "" }</td>
       <td>${ rval.linkref || "" }</td>
       <td>${ rval.from || "" }</td>
       <td>${ (rval.to || []).join(", ") || "" }</td>
       <td>${ rval.subject || "" }</td>
+      <td>${ rval.headline || "" }</td>
+      <td>${ rval.time || "" }</td>
+      <td>${ rval.place || "" }</td>
       <td>${ Object.keys(rval._attachments || "").length || "" }</td>
     </tr>`,
   qd2Fmt = rows => rows.map( (r, i) =>
@@ -1138,8 +1175,8 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
       + ( !(fwg.file_updated || "").subdir ? ""
         : "<button class=opq0 disabled>" + fwg.file_updated.subdir + " &sol;</button>" )
       + "<button class=opq0 disabled>" + fwg._id + "</button>"
-      + "\n<div class=\"chelp isucc alnrt lnh14 dnone\">Note is updated in local database.</div>"
-      + "\n<div class=\"chelp iwarn alnrt lnh14 dnone\">Note update failed.</div>\n</div>"
+      + "\n<div class=\"chelp isucc alnrt lnh14 dnone\">Note is updated in local DB.</div>"
+      + "\n<div class=\"chelp iwarn alnrt lnh14 dnone\">Note-update attempt failed.</div>\n</div>"
       + Object.keys(fwg).map(k => /^_id$|^_rev$/.test(k) ? "" : `
 <div class="cfield is-horizontal">
   <div class="field-label">
@@ -1408,11 +1445,11 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
           : !Array.isArray(fwg[k]) && Object.keys(fwg[k]).length < 8 ? 8 : 16;
       fwg = JSON.parse( JSON.stringify(
         (nm0sets.p2typs[t00sel.value] || "").t1 || pntyps[t00sel.value] || pntyps.new ));
-      pnacnt.innerHTML = "\n<button id=updbtn class=\"hgainl fltrt mtup28\">"
+      pnacnt.innerHTML = "\n<h4>New Note</h4>\n<button id=savbtn class=\"hgainl fltrt mtup28\">"
       + "<span class=isucc>&#x267a;</span> SAVE</button>\n<div class=\"cfield alnrt\">"
-      + "\n<div class=\"chelp isucc lnh14 dnone\">Note is updated in local database.</div>"
-      + "\n<div class=\"chelp iwarn lnh14 dnone\">Note update failed.</div>\n</div>\n<div>&nbsp;</div>"
-      + Object.keys(fwg).map(k => /^_rev$/.test(k) ? "" : `
+      + "\n<div class=\"chelp isucc lnh14 dnone\">New note is saved in local DB.</div>"
+      + "\n<div class=\"chelp iwarn lnh14 dnone\">New-note save attempt failed.</div>\n</div>"
+      + "\n<div>&nbsp;</div>" + Object.keys(fwg).map(k => /^_rev$/.test(k) ? "" : `
 <div class="cfield is-horizontal">
   <div class="field-label">
     <span class=label>${k}</span>
@@ -1424,7 +1461,7 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
       .replace(/&(?=#?\w+;)/g, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;") }</textarea>
   </div>
 </div>`).join("") + "\n";
-      updbtn.onclick = () => {
+      savbtn.onclick = () => {
         fwg = null;
         let hlps = pnacnt.querySelectorAll('.chelp');
         hlps.forEach(e => e.classList.add("dnone"));
@@ -1450,12 +1487,13 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
       nmflow.classList.remove("dnone");
       tblGen(evt);
     }
+    !evt || !vbas || tidx !== 1 || tabActv();
   },
   viewChg = evt => {
     let vkey = viewsel.value.replace(/-?\d+$|^V\d:/g, "") || "myview";
     if (vidx > 3 && evt && evt.currentTarget.localName === 'a') { return tabActv(evt); }
     vidx = !evt || evt.currentTarget.localName !== 'a' ? viewsel.selectedIndex
-      : evt.currentTarget.parentElement.dataset.tabidx;
+      : +evt.currentTarget.parentElement.dataset.tabidx;
     vidx < 4 || txd1.DBNAME || pdbssel.selectedIndex === 1 || (viewsel.selectedIndex = vidx = 0);
     vbas = viewsel.selectedIndex > 3 && +/\d/.exec(viewsel.value);
     txd1.VIEW = vbas === 4 ? "files-static" : vbas === 1 ? "files-contact" : "files-idxlist";
@@ -1476,7 +1514,7 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
         .filter(e => e).map(e => +e).sort().reverse()[0] || 1 ) );
     vusr = "";
     ( vidx > 8 ? (nm0sets.p2vws[vusr = viewsel.value.replace(/^V\d-/, "")] || "").cols || []
-      : [[1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5, 18], [1, 2, 7, 8, 14, 15, 16, 17], [0, 1, 2]][vidx - 5] || [] )
+      : [[1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5, 21], [1, 2, 7, 8, 14, 15, 16, 17], [0, 1, 2]][vidx - 5] || [] )
     .forEach(n => colssel.options[n].selected = true);
     vidx < 4 || !colssel.innerHTML || colsTog();
     vidx < 9 || (descswi.checked = (nm0sets.p2vws[vusr] || "").desc);
@@ -1488,7 +1526,7 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
     pdbnam.innerHTML = txd1.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value;
     !window.PouchDB || !txd1.DBNAME ? (pdbseq.innerHTML = pdbtot.innerHTML = "")
     : new PouchDB(txd1.DBNAME).info()
-      .then(r => { pdbtot.innerHTML = r.doc_count; pdbseq.innerHTML = r.update_seq }).catch(rsp2Show);
+      .then(r => [pdbtot.innerHTML, pdbseq.innerHTML] = [r.doc_count, r.update_seq]).catch(rsp2Show);
     pdbssel.selectedIndex < 2 ? (opencbx.checked = viewsel.selectedIndex = vidx = 0)
       || pnahlp.classList.remove("dnone") || pnacnt.classList.add("dnone") || (opencbx.disabled = 1)
     : pnahlp.classList.add("dnone") || pnacnt.classList.remove("dnone") || (opencbx.disabled = 0)
@@ -1498,7 +1536,7 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
     viewChg();
     pdbssel.selectedIndex !== 1 || !(viewsel.selectedIndex = vidx = 2)
     || cfgcbx.checked || cfgcbx.click();
-    pdbssel.selectedIndex > 1 || tabActv();
+    (!vidx || vidx > 3) && !tidx || tabActv();
   },
   t1sChg = evt => {
     let dtOpts = v => ["string", "number", "boolean", "object",
@@ -1521,7 +1559,7 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
           .filter(e => e).map(e => +e).sort().reverse()[0] || 1 ) ));
     }
     t02inp.value = t01inp.value = "";
-    t1tbod.innerHTML = Object.entries( t00sel.selectedIndex < 5
+    t1tbod.innerHTML = Object.entries( t00sel.selectedIndex < 6
         ? pntyps[t00sel.value] || pntyps.new : nm0sets.p2typs[t00sel.value].t1 )
       .concat([["", ""]]).map( ([k, v], i) => k === "_rev" ? ""
         : "\n      <tr><td><input type=text value=\"" + k + "\"" + (i ? "" : " disabled")
@@ -1531,7 +1569,8 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
     t1tbod.querySelectorAll('input, select').forEach(e => e.onchange = t1sChg);
   },
   t0sChg = () => {
-    let t0s = [ ["", ""], ["srcdoc", "Web source document"], ["scrap", "No-frills, plain-text note"],
+    let t0s = [ ["", ""], ["srcdoc", "Web source document"],
+        ["scrap", "No-frills, plain-text note"], ["event", "Calendaring item or logging record"],
         ["memo", "Short memorandum or text msg"], ["contact", "Person's contact information"] ]
         .concat(Object.values(nm0sets.p2typs).map(v => v.t0));
     t00sel.innerHTML = t0s.map( ([k, v], i) => "\n      <option"
@@ -1544,9 +1583,10 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
   },
   v0sChg = () => {
     let v0v = !v00sel.innerHTML ? "V2:organized" : v00sel.value,
-      v0s = [ ["V1:noteclips", "Previews of <em>memo</em>s or <em>contact</em>s"],
+      v0s = [ ["V1:noteclips", "Preview <em>event</em>/<em>memo</em>/<em>contact</em>'s"],
           ["V2:organized", "Notes/attach's by subdirectory"], ["V3:mutables", "All updatable notes"],
-          ["V4:statics", "All one-off memos/text-posts"], ["V5:deleted", "All discarded-note IDs"] ]
+          ["V4:statics", "All one-off, text post/<em>memo</em>'s"],
+          ["V5:deleted", "All discarded-note IDs"] ]
         .concat(Object.values(nm0sets.p2vws).map(vo => vo.v0));
     v00sel.innerHTML = v0s.map( ([k, v], i) =>
       "\n      <option>" + k + "</option>" ).join("") + "\n      ";
@@ -1625,7 +1665,7 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
     unaminp.value = una2inp.value = nm0sets.uname;
     uemlinp.value = nm0sets.uemail;
     !nm0sets.useset || setcbx.checked || setcbx.click();
-    viewApd() || viewsel.options.length !== 9 || v0sChg();
+    viewApd() || viewsel.options.length > 9 || v0sChg();
     t0sChg();
     t1sChg();
     opensel.value = pdbssel.value = nm0sets.dbdflt;
