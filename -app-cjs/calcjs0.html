@@ -342,10 +342,10 @@ let q2Bcopy, q2Bhtml,
     = cheadg.innerHTML = (tnew || cheadg.textContent.trim().substring(0, 32));
   },
   gridAdj = idx => {
-    if (idx == 4) {
+    if (idx === 4) {
       [quad1A, quad1B].forEach(e => e.classList.toggle("is-hidden"));
       cgrid.classList.toggle("clpsrow1");
-    } else if (idx == 5) {
+    } else if (idx === 5) {
       quad2A.classList.toggle("is-hidden");
       cgrid.classList.toggle("xpndq2B");
     }
@@ -416,25 +416,26 @@ let q2Bcopy, q2Bhtml,
     nanc.click();
   },
   menuSel = evt => {
+    let idx = evt.target.selectedIndex;
     window.setTimeout(() => {
       menulist.blur();
       menulist.selectedIndex = 0;
     }, 1);
     evt.preventDefault();
-    if (evt.target.selectedIndex == 1) {
+    if (idx === 1) {
       zoomTog();
-    } else if (evt.target.selectedIndex == 2) {
+    } else if (idx === 2) {
       cheadg.setAttribute('contenteditable', true);
       cheadg.focus();
-    } else if (evt.target.selectedIndex == 3) {
+    } else if (idx === 3) {
       [cgrid, xctrls].forEach(e => e.classList.toggle("is-hidden"));
-    } else if (/[45]/.test(evt.target.selectedIndex)) {
-      gridAdj(evt.target.selectedIndex);
-    } else if (evt.target.selectedIndex == 6 && ((xsetlist || "").value || !dentry.value)) {
+    } else if (/[45]/.test(idx)) {
+      gridAdj(idx);
+    } else if (idx === 6 && ((xsetlist || "").value || !dentry.value)) {
       viewSet();
-    } else if (evt.target.selectedIndex == 7) {
+    } else if (idx === 7) {
       calcCopy();
-    } else if (evt.target.selectedIndex == 8) {
+    } else if (idx === 8) {
       window.location.href = "https://jahoward11.github.io/a00/-app-cjs/calcjs0.html";
     }
   },
@@ -458,7 +459,7 @@ let q2Bcopy, q2Bhtml,
       reslts = xprsns.map(xpri => {
         try {
           xpri = xpri && xpri
-            .replace( /^(?=[\t ]*{)|^.*?(?=\/\/|<\/?\b[ \w\\,;:'"#=()-]+>|\(? *function\b[ \w]*\(.*?\) *{|\(? *(?:[$\wÀ-Ͽ]+|\(.*?\)) *=>|$)/g,
+            .replace( /^(?=[\t ]*{)|^.*?(?=\/\/|<\/?\w+ [ \w\\,;:'"#=()-]+>|\(? *function\b[ \w]*\(.*?\) *{|\(? *(?:[$\wÀ-Ͽ]+|\(.*?\)) *=>|$)/g,
               m0 => m0.replace( /( |^)(?:_\.|)([$_a-zÀ-Ͽ][$\wÀ-Ͽ]*)(?=\s*=\s*(?:$|[$\wÀ-Ͽ'"`([{.+-]))/gi,
                 (m1, c1, c2) => _ks.push(c2) && c1 + "_." + c2 )
               .replace( /([\t =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([$_](?!\.)[$\wÀ-Ͽ]*|[A-Za-zÀ-Ͽ][$\wÀ-Ͽ]*)(?! *=)/g,
