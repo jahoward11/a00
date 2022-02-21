@@ -985,8 +985,9 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
   tr0Gen = (r, i) => `
     <tr${ vbas !== 2 ? "" : " hidden"}>
       <td>${ 1 + i - j } <input type=checkbox class=dnone /></td>
-      <td>${ (rval = r.doc || r.value).file_updated
-        ? (rval.file_updated.subdir || ".") + "/" : "" }</td>
+      <td>${ (rval = r.doc || r.value).hasOwnProperty("loc_subdir")
+        ? (rval.loc_subdir || ".") + "/" : rval.file_updated || rval.file_created
+        ? ((rval.file_updated || rval.file_created).subdir || ".") + "/" : "" }</td>
       <td>${ rval._id || r.id }</td>
       <td>${ (rval.file_type || "").replace(/^eco-/, "")
         || (!/^[.-]./.test(rval._id || r.id) ? "" : "(app assets)") }</td>
@@ -1026,12 +1027,13 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
       <td colspan=18>${ !rval._attachments[k] ? k
         : k + " (" + Math.ceil(+rval._attachments[k].length / 1000) + "k)" }</td>
     </tr>` ).join("")
-    : !i || !(rva2 = rows[i - 1].doc || rows[i - 1].value).file_updated
-      || rval.file_updated.subdir !== rva2.file_updated.subdir
+    : (( rval = rval.hasOwnProperty("loc_subdir") ? rval.loc_subdir
+        : (rval.file_updated || rval.file_created || "").subdir ) || 1 ) && !i
+      || ( (rva2 = (rows[i - 1].doc || rows[i - 1].value)).hasOwnProperty("loc_subdir")
+        ? rva2.loc_subdir : (rva2.file_updated || rva2.file_created || "").subdir ) !== rval
     ? (!i || (j = i)) && `
-    <tr id="${ rval.file_updated.subdir || "_" }">
-      <td colspan=20><a>&#x25b6;</a> <input type=checkbox class=dnone /> ${
-        rval.file_updated.subdir || "/" }</td>
+    <tr id="${ rval || "_" }">
+      <td colspan=20><a>&#x25b6;</a> <input type=checkbox class=dnone /> ${ rval || "/" }</td>
     </tr>` + tr0Gen(r, i)
     : tr0Gen(r, i) ).join("") + "\n  ",
   qd3Fmt = rows => rows.map(tr0Gen).join("") + "\n  ",
