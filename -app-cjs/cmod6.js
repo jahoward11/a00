@@ -660,7 +660,7 @@ srui += "\\n#srwrap { font: normal medium Helvetica, Arial, sans-serif; max-widt
 srui += "\\n#srwrap button, #srwrap input:not([type=checkbox]), #srwrap select { height: 24px; vertical-align: bottom; }";
 srui += "\\n#srwrap textarea { display: block; font-size: medium; width: 100%; height: 288px; }";
 srui += "\\n#srwrap .iwarn { color: Orange; }\\n#srwrap .isucc { color: CornFlowerBlue; }";
-srui += "\\n#srwrap textarea.iwarn { color: unset; border-color: Orange; }\\n#srwrap textarea.isucc { color: unset; border-color: CornFlowerBlue; }";
+srui += "\\n#srwrap textarea.iwarn { color: revert; border-color: Orange; }\\n#srwrap textarea.isucc { color: revert; border-color: CornFlowerBlue; }";
 srui += "\\n#srwrap .pwrap { white-space: pre-wrap; }";
 srui += "\\n#srwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }";
 srui += "\\n#srwrap .cfield:not(:last-child) { margin-bottom: 8px; }";
@@ -882,7 +882,7 @@ three tutorials.
 - API commands make fundamental networking and interactional tasks
   more coder-human friendly.
 - API commands are generally simpler, more intuitive alternatives to
-  common-use, yet complex, coding algorithms.
+  commonly used, yet complex, coding algorithms.
 
 *What are the most useful kinds (classes) of client-side web APIs?*
 - Document Object Model (DOM) manipulation
@@ -914,7 +914,7 @@ three tutorials.
   information continue to change over time.
 - *Aside:* In order to use one of the abundant, non-browser-included
   APIs, its defining script must first be imported into the web app.
-  This is why, near the end of *Tutorial Part 3*, we could use the
+  This is why, near the end of *Tutorials Part 3*, we could use the
   (unrecognizable-to-a-browser) \`markdownit()\` command (which had
   allowed us to generate HTML markup on a plain-text article). In
   other words, if we had not previously imported the associated,
