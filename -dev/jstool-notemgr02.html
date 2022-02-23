@@ -530,7 +530,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   <div id=pnacnt class=dnone></div>
 </div>
 <div id=pdbcfg class="cblock dnone">
-  <label class="fltrt mtup3 fsz075 lnht1 ilink"><input type=checkbox id=gcfgswi checked />
+  <label class="fltrt mtup3 fsz075 lnht1 ilink"><input type=checkbox id=use1swi checked />
   Show<br />use guides</label>
   <h4>Database Setup &plus; Configuration</h4>
   <h5>Old Data Destruction</h5>
@@ -555,14 +555,14 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </div>
   <h5>New Database Creation</h5>
   <p>
-    &emsp;To <em>create</em> a new local database, enter your username,
+    &emsp;To <em>create</em> a new local database, enter your username or email,
     a new DB name and a short description of its intended purpose;
     (And, optionally, set your own DB configurations, below;)
     Then, tap the associated button, here.
   </p>
   <div class=cblock>
     <div class=cfield>
-      <label class=ccntr>Username</label><span class=ccntr><input type=text id=una2inp /></span>
+      <label class=ccntr>Username or email</label><span class=ccntr><input type=text id=una2inp /></span>
     </div>
     <div class=cfield>
       <label class=ccntr>New DB name</label><span class=ccntr><input type=text id=pdb0inp /></span>
@@ -588,7 +588,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
       <tr><td>DB name:</td><td id=pdbnam></td></tr>
       <tr><td>Notes total:</td><td id=pdbtot></td></tr>
       <tr><td>Update seq#:</td><td id=pdbseq></td></tr>
-      <tr><td>Created:</td><td id=pdbcrt></td></tr>
+      <tr><td>Created on:</td><td id=pdbcrt></td></tr>
       <tr><td>Created by:</td><td id=pdbusr></td></tr>
       <tr><td>Description:</td><td id=pdbdsc></td></tr>
     </tbody>
@@ -713,7 +713,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </div>
 </div>
 <div id=nmsets class="cblock dnone">
-  <label class="fltrt mtup3 fsz075 lnht1 ilink"><input type=checkbox id=gsetswi />
+  <label class="fltrt mtup3 fsz075 lnht1 ilink"><input type=checkbox id=use2swi />
   Show<br />use guides</label>
   <h4><em>Note Mgr</em> App Settings</h4>
   <p class=dnone>
@@ -746,7 +746,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     &emsp;Be aware that these data stores are not secure; They may be viewed by any prying person who is allowed access to the device, even without the use of the <em>Note&nbsp;Mgr</em>&nbsp;app.
   </p>
   <p class=dnone>
-    &emsp;To completely destroy either one or both stores of user data, select the appropriate checkbox(es), enter the same username as above and tap the associated button, here.
+    &emsp;To completely destroy either one or both stores of user data, select the appropriate checkbox(es), enter the same username or email as above and tap the associated button, here.
   </p>
   <p class=dnone>
     &emsp;<em>Use Tip:</em> To destroy just one DB without affecting any other DB, use the <em class=hwsmok>DB Config</em> control panel instead.
@@ -758,7 +758,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
       <br />&emsp;<label class=iwarn><input type=checkbox /> Purge all local DBs</label>
     </div>
     <div class=cfield>
-      <label class=ccntr>Username</label><span class=ccntr><input type=text id=wipeinp /></span>
+      <label class=ccntr>Username or email</label><span class=ccntr><input type=text id=wipeinp /></span>
     </div>
     <div class=cfield>
       <label class=ccntr>
@@ -1455,7 +1455,7 @@ let fwg, rva2, rval, vbas, vusr,
     tidx = !evt ? (vidx > 3 ? 0 : vidx) : +evt.currentTarget.parentElement.dataset.tabidx;
     [nmflow, nmdata].some(e => !e.classList.contains('dnone')) || (viewsel.selectedIndex = vidx = tidx);
     pdbssel.selectedIndex > 1 || vidx === 2 || (pdbssel.selectedIndex = 0);
-    pdbssel.selectedIndex === 1 || nm0sets.usecfg || !gcfgswi.checked || gcfgswi.click();
+    pdbssel.selectedIndex === 1 || nm0sets.usecfg || !use1swi.checked || use1swi.click();
     !/0|1|3/.test(vidx) || (ftotal.textContent = "_");
     tabncs.forEach(anc => anc.parentElement.classList.remove('is-active'));
     (!evt ? tabncs[tidx] : evt.currentTarget).parentElement.classList.add('is-active');
@@ -1468,12 +1468,14 @@ let fwg, rva2, rval, vbas, vusr,
           : !Array.isArray(fwg[k]) && Object.keys(fwg[k]).length < 8 ? 8 : 16;
       fwg = JSON.parse( JSON.stringify(
         (nm0sets.p2typs[t01sel.value] || "").t1 || pntyps[t01sel.value] || pntyps.new ));
-      fwg.ts_updated = fwg.ts_created = ts0;
-      [[fwg.file_created, fwg.file_updated]].forEach(([p0, p1] = ["", ""]) => {
-        if (!p0 && !p1) { return; }
-        p1.username = p0.username = nm0sets.uname;
+      !fwg.hasOwnProperty("ts_created") || (fwg.ts_updated = fwg.ts_created = ts0);
+      [[fwg.file_created, fwg.file_updated]].forEach(([p0, p1]) => {
+        if (!p0) { return; }
+        p1 = p1 || {};
+        p1.username = p0.username = nm0sets.uname || nm0sets.uemail;
         p1.timestamp = p0.timestamp = ts0;
-        p1.dborigin = p0.dborigin = navigator.userAgent;
+        p1.dborigin = p0.dborigin = /cloudant|localhost/.test(location.origin) ? location.origin
+          : [location.origin, navigator.userAgent || navigator.userAgentData];
         p1.dbname = p0.dbname = txd1.DBNAME;
       });
       pnacnt.innerHTML = "\n<div class=field>\n<button id=savbtn class=\"hgainl fltrt\">"
@@ -1532,7 +1534,7 @@ let fwg, rva2, rval, vbas, vusr,
     !evt || !vbas || tidx !== 1 || tabActv();
   },
   viewChg = evt => {
-    let vkey = viewsel.value.replace(/-?\d+$|^V\d:/g, "") || "myview";
+    let vkey;
     if (vidx > 3 && evt && evt.currentTarget.localName === 'a') { return tabActv(evt); }
     vidx = !evt || evt.currentTarget.localName !== 'a' ? viewsel.selectedIndex
       : +evt.currentTarget.parentElement.dataset.tabidx;
@@ -1551,9 +1553,10 @@ let fwg, rva2, rval, vbas, vusr,
     if (vidx < 4 && evt && [nmflow, nmdata].every(e => e.classList.contains('dnone'))) {
       return tabActv(evt);
     }
-    v01inp.value = vkey + "-" + ( 1
+    vidx < 4 || !(vkey = viewsel.value.replace(/-?\d+$|^V\d:/g, "") || "myview")
+    || ( v01inp.value = vkey + "-" + ( 1
       + ( Array.from(v01sel.options).map(o => o.value.includes(vkey) && /\d+$/.exec(o.value))
-        .filter(e => e).map(e => +e).sort().reverse()[0] || 1 ) );
+        .filter(e => e).map(e => +e).sort().reverse()[0] || 1 ) ));
     vusr = "";
     ( vidx > 8 ? (nm0sets.p2vws[vusr = viewsel.value.replace(/^V\d-/, "")] || "").cols || []
       : [[1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5, 21], [1, 2, 7, 8, 14, 15, 16, 17], [0, 1, 2]][vidx - 5] || [] )
@@ -1562,51 +1565,32 @@ let fwg, rva2, rval, vbas, vusr,
     vidx < 9 || (descswi.checked = (nm0sets.p2vws[vusr] || "").desc);
     viewRte(evt);
   },
-  pdbOpen = () => {
-    pnacnt.innerHTML = fwg = null;
-    !pdbssel.options[3] || (nmtips.innerHTML = "");
-    pdbnam.innerText = txd1.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value;
-    pdbcrt.innerText = new Date((nm0cfgs[txd1.DBNAME] || "").tscrtd).toLocaleString();
-    pdbusr.innerText = (nm0cfgs[txd1.DBNAME] || "").uname;
-    pdbdsc.innerText = (nm0cfgs[txd1.DBNAME] || "").dbdscr;
-    !window.PouchDB || !txd1.DBNAME ? (pdbseq.innerText = pdbtot.innerText = "")
-    : new PouchDB(txd1.DBNAME).info()
-      .then(r => [pdbtot.innerText, pdbseq.innerText] = [r.doc_count, r.update_seq]).catch(rsp2Show);
-    pdbssel.selectedIndex < 2 ? (openswi.checked = viewsel.selectedIndex = vidx = 0)
-      || pnahlp.classList.remove("dnone") || pnacnt.classList.add("dnone") || (openswi.disabled = 1)
-    : pnahlp.classList.add("dnone") || pnacnt.classList.remove("dnone") || (openswi.disabled = 0)
-      || vidx > 3 || !v02sel.selectedIndex || (viewsel.selectedIndex = vidx = 3 + v02sel.selectedIndex);
-    Array.from(viewsel.options).forEach((o, i) => i < 4 || (o.disabled = !txd1.DBNAME));
-    openswi.disabled || (openswi.checked = (txd1.DBNAME === nm0sets.dbdflt));
-    viewChg();
-    pdbssel.selectedIndex !== 1 || !(viewsel.selectedIndex = vidx = 2)
-    || gcfgswi.checked || gcfgswi.click();
-    (!vidx || vidx > 3) && !tidx || tabActv();
-  },
   cfgsUpd = evt => {
     let ts0 = new Date().getTime(),
       db0 = pdb0inp.value.trim();
-    //["uemail", "uname", "type0", "view0", "tscrtd", "tsddel", "dbdscr"];
+    //["type0", "view0", "tsset", "tsdel", "user0", "descr"]
     if (evt && evt.target.id !== "pdb0btn" && nm0cfgs[txd1.DBNAME]) {
       evt.target.id !== "t01sel" || (nm0cfgs[txd1.DBNAME].type0 = t01sel.value);
-      evt.target.id !== "v01sel" || (nm0cfgs[txd1.DBNAME].view0 = v01sel.value);
+      evt.target.id !== "v01sel"
+      || (nm0cfgs[txd1.DBNAME].view0 = v01sel.value.replace(/^(V\d):.+/, "$1"));
       if (/dbd[01]btn/.test(evt.target.id) && ddelinp.value === txd1.DBNAME && window.PouchDB) {
-        nm0cfgs[txd1.DBNAME].tsddel = ts0;
+        nm0cfgs[txd1.DBNAME].tsdel = ts0;
         evt.target.id !== "dbd0btn" || new PouchDB(txd1.DBNAME).compact().then().catch(rsp2Show);
         evt.target.id !== "dbd1btn" || new PouchDB(txd1.DBNAME).destroy().then().catch(rsp2Show);
         //todo: regen pdblist
       }
+      localStorage._nm0cfgs = JSON.stringify(nm0cfgs);
       //todo: persist to ls; show confirm
     } else if (!txd1.DBNAME && /[a-z][0-9a-z_]*/.test(db0) && window.PouchDB) {
       new PouchDB(txd1.DBNAME = db0).info().then().catch(rsp2Show);
       nm0cfgs[db0] = nm0cfgs[db0] || {};
-      nm0cfgs[db0].uemail = una2inp.value !== nm0sets.uname ? "" : nm0sets.uemail;
-      nm0cfgs[db0].uname = una2inp.value.trim();
       nm0cfgs[db0].type0 = t01sel.value;
-      nm0cfgs[db0].view0 = v01sel.value;
-      nm0cfgs[db0].tscrtd = ts0;
-      nm0cfgs[db0].tsddel = 0;
-      nm0cfgs[db0].dbdscr = pdb1inp.value;
+      nm0cfgs[db0].view0 = v01sel.value.replace(/^(V\d):.+/, "$1");
+      nm0cfgs[db0].tsset = ts0;
+      nm0cfgs[db0].tsdel = 0;
+      nm0cfgs[db0].user0 = una2inp.value.trim();
+      nm0cfgs[db0].descr = pdb1inp.value;
+      localStorage._nm0cfgs = JSON.stringify(nm0cfgs);
       //todo: regen pdblist
       //todo: persist to ls; show confirm
     }
@@ -1656,7 +1640,7 @@ let fwg, rva2, rval, vbas, vusr,
         + "</td><td>" + v + "</td></tr>" ).join("") + "\n      ";
   },
   v0sChg = () => {
-    let v0v = !v01sel.innerHTML ? "V2:organized" : v01sel.value,
+    let v0v = v01sel.value,
       v0s = [ ["", ""], ["V1:noteclips", "Preview <em>event</em>/<em>memo</em>/<em>contact</em>'s"],
           ["V2:organized", "Notes/attach's by subdirectory"], ["V3:mutables", "All updatable notes"],
           ["V4:statics", "All one-off text posts (<em>memo</em>s)"],
@@ -1690,7 +1674,7 @@ let fwg, rva2, rval, vbas, vusr,
         ? document.querySelector('#nmtbl thead:not(.dnone) td:first-of-type>input.dnone')
         : document.querySelector('#nmdata .media-content>.pwrap>span.dnone') ),
       ps = ["dbdflt", "dbdflt", "vwdflt", "uname", "uemail", "usecfg", "useset"],
-      idx = evt && actrls.concat([gcfgswi, gsetswi, t0abtn, t0dbtn, v0abtn, v0dbtn])
+      idx = evt && actrls.concat([use1swi, use2swi, t0abtn, t0dbtn, v0abtn, v0dbtn])
         .findIndex(e => e.id === evt.target.id);
     if (typeof idx === 'number' && idx > -1) {
       idx || (opensel.value = !openswi.checked ? "" : txd1.DBNAME);
@@ -1714,8 +1698,40 @@ let fwg, rva2, rval, vbas, vusr,
       localStorage._nm0sets = JSON.stringify(nm0sets);
       idx < 9 || !v01inp.value || viewApd(idx === 9 && nm0sets.p2vws[v01inp.value].v0[0])
       || idx > 9 || (v01sel.value = nm0sets.p2vws[v01inp.value].v0[0]);
-      v01sel.selectedIndex > -1 || (v01sel.selectedIndex = 1);
+      !txd1.DBNAME || v01sel.selectedIndex > -1 || (v01sel.selectedIndex = 2);
     }
+  },
+  pdbOpen = () => {
+    let t0v = t01sel.value;
+    pnacnt.innerHTML = fwg = null;
+    !pdbssel.options[3] || (nmtips.innerHTML = "");
+    pdbnam.innerText = txd1.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value;
+    pdbcrt.innerText = !txd1.DBNAME ? ""
+      : new Date((nm0cfgs[txd1.DBNAME] || "").tsset || null).toLocaleString();
+    pdbusr.innerText = !txd1.DBNAME ? "" : (nm0cfgs[txd1.DBNAME] || "").user0;
+    pdbdsc.innerText = !txd1.DBNAME ? "" : (nm0cfgs[txd1.DBNAME] || "").descr;
+    !window.PouchDB || !txd1.DBNAME ? (pdbseq.innerText = pdbtot.innerText = "")
+    : new PouchDB(txd1.DBNAME).info()
+      .then(r => [pdbtot.innerText, pdbseq.innerText] = [r.doc_count, r.update_seq]).catch(rsp2Show);
+    pdbssel.selectedIndex < 2 ? (openswi.checked = viewsel.selectedIndex = vidx = 0)
+      || pnahlp.classList.remove("dnone") || pnacnt.classList.add("dnone") || (openswi.disabled = 1)
+    : pnahlp.classList.add("dnone") || pnacnt.classList.remove("dnone") || (openswi.disabled = 0)
+      || vidx > 3 || !v02sel.selectedIndex || (viewsel.selectedIndex = vidx = 3 + v02sel.selectedIndex);
+    Array.from(viewsel.options).forEach((o, i) => i < 4 || (o.disabled = !txd1.DBNAME));
+    openswi.disabled || (openswi.checked = (txd1.DBNAME === nm0sets.dbdflt));
+    if (nm0cfgs[txd1.DBNAME]) {
+      v01sel.value = viewsel.value = ( Array.from(v01sel.options).find( o =>
+        o.value.replace(/^(V\d):.+/, "$1") === nm0cfgs[txd1.DBNAME].view0 ) || "" ).value;
+      (t01sel.value = nm0cfgs[txd1.DBNAME].type0) === t0v || t1sChg();
+    } else {
+      v01sel.value = !txd1.DBNAME ? "" : viewsel.value = ( Array.from(v01sel.options).find( o =>
+        o.value.replace(/^(V\d):.+/, "$1") === nm0sets.vwdflt ) || "" ).value;
+      (t01sel.value = "scrap") === t0v || t1sChg();
+    }
+    viewChg();
+    pdbssel.selectedIndex !== 1 || !(viewsel.selectedIndex = vidx = 2)
+    || use1swi.checked || use1swi.click();
+    (!vidx || vidx > 3) && !tidx || tabActv();
   },
   pdbsGen = (dbs = []) => {
     let ts0 = new Date().getTime();
@@ -1735,19 +1751,22 @@ let fwg, rva2, rval, vbas, vusr,
     !/^{['"].+}$/.test(localStorage._nm0cfgs || "")
     || (nm0cfgs = fncTry(localStorage._nm0cfgs, JSON.parse) || {});
     nm0cfgs && !dbs.forEach(e => nm0cfgs[e] || (nm0cfgs[e] = {}))
-    && ["uemail", "uname", "type0", "view0", "tscrtd", "tsddel", "dbdscr"]
+    && ["type0", "view0", "tsset", "tsdel", "user0", "descr"]
       .every(pty => Object.values(nm0cfgs).every(val => val.hasOwnProperty(pty)))
     || ( localStorage._nm0cfgs = JSON.stringify( nm0cfgs = Object.fromEntries(
-      Object.entries(nm0cfgs).map( oe => [ oe[0], Object.assign(
-        { uemail: nm0sets.uemail, uname: nm0sets.uname,
-          type0: "scrap", view0: nm0sets.vwdflt, tscrtd: ts0, tsddel: 0, dbdscr: "" },
-        oe[1] || {} ) ]) )));
+      Object.entries(nm0cfgs).map( oe =>
+        //[uemail, uname, tscrtd, tsddel, dbdscr].forEach(e => delete oe[1].e) //temp cleanup
+        [ oe[0], Object.assign(
+          { type0: "scrap", view0: nm0sets.vwdflt || "V2", tsset: ts0, tsdel: 0,
+            user0: nm0sets.uname || nm0sets.uemail || "", descr: oe[0] + " project data" },
+          oe[1].user0 && oe[1] || {} )] ) )));
     [pdbssel, opensel].forEach( (e, i) => e.innerHTML
       = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
         .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
-    unaminp.value = una2inp.value = nm0sets.uname;
+    una2inp.value = nm0sets.uname || nm0sets.uemail;
+    unaminp.value = nm0sets.uname;
     uemlinp.value = nm0sets.uemail;
-    !nm0sets.useset || gsetswi.checked || gsetswi.click();
+    !nm0sets.useset || use2swi.checked || use2swi.click();
     viewApd() || viewsel.options.length > 9 || v0sChg();
     t0sChg();
     t1sChg();
@@ -1769,7 +1788,7 @@ tabncs.forEach(anc => anc.onclick = viewChg);
 t01sel.onchange = t1sChg;
 v01sel.onchange = cfgsUpd;
 actrls.forEach(elm => elm.onchange = setsUpd);
-[[gcfgswi, pdbcfg], [gsetswi, nmsets]].forEach( ([s, e]) => s.onclick = evt => e.querySelectorAll('p')
+[[use1swi, pdbcfg], [use2swi, nmsets]].forEach( ([s, e]) => s.onclick = evt => e.querySelectorAll('p')
   .forEach(p => p.classList[!s.checked ? "add" : "remove"]("dnone")) || setsUpd(evt) );
 [t0abtn, v0abtn, t0dbtn, v0dbtn].forEach(btn => btn.onclick = setsUpd);
 jselbtn.onclick = txtaSel;
