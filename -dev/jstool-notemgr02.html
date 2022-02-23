@@ -97,14 +97,14 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   font-weight: 700;
 }
 .label:not(:last-child) { margin-bottom: 0.5em; }
+.field:not(:last-child) { margin-bottom: 10.5px; /* 0.75rem */ }
 .field-label .label { font-size: inherit; }
-.field-body .field .field,
-.field-body .cfield .cfield { margin-bottom: 0; }
+.field-body .field .field { margin-bottom: 0; }
 @media screen and (max-width: 719px) {
   .field-label { margin-bottom: 7px; /* 0.5rem */ }
 }
 @media screen and (min-width: 720px), print {
-  .field.is-horizontal, .cfield.is-horizontal { display: flex; }
+  .field.is-horizontal { display: flex; }
   .field-label {
     flex-basis: 0;
     flex-grow: 1;
@@ -118,12 +118,10 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     flex-grow: 5;
     flex-shrink: 1;
   }
-  .field-body .field, .field-body .cfield { margin-bottom: 0; }
-  .field-body > .field, .field-body > .cfield { flex-shrink: 1; }
-  .field-body > .field:not(.is-narrow),
-  .field-body > .cfield:not(.is-narrow) { flex-grow: 1; }
-  .field-body > .field:not(:last-child),
-  .field-body > .cfield:not(:last-child) { margin-right: 10.5px; /* 0.75rem */ }
+  .field-body .field { margin-bottom: 0; }
+  .field-body > .field { flex-shrink: 1; }
+  .field-body > .field:not(.is-narrow) { flex-grow: 1; }
+  .field-body > .field:not(:last-child) { margin-right: 10.5px; /* 0.75rem */ }
 }
 .level {
   align-items: center;
@@ -221,10 +219,9 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 .tabs .icon:last-child { margin-left: 0.5em; }
 .tabs.is-centered ul { justify-content: center; }
 #nmwrap {
-  font: normal 14px BlinkMacSystemFont, -apple-system, Helvetica, Arial, sans-serif;
+  font: normal 14px/1.5 BlinkMacSystemFont, -apple-system, Helvetica, Arial, sans-serif;
   max-width: 960px;
   margin: 24px auto 96px;
-  line-height: 1.5;
 }
 #nmwrap h4, #nmwrap h5 { margin-bottom: 7px; }
 #nmwrap h4+h5 { margin-top: 14px; }
@@ -233,9 +230,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   cursor: pointer;
   text-decoration: none;
 }
-#nmwrap a:hover {
-  color: CornFlowerBlue;
-}
+#nmwrap a:hover { color: CornFlowerBlue; }
 #nmwrap .tabs a { color: DarkGrey; }
 #nmwrap .tabs a:hover {
   border-bottom-color: #363636;
@@ -264,12 +259,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 }
 #nmwrap input::placeholder { opacity: 0.5; }
 #nmwrap textarea { display: block; font: normal 10.5px monospace; width: 100%; }
-#nmwrap .table { line-height: normal; }
-#nmwrap .lnht1 { line-height: 1; }
-#nmwrap .lnh12 { line-height: normal; }
-#nmwrap .lnh17 { line-height: 24px; }
-#nmwrap .fsiz75 { font-size: 0.75em; }
-#nmwrap .hwhsmk { background-color: Whitesmoke; }
+#nmwrap .hwsmok { background-color: Whitesmoke; }
 #nmwrap .hgainl { background-color: #ececec; } /* Gainsboro #dcdcdc */
 #nmwrap .hwarnl { background-color: #fff6e6; }
 #nmwrap .hsuccl { background-color: #e8effc; }
@@ -289,7 +279,6 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   height: 16px;
   padding: 4px;
 }
-#nmwrap .cblock:not(:last-child) { margin-bottom: 21px; }
 #nmwrap .cfield:not(:last-child) { margin-bottom: 8px; }
 #nmwrap .ccntr:not(:last-of-type) { margin-right: 8px; }
 #nmwrap label.ccntr {
@@ -303,15 +292,19 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap label.ccntr+.ccntr>input[type=text],
 #nmwrap label.ccntr+.ccntr>select { width: 216px; }
 #nmwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }
-#nmwrap .cfield .chelp { font-size: 12px; margin-top: 4px; line-height: 21px; }
-#nmwrap .cfield .lnh14, #nmwrap .lnh14 { line-height: 1.4; }
+#nmwrap .chelp { font-size: 12px; margin-top: 4px; line-height: 21px; }
+#nmwrap .fsz075 { font-size: 10.5px; }
+#nmwrap .table { line-height: normal; }
+#nmwrap .lnht1 { line-height: 1; }
+#nmwrap .lnht12 { line-height: normal; }
+#nmwrap .lnht14 { line-height: 1.4; }
+#nmwrap .lnht17 { line-height: 24px; }
 #nmwrap .fltrt { float: right; }
 #nmwrap .alnrt { text-align: right; }
 #nmwrap .pwrap { word-wrap: normal; overflow-wrap: normal; white-space: pre-wrap; }
-#nmwrap .mbot0 { margin-bottom: 0; }
 #nmwrap .mtup3 { margin-top: -3px; }
-#nmwrap .mtup28 { margin-top: -28px; }
-#nmwrap .mrt8 { margin-right: 8px; }
+#nmwrap .mbot0 { margin-bottom: 0; }
+#nmwrap .cblock:not(:last-child) { margin-bottom: 21px; }
 #nmwrap .dflow { display: flow-root; overflow-x: auto; }
 #nmwrap .dnone { display: none; }
 #nmwrap>#rsp2con {
@@ -338,7 +331,6 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   background: Whitesmoke;
   text-align: left;
 }
-#nmdata .cfield:not(:last-child), #pnacnt .cfield:not(:last-child) { margin-bottom: 10.5px; }
 #nmdata .media-left>.image.rspv128 {
   width: 128px;
   height: unset;
@@ -354,7 +346,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #pnacnt .field-label>.label:not(:last-child) { margin-bottom: 0; }
 #nmtabs li:first-child>a { letter-spacing: -3px; }
 #pdbcfg .table {
-  min-width: calc(220px + 35vw); /* 220/375px=59vw, 351/375px=94vw */
+  min-width: calc(219px + 35vw); /* 219/375px=58vw, 350/375px=93vw */
   margin-left: 8px;
 }
 #pdbcfg #pdbtbl td:nth-of-type(1),
@@ -365,10 +357,11 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   overflow-x: clip;
   white-space: nowrap;
 }
-#pdbcfg #typtbl td { padding: 5px 3.5px; }
-#pdbcfg #typtbl td:nth-of-type(1)>input { width: 30vw; max-width: 120px; } /* 120/375px=32vw */
+#pdbcfg #typtbl td { padding: 5px 2.5px; }
+#pdbcfg #typtbl td:nth-of-type(1)>input { width: 120px; } /* 120/375px=32vw */
 #pdbcfg #typtbl td:nth-of-type(2)>select { width: 84px; padding: 0 4px; } /* 84/375px=22vw */
-#pdbcfg #typtbl td:nth-of-type(3)>input { width: calc(35vw - 5px); } /* 131/375px=35vw */
+#pdbcfg #typtbl td:nth-of-type(3)>input { width: 35vw; } /* 131/375px=35vw */
+#nmsets #jselbtn { margin: -23px 8px 0 0; }
 @media screen and (max-width: 575px) {
   #nmdata .media-left>.image.rspv128 { width: 48px; margin: 0; }
   #nmdata .media-left>.image.rspv128 img { min-height: 48px; }
@@ -422,7 +415,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     </div>
   </div>
 </nav>
-<div id=nmflow class="cblock dflow dnone">
+<div id=nmflow class="dflow cblock dnone">
 <table id=nmtbl class=table>
   <thead>
     <tr>
@@ -504,7 +497,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 </table>
 </div>
 <div id=nmdata class="cblock dnone"></div>
-<nav id=nmtabs class="cblock tabs">
+<nav id=nmtabs class="tabs cblock">
   <ul>
     <li data-tabidx=0 class="is-active">
       <a>&blk14;&blk14;</a>
@@ -523,7 +516,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 <div id=nmtips class=cblock>
   <h4>Just getting started?</h4>
   <p>
-    &emsp;Add a new <em>database</em> ( <span class=hwhsmk>&plus; New DB</span> )
+    &emsp;Add a new <em>database</em> ( <span class=hwsmok>&plus; New DB</span> )
     using the 1<sup>st</sup> select list of the control panel&nbsp;above.
   </p>
 </div>
@@ -537,7 +530,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   <div id=pnacnt class=dnone></div>
 </div>
 <div id=pdbcfg class="cblock dnone">
-  <label class="fltrt mtup3 fsiz75 lnht1 ilink"><input type=checkbox id=cfgcbx checked />
+  <label class="fltrt mtup3 fsz075 lnht1 ilink"><input type=checkbox id=gcfgswi checked />
   Show<br />use guides</label>
   <h4>Database Setup &plus; Configuration</h4>
   <h5>Old Data Destruction</h5>
@@ -595,18 +588,18 @@ strong, mark, table th, .table, .table thead td, .table thead th,
       <tr><td>DB name:</td><td id=pdbnam></td></tr>
       <tr><td>Notes total:</td><td id=pdbtot></td></tr>
       <tr><td>Update seq#:</td><td id=pdbseq></td></tr>
-      <tr><td>Created:</td><td></td></tr>
-      <tr><td>Created by:</td><td></td></tr>
-      <tr><td>Description:</td><td></td></tr>
+      <tr><td>Created:</td><td id=pdbcrt></td></tr>
+      <tr><td>Created by:</td><td id=pdbusr></td></tr>
+      <tr><td>Description:</td><td id=pdbdsc></td></tr>
     </tbody>
   </table>
-  <div class="cfield lnh14">
-    &emsp;<label><input type=checkbox id=opencbx disabled /> <a>Set as default DB</a></label>
+  <div class="cfield lnht14">
+    &emsp;<label><input type=checkbox id=openswi disabled /> <a>Set as default DB</a></label>
     <br />&emsp;&emsp; <span class=chelp>(Open this DB directly on next startup.)</span>
   </div>
   <h5>"New Note" Type/Template</h5>
   <p>
-    &emsp;You can add a new <em>note</em> ( <span class=hwhsmk>&plus; New Note</span> ) to the database by using the 2<sup>nd</sup> select list of the top control panel (or, by activating the corresponding tab beneath the notelist <em>view</em>).
+    &emsp;You can add a new <em>note</em> ( <span class=hwsmok>&plus; New Note</span> ) to the database by using the 2<sup>nd</sup> select list of the top control panel (or, by activating the corresponding tab beneath the notelist <em>view</em>).
   </p>
   <p>
     &emsp;Be aware that a database <em>note</em>
@@ -624,9 +617,9 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     or a new creation of your own), here.
   </p>
   <div class=cfield>
-    <label class=ccntr>Default note type</label><span class=ccntr><select id=t00sel></select></span>
+    <label class=ccntr>Default note type</label><span class=ccntr><select id=t01sel></select></span>
   </div>
-  <table id=typtbl class="cfield table">
+  <table id=typtbl class="table cfield">
     <thead>
       <tr><th>Note-object-<br />property KEY</th>
       <th>VALUE<br />datatype</th><th>VALUE<br />pre-fill</th></tr>
@@ -666,7 +659,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     <div class="chelp isucc dnone">Add-new-type operation is successful.</div>
     <div class="chelp iwarn dnone">Add-new-type operation failed.</div>
   </div>
-  <table class="cfield table">
+  <table class="table cfield">
     <tbody id=t0tbod></tbody>
   </table>
   <div class=cfield>
@@ -681,7 +674,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     &emsp;You can switch to any notelist <em>view</em> by using the 2<sup>nd</sup> select list of the top control panel.
   </p>
   <p>
-    &emsp;Five different <em>views</em> are available (<span class=hwhsmk>V1</span>&ndash;<span class=hwhsmk>V5</span>).
+    &emsp;Five different <em>views</em> are available (<span class=hwsmok>V1</span>&ndash;<span class=hwsmok>V5</span>).
   </p>
   <p>
     &emsp;Customize and preserve any one or more of the five <em>views</em> by selecting one and
@@ -692,10 +685,8 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     &emsp;Also, select one (either a preset or one of your own) as the default <em>view</em>&mdash;i.e.,
     the <em>view</em> that will be displayed first each time the database is opened.
   </p>
-  <div class=cblock>
-    <div class=cfield>
-      <label class=ccntr>Default <em>view</em></label><span class=ccntr><select id=v00sel></select></span>
-    </div>
+  <div class="cblock cfield">
+    <label class=ccntr>Default <em>view</em></label><span class=ccntr><select id=v01sel></select></span>
   </div>
   <div class=cfield>
     <label class=ccntr>Custom <em>view</em> label</label><span class=ccntr><input type=text id=v01inp /></span>
@@ -710,7 +701,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     <div class="chelp isucc dnone">Add-new-view operation is successful.</div>
     <div class="chelp iwarn dnone">Add-new-view operation failed.</div>
   </div>
-  <table class="cfield table">
+  <table class="table cfield">
     <tbody id=v0tbod></tbody>
   </table>
   <div class=cfield>
@@ -722,7 +713,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </div>
 </div>
 <div id=nmsets class="cblock dnone">
-  <label class="fltrt mtup3 fsiz75 lnht1 ilink"><input type=checkbox id=setcbx />
+  <label class="fltrt mtup3 fsz075 lnht1 ilink"><input type=checkbox id=gsetswi />
   Show<br />use guides</label>
   <h4><em>Note Mgr</em> App Settings</h4>
   <p class=dnone>
@@ -731,19 +722,17 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   <p class=dnone>
     &emsp;Also, optionally, identify yourself by username and/or email, which will be associated with every database that you create. This becomes useful if, for example, your DB data is ever synced to a cloud server and/or consolidated with other users' data; User identities facilitate a team's management of multiple&nbsp;DBs.
   </p>
-  <div class=cblock>
-    <div class=cfield>
-      <label class=ccntr>Default DB</label><span class=ccntr><select id=opensel></select></span>
-    </div>
-    <div class=cfield>
-      <label class=ccntr>Default <em>view</em></label><span class=ccntr><select id=v0ssel></select></span>
-    </div>
-    <div class=cfield>
-      <label class=ccntr>Username</label><span class=ccntr><input type=text id=unaminp /></span>
-    </div>
-    <div class=cfield>
-      <label class=ccntr>User email</label><span class=ccntr><input type=text id=uemlinp /></span>
-    </div>
+  <div class=cfield>
+    <label class=ccntr>Default DB</label><span class=ccntr><select id=opensel></select></span>
+  </div>
+  <div class=cfield>
+    <label class=ccntr>Default <em>view</em></label><span class=ccntr><select id=v02sel></select></span>
+  </div>
+  <div class=cfield>
+    <label class=ccntr>Username</label><span class=ccntr><input type=text id=unaminp /></span>
+  </div>
+  <div class=cfield>
+    <label class=ccntr>User email</label><span class=ccntr><input type=text id=uemlinp /></span>
   </div>
   <hr />
   <h4>Wipe user data stored on device</h4>
@@ -760,7 +749,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     &emsp;To completely destroy either one or both stores of user data, select the appropriate checkbox(es), enter the same username as above and tap the associated button, here.
   </p>
   <p class=dnone>
-    &emsp;<em>Use Tip:</em> To destroy just one DB without affecting any other DB, use the <em class=hwhsmk>DB Config</em> control panel instead.
+    &emsp;<em>Use Tip:</em> To destroy just one DB without affecting any other DB, use the <em class=hwsmok>DB Config</em> control panel instead.
   </p>
   <div id=wipectrl class=cblock>
     <div class=cfield>
@@ -785,7 +774,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     &emsp;<em>How it works:</em>
     The "<code>&gt;</code>" symbol in the following text field is a <em>command prompt</em>. The prompt accepts any JavaScript command or expression. When a command or an expression is entered on the <em>command line</em> (i.e., after the prompt) and the field is de-focused (by tapping outside the field), the command or expression is executed by the browser and the final result is then displayed in the next line(s) of the text field.
   </p>
-  <span class="fltrt mtup28 mrt8"><button id=jselbtn class="bsml ilink" data-seltrg=jsctxta>sel</button></span>
+  <button id=jselbtn class="fltrt bsml ilink" data-seltrg=jsctxta>sel</button>
   <div class=cblock>
     <textarea id=jsctxta class=textarea rows=31>&gt; </textarea>
   </div>
@@ -795,8 +784,10 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 <script src="../../a00/-res-js/pouchdb.min.js" type="text/javascript"></script>
 <script src="../../a00/-res-js/pouchdb.all-dbs.min.js" type="text/javascript"></script>
 <script type=module>
-let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
+let fwg, rva2, rval, vbas, vusr,
   j = 0,  tidx = 0, vidx = 0,
+  nm0cfgs = {},
+  nm0sets = {},
   txd1 = {
     DBNAME:  "",
     FILEID:  "_design/ecosorter",
@@ -854,7 +845,7 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
   nmtfts = document.querySelectorAll('#nmtbl tfoot'),
   tabncs = document.querySelectorAll('#nmtabs li>a'),
   nmpans = [nmtips, pnadd1, pdbcfg, nmsets],
-  actrls = [opencbx, opensel, v0ssel, unaminp, uemlinp],
+  actrls = [openswi, opensel, v02sel, unaminp, uemlinp],
   pntyps = {
     new: {
       _id: "",
@@ -1183,17 +1174,17 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
       pnacnt.innerHTML = "";
       [vctrls, nmflow, nmtabs, nmpans[tidx]].forEach(e => e.classList.add("dnone"));
       nmdata.classList.remove("dnone");
-      nmdata.innerHTML = "\n<div class=cfield>"
+      nmdata.innerHTML = "\n<div class=field>"
       + "\n<button id=updbtn class=\"fltrt hgainl\"><span class=isucc>&#x267a;</span> UPDATE</button>"
       + "\n<button id=bckbtn class=hgainl><strong class=ilink>&lang;</strong></button>"
       + " <button class=opq0 disabled>" + txd2.DBNAME + " &sol;</button>"
       + ( !(rval = fwg.loc_subdir || (fwg.file_updated || fwg.file_created || "").subdir) ? ""
         : "<button class=opq0 disabled>" + rval + " &sol;</button>" )
       + "<button class=opq0 disabled>" + fwg._id + "</button>"
-      + "\n<div class=\"chelp isucc alnrt lnh14 dnone\">Note is updated in local DB.</div>"
-      + "\n<div class=\"chelp iwarn alnrt lnh14 dnone\">Note-update attempt failed.</div>\n</div>"
+      + "\n<div class=\"chelp isucc alnrt lnht14 dnone\">Note is updated in local DB.</div>"
+      + "\n<div class=\"chelp iwarn alnrt lnht14 dnone\">Note-update attempt failed.</div>\n</div>"
       + Object.keys(fwg).map(k => /^_id$|^_rev$/.test(k) ? "" : `
-<div class="cfield is-horizontal">
+<div class="field is-horizontal">
   <div class="field-label">
     <span class=label>${k}</span>
     <button class="fltrt bsml ilink" data-seltrg=${"p0" + k}>sel</button>
@@ -1419,8 +1410,8 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
               == descswi.checked ? 1 : -1 );
       ftotal.textContent = rrs.length;
       nmdata.innerHTML = "\n<span class=\"fltrt mtup3\">&ensp;Show all:&ensp;"
-      + "<label><input type=checkbox id=cbxhdrs /> <a>headers</a></label>&ensp;"
-      + "<label><input type=checkbox id=cbxbods /> <a>bodies</a></label></span>\n<hr />"
+      + "<label><input type=checkbox id=hdrsswi /> <a>headers</a></label>&ensp;"
+      + "<label><input type=checkbox id=bodsswi /> <a>bodies</a></label></span>\n<hr />"
       + (rrs.length ? "" : "\n<p class=igreyd>&emsp;<em>[No results found &hellip;]</em><p>")
       + rrs.map( r => `
 <article class=media>
@@ -1447,15 +1438,15 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
         : "\n<strong>Last updated:</strong> " + date1Fmt(ra.ts_updated) }</details></div>
   </div>
 </article>` ).join("") + "\n";
-      cbxhdrs.onchange = evt => document.querySelectorAll('#nmdata .media-content>:first-child>details')
+      hdrsswi.onchange = evt => document.querySelectorAll('#nmdata .media-content>:first-child>details')
         .forEach(e => e.open = evt.target.checked);
-      cbxbods.onchange = evt => document.querySelectorAll('#nmdata .media-content>:last-child>details')
+      bodsswi.onchange = evt => document.querySelectorAll('#nmdata .media-content>:last-child>details')
         .forEach(e => e.open = evt.target.checked);
       document.querySelectorAll('#nmdata .media-left>.image>img').forEach(e => e.onclick = fileLoad);
       document.querySelectorAll('#nmdata .media-content>.pwrap>span>input')
       .forEach(inp => inp.onchange = blk2Tog);
-      vidx > 8 && !(nm0sets.p2vws[vusr] || "").hdrs || cbxhdrs.click();
-      !(nm0sets.p2vws[vusr] || "").bods || cbxbods.click();
+      vidx > 8 && !(nm0sets.p2vws[vusr] || "").hdrs || hdrsswi.click();
+      !(nm0sets.p2vws[vusr] || "").bods || bodsswi.click();
       vwFnlz(evt);
     }).catch(rsp2Show);
   },
@@ -1464,24 +1455,33 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
     tidx = !evt ? (vidx > 3 ? 0 : vidx) : +evt.currentTarget.parentElement.dataset.tabidx;
     [nmflow, nmdata].some(e => !e.classList.contains('dnone')) || (viewsel.selectedIndex = vidx = tidx);
     pdbssel.selectedIndex > 1 || vidx === 2 || (pdbssel.selectedIndex = 0);
-    pdbssel.selectedIndex === 1 || nm0sets.usecfg || !cfgcbx.checked || cfgcbx.click();
+    pdbssel.selectedIndex === 1 || nm0sets.usecfg || !gcfgswi.checked || gcfgswi.click();
     !/0|1|3/.test(vidx) || (ftotal.textContent = "_");
     tabncs.forEach(anc => anc.parentElement.classList.remove('is-active'));
     (!evt ? tabncs[tidx] : evt.currentTarget).parentElement.classList.add('is-active');
     nmpans.forEach(e => e.classList.add("dnone"));
     nmpans[tidx].classList.remove("dnone");
     if (tidx === 1 && !fwg) {
-      let taHt = k => /body|content/i.test(k) ? 16 : /misc/i.test(k) ? 8
+      let ts0 = new Date().getTime(),
+        taHt = k => /body|content/i.test(k) ? 16 : /misc/i.test(k) ? 8
           : typeof fwg[k] !== 'object' || Array.isArray(fwg[k]) && typeof fwg[k][0] !== 'object' ? 2
           : !Array.isArray(fwg[k]) && Object.keys(fwg[k]).length < 8 ? 8 : 16;
       fwg = JSON.parse( JSON.stringify(
-        (nm0sets.p2typs[t00sel.value] || "").t1 || pntyps[t00sel.value] || pntyps.new ));
-      pnacnt.innerHTML = "\n<div class=cfield>\n<button id=savbtn class=\"hgainl fltrt\">"
-      + "<span class=isucc>&#x267a;</span> SAVE</button>\n<h4 class=\"lnh17 mbot0\">New Note</h4>"
-      + "\n<div class=\"chelp isucc alnrt lnh14 dnone\">New note is saved in local DB.</div>"
-      + "\n<div class=\"chelp iwarn alnrt lnh14 dnone\">New-note save attempt failed.</div>\n</div>"
+        (nm0sets.p2typs[t01sel.value] || "").t1 || pntyps[t01sel.value] || pntyps.new ));
+      fwg.ts_updated = fwg.ts_created = ts0;
+      [[fwg.file_created, fwg.file_updated]].forEach(([p0, p1] = ["", ""]) => {
+        if (!p0 && !p1) { return; }
+        p1.username = p0.username = nm0sets.uname;
+        p1.timestamp = p0.timestamp = ts0;
+        p1.dborigin = p0.dborigin = navigator.userAgent;
+        p1.dbname = p0.dbname = txd1.DBNAME;
+      });
+      pnacnt.innerHTML = "\n<div class=field>\n<button id=savbtn class=\"hgainl fltrt\">"
+      + "<span class=isucc>&#x267a;</span> SAVE</button>\n<h4 class=\"lnht17 mbot0\">New Note</h4>"
+      + "\n<div class=\"chelp isucc alnrt lnht14 dnone\">New note is saved in local DB.</div>"
+      + "\n<div class=\"chelp iwarn alnrt lnht14 dnone\">New-note save attempt failed.</div>\n</div>"
       + Object.keys(fwg).map(k => /^_rev$/.test(k) ? "" : `
-<div class="cfield is-horizontal">
+<div class="field is-horizontal">
   <div class="field-label">
     <span class=label>${k}</span>
     <button class="fltrt bsml ilink" data-seltrg=${"p0" + k}>sel</button>
@@ -1552,7 +1552,7 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
       return tabActv(evt);
     }
     v01inp.value = vkey + "-" + ( 1
-      + ( Array.from(v00sel.options).map(o => o.value.includes(vkey) && /\d+$/.exec(o.value))
+      + ( Array.from(v01sel.options).map(o => o.value.includes(vkey) && /\d+$/.exec(o.value))
         .filter(e => e).map(e => +e).sort().reverse()[0] || 1 ) );
     vusr = "";
     ( vidx > 8 ? (nm0sets.p2vws[vusr = viewsel.value.replace(/^V\d-/, "")] || "").cols || []
@@ -1565,28 +1565,59 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
   pdbOpen = () => {
     pnacnt.innerHTML = fwg = null;
     !pdbssel.options[3] || (nmtips.innerHTML = "");
-    pdbnam.innerHTML = txd1.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value;
-    !window.PouchDB || !txd1.DBNAME ? (pdbseq.innerHTML = pdbtot.innerHTML = "")
+    pdbnam.innerText = txd1.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value;
+    pdbcrt.innerText = new Date((nm0cfgs[txd1.DBNAME] || "").tscrtd).toLocaleString();
+    pdbusr.innerText = (nm0cfgs[txd1.DBNAME] || "").uname;
+    pdbdsc.innerText = (nm0cfgs[txd1.DBNAME] || "").dbdscr;
+    !window.PouchDB || !txd1.DBNAME ? (pdbseq.innerText = pdbtot.innerText = "")
     : new PouchDB(txd1.DBNAME).info()
-      .then(r => [pdbtot.innerHTML, pdbseq.innerHTML] = [r.doc_count, r.update_seq]).catch(rsp2Show);
-    pdbssel.selectedIndex < 2 ? (opencbx.checked = viewsel.selectedIndex = vidx = 0)
-      || pnahlp.classList.remove("dnone") || pnacnt.classList.add("dnone") || (opencbx.disabled = 1)
-    : pnahlp.classList.add("dnone") || pnacnt.classList.remove("dnone") || (opencbx.disabled = 0)
-      || vidx > 3 || (viewsel.selectedIndex = vidx = 4 + v0ssel.selectedIndex);
-    Array.from(viewsel.options).forEach((o, i) => i < 4 || (o.disabled = vidx < 4));
-    opencbx.disabled || (opencbx.checked = (txd1.DBNAME === nm0sets.dbdflt));
+      .then(r => [pdbtot.innerText, pdbseq.innerText] = [r.doc_count, r.update_seq]).catch(rsp2Show);
+    pdbssel.selectedIndex < 2 ? (openswi.checked = viewsel.selectedIndex = vidx = 0)
+      || pnahlp.classList.remove("dnone") || pnacnt.classList.add("dnone") || (openswi.disabled = 1)
+    : pnahlp.classList.add("dnone") || pnacnt.classList.remove("dnone") || (openswi.disabled = 0)
+      || vidx > 3 || !v02sel.selectedIndex || (viewsel.selectedIndex = vidx = 3 + v02sel.selectedIndex);
+    Array.from(viewsel.options).forEach((o, i) => i < 4 || (o.disabled = !txd1.DBNAME));
+    openswi.disabled || (openswi.checked = (txd1.DBNAME === nm0sets.dbdflt));
     viewChg();
     pdbssel.selectedIndex !== 1 || !(viewsel.selectedIndex = vidx = 2)
-    || cfgcbx.checked || cfgcbx.click();
+    || gcfgswi.checked || gcfgswi.click();
     (!vidx || vidx > 3) && !tidx || tabActv();
+  },
+  cfgsUpd = evt => {
+    let ts0 = new Date().getTime(),
+      db0 = pdb0inp.value.trim();
+    //["uemail", "uname", "type0", "view0", "tscrtd", "tsddel", "dbdscr"];
+    if (evt && evt.target.id !== "pdb0btn" && nm0cfgs[txd1.DBNAME]) {
+      evt.target.id !== "t01sel" || (nm0cfgs[txd1.DBNAME].type0 = t01sel.value);
+      evt.target.id !== "v01sel" || (nm0cfgs[txd1.DBNAME].view0 = v01sel.value);
+      if (/dbd[01]btn/.test(evt.target.id) && ddelinp.value === txd1.DBNAME && window.PouchDB) {
+        nm0cfgs[txd1.DBNAME].tsddel = ts0;
+        evt.target.id !== "dbd0btn" || new PouchDB(txd1.DBNAME).compact().then().catch(rsp2Show);
+        evt.target.id !== "dbd1btn" || new PouchDB(txd1.DBNAME).destroy().then().catch(rsp2Show);
+        //todo: regen pdblist
+      }
+      //todo: persist to ls; show confirm
+    } else if (!txd1.DBNAME && /[a-z][0-9a-z_]*/.test(db0) && window.PouchDB) {
+      new PouchDB(txd1.DBNAME = db0).info().then().catch(rsp2Show);
+      nm0cfgs[db0] = nm0cfgs[db0] || {};
+      nm0cfgs[db0].uemail = una2inp.value !== nm0sets.uname ? "" : nm0sets.uemail;
+      nm0cfgs[db0].uname = una2inp.value.trim();
+      nm0cfgs[db0].type0 = t01sel.value;
+      nm0cfgs[db0].view0 = v01sel.value;
+      nm0cfgs[db0].tscrtd = ts0;
+      nm0cfgs[db0].tsddel = 0;
+      nm0cfgs[db0].dbdscr = pdb1inp.value;
+      //todo: regen pdblist
+      //todo: persist to ls; show confirm
+    }
   },
   t1sChg = evt => {
     let dtOpts = v => ["string", "number", "boolean", "object",
         "arr of str", "arr of nbr", "arr of bln", "arr of obj", "arr of any", "other"].map( e =>
           "\n      <option" + (e !== v ? ">" : " selected>") + e + "</option>" ).join("") + "\n      ";
-    if (evt && evt.target.id !== "t00sel") {
+    if (evt && evt.target.id !== "t01sel") {
       let ntr,
-        tkey = t00sel.value.replace(/-?\d+$/, "") || "mytype";
+        tkey = t01sel.value.replace(/-?\d+$/, "") || "mytype";
       evt.target.localName !== 'select' || ( evt.target.parentElement.nextSibling.firstChild.value
         = ["", "0", "false", "{ \"key\": \"val\" }", "[\"\"]", "[0]", "[true]",
           "[ { \"key\": \"val\" } ]", "[ \"\", 0, false, {}, [] ]", ""][evt.target.selectedIndex] );
@@ -1597,48 +1628,49 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
         + "</select></td><td><input type=text /></td>" ) || !t1tbod.appendChild(ntr)
       || ntr.querySelectorAll('input, select').forEach(e => e.onchange = t1sChg);
       return t01inp.value || ( t01inp.value = tkey + "-" + ( 1
-        + ( Array.from(t00sel.options).map(o => o.value.includes(tkey) && /\d+$/.exec(o.value))
+        + ( Array.from(t01sel.options).map(o => o.value.includes(tkey) && /\d+$/.exec(o.value))
           .filter(e => e).map(e => +e).sort().reverse()[0] || 1 ) ));
     }
     t02inp.value = t01inp.value = "";
-    t1tbod.innerHTML = Object.entries( t00sel.selectedIndex < 6
-        ? pntyps[t00sel.value] || pntyps.new : nm0sets.p2typs[t00sel.value].t1 )
+    t1tbod.innerHTML = Object.entries( t01sel.selectedIndex < 6
+        ? pntyps[t01sel.value] || pntyps.new : nm0sets.p2typs[t01sel.value].t1 )
       .concat([["", ""]]).map( ([k, v], i) => k === "_rev" ? ""
         : "\n      <tr><td><input type=text value=\"" + k + "\"" + (i ? "" : " disabled")
           + " /></td><td><select>" + dtOpts(typeof v)
           + "</select></td><td><input type=text value='"
           + vtoStr(v) + "' /></td></tr>" ).join("") + "\n      ";
     t1tbod.querySelectorAll('input, select').forEach(e => e.onchange = t1sChg);
+    !evt || evt.target.id !== "t01sel" || cfgsUpd(evt);
   },
   t0sChg = () => {
     let t0s = [ ["", ""], ["srcdoc", "Web source document"],
         ["scrap", "No-frills, plain-text note"], ["event", "Calendaring item or logging record"],
         ["memo", "Short memorandum or text msg"], ["contact", "Person's contact information"] ]
         .concat(Object.values(nm0sets.p2typs).map(v => v.t0));
-    t00sel.innerHTML = t0s.map( ([k, v], i) => "\n      <option"
+    t01sel.innerHTML = t0s.map( ([k, v], i) => "\n      <option"
       + (i !== 2 ? ">" : " selected>") + k + "</option>" ).join("") + "\n      ";
     t0tbod.innerHTML = t0s.map( ([k, v], i) => !i ? ""
-      : "\n      <tr><td>" + (i < 5 ? "" : "<label>")
-        + "<input type=checkbox" + (i > 4 ? "" : " disabled")
-        + " />&ensp;" + k + (i < 5 ? "" : "</label>")
+      : "\n      <tr><td>" + (i < 6 ? "" : "<label>")
+        + "<input type=checkbox" + (i > 5 ? "" : " disabled")
+        + " />&ensp;" + k + (i < 6 ? "" : "</label>")
         + "</td><td>" + v + "</td></tr>" ).join("") + "\n      ";
   },
   v0sChg = () => {
-    let v0v = !v00sel.innerHTML ? "V2:organized" : v00sel.value,
-      v0s = [ ["V1:noteclips", "Preview <em>event</em>/<em>memo</em>/<em>contact</em>'s"],
+    let v0v = !v01sel.innerHTML ? "V2:organized" : v01sel.value,
+      v0s = [ ["", ""], ["V1:noteclips", "Preview <em>event</em>/<em>memo</em>/<em>contact</em>'s"],
           ["V2:organized", "Notes/attach's by subdirectory"], ["V3:mutables", "All updatable notes"],
           ["V4:statics", "All one-off text posts (<em>memo</em>s)"],
           ["V5:deleted", "All discarded-note IDs"] ]
         .concat(Object.values(nm0sets.p2vws).map(vo => vo.v0));
-    v00sel.innerHTML = v0s.map( ([k, v], i) =>
+    v01sel.innerHTML = v0s.map( ([k, v]) =>
       "\n      <option>" + k + "</option>" ).join("") + "\n      ";
-    v00sel.value = v0v;
-    v0tbod.innerHTML = v0s.map( ([k, v], i) =>
-      "\n      <tr><td>" + (i < 5 ? "" : "<label>")
-      + "<input type=checkbox" + (i > 4 ? "" : " disabled")
-      + " />&ensp;" + k + (i < 5 ? "" : "</label>")
+    v01sel.value = v0v;
+    v0tbod.innerHTML = v0s.map( ([k, v], i) => !i ? ""
+      : "\n      <tr><td>" + (i < 6 ? "" : "<label>")
+      + "<input type=checkbox" + (i > 5 ? "" : " disabled")
+      + " />&ensp;" + k + (i < 6 ? "" : "</label>")
       + "</td><td>" + v + "</td></tr>" ).join("") + "\n      ";
-    v0ssel.innerHTML = v0s.map( ([k, v]) => "\n      <option"
+    v02sel.innerHTML = v0s.map( ([k, v]) => "\n      <option"
       + (k.replace(/^(V\d):.+/, "$1") !== nm0sets.vwdflt ? ">" : " selected>")
       + k + "</option>" ).join("") + "\n      ";
   },
@@ -1658,10 +1690,10 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
         ? document.querySelector('#nmtbl thead:not(.dnone) td:first-of-type>input.dnone')
         : document.querySelector('#nmdata .media-content>.pwrap>span.dnone') ),
       ps = ["dbdflt", "dbdflt", "vwdflt", "uname", "uemail", "usecfg", "useset"],
-      idx = evt && actrls.concat([cfgcbx, setcbx, t0abtn, t0dbtn, v0abtn, v0dbtn])
+      idx = evt && actrls.concat([gcfgswi, gsetswi, t0abtn, t0dbtn, v0abtn, v0dbtn])
         .findIndex(e => e.id === evt.target.id);
     if (typeof idx === 'number' && idx > -1) {
-      idx || (opensel.value = !opencbx.checked ? "" : txd1.DBNAME);
+      idx || (opensel.value = !openswi.checked ? "" : txd1.DBNAME);
       idx < 7 ? ( nm0sets[ps[idx]] = !idx ? opensel.value : idx > 4 ? evt.target.checked
         : idx !== 2 ? evt.target.value : evt.target.value.replace(/^(V\d):.+/, "$1") )
       : idx < 8 && t01inp.value ? ( nm0sets.p2typs[t01inp.value]
@@ -1676,20 +1708,19 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
           cols: Array.from(colssel.options)
             .map((o, i) => o.selected && i).filter(e => typeof e === 'number'),
           sort: sortsel.value, desc: descswi.checked, filt: filtinp.value, cbxs: !hid,
-          hdrs: vbas < 2 && cbxhdrs.checked, bods: vbas < 2 && cbxbods.checked } )
+          hdrs: vbas < 2 && hdrsswi.checked, bods: vbas < 2 && bodsswi.checked } )
       : v0tbod.querySelectorAll('[type=checkbox]:checked')
         .forEach(e => delete nm0sets.p2vws[e.parentElement.innerText.replace(/^\s?V\d-/, "")]);
       localStorage._nm0sets = JSON.stringify(nm0sets);
       idx < 9 || !v01inp.value || viewApd(idx === 9 && nm0sets.p2vws[v01inp.value].v0[0])
-      || idx > 9 || (v00sel.value = nm0sets.p2vws[v01inp.value].v0[0]);
-      v00sel.selectedIndex > -1 || (v00sel.selectedIndex = 1);
+      || idx > 9 || (v01sel.value = nm0sets.p2vws[v01inp.value].v0[0]);
+      v01sel.selectedIndex > -1 || (v01sel.selectedIndex = 1);
     }
   },
   pdbsGen = (dbs = []) => {
-    !/^{['"].+}$/.test(localStorage._nm0cfgs || "")
-    || (nm0cfgs = fncTry(localStorage._nm0cfgs, JSON.parse) || {});
+    let ts0 = new Date().getTime();
     !/^{['"].+}$/.test(localStorage._nm0sets || "")
-    || (nm0sets = fncTry(localStorage._nm0sets, JSON.parse));
+    || (nm0sets = fncTry(localStorage._nm0sets, JSON.parse) || {});
     nm0sets && ["uemail", "uname", "dbdflt", "vwdflt", "usecfg", "useset", "p2typs", "p2vws"]
       .every(pty => nm0sets.hasOwnProperty(pty))
     || ( localStorage._nm0sets = JSON.stringify( nm0sets = Object.assign(
@@ -1699,14 +1730,24 @@ let fwg, nm0cfgs, nm0sets, rva2, rval, vbas, vusr,
         p2vws: { myview2: { v0: ["V1-myview2", "<em>[myview2 description &hellip;]</em>"],
             base: 1, cols: [], sort: "", desc: 0, filt: "", cbxs: 0, hdrs: 1, bods: 0 }} },
       nm0sets || {} )));
-    !nm0sets.u2typs || delete nm0sets.u2typs;
-    !nm0sets.u2vws || delete nm0sets.u2vws;
+    !nm0sets.u2typs || delete nm0sets.u2typs; //temp cleanup
+    !nm0sets.u2vws || delete nm0sets.u2vws; //temp cleanup
+    !/^{['"].+}$/.test(localStorage._nm0cfgs || "")
+    || (nm0cfgs = fncTry(localStorage._nm0cfgs, JSON.parse) || {});
+    nm0cfgs && !dbs.forEach(e => nm0cfgs[e] || (nm0cfgs[e] = {}))
+    && ["uemail", "uname", "type0", "view0", "tscrtd", "tsddel", "dbdscr"]
+      .every(pty => Object.values(nm0cfgs).every(val => val.hasOwnProperty(pty)))
+    || ( localStorage._nm0cfgs = JSON.stringify( nm0cfgs = Object.fromEntries(
+      Object.entries(nm0cfgs).map( oe => [ oe[0], Object.assign(
+        { uemail: nm0sets.uemail, uname: nm0sets.uname,
+          type0: "scrap", view0: nm0sets.vwdflt, tscrtd: ts0, tsddel: 0, dbdscr: "" },
+        oe[1] || {} ) ]) )));
     [pdbssel, opensel].forEach( (e, i) => e.innerHTML
       = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
         .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
     unaminp.value = una2inp.value = nm0sets.uname;
     uemlinp.value = nm0sets.uemail;
-    !nm0sets.useset || setcbx.checked || setcbx.click();
+    !nm0sets.useset || gsetswi.checked || gsetswi.click();
     viewApd() || viewsel.options.length > 9 || v0sChg();
     t0sChg();
     t1sChg();
@@ -1724,11 +1765,13 @@ document.querySelectorAll('#vctrls #movebtn, #vctrls #delbtn').forEach(btn => bt
 document.querySelectorAll(qslrs[2]).forEach(anc => anc.onclick = sdirXpd);
 document.querySelectorAll('#nmtbl td:first-of-type>input').forEach(inp => inp.onchange = chksTog);
 tabncs.forEach(anc => anc.onclick = viewChg);
-t00sel.onchange = t1sChg;
+[dbd0btn, dbd1btn, pdb0btn].forEach(btn => btn.onclick = cfgsUpd);
+t01sel.onchange = t1sChg;
+v01sel.onchange = cfgsUpd;
 actrls.forEach(elm => elm.onchange = setsUpd);
-[[cfgcbx, pdbcfg], [setcbx, nmsets]].forEach( ([c, e]) => c.onclick = evt => e.querySelectorAll('p')
-  .forEach(p => p.classList[!c.checked ? "add" : "remove"]("dnone")) || setsUpd(evt) );
-[t0abtn, v0abtn, t0dbtn, v0dbtn].forEach(e => e.onclick = setsUpd);
+[[gcfgswi, pdbcfg], [gsetswi, nmsets]].forEach( ([s, e]) => s.onclick = evt => e.querySelectorAll('p')
+  .forEach(p => p.classList[!s.checked ? "add" : "remove"]("dnone")) || setsUpd(evt) );
+[t0abtn, v0abtn, t0dbtn, v0dbtn].forEach(btn => btn.onclick = setsUpd);
 jselbtn.onclick = txtaSel;
 jsctxta.onblur = jscEval;
 !window.PouchDB || !PouchDB.allDbs ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(rsp2Show);
