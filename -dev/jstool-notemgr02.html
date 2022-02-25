@@ -26,6 +26,10 @@ hr {
   margin: 1.5em 0;
   border: none;
 }
+figure, .figure {
+  margin: 1em 0;
+  padding: 0 1em;
+}
 p, dl, ol, ul, li, button, input, select, textarea, pre { margin: 0; }
 p:not(:last-child), dl:not(:last-child), ol:not(:last-child), ul:not(:last-child),
 blockquote:not(:last-child), pre:not(:last-child), table:not(:last-child) { margin-bottom: 1em; }
@@ -794,6 +798,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 <script type=module>
 let fwg, rva2, rval, vbas, vusr,
   j = 0,  tidx = 0, vidx = 0,
+  aurls = {},
   nm0cfgs = {},
   nm0sets = {},
   txd1 = {
@@ -892,7 +897,7 @@ let fwg, rva2, rval, vbas, vusr,
       content: ""
     },
     event: {
-      _id: "",
+      _id: "idAuto(\"~EVT\", ts0, 0)",
       _rev: "",
       file_type: "event",
       file_created: {
@@ -917,7 +922,7 @@ let fwg, rva2, rval, vbas, vusr,
       description: "",
     },
     memo: {
-      _id: "",
+      _id: "idAuto(\"~mem\", ts0, 0)",
       _rev: "",
       file_type: "memo",
       file_created: {
@@ -934,7 +939,7 @@ let fwg, rva2, rval, vbas, vusr,
       body: ""
     },
     contact: {
-      _id: "",
+      _id: "idAuto(\"!\", \"team_ID-\", \"contact_user_name\")",
       _rev: "",
       file_type: "contact",
       ts_created: 0,
@@ -1015,7 +1020,9 @@ let fwg, rva2, rval, vbas, vusr,
     //.then(PouchDB.allDbs);
   },
   ordFlip = arr => !descswi.checked ? arr.sort() : arr.sort().reverse(),
-  aurlGen = isrc => isrc,
+  aurlGen = isrc => aurls(isrc) || isrc,
+  idAuto = (pfx, ts0, uid = nm0sets.uname) => (pfx || "~pfx") + ( typeof ts0 !== 'number'
+    ? (ts0 || "") : new Date(ts0).toISOString().replace(/\.\w+$|[:-]/g, "") ) + (uid || "-noname000"),
   date0Fmt = nbr => !nbr ? "" : new Date(nbr).toISOString().replace(/T.+$/, ""),
   date1Fmt = str => !str ? ""
     : new Date(str).toUTCString().replace(/.+(\d{2} [a-z]{3} \d{4}).+/i, "$1"),
@@ -1228,17 +1235,27 @@ let fwg, rva2, rval, vbas, vusr,
     .catch(rsp2Show);
   },
   fileLoad = evt => {
-    let txd2 = {
+    let sdir = evt && evt.target.parentElement.previousElementSibling.textContent,
+      txd2 = {
         DBNAME: txd1.DBNAME,
-        FILEID: !evt ? "" : evt.target.textContent || evt.target.dataset.fileid,
+        FILEID: !evt ? "" : /^[.-]/.test(sdir)
+          ? sdir.replace(/\/$/, "") : evt.target.textContent || evt.target.dataset.fileid,
+        ATTKEY: !evt || !/^[.-]/.test(sdir) ? "" : evt.target.textContent,
         OPTS:   {
           //rev: vbas !== 5 ? null : evt.target.parentElement.parentElement.children[3].textContent
           //revs_info: true
         }
       };
+    //rsp2Show(txd2);
+    if (!window.PouchDB || !txd2.DBNAME || !txd2.FILEID
+    || txd2.ATTKEY && !/\.giff?$|\.jpe?g$|\.png$/i.test(txd2.ATTKEY)) { return; }
     rsp2con.textContent = "";
-    !txd2.DBNAME || !window.PouchDB || new PouchDB(txd2.DBNAME)
-    .get(txd2.FILEID, txd2.OPTS).then(doc => {
+    txd2.ATTKEY
+    ? new PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
+      .then( abl => nmbulk.innerHTML = "\n<figure class=image><img src=\""
+        + (aurls[txd2.ATTKEY] || (aurls[txd2.ATTKEY] = URL.createObjectURL(abl))) + "\" /></figure>\n" )
+      .catch(rsp2Show)
+    : new PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS).then(doc => {
       let lnl, str,
         taHt = k => ( lnl = ( ( str = vtoStr( fwg[k],
               !Array.isArray(fwg[k]) || typeof fwg[k][0] === 'object' ? 2 : null ))
@@ -1290,7 +1307,6 @@ let fwg, rva2, rval, vbas, vusr,
       Object.keys(fwg).forEach(k => /^_id$|^_rev$/.test(k) || (window["p0" + k].onblur = datVldt));
       tidx !== 1 || tabActv();
     }).catch(rsp2Show);
-    //rsp2Show(txd2);
   },
   vwFnlz = evt => {
     if (vidx > 8 && (!evt || evt.target.id === "viewsel")) {
@@ -1524,6 +1540,7 @@ let fwg, rva2, rval, vbas, vusr,
           : !Array.isArray(fwg[k]) && Object.keys(fwg[k]).length < 8 ? 8 : 16;
       fwg = JSON.parse( JSON.stringify(
         (nm0sets.p2typs[t01sel.value] || "").t1 || pftyps[t01sel.value] || pftyps.new ));
+      !/^idAuto\(.*\)$/.test(fwg._id.trim()) || (fwg._id = eval(fwg._id));
       !fwg.hasOwnProperty("ts_created") || (fwg.ts_updated = fwg.ts_created = ts0);
       [[fwg.file_created, fwg.file_updated]].forEach(([p0, p1]) => {
         if (!p0) { return; }
@@ -1670,13 +1687,13 @@ let fwg, rva2, rval, vbas, vusr,
     if (evt && evt.target.id !== "t01sel") {
       let ntr,
         tkey = t01sel.value.replace(/-?\d+$/, "") || "mytype";
-      evt.target.localName !== 'select' || ( evt.target.parentElement.nextSibling.firstChild.value
-        = ["", "0", "false", "{ \"key\": \"val\" }", "[ ]",
-          "[\"\"]", "[0]", "[true]", "[ { \"key\": \"val\" } ]",
-          "[ [] ]", "[ \"\", 0, false, {}, [] ]", "null"][evt.target.selectedIndex] );
+      evt.target.localName !== 'select'
+      || ( evt.target.parentElement.nextElementSibling.firstChild.value = [ "", "0", "false",
+          "{ \"key\": \"val\" }", "[ ]", "[\"\"]", "[0]", "[true]", "[ { \"key\": \"val\" } ]",
+          "[ [] ]", "[ \"\", 0, false, {}, [] ]", "null" ][evt.target.selectedIndex] );
       evt.target.parentElement.nextElementSibling
-      || (evt.target.parentElement.previousSibling.firstChild.value = typTest(evt.target.value)[1]);
-      evt.target.parentElement.previousSibling
+      || (evt.target.parentElement.previousElementSibling.firstChild.value = typTest(evt.target.value)[1]);
+      evt.target.parentElement.previousElementSibling
       || evt.target.parentElement.parentElement.nextElementSibling
       || !evt.target.value || !(ntr = document.createElement('tr'))
       || !( ntr.innerHTML = "<td><input type=text /></td><td><select>" + dtOpts()
