@@ -108,7 +108,7 @@ Array.from(Array(5).keys())
 // { let k, k2s, keys = []; for (k in document.documentElement) keys.push(k); respShow(k2s = keys.filter(k => !/^on|^aria/.test(k)).sort()); k2s.length; } //
 // respShow( Object.keys(window).filter( pty => Object.entries(Object.getOwnPropertyDescriptor(window, pty) || "").filter(e => ['value', 'writable', 'enumerable'].includes(e[0]) && e[1]).length === 3 ))
 // respShow(Object.fromEntries(Object.keys(location).map(e => [e, location[e]])))
-// respShow(Object.fromEntries(["appCodeName", "appName", "platform", "product", "vendor"].map(e => [e, navigator[e]])))
+// respShow(Object.fromEntries(["online", "appCodeName", "appName", "platform", "product", "vendor", "userAgent", "userAgentData"].map(e => [e, navigator[e]])))
 // respShow(Object.getOwnPropertyNames(Math))
 // respShow(Object.getOwnPropertyNames(Number.prototype))
 
