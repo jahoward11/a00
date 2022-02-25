@@ -543,7 +543,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </p>
   <div id=olddctrl class=cblock>
     <div class=cfield>
-      <div class="chelp lnht21p"><em>ALERT:</em> This operation cannot be reversed.</div>
+      <div class=fsz10p5><em>ALERT:</em> This operation cannot be reversed.</div>
       <label class=ccntr>Selected DB name</label><span class=ccntr><input type=text id=ddelinp /></span>
     </div>
     <div class=cfield>
@@ -590,14 +590,14 @@ strong, mark, table th, .table, .table thead td, .table thead th,
       <tr><td>DB name:</td><td id=pdbnam></td></tr>
       <tr><td>Notes total:</td><td id=pdbtot></td></tr>
       <tr><td>Update seq#:</td><td id=pdbseq></td></tr>
-      <tr><td>Created on:</td><td id=pdbcrt></td></tr>
+      <tr><td>Created on:</td><td id=pdbcre></td></tr>
       <tr><td>Created by:</td><td id=pdbusr></td></tr>
       <tr><td>Description:</td><td id=pdbdsc></td></tr>
     </tbody>
   </table>
   <div class="cfield lnhtnml">
     &emsp;<label><input type=checkbox id=openswi disabled /> <a>Set as default DB</a></label>
-    <br />&emsp;&emsp; <span class=chelp>(Open this DB directly on next startup.)</span>
+    <br />&emsp;&emsp; <span class=fsz10p5>(Open this DB directly on next startup.)</span>
   </div>
   <h5>"New Note" Type/Template</h5>
   <p class=dnone>
@@ -755,16 +755,16 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </p>
   <div id=wipectrl class=cblock>
     <div class=cfield>
-      <div class="chelp lnht21p"><em>ALERT:</em> This operation cannot be reversed.</div>
-      &emsp;<label class=iwarn><input type=checkbox /> Empty local storage</label>
-      <br />&emsp;<label class=iwarn><input type=checkbox /> Purge all local DBs</label>
+      <div class=fsz10p5><em>ALERT:</em> This operation cannot be reversed.</div>
+      &emsp;<label class=iwarn><input type=checkbox id=slocswi /> Empty local storage</label>
+      <br />&emsp;<label class=iwarn><input type=checkbox id=spdbswi /> Purge all local DBs</label>
     </div>
     <div class=cfield>
       <label class=ccntr>Username or email</label><span class=ccntr><input type=text id=wipeinp /></span>
     </div>
     <div class=cfield>
       <label class=ccntr>
-      </label><span class=ccntr><button class="iwarn hwarnl">
+      </label><span class=ccntr><button id=wipebtn class="iwarn hwarnl">
       WIPE DATA</button></span>
       <div class="chelp isucc dnone">Data wipe is successful.</div>
       <div class="chelp iwarn dnone">Data-wipe attempt failed.</div>
@@ -777,9 +777,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     The "<code>&gt;</code>" symbol in the following text field is a <em>command prompt</em>. The prompt accepts any JavaScript command or expression. When a command or an expression is entered on the <em>command line</em> (i.e., after the prompt) and the field is de-focused (by tapping outside the field), the command or expression is executed by the browser and the final result is then displayed in the next line(s) of the text field.
   </p>
   <button id=jselbtn class="fltrt bsml ilink" data-seltrg=jsctxta>sel</button>
-  <div class=cblock>
-    <textarea id=jsctxta class=textarea rows=31>&gt; </textarea>
-  </div>
+  <textarea id=jsctxta class=textarea rows=31>&gt; </textarea>
 </div>
 </div>
 
@@ -974,14 +972,40 @@ let fwg, rva2, rval, vbas, vusr,
   },
   txtaSel = e => !(e.focus || (e = window.eval(e.target.dataset.seltrg)))
     || e.focus() || e.setSelectionRange(0, e.textLength),
-  typTest = val => [ typeof ( val = fncTry(val, JSON.parse)
-    || (/^\d+$/.test(val.trim()) ? +val : /^false$|^true$/.test(val.trim()) ? eval(val) : val) ), val ],
+  typTest = (val, l2) => [ typeof ( val = typeof val !== 'string' ? val : fncTry(val, JSON.parse)
+      || (/^\d+$/.test(val.trim()) ? +val : /^false$|^true$/.test(val.trim()) ? eval(val) : val) ),
+    !Array.isArray(val) ? typeof val : l2 ? "array" : "arr of "
+      + { string: "str", number: "nbr", boolean: "bln", object: "obj", array: "arr", any: "any" }
+        [val.reduce((a, b) => typTest(b, 1)[1] === a && a, typTest(val[0], 1)[1]) || "any"], val ],
   datVldt = evt => {
     let k = evt.target.id.replace(/^p0/, ""),
       v = evt.target.value;
     evt.target.classList.remove("isucc", "iwarn");
     vtoStr(v) === vtoStr(fwg[k])
-      || evt.target.classList.add(typTest(v)[0] === typeof fwg[k] ? "isucc" : "iwarn")
+      || evt.target.classList.add(typTest(v)[1] === typTest(fwg[k])[1] ? "isucc" : "iwarn")
+  },
+  storDel = () => {
+    if ( !wipeinp.value
+    || wipeinp.value !== nm0sets.uname && wipeinp.value !== nm0sets.uemail ) { return; }
+    let hlps = nmsets.querySelectorAll('.chelp'),
+      dbs = Array.from(opensel.options).map(o => o.value);
+    !slocswi.checked || (uemlinp.value = unaminp.value = una2inp.value = "")
+    || !(nm0sets = {}) || !(nm0cfgs = {}) || hlps[0].classList.remove("dnone")
+    || ["_nm0sets", "_nm0cfgs"].forEach(e => localStorage.removeItem(e))
+    || rsp2Show("ALERT: Close/remove app directly, or local storage might be re-engaged.");
+    !spdbswi.checked || (txd1.DBNAME = "") || !window.PouchDB || Promise.all( dbs.map( dbi =>
+      !dbi || new PouchDB(dbi).destroy() //|| !PouchDB.allDbs
+      .then(resp => rsp2Show("Local DB successfully destroyed: " + dbi))
+      .catch(err => {
+        rsp2Show("ALERT: DB destruction attempted & failed.\n" + vtoStr(err, 2));
+        hlps[0].classList.add("dnone");
+        hlps[1].classList.remove("dnone");
+      }) ))
+    .catch(rsp2Show)
+    .then( () => (opensel.innerHTML = pdbssel.innerHTML = "")
+      || !hlps[1].classList.includes("dnone") || hlps[0].classList.remove("dnone") );
+    //.then(PouchDB.allDbs)
+    //.then(pdbsGen);
   },
   ordFlip = arr => !descswi.checked ? arr.sort() : arr.sort().reverse(),
   aurlGen = isrc => isrc,
@@ -1249,7 +1273,7 @@ let fwg, rva2, rval, vbas, vusr,
         Array.from(nmdata.querySelectorAll('.label')).map(e => e.textContent)
         .forEach( k => /^_id$|^_rev$/.test(k)
           || !/isucc|iwarn/.test(window["p0" + k].className)
-          || !++chgs || (fwg[k] = typTest(window["p0" + k].value)[1]) );
+          || !++chgs || (fwg[k] = typTest(window["p0" + k].value, 1)[2]) );
         !chgs || !txd2.DBNAME || !window.PouchDB || new PouchDB(txd2.DBNAME)
         .put(Object.assign({ _id: "", _rev: "" }, fwg), txd2.OPTIONS).then( trsp =>
           Object.keys(fwg).forEach( k => /^_id$|^_rev$/.test(k)
@@ -1380,7 +1404,7 @@ let fwg, rva2, rval, vbas, vusr,
     .changes(txd1.OPTIONS)
     .then(rslt => {
       let dels = rslt.results.filter(r => r.deleted);
-      ftotal.textContent = dels.length;
+      ftotal.innerText = dels.length;
       [nmthds[0], nmtfts[0]].forEach(e => e.classList.add("dnone"));
       [nmthds[1], nmtfts[1]].forEach(e => e.classList.remove("dnone"));
       nmtbod.innerHTML = qd5Fmt( ss[0] === "seq" ? dels
@@ -1399,7 +1423,7 @@ let fwg, rva2, rval, vbas, vusr,
     ).then(rslt => {
       let calcSum = arr => !arr.length ? 0 : arr.reduce((s, v) => s + v);
       j = 0;
-      ftotal.textContent = vbas !== 2 ? rslt.total_rows
+      ftotal.innerText = vbas !== 2 ? rslt.total_rows
         : rslt.rows.filter( r => (rval = r.doc || r.value).hasOwnProperty("loc_subdir")
             || rval.file_updated || rval.file_created ).length
           + calcSum( rslt.rows.filter(r => (r.doc || r.value)._attachments)
@@ -1437,6 +1461,11 @@ let fwg, rva2, rval, vbas, vusr,
     }).catch(rsp2Show);
   },
   clipsGen = evt => {
+    !evt || evt.target.id !== "descswi" || ( txd1.OPTIONS = {
+      //startkey: descswi.checked ? "~~~" : "",
+      //endkey: descswi.checked ? "" : "~~~",
+      descending: descswi.checked
+    });
     new PouchDB(txd1.DBNAME)
     .query(txd1.FILEID.replace(/^_design\//, "") + "/" + txd1.VIEW, txd1.OPTIONS)
     .catch( () => new PouchDB(txd1.DBNAME).allDocs({
@@ -1454,7 +1483,7 @@ let fwg, rva2, rval, vbas, vusr,
               || !(nb = (rb = b.doc || b.value).name_full || rb.name_user || rb.name || rb._id) ? 0
             : (nsX(na).replace(/[.,;:/]/g, "") < nsX(nb).replace(/[.,;:/]/g, ""))
               == descswi.checked ? 1 : -1 );
-      ftotal.textContent = rrs.length;
+      ftotal.innerText = rrs.length;
       nmdata.innerHTML = "\n<span class=\"fltrt mtup3p5\">&ensp;Show all:&ensp;"
       + "<label><input type=checkbox id=hdrsswi /> <a>headers</a></label>&ensp;"
       + "<label><input type=checkbox id=bodsswi /> <a>bodies</a></label></span>\n<hr />"
@@ -1497,14 +1526,14 @@ let fwg, rva2, rval, vbas, vusr,
     }).catch(rsp2Show);
   },
   tabActv = evt => {
-    tidx === 2 || pdbcfg.querySelectorAll('.ccntr+.chelp, .chelp+.chelp')
+    tidx === 2 || pdbcfg.querySelectorAll('.chelp')
       .forEach(e => e.classList.add("dnone"));
     !evt || evt.currentTarget.localName === 'a' || (evt = null);
     tidx = !evt ? (vidx > 3 ? 0 : vidx) : +evt.currentTarget.parentElement.dataset.tabidx;
     [nmflow, nmdata].some(e => !e.classList.contains('dnone')) || (viewsel.selectedIndex = vidx = tidx);
     pdbssel.selectedIndex > 1 || vidx === 2 || (pdbssel.selectedIndex = 0);
     pdbssel.selectedIndex === 1 || nm0sets.usecfg == use1swi.checked || use1swi.click();
-    !/0|1|3/.test(vidx) || (ftotal.textContent = "_");
+    !/0|1|3/.test(vidx) || (ftotal.innerText = "_");
     tabncs.forEach(anc => anc.parentElement.classList.remove('is-active'));
     (!evt ? tabncs[tidx] : evt.currentTarget).parentElement.classList.add('is-active');
     nmpans.forEach(e => e.classList.add("dnone"));
@@ -1550,7 +1579,7 @@ let fwg, rva2, rval, vbas, vusr,
         Array.from(pfacnt.querySelectorAll('.label')).map(e => e.textContent)
         .forEach( k => /^_id$|^_rev$/.test(k)
           || !/isucc|iwarn/.test(window["p0" + k].className)
-          || !++chgs || (fwg[k] = typTest(window["p0" + k].value)[1]) );
+          || !++chgs || (fwg[k] = typTest(window["p0" + k].value, 1)[2]) );
         !chgs || !p0_id.value || !txd1.DBNAME || !window.PouchDB || new PouchDB(txd1.DBNAME)
         .put(Object.assign({ _id: "", _rev: "" }, fwg), {}).then( trsp =>
           Object.keys(fwg).forEach( k => /^_id$|^_rev$/.test(k)
@@ -1567,13 +1596,13 @@ let fwg, rva2, rval, vbas, vusr,
     [nmflow, nmdata].forEach(e => e.classList.add("dnone"));
     nmtbod.innerHTML = nmdata.innerHTML = "";
     if (!window.PouchDB || !txd1.DBNAME) {
-      ftotal.textContent = "_";
+      ftotal.innerText = "_";
       window.PouchDB || !txd1.DBNAME || rsp2con.textContent
       || rsp2Show("ALERT: PouchDB is not loaded. Database is inaccessible.");
       pdbssel.selectedIndex === 1
       || [nmflow, nmdata].some(e => !e.classList.contains('dnone')) || tabActv();
     } else if (vbas < 2) {
-      !vbas || (rsp2con.textContent = ""); // keep msg from filesChg, fileLoad
+      !vbas || (rsp2con.textContent = ""); // keep msg left by filesChg, fileLoad
       !vbas ? tabActv() : nmdata.classList.remove("dnone") || clipsGen(evt);
     } else if (vbas) {
       rsp2con.textContent = "";
@@ -1618,56 +1647,56 @@ let fwg, rva2, rval, vbas, vusr,
   cfgsUpd = evt => {
     let ts0 = new Date().getTime(),
       db0 = pdb0inp.value.trim(),
-      hlps = pdbcfg.querySelectorAll('.ccntr+.chelp, .chelp+.chelp');
+      hlps = pdbcfg.querySelectorAll('.chelp');
     //["type0", "view0", "tsset", "tsdel", "user0", "descr"]
     hlps.forEach(e => e.classList.add("dnone"));
-    if (evt && evt.target.id !== "pdb0btn" && nm0cfgs[txd1.DBNAME]) {
+    if (evt && /[tv]01sel/.test(evt.target.id) && nm0cfgs[txd1.DBNAME]) {
       evt.target.id !== "t01sel" || (nm0cfgs[txd1.DBNAME].type0 = t01sel.value);
       evt.target.id !== "v01sel" || (nm0cfgs[txd1.DBNAME].view0 = v01sel.value);
-      if (/dbd[01]btn/.test(evt.target.id) && ddelinp.value === txd1.DBNAME && window.PouchDB) {
-        nm0cfgs[txd1.DBNAME].tsdel = ts0;
-        evt.target.id !== "dbd0btn" || new PouchDB(txd1.DBNAME).compact().then( trsp =>
-            hlps[0].classList.remove("dnone") || rsp2Show(trsp) )
-            //|| !vidx || (viewsel.selectedIndex = vidx = 0) || viewChg() )
-          .catch(err => hlps[1].classList.remove("dnone") || rsp2Show(err));
-        evt.target.id !== "dbd1btn" || new PouchDB(txd1.DBNAME).destroy().then(trsp => {
-          let dbs = Array.from(opensel.options).map(o => o.value).filter(e => e && e !== txd1.DBNAME);
-          [pdbssel, opensel].forEach( (e, i) => e.innerHTML
-            = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
-              .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
-          hlps[0].classList.remove("dnone") //todo: will pdbcfg remain?
-          || (pdbssel.selectedIndex = 0) || pdbOpen() || rsp2Show(trsp);
-        }).catch(err => hlps[1].classList.remove("dnone") || rsp2Show(err));
-      }
       localStorage._nm0cfgs = JSON.stringify(nm0cfgs);
-    } else if (!txd1.DBNAME && /[a-z][0-9a-z_]*/.test(db0) && window.PouchDB) {
-      new PouchDB(txd1.DBNAME = db0).info().then(trsp => {
-        let dbs = Array.from(opensel.options).map(o => o.value).filter(e => e).concat("db0").sort();
+    } else if (evt && /dbd[01]btn/.test(evt.target.id) && ddelinp.value === txd1.DBNAME && window.PouchDB) {
+      nm0cfgs[txd1.DBNAME].tsdel = ts0;
+      evt.target.id !== "dbd0btn" || new PouchDB(txd1.DBNAME).compact().then( trsp =>
+          hlps[0].classList.remove("dnone") || rsp2Show(trsp) )
+          //|| !vidx || (viewsel.selectedIndex = vidx = 0) || viewChg() )
+        .catch(err => hlps[1].classList.remove("dnone") || rsp2Show(err));
+      evt.target.id !== "dbd1btn" || new PouchDB(txd1.DBNAME).destroy().then(trsp => {
+        let dbs = Array.from(opensel.options).map(o => o.value).filter(e => e && e !== txd1.DBNAME);
         [pdbssel, opensel].forEach( (e, i) => e.innerHTML
           = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
             .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
-        hlps[2].classList.remove("dnone") || rsp2Show(trsp);
+        hlps[0].classList.remove("dnone") //todo: how will pdbcfg remain visible?
+        || (pdbssel.selectedIndex = 0) || pdbOpen() || rsp2Show(trsp);
+      }).catch(err => hlps[1].classList.remove("dnone") || rsp2Show(err));
+    } else if (evt && !txd1.DBNAME && /[a-z][0-9a-z_]*/.test(db0) && window.PouchDB) {
+      new PouchDB(txd1.DBNAME = db0).info().then(trsp => {
+        let dbs = Array.from(opensel.options).map(o => o.value).filter(e => e).concat("db0").sort();
+        nm0cfgs[db0] = { type0: t01sel.value, view0: v01sel.value || nm0sets.vwdflt || "",
+          tsset: ts0, tsdel: 0, user0: una2inp.value.trim() || nm0sets.uname || nm0sets.uemail || "",
+          descr: pdb1inp.value || db0 + " project data" };
+        localStorage._nm0cfgs = JSON.stringify(nm0cfgs);
+        [pdbssel, opensel].forEach( (e, i) => e.innerHTML
+          = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
+            .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
+        opensel.value = pdbssel.value = db0;
+        hlps[2].classList.remove("dnone");
+        openswi.click();
+        rsp2Show(trsp);
       }).catch(err => hlps[3].classList.remove("dnone") || rsp2Show(err));
-      nm0cfgs[db0] = nm0cfgs[db0] || {};
-      nm0cfgs[db0].type0 = t01sel.value;
-      nm0cfgs[db0].view0 = v01sel.value;
-      nm0cfgs[db0].tsset = ts0;
-      nm0cfgs[db0].tsdel = 0;
-      nm0cfgs[db0].user0 = una2inp.value.trim();
-      nm0cfgs[db0].descr = pdb1inp.value;
-      localStorage._nm0cfgs = JSON.stringify(nm0cfgs);
     }
   },
   t1sChg = evt => {
-    let dtOpts = v => ["string", "number", "boolean", "object",
-        "arr of str", "arr of nbr", "arr of bln", "arr of obj", "arr of any", "other"].map( e =>
-          "\n      <option" + (e !== v ? ">" : " selected>") + e + "</option>" ).join("") + "\n      ";
+    let dtOpts = typ => [ "string", "number", "boolean", "object", "arr of str", "arr of nbr",
+        "arr of bln", "arr of obj", "arr of arr", "arr of any", "other" ].map( e =>
+          "\n      <option" + (e !== typ ? ">" : " selected>") + e + "</option>" ).join("") + "\n      ";
     if (evt && evt.target.id !== "t01sel") {
       let ntr,
         tkey = t01sel.value.replace(/-?\d+$/, "") || "mytype";
       evt.target.localName !== 'select' || ( evt.target.parentElement.nextSibling.firstChild.value
         = ["", "0", "false", "{ \"key\": \"val\" }", "[\"\"]", "[0]", "[true]",
           "[ { \"key\": \"val\" } ]", "[ \"\", 0, false, {}, [] ]", ""][evt.target.selectedIndex] );
+      evt.target.parentElement.nextElementSibling
+      || (evt.target.parentElement.previousSibling.firstChild.value = typTest(evt.target.value)[1]);
       evt.target.parentElement.previousSibling
       || evt.target.parentElement.parentElement.nextElementSibling
       || !evt.target.value || !(ntr = document.createElement('tr'))
@@ -1683,7 +1712,7 @@ let fwg, rva2, rval, vbas, vusr,
         ? pftyps[t01sel.value] || pftyps.new : nm0sets.p2typs[t01sel.value].t1 )
       .concat([["", ""]]).map( ([k, v], i) => k === "_rev" ? ""
         : "\n      <tr><td><input type=text value=\"" + k + "\"" + (i ? "" : " disabled")
-          + " /></td><td><select>" + dtOpts(typeof v)
+          + " /></td><td><select>" + dtOpts(typTest(v)[1])
           + "</select></td><td><input type=text value='"
           + vtoStr(v) + "' /></td></tr>" ).join("") + "\n      ";
     t1tbod.querySelectorAll('input, select').forEach(e => e.onchange = t1sChg);
@@ -1693,7 +1722,7 @@ let fwg, rva2, rval, vbas, vusr,
     let t0s = [ ["", ""], ["srcdoc", "Web source document"],
         ["scrap", "No-frills, plain-text note"], ["event", "Calendaring item or logging record"],
         ["memo", "Short memorandum or text msg"], ["contact", "Person's contact information"] ]
-        .concat(Object.values(nm0sets.p2typs).map(v => v.t0));
+        .concat(Object.values(nm0sets.p2typs).map(to => to.t0));
     t01sel.innerHTML = t0s.map( ([k, v], i) => "\n      <option"
       + (i !== 2 ? ">" : " selected>") + k + "</option>" ).join("") + "\n      ";
     t0tbod.innerHTML = t0s.map( ([k, v], i) => !i ? ""
@@ -1717,23 +1746,23 @@ let fwg, rva2, rval, vbas, vusr,
       + "<input type=checkbox" + (i > 5 ? "" : " disabled")
       + " />&ensp;" + k + (i < 6 ? "" : "</label>")
       + "</td><td>" + v + "</td></tr>" ).join("") + "\n      ";
-    v02sel.innerHTML = v0s.map( ([k, v]) => "\n      <option"
-      + (k !== nm0sets.vwdflt ? ">" : " selected>")
-      + k + "</option>" ).join("") + "\n      ";
+    v02sel.innerHTML = Array.from(viewsel.options).filter((o, i) => i > 3)
+      .map(o => "\n      <option>" + o.value + "</option>").join("") + "\n      ";
+    v02sel.value = nm0sets.vwdflt || "";
   },
   viewApd = (add = viewsel.value) => {
-    let vw2s = Object.values(nm0sets.p2vws).map(v => v.cbxs !== 0 && v.v0[0]).filter(e => e);
+    let vw2s = Object.values(nm0sets.p2vws).map(vo => vo.cbxs !== 0 && vo.v0[0]).filter(e => e);
     if (viewsel.options.length !== 9 + vw2s.length || add !== viewsel.value) {
-      v0sChg();
       viewsel.innerHTML = Array.from(viewsel.options)
         .filter((o, i) => i < 9).map(o => "\n      " + o.outerHTML)
         .concat(vw2s.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      ";
       viewsel.value = add;
+      v0sChg();
     }
     !txd1.DBNAME || viewsel.selectedIndex > 3 || !(viewsel.selectedIndex = vidx = 5) || viewChg();
   },
   setsUpd = evt => {
-    let hlps = pdbcfg.querySelectorAll('.ccntr+.chelp, .chelp+.chelp'),
+    let hlps = pdbcfg.querySelectorAll('.chelp'),
       t0cs = t0tbod.querySelectorAll('[type=checkbox]:checked'),
       v0cs = v0tbod.querySelectorAll('[type=checkbox]:checked'),
       hid = !vbas || ( vbas !== 1
@@ -1742,52 +1771,49 @@ let fwg, rva2, rval, vbas, vusr,
       ps = ["dbdflt", "dbdflt", "vwdflt", "uname", "uemail", "usecfg", "useset"],
       idx = evt && actrls.concat([use1swi, use2swi, t0abtn, t0dbtn, v0abtn, v0dbtn])
         .findIndex(e => e.id === evt.target.id);
-    if (typeof idx === 'number' && idx > -1) {
-      hlps.forEach(e => e.classList.add("dnone"));
-      idx || (opensel.value = !openswi.checked ? "" : txd1.DBNAME);
-      idx < 7 ? ( nm0sets[ps[idx]] = !idx ? opensel.value : idx > 4 ? evt.target.checked
-        : idx !== 2 ? evt.target.value : evt.target.value )
-      : idx < 8 ? ( !t01inp.value ? hlps[5].classList.remove("dnone")
-        : hlps[4].classList.remove("dnone")
-          || ( nm0sets.p2typs[t01inp.value] = { t0: [t01inp.value, t02inp.value],
-            t1: Object.fromEntries( Array.from(t1tbod.querySelectorAll('tr'))
-              .map( tr => tr.children[0].firstChild.value
-                && [ tr.children[0].firstChild.value,
-                  fncTry(tr.children[2].firstChild.value, JSON.parse)
-                  || tr.children[2].firstChild.value ] )
-              .filter(e => e) ) } ) )
-      : idx < 9 ? ( !t0cs.length ? hlps[7].classList.remove("dnone") : hlps[6].classList.remove("dnone")
-        || t0cs.forEach(e => delete nm0sets.p2typs[e.parentElement.innerText.replace(/^\s/, "")]) )
-      : idx < 10 ? ( !vbas || !v01inp.value ? hlps[9].classList.remove("dnone")
-        : hlps[8].classList.remove("dnone") || ( nm0sets.p2vws[v01inp.value]
-          = { v0: ["V" + vbas + "-" + v01inp.value, v02inp.value], base: vbas,
-            cols: Array.from(colssel.options)
-              .map((o, i) => o.selected && i).filter(e => typeof e === 'number'),
-            sort: sortsel.value, desc: descswi.checked, filt: filtinp.value, cbxs: !hid,
-            hdrs: vbas < 2 && hdrsswi.checked, bods: vbas < 2 && bodsswi.checked } ) )
-      : !v0cs.length ? hlps[11].classList.remove("dnone") : hlps[10].classList.remove("dnone")
-        || v0cs.forEach(e => delete nm0sets.p2vws[e.parentElement.innerText.replace(/^\s?V\d-/, "")]);
-      idx !== 7 || !t01inp.value || t0sChg() || !(t01sel.value = t01inp.value)
-      || (t01inp.value = t02inp.value = "") || t1sChg();
-      idx !== 8 || !t0cs.length || t0sChg() || !txd1.DBNAME || t1sChg();
-      idx < 7 || idx > 8 || !txd1.DBNAME || (nm0cfgs[txd1.DBNAME].type0 = t01sel.value)
-      || (localStorage._nm0cfgs = JSON.stringify(nm0cfgs));
-      idx < 9 || (idx < 10 && !v01inp.value) || (idx > 9 && !v0cs.length)
-      || viewApd(idx < 10 && nm0sets.p2vws[v01inp.value].v0[0]);
-      idx !== 9 || !v01inp.value || !(v01sel.value = nm0sets.p2vws[v01inp.value].v0[0])
-      || (v01inp.value = v02inp.value = "");
-      idx < 9 || !txd1.DBNAME || v01sel.selectedIndex > -1 || (v01sel.selectedIndex = 2);
-      idx < 9 || !txd1.DBNAME || !(nm0cfgs[txd1.DBNAME].view0 = v01sel.value)
-      || (localStorage._nm0cfgs = JSON.stringify(nm0cfgs));
-      localStorage._nm0sets = JSON.stringify(nm0sets);
-    }
+    if (typeof idx !== 'number' || idx < 0) { return; }
+    hlps.forEach(e => e.classList.add("dnone"));
+    idx || (opensel.value = !openswi.checked ? "" : txd1.DBNAME);
+    idx < 7 ? ( nm0sets[ps[idx]] = !idx ? opensel.value : idx > 4 ? evt.target.checked
+      : idx !== 2 ? evt.target.value : evt.target.value )
+    : idx < 8 ? ( !t01inp.value ? hlps[5].classList.remove("dnone")
+      : hlps[4].classList.remove("dnone")
+        || ( nm0sets.p2typs[t01inp.value] = { t0: [t01inp.value, t02inp.value],
+          t1: Object.assign( { _id: "", _rev: "" },
+            Object.fromEntries( Array.from(t1tbod.querySelectorAll('tr')).map( tr =>
+              [tr.children[0].firstChild.value, typTest(tr.children[2].firstChild.value, 1)[2]] )
+            .filter(e => e[0]) ) ) }) )
+    : idx < 9 ? ( !t0cs.length ? hlps[7].classList.remove("dnone") : hlps[6].classList.remove("dnone")
+      || t0cs.forEach(e => delete nm0sets.p2typs[e.parentElement.textContent.replace(/^\s/, "")]) )
+    : idx < 10 ? ( !vbas || !v01inp.value ? hlps[9].classList.remove("dnone")
+      : hlps[8].classList.remove("dnone") || ( nm0sets.p2vws[v01inp.value]
+        = { v0: ["V" + vbas + "-" + v01inp.value, v02inp.value], base: vbas,
+          cols: Array.from(colssel.options)
+            .map((o, i) => o.selected && i).filter(e => typeof e === 'number'),
+          sort: sortsel.value, desc: descswi.checked, filt: filtinp.value, cbxs: !hid,
+          hdrs: vbas < 2 && hdrsswi.checked, bods: vbas < 2 && bodsswi.checked } ) )
+    : !v0cs.length ? hlps[11].classList.remove("dnone") : hlps[10].classList.remove("dnone")
+      || v0cs.forEach(e => delete nm0sets.p2vws[e.parentElement.textContent.replace(/^\s?V\d-/, "")]);
+    idx !== 7 || !t01inp.value || t0sChg() || !(t01sel.value = t01inp.value)
+    || (t01inp.value = t02inp.value = "") || t1sChg();
+    idx !== 8 || !t0cs.length || t0sChg() || !txd1.DBNAME || t1sChg();
+    idx < 7 || idx > 8 || !txd1.DBNAME || (nm0cfgs[txd1.DBNAME].type0 = t01sel.value)
+    || (localStorage._nm0cfgs = JSON.stringify(nm0cfgs));
+    idx < 9 || (idx < 10 && !v01inp.value) || (idx > 9 && !v0cs.length)
+    || viewApd(idx < 10 && nm0sets.p2vws[v01inp.value].v0[0]);
+    idx !== 9 || !v01inp.value || !(v01sel.value = nm0sets.p2vws[v01inp.value].v0[0])
+    || (v01inp.value = v02inp.value = "");
+    idx < 9 || !txd1.DBNAME || v01sel.selectedIndex > -1 || (v01sel.selectedIndex = 2);
+    idx < 9 || !txd1.DBNAME || !(nm0cfgs[txd1.DBNAME].view0 = v01sel.value)
+    || (localStorage._nm0cfgs = JSON.stringify(nm0cfgs));
+    localStorage._nm0sets = JSON.stringify(nm0sets);
   },
   pdbOpen = () => {
     let t0v = t01sel.value;
     pfacnt.innerHTML = fwg = null;
     !pdbssel.options[3] || (nmbulk.innerHTML = "");
     pdbnam.innerText = txd1.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value;
-    pdbcrt.innerText = !txd1.DBNAME ? ""
+    pdbcre.innerText = !txd1.DBNAME ? ""
       : new Date((nm0cfgs[txd1.DBNAME] || "").tsset || null).toLocaleString();
     pdbusr.innerText = !txd1.DBNAME ? "" : (nm0cfgs[txd1.DBNAME] || "").user0;
     pdbdsc.innerText = !txd1.DBNAME ? "" : (nm0cfgs[txd1.DBNAME] || "").descr;
@@ -1801,8 +1827,7 @@ let fwg, rva2, rval, vbas, vusr,
     Array.from(viewsel.options).forEach((o, i) => i < 4 || (o.disabled = !txd1.DBNAME));
     openswi.disabled || (openswi.checked = (txd1.DBNAME === nm0sets.dbdflt));
     (t01sel.value = (nm0cfgs[txd1.DBNAME] || "").type0 || "scrap") === t0v || t1sChg();
-    v01sel.value = !txd1.DBNAME ? ""
-      : viewsel.value = (nm0cfgs[txd1.DBNAME] || "").view0 || nm0sets.vwdflt;
+    v01sel.value = !txd1.DBNAME ? "" : viewsel.value = (nm0cfgs[txd1.DBNAME] || "").view0 || "";
     v01sel.selectedIndex > -1 || (v01sel.selectedIndex = viewsel.selectedIndex = 2);
     viewChg();
     pdbssel.selectedIndex !== 1 || !(viewsel.selectedIndex = vidx = 2)
@@ -1816,7 +1841,7 @@ let fwg, rva2, rval, vbas, vusr,
     nm0sets && ["uemail", "uname", "dbdflt", "vwdflt", "usecfg", "useset", "p2typs", "p2vws"]
       .every(pty => nm0sets.hasOwnProperty(pty))
     || ( localStorage._nm0sets = JSON.stringify( nm0sets = Object.assign(
-      { uemail: "", uname: "", dbdflt: "", vwdflt: "V2", usecfg: 0, useset: 0,
+      { uemail: "", uname: "", dbdflt: "", vwdflt: "V2:organized", usecfg: 0, useset: 0,
         p2typs: { mytype2: { t0: ["mytype2", "<em>[mytype2 description &hellip;]</em>"],
             t1: { _id: "", _rev: "", key2: "", key3: "" } }},
         p2vws: { myview2: { v0: ["V1-myview2", "<em>[myview2 description &hellip;]</em>"],
@@ -1833,7 +1858,7 @@ let fwg, rva2, rval, vbas, vusr,
       Object.entries(nm0cfgs).map( oe =>
         //[uemail, uname, tscrtd, tsddel, dbdscr].forEach(e => delete oe[1].e) //temp cleanup
         [ oe[0], Object.assign(
-          { type0: "scrap", view0: nm0sets.vwdflt || "V2", tsset: ts0, tsdel: 0,
+          { type0: "scrap", view0: nm0sets.vwdflt, tsset: ts0, tsdel: 0,
             user0: nm0sets.uname || nm0sets.uemail || "", descr: oe[0] + " project data" },
           oe[1].user0 && oe[1] || {} )] ) )));
     [pdbssel, opensel].forEach( (e, i) => e.innerHTML
@@ -1867,6 +1892,7 @@ v01sel.onchange = cfgsUpd;
   .forEach(p => p.classList[!s.checked ? "add" : "remove"]("dnone")) || setsUpd(evt) );
 [t0abtn, v0abtn, t0dbtn, v0dbtn].forEach(btn => btn.onclick = setsUpd);
 actrls.forEach(elm => elm.onchange = setsUpd);
+wipebtn.onclick = storDel;
 jselbtn.onclick = txtaSel;
 jsctxta.onblur = jscEval;
 !window.PouchDB || !PouchDB.allDbs ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(rsp2Show);
