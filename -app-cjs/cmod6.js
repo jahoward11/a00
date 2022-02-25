@@ -867,10 +867,10 @@ following table lists the API elements that appear within the first
 three tutorials.
 
  __tutorial1		tutorial2	       tutorial3__
- docu….createElement()	.remove()	       localStorage.keys()
- .id			.outerHTML	       localStorage.getItem()
- .value			.onclick	       localStorage.setItem()
- .innerHTML		.checked	       localStorage.removeItem()
+ docu….createElement()	.remove()	       localforage.keys()
+ .id			.outerHTML	       localforage.getItem()
+ .value			.onclick	       localforage.setItem()
+ .innerHTML		.checked	       localforage.removeItem()
  .appendChild()		.classList.add()       .then().catch()
  .onblur		.classList.remove()    .focus()
  .onchange		.classList.toggle()    .setSelectionRange()
