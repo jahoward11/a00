@@ -632,26 +632,6 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     </thead>
     <tbody id=t1tbod></tbody>
   </table>
-  <pre class=dnone>
-   Note-obj-pty KEY | VALUE datatype| VALUE pre-fill
-   _id              | string        | `cidGen()`
-   file_type        | string        | contact
-   ts_created       | number        | `Date()`
-   ts_updated       | number        | `Date()`
-   name_full        | string        |
-   name_user        | string        |
-   birthdate        | string        |
-   roles            | string        |
-   emails           | arr of str    | []
-   phones           | arr of str    | []
-   locations        | arr of obj    | [ { "label": "home", "street": "", ... } ]
-   social_profiles  | arr of str    | []
-   project_urls     | arr of str    | []
-   team_groups      | arr of str    | []
-   image_src        | string        |
-   bio_short        | string        |
-   miscellany       | string        |
-  </pre>
   <div class=cfield>
     <label class=ccntr>Custom type label</label><span class=ccntr><input type=text id=t01inp /></span>
   </div>
@@ -897,7 +877,7 @@ let fwg, rva2, rval, vbas, vusr,
       content: ""
     },
     event: {
-      _id: "idAuto(\"~EVT\", ts0, 0)",
+      _id: "idGen(\"~E\", ts0, un0)",
       _rev: "",
       file_type: "event",
       file_created: {
@@ -922,7 +902,7 @@ let fwg, rva2, rval, vbas, vusr,
       description: "",
     },
     memo: {
-      _id: "idAuto(\"~mem\", ts0, 0)",
+      _id: "idGen(\"~m\", ts0, un0)",
       _rev: "",
       file_type: "memo",
       file_created: {
@@ -939,7 +919,7 @@ let fwg, rva2, rval, vbas, vusr,
       body: ""
     },
     contact: {
-      _id: "idAuto(\"!\", \"team_ID-\", \"contact_user_name\")",
+      _id: "![groupID]-[contactusername]",
       _rev: "",
       file_type: "contact",
       ts_created: 0,
@@ -1019,13 +999,16 @@ let fwg, rva2, rval, vbas, vusr,
       || !hlps[1].classList.includes("dnone") || hlps[0].classList.remove("dnone") );
     //.then(PouchDB.allDbs);
   },
-  ordFlip = arr => !descswi.checked ? arr.sort() : arr.sort().reverse(),
-  aurlGen = isrc => aurls(isrc) || isrc,
-  idAuto = (pfx, ts0, uid = nm0sets.uname) => (pfx || "~pfx") + ( typeof ts0 !== 'number'
-    ? (ts0 || "") : new Date(ts0).toISOString().replace(/\.\w+$|[:-]/g, "") ) + (uid || "-noname000"),
   date0Fmt = nbr => !nbr ? "" : new Date(nbr).toISOString().replace(/T.+$/, ""),
   date1Fmt = str => !str ? ""
     : new Date(str).toUTCString().replace(/.+(\d{2} [a-z]{3} \d{4}).+/i, "$1"),
+  aurlGen = isrc => aurls(isrc) || isrc,
+  idGen = (pfx, tsx, unx) => (/^[a-z~][a-z]$/i.test("" + pfx) ? pfx : "~p")
+    + ( typeof tsx === 'string' && /^[\w:.-]*$/.test(tsx) ? tsx
+      : (!tsx || typeof tsx !== 'number' || tsx < -8e15 || tsx > 8e15 ? new Date() : new Date(tsx))
+        .toISOString().replace(/\.\w+$|[:-]/g, "") )
+    + (typeof unx === 'string' && /^[\w@.-]*$/.test(unx) ? unx : "user000"),
+  ordFlip = arr => !descswi.checked ? arr.sort() : arr.sort().reverse(),
   tr0Gen = (r, i) => `
     <tr${ vbas !== 2 ? "" : " hidden"}>
       <td>${ 1 + i - j } <input type=checkbox class=dnone /></td>
@@ -1289,13 +1272,23 @@ let fwg, rva2, rval, vbas, vusr,
           .forEach(e => e.classList.remove("dnone"))
         || !vidx || (viewsel.selectedIndex = vidx = 0) || viewChg(); //viewBk
       updbtn.onclick = () => {
-        let chgs = 0,
+        let ts0 = new Date().getTime(),
+          chgs = 0,
           hlps = nmdata.querySelectorAll('.chelp');
         hlps.forEach(e => e.classList.add("dnone"));
         Array.from(nmdata.querySelectorAll('.label')).map(e => e.textContent)
         .forEach( k => /^_id$|^_rev$/.test(k)
           || !/isucc|iwarn/.test(window["p0" + k].className)
           || !++chgs || (fwg[k] = typTest(window["p0" + k].value, 1)[2]) );
+        !fwg.hasOwnProperty("ts_updated") || (fwg.ts_updated = ts0);
+        !fwg.hasOwnProperty("file_updated") || [fwg.file_updated].forEach(p1 => {
+          p1.username = nm0sets.uname || nm0sets.uemail || "user000";
+          p1.timestamp = ts0;
+          p1.dborigin = /192\.168\.0|cloudant|localhost/.test(location.origin)
+            ? location.origin : [navigator.userAgent || navigator.userAgentData, location.origin];
+          p1.dbname = txd1.DBNAME;
+          !p1.hasOwnProperty("version") || (p1.version = p1.version.replace(/-?\d+$/, m => ++m));
+        });
         !chgs || !txd2.DBNAME || !window.PouchDB || new PouchDB(txd2.DBNAME)
         .put(Object.assign({ _id: "", _rev: "" }, fwg), txd2.OPTS).then( trsp =>
           Object.keys(fwg).forEach( k => /^_id$|^_rev$/.test(k)
@@ -1535,21 +1528,23 @@ let fwg, rva2, rval, vbas, vusr,
     nmpans[tidx].classList.remove("dnone");
     if (tidx === 1 && !fwg) {
       let ts0 = new Date().getTime(),
+        un0 = nm0sets.uname || "user000",
         taHt = k => /body|content/i.test(k) ? 16 : /misc/i.test(k) ? 8
           : typeof fwg[k] !== 'object' || Array.isArray(fwg[k]) && typeof fwg[k][0] !== 'object' ? 2
           : !Array.isArray(fwg[k]) && Object.keys(fwg[k]).length < 8 ? 8 : 16;
       fwg = JSON.parse( JSON.stringify(
         (nm0sets.p2typs[t01sel.value] || "").t1 || pftyps[t01sel.value] || pftyps.new ));
-      !/^idAuto\(.*\)$/.test(fwg._id.trim()) || (fwg._id = eval(fwg._id));
+      !/^idGen\(.*\)$/.test(fwg._id.trim()) || (fwg._id = eval(fwg._id));
       !fwg.hasOwnProperty("ts_created") || (fwg.ts_updated = fwg.ts_created = ts0);
       [[fwg.file_created, fwg.file_updated]].forEach(([p0, p1]) => {
         if (!p0) { return; }
         p1 = p1 || {};
         p1.username = p0.username = nm0sets.uname || nm0sets.uemail;
         p1.timestamp = p0.timestamp = ts0;
-        p1.dborigin = p0.dborigin = /cloudant|localhost/.test(location.origin) ? location.origin
-          : [location.origin, navigator.userAgent || navigator.userAgentData];
+        p1.dborigin = p0.dborigin = /192\.168\.0|cloudant|localhost/.test(location.origin)
+          ? location.origin : [navigator.userAgent || navigator.userAgentData, location.origin];
         p1.dbname = p0.dbname = txd1.DBNAME;
+        !p0.hasOwnProperty("version") || p0.version || (p1.version = p0.version = "0.1.0");
       });
       pfacnt.innerHTML = "\n<button id=savbtn class=\"fltrt hgainl\">"
       + "<span class=isucc>&#x267a;</span> SAVE</button>"
