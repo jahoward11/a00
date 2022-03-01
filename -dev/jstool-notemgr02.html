@@ -718,6 +718,9 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     &emsp;For convenience, choose a default database, and associated <em>view</em>, that will be directly opened and displayed at each&nbsp;startup.
   </p>
   <p class=dnone>
+    &emsp;To view a lengthy notelist in smaller, more manageable sized chunks, optionally, provide the filename of a custom, CouchDB <em>design</em> doc; Then, create one or more custom <em>view</em>s (using the <em>DB&nbsp;Config</em> control panel), and label each <em>view</em> with the same name as the filtering-algorithm key of a corresponding, pre-written <em>view</em> function within that <em>design</em> doc.
+  </p>
+  <p class=dnone>
     &emsp;Also, optionally, identify yourself by username and/or email, which will be associated with every database that you create. This becomes useful if, for example, your DB data is ever synced to a cloud server and/or consolidated with other users' data; User identities facilitate a team's management of multiple&nbsp;DBs.
   </p>
   <div class=cfield>
@@ -725,6 +728,9 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </div>
   <div class=cfield>
     <span class="ccntr cleft">Default <em>view</em></span><span class=ccntr><select id=v02sel></select></span>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft">Custom filter</span><span class=ccntr><input type=text id=v03inp placeholder="e.g., _design/notesorter2" /></span>
   </div>
   <div class=cfield>
     <span class="ccntr cleft">Username</span><span class=ccntr><input type=text id=unaminp /></span>
@@ -1142,7 +1148,7 @@ let fwg, rva2, rval, vbas, vusr,
   filesChg = evt => {
     if (vbas === 5) { return; }
     let hlps,
-      fmove = evt.target.id === "movebtn",
+      fmove = evt && evt.target.id === "movebtn",
       chks = document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:first-of-type>input:checked'),
       chkaf2 = !fmove ? Array.from(chks)
           .filter(inp => !/^[.-]\w/.test(inp.parentElement.parentElement.children[1].textContent))
@@ -1221,11 +1227,11 @@ let fwg, rva2, rval, vbas, vusr,
     document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:first-of-type>input') //!fmove ||
       .forEach(inp => inp.parentElement.parentElement.className = "");
     chkaf2.forEach(inp => inp.parentElement.parentElement.className = fmove ? "hsuccl" : "hwarnl");
-    !dbq || ( txd2.FILEID === "_all_docs"
-      ? dbq.allDocs(txd2.OPTS).then(rdataTfm).then(blkDspl)
-      : txd2.FILEID === "_changes"
-      ? dbq.changes(txd2.OPTS).then(rdataTfm).then(blkDspl)
-      : dbq.get(txd2.FILEID, txd2.OPTS).then(blkDspl) )
+    !dbq //|| ( txd2.FILEID === "_all_docs" ?
+      || dbq.allDocs(txd2.OPTS).then(rdataTfm).then(blkDspl)
+      //: txd2.FILEID === "_changes"
+      //? dbq.changes(txd2.OPTS).then(rdataTfm).then(blkDspl)
+      //: dbq.get(txd2.FILEID, txd2.OPTS).then(blkDspl) )
     .catch(rsp2Show);
   },
   fileLoad = evt => {
@@ -1665,7 +1671,9 @@ let fwg, rva2, rval, vbas, vusr,
       : +evt.currentTarget.parentElement.dataset.tabidx;
     vidx < 4 || txd1.DBNAME || pdbssel.selectedIndex === 1 || (viewsel.selectedIndex = vidx = 0);
     vbas = viewsel.selectedIndex > 3 && +/\d/.exec(viewsel.value);
-    txd1.VIEW = vbas === 4 ? "files-static" : vbas === 1 ? "files-contact" : "files-idxlist";
+    !v03inp.value || (txd1.FILEID = v03inp.value);
+    txd1.VIEW = vidx > 8 && v03inp.value ? viewsel.value.replace(/^V\d-/, "")
+      : vbas === 4 ? "files-static" : vbas === 1 ? "files-contact" : "files-idxlist";
     if (vidx !== 2) {
       (colssel.innerHTML = !vbas ? "" : copts[vbas !== 5 ? 0 : 1]);
       vidx > 3 || (sortsel.innerHTML = "") || (colssel.selectedIndex = -1);
