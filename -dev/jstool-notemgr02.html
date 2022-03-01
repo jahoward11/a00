@@ -245,12 +245,15 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   border-bottom-color: #485fc7;
   color: #485fc7;
 }
-#nmwrap a:active, #nmwrap button:active { box-shadow: 0 0 0 0.125em rgb(50 152 220 / 25%); }
-#nmwrap button, #nmwrap input:not([type=checkbox]), #nmwrap select {
+#nmwrap a:active, #nmwrap button:active, #nmwrap .btn1:active {
+  box-shadow: 0 0 0 0.125em rgb(50 152 220 / 25%);
+}
+#nmwrap button, #nmwrap .btn1, #nmwrap input:not([type=checkbox]), #nmwrap select {
+//display: inline-block;
   background: #f8f8f8;
   color: Grey;
 //font-size: 14px;
-  line-height: 0;
+  line-height: 24px;
   height: 24px;
   margin: 0;
   padding: 0 8px;
@@ -258,22 +261,26 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   border-radius: 0;
   vertical-align: bottom;
 }
-#nmwrap button, #nmwrap input[type=button], #nmwrap select {
+#nmwrap button, #nmwrap .btn1, #nmwrap input[type=button], #nmwrap select {
   cursor: pointer;
   white-space: nowrap;
 }
-#nmwrap button.opq0 {
+#nmwrap button.opq0, #nmwrap .btn1.opq0 {
   background: transparent;
   max-width: 359px;
-  padding: 0 2px;
+  padding: 0;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 #nmwrap button.bsml {
+  line-height: 8px;
   height: 16px;
   padding: 4px;
 }
-#nmwrap input::placeholder { opacity: 0.5; }
+#nmwrap input::placeholder, #nmwrap input:disabled {
+  color: revert;
+  opacity: 0.5;
+}
 #nmwrap textarea { display: block; font: normal 10.5px monospace; width: 100%; }
 #nmwrap .hwsmok { background-color: Whitesmoke; }
 #nmwrap .hgainl { background-color: #ececec; } /* Gainsboro: #dcdcdc */
@@ -282,23 +289,23 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap .igreyd { color: DarkGrey; }
 #nmwrap .ilink { color: #485fc7; }
 #nmwrap .iwarn { color: Orange; }
-#nmwrap .isucc, #nmwrap .ilink:hover { color: CornFlowerBlue; }
+#nmwrap .isucc, #nmwrap .ilink:hover:not(:disabled) { color: CornFlowerBlue; }
 #nmwrap textarea.iwarn { color: revert; border-color: Orange; }
 #nmwrap textarea.isucc { color: revert; border-color: CornFlowerBlue; }
 #nmwrap .cfield:not(:last-child) { margin-bottom: 8px; }
 #nmwrap .ccntr:not(:last-of-type) { margin-right: 8px; }
-#nmwrap label.ccntr {
+#nmwrap .ccntr.cleft {
   display: inline-block;
-  width: 126px;
-  margin-right: 8px;
   line-height: 24px;
+  width: 126px;
+//margin-right: 8px;
   text-align: right;
   white-space: nowrap;
 }
-#nmwrap label.ccntr+.ccntr>input[type=text],
-#nmwrap label.ccntr+.ccntr>select { width: 216px; }
+#nmwrap .ccntr.cleft+.ccntr>input[type=text],
+#nmwrap .ccntr.cleft+.ccntr>select { width: 216px; }
 #nmwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }
-#nmwrap .chelp { font-size: 10.5px; margin-top: 3.5px; line-height: normal; } /* 12px */
+#nmwrap .chelp { font-size: 10.5px; line-height: normal; margin-top: 3.5px; } /* 12px */
 #nmwrap .fsz10p5 { font-size: 10.5px; }
 #nmwrap .table { line-height: normal; } /* 16.5px */
 #nmwrap .lnht1m { line-height: 1; } /* 10.5px, 14px */
@@ -310,6 +317,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap .mtup3p5 { margin-top: -3.5px; }
 #nmwrap .cblock:not(:last-child) { margin-bottom: 21px; }
 #nmwrap .pwrap { word-wrap: normal; overflow-wrap: normal; white-space: pre-wrap; }
+#nmwrap .diblk, #nmwrap .btn1 { display: inline-block; }
 #nmwrap .dflow { display: flow-root; overflow-x: auto; }
 #nmwrap .dnone { display: none; }
 #nmwrap>#rsp2con {
@@ -322,6 +330,10 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   overflow-x: hidden;
   white-space: pre;
 }
+#nmwrap #imgainp { width: 0; padding: 0; }
+#nmwrap #imgain2 { width: 24px; text-align: center; }
+#nmwrap #imgain3 { font-size: calc(40px / 3); width: 192px; text-align: left; }
+#nmwrap #imgain3>span { color: revert; opacity: 0.5; }
 #vctrls #pdbssel { width: 136px; }
 #vctrls #ftotal { display: inline-block; min-width: 20px; }
 #vctrls #viewsel { width: 24px; }
@@ -548,11 +560,11 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   <div id=olddctrl class=cblock>
     <div class=cfield>
       <div class=fsz10p5><em>ALERT:</em> This operation cannot be reversed.</div>
-      <label class=ccntr>Selected DB name</label><span class=ccntr><input type=text id=ddelinp /></span>
+      <span class="ccntr cleft">Selected DB name</span><span class=ccntr><input type=text id=ddelinp /></span>
     </div>
     <div class=cfield>
-      <label class=ccntr>
-      </label><span class=ccntr><button id=dbd0btn class="isucc hsuccl">
+      <span class="ccntr cleft">
+      </span><span class=ccntr><button id=dbd0btn class="isucc hsuccl">
       COMPACT</button></span><span class=ccntr><button id=dbd1btn class="iwarn hwarnl">
       DESTROY</button></span>
       <div class="chelp isucc dnone">Data destruction is successful.</div>
@@ -568,17 +580,17 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </p>
   <div class=cblock>
     <div class=cfield>
-      <label class=ccntr>Username or email</label><span class=ccntr><input type=text id=una2inp /></span>
+      <span class="ccntr cleft">Username or email</span><span class=ccntr><input type=text id=una2inp /></span>
     </div>
     <div class=cfield>
-      <label class=ccntr>New DB name</label><span class=ccntr><input type=text id=pdb0inp /></span>
+      <span class="ccntr cleft">New DB name</span><span class=ccntr><input type=text id=pdb0inp /></span>
     </div>
     <div class=cfield>
-      <label class=ccntr>DB description</label><span class=ccntr><input type=text id=pdb1inp /></span>
+      <span class="ccntr cleft">DB description</span><span class=ccntr><input type=text id=pdb1inp /></span>
     </div>
     <div class=cfield>
-      <label class=ccntr>
-      </label><span class=ccntr><button id=pdb0btn class="isucc hsuccl">CREATE</button></span>
+      <span class="ccntr cleft">
+      </span><span class=ccntr><button id=pdb0btn class="isucc hsuccl">CREATE</button></span>
       <div class="chelp isucc dnone">DB creation is successful.</div>
       <div class="chelp iwarn dnone">DB creation failed.</div>
     </div>
@@ -623,7 +635,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     or a new creation of your own),&nbsp;here.
   </p>
   <div class=cfield>
-    <label class=ccntr>Default note type</label><span class=ccntr><select id=t01sel></select></span>
+    <span class="ccntr cleft">Default note type</span><span class=ccntr><select id=t01sel></select></span>
   </div>
   <table id=typtbl class="table cfield">
     <thead>
@@ -633,14 +645,14 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     <tbody id=t1tbod></tbody>
   </table>
   <div class=cfield>
-    <label class=ccntr>Custom type label</label><span class=ccntr><input type=text id=t01inp /></span>
+    <span class="ccntr cleft">Custom type label</span><span class=ccntr><input type=text id=t01inp /></span>
   </div>
   <div class=cfield>
-    <label class=ccntr>Type description</label><span class=ccntr><input type=text id=t02inp /></span>
+    <span class="ccntr cleft">Type description</span><span class=ccntr><input type=text id=t02inp /></span>
   </div>
   <div class=cfield>
-    <label class=ccntr>
-    </label><span class=ccntr><button id=t0abtn class=hgainl><span class=isucc>&plus;</span>
+    <span class="ccntr cleft">
+    </span><span class=ccntr><button id=t0abtn class=hgainl><span class=isucc>&plus;</span>
     NEW TYPE</button></span>
     <div class="chelp isucc dnone">Add-type operation is successful.</div>
     <div class="chelp iwarn dnone">Add-type operation failed.</div>
@@ -649,8 +661,8 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     <tbody id=t0tbod></tbody>
   </table>
   <div class=cfield>
-    <label class=ccntr>
-    </label><span class=ccntr><button id=t0dbtn class=hgainl><span class=iwarn>&#x2715;</span>
+    <span class="ccntr cleft">
+    </span><span class=ccntr><button id=t0dbtn class=hgainl><span class=iwarn>&#x2715;</span>
     DEL TYPE</button></span>
     <div class="chelp isucc dnone">Delete-type operation is successful.</div>
     <div class="chelp iwarn dnone">Delete-type operation failed.</div>
@@ -672,17 +684,17 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     the <em>view</em> that will be displayed first each time the database is&nbsp;opened.
   </p>
   <div class="cblock cfield">
-    <label class=ccntr>Default <em>view</em></label><span class=ccntr><select id=v01sel></select></span>
+    <span class="ccntr cleft">Default <em>view</em></span><span class=ccntr><select id=v01sel></select></span>
   </div>
   <div class=cfield>
-    <label class=ccntr>Custom <em>view</em> label</label><span class=ccntr><input type=text id=v01inp /></span>
+    <span class="ccntr cleft">Custom <em>view</em> label</span><span class=ccntr><input type=text id=v01inp /></span>
   </div>
   <div class=cfield>
-    <label class=ccntr><em>View</em> description</label><span class=ccntr><input type=text id=v02inp /></span>
+    <span class="ccntr cleft"><em>View</em> description</span><span class=ccntr><input type=text id=v02inp /></span>
   </div>
   <div class=cfield>
-    <label class=ccntr>
-    </label><span class=ccntr><button id=v0abtn class=hgainl><span class=isucc>&plus;</span>
+    <span class="ccntr cleft">
+    </span><span class=ccntr><button id=v0abtn class=hgainl><span class=isucc>&plus;</span>
     NEW VIEW</button></span>
     <div class="chelp isucc dnone">Add-view operation is successful.</div>
     <div class="chelp iwarn dnone">Add-view operation failed.</div>
@@ -691,8 +703,8 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     <tbody id=v0tbod></tbody>
   </table>
   <div class=cfield>
-    <label class=ccntr>
-    </label><span class=ccntr><button id=v0dbtn class=hgainl><span class=iwarn>&#x2715;</span>
+    <span class="ccntr cleft">
+    </span><span class=ccntr><button id=v0dbtn class=hgainl><span class=iwarn>&#x2715;</span>
     DEL VIEW</button></span>
     <div class="chelp isucc dnone">Delete-view operation is successful.</div>
     <div class="chelp iwarn dnone">Delete-view operation failed.</div>
@@ -709,16 +721,16 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     &emsp;Also, optionally, identify yourself by username and/or email, which will be associated with every database that you create. This becomes useful if, for example, your DB data is ever synced to a cloud server and/or consolidated with other users' data; User identities facilitate a team's management of multiple&nbsp;DBs.
   </p>
   <div class=cfield>
-    <label class=ccntr>Default DB</label><span class=ccntr><select id=opensel></select></span>
+    <span class="ccntr cleft">Default DB</span><span class=ccntr><select id=opensel></select></span>
   </div>
   <div class=cfield>
-    <label class=ccntr>Default <em>view</em></label><span class=ccntr><select id=v02sel></select></span>
+    <span class="ccntr cleft">Default <em>view</em></span><span class=ccntr><select id=v02sel></select></span>
   </div>
   <div class=cfield>
-    <label class=ccntr>Username</label><span class=ccntr><input type=text id=unaminp /></span>
+    <span class="ccntr cleft">Username</span><span class=ccntr><input type=text id=unaminp /></span>
   </div>
   <div class=cfield>
-    <label class=ccntr>User email</label><span class=ccntr><input type=text id=uemlinp /></span>
+    <span class="ccntr cleft">User email</span><span class=ccntr><input type=text id=uemlinp /></span>
   </div>
   <hr />
   <h4>Wipe user data stored on device</h4>
@@ -752,11 +764,11 @@ strong, mark, table th, .table, .table thead td, .table thead th,
       <br />&emsp;<label class=iwarn><input type=checkbox id=spdbswi /> Purge all local DBs</label>
     </div>
     <div class=cfield>
-      <label class=ccntr>Username or email</label><span class=ccntr><input type=text id=wipeinp /></span>
+      <span class="ccntr cleft">Username or email</span><span class=ccntr><input type=text id=wipeinp /></span>
     </div>
     <div class=cfield>
-      <label class=ccntr>
-      </label><span class=ccntr><button id=wipebtn class="iwarn hwarnl">
+      <span class="ccntr cleft">
+      </span><span class=ccntr><button id=wipebtn class="iwarn hwarnl">
       WIPE DATA</button></span>
       <div class="chelp isucc dnone">Data wipe is successful.</div>
       <div class="chelp iwarn dnone">Data-wipe attempt failed.</div>
@@ -951,21 +963,21 @@ let fwg, rva2, rval, vbas, vusr,
   rsp2Show = r => rsp2con.textContent
     += ( !r || typeof r !== 'object' || r instanceof Error && r.constructor && !r.reason
       ? r : JSON.stringify(r, null, 2) ) + "\n\n",
-  fncTry = (a, fnc, e) => { try { return fnc(a) } catch (err) { return e ? err : undefined }},
+  fncTry = (fnc, a, e) => { try { return fnc(a) } catch (err) { return e ? err : undefined }},
   vtoStr = (v, sp) => v == null ? ""
     : v instanceof Error && v.constructor && !v.reason ? v
     : typeof v === 'object' ? JSON.stringify(v, null, sp)
     : typeof v !== 'string' ? "" + v
     : !/^{\s*['"][^]+}$|^\[[^]+\]$/.test(v.trim()) ? v
-    : JSON.stringify(fncTry(v, JSON.parse), null, sp) || v,
+    : JSON.stringify(fncTry(JSON.parse, v), null, sp) || v,
   jscEval = () => {
     let fncexp = jsctxta.value.trim().replace(/(?:[^]*\n|^)>\s*(?=(?:.|\n(?!>))*$)/, ""),
       rsltShow = r => jsctxta.value += "\n" + vtoStr(r, 2) + "\n> ";
-    !fncexp || Promise.resolve(fncTry(fncexp, window.eval, 1)).then(rsltShow).catch(rsltShow);
+    !fncexp || Promise.resolve(fncTry(window.eval, fncexp, 1)).then(rsltShow).catch(rsltShow);
   },
   txtaSel = e => !(e.focus || (e = window.eval(e.target.dataset.seltrg)))
     || e.focus() || e.setSelectionRange(0, e.textLength),
-  typTest = (val, l2) => [ typeof ( val = typeof val !== 'string' ? val : fncTry(val, JSON.parse)
+  typTest = (val, l2) => [ typeof ( val = typeof val !== 'string' ? val : fncTry(JSON.parse, val)
       || (/^\d+$/.test(val.trim()) ? +val : /^(false|null|true)$/.test(val.trim()) ? eval(val) : val) ),
     val === null ? "null obj" : !Array.isArray(val) ? typeof val : l2 || !val.length ? "array"
       : "arr of " + { string:"str", number:"nbr", boolean:"bln", object:"obj", array:"arr", a:"any" }
@@ -1005,8 +1017,7 @@ let fwg, rva2, rval, vbas, vusr,
   aurlGen = isrc => aurls(isrc) || isrc,
   idGen = (pfx, tsx, unx) => (/^[a-z~][a-z]$/i.test("" + pfx) ? pfx : "~p")
     + ( typeof tsx === 'string' && /^[\w:.-]*$/.test(tsx) ? tsx
-      : (!tsx || typeof tsx !== 'number' || tsx < -8e15 || tsx > 8e15 ? new Date() : new Date(tsx))
-        .toISOString().replace(/\.\w+$|[:-]/g, "") )
+      : (fncTry(v => new Date(v), tsx) || new Date()).toISOString().replace(/\.\w+$|[:-]/g, "") )
     + (typeof unx === 'string' && /^[\w@.-]*$/.test(unx) ? unx : "user000"),
   ordFlip = arr => !descswi.checked ? arr.sort() : arr.sort().reverse(),
   tr0Gen = (r, i) => `
@@ -1165,11 +1176,11 @@ let fwg, rva2, rval, vbas, vusr,
       jsonVldt = () => {
         rsp2con.textContent = "";
         hlps.forEach(e => e.classList.add("dnone"));
-        fncTry(qctxta.value, JSON.parse) ? qctxta.classList.remove("iwarn")
+        fncTry(JSON.parse, qctxta.value) ? qctxta.classList.remove("iwarn")
         : qctxta.classList.add("iwarn") || hlps[2].classList.remove("dnone");
       },
       pchPut = () => {
-        let txd3 = fncTry(qctxta.value, JSON.parse);
+        let txd3 = fncTry(JSON.parse, qctxta.value);
         if ( !txd3 || !txd3.DBNAME || !Array.isArray(txd3.docs)
         || !Array.from(opensel.options).map(o => o.value).includes(txd3.DBNAME) ) { return; }
         txd3.OPTS && typeof txd3.OPTS === 'object' || (txd3.OPTS = {});
@@ -1185,15 +1196,15 @@ let fwg, rva2, rval, vbas, vusr,
       },
       blkDspl = qrsp => {
         if (!window.qctxta) {
-          nmbulk.innerHTML = "\n<button id=submbtn class=\"fltrt hgainl\">"
+          nmbulk.innerHTML = "\n  <button id=submbtn class=\"fltrt hgainl\">"
             + "<span class=isucc>&#x27b6;</span> SUBMIT</button>"
-            + "\n<div class=field>\n<h4>DB Bulk Action</h4>"
-            + "\n<div class=\"alnrt chelp isucc dnone\">Data is submitted to local DB.</div>"
-            + "\n<div class=\"alnrt chelp iwarn dnone\">Data-submission attempt failed.</div>\n</div>"
-            + "\n<div class=\"cfield alnrt\">"
+            + "\n  <div class=field>\n<h4>DB Bulk Action</h4>"
+            + "\n  <div class=\"alnrt chelp isucc dnone\">Data is submitted to local DB.</div>"
+            + "\n  <div class=\"alnrt chelp iwarn dnone\">Data-submission attempt failed.</div>\n</div>"
+            + "\n  <div class=\"cfield alnrt\">"
             + "<button id=qselbtn class=\"bsml ilink\" data-seltrg=qctxta>sel</button></div>"
-            + "\n<textarea id=qctxta class=textarea rows=31></textarea>\n"
-            + "\n<div id=qchlp class=\"chelp iwarn dnone\"><strong>ALERT:</strong> Invalid JSON.</div>";
+            + "\n  <textarea id=qctxta class=textarea rows=31></textarea>"
+            + "\n  <div id=qchlp class=\"chelp iwarn dnone\"><strong>ALERT:</strong> Invalid JSON.</div>\n";
           submbtn.onclick = pchPut;
           qselbtn.onclick = txtaSel;
           qctxta.onblur = jsonVldt;
@@ -1248,29 +1259,46 @@ let fwg, rva2, rval, vbas, vusr,
       pfacnt.innerHTML = nmbulk.innerHTML = "";
       [vctrls, nmflow, nmtabs, nmpans[tidx]].forEach(e => e.classList.add("dnone"));
       nmdata.classList.remove("dnone");
-      nmdata.innerHTML = "\n<button id=updbtn class=\"fltrt hgainl\">"
-      + "<span class=isucc>&#x267a;</span> UPDATE</button>\n<div class=field>"
-      + "\n<button id=bckbtn class=hgainl><strong class=ilink>&lang;</strong></button>"
-      + " <button class=opq0 disabled>" + txd2.DBNAME + " &sol;</button>"
-      + ( !(rval = fwg.loc_subdir || (fwg.file_updated || fwg.file_created || "").subdir) ? ""
-        : "<button class=opq0 disabled>" + rval + " &sol;</button>" )
-      + "<button class=opq0 disabled>" + fwg._id + "</button>"
-      + "\n<div class=\"alnrt chelp isucc dnone\">Note is updated in local DB.</div>"
-      + "\n<div class=\"alnrt chelp iwarn dnone\">Note-update attempt failed.</div>\n</div>"
-      + Object.keys(fwg).map(k => /^_id$|^_rev$/.test(k) ? "" : `
-<div class="field is-horizontal">
-  <div class="field-label">
-    <span class=label>${k}</span>
-    <button class="fltrt bsml ilink" data-seltrg=${"p0" + k}>sel</button>
+      nmdata.innerHTML = "" + `
+  <button id=updbtn class="fltrt hgainl"><span class=isucc>&#x267a;</span> UPDATE</button>
+  <div class=field>
+    <button id=bckbtn class="hgainl ilink"><strong>&lang;</strong></button>
+    <span class="btn1 opq0" disabled>${txd2.DBNAME} &sol;</span> ${
+        !(rval = fwg.loc_subdir || (fwg.file_updated || fwg.file_created || "").subdir) ? ""
+        : "<span class=\"btn1 opq0\" disabled>" + rval + " &sol;</span>" }
+    <span class="btn1 opq0" disabled>${fwg._id}</span>
+    <div class="alnrt chelp isucc dnone">Note is updated in local DB.</div>
+    <div class="alnrt chelp iwarn dnone">Note-update attempt failed.</div>
+  </div>` + Object.keys(fwg).map( k => /^_id$|^_rev$/.test(k) ? "" : `
+  <div class="field is-horizontal">
+    <div class="field-label">
+      <span class=label>${k}</span>
+      <button class="fltrt bsml ilink" data-seltrg=${"p0" + k}>sel</button>
+    </div>
+    <div class="field-body">
+      <textarea id=${"p0" + k} class=textarea rows=${taHt(k)}>${
+        str.replace(/&(?=#?\w+;)/g, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;")}</textarea>
+    </div>
+  </div>` ).join("") + `
+  <hr />
+  <div class=cfield>
+    <span class="ccntr cleft">Add attachments</span><span class=ccntr><label>`
+      + `<input id=imgainp type=file multiple />`
+      + `<span id=imgain2 class="btn1 fsz10p5 hgainl ilink">&#x2726;</span>`
+      + `<span id=imgain3 class=btn1><span>Locate image&hellip;</span></span>
+    </label></span>
   </div>
-  <div class="field-body">
-    <textarea id=${"p0" + k} class=textarea rows=${taHt(k)}>${
-      str.replace(/&(?=#?\w+;)/g, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;")}</textarea>
-  </div>
-</div>`).join("") + "\n";
+  <div class=cfield>
+    <span class="ccntr cleft">
+    </span><span class=ccntr>`
+    + `<input type=text id=imganm2 placeholder="Rename as attachment&hellip;" /></span>
+  </div>\n`;
       bckbtn.onclick = () => (fwg = null) || [vctrls, nmtabs, nmpans[tidx]]
           .forEach(e => e.classList.remove("dnone"))
         || !vidx || (viewsel.selectedIndex = vidx = 0) || viewChg(); //viewBk
+      imgainp.onchange = () => imgain3.innerHTML = imgainp.files[1]
+        ? "<em>[" + imgainp.files.length + " files selected]</em>"
+        : imgainp.files[0] ? imgainp.files[0].name : "<span>Locate image&hellip;</span>";
       updbtn.onclick = () => {
         let ts0 = new Date().getTime(),
           chgs = 0,
@@ -1289,6 +1317,11 @@ let fwg, rva2, rval, vbas, vusr,
           p1.dbname = txd1.DBNAME;
           !p1.hasOwnProperty("version") || (p1.version = p1.version.replace(/-?\d+$/, m => ++m));
         });
+        !imgainp.files.length || !++chgs
+        || !(fwk.hasOwnProperty("_attachments") || (fwk._attachments = {}))
+        || imgainp.files.forEach( (f, i) => fwg._attachments[ !imganm2.value ? f.name : !imgainp.files[1]
+            ? imganm2.value : imganm2.value.replace(/(?=\.\w+$|$)/, i > 9 ? i : "0" + i) ]
+          = { content_type: f.type, data: f } );
         !chgs || !txd2.DBNAME || !window.PouchDB || new PouchDB(txd2.DBNAME)
         .put(Object.assign({ _id: "", _rev: "" }, fwg), txd2.OPTS).then( trsp =>
           Object.keys(fwg).forEach( k => /^_id$|^_rev$/.test(k)
@@ -1472,35 +1505,35 @@ let fwg, rva2, rval, vbas, vusr,
             : (nsX(na).replace(/[.,;:/]/g, "") < nsX(nb).replace(/[.,;:/]/g, ""))
               == descswi.checked ? 1 : -1 );
       ftotal.innerText = rrs.length;
-      nmdata.innerHTML = "\n<span class=\"fltrt mtup3p5\">&ensp;Show all:&ensp;"
+      nmdata.innerHTML = "\n  <span class=\"fltrt mtup3p5\">&ensp;Show all:&ensp;"
       + "<label><input type=checkbox id=hdrsswi /> <a>headers</a></label>&ensp;"
-      + "<label><input type=checkbox id=bodsswi /> <a>bodies</a></label></span>\n<hr />"
-      + (rrs.length ? "" : "\n<p class=igreyd>&emsp;<em>[No results found &hellip;]</em></p>")
+      + "<label><input type=checkbox id=bodsswi /> <a>bodies</a></label></span>\n  <hr />"
+      + (rrs.length ? "" : "\n  <p class=igreyd>&emsp;<em>[No results found &hellip;]</em></p>")
       + rrs.map( r => `
-<article class=media>
-  <div class="media-left">
-    <figure class="image rspv128"><img src="${
-      aurlGen((ra = r.doc || r.value).image_src || "") }" data-fileid="${ r.id }" />
-    <figcaption>${ ra.name_user || "" }</figcaption></figure>
-  </div>
-  <div class="media-content">
-    <div class=pwrap><span class=dnone><input type=checkbox /> </span><strong>${
-      nsX(ra.name_full || ra.name_user || ra.name || ra._id) }</strong>
-<em>${ ra.roles.join(", ") }</em>
-<details><summary>Short Bio</summary>${ ra.bio_short }</details></div>
-    <div class=pwrap><details><strong>Birthdate:</strong> ${ date1Fmt(ra.birthdate) }
-<strong>Emails:</strong> ${ ra.emails.join(", ") }
-<strong>Phones:</strong> ${ ra.phones.join(", ") }${
-      !ra.social_profiles.length ? ""
-        : "\n<strong>Social profiles:</strong> " + ra.social_profiles.join(", ") }${
-      !ra.project_urls.length ? ""
-        : "\n<strong>Project urls:</strong> " + ra.project_urls.join(", ") }${
-      !ra.ts_created ? ""
-        : "\n<strong>Joined team:</strong> " + date1Fmt(ra.ts_created) }${
-      !ra.ts_updated ? ""
-        : "\n<strong>Last updated:</strong> " + date1Fmt(ra.ts_updated) }</details></div>
-  </div>
-</article>` ).join("") + "\n";
+  <article class=media>
+    <div class="media-left">
+      <figure class="image rspv128"><img src="${
+        aurlGen((ra = r.doc || r.value).image_src || "") }" data-fileid="${ r.id }" />
+      <figcaption>${ ra.name_user || "" }</figcaption></figure>
+    </div>
+    <div class="media-content">
+      <div class=pwrap><span class=dnone><input type=checkbox /> </span><strong>${
+        nsX(ra.name_full || ra.name_user || ra.name || ra._id) }</strong>
+  <em>${ ra.roles.join(", ") }</em>
+  <details><summary>Short Bio</summary>${ ra.bio_short }</details></div>
+      <div class=pwrap><details><strong>Birthdate:</strong> ${ date1Fmt(ra.birthdate) }
+  <strong>Emails:</strong> ${ ra.emails.join(", ") }
+  <strong>Phones:</strong> ${ ra.phones.join(", ") }${
+        !ra.social_profiles.length ? ""
+          : "\n<strong>Social profiles:</strong> " + ra.social_profiles.join(", ") }${
+        !ra.project_urls.length ? ""
+          : "\n<strong>Project urls:</strong> " + ra.project_urls.join(", ") }${
+        !ra.ts_created ? ""
+          : "\n<strong>Joined team:</strong> " + date1Fmt(ra.ts_created) }${
+        !ra.ts_updated ? ""
+          : "\n<strong>Last updated:</strong> " + date1Fmt(ra.ts_updated) }</details></div>
+    </div>
+  </article>` ).join("") + "\n";
       hdrsswi.onchange = evt => document.querySelectorAll('#nmdata .media-content>:first-child>details')
         .forEach(e => e.open = evt.target.checked);
       bodsswi.onchange = evt => document.querySelectorAll('#nmdata .media-content>:last-child>details')
@@ -1546,23 +1579,40 @@ let fwg, rva2, rval, vbas, vusr,
         p1.dbname = p0.dbname = txd1.DBNAME;
         !p0.hasOwnProperty("version") || p0.version || (p1.version = p0.version = "0.1.0");
       });
-      pfacnt.innerHTML = "\n<button id=savbtn class=\"fltrt hgainl\">"
+      !fwg.hasOwnProperty("from") || (fwg.from = un0);
+      pfacnt.innerHTML = "\n  <button id=savbtn class=\"fltrt hgainl\">"
       + "<span class=isucc>&#x267a;</span> SAVE</button>"
-      + "\n<div class=field>\n<h4>New Note</h4>"
-      + "\n<div class=\"alnrt chelp isucc dnone\">New note is saved in local DB.</div>"
-      + "\n<div class=\"alnrt chelp iwarn dnone\">New-note save attempt failed.</div>\n</div>"
+      + "\n  <div class=field>\n<h4>New Note</h4>"
+      + "\n  <div class=\"alnrt chelp isucc dnone\">New note is saved in local DB.</div>"
+      + "\n  <div class=\"alnrt chelp iwarn dnone\">New-note save attempt failed.</div>\n  </div>"
       + Object.keys(fwg).map(k => /^_rev$/.test(k) ? "" : `
-<div class="field is-horizontal">
-  <div class="field-label">
-    <span class=label>${k}</span>
-    <button class="fltrt bsml ilink" data-seltrg=${"p0" + k}>sel</button>
+  <div class="field is-horizontal">
+    <div class="field-label">
+      <span class=label>${k}</span>
+      <button class="fltrt bsml ilink" data-seltrg=${"p0" + k}>sel</button>
+    </div>
+    <div class="field-body">
+      <textarea id=${"p0" + k} class=textarea rows=${taHt(k)}>${
+        vtoStr(fwg[k], !Array.isArray(fwg[k]) || typeof fwg[k][0] === 'object' ? 2 : null)
+        .replace(/&(?=#?\w+;)/g, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;") }</textarea>
+    </div>
+  </div>`).join("") + `
+  <hr />
+  <div class=cfield>
+    <span class="ccntr cleft">Add attachments</span><span class=ccntr><label>`
+      + `<input id=imgainp type=file multiple />`
+      + `<span id=imgain2 class="btn1 fsz10p5 hgainl ilink">&#x2726;</span>`
+      + `<span id=imgain3 class=btn1><span>Locate image&hellip;</span></span>
+    </label></span>
   </div>
-  <div class="field-body">
-    <textarea id=${"p0" + k} class=textarea rows=${taHt(k)}>${
-      vtoStr(fwg[k], !Array.isArray(fwg[k]) || typeof fwg[k][0] === 'object' ? 2 : null)
-      .replace(/&(?=#?\w+;)/g, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;") }</textarea>
-  </div>
-</div>`).join("") + "\n";
+  <div class=cfield>
+    <span class="ccntr cleft">
+    </span><span class=ccntr>`
+    + `<input type=text id=imganm2 placeholder="Rename as attachment&hellip;" /></span>
+  </div>\n`;
+      imgainp.onchange = () => imgain3.innerHTML = imgainp.files[1]
+        ? "<em>[" + imgainp.files.length + " files selected]</em>"
+        : imgainp.files[0] ? imgainp.files[0].name : "<span>Locate image&hellip;</span>";
       savbtn.onclick = () => {
         let chgs = 0,
           hlps = pfacnt.querySelectorAll('.chelp');
@@ -1571,6 +1621,11 @@ let fwg, rva2, rval, vbas, vusr,
         .forEach( k => /^_id$|^_rev$/.test(k)
           || !/isucc|iwarn/.test(window["p0" + k].className)
           || !++chgs || (fwg[k] = typTest(window["p0" + k].value, 1)[2]) );
+        !imgainp.files.length || !++chgs
+        || !(fwk.hasOwnProperty("_attachments") || (fwk._attachments = {}))
+        || imgainp.files.forEach( (f, i) => fwg._attachments[ !imganm2.value ? f.name : !imgainp.files[1]
+            ? imganm2.value : imganm2.value.replace(/(?=\.\w+$|$)/, i > 9 ? i : "0" + i) ]
+          = { content_type: f.type, data: f } );
         !chgs || !p0_id.value || !txd1.DBNAME || !window.PouchDB || new PouchDB(txd1.DBNAME)
         .put(Object.assign({ _id: "", _rev: "" }, fwg), {}).then( trsp =>
           Object.keys(fwg).forEach( k => /^_id$|^_rev$/.test(k)
@@ -1828,7 +1883,7 @@ let fwg, rva2, rval, vbas, vusr,
   pdbsGen = (dbs = []) => {
     let ts0 = new Date().getTime();
     !/^{['"].+}$/.test(localStorage._nm0sets || "")
-    || (nm0sets = fncTry(localStorage._nm0sets, JSON.parse) || {});
+    || (nm0sets = fncTry(JSON.parse, localStorage._nm0sets) || {});
     nm0sets && ["uemail", "uname", "dbdflt", "vwdflt", "usecfg", "useset", "p2typs", "p2vws"]
       .every(pty => nm0sets.hasOwnProperty(pty))
     || ( localStorage._nm0sets = JSON.stringify( nm0sets = Object.assign(
@@ -1841,7 +1896,7 @@ let fwg, rva2, rval, vbas, vusr,
     !nm0sets.u2typs || delete nm0sets.u2typs; //temp cleanup
     !nm0sets.u2vws || delete nm0sets.u2vws; //temp cleanup
     !/^{['"].+}$/.test(localStorage._nm0cfgs || "")
-    || (nm0cfgs = fncTry(localStorage._nm0cfgs, JSON.parse) || {});
+    || (nm0cfgs = fncTry(JSON.parse, localStorage._nm0cfgs) || {});
     nm0cfgs && !dbs.forEach(e => nm0cfgs[e] || (nm0cfgs[e] = {}))
     && ["type0", "view0", "tsset", "tsdel", "user0", "descr"]
       .every(pty => Object.values(nm0cfgs).every(val => val.hasOwnProperty(pty)))
