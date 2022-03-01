@@ -427,7 +427,8 @@ strong, mark, table th, .table, .table thead td, .table thead th,
       <span id=filtctrl class=ccntr>
       <input type=text id=filtinp placeholder="Search pattern&hellip;" /><button id=filtbtn class=hgainl title="Notelist filter">
       FILT</button></span><span id=bulkctrl class="ccntr dnone"><span class=cfield>
-      <span class=ccntr><input type=text id=moveinp placeholder="New subdir&hellip;" /><button id=movebtn class="isucc hsuccl" title="Note subdirectory reassignment">
+      <span class=ccntr><input type=text id=moveinp placeholder="New subdir&hellip;" /><button id=editbtn class="isucc hsuccl dnone" title="Note bulk edit">
+      EDIT</button><button id=movebtn class="isucc hsuccl" title="Note subdirectory reassignment">
       MOV</button></span><span class=ccntr><button id=delbtn class="iwarn hwarnl" title="Note delete">
       DEL</button></span></span></span><span class=ccntr><a id=blktrig title="Checkboxes toggle">&#x2611;</a></span>
     </div>
@@ -718,7 +719,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     &emsp;For convenience, choose a default database, and associated <em>view</em>, that will be directly opened and displayed at each&nbsp;startup.
   </p>
   <p class=dnone>
-    &emsp;To view a lengthy notelist in smaller, more manageable sized chunks, optionally, provide the filename of a custom, CouchDB <em>design</em> doc; Then, create one or more custom <em>view</em>s (using the <em>DB&nbsp;Config</em> control panel), and label each <em>view</em> with the same name as the filtering-algorithm key of a corresponding, pre-written <em>view</em> function within that <em>design</em> doc.
+    &emsp;To cut a lengthy notelist into smaller, more manageable sized chunks, optionally, provide the filename of a custom, <em>CouchDB design doc</em>; Then, (using the <em>DB&nbsp;Config</em> control panel) create one or more custom <em>view</em>s, and label each <em>view</em> with the same name as the filtering-algorithm <em>view</em> key of a corresponding, pre-written <em>map/reduce</em> function within that <em>design&nbsp;doc</em>.
   </p>
   <p class=dnone>
     &emsp;Also, optionally, identify yourself by username and/or email, which will be associated with every database that you create. This becomes useful if, for example, your DB data is ever synced to a cloud server and/or consolidated with other users' data; User identities facilitate a team's management of multiple&nbsp;DBs.
@@ -730,7 +731,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     <span class="ccntr cleft">Default <em>view</em></span><span class=ccntr><select id=v02sel></select></span>
   </div>
   <div class=cfield>
-    <span class="ccntr cleft">Custom filter</span><span class=ccntr><input type=text id=v03inp placeholder="e.g., _design/notesorter2" /></span>
+    <span class="ccntr cleft"><em>Design doc</em></span><span class=ccntr><input type=text id=v03inp placeholder="e.g., _design/notesorter2" /></span>
   </div>
   <div class=cfield>
     <span class="ccntr cleft">Username</span><span class=ccntr><input type=text id=unaminp /></span>
@@ -856,7 +857,7 @@ let fwg, rva2, rval, vbas, vusr,
   nmtfts = document.querySelectorAll('#nmtbl tfoot'),
   tabncs = document.querySelectorAll('#nmtabs li>a'),
   nmpans = [nmbulk, pfadd1, pdbcfg, nmsets],
-  actrls = [openswi, opensel, v02sel, unaminp, uemlinp],
+  actrls = [openswi, opensel, v02sel, v03inp, unaminp, uemlinp],
   pftyps = {
     new: {
       _id: "",
@@ -1148,7 +1149,8 @@ let fwg, rva2, rval, vbas, vusr,
   filesChg = evt => {
     if (vbas === 5) { return; }
     let hlps,
-      fmove = evt && evt.target.id === "movebtn",
+      fedit = evt && /editbtn|movebtn/.test(evt.target.id),
+      fmove = evt && /movebtn/.test(evt.target.id),
       chks = document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:first-of-type>input:checked'),
       chkaf2 = !fmove ? Array.from(chks)
           .filter(inp => !/^[.-]\w/.test(inp.parentElement.parentElement.children[1].textContent))
@@ -1160,14 +1162,14 @@ let fwg, rva2, rval, vbas, vusr,
         FILEID: "_all_docs",
         OPTS:   {
           keys: chkaf2.map(inp => inp.parentElement.parentElement.children[2].textContent),
-          include_docs: fmove
+          include_docs: fedit
         }
       },
       row1Tfm = r1 => {
         !fmove || !r1 || !r1.doc || ( r1.doc.hasOwnProperty("loc_subdir")
           ? (r1.doc.loc_subdir = moveinp.value)
           : (r1.doc.file_updated || r1.doc.file_created || {}).subdir = moveinp.value );
-        return fmove ? Object.assign({ _id: "", _rev: null }, (r1 || "").doc)
+        return fedit ? Object.assign({ _id: "", _rev: null }, (r1 || "").doc)
         : {
             _id:  r1.key || r1.id,
             _rev: r1.value && r1.value.rev || r1.changes && r1.changes[0].rev,
@@ -1224,9 +1226,9 @@ let fwg, rva2, rval, vbas, vusr,
       },
       dbq = txd2.DBNAME && window.PouchDB && new PouchDB(txd2.DBNAME);
     rsp2con.textContent = "";
-    document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:first-of-type>input') //!fmove ||
+    document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:first-of-type>input')
       .forEach(inp => inp.parentElement.parentElement.className = "");
-    chkaf2.forEach(inp => inp.parentElement.parentElement.className = fmove ? "hsuccl" : "hwarnl");
+    chkaf2.forEach(inp => inp.parentElement.parentElement.className = fedit ? "hsuccl" : "hwarnl");
     !dbq //|| ( txd2.FILEID === "_all_docs" ?
       || dbq.allDocs(txd2.OPTS).then(rdataTfm).then(blkDspl)
       //: txd2.FILEID === "_changes"
@@ -1671,7 +1673,7 @@ let fwg, rva2, rval, vbas, vusr,
       : +evt.currentTarget.parentElement.dataset.tabidx;
     vidx < 4 || txd1.DBNAME || pdbssel.selectedIndex === 1 || (viewsel.selectedIndex = vidx = 0);
     vbas = viewsel.selectedIndex > 3 && +/\d/.exec(viewsel.value);
-    !v03inp.value || (txd1.FILEID = v03inp.value);
+    !nm0sets.ddoc || (txd1.FILEID = nm0sets.ddoc);
     txd1.VIEW = vidx > 8 && v03inp.value ? viewsel.value.replace(/^V\d-/, "")
       : vbas === 4 ? "files-static" : vbas === 1 ? "files-contact" : "files-idxlist";
     if (vidx !== 2) {
@@ -1822,24 +1824,24 @@ let fwg, rva2, rval, vbas, vusr,
       hid = !vbas || ( vbas !== 1
         ? document.querySelector('#nmtbl thead:not(.dnone) td:first-of-type>input.dnone')
         : document.querySelector('#nmdata .media-content>.pwrap>span.dnone') ),
-      ps = ["dbdflt", "dbdflt", "vwdflt", "uname", "uemail", "usecfg", "useset"],
+      ps = ["dbdflt", "dbdflt", "vwdflt", "ddoc", "uname", "uemail", "usecfg", "useset"],
       idx = evt && actrls.concat([use1swi, use2swi, t0abtn, t0dbtn, v0abtn, v0dbtn])
         .findIndex(e => e.id === evt.target.id);
     if (typeof idx !== 'number' || idx < 0) { return; }
     hlps.forEach(e => e.classList.add("dnone"));
     idx || (opensel.value = !openswi.checked ? "" : txd1.DBNAME);
-    idx < 7 ? ( nm0sets[ps[idx]]
-      = !idx ? opensel.value : idx > 4 ? evt.target.checked : evt.target.value )
-    : idx < 8 ? ( !t01inp.value ? hlps[5].classList.remove("dnone")
+    idx < 8 ? ( nm0sets[ps[idx]]
+      = !idx ? opensel.value : idx > 5 ? evt.target.checked : evt.target.value )
+    : idx < 9 ? ( !t01inp.value ? hlps[5].classList.remove("dnone")
       : hlps[4].classList.remove("dnone")
         || ( nm0sets.p2typs[t01inp.value] = { t0: [t01inp.value, t02inp.value],
           t1: Object.assign( { _id: "", _rev: "" },
             Object.fromEntries( Array.from(t1tbod.querySelectorAll('tr')).map( tr =>
               [tr.children[0].firstChild.value, typTest(tr.children[2].firstChild.value, 1)[2]] )
             .filter(e => e[0]) ) ) }) )
-    : idx < 9 ? ( !t0cs.length ? hlps[7].classList.remove("dnone") : hlps[6].classList.remove("dnone")
+    : idx < 10 ? ( !t0cs.length ? hlps[7].classList.remove("dnone") : hlps[6].classList.remove("dnone")
       || t0cs.forEach(e => delete nm0sets.p2typs[e.parentElement.textContent.replace(/^\s/, "")]) )
-    : idx < 10 ? ( !vbas || !v01inp.value ? hlps[9].classList.remove("dnone")
+    : idx < 11 ? ( !vbas || !v01inp.value ? hlps[9].classList.remove("dnone")
       : hlps[8].classList.remove("dnone") || ( nm0sets.p2vws[v01inp.value]
         = { v0: ["V" + vbas + "-" + v01inp.value, v02inp.value], base: vbas,
           cols: Array.from(colssel.options)
@@ -1848,17 +1850,17 @@ let fwg, rva2, rval, vbas, vusr,
           hdrs: vbas < 2 && hdrsswi.checked, bods: vbas < 2 && bodsswi.checked } ) )
     : !v0cs.length ? hlps[11].classList.remove("dnone") : hlps[10].classList.remove("dnone")
       || v0cs.forEach(e => delete nm0sets.p2vws[e.parentElement.textContent.replace(/^\s?V\d-/, "")]);
-    idx !== 7 || !t01inp.value || t0sChg() || !(t01sel.value = t01inp.value)
+    idx !== 8 || !t01inp.value || t0sChg() || !(t01sel.value = t01inp.value)
     || (t01inp.value = t02inp.value = "") || t1sChg();
-    idx !== 8 || !t0cs.length || t0sChg() || !txd1.DBNAME || t1sChg();
-    idx < 7 || idx > 8 || !txd1.DBNAME || (nm0cfgs[txd1.DBNAME].type0 = t01sel.value)
+    idx !== 9 || !t0cs.length || t0sChg() || !txd1.DBNAME || t1sChg();
+    idx < 8 || idx > 9 || !txd1.DBNAME || (nm0cfgs[txd1.DBNAME].type0 = t01sel.value)
     || (localStorage._nm0cfgs = JSON.stringify(nm0cfgs));
-    idx < 9 || (idx < 10 && !v01inp.value) || (idx > 9 && !v0cs.length)
-    || viewApd(idx < 10 && nm0sets.p2vws[v01inp.value].v0[0]);
-    idx !== 9 || !v01inp.value || !(v01sel.value = nm0sets.p2vws[v01inp.value].v0[0])
+    idx < 10 || (idx < 11 && !v01inp.value) || (idx > 10 && !v0cs.length)
+    || viewApd(idx < 11 && nm0sets.p2vws[v01inp.value].v0[0]);
+    idx !== 10 || !v01inp.value || !(v01sel.value = nm0sets.p2vws[v01inp.value].v0[0])
     || (v01inp.value = v02inp.value = "");
-    idx < 9 || !txd1.DBNAME || v01sel.selectedIndex > -1 || (v01sel.selectedIndex = 2);
-    idx < 9 || !txd1.DBNAME || !(nm0cfgs[txd1.DBNAME].view0 = v01sel.value)
+    idx < 10 || !txd1.DBNAME || v01sel.selectedIndex > -1 || (v01sel.selectedIndex = 2);
+    idx < 10 || !txd1.DBNAME || !(nm0cfgs[txd1.DBNAME].view0 = v01sel.value)
     || (localStorage._nm0cfgs = JSON.stringify(nm0cfgs));
     localStorage._nm0sets = JSON.stringify(nm0sets);
   },
@@ -1892,10 +1894,11 @@ let fwg, rva2, rval, vbas, vusr,
     let ts0 = new Date().getTime();
     !/^{['"].+}$/.test(localStorage._nm0sets || "")
     || (nm0sets = fncTry(JSON.parse, localStorage._nm0sets) || {});
-    nm0sets && ["uemail", "uname", "dbdflt", "vwdflt", "usecfg", "useset", "p2typs", "p2vws"]
-      .every(pty => nm0sets.hasOwnProperty(pty))
+    nm0sets && [ "uemail", "uname", "dbdflt", "vwdflt", "ddoc", "bedit",
+      "usecfg", "useset", "p2typs", "p2vws" ].every(pty => nm0sets.hasOwnProperty(pty))
     || ( localStorage._nm0sets = JSON.stringify( nm0sets = Object.assign(
-      { uemail: "", uname: "", dbdflt: "", vwdflt: "V2:organized", usecfg: 0, useset: 0,
+      { uemail: "", uname: "", dbdflt: "", vwdflt: "V2:organized",
+        ddoc: "", bedit: 0, usecfg: 0, useset: 0,
         p2typs: { mytype2: { t0: ["mytype2", "<em>[mytype2 description &hellip;]</em>"],
             t1: { _id: "", _rev: "", key2: "", key3: "" } }},
         p2vws: { myview2: { v0: ["V1-myview2", "<em>[myview2 description &hellip;]</em>"],
@@ -1918,6 +1921,8 @@ let fwg, rva2, rval, vbas, vusr,
     [pdbssel, opensel].forEach( (e, i) => e.innerHTML
       = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
         .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
+    !nm0sets.bedit || movebtn.classList.add("dnone") || editbtn.classList.remove("dnone");
+    v03inp.value = nm0sets.ddoc;
     una2inp.value = nm0sets.uname || nm0sets.uemail;
     unaminp.value = nm0sets.uname;
     uemlinp.value = nm0sets.uemail;
@@ -1935,7 +1940,8 @@ sortsel.onchange = viewRte;
 descswi.onchange = viewRte;
 filtbtn.onclick = filtExe;
 blktrig.onclick = bulkTog;
-document.querySelectorAll('#vctrls #movebtn, #vctrls #delbtn').forEach(btn => btn.onclick = filesChg);
+document.querySelectorAll('#vctrls #editbtn, #vctrls #movebtn, #vctrls #delbtn')
+.forEach(btn => btn.onclick = filesChg);
 document.querySelectorAll(qslrs[2]).forEach(anc => anc.onclick = sdirXpd);
 document.querySelectorAll('#nmtbl td:first-of-type>input').forEach(inp => inp.onchange = chksTog);
 tabncs.forEach(anc => anc.onclick = viewChg);
