@@ -1,0 +1,1959 @@
+<!DOCTYPE html>
+<html lang=en>
+<title>Note Manager</title>
+<meta charset="utf-8" />
+<meta name=viewport content="width=device-width, initial-scale=1" />
+
+<div id=nmwrap>
+<style>
+*, *::before, *::after { box-sizing: inherit; }
+html {
+  box-sizing: border-box;
+  color: DimGrey;
+  min-width: 375px;
+  overflow-wrap: break-word;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+hr {
+  display: block;
+  background-color: Gainsboro;
+  height: 2px;
+  margin: 1.5em 0;
+  border: none;
+}
+figure, .figure {
+  margin: 1em 0;
+  padding: 0 1em;
+}
+p, dl, ol, ul, li, button, input, select, textarea, pre { margin: 0; }
+p:not(:last-child), dl:not(:last-child), ol:not(:last-child), ul:not(:last-child),
+blockquote:not(:last-child), pre:not(:last-child), table:not(:last-child) { margin-bottom: 1em; }
+input[type=checkbox], input[type=radio] { margin: 0; vertical-align: baseline; }
+strong, mark, table th, .table, .table thead td, .table thead th,
+.table tfoot td, .table tfoot th { color: inherit; }
+.image {
+  display: block;
+  position: relative;
+}
+.image img {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+.table {
+  background-color: white;
+//color: #363636;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.table td, .table th {
+  border: 1px solid #dbdbdb;
+  border-width: 0 0 1px;
+  padding: 0.5em 0.75em;
+  vertical-align: top;
+}
+.table th { //color: #363636; }
+.table th:not([align]) { text-align: inherit; }
+.table thead { background-color: transparent; }
+.table thead td, .table thead th {
+  border-width: 0 0 2px;
+//color: #363636;
+}
+.table tfoot { background-color: transparent; }
+.table tfoot td, .table tfoot th {
+  border-width: 2px 0 0;
+//color: #363636;
+}
+.table tbody { background-color: transparent; }
+.table tbody tr:last-child td,
+.table tbody tr:last-child th { border-bottom-width: 0; }
+.textarea {
+  background-color: white;
+  border-color: #dbdbdb;
+  border-radius: 4px;
+//color: #363636;
+  display: block;
+  max-width: 100%;
+  min-width: 100%;
+  padding: calc(0.75em - 1px);
+  resize: vertical;
+}
+.textarea:not([rows]) {
+  max-height: 40em;
+  min-height: 8em;
+}
+.textarea[rows] { height: initial; }
+.checkbox, .radio {
+  cursor: pointer;
+  display: inline-block;
+  line-height: 1.25;
+  position: relative;
+}
+.label {
+//color: #363636;
+  display: block;
+//font-size: 14px; /* 1rem */
+  font-weight: 700;
+}
+.label:not(:last-child) { margin-bottom: 0.5em; }
+.field:not(:last-child) { margin-bottom: 10.5px; /* 0.75rem */ }
+.field-label .label { font-size: inherit; }
+.field-body .field .field { margin-bottom: 0; }
+@media screen and (max-width: 719px) {
+  .field-label { margin-bottom: 7px; /* 0.5rem */ }
+}
+@media screen and (min-width: 720px), print {
+  .field.is-horizontal { display: flex; }
+  .field-label {
+    flex-basis: 0;
+    flex-grow: 1;
+    flex-shrink: 0;
+    margin-right: 21px; /* 1.5rem */
+    text-align: right;
+  }
+  .field-body {
+    display: flex;
+    flex-basis: 0;
+    flex-grow: 5;
+    flex-shrink: 1;
+  }
+  .field-body .field { margin-bottom: 0; }
+  .field-body > .field { flex-shrink: 1; }
+  .field-body > .field:not(.is-narrow) { flex-grow: 1; }
+  .field-body > .field:not(:last-child) { margin-right: 10.5px; /* 0.75rem */ }
+}
+.level {
+  align-items: center;
+  justify-content: space-between;
+}
+@media screen and (min-width: 720px), print {
+  .level { display: flex; }
+  .level > .level-item:not(.is-narrow) { flex-grow: 1; }
+}
+.level-item {
+  align-items: center;
+  display: flex;
+  flex-basis: auto;
+  flex-grow: 0;
+  flex-shrink: 0;
+  justify-content: center;
+}
+@media screen and (max-width: 719px) {
+  .level-item:not(:last-child) { margin-bottom: 8px; } /* not Bulma */
+  .level-item > .level { display: flex; }
+}
+.media {
+  align-items: flex-start;
+  display: flex;
+  text-align: inherit;
+}
+.media + .media {
+  border-top: 1px solid rgba(219, 219, 219, 0.5);
+  margin-top: 14px; /* 1rem */
+  padding-top: 14px; /* 1rem */
+}
+.media-left, .media-right {
+  flex-basis: auto;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+.media-left { margin-right: 14px; /* 1rem */ }
+.media-right { margin-left: 14px; /* 1rem */ }
+.media-content {
+  flex-basis: auto;
+  flex-grow: 1;
+  flex-shrink: 1;
+  text-align: inherit;
+}
+@media screen and (max-width: 719px) {
+  .media-content { overflow-x: auto; }
+}
+.tabs>ul, .tabs li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tabs {
+  -webkit-overflow-scrolling: touch;
+  align-items: stretch;
+  display: flex;
+//font-size: 1rem;
+  justify-content: space-between;
+  overflow: hidden;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.tabs a {
+  align-items: center;
+  border-bottom-color: #dbdbdb;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+//color: #4a4a4a;
+  display: flex;
+  justify-content: center;
+  margin-bottom: -1px;
+  padding: 0.5em 1em;
+  vertical-align: top;
+}
+.tabs a:hover {
+  border-bottom-color: #363636;
+  color: #363636;
+}
+.tabs li { display: block; }
+.tabs li.is-active a {
+  border-bottom-color: #485fc7;
+  color: #485fc7;
+}
+.tabs ul {
+  align-items: center;
+  border-bottom-color: #dbdbdb;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  display: flex;
+  flex-grow: 1;
+  flex-shrink: 0;
+  justify-content: flex-start;
+}
+.tabs .icon:first-child { margin-right: 0.5em; }
+.tabs .icon:last-child { margin-left: 0.5em; }
+.tabs.is-centered ul { justify-content: center; }
+#nmwrap {
+  font: normal 14px/1.5 BlinkMacSystemFont, -apple-system, Helvetica, Arial, sans-serif;
+  max-width: 960px;
+  margin: 24px auto 96px;
+}
+#nmwrap h4, #nmwrap h5 { margin-bottom: 0; }
+#nmwrap h4:not(last-child), #nmwrap h5:not(last-child) { margin-bottom: 7px; }
+#nmwrap h4+h5 { margin-top: 14px; }
+#nmwrap a {
+  color: #485fc7;
+  cursor: pointer;
+  text-decoration: none;
+}
+#nmwrap a:hover { color: CornFlowerBlue; }
+#nmwrap .tabs a { color: DarkGrey; }
+#nmwrap .tabs a:hover {
+  border-bottom-color: #363636;
+  color: #363636;
+}
+#nmwrap .tabs li.is-active a {
+  border-bottom-color: #485fc7;
+  color: #485fc7;
+}
+#nmwrap a:active, #nmwrap button:active, #nmwrap .btn1:active {
+  box-shadow: 0 0 0 0.125em rgb(50 152 220 / 25%);
+}
+#nmwrap button, #nmwrap .btn1, #nmwrap input:not([type=checkbox]), #nmwrap select {
+//display: inline-block;
+  background: #f8f8f8;
+  color: Grey;
+//font-size: 14px;
+  line-height: 24px;
+  height: 24px;
+  margin: 0;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 0;
+  vertical-align: bottom;
+}
+#nmwrap button, #nmwrap .btn1, #nmwrap input[type=button], #nmwrap select {
+  cursor: pointer;
+  white-space: nowrap;
+}
+#nmwrap button.opq0, #nmwrap .btn1.opq0 {
+  background: transparent;
+  max-width: 359px;
+  padding: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#nmwrap button.bsml {
+  line-height: 8px;
+  height: 16px;
+  padding: 4px;
+}
+#nmwrap input::placeholder, #nmwrap input:disabled {
+  color: revert;
+  opacity: 0.5;
+}
+#nmwrap textarea { display: block; font: normal 10.5px monospace; width: 100%; }
+#nmwrap .hwsmok { background-color: Whitesmoke; }
+#nmwrap .hgainl { background-color: #ececec; } /* Gainsboro: #dcdcdc */
+#nmwrap .hwarnl { background-color: #fff6e6; }
+#nmwrap .hsuccl { background-color: #e8effc; }
+#nmwrap .igreyd { color: DarkGrey; }
+#nmwrap .ilink { color: #485fc7; }
+#nmwrap .iwarn { color: Orange; }
+#nmwrap .isucc, #nmwrap .ilink:hover:not(:disabled) { color: CornFlowerBlue; }
+#nmwrap textarea.iwarn { color: revert; border-color: Orange; }
+#nmwrap textarea.isucc { color: revert; border-color: CornFlowerBlue; }
+#nmwrap .cfield:not(:last-child) { margin-bottom: 8px; }
+#nmwrap .ccntr:not(:last-of-type) { margin-right: 8px; }
+#nmwrap .ccntr.cleft {
+  display: inline-block;
+  line-height: 24px;
+  width: 126px;
+//margin-right: 8px;
+  text-align: right;
+  white-space: nowrap;
+}
+#nmwrap .ccntr.cleft+.ccntr>input[type=text],
+#nmwrap .ccntr.cleft+.ccntr>select { width: 216px; }
+#nmwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }
+#nmwrap .chelp { font-size: 10.5px; line-height: normal; margin-top: 3.5px; } /* 12px */
+#nmwrap .fsz10p5 { font-size: 10.5px; }
+#nmwrap .table { line-height: normal; } /* 16.5px */
+#nmwrap .lnht1m { line-height: 1; } /* 10.5px, 14px */
+#nmwrap .lnhtnml { line-height: normal; } /* 12px, 16.5px */
+#nmwrap .lnht21p { line-height: 21px; }
+#nmwrap .lnht24p { line-height: 24px; }
+#nmwrap .fltrt { float: right; }
+#nmwrap .alnrt { text-align: right; }
+#nmwrap .mtup3p5 { margin-top: -3.5px; }
+#nmwrap .cblock:not(:last-child) { margin-bottom: 21px; }
+#nmwrap .pwrap { word-wrap: normal; overflow-wrap: normal; white-space: pre-wrap; }
+#nmwrap .diblk, #nmwrap .btn1 { display: inline-block; }
+#nmwrap .dflow { display: flow-root; overflow-x: auto; }
+#nmwrap .dnone { display: none; }
+#nmwrap>#rsp2con {
+  color: Orange;
+  font: normal medium/1.25 monospace;
+//margin: 0;
+  padding: 0;
+  word-wrap: normal;
+  overflow-wrap: normal;
+  overflow-x: hidden;
+  white-space: pre;
+}
+#nmwrap #imgainp { width: 0; padding: 0; }
+#nmwrap #imgain2 { width: 24px; text-align: center; }
+#nmwrap #imgain3 { font-size: calc(40px / 3); width: 192px; text-align: left; }
+#nmwrap #imgain3>span { color: revert; opacity: 0.5; }
+#vctrls #pdbssel { width: 136px; }
+#vctrls #ftotal { display: inline-block; min-width: 20px; }
+#vctrls #viewsel { width: 24px; }
+#vctrls #colssel, #vctrls #sortsel { width: 100px; }
+#vctrls #descswi { margin-right: 2px; }
+#vctrls #filtinp { width: 168px; }
+#vctrls #moveinp { width: 114px; }
+#nmtbl thead, #nmtbl tfoot { font-weight: bold; }
+#nmtbl td:first-of-type { white-space: nowrap; }
+#nmtbl td:nth-of-type(1), #nmtbl td:nth-of-type(2) { text-align: right; }
+#nmtbl td[colspan="20"] {
+  background: Whitesmoke;
+  text-align: left;
+}
+#nmdata .media-left>.image.rspv128 {
+  width: 128px;
+  height: unset;
+  margin: 0 1em 0 2em;
+}
+#nmdata .media-left>.image img {
+  background-color: LightSteelBlue;
+  min-height: 128px;
+  cursor: pointer;
+}
+#nmdata .media-left>.image>figcaption { font-style: italic; text-align: center; }
+#nmdata .field-label>.label:not(:last-child),
+#pfacnt .field-label>.label:not(:last-child) { margin-bottom: 0; }
+#nmtabs li:first-child>a { letter-spacing: -3px; }
+#nmbulk #qselbtn { margin-right: 8px; }
+#pdbcfg .table {
+  min-width: calc(219px + 35vw); /* 219/375px=58vw, 350/375px=93vw */
+  margin-left: 8px;
+}
+#pdbcfg #pdbtbl td:nth-of-type(1),
+#pdbcfg #t0tbod td:nth-of-type(1),
+#pdbcfg #v0tbod td:nth-of-type(1) {
+  width: 100px;
+  max-width: 165px;
+  overflow-x: clip;
+  white-space: nowrap;
+}
+#pdbcfg #typtbl td { padding: 5px 2.5px; }
+#pdbcfg #typtbl td:nth-of-type(1)>input { width: 120px; } /* 120/375px=32vw */
+#pdbcfg #typtbl td:nth-of-type(2)>select { width: 84px; padding: 0 4px; } /* 84/375px=22vw */
+#pdbcfg #typtbl td:nth-of-type(3)>input { width: 35vw; } /* 131/375px=35vw */
+#nmsets #jselbtn { margin: -23px 8px 0 0; }
+@media screen and (max-width: 575px) {
+  #nmdata .media-left>.image.rspv128 { width: 48px; margin: 0; }
+  #nmdata .media-left>.image.rspv128 img { min-height: 48px; }
+  #nmdata .media-left>.image>figcaption { float: right; font-size: x-small; }
+}
+@media screen and (max-width: 719px) {
+  #nmdata .media-left>.media-left>.image { margin: 0; }
+  #nmdata .field-label>button.bsml, #pfacnt .field-label>button.bsml { margin: -16px 8px 0 0; }
+}
+@media screen and (min-width: 720px) and (max-width: 767px), print {
+  #vctrls #pdbssel { width: 120px; }
+  #vctrls #colssel, #vctrls #sortsel { width: 90px; }
+  #vctrls #filtinp { width: 150px; }
+  #vctrls #moveinp { width: 96px; }
+}
+</style>
+<h4 class=cfield>Note Manager</h4>
+<pre id=rsp2con></pre>
+<nav id=vctrls class="level cblock">
+  <div class="level-item">
+    <div class="level cfield">
+      <span class=ccntr><select id=pdbssel title="DB-open select list">
+      </select></span><span class=ccntr><select id=viewsel title="Notelist-view select list">
+        <option></option>
+        <option>&plus; New Note</option>
+        <option>&check;&thinsp;DB Config</option>
+        <option>&#x2732; Settings</option>
+        <option disabled>V1:noteclips</option>
+        <option disabled>V2:organized</option>
+        <option disabled>V3:mutables</option>
+        <option disabled>V4:statics</option>
+        <option disabled>V5:deleted</option>
+      </select></span><span class=ccntr>Total: <span id=ftotal>_</span></span>
+    </div>
+  </div>
+  <div class="level-item">
+    <div class="level cfield">
+      <span class=ccntr><select id=colssel multiple size=1 title="Show/hide-columns select list">
+      </select></span><span class=ccntr><select id=sortsel title="Sort-column select list">
+      </select></span><span class=ccntr><label title="Notelist sort order"><input type=checkbox id=descswi /><a>Z-A</a></label></span>
+    </div>
+  </div>
+  <div class="level-item">
+    <div class="level cfield">
+      <span id=filtctrl class=ccntr>
+      <input type=text id=filtinp placeholder="Search pattern&hellip;" /><button id=filtbtn class=hgainl title="Notelist filter">
+      FILT</button></span><span id=bulkctrl class="ccntr dnone"><span class=cfield>
+      <span class=ccntr><input type=text id=moveinp placeholder="New subdir&hellip;" /><button id=editbtn class="isucc hsuccl dnone" title="Note bulk edit">
+      EDIT</button><button id=movebtn class="isucc hsuccl" title="Note subdirectory reassignment">
+      MOV</button></span><span class=ccntr><button id=delbtn class="iwarn hwarnl" title="Note delete">
+      DEL</button></span></span></span><span class=ccntr><a id=blktrig title="Checkboxes toggle">&#x2611;</a></span>
+    </div>
+  </div>
+</nav>
+<div id=nmflow class="dflow cblock dnone">
+<table id=nmtbl class=table>
+  <thead>
+    <tr>
+      <td>
+        <span>#</span><a class=dnone>&#x25b6;</a>
+        <input type=checkbox class=dnone />
+      </td>
+      <td>Subdir</td>
+      <td>Note ID</td>
+      <td>Type</td>
+      <td>Updated</td>
+      <td>Up'd By</td>
+      <td>Up'd Ver</td>
+      <td>Up'd Misc</td>
+      <td>Created</td>
+      <td>Cr'd By</td>
+      <td>Cr'd Ver</td>
+      <td>Cr'd Misc</td>
+      <td>People</td>
+      <td>Username</td>
+      <td>Image</td>
+      <td>Link Ref</td>
+      <td>From</td>
+      <td>To</td>
+      <td>Subject</td>
+      <td>Headline</td>
+      <td>Time</td>
+      <td>Place</td>
+      <td>Attach's</td>
+    </tr>
+  </thead>
+  <thead class=dnone>
+    <tr>
+      <td># <input type=checkbox class=dnone /></td>
+      <td>Chg Seq</td>
+      <td>Note ID</td>
+      <td>Revision#</td>
+    </tr>
+  </thead>
+  <tbody></tbody>
+  <tfoot>
+    <tr>
+      <td>
+        <span>#</span><a class=dnone>&#x25b6;</a>
+        <input type=checkbox class=dnone />
+      </td>
+      <td>Subdir</td>
+      <td>Note ID</td>
+      <td>Type</td>
+      <td>Updated</td>
+      <td>Up'd By</td>
+      <td>Up'd Ver</td>
+      <td>Up'd Misc</td>
+      <td>Created</td>
+      <td>Cr'd By</td>
+      <td>Cr'd Ver</td>
+      <td>Cr'd Misc</td>
+      <td>People</td>
+      <td>Username</td>
+      <td>Image</td>
+      <td>Link Ref</td>
+      <td>From</td>
+      <td>To</td>
+      <td>Subject</td>
+      <td>Headline</td>
+      <td>Time</td>
+      <td>Place</td>
+      <td>Attach's</td>
+    </tr>
+  </tfoot>
+  <tfoot class=dnone>
+    <tr>
+      <td># <input type=checkbox class=dnone /></td>
+      <td>Chg Seq</td>
+      <td>Note ID</td>
+      <td>Revision#</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+<div id=nmdata class="cblock dnone"></div>
+<nav id=nmtabs class="tabs cblock">
+  <ul>
+    <li data-tabidx=0 class="is-active">
+      <a>&blk14;&blk14;</a>
+    </li>
+    <li data-tabidx=1>
+      <a><span class=icon>&plus;</span><span>New Note</span></a>
+    </li>
+    <li data-tabidx=2>
+      <a><span class=icon>&check;</span><span>DB Config</span></a>
+    </li>
+    <li data-tabidx=3>
+      <a><span class=icon>&#x2732;</span><span>Settings</span></a>
+    </li>
+  </ul>
+</nav>
+<div id=nmbulk class=cblock>
+  <h4>Just getting started?</h4>
+  <p>
+    &emsp;Add a new <em>database</em> ( <span class=hwsmok>&plus; New DB</span> )
+    using the 1<sup>st</sup> select list of the control panel&nbsp;above.
+  </p>
+</div>
+<div id=pfadd1 class="cblock dnone">
+  <div id=pfahlp>
+    <h4>New Note</h4>
+    <p>
+      &emsp;<em>Use Tip:</em> You must first create/open a database before you can add a new&nbsp;<em>note</em>.
+    </p>
+  </div>
+  <div id=pfacnt class=dnone></div>
+</div>
+<div id=pdbcfg class="cblock dnone">
+  <label class="fltrt mtup3p5 fsz10p5 lnht1m ilink"><input type=checkbox id=use1swi />
+  Show<br />use guides</label>
+  <h4>Database Setup &plus; Configuration</h4>
+  <h5>Old Data Destruction</h5>
+  <p class=dnone>
+    &emsp;To <em>destroy</em> an existing database&mdash;or to <em>compact</em> it
+    (i.e., remove all versions of each <em>note</em> but the last one)&mdash;enter
+    the same name as the currently selected database and tap the appropriate button,&nbsp;here.
+  </p>
+  <div id=olddctrl class=cblock>
+    <div class=cfield>
+      <div class=fsz10p5><em>ALERT:</em> This operation cannot be reversed.</div>
+      <span class="ccntr cleft">Selected DB name</span><span class=ccntr><input type=text id=ddelinp /></span>
+    </div>
+    <div class=cfield>
+      <span class="ccntr cleft">
+      </span><span class=ccntr><button id=dbd0btn class="isucc hsuccl">
+      COMPACT</button></span><span class=ccntr><button id=dbd1btn class="iwarn hwarnl">
+      DESTROY</button></span>
+      <div class="chelp isucc dnone">Data destruction is successful.</div>
+      <div class="chelp iwarn dnone">Data destruction failed.</div>
+    </div>
+  </div>
+  <h5>New Database Creation</h5>
+  <p class=dnone>
+    &emsp;To <em>create</em> a new local database, enter your username or email,
+    a new DB name and a short description of its intended purpose;
+    (And, optionally, set your own DB configurations, below;)
+    Then, tap the associated button,&nbsp;here.
+  </p>
+  <div class=cblock>
+    <div class=cfield>
+      <span class="ccntr cleft">Username or email</span><span class=ccntr><input type=text id=una2inp /></span>
+    </div>
+    <div class=cfield>
+      <span class="ccntr cleft">New DB name</span><span class=ccntr><input type=text id=pdb0inp /></span>
+    </div>
+    <div class=cfield>
+      <span class="ccntr cleft">DB description</span><span class=ccntr><input type=text id=pdb1inp /></span>
+    </div>
+    <div class=cfield>
+      <span class="ccntr cleft">
+      </span><span class=ccntr><button id=pdb0btn class="isucc hsuccl">CREATE</button></span>
+      <div class="chelp isucc dnone">DB creation is successful.</div>
+      <div class="chelp iwarn dnone">DB creation failed.</div>
+    </div>
+  </div>
+  <hr />
+  <h4>About the Selected, Local DB</h4>
+  <p class=dnone>
+    &emsp;You can switch to any previously created, local database by using
+    the 1<sup>st</sup> select list of the top control&nbsp;panel.
+  </p>
+  <table id=pdbtbl class="table cfield">
+    <tbody>
+      <tr><td>DB name:</td><td id=pdbnam></td></tr>
+      <tr><td>Notes total:</td><td id=pdbtot></td></tr>
+      <tr><td>Update seq#:</td><td id=pdbseq></td></tr>
+      <tr><td>Created on:</td><td id=pdbcre></td></tr>
+      <tr><td>Created by:</td><td id=pdbusr></td></tr>
+      <tr><td>Description:</td><td id=pdbdsc></td></tr>
+    </tbody>
+  </table>
+  <div class="cfield lnhtnml">
+    &emsp;<label><input type=checkbox id=openswi disabled /> <a>Set as default DB</a></label>
+    <br />&emsp;&emsp; <span class=fsz10p5>(Open this DB directly on next startup.)</span>
+  </div>
+  <h5>"New Note" Type/Template</h5>
+  <p class=dnone>
+    &emsp;You can add a new <em>note</em> ( <span class=hwsmok>&plus; New Note</span> ) to the database by using the 2<sup>nd</sup> select list of the top control panel (or, by activating the corresponding tab beneath the notelist&nbsp;<em>view</em>).
+  </p>
+  <p class=dnone>
+    &emsp;Be aware that a database <em>note</em>
+    (a.k.a., <em>file</em> or <em>document</em> or <em>entry</em>) is actually
+    a stored JavaScript object (with arbitrary <em>keys</em> and&nbsp;<em>values</em>).
+  </p>
+  <p class=dnone>
+    &emsp;As such, the database is more manageable when all of its <em>notes</em>
+    share a common structure (i.e., have the same set of object-property&nbsp;<em>keys</em>).
+  </p>
+  <p class=dnone>
+    &emsp;Therefore, to keep a new database manageable, decide in advance
+    what its function is by committing to one object structure as the default template for
+    every new <em>note</em>&mdash;and selecting it (either a preset <em>note</em> type
+    or a new creation of your own),&nbsp;here.
+  </p>
+  <div class=cfield>
+    <span class="ccntr cleft">Default note type</span><span class=ccntr><select id=t01sel></select></span>
+  </div>
+  <table id=typtbl class="table cfield">
+    <thead>
+      <tr><th>Note-object-<br />property KEY</th>
+      <th>VALUE<br />datatype</th><th>VALUE<br />pre-fill</th></tr>
+    </thead>
+    <tbody id=t1tbod></tbody>
+  </table>
+  <div class=cfield>
+    <span class="ccntr cleft">Custom type label</span><span class=ccntr><input type=text id=t01inp /></span>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft">Type description</span><span class=ccntr><input type=text id=t02inp /></span>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft">
+    </span><span class=ccntr><button id=t0abtn class=hgainl><span class=isucc>&plus;</span>
+    NEW TYPE</button></span>
+    <div class="chelp isucc dnone">Add-type operation is successful.</div>
+    <div class="chelp iwarn dnone">Add-type operation failed.</div>
+  </div>
+  <table class="table cfield">
+    <tbody id=t0tbod></tbody>
+  </table>
+  <div class=cfield>
+    <span class="ccntr cleft">
+    </span><span class=ccntr><button id=t0dbtn class=hgainl><span class=iwarn>&#x2715;</span>
+    DEL TYPE</button></span>
+    <div class="chelp isucc dnone">Delete-type operation is successful.</div>
+    <div class="chelp iwarn dnone">Delete-type operation failed.</div>
+  </div>
+  <h5>Notelist Views</h5>
+  <p class=dnone>
+    &emsp;You can switch to any notelist <em>view</em> by using the 2<sup>nd</sup> select list of the top control&nbsp;panel.
+  </p>
+  <p class=dnone>
+    &emsp;Five different <em>views</em> are available (<span class=hwsmok>V1</span>&ndash;<span class=hwsmok>V5</span>).
+  </p>
+  <p class=dnone>
+    &emsp;Customize and preserve any one or more of the five <em>views</em> by selecting one and
+    adjusting the subsequent view controls, above&mdash;then, returning directly back here to add
+    the resulting new <em>view</em>,&nbsp;below.
+  </p>
+  <p class=dnone>
+    &emsp;Also, select one (either a preset or one of your own) as the default <em>view</em>&mdash;i.e.,
+    the <em>view</em> that will be displayed first each time the database is&nbsp;opened.
+  </p>
+  <div class="cblock cfield">
+    <span class="ccntr cleft">Default <em>view</em></span><span class=ccntr><select id=v01sel></select></span>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft">Custom <em>view</em> label</span><span class=ccntr><input type=text id=v01inp /></span>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft"><em>View</em> description</span><span class=ccntr><input type=text id=v02inp /></span>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft">
+    </span><span class=ccntr><button id=v0abtn class=hgainl><span class=isucc>&plus;</span>
+    NEW VIEW</button></span>
+    <div class="chelp isucc dnone">Add-view operation is successful.</div>
+    <div class="chelp iwarn dnone">Add-view operation failed.</div>
+  </div>
+  <table class="table cfield">
+    <tbody id=v0tbod></tbody>
+  </table>
+  <div class=cfield>
+    <span class="ccntr cleft">
+    </span><span class=ccntr><button id=v0dbtn class=hgainl><span class=iwarn>&#x2715;</span>
+    DEL VIEW</button></span>
+    <div class="chelp isucc dnone">Delete-view operation is successful.</div>
+    <div class="chelp iwarn dnone">Delete-view operation failed.</div>
+  </div>
+</div>
+<div id=nmsets class="cblock dnone">
+  <label class="fltrt mtup3p5 fsz10p5 lnht1m ilink"><input type=checkbox id=use2swi />
+  Show<br />use guides</label>
+  <h4><em>Note Mgr</em> App Settings</h4>
+  <p class=dnone>
+    &emsp;For convenience, choose a default database, and associated <em>view</em>, that will be directly opened and displayed at each&nbsp;startup.
+  </p>
+  <p class=dnone>
+    &emsp;To cut a lengthy notelist into smaller, more manageable sized chunks, optionally, provide the filename of a custom, <em>CouchDB design doc</em>; Then, (using the <em>DB&nbsp;Config</em> control panel) create one or more custom <em>view</em>s, and label each <em>view</em> with the same name as the filtering-algorithm <em>view</em> key of a corresponding, pre-written <em>map/reduce</em> function within that <em>design&nbsp;doc</em>.
+  </p>
+  <p class=dnone>
+    &emsp;Also, optionally, identify yourself by username and/or email, which will be associated with every database that you create. This becomes useful if, for example, your DB data is ever synced to a cloud server and/or consolidated with other users' data; User identities facilitate a team's management of multiple&nbsp;DBs.
+  </p>
+  <div class=cfield>
+    <span class="ccntr cleft">Default DB</span><span class=ccntr><select id=opensel></select></span>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft">Default <em>view</em></span><span class=ccntr><select id=v02sel></select></span>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft"><em>Design doc</em></span><span class=ccntr><input type=text id=v03inp placeholder="e.g., _design/notesorter2" /></span>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft">Username</span><span class=ccntr><input type=text id=unaminp /></span>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft">User email</span><span class=ccntr><input type=text id=uemlinp /></span>
+  </div>
+  <hr />
+  <h4>Wipe user data stored on device</h4>
+  <p class=dnone>
+    &emsp;App settings and DB configurations are stored in the browser's <em>Local&nbsp;Storage</em>.
+  </p>
+  <p class=dnone>
+    &emsp;Each database's collection of <em>notes</em> is stored in the browser's <em>IndexedDB&nbsp;Storage</em>.
+  </p>
+  <p class=dnone>
+    &emsp;Be aware that these data stores are not secure; They may be viewed by any prying person who is allowed access to the device, even without the use of the <em>Note&nbsp;Mgr</em>&nbsp;app.
+  </p>
+  <p class=dnone>
+    &emsp;To completely destroy either one or both stores of user data, select the appropriate checkbox(es), enter the same username or email as above and tap the associated button,&nbsp;here.
+  </p>
+  <p class=dnone>
+    &emsp;<em>Use Tip:</em> To destroy just one DB without affecting any other DB, use the <em>DB&nbsp;Config</em> control panel&nbsp;instead.
+  </p>
+  <p class=dnone>
+    &emsp;<em>Pro Tip:</em> To view the available lists of <em>IndexedDB&nbsp;Storage</em> and <em>Local&nbsp;Storage</em> keys (or a key-specified value) before/after wiping data from the device, enter each of the following commands into the <em>Browser Command UI</em>,&nbsp;below.
+    <br />&emsp;&bull; <code class="fsz10p5 hwsmok">PouchDB.allDbs()</code> (<em>Note&nbsp;Mgr</em>&nbsp;DB&nbsp;names)
+    <br />&emsp;&bull; <code class="fsz10p5 hwsmok">indexedDB.databases()</code> (all&nbsp;DB&nbsp;names)
+    <br />&emsp;&bull; <code class="fsz10p5 hwsmok">{ let k, keys = []; for (k in localStorage) keys.push(k); keys; }</code> (all&nbsp;<em>Local&nbsp;Storage</em>&nbsp;keys)
+    <br />&emsp;&bull; <code class="fsz10p5 hwsmok">localStorage._nm0sets</code> (<em>Note&nbsp;Mgr</em>&nbsp;app&nbsp;settings)
+    <br />&emsp;&bull; <code class="fsz10p5 hwsmok">localStorage._nm0cfgs</code>&emsp;(<em>Note&nbsp;Mgr</em>&nbsp;DB&nbsp;configs)
+  </p>
+  <div id=wipectrl class=cblock>
+    <div class=cfield>
+      <div class=fsz10p5><em>ALERT:</em> This operation cannot be reversed.</div>
+      &emsp;<label class=iwarn><input type=checkbox id=slocswi /> Empty local storage</label>
+      <br />&emsp;<label class=iwarn><input type=checkbox id=spdbswi /> Purge all local DBs</label>
+    </div>
+    <div class=cfield>
+      <span class="ccntr cleft">Username or email</span><span class=ccntr><input type=text id=wipeinp /></span>
+    </div>
+    <div class=cfield>
+      <span class="ccntr cleft">
+      </span><span class=ccntr><button id=wipebtn class="iwarn hwarnl">
+      WIPE DATA</button></span>
+      <div class="chelp isucc dnone">Data wipe is successful.</div>
+      <div class="chelp iwarn dnone">Data-wipe attempt failed.</div>
+    </div>
+  </div>
+  <hr />
+  <h4>Browser Command UI</h4>
+  <p class=dnone>
+    &emsp;<em>How it works:</em>
+    The "<code>&gt;</code>" symbol in the following text field is a <em>command prompt</em>. The prompt accepts any JavaScript command or expression. When a command or an expression is entered on the <em>command line</em> (i.e., after the prompt) and the field is de-focused (by tapping outside the field), the command or expression is executed by the browser and the final result is then displayed in the next line(s) of the text&nbsp;field.
+  </p>
+  <button id=jselbtn class="fltrt bsml ilink" data-seltrg=jsctxta>sel</button>
+  <textarea id=jsctxta class=textarea rows=31>&gt; </textarea>
+</div>
+</div>
+
+<script src="../../a00/-res-js/pouchdb.min.js" type="text/javascript"></script>
+<script src="../../a00/-res-js/pouchdb.all-dbs.min.js" type="text/javascript"></script>
+<script type=module>
+let fwg, rva2, rval, vbas, vusr,
+  j = 0,  tidx = 0, vidx = 0,
+  aurls = {},
+  nm0cfgs = {},
+  nm0sets = {},
+  txd1 = {
+    DBNAME: "",
+    FILEID: "_design/ecosorter",
+    VIEW:   "files-idxlist",
+    OPTS:   { since: 0 }
+  },
+  copts = [`
+          <option value="loc_subdir || (file_updated || file_created).subdir">Subdir</option>
+          <option value="id">Note ID</option>
+          <option value="file_type">Type</option>
+          <option value="file_updated.timestamp">Updated</option>
+          <option value="file_updated.username">Up'd By</option>
+          <option value="file_updated.version">Up'd Ver</option>
+          <option value="file_updated.misc || file_updated.notes">Up'd Misc</option>
+          <option value="file_created.timestamp">Created</option>
+          <option value="file_created.username">Cr'd By</option>
+          <option value="file_created.version">Cr'd Ver</option>
+          <option value="file_created.misc || file_created.notes">Cr'd Misc</option>
+          <option value="people">People</option>
+          <option value="name_user">Username</option>
+          <option value="image_src">Image</option>
+          <option value="linkref">Link Ref</option>
+          <option value="from">From</option>
+          <option value="to">To</option>
+          <option value="subject">Subject</option>
+          <option value="headline">Headline</option>
+          <option value="time">Time</option>
+          <option value="place">Place</option>
+          <option value="_attachments">Attach's</option>
+        `, `
+          <option value="seq">Chg Seq</option>
+          <option value="id">Note ID</option>
+          <option value="rev">Revision#</option>
+        `],
+  qslrs = [
+    '#vctrls #colssel>option:nth-of-type(2), '
+    + '#nmtbl thead:first-of-type td:nth-of-type(3), '
+    + '#nmtbl tfoot:first-of-type td:nth-of-type(3)',
+    '#nmtbl thead:first-of-type td:first-of-type>span, '
+    + '#nmtbl tfoot:first-of-type td:first-of-type>span',
+    '#nmtbl thead:first-of-type td:first-of-type>a, '
+    + '#nmtbl tfoot:first-of-type td:first-of-type>a',
+    '#nmtbl thead:not(.dnone) td:first-of-type>input, '
+    + '#nmtbl tfoot:not(.dnone) td:first-of-type>input',
+    '#nmtbl thead:not(.dnone) td:first-of-type>input, '
+    + '#nmtbl tbody>tr>td:first-of-type>input, '
+    + '#nmtbl tfoot:not(.dnone) td:first-of-type>input',
+    '#nmdata .media-left figcaption,'
+    + '#nmdata .media-content>.pwrap>strong,'
+    + '#nmdata .media-content>.pwrap>em,'
+    + '#nmdata .media-content>.pwrap>details'
+  ],
+  nmthds = document.querySelectorAll('#nmtbl thead'),
+  nmtbod = document.querySelector('#nmtbl tbody'),
+  nmtfts = document.querySelectorAll('#nmtbl tfoot'),
+  tabncs = document.querySelectorAll('#nmtabs li>a'),
+  nmpans = [nmbulk, pfadd1, pdbcfg, nmsets],
+  actrls = [openswi, opensel, v02sel, v03inp, unaminp, uemlinp],
+  pftyps = {
+    new: {
+      _id: "",
+      _rev: ""
+    },
+    srcdoc: {
+      _id: "",
+      _rev: "",
+      file_type: "srcdoc",
+      file_created: {
+        username: "",
+        timestamp: 0,
+        dborigin: "",
+        dbname: "",
+        subdir: "",
+        misc: ""
+      },
+      file_updated: {
+        username: "",
+        timestamp: 0,
+        dborigin: "",
+        dbname: "",
+        subdir: "",
+        misc: ""
+      },
+      media_type: "text/plain",
+      content: ""
+    },
+    scrap: {
+      _id: "",
+      _rev: "",
+      file_type: "scrap",
+      ts_created: 0,
+      ts_updated: 0,
+      loc_subdir: "",
+      content: ""
+    },
+    event: {
+      _id: "idGen(\"~E\", ts0, un0)",
+      _rev: "",
+      file_type: "event",
+      file_created: {
+        username: "",
+        timestamp: 0,
+        dborigin: "",
+        dbname: "",
+        subdir: ""
+      },
+      file_updated: {
+        username: "",
+        timestamp: 0,
+        dborigin: "",
+        dbname: "",
+        subdir: ""
+      },
+      people: [""],
+      headline: "",
+      time: "",
+      place: "",
+      map_refs: [""],
+      description: "",
+    },
+    memo: {
+      _id: "idGen(\"~m\", ts0, un0)",
+      _rev: "",
+      file_type: "memo",
+      file_created: {
+        username: "",
+        timestamp: 0,
+        dborigin: "",
+        dbname: "",
+        subdir: ""
+      },
+      linkref: "",
+      from: "",
+      to: [""],
+      subject: "",
+      body: ""
+    },
+    contact: {
+      _id: "![groupID]-[contactusername]",
+      _rev: "",
+      file_type: "contact",
+      ts_created: 0,
+      ts_updated: 0,
+      loc_subdir: "",
+      name_full: "",
+      name_user: "",
+      birthdate: "",
+      roles: [""],
+      emails: [""],
+      phones: [""],
+      locations: [
+        {
+          label: "home",
+          street: "",
+          city: "",
+          state: "",
+          zip: ""
+        }
+      ],
+      social_profiles: [""],
+      project_urls: [""],
+      team_groups: [""],
+      image_src: "",
+      bio_short: "",
+      miscellany: ""
+    }
+  },
+  rsp2Show = r => rsp2con.textContent
+    += ( !r || typeof r !== 'object' || r instanceof Error && r.constructor && !r.reason
+      ? r : JSON.stringify(r, null, 2) ) + "\n\n",
+  fncTry = (fnc, a, e) => { try { return fnc(a) } catch (err) { return e ? err : undefined }},
+  vtoStr = (v, sp) => v == null ? ""
+    : v instanceof Error && v.constructor && !v.reason ? v
+    : typeof v === 'object' ? JSON.stringify(v, null, sp)
+    : typeof v !== 'string' ? "" + v
+    : !/^{\s*['"][^]+}$|^\[[^]+\]$/.test(v.trim()) ? v
+    : JSON.stringify(fncTry(JSON.parse, v), null, sp) || v,
+  jscEval = () => {
+    let fncexp = jsctxta.value.trim().replace(/(?:[^]*\n|^)>\s*(?=(?:.|\n(?!>))*$)/, ""),
+      rsltShow = r => jsctxta.value += "\n" + vtoStr(r, 2) + "\n> ";
+    !fncexp || Promise.resolve(fncTry(window.eval, fncexp, 1)).then(rsltShow).catch(rsltShow);
+  },
+  txtaSel = e => !(e.focus || (e = window.eval(e.target.dataset.seltrg)))
+    || e.focus() || e.setSelectionRange(0, e.textLength),
+  typTest = (val, l2) => [ typeof ( val = typeof val !== 'string' ? val : fncTry(JSON.parse, val)
+      || (/^\d+$/.test(val.trim()) ? +val : /^(false|null|true)$/.test(val.trim()) ? eval(val) : val) ),
+    val === null ? "null obj" : !Array.isArray(val) ? typeof val : l2 || !val.length ? "array"
+      : "arr of " + { string:"str", number:"nbr", boolean:"bln", object:"obj", array:"arr", a:"any" }
+        [val.reduce((a, b) => typTest(b, 1)[1] === a && a, typTest(val[0], 1)[1]) || "a"], val ],
+  datVldt = evt => {
+    let k = evt.target.id.replace(/^p0/, ""),
+      v = evt.target.value;
+    evt.target.classList.remove("isucc", "iwarn");
+    vtoStr(v) === vtoStr(fwg[k])
+    || evt.target.classList.add(typTest(v)[1] === typTest(fwg[k])[1] ? "isucc" : "iwarn")
+  },
+  storDel = () => {
+    if ( !wipeinp.value
+    || wipeinp.value !== nm0sets.uname && wipeinp.value !== nm0sets.uemail ) { return; }
+    let hlps = nmsets.querySelectorAll('.chelp'),
+      dbs = Array.from(opensel.options).map(o => o.value);
+    !slocswi.checked || (uemlinp.value = unaminp.value = una2inp.value = "")
+    || !(nm0sets = {}) || !(nm0cfgs = {}) || hlps[0].classList.remove("dnone")
+    || ["_nm0sets", "_nm0cfgs"].forEach(e => localStorage.removeItem(e))
+    || rsp2Show("ALERT: Close/remove app directly, or local storage might be re-engaged.");
+    !spdbswi.checked || (txd1.DBNAME = "") || !window.PouchDB || Promise.all( dbs.map( dbi =>
+      !dbi || new PouchDB(dbi).destroy() //|| !PouchDB.allDbs
+      .then(resp => rsp2Show("Local DB successfully destroyed: " + dbi))
+      .catch(err => {
+        rsp2Show("ALERT: DB destruction attempted & failed.\n" + vtoStr(err, 2));
+        hlps[0].classList.add("dnone");
+        hlps[1].classList.remove("dnone");
+      }) ))
+    .catch(rsp2Show)
+    .then( () => (opensel.innerHTML = pdbssel.innerHTML = "")
+      || !hlps[1].classList.includes("dnone") || hlps[0].classList.remove("dnone") );
+    //.then(PouchDB.allDbs);
+  },
+  date0Fmt = nbr => !nbr ? "" : new Date(nbr).toISOString().replace(/T.+$/, ""),
+  date1Fmt = str => !str ? ""
+    : new Date(str).toUTCString().replace(/.+(\d{2} [a-z]{3} \d{4}).+/i, "$1"),
+  aurlGen = isrc => aurls(isrc) || isrc,
+  idGen = (pfx, tsx, unx) => (/^[a-z~][a-z]$/i.test("" + pfx) ? pfx : "~p")
+    + ( typeof tsx === 'string' && /^[\w:.-]*$/.test(tsx) ? tsx
+      : (fncTry(v => new Date(v), tsx) || new Date()).toISOString().replace(/\.\w+$|[:-]/g, "") )
+    + (typeof unx === 'string' && /^[\w@.-]*$/.test(unx) ? unx : "user000"),
+  ordFlip = arr => !descswi.checked ? arr.sort() : arr.sort().reverse(),
+  tr0Gen = (r, i) => `
+    <tr${ vbas !== 2 ? "" : " hidden"}>
+      <td>${ 1 + i - j } <input type=checkbox class=dnone /></td>
+      <td>${ (rval = r.doc || r.value).hasOwnProperty("loc_subdir")
+        ? (rval.loc_subdir || ".") + "/" : rval.file_updated || rval.file_created
+        ? ((rval.file_updated || rval.file_created).subdir || ".") + "/" : "" }</td>
+      <td>${ rval._id || r.id }</td>
+      <td>${ (rval.file_type || "").replace(/^eco-/, "")
+        || (!/^[.-]./.test(rval._id || r.id) ? "" : "(app assets)") }</td>
+      <td>${ date0Fmt(rval.ts_updated || (rval.file_updated || "").timestamp) }</td>
+      <td>${ (rval.file_updated || "").username || "" }</td>
+      <td>${ (rval.file_updated || "").version || "" }</td>
+      <td>${ rval.file_updated && (rval.file_updated.misc || rval.file_updated.notes) || "" }</td>
+      <td>${ date0Fmt(rval.ts_created || (rval.file_created || "").timestamp) }</td>
+      <td>${ (rval.file_created || "").username || "" }</td>
+      <td>${ (rval.file_created || "").version || "" }</td>
+      <td>${ rval.file_created && (rval.file_created.misc || rval.file_created.notes) || "" }</td>
+      <td>${ (rval.people || rval.contributors || []).join(", ") || "" }</td>
+      <td>${ rval.name_user || "" }</td>
+      <td>${ rval.image_src || "" }</td>
+      <td>${ rval.linkref || "" }</td>
+      <td>${ rval.from || "" }</td>
+      <td>${ (rval.to || []).join(", ") || "" }</td>
+      <td>${ rval.subject || "" }</td>
+      <td>${ rval.headline || "" }</td>
+      <td>${ rval.time || "" }</td>
+      <td>${ rval.place || "" }</td>
+      <td>${ Object.keys(rval._attachments || "").length || "" }</td>
+    </tr>`,
+  qd2Fmt = rows => rows.map( (r, i) =>
+    !(rval = r.doc || r.value)._attachments && /^\./.test(r.id) ? ""
+    : /^[.-]/.test(r.id) ? (!i || (j = i)) && `
+    <tr id="${ r.id.replace(/^[.-]/, "_") }">
+      <td colspan=20><a>&#x25b6;</a> <input type=checkbox class=dnone /> ${
+        r.id.replace( /^[.-].+$/, m => m + " ("
+          + (/^eco-assets$/.test(rval.file_type || "") ? "eco-" : "app ") + "assets)" ) }</td>
+    </tr>\n` + ordFlip(Object.keys(rval._attachments || "")).map( (k, i2) => `
+    <tr hidden>
+      <td>${ 1 + i2 } <input type=checkbox class=dnone /></td>
+      <td>${ r.id + "/" }</td>
+      <td colspan=18>${ !rval._attachments[k] ? k
+        : k + " (" + Math.ceil(+rval._attachments[k].length / 1000) + "k)" }</td>
+    </tr>` ).join("")
+    : (( rval = rval.hasOwnProperty("loc_subdir") ? rval.loc_subdir
+        : (rval.file_updated || rval.file_created || "").subdir ) || 1 ) && !i
+      || ( (rva2 = (rows[i - 1].doc || rows[i - 1].value)).hasOwnProperty("loc_subdir")
+        ? rva2.loc_subdir : (rva2.file_updated || rva2.file_created || "").subdir ) !== rval
+    ? (!i || (j = i)) && `
+    <tr id="${ rval || "_" }">
+      <td colspan=20><a>&#x25b6;</a> <input type=checkbox class=dnone /> ${ rval || "" }</td>
+    </tr>` + tr0Gen(r, i)
+    : tr0Gen(r, i) ).join("") + "\n  ",
+  qd3Fmt = rows => rows.map(tr0Gen).join("") + "\n  ",
+  qd5Fmt = dels => dels.map( (d, i) => `
+    <tr>
+      <td>${ 1 + i } <input type=checkbox class=dnone /></td>
+      <td>${ d.seq }</td>
+      <td>${ d.id }</td>
+      <td>${ d.changes[0].rev }</td>
+    </tr>` ).join("") + "\n  ",
+  blk2Tog = () => {
+    if (vbas === 5) { return; }
+    let chks = vbas !== 1
+        ? document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:first-of-type>input:checked')
+        : document.querySelectorAll('#nmdata .media-content>.pwrap>span>input:checked');
+    (chks.length ? filtctrl : bulkctrl).classList.add("dnone");
+    (chks.length ? bulkctrl : filtctrl).classList.remove("dnone");
+  },
+  bulkTog = () => {
+    let hid = vbas !== 1
+        ? document.querySelector('#nmtbl thead:not(.dnone) td:first-of-type>input.dnone')
+        : document.querySelector('#nmdata .media-content>.pwrap>span.dnone');
+    ( vbas !== 1 ? document.querySelectorAll(qslrs[4])
+      : document.querySelectorAll('#nmdata .media-content>.pwrap>span') )
+      .forEach(e => e.className = hid ? "" : "dnone");
+    if (hid) {
+      blk2Tog();
+    } else {
+      bulkctrl.classList.add("dnone");
+      filtctrl.classList.remove("dnone");
+    }
+  },
+  filtExe = () => {
+    let negs = /^-/.test(filtinp.value),
+      sepa = /^\/.+\/[gim]*$/.test(filtinp.value.trim()) ? eval(filtinp.value)
+        : new RegExp(filtinp.value.replace(/^-/, "") || "^$", "gi");
+    rsp2con.textContent = "";
+    ( vbas !== 1 ? document.querySelectorAll(qslrs[4])
+      : document.querySelectorAll('#nmdata .media-content>.pwrap>span>input') )
+      .forEach(inp => inp.checked = false);
+    document.querySelectorAll('#nmtbl tbody>tr:not([id])').forEach(tr => {
+      tr.classList.remove("dnone", "match");
+      Array.from(tr.children)
+      .forEach( (td, i) => !i || ( (i !== 2 ? td : td.firstChild).innerHTML
+        = (i !== 2 ? td : td.firstChild).innerHTML.replace(/<\/?mark>/g, "") ));
+    });
+    document.querySelectorAll(qslrs[5])
+    .forEach(e => e.innerHTML = e.innerHTML.replace(/<\/?mark>/g, ""));
+    document.querySelectorAll('#nmdata .media').forEach(e => e.classList.remove("dnone"));
+    if (vbas !== 1 && filtinp.value) {
+      document.querySelectorAll('#nmtbl tbody>tr:not([id]):not([hidden])')
+      .forEach( tr => Array.from(tr.children).forEach( (td, i) => {
+        if (i && !td.classList.contains("dnone")) {
+          sepa.lastIndex = 0;
+          !negs ? tr.classList.contains("match")
+            || (tr.className = sepa.test(td.textContent) ? "match" : "dnone")
+          : tr.classList.contains("dnone")
+            || (tr.className = !sepa.test(td.textContent) ? "match" : "dnone");
+          negs || ( (i !== 2 ? td : td.firstChild).innerHTML
+            = (i !== 2 ? td : td.firstChild).innerHTML.replace(sepa, "<mark>$&</mark>") );
+        }
+      }));
+    } else if (filtinp.value) {
+      document.querySelectorAll(qslrs[5])
+      .forEach(e => e.innerHTML = e.innerHTML.replace(sepa, "<mark>$&</mark>"));
+      document.querySelectorAll('#nmdata .media')
+      .forEach(e => /<mark>/.test(e.innerHTML) != negs || e.classList.add("dnone"));
+    }
+  },
+  filesChg = evt => {
+    if (vbas === 5) { return; }
+    let hlps,
+      fedit = evt && /editbtn|movebtn/.test(evt.target.id),
+      fmove = evt && /movebtn/.test(evt.target.id),
+      chks = document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:first-of-type>input:checked'),
+      chkaf2 = !fmove ? Array.from(chks)
+          .filter(inp => !/^[.-]\w/.test(inp.parentElement.parentElement.children[1].textContent))
+        : Array.from(chks).filter( inp => inp.parentElement.parentElement.children[3]
+          && !/^$|asset|attach/i ///^(?:anno|contact|memo|post|prjid|publmgr|scrap|srcdoc)$/
+          .test(inp.parentElement.parentElement.children[3].textContent) ),
+      txd2 = {
+        DBNAME: txd1.DBNAME,
+        FILEID: "_all_docs",
+        OPTS:   {
+          keys: chkaf2.map(inp => inp.parentElement.parentElement.children[2].textContent),
+          include_docs: fedit
+        }
+      },
+      row1Tfm = r1 => {
+        !fmove || !r1 || !r1.doc || ( r1.doc.hasOwnProperty("loc_subdir")
+          ? (r1.doc.loc_subdir = moveinp.value)
+          : (r1.doc.file_updated || r1.doc.file_created || {}).subdir = moveinp.value );
+        return fedit ? Object.assign({ _id: "", _rev: null }, (r1 || "").doc)
+        : {
+            _id:  r1.key || r1.id,
+            _rev: r1.value && r1.value.rev || r1.changes && r1.changes[0].rev,
+            _deleted: true
+          }
+      },
+      rdataTfm = rslt => !rslt.rows && !rslt.results ? {} : {
+        DBNAME: txd2.DBNAME,
+        OPTS:   {},
+        docs:   (rslt.rows || rslt.results).map(row1Tfm) //.filter(d => !d._deleted)
+      },
+      jsonVldt = () => {
+        rsp2con.textContent = "";
+        hlps.forEach(e => e.classList.add("dnone"));
+        fncTry(JSON.parse, qctxta.value) ? qctxta.classList.remove("iwarn")
+        : qctxta.classList.add("iwarn") || hlps[2].classList.remove("dnone");
+      },
+      pchPut = () => {
+        let txd3 = fncTry(JSON.parse, qctxta.value);
+        if ( !txd3 || !txd3.DBNAME || !Array.isArray(txd3.docs)
+        || !Array.from(opensel.options).map(o => o.value).includes(txd3.DBNAME) ) { return; }
+        txd3.OPTS && typeof txd3.OPTS === 'object' || (txd3.OPTS = {});
+        txd3.DBNAME && window.PouchDB && new PouchDB(txd3.DBNAME)
+        .bulkDocs(txd3.docs, txd3.OPTS).then(trsp => {
+          hlps[0].classList.remove("dnone");
+          rsp2Show(trsp);
+          !vidx || (viewsel.selectedIndex = vidx = 0) || viewChg();
+        }).catch(err => {
+          hlps[1].classList.remove("dnone");
+          rsp2Show(err);
+        });
+      },
+      blkDspl = qrsp => {
+        if (!window.qctxta) {
+          nmbulk.innerHTML = "\n  <button id=submbtn class=\"fltrt hgainl\">"
+            + "<span class=isucc>&#x27b6;</span> SUBMIT</button>"
+            + "\n  <div class=field>\n<h4>DB Bulk Action</h4>"
+            + "\n  <div class=\"alnrt chelp isucc dnone\">Data is submitted to local DB.</div>"
+            + "\n  <div class=\"alnrt chelp iwarn dnone\">Data-submission attempt failed.</div>\n</div>"
+            + "\n  <div class=\"cfield alnrt\">"
+            + "<button id=qselbtn class=\"bsml ilink\" data-seltrg=qctxta>sel</button></div>"
+            + "\n  <textarea id=qctxta class=textarea rows=31></textarea>"
+            + "\n  <div id=qchlp class=\"chelp iwarn dnone\"><strong>ALERT:</strong> Invalid JSON.</div>\n";
+          submbtn.onclick = pchPut;
+          qselbtn.onclick = txtaSel;
+          qctxta.onblur = jsonVldt;
+        }
+        rsp2con.textContent = "";
+        hlps = nmbulk.querySelectorAll('.chelp');
+        hlps.forEach(e => e.classList.add("dnone"));
+        qctxta.classList.remove("iwarn");
+        qctxta.value = vtoStr(qrsp, 2);
+        !tidx || tabActv();
+      },
+      dbq = txd2.DBNAME && window.PouchDB && new PouchDB(txd2.DBNAME);
+    rsp2con.textContent = "";
+    document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:first-of-type>input')
+      .forEach(inp => inp.parentElement.parentElement.className = "");
+    chkaf2.forEach(inp => inp.parentElement.parentElement.className = fedit ? "hsuccl" : "hwarnl");
+    !dbq //|| ( txd2.FILEID === "_all_docs" ?
+      || dbq.allDocs(txd2.OPTS).then(rdataTfm).then(blkDspl)
+      //: txd2.FILEID === "_changes"
+      //? dbq.changes(txd2.OPTS).then(rdataTfm).then(blkDspl)
+      //: dbq.get(txd2.FILEID, txd2.OPTS).then(blkDspl) )
+    .catch(rsp2Show);
+  },
+  fileLoad = evt => {
+    let sdir = evt && evt.target.parentElement.previousElementSibling.textContent,
+      txd2 = {
+        DBNAME: txd1.DBNAME,
+        FILEID: !evt ? "" : /^[.-]/.test(sdir)
+          ? sdir.replace(/\/$/, "") : evt.target.textContent || evt.target.dataset.fileid,
+        ATTKEY: !evt || !/^[.-]/.test(sdir) ? "" : evt.target.textContent,
+        OPTS:   {
+          //rev: vbas !== 5 ? null : evt.target.parentElement.parentElement.children[3].textContent
+          //revs_info: true
+        }
+      };
+    //rsp2Show(txd2);
+    if (!window.PouchDB || !txd2.DBNAME || !txd2.FILEID
+    || txd2.ATTKEY && !/\.giff?$|\.jpe?g$|\.png$/i.test(txd2.ATTKEY)) { return; }
+    rsp2con.textContent = "";
+    txd2.ATTKEY
+    ? new PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
+      .then( abl => nmbulk.innerHTML = "\n<figure class=image><img src=\""
+        + (aurls[txd2.ATTKEY] || (aurls[txd2.ATTKEY] = URL.createObjectURL(abl))) + "\" /></figure>\n" )
+      .catch(rsp2Show)
+    : new PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS).then(doc => {
+      let lnl, str,
+        taHt = k => ( lnl = ( ( str = vtoStr( fwg[k],
+              !Array.isArray(fwg[k]) || typeof fwg[k][0] === 'object' ? 2 : null ))
+            .match(/\n/g) || "" ).length ) > 8 || str.length > 400
+          ? 16 : lnl > 2 || str.length > 200 ? 8 : 2;
+      fwg = doc;
+      pfacnt.innerHTML = nmbulk.innerHTML = "";
+      [vctrls, nmflow, nmtabs, nmpans[tidx]].forEach(e => e.classList.add("dnone"));
+      nmdata.classList.remove("dnone");
+      nmdata.innerHTML = "" + `
+  <button id=updbtn class="fltrt hgainl"><span class=isucc>&#x267a;</span> UPDATE</button>
+  <div class=field>
+    <button id=bckbtn class="hgainl ilink"><strong>&lang;</strong></button>
+    <span class="btn1 opq0" disabled>${txd2.DBNAME} &sol;</span> ${
+        !(rval = fwg.loc_subdir || (fwg.file_updated || fwg.file_created || "").subdir) ? ""
+        : "<span class=\"btn1 opq0\" disabled>" + rval + " &sol;</span>" }
+    <span class="btn1 opq0" disabled>${fwg._id}</span>
+    <div class="alnrt chelp isucc dnone">Note is updated in local DB.</div>
+    <div class="alnrt chelp iwarn dnone">Note-update attempt failed.</div>
+  </div>` + Object.keys(fwg).map( k => /^_id$|^_rev$/.test(k) ? "" : `
+  <div class="field is-horizontal">
+    <div class="field-label">
+      <span class=label>${k}</span>
+      <button class="fltrt bsml ilink" data-seltrg=${"p0" + k}>sel</button>
+    </div>
+    <div class="field-body">
+      <textarea id=${"p0" + k} class=textarea rows=${taHt(k)}>${
+        str.replace(/&(?=#?\w+;)/g, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;")}</textarea>
+    </div>
+  </div>` ).join("") + `
+  <hr />
+  <div class=cfield>
+    <span class="ccntr cleft">Add attachments</span><span class=ccntr><label>`
+      + `<input id=imgainp type=file multiple />`
+      + `<span id=imgain2 class="btn1 fsz10p5 hgainl ilink">&#x2726;</span>`
+      + `<span id=imgain3 class=btn1><span>Locate image&hellip;</span></span>
+    </label></span>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft">
+    </span><span class=ccntr>`
+    + `<input type=text id=imganm2 placeholder="Rename as attachment&hellip;" /></span>
+  </div>\n`;
+      bckbtn.onclick = () => (fwg = null) || [vctrls, nmtabs, nmpans[tidx]]
+          .forEach(e => e.classList.remove("dnone"))
+        || !vidx || (viewsel.selectedIndex = vidx = 0) || viewChg(); //viewBk
+      imgainp.onchange = () => imgain3.innerHTML = imgainp.files[1]
+        ? "<em>[" + imgainp.files.length + " files selected]</em>"
+        : imgainp.files[0] ? imgainp.files[0].name : "<span>Locate image&hellip;</span>";
+      updbtn.onclick = () => {
+        let ts0 = new Date().getTime(),
+          chgs = 0,
+          hlps = nmdata.querySelectorAll('.chelp');
+        hlps.forEach(e => e.classList.add("dnone"));
+        Array.from(nmdata.querySelectorAll('.label')).map(e => e.textContent)
+        .forEach( k => /^_id$|^_rev$/.test(k)
+          || !/isucc|iwarn/.test(window["p0" + k].className)
+          || !++chgs || (fwg[k] = typTest(window["p0" + k].value, 1)[2]) );
+        !fwg.hasOwnProperty("ts_updated") || (fwg.ts_updated = ts0);
+        !fwg.hasOwnProperty("file_updated") || [fwg.file_updated].forEach(p1 => {
+          p1.username = nm0sets.uname || nm0sets.uemail || "user000";
+          p1.timestamp = ts0;
+          p1.dborigin = /192\.168\.0|cloudant|localhost/.test(location.origin)
+            ? location.origin : [navigator.userAgent || navigator.userAgentData, location.origin];
+          p1.dbname = txd1.DBNAME;
+          !p1.hasOwnProperty("version") || (p1.version = p1.version.replace(/-?\d+$/, m => ++m));
+        });
+        !imgainp.files.length || !++chgs
+        || !(fwk.hasOwnProperty("_attachments") || (fwk._attachments = {}))
+        || imgainp.files.forEach( (f, i) => fwg._attachments[ !imganm2.value ? f.name : !imgainp.files[1]
+            ? imganm2.value : imganm2.value.replace(/(?=\.\w+$|$)/, i > 9 ? i : "0" + i) ]
+          = { content_type: f.type, data: f } );
+        !chgs || !txd2.DBNAME || !window.PouchDB || new PouchDB(txd2.DBNAME)
+        .put(Object.assign({ _id: "", _rev: "" }, fwg), txd2.OPTS).then( trsp =>
+          Object.keys(fwg).forEach( k => /^_id$|^_rev$/.test(k)
+            || window["p0" + k].classList.remove("isucc", "iwarn") )
+          || hlps[0].classList.remove("dnone") || rsp2Show(trsp) )
+        .catch(err => hlps[1].classList.remove("dnone") || rsp2Show(err));
+      }; //fwgUpd;
+      nmdata.querySelectorAll('.field-label button').forEach(e => e.onclick = txtaSel);
+      Object.keys(fwg).forEach(k => /^_id$|^_rev$/.test(k) || (window["p0" + k].onblur = datVldt));
+      tidx !== 1 || tabActv();
+    }).catch(rsp2Show);
+  },
+  vwFnlz = evt => {
+    if (vidx > 8 && (!evt || evt.target.id === "viewsel")) {
+      !(nm0sets.p2vws[vusr] || "").cbxs || bulkTog();
+      !(filtinp.value = (nm0sets.p2vws[vusr] || "").filt || "") || filtExe();
+    }
+  },
+  ancAdd1 = td2 => {
+    td2.innerHTML = td2.textContent.replace(/.+?(?= \(\d+k\)$|$)/, "<a>$&</a>");
+    td2.firstChild.onclick = fileLoad;
+  },
+  chksTog = evt => {
+    let r1idx = evt.target.parentElement.parentElement.rowIndex - 2,
+      sdtrs = document.querySelectorAll('#nmtbl tbody>tr[id]'),
+      rsidx = Array.from(sdtrs || "").map(e => e.rowIndex - 2),
+      r2idx = rsidx[rsidx.findIndex(n => n === r1idx) + 1]
+        || ((document.querySelector('#nmtbl tbody>tr:last-of-type') || "").rowIndex - 1),
+      trows = document.querySelectorAll('#nmtbl tbody>tr');
+    rsp2con.textContent = "";
+    if (!evt.target.parentElement.parentElement.id) {
+      evt.target.checked
+      || document.querySelectorAll('#nmtbl tbody>tr:not([id])').forEach(tr => tr.className = "");
+      document.querySelectorAll(qslrs[4]).forEach(inp => inp.checked = evt.target.checked);
+    } else {
+      while (++r1idx < r2idx) {
+        evt.target.checked || (trows[r1idx].className = "");
+        trows[r1idx].children[0].children[0].checked = evt.target.checked;
+      }
+    }
+    blk2Tog();
+  },
+  sdirXpd = evt => {
+    let xpd = evt.target.textContent === "\u25b6",
+      rowid = evt.target.parentElement.parentElement.id,
+      r1idx = evt.target.parentElement.parentElement.rowIndex - 2,
+      sdtrs = document.querySelectorAll('#nmtbl tbody>tr[id]'),
+      rsidx = Array.from(sdtrs || "").map(e => e.rowIndex - 2),
+      r2idx = rsidx[rsidx.findIndex(n => n === r1idx) + 1]
+        || ((document.querySelector('#nmtbl tbody>tr:last-of-type') || "").rowIndex - 1),
+      trows = document.querySelectorAll('#nmtbl tbody>tr');
+    //rsp2Show([r1idx, r2idx, rowid].join(", "));
+    if (rowid) {
+      evt.target.innerHTML = !xpd ? "&#x25b6;" : "&#x25bc;";
+      while (++r1idx < r2idx) { trows[r1idx].hidden = !xpd; }
+    } else {
+      document.querySelectorAll(qslrs[2])
+      .forEach(anc => anc.innerHTML = !xpd ? "&#x25b6;" : "&#x25bc;");
+      document.querySelectorAll('#nmtbl tbody>tr[id]>td:first-of-type>a')
+      .forEach(anc => anc.innerHTML = !xpd ? "&#x25b6;" : "&#x25bc;");
+      document.querySelectorAll('#nmtbl tbody>tr:not([id])').forEach(tr => tr.hidden = !xpd);
+    }
+  },
+  colsTog = (evt, resel = (nm0sets.p2vws[vusr] || "").sort) => {
+    let opts = Array.from(colssel.selectedOptions).map(o => 1 + o.index);
+    !evt || (resel = sortsel.value);
+    document.querySelectorAll('#nmtbl :not(.dnone)>tr')
+    .forEach( tr => Array.from(tr.children).forEach( (td, i) =>
+      td.className = !i || opts.indexOf(i) > -1 ? "" : "dnone" ));
+    sortsel.innerHTML = vbas === 5 ? `
+        <option value=seq>Chg Seq</option>
+        <option value=id>Note ID</option>\n`
+      : Array.from(colssel.selectedOptions)
+        .map(o => `\n          <option value="${ o.value }">${ o.textContent }</option>`)
+        .join("") + "\n        ";
+    sortsel.value = Array.from(sortsel.options).some(o => o.value === resel) ? resel : "id";
+  },
+  tblGen = evt => {
+    let ss = ( evt && evt.target.id === "sortsel" ? sortsel.value
+      : (nm0sets.p2vws[vusr] || "").sort || sortsel.value ).split("."),
+      chksRstr = () => {
+        bulkctrl.classList.add("dnone");
+        filtctrl.classList.remove("dnone");
+        filtinp.value = moveinp.value = "";
+        document.querySelectorAll(qslrs[2]).forEach(anc => anc.innerHTML = "&#x25b6;");
+        document.querySelectorAll(qslrs[3]).forEach(inp => {
+          inp.checked = false;
+          inp.className = "dnone";
+        });
+        document.querySelectorAll('#nmtbl tbody>tr[id]>td:first-of-type>input')
+        .forEach(inp => inp.onchange = chksTog);
+        document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:first-of-type>input')
+        .forEach(inp => inp.onchange = blk2Tog);
+      };
+    !evt || evt.target.id !== "descswi" || ( txd1.OPTS = {
+      //startkey: descswi.checked ? "~~~" : "",
+      //endkey: descswi.checked ? "" : "~~~",
+      descending: descswi.checked
+    });
+    vbas !== 5 || new PouchDB(txd1.DBNAME)
+    .changes(txd1.OPTS)
+    .then(rslt => {
+      let dels = rslt.results.filter(r => r.deleted);
+      ftotal.innerText = dels.length;
+      [nmthds[0], nmtfts[0]].forEach(e => e.classList.add("dnone"));
+      [nmthds[1], nmtfts[1]].forEach(e => e.classList.remove("dnone"));
+      nmtbod.innerHTML = qd5Fmt( ss[0] === "seq" ? dels
+        : ordFlip(dels.map(r => [r.id, r])).map(sr => sr[1]) );
+      chksRstr();
+      colsTog(null, /^(?:id|seq)$/.test(ss[0]) ? ss[0] : "id");
+      vwFnlz(evt);
+    }).catch(rsp2Show);
+    vbas === 5 || new PouchDB(txd1.DBNAME)
+    .query(txd1.FILEID.replace(/^_design\//, "") + "/" + txd1.VIEW, txd1.OPTS)
+    .catch( () => new PouchDB(txd1.DBNAME).allDocs({
+      startkey: descswi.checked != (vbas === 4) ? "~a" : undefined,
+      endkey: descswi.checked != (vbas === 4) ? undefined : "~a",
+      descending: descswi.checked,
+      include_docs: true })
+    ).then(rslt => {
+      let calcSum = arr => !arr.length ? 0 : arr.reduce((s, v) => s + v);
+      j = 0;
+      ftotal.innerText = vbas !== 2 ? rslt.total_rows
+        : rslt.rows.filter( r => (rval = r.doc || r.value).hasOwnProperty("loc_subdir")
+            || rval.file_updated || rval.file_created ).length
+          + calcSum( rslt.rows.filter(r => (r.doc || r.value)._attachments)
+            .map(r => Object.keys((r.doc || r.value)._attachments).length) );
+      [nmthds[1], nmtfts[1]].forEach(e => e.classList.add("dnone"));
+      [nmthds[0], nmtfts[0]].forEach(e => e.classList.remove("dnone"));
+      nmtbod.innerHTML = vbas !== 2
+      ? qd3Fmt( !ss[0] || vbas !== 4 && ss[0] === "id" || vbas === 4 && ss[1] === "timestamp"
+        ? rslt.rows
+        : ordFlip( !ss[1] ? rslt.rows.map(r => [(r.doc || r.value)[ss[0]], r.id, r])
+          : ss[1] !== "timestamp"
+          ? rslt.rows.map(r => [((r.doc || r.value)[ss[0]] || "")[ss[1]], r.id, r])
+          : rslt.rows.map( r => [ (rval = r.doc || r.value)[ss[0]]
+            ? rval[ss[0]][ss[1]]
+            : rval[ss[0].replace(/^file/, "ts")], r.id, r ]) )
+        .map(sr => sr[2]) )
+      : qd2Fmt( ordFlip( rslt.rows.filter( r => /^[.-]/.test(r.id)
+          || (rval = r.doc || r.value).hasOwnProperty("loc_subdir")
+          || rval.file_updated || rval.file_created )
+        .map( r => /^[.-]/.test(r.id) ? [r.id.replace(/^\.(.+)$/, "$1_"), null, r.id, r]
+          : [ (rval = r.doc || r.value).loc_subdir
+              || (rval.file_updated || rval.file_created).subdir || ".",
+            !ss[1] ? rval[ss[0] || "id"] : (rval[ss[0]] || "")[ss[1]], r.id, r ] ) )
+        .map(sr => sr[3]) );
+      colsTog(null, ss.join(".") || "file_created.timestamp");
+      document.querySelectorAll(qslrs[1])
+      .forEach(spn => spn.className = vbas !== 2 ? "" : "dnone");
+      document.querySelectorAll(qslrs[2])
+      .forEach(anc => anc.className = vbas === 2 ? "" : "dnone");
+      document.querySelectorAll('#nmtbl tbody>tr[id]>td:first-of-type>a')
+      .forEach(anc => anc.onclick = sdirXpd);
+      chksRstr();
+      document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:nth-of-type(3)').forEach(ancAdd1);
+      vwFnlz(evt);
+    }).catch(rsp2Show);
+  },
+  clipsGen = evt => {
+    !evt || evt.target.id !== "descswi" || ( txd1.OPTS = {
+      //startkey: descswi.checked ? "~~~" : "",
+      //endkey: descswi.checked ? "" : "~~~",
+      descending: descswi.checked
+    });
+    new PouchDB(txd1.DBNAME)
+    .query(txd1.FILEID.replace(/^_design\//, "") + "/" + txd1.VIEW, txd1.OPTS)
+    .catch( () => new PouchDB(txd1.DBNAME).allDocs({
+      startkey: descswi.checked ? "~a" : undefined,
+      endkey: descswi.checked ? undefined : "~a",
+      descending: descswi.checked,
+      include_docs: true }) )
+    .then(rslt => {
+      let na, nb, ra, rb,
+        nsX = nf => nf.trim()
+          .replace(/(.*?) *((?:\bde +|\bvon +|)['‘’\w-]+)([ ,]*\b[js]r\.?|[ ,]*\b[ivx]+|)$/i, "$2, $1$3"),
+        rrs = rslt.rows.filter(r => r && ( /contact|phone/.test((r.doc || r.value).file_type || "")
+            || (ra = a.doc || a.value).name_full || ra.name_user || ra.name ))
+          .sort( (a, b) => !(na = (ra = a.doc || a.value).name_full || ra.name_user || ra.name || ra._id)
+              || !(nb = (rb = b.doc || b.value).name_full || rb.name_user || rb.name || rb._id) ? 0
+            : (nsX(na).replace(/[.,;:/]/g, "") < nsX(nb).replace(/[.,;:/]/g, ""))
+              == descswi.checked ? 1 : -1 );
+      ftotal.innerText = rrs.length;
+      nmdata.innerHTML = "\n  <span class=\"fltrt mtup3p5\">&ensp;Show all:&ensp;"
+      + "<label><input type=checkbox id=hdrsswi /> <a>headers</a></label>&ensp;"
+      + "<label><input type=checkbox id=bodsswi /> <a>bodies</a></label></span>\n  <hr />"
+      + (rrs.length ? "" : "\n  <p class=igreyd>&emsp;<em>[No results found &hellip;]</em></p>")
+      + rrs.map( r => `
+  <article class=media>
+    <div class="media-left">
+      <figure class="image rspv128"><img src="${
+        aurlGen((ra = r.doc || r.value).image_src || "") }" data-fileid="${ r.id }" />
+      <figcaption>${ ra.name_user || "" }</figcaption></figure>
+    </div>
+    <div class="media-content">
+      <div class=pwrap><span class=dnone><input type=checkbox /> </span><strong>${
+        nsX(ra.name_full || ra.name_user || ra.name || ra._id) }</strong>
+  <em>${ ra.roles.join(", ") }</em>
+  <details><summary>Short Bio</summary>${ ra.bio_short }</details></div>
+      <div class=pwrap><details><strong>Birthdate:</strong> ${ date1Fmt(ra.birthdate) }
+  <strong>Emails:</strong> ${ ra.emails.join(", ") }
+  <strong>Phones:</strong> ${ ra.phones.join(", ") }${
+        !ra.social_profiles.length ? ""
+          : "\n<strong>Social profiles:</strong> " + ra.social_profiles.join(", ") }${
+        !ra.project_urls.length ? ""
+          : "\n<strong>Project urls:</strong> " + ra.project_urls.join(", ") }${
+        !ra.ts_created ? ""
+          : "\n<strong>Joined team:</strong> " + date1Fmt(ra.ts_created) }${
+        !ra.ts_updated ? ""
+          : "\n<strong>Last updated:</strong> " + date1Fmt(ra.ts_updated) }</details></div>
+    </div>
+  </article>` ).join("") + "\n";
+      hdrsswi.onchange = evt => document.querySelectorAll('#nmdata .media-content>:first-child>details')
+        .forEach(e => e.open = evt.target.checked);
+      bodsswi.onchange = evt => document.querySelectorAll('#nmdata .media-content>:last-child>details')
+        .forEach(e => e.open = evt.target.checked);
+      document.querySelectorAll('#nmdata .media-left>.image>img').forEach(e => e.onclick = fileLoad);
+      document.querySelectorAll('#nmdata .media-content>.pwrap>span>input')
+      .forEach(inp => inp.onchange = blk2Tog);
+      vidx > 8 && !(nm0sets.p2vws[vusr] || "").hdrs || hdrsswi.click();
+      !(nm0sets.p2vws[vusr] || "").bods || bodsswi.click();
+      vwFnlz(evt);
+    }).catch(rsp2Show);
+  },
+  tabActv = evt => {
+    tidx === 2 || pdbcfg.querySelectorAll('.chelp')
+      .forEach(e => e.classList.add("dnone"));
+    !evt || evt.currentTarget.localName === 'a' || (evt = null);
+    tidx = !evt ? (vidx > 3 ? 0 : vidx) : +evt.currentTarget.parentElement.dataset.tabidx;
+    [nmflow, nmdata].some(e => !e.classList.contains('dnone')) || (viewsel.selectedIndex = vidx = tidx);
+    pdbssel.selectedIndex > 1 || vidx === 2 || (pdbssel.selectedIndex = 0);
+    pdbssel.selectedIndex === 1 || nm0sets.usecfg == use1swi.checked || use1swi.click();
+    !/0|1|3/.test(vidx) || (ftotal.innerText = "_");
+    tabncs.forEach(anc => anc.parentElement.classList.remove('is-active'));
+    (!evt ? tabncs[tidx] : evt.currentTarget).parentElement.classList.add('is-active');
+    nmpans.forEach(e => e.classList.add("dnone"));
+    nmpans[tidx].classList.remove("dnone");
+    if (tidx === 1 && !fwg) {
+      let ts0 = new Date().getTime(),
+        un0 = nm0sets.uname || "user000",
+        taHt = k => /body|content/i.test(k) ? 16 : /misc/i.test(k) ? 8
+          : typeof fwg[k] !== 'object' || Array.isArray(fwg[k]) && typeof fwg[k][0] !== 'object' ? 2
+          : !Array.isArray(fwg[k]) && Object.keys(fwg[k]).length < 8 ? 8 : 16;
+      fwg = JSON.parse( JSON.stringify(
+        (nm0sets.p2typs[t01sel.value] || "").t1 || pftyps[t01sel.value] || pftyps.new ));
+      !/^idGen\(.*\)$/.test(fwg._id.trim()) || (fwg._id = eval(fwg._id));
+      !fwg.hasOwnProperty("ts_created") || (fwg.ts_updated = fwg.ts_created = ts0);
+      [[fwg.file_created, fwg.file_updated]].forEach(([p0, p1]) => {
+        if (!p0) { return; }
+        p1 = p1 || {};
+        p1.username = p0.username = nm0sets.uname || nm0sets.uemail;
+        p1.timestamp = p0.timestamp = ts0;
+        p1.dborigin = p0.dborigin = /192\.168\.0|cloudant|localhost/.test(location.origin)
+          ? location.origin : [navigator.userAgent || navigator.userAgentData, location.origin];
+        p1.dbname = p0.dbname = txd1.DBNAME;
+        !p0.hasOwnProperty("version") || p0.version || (p1.version = p0.version = "0.1.0");
+      });
+      !fwg.hasOwnProperty("from") || (fwg.from = un0);
+      pfacnt.innerHTML = "\n  <button id=savbtn class=\"fltrt hgainl\">"
+      + "<span class=isucc>&#x267a;</span> SAVE</button>"
+      + "\n  <div class=field>\n<h4>New Note</h4>"
+      + "\n  <div class=\"alnrt chelp isucc dnone\">New note is saved in local DB.</div>"
+      + "\n  <div class=\"alnrt chelp iwarn dnone\">New-note save attempt failed.</div>\n  </div>"
+      + Object.keys(fwg).map(k => /^_rev$/.test(k) ? "" : `
+  <div class="field is-horizontal">
+    <div class="field-label">
+      <span class=label>${k}</span>
+      <button class="fltrt bsml ilink" data-seltrg=${"p0" + k}>sel</button>
+    </div>
+    <div class="field-body">
+      <textarea id=${"p0" + k} class=textarea rows=${taHt(k)}>${
+        vtoStr(fwg[k], !Array.isArray(fwg[k]) || typeof fwg[k][0] === 'object' ? 2 : null)
+        .replace(/&(?=#?\w+;)/g, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;") }</textarea>
+    </div>
+  </div>`).join("") + `
+  <hr />
+  <div class=cfield>
+    <span class="ccntr cleft">Add attachments</span><span class=ccntr><label>`
+      + `<input id=imgainp type=file multiple />`
+      + `<span id=imgain2 class="btn1 fsz10p5 hgainl ilink">&#x2726;</span>`
+      + `<span id=imgain3 class=btn1><span>Locate image&hellip;</span></span>
+    </label></span>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft">
+    </span><span class=ccntr>`
+    + `<input type=text id=imganm2 placeholder="Rename as attachment&hellip;" /></span>
+  </div>\n`;
+      imgainp.onchange = () => imgain3.innerHTML = imgainp.files[1]
+        ? "<em>[" + imgainp.files.length + " files selected]</em>"
+        : imgainp.files[0] ? imgainp.files[0].name : "<span>Locate image&hellip;</span>";
+      savbtn.onclick = () => {
+        let chgs = 0,
+          hlps = pfacnt.querySelectorAll('.chelp');
+        hlps.forEach(e => e.classList.add("dnone"));
+        Array.from(pfacnt.querySelectorAll('.label')).map(e => e.textContent)
+        .forEach( k => /^_id$|^_rev$/.test(k)
+          || !/isucc|iwarn/.test(window["p0" + k].className)
+          || !++chgs || (fwg[k] = typTest(window["p0" + k].value, 1)[2]) );
+        !imgainp.files.length || !++chgs
+        || !(fwk.hasOwnProperty("_attachments") || (fwk._attachments = {}))
+        || imgainp.files.forEach( (f, i) => fwg._attachments[ !imganm2.value ? f.name : !imgainp.files[1]
+            ? imganm2.value : imganm2.value.replace(/(?=\.\w+$|$)/, i > 9 ? i : "0" + i) ]
+          = { content_type: f.type, data: f } );
+        !chgs || !p0_id.value || !txd1.DBNAME || !window.PouchDB || new PouchDB(txd1.DBNAME)
+        .put(Object.assign({ _id: "", _rev: "" }, fwg), {}).then( trsp =>
+          Object.keys(fwg).forEach( k => /^_id$|^_rev$/.test(k)
+            || window["p0" + k].classList.remove("isucc", "iwarn")
+            || (window["p0" + k].disabled = 1) )
+          || (fwg = null) || hlps[0].classList.remove("dnone") || rsp2Show(trsp) )
+        .catch(err => hlps[1].classList.remove("dnone") || rsp2Show(err));
+      }; //fwgUpd;
+      pfacnt.querySelectorAll('.field-label button').forEach(e => e.onclick = txtaSel);
+      Object.keys(fwg).forEach(k => /^_id$|^_rev$/.test(k) || (window["p0" + k].onblur = datVldt));
+    }
+  },
+  viewRte = evt => {
+    [nmflow, nmdata].forEach(e => e.classList.add("dnone"));
+    nmtbod.innerHTML = nmdata.innerHTML = "";
+    if (!window.PouchDB || !txd1.DBNAME) {
+      ftotal.innerText = "_";
+      window.PouchDB || !txd1.DBNAME || rsp2con.textContent
+      || rsp2Show("ALERT: PouchDB is not loaded. Database is inaccessible.");
+      pdbssel.selectedIndex === 1
+      || [nmflow, nmdata].some(e => !e.classList.contains('dnone')) || tabActv();
+    } else if (vbas < 2) {
+      !vbas || (rsp2con.textContent = ""); // keep msg left by filesChg, fileLoad
+      !vbas ? tabActv() : nmdata.classList.remove("dnone") || clipsGen(evt);
+    } else if (vbas) {
+      rsp2con.textContent = "";
+      nmflow.classList.remove("dnone");
+      tblGen(evt);
+    }
+    !evt || !vbas || tidx !== 1 || tabActv();
+  },
+  viewChg = evt => {
+    let vkey;
+    if (vidx > 3 && evt && evt.currentTarget.localName === 'a') { return tabActv(evt); }
+    vidx || !viewsel.selectedIndex || (nmbulk.innerHTML = "");
+    vidx = !evt || evt.currentTarget.localName !== 'a' ? viewsel.selectedIndex
+      : +evt.currentTarget.parentElement.dataset.tabidx;
+    vidx < 4 || txd1.DBNAME || pdbssel.selectedIndex === 1 || (viewsel.selectedIndex = vidx = 0);
+    vbas = viewsel.selectedIndex > 3 && +/\d/.exec(viewsel.value);
+    !nm0sets.ddoc || (txd1.FILEID = nm0sets.ddoc);
+    txd1.VIEW = vidx > 8 && v03inp.value ? viewsel.value.replace(/^V\d-/, "")
+      : vbas === 4 ? "files-static" : vbas === 1 ? "files-contact" : "files-idxlist";
+    if (vidx !== 2) {
+      (colssel.innerHTML = !vbas ? "" : copts[vbas !== 5 ? 0 : 1]);
+      vidx > 3 || (sortsel.innerHTML = "") || (colssel.selectedIndex = -1);
+      descswi.checked = false;
+      bulkctrl.classList.add("dnone");
+      filtctrl.classList.remove("dnone");
+      filtinp.value = moveinp.value = "";
+      v02inp.value = v01inp.value = "";
+    }
+    if (vidx < 4 && evt && [nmflow, nmdata].every(e => e.classList.contains('dnone'))) {
+      return tabActv(evt);
+    }
+    vidx < 4 || !(vkey = viewsel.value.replace(/-?\d+$|^V\d:/g, "") || "myview")
+    || ( v01inp.value = vkey + "-" + ( 1
+      + ( Array.from(v01sel.options).map(o => o.value.includes(vkey) && /\d+$/.exec(o.value))
+        .filter(e => e).map(e => +e).sort().reverse()[0] || 1 ) ));
+    vusr = "";
+    ( vidx > 8 ? (nm0sets.p2vws[vusr = viewsel.value.replace(/^V\d-/, "")] || "").cols || []
+      : [[1,2,3,4,5], [0,1,2,3,4,5,21], [1,2,7,8,14,15,16,17], [0,1,2]][vidx - 5] || [] )
+    .forEach(n => colssel.options[n].selected = true);
+    vidx < 4 || !colssel.innerHTML || colsTog();
+    vidx < 9 || (descswi.checked = (nm0sets.p2vws[vusr] || "").desc);
+    viewRte(evt);
+  },
+  cfgsUpd = evt => {
+    let ts0 = new Date().getTime(),
+      db0 = pdb0inp.value.trim(),
+      hlps = pdbcfg.querySelectorAll('.chelp');
+    hlps.forEach(e => e.classList.add("dnone"));
+    if (evt && /[tv]01sel/.test(evt.target.id) && nm0cfgs[txd1.DBNAME]) {
+      evt.target.id !== "t01sel" || (nm0cfgs[txd1.DBNAME].type0 = t01sel.value);
+      evt.target.id !== "v01sel" || (nm0cfgs[txd1.DBNAME].view0 = v01sel.value);
+      localStorage._nm0cfgs = JSON.stringify(nm0cfgs);
+    } else if (evt && /dbd[01]btn/.test(evt.target.id)
+    && txd1.DBNAME && ddelinp.value === txd1.DBNAME && window.PouchDB) {
+      nm0cfgs[txd1.DBNAME].tsdel = ts0;
+      evt.target.id !== "dbd0btn" || new PouchDB(txd1.DBNAME).compact().then( trsp =>
+          hlps[0].classList.remove("dnone") || rsp2Show(trsp) )
+          //|| !vidx || (viewsel.selectedIndex = vidx = 0) || viewChg() )
+        .catch(err => hlps[1].classList.remove("dnone") || rsp2Show(err));
+      evt.target.id !== "dbd1btn" || new PouchDB(txd1.DBNAME).destroy().then(trsp => {
+        let dbs = Array.from(opensel.options).map(o => o.value).filter(e => e && e !== txd1.DBNAME);
+        [pdbssel, opensel].forEach( (e, i) => e.innerHTML
+          = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
+            .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
+        hlps[0].classList.remove("dnone") //todo: how will pdbcfg remain visible?
+        || (pdbssel.selectedIndex = 0) || pdbOpen() || rsp2Show(trsp);
+      }).catch(err => hlps[1].classList.remove("dnone") || rsp2Show(err));
+    } else if (evt && !txd1.DBNAME && una2inp.value && /[a-z][0-9a-z_]*/.test(db0) && window.PouchDB) {
+      new PouchDB(txd1.DBNAME = db0).info().then(trsp => {
+        let dbs = Array.from(opensel.options).map(o => o.value).filter(e => e).concat("db0").sort();
+        nm0cfgs[db0] = { type0: t01sel.value, view0: v01sel.value || nm0sets.vwdflt || "",
+          tsset: ts0, tsdel: 0, user0: una2inp.value.trim() || nm0sets.uname || nm0sets.uemail || "",
+          descr: pdb1inp.value || db0 + " project data" };
+        localStorage._nm0cfgs = JSON.stringify(nm0cfgs);
+        [pdbssel, opensel].forEach( (e, i) => e.innerHTML
+          = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
+            .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
+        pdbssel.value = db0; //opensel.value = //openswi.click();
+        hlps[2].classList.remove("dnone");
+        rsp2Show(trsp);
+      }).catch(err => hlps[3].classList.remove("dnone") || rsp2Show(err));
+    }
+  },
+  t1sChg = evt => {
+    let dtOpts = typ => [ "string", "number", "boolean", "object", "array", "arr of str", "arr of nbr",
+        "arr of bln", "arr of obj", "arr of arr", "arr of any", "null obj" ].map( e =>
+          "\n      <option" + (e !== typ ? ">" : " selected>") + e + "</option>" ).join("") + "\n      ";
+    if (evt && evt.target.id !== "t01sel") {
+      let ntr,
+        tkey = t01sel.value.replace(/-?\d+$/, "") || "mytype";
+      evt.target.localName !== 'select'
+      || ( evt.target.parentElement.nextElementSibling.firstChild.value = [ "", "0", "false",
+          "{ \"key\": \"val\" }", "[ ]", "[\"\"]", "[0]", "[true]", "[ { \"key\": \"val\" } ]",
+          "[ [] ]", "[ \"\", 0, false, {}, [] ]", "null" ][evt.target.selectedIndex] );
+      evt.target.parentElement.nextElementSibling
+      || (evt.target.parentElement.previousElementSibling.firstChild.value = typTest(evt.target.value)[1]);
+      evt.target.parentElement.previousElementSibling
+      || evt.target.parentElement.parentElement.nextElementSibling
+      || !evt.target.value || !(ntr = document.createElement('tr'))
+      || !( ntr.innerHTML = "<td><input type=text /></td><td><select>" + dtOpts()
+        + "</select></td><td><input type=text /></td>" ) || !t1tbod.appendChild(ntr)
+      || ntr.querySelectorAll('input, select').forEach(e => e.onchange = t1sChg);
+      return t01inp.value || ( t01inp.value = tkey + "-" + ( 1
+        + ( Array.from(t01sel.options).map(o => o.value.includes(tkey) && /\d+$/.exec(o.value))
+          .filter(e => e).map(e => +e).sort().reverse()[0] || 1 ) ));
+    }
+    t02inp.value = t01inp.value = "";
+    t1tbod.innerHTML = Object.entries( t01sel.selectedIndex < 6
+        ? pftyps[t01sel.value] || pftyps.new : nm0sets.p2typs[t01sel.value].t1 )
+      .concat([["", ""]]).map( ([k, v], i) => k === "_rev" ? ""
+        : "\n      <tr><td><input type=text value=\"" + k + "\"" + (i ? "" : " disabled")
+          + " /></td><td><select>" + dtOpts(typTest(v)[1])
+          + "</select></td><td><input type=text value='"
+          + vtoStr(v) + "' /></td></tr>" ).join("") + "\n      ";
+    t1tbod.querySelectorAll('input, select').forEach(e => e.onchange = t1sChg);
+    !evt || evt.target.id !== "t01sel" || cfgsUpd(evt);
+  },
+  t0sChg = () => {
+    let t0s = [ ["", ""], ["srcdoc", "Web source document"],
+        ["scrap", "No-frills, plain-text note"], ["event", "Calendaring item or logging record"],
+        ["memo", "Short memorandum or text msg"], ["contact", "Person's contact information"] ]
+        .concat(Object.values(nm0sets.p2typs).map(to => to.t0));
+    t01sel.innerHTML = t0s.map( ([k, v], i) => "\n      <option"
+      + (i !== 2 ? ">" : " selected>") + k + "</option>" ).join("") + "\n      ";
+    t0tbod.innerHTML = t0s.map( ([k, v], i) => !i ? ""
+      : "\n      <tr><td>" + (i < 6 ? "" : "<label>")
+        + "<input type=checkbox" + (i > 5 ? "" : " disabled")
+        + " />&ensp;" + k + (i < 6 ? "" : "</label>")
+        + "</td><td>" + v + "</td></tr>" ).join("") + "\n      ";
+  },
+  v0sChg = () => {
+    let v0v = v01sel.value,
+      v0s = [ ["", ""], ["V1:noteclips", "Preview <em>event</em>/<em>memo</em>/<em>contact</em>'s"],
+          ["V2:organized", "Notes/attach's by subdirectory"], ["V3:mutables", "All updatable notes"],
+          ["V4:statics", "All one-off text posts (<em>memo</em>s)"],
+          ["V5:deleted", "All discarded-note IDs"] ]
+        .concat(Object.values(nm0sets.p2vws).map(vo => vo.v0));
+    v01sel.innerHTML = v0s.map( ([k, v]) =>
+      "\n      <option>" + k + "</option>" ).join("") + "\n      ";
+    v01sel.value = v0v;
+    v0tbod.innerHTML = v0s.map( ([k, v], i) => !i ? ""
+      : "\n      <tr><td>" + (i < 6 ? "" : "<label>")
+      + "<input type=checkbox" + (i > 5 ? "" : " disabled")
+      + " />&ensp;" + k + (i < 6 ? "" : "</label>")
+      + "</td><td>" + v + "</td></tr>" ).join("") + "\n      ";
+    v02sel.innerHTML = Array.from(viewsel.options).filter((o, i) => i > 3)
+      .map(o => "\n      <option>" + o.value + "</option>").join("") + "\n      ";
+    v02sel.value = nm0sets.vwdflt || "";
+  },
+  viewApd = (add = viewsel.value) => {
+    let vw2s = Object.values(nm0sets.p2vws).map(vo => vo.cbxs !== 0 && vo.v0[0]).filter(e => e);
+    if (viewsel.options.length !== 9 + vw2s.length || add !== viewsel.value) {
+      viewsel.innerHTML = Array.from(viewsel.options)
+        .filter((o, i) => i < 9).map(o => "\n      " + o.outerHTML)
+        .concat(vw2s.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      ";
+      viewsel.value = add;
+      v0sChg();
+    }
+    !txd1.DBNAME || viewsel.selectedIndex > 3 || !(viewsel.selectedIndex = vidx = 5) || viewChg();
+  },
+  setsUpd = evt => {
+    let hlps = pdbcfg.querySelectorAll('.chelp'),
+      t0cs = t0tbod.querySelectorAll('[type=checkbox]:checked'),
+      v0cs = v0tbod.querySelectorAll('[type=checkbox]:checked'),
+      hid = !vbas || ( vbas !== 1
+        ? document.querySelector('#nmtbl thead:not(.dnone) td:first-of-type>input.dnone')
+        : document.querySelector('#nmdata .media-content>.pwrap>span.dnone') ),
+      ps = ["dbdflt", "dbdflt", "vwdflt", "ddoc", "uname", "uemail", "usecfg", "useset"],
+      idx = evt && actrls.concat([use1swi, use2swi, t0abtn, t0dbtn, v0abtn, v0dbtn])
+        .findIndex(e => e.id === evt.target.id);
+    if (typeof idx !== 'number' || idx < 0) { return; }
+    hlps.forEach(e => e.classList.add("dnone"));
+    idx || (opensel.value = !openswi.checked ? "" : txd1.DBNAME);
+    idx < 8 ? ( nm0sets[ps[idx]]
+      = !idx ? opensel.value : idx > 5 ? evt.target.checked : evt.target.value )
+    : idx < 9 ? ( !t01inp.value ? hlps[5].classList.remove("dnone")
+      : hlps[4].classList.remove("dnone")
+        || ( nm0sets.p2typs[t01inp.value] = { t0: [t01inp.value, t02inp.value],
+          t1: Object.assign( { _id: "", _rev: "" },
+            Object.fromEntries( Array.from(t1tbod.querySelectorAll('tr')).map( tr =>
+              [tr.children[0].firstChild.value, typTest(tr.children[2].firstChild.value, 1)[2]] )
+            .filter(e => e[0]) ) ) }) )
+    : idx < 10 ? ( !t0cs.length ? hlps[7].classList.remove("dnone") : hlps[6].classList.remove("dnone")
+      || t0cs.forEach(e => delete nm0sets.p2typs[e.parentElement.textContent.replace(/^\s/, "")]) )
+    : idx < 11 ? ( !vbas || !v01inp.value ? hlps[9].classList.remove("dnone")
+      : hlps[8].classList.remove("dnone") || ( nm0sets.p2vws[v01inp.value]
+        = { v0: ["V" + vbas + "-" + v01inp.value, v02inp.value], base: vbas,
+          cols: Array.from(colssel.options)
+            .map((o, i) => o.selected && i).filter(e => typeof e === 'number'),
+          sort: sortsel.value, desc: descswi.checked, filt: filtinp.value, cbxs: !hid,
+          hdrs: vbas < 2 && hdrsswi.checked, bods: vbas < 2 && bodsswi.checked } ) )
+    : !v0cs.length ? hlps[11].classList.remove("dnone") : hlps[10].classList.remove("dnone")
+      || v0cs.forEach(e => delete nm0sets.p2vws[e.parentElement.textContent.replace(/^\s?V\d-/, "")]);
+    idx !== 8 || !t01inp.value || t0sChg() || !(t01sel.value = t01inp.value)
+    || (t01inp.value = t02inp.value = "") || t1sChg();
+    idx !== 9 || !t0cs.length || t0sChg() || !txd1.DBNAME || t1sChg();
+    idx < 8 || idx > 9 || !txd1.DBNAME || (nm0cfgs[txd1.DBNAME].type0 = t01sel.value)
+    || (localStorage._nm0cfgs = JSON.stringify(nm0cfgs));
+    idx < 10 || (idx < 11 && !v01inp.value) || (idx > 10 && !v0cs.length)
+    || viewApd(idx < 11 && nm0sets.p2vws[v01inp.value].v0[0]);
+    idx !== 10 || !v01inp.value || !(v01sel.value = nm0sets.p2vws[v01inp.value].v0[0])
+    || (v01inp.value = v02inp.value = "");
+    idx < 10 || !txd1.DBNAME || v01sel.selectedIndex > -1 || (v01sel.selectedIndex = 2);
+    idx < 10 || !txd1.DBNAME || !(nm0cfgs[txd1.DBNAME].view0 = v01sel.value)
+    || (localStorage._nm0cfgs = JSON.stringify(nm0cfgs));
+    localStorage._nm0sets = JSON.stringify(nm0sets);
+  },
+  pdbOpen = () => {
+    let t0v = t01sel.value;
+    pfacnt.innerHTML = fwg = null;
+    !pdbssel.options[3] || (nmbulk.innerHTML = "");
+    pdbnam.innerText = txd1.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value;
+    pdbcre.innerText = !txd1.DBNAME ? ""
+      : new Date((nm0cfgs[txd1.DBNAME] || "").tsset || null).toLocaleString();
+    pdbusr.innerText = !txd1.DBNAME ? "" : (nm0cfgs[txd1.DBNAME] || "").user0;
+    pdbdsc.innerText = !txd1.DBNAME ? "" : (nm0cfgs[txd1.DBNAME] || "").descr;
+    !window.PouchDB || !txd1.DBNAME ? (pdbseq.innerText = pdbtot.innerText = "")
+    : new PouchDB(txd1.DBNAME).info()
+      .then(r => [pdbtot.innerText, pdbseq.innerText] = [r.doc_count, r.update_seq]).catch(rsp2Show);
+    pdbssel.selectedIndex < 2 ? (openswi.checked = viewsel.selectedIndex = vidx = 0)
+      || pfahlp.classList.remove("dnone") || pfacnt.classList.add("dnone") || (openswi.disabled = 1)
+    : pfahlp.classList.add("dnone") || pfacnt.classList.remove("dnone") || (openswi.disabled = 0)
+      || vidx > 3 || !v02sel.selectedIndex || (viewsel.selectedIndex = vidx = 3 + v02sel.selectedIndex);
+    Array.from(viewsel.options).forEach((o, i) => i < 4 || (o.disabled = !txd1.DBNAME));
+    openswi.disabled || (openswi.checked = (txd1.DBNAME === nm0sets.dbdflt));
+    (t01sel.value = (nm0cfgs[txd1.DBNAME] || "").type0 || "scrap") === t0v || t1sChg();
+    v01sel.value = !txd1.DBNAME ? "" : viewsel.value = (nm0cfgs[txd1.DBNAME] || "").view0 || "";
+    v01sel.selectedIndex > -1 || (v01sel.selectedIndex = viewsel.selectedIndex = 2);
+    viewChg();
+    pdbssel.selectedIndex !== 1 || !(viewsel.selectedIndex = vidx = 2)
+    || use1swi.checked || use1swi.click();
+    (!vidx || vidx > 3) && !tidx || tabActv();
+  },
+  pdbsGen = (dbs = []) => {
+    let ts0 = new Date().getTime();
+    !/^{['"].+}$/.test(localStorage._nm0sets || "")
+    || (nm0sets = fncTry(JSON.parse, localStorage._nm0sets) || {});
+    nm0sets && [ "uemail", "uname", "dbdflt", "vwdflt", "ddoc", "bedit",
+      "usecfg", "useset", "p2typs", "p2vws" ].every(pty => nm0sets.hasOwnProperty(pty))
+    || ( localStorage._nm0sets = JSON.stringify( nm0sets = Object.assign(
+      { uemail: "", uname: "", dbdflt: "", vwdflt: "V2:organized",
+        ddoc: "", bedit: 0, usecfg: 0, useset: 0,
+        p2typs: { mytype2: { t0: ["mytype2", "<em>[mytype2 description &hellip;]</em>"],
+            t1: { _id: "", _rev: "", key2: "", key3: "" } }},
+        p2vws: { myview2: { v0: ["V1-myview2", "<em>[myview2 description &hellip;]</em>"],
+            base: 1, cols: [], sort: "", desc: 0, filt: "", cbxs: 0, hdrs: 1, bods: 0 }} },
+      nm0sets || {} )));
+    !nm0sets.u2typs || delete nm0sets.u2typs; //temp cleanup
+    !nm0sets.u2vws || delete nm0sets.u2vws; //temp cleanup
+    !/^{['"].+}$/.test(localStorage._nm0cfgs || "")
+    || (nm0cfgs = fncTry(JSON.parse, localStorage._nm0cfgs) || {});
+    nm0cfgs && !dbs.forEach(e => nm0cfgs[e] || (nm0cfgs[e] = {}))
+    && ["type0", "view0", "tsset", "tsdel", "user0", "descr"]
+      .every(pty => Object.values(nm0cfgs).every(val => val.hasOwnProperty(pty)))
+    || ( localStorage._nm0cfgs = JSON.stringify( nm0cfgs = Object.fromEntries(
+      Object.entries(nm0cfgs).map( oe =>
+        //[uemail, uname, tscrtd, tsddel, dbdscr].forEach(e => delete oe[1].e) //temp cleanup
+        [ oe[0], Object.assign(
+          { type0: "scrap", view0: nm0sets.vwdflt, tsset: ts0, tsdel: 0,
+            user0: nm0sets.uname || nm0sets.uemail || "", descr: oe[0] + " project data" },
+          oe[1].user0 && oe[1] || {} )] ) )));
+    [pdbssel, opensel].forEach( (e, i) => e.innerHTML
+      = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
+        .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
+    v03inp.value = nm0sets.ddoc;
+    una2inp.value = nm0sets.uname || nm0sets.uemail;
+    unaminp.value = nm0sets.uname;
+    uemlinp.value = nm0sets.uemail;
+    !nm0sets.useset || use2swi.checked || use2swi.click();
+    viewApd() || viewsel.options.length > 9 || v0sChg();
+    t0sChg();
+    t1sChg();
+    opensel.value = pdbssel.value = nm0sets.dbdflt;
+    !pdbssel.value || pdbOpen();
+  };
+pdbssel.onchange = pdbOpen;
+viewsel.onchange = viewChg;
+colssel.onchange = colsTog;
+sortsel.onchange = viewRte;
+descswi.onchange = viewRte;
+filtbtn.onclick = filtExe;
+blktrig.onclick = bulkTog;
+document.querySelectorAll('#vctrls #editbtn, #vctrls #movebtn, #vctrls #delbtn')
+.forEach(btn => btn.onclick = filesChg);
+document.querySelectorAll(qslrs[2]).forEach(anc => anc.onclick = sdirXpd);
+document.querySelectorAll('#nmtbl td:first-of-type>input').forEach(inp => inp.onchange = chksTog);
+tabncs.forEach(anc => anc.onclick = viewChg);
+[dbd0btn, dbd1btn, pdb0btn].forEach(btn => btn.onclick = cfgsUpd);
+t01sel.onchange = t1sChg;
+v01sel.onchange = cfgsUpd;
+[[use1swi, pdbcfg], [use2swi, nmsets]].forEach( ([s, e]) => s.onclick = evt => e.querySelectorAll('p')
+  .forEach(p => p.classList[!s.checked ? "add" : "remove"]("dnone")) || setsUpd(evt) );
+[t0abtn, v0abtn, t0dbtn, v0dbtn].forEach(btn => btn.onclick = setsUpd);
+actrls.forEach(elm => elm.onchange = setsUpd);
+wipebtn.onclick = storDel;
+jselbtn.onclick = txtaSel;
+jsctxta.onblur = jscEval;
+!window.PouchDB || !PouchDB.allDbs ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(rsp2Show);
+</script>
+</html>
