@@ -427,9 +427,9 @@ strong, mark, table th, .table, .table thead td, .table thead th,
       <span id=filtctrl class=ccntr>
       <input type=text id=filtinp placeholder="Search pattern&hellip;" /><button id=filtbtn class=hgainl title="Notelist filter">
       FILT</button></span><span id=bulkctrl class="ccntr dnone"><span class=cfield>
-      <span class=ccntr><input type=text id=moveinp placeholder="New subdir&hellip;" /><button id=editbtn class="isucc hsuccl dnone" title="Note bulk edit">
-      EDIT</button><button id=movebtn class="isucc hsuccl" title="Note subdirectory reassignment">
-      MOV</button></span><span class=ccntr><button id=delbtn class="iwarn hwarnl" title="Note delete">
+      <span class=ccntr><input type=text id=moveinp placeholder="New subdir&hellip;" /><button id=movebtn class="isucc hsuccl" title="Note subdirectory reassigning">
+      MOV</button><button id=editbtn class="isucc hsuccl dnone" title="Multiple notes editing">
+      BULK EDIT</button></span><span class=ccntr><button id=delbtn class="iwarn hwarnl" title="Multiple notes deleting">
       DEL</button></span></span></span><span class=ccntr><a id=blktrig title="Checkboxes toggle">&#x2611;</a></span>
     </div>
   </div>
@@ -719,7 +719,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     &emsp;For convenience, choose a default database, and associated <em>view</em>, that will be directly opened and displayed at each&nbsp;startup.
   </p>
   <p class=dnone>
-    &emsp;To cut a lengthy notelist into smaller, more manageable sized chunks, optionally, provide the filename of a custom, <em>CouchDB design doc</em>; Then, (using the <em>DB&nbsp;Config</em> control panel) create one or more custom <em>view</em>s, and label each <em>view</em> with the same name as the filtering-algorithm <em>view</em> key of a corresponding, pre-written <em>map/reduce</em> function within that <em>design&nbsp;doc</em>.
+    &emsp;To cut a lengthy notelist into smaller, more manageable sized chunks, optionally, provide the ID pathname of a custom, <em>CouchDB design doc</em>; Then, using the <em>DB&nbsp;Config</em> control panel, create one or more notelist <em>view</em>s, and label each new <em>view</em> with the same name as the <em>view</em> key of a corresponding, <em>design&nbsp;doc</em> filtering algorithm (a pre-written <em>map/reduce</em> function within that <em>design&nbsp;doc</em>).
   </p>
   <p class=dnone>
     &emsp;Also, optionally, identify yourself by username and/or email, which will be associated with every database that you create. This becomes useful if, for example, your DB data is ever synced to a cloud server and/or consolidated with other users' data; User identities facilitate a team's management of multiple&nbsp;DBs.
@@ -731,7 +731,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     <span class="ccntr cleft">Default <em>view</em></span><span class=ccntr><select id=v02sel></select></span>
   </div>
   <div class=cfield>
-    <span class="ccntr cleft"><em>Design doc</em></span><span class=ccntr><input type=text id=v03inp placeholder="e.g., _design/notesorter2" /></span>
+    <span class="ccntr cleft"><em>Design doc</em></span><span class=ccntr><input type=text id=v03inp placeholder="e.g.: mydb/_design/notesorter2" /></span>
   </div>
   <div class=cfield>
     <span class="ccntr cleft">Username</span><span class=ccntr><input type=text id=unaminp /></span>
@@ -802,9 +802,10 @@ let fwg, rva2, rval, vbas, vusr,
   nm0sets = {},
   txd1 = {
     DBNAME: "",
+    DBNAM2: "",
     FILEID: "_design/ecosorter",
-    VIEW:   "files-idxlist",
-    OPTS:   { since: 0 }
+    VIEW:   "", //"files-idxlist",
+    OPTS:   {} //{ since: 0 }
   },
   copts = [`
           <option value="loc_subdir || (file_updated || file_created).subdir">Subdir</option>
@@ -1442,7 +1443,7 @@ let fwg, rva2, rval, vbas, vusr,
       colsTog(null, /^(?:id|seq)$/.test(ss[0]) ? ss[0] : "id");
       vwFnlz(evt);
     }).catch(rsp2Show);
-    vbas === 5 || new PouchDB(txd1.DBNAME)
+    vbas === 5 || new PouchDB(txd1.DBNAM2 || txd1.DBNAME)
     .query(txd1.FILEID.replace(/^_design\//, "") + "/" + txd1.VIEW, txd1.OPTS)
     .catch( () => new PouchDB(txd1.DBNAME).allDocs({
       startkey: descswi.checked != (vbas === 4) ? "~a" : undefined,
@@ -1495,7 +1496,7 @@ let fwg, rva2, rval, vbas, vusr,
       //endkey: descswi.checked ? "" : "~~~",
       descending: descswi.checked
     });
-    new PouchDB(txd1.DBNAME)
+    new PouchDB(txd1.DBNAM2 || txd1.DBNAME)
     .query(txd1.FILEID.replace(/^_design\//, "") + "/" + txd1.VIEW, txd1.OPTS)
     .catch( () => new PouchDB(txd1.DBNAME).allDocs({
       startkey: descswi.checked ? "~a" : undefined,
@@ -1673,8 +1674,10 @@ let fwg, rva2, rval, vbas, vusr,
       : +evt.currentTarget.parentElement.dataset.tabidx;
     vidx < 4 || txd1.DBNAME || pdbssel.selectedIndex === 1 || (viewsel.selectedIndex = vidx = 0);
     vbas = viewsel.selectedIndex > 3 && +/\d/.exec(viewsel.value);
-    !nm0sets.ddoc || (txd1.FILEID = nm0sets.ddoc);
-    txd1.VIEW = vidx > 8 && v03inp.value ? viewsel.value.replace(/^V\d-/, "")
+    !nm0sets.ddoc || !(txd1.FILEID = nm0sets.ddoc.replace(/^\/?[a-z][\w-]*\//, ""))
+    || !(txd1.DBNAM2 = nm0sets.ddoc.replace(/^\/?([a-z][\w-]*)\/.+/, "$1"))
+    || Array.from(opensel.options).map(o => o.value).includes(txd1.DBNAM2) || (txd1.DBNAM2 = "");
+    txd1.VIEW = vidx > 8 && nm0sets.ddoc ? viewsel.value.replace(/^V\d-/, "")
       : vbas === 4 ? "files-static" : vbas === 1 ? "files-contact" : "files-idxlist";
     if (vidx !== 2) {
       (colssel.innerHTML = !vbas ? "" : copts[vbas !== 5 ? 0 : 1]);
@@ -1921,7 +1924,8 @@ let fwg, rva2, rval, vbas, vusr,
     [pdbssel, opensel].forEach( (e, i) => e.innerHTML
       = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
         .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
-    !nm0sets.bedit || movebtn.classList.add("dnone") || editbtn.classList.remove("dnone");
+    !nm0sets.bedit || [moveinp, movebtn].forEach(elm => elm.classList.add("dnone"))
+    || editbtn.classList.remove("dnone");
     v03inp.value = nm0sets.ddoc;
     una2inp.value = nm0sets.uname || nm0sets.uemail;
     unaminp.value = nm0sets.uname;
@@ -1940,7 +1944,7 @@ sortsel.onchange = viewRte;
 descswi.onchange = viewRte;
 filtbtn.onclick = filtExe;
 blktrig.onclick = bulkTog;
-document.querySelectorAll('#vctrls #editbtn, #vctrls #movebtn, #vctrls #delbtn')
+document.querySelectorAll('#vctrls #movebtn, #vctrls #editbtn, #vctrls #delbtn')
 .forEach(btn => btn.onclick = filesChg);
 document.querySelectorAll(qslrs[2]).forEach(anc => anc.onclick = sdirXpd);
 document.querySelectorAll('#nmtbl td:first-of-type>input').forEach(inp => inp.onchange = chksTog);
