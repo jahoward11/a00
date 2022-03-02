@@ -352,8 +352,9 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   width: 128px;
   height: unset;
   margin: 0 1em 0 2em;
+  padding: 0;
 }
-#nmdata .media-left>.image img {
+#nmdata .media-left>.image>img {
   background-color: LightSteelBlue;
   min-height: 128px;
   cursor: pointer;
@@ -382,7 +383,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmsets #jselbtn { margin: -23px 8px 0 0; }
 @media screen and (max-width: 575px) {
   #nmdata .media-left>.image.rspv128 { width: 48px; margin: 0; }
-  #nmdata .media-left>.image.rspv128 img { min-height: 48px; }
+  #nmdata .media-left>.image.rspv128>img { min-height: 48px; }
   #nmdata .media-left>.image>figcaption { float: right; font-size: x-small; }
 }
 @media screen and (max-width: 719px) {
@@ -684,6 +685,12 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     &emsp;Also, select one (either a preset or one of your own) as the default <em>view</em>&mdash;i.e.,
     the <em>view</em> that will be displayed first each time the database is&nbsp;opened.
   </p>
+  <p class=dnone>
+    &emsp;<em>Pro Tip:</em> To further refine a <em>view</em>, or to cut a lengthy notelist into several smaller, more manageable sized chunks, provide the ID of a custom <em>CouchDB design doc</em> that has been added to the database; Then, create one or more notelist <em>view</em>s, and label each new <em>view</em> with the same name as its corresponding <em>design-doc view</em> key (a pre-written <em>map/reduce</em> function, a filtering algorithm, that is stored within that <em>design&nbsp;doc</em>).
+  </p>
+  <div class="cfield">
+    <span class="ccntr cleft"><em>Design doc</em></span><span class=ccntr><input type=text id=v03inp placeholder="e.g.: _design/notesorter2" /></span>
+  </div>
   <div class="cblock cfield">
     <span class="ccntr cleft">Default <em>view</em></span><span class=ccntr><select id=v01sel></select></span>
   </div>
@@ -718,11 +725,11 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   <p class=dnone>
     &emsp;For convenience, choose a default database, and associated <em>view</em>, that will be directly opened and displayed at each&nbsp;startup.
   </p>
+  <!-- p class=dnone>
+    &emsp;<em>Pro Tip:</em> To further refine the default <em>view</em>, provide the ID of a custom <em>CouchDB design doc</em> that has been added to the default database, and, using the <em>DB&nbsp;Config</em> control panel, label a new <em>view</em> with the same name as its corresponding <em>design-doc&nbsp;view</em>.
+  </p -->
   <p class=dnone>
-    &emsp;To cut a lengthy notelist into smaller, more manageable sized chunks, optionally, provide the ID pathname of a custom, <em>CouchDB design doc</em>; Then, using the <em>DB&nbsp;Config</em> control panel, create one or more notelist <em>view</em>s, and label each new <em>view</em> with the same name as the <em>view</em> key of a corresponding, <em>design&nbsp;doc</em> filtering algorithm (a pre-written <em>map/reduce</em> function within that <em>design&nbsp;doc</em>).
-  </p>
-  <p class=dnone>
-    &emsp;Also, optionally, identify yourself by username and/or email, which will be associated with every database that you create. This becomes useful if, for example, your DB data is ever synced to a cloud server and/or consolidated with other users' data; User identities facilitate a team's management of multiple&nbsp;DBs.
+    &emsp;Optionally, identify yourself by username and/or email, which will be associated with every database that you create. This becomes useful if, for example, your DB data is ever synced to a cloud server and/or consolidated with other users' data; User identities facilitate a team's management of multiple&nbsp;DBs.
   </p>
   <div class=cfield>
     <span class="ccntr cleft">Default DB</span><span class=ccntr><select id=opensel></select></span>
@@ -730,9 +737,9 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   <div class=cfield>
     <span class="ccntr cleft">Default <em>view</em></span><span class=ccntr><select id=v02sel></select></span>
   </div>
-  <div class=cfield>
-    <span class="ccntr cleft"><em>Design doc</em></span><span class=ccntr><input type=text id=v03inp placeholder="e.g.: mydb/_design/notesorter2" /></span>
-  </div>
+  <!-- div class=cfield>
+    <span class="ccntr cleft"><em>Design doc</em></span><span class=ccntr><input type=text id=v04inp placeholder="e.g.: _design/notesorter2" /></span>
+  </div -->
   <div class=cfield>
     <span class="ccntr cleft">Username</span><span class=ccntr><input type=text id=unaminp /></span>
   </div>
@@ -802,7 +809,6 @@ let fwg, rva2, rval, vbas, vusr,
   nm0sets = {},
   txd1 = {
     DBNAME: "",
-    DBNAM2: "",
     FILEID: "_design/ecosorter",
     VIEW:   "", //"files-idxlist",
     OPTS:   {} //{ since: 0 }
@@ -858,7 +864,7 @@ let fwg, rva2, rval, vbas, vusr,
   nmtfts = document.querySelectorAll('#nmtbl tfoot'),
   tabncs = document.querySelectorAll('#nmtabs li>a'),
   nmpans = [nmbulk, pfadd1, pdbcfg, nmsets],
-  actrls = [openswi, opensel, v02sel, v03inp, unaminp, uemlinp],
+  actrls = [openswi, opensel, v02sel, {}, unaminp, uemlinp], //v04inp
   pftyps = {
     new: {
       _id: "",
@@ -1022,7 +1028,7 @@ let fwg, rva2, rval, vbas, vusr,
   date0Fmt = nbr => !nbr ? "" : new Date(nbr).toISOString().replace(/T.+$/, ""),
   date1Fmt = str => !str ? ""
     : new Date(str).toUTCString().replace(/.+(\d{2} [a-z]{3} \d{4}).+/i, "$1"),
-  aurlGen = isrc => aurls(isrc) || isrc,
+  aurlGen = isrc => aurls[isrc] || isrc,
   idGen = (pfx, tsx, unx) => (/^[a-z~][a-z]$/i.test("" + pfx) ? pfx : "~p")
     + ( typeof tsx === 'string' && /^[\w:.-]*$/.test(tsx) ? tsx
       : (fncTry(v => new Date(v), tsx) || new Date()).toISOString().replace(/\.\w+$|[:-]/g, "") )
@@ -1443,7 +1449,7 @@ let fwg, rva2, rval, vbas, vusr,
       colsTog(null, /^(?:id|seq)$/.test(ss[0]) ? ss[0] : "id");
       vwFnlz(evt);
     }).catch(rsp2Show);
-    vbas === 5 || new PouchDB(txd1.DBNAM2 || txd1.DBNAME)
+    vbas === 5 || new PouchDB(txd1.DBNAME)
     .query(txd1.FILEID.replace(/^_design\//, "") + "/" + txd1.VIEW, txd1.OPTS)
     .catch( () => new PouchDB(txd1.DBNAME).allDocs({
       startkey: descswi.checked != (vbas === 4) ? "~a" : undefined,
@@ -1496,7 +1502,7 @@ let fwg, rva2, rval, vbas, vusr,
       //endkey: descswi.checked ? "" : "~~~",
       descending: descswi.checked
     });
-    new PouchDB(txd1.DBNAM2 || txd1.DBNAME)
+    new PouchDB(txd1.DBNAME)
     .query(txd1.FILEID.replace(/^_design\//, "") + "/" + txd1.VIEW, txd1.OPTS)
     .catch( () => new PouchDB(txd1.DBNAME).allDocs({
       startkey: descswi.checked ? "~a" : undefined,
@@ -1505,14 +1511,16 @@ let fwg, rva2, rval, vbas, vusr,
       include_docs: true }) )
     .then(rslt => {
       let na, nb, ra, rb,
-        nsX = nf => nf.trim()
+        nsX = nf => (nf || "").trim()
           .replace(/(.*?) *((?:\bde +|\bvon +|)['‘’\w-]+)([ ,]*\b[js]r\.?|[ ,]*\b[ivx]+|)$/i, "$2, $1$3"),
-        rrs = rslt.rows.filter(r => r && ( /contact|phone/.test((r.doc || r.value).file_type || "")
-            || (ra = a.doc || a.value).name_full || ra.name_user || ra.name ))
-          .sort( (a, b) => !(na = (ra = a.doc || a.value).name_full || ra.name_user || ra.name || ra._id)
-              || !(nb = (rb = b.doc || b.value).name_full || rb.name_user || rb.name || rb._id) ? 0
-            : (nsX(na).replace(/[.,;:/]/g, "") < nsX(nb).replace(/[.,;:/]/g, ""))
-              == descswi.checked ? 1 : -1 );
+        rrs = rslt.rows.filter( r => r
+            && ( /anno|contact|event|memo|phone|post/.test((r.doc || r.value).file_type || "")
+            || (ra = r.doc || r.value).name_full || ra.name_user || ra.name ) )
+          .sort( (a, b) => !( na = nsX((ra = a.doc || a.value).name_full).replace(/[.,;:/]/g, "")
+                || ra.name_user || ra.name || ra._id )
+              || !( nb = nsX((rb = b.doc || b.value).name_full).replace(/[.,;:/]/g, "")
+                || rb.name_user || rb.name || rb._id )
+            ? 0 : (na < nb) == descswi.checked ? 1 : -1 );
       ftotal.innerText = rrs.length;
       nmdata.innerHTML = "\n  <span class=\"fltrt mtup3p5\">&ensp;Show all:&ensp;"
       + "<label><input type=checkbox id=hdrsswi /> <a>headers</a></label>&ensp;"
@@ -1527,20 +1535,27 @@ let fwg, rva2, rval, vbas, vusr,
     </div>
     <div class="media-content">
       <div class=pwrap><span class=dnone><input type=checkbox /> </span><strong>${
-        nsX(ra.name_full || ra.name_user || ra.name || ra._id) }</strong>
-  <em>${ ra.roles.join(", ") }</em>
-  <details><summary>Short Bio</summary>${ ra.bio_short }</details></div>
-      <div class=pwrap><details><strong>Birthdate:</strong> ${ date1Fmt(ra.birthdate) }
-  <strong>Emails:</strong> ${ ra.emails.join(", ") }
-  <strong>Phones:</strong> ${ ra.phones.join(", ") }${
-        !ra.social_profiles.length ? ""
-          : "\n<strong>Social profiles:</strong> " + ra.social_profiles.join(", ") }${
-        !ra.project_urls.length ? ""
-          : "\n<strong>Project urls:</strong> " + ra.project_urls.join(", ") }${
-        !ra.ts_created ? ""
-          : "\n<strong>Joined team:</strong> " + date1Fmt(ra.ts_created) }${
+        nsX(ra.name_full) || ra.name_user || ra.name || ra._id }</strong>${
+        !ra.roles ? "" : "\n<em>" + ra.roles.join(", ") + "</em>" }
+<details>${ !ra.hasOwnProperty("bio_short")
+          ? "From/To/Subject/Headline/Reflink/Cr'd/Up'd/Subdir: [ ... ]"
+          : "<summary>Short Bio</summary>" + ra.bio_short }</details></div>
+      <div class=pwrap><details>${
+        !ra.hasOwnProperty("birthdate") ? ""
+          : "<strong>Birthdate:</strong> " + date1Fmt(ra.birthdate) + "\n" }${
+        !ra.hasOwnProperty("emails") ? ""
+          : "<strong>Emails:</strong> " + ra.emails.join(", ") + "\n" }${
+        !ra.hasOwnProperty("phones") ? ""
+          : "<strong>Phones:</strong> " + ra.phones.join(", ") + "\n" }${
+        !(ra.social_profiles || "").length ? ""
+          : "<strong>Social profiles:</strong> " + ra.social_profiles.join(", ") + "\n" }${
+        !(ra.project_urls || "").length ? ""
+          : "<strong>Project urls:</strong> " + ra.project_urls.join(", ") + "\n" }${
+        !ra.ts_created ? "" : "<strong>"
+            + (!/contact|phone/.test(ra.file_type || "") ? "Created on:" : "Joined team:")
+            + "</strong> " + date1Fmt(ra.ts_created) + "\n" }${
         !ra.ts_updated ? ""
-          : "\n<strong>Last updated:</strong> " + date1Fmt(ra.ts_updated) }</details></div>
+          : "<strong>Last updated:</strong> " + date1Fmt(ra.ts_updated) + "\n" }</details></div>
     </div>
   </article>` ).join("") + "\n";
       hdrsswi.onchange = evt => document.querySelectorAll('#nmdata .media-content>:first-child>details')
@@ -1674,11 +1689,6 @@ let fwg, rva2, rval, vbas, vusr,
       : +evt.currentTarget.parentElement.dataset.tabidx;
     vidx < 4 || txd1.DBNAME || pdbssel.selectedIndex === 1 || (viewsel.selectedIndex = vidx = 0);
     vbas = viewsel.selectedIndex > 3 && +/\d/.exec(viewsel.value);
-    !nm0sets.ddoc || !(txd1.FILEID = nm0sets.ddoc.replace(/^\/?[a-z][\w-]*\//, ""))
-    || !(txd1.DBNAM2 = nm0sets.ddoc.replace(/^\/?([a-z][\w-]*)\/.+/, "$1"))
-    || Array.from(opensel.options).map(o => o.value).includes(txd1.DBNAM2) || (txd1.DBNAM2 = "");
-    txd1.VIEW = vidx > 8 && nm0sets.ddoc ? viewsel.value.replace(/^V\d-/, "")
-      : vbas === 4 ? "files-static" : vbas === 1 ? "files-contact" : "files-idxlist";
     if (vidx !== 2) {
       (colssel.innerHTML = !vbas ? "" : copts[vbas !== 5 ? 0 : 1]);
       vidx > 3 || (sortsel.innerHTML = "") || (colssel.selectedIndex = -1);
@@ -1691,7 +1701,7 @@ let fwg, rva2, rval, vbas, vusr,
     if (vidx < 4 && evt && [nmflow, nmdata].every(e => e.classList.contains('dnone'))) {
       return tabActv(evt);
     }
-    vidx < 4 || !(vkey = viewsel.value.replace(/-?\d+$|^V\d:/g, "") || "myview")
+    vidx < 4 || !(vkey = viewsel.value.replace(/-?\d+$|^V\d[:-]/g, "") || "myview")
     || ( v01inp.value = vkey + "-" + ( 1
       + ( Array.from(v01sel.options).map(o => o.value.includes(vkey) && /\d+$/.exec(o.value))
         .filter(e => e).map(e => +e).sort().reverse()[0] || 1 ) ));
@@ -1701,20 +1711,24 @@ let fwg, rva2, rval, vbas, vusr,
     .forEach(n => colssel.options[n].selected = true);
     vidx < 4 || !colssel.innerHTML || colsTog();
     vidx < 9 || (descswi.checked = (nm0sets.p2vws[vusr] || "").desc);
+    txd1.FILEID = v03inp.value = (nm0sets.p2vws[vusr] || "").ddoc || "";
+    txd1.VIEW = vidx > 8 && txd1.FILEID ? viewsel.value.replace(/^V\d-/, "")
+      : vbas === 4 ? "files-static" : vbas === 1 ? "files-contact" : "files-idxlist";
     viewRte(evt);
   },
   cfgsUpd = evt => {
-    let ts0 = new Date().getTime(),
+    let cfg = nm0cfgs[txd1.DBNAME],
+      ts0 = new Date().getTime(),
       db0 = pdb0inp.value.trim(),
       hlps = pdbcfg.querySelectorAll('.chelp');
     hlps.forEach(e => e.classList.add("dnone"));
-    if (evt && /[tv]01sel/.test(evt.target.id) && nm0cfgs[txd1.DBNAME]) {
-      evt.target.id !== "t01sel" || (nm0cfgs[txd1.DBNAME].type0 = t01sel.value);
-      evt.target.id !== "v01sel" || (nm0cfgs[txd1.DBNAME].view0 = v01sel.value);
+    if (evt && /[tv]01sel/.test(evt.target.id) && cfg) {
+      evt.target.id !== "t01sel" || (cfg.type0 = t01sel.value);
+      evt.target.id !== "v01sel" || (cfg.view0 = v01sel.value);
       localStorage._nm0cfgs = JSON.stringify(nm0cfgs);
     } else if (evt && /dbd[01]btn/.test(evt.target.id)
     && txd1.DBNAME && ddelinp.value === txd1.DBNAME && window.PouchDB) {
-      nm0cfgs[txd1.DBNAME].tsdel = ts0;
+      (cfg || {}).tsdel = ts0;
       evt.target.id !== "dbd0btn" || new PouchDB(txd1.DBNAME).compact().then( trsp =>
           hlps[0].classList.remove("dnone") || rsp2Show(trsp) )
           //|| !vidx || (viewsel.selectedIndex = vidx = 0) || viewChg() )
@@ -1818,7 +1832,8 @@ let fwg, rva2, rval, vbas, vusr,
       viewsel.value = add;
       v0sChg();
     }
-    !txd1.DBNAME || viewsel.selectedIndex > 3 || !(viewsel.selectedIndex = vidx = 5) || viewChg();
+    !txd1.DBNAME || viewsel.selectedIndex > 3 || tabActv();
+    //!(viewsel.selectedIndex = vidx = 5) || viewChg();
   },
   setsUpd = evt => {
     let hlps = pdbcfg.querySelectorAll('.chelp'),
@@ -1827,7 +1842,7 @@ let fwg, rva2, rval, vbas, vusr,
       hid = !vbas || ( vbas !== 1
         ? document.querySelector('#nmtbl thead:not(.dnone) td:first-of-type>input.dnone')
         : document.querySelector('#nmdata .media-content>.pwrap>span.dnone') ),
-      ps = ["dbdflt", "dbdflt", "vwdflt", "ddoc", "uname", "uemail", "usecfg", "useset"],
+      ps = ["dbdflt", "dbdflt", "vwdflt", "", "uname", "uemail", "usecfg", "useset"], //"ddoc"
       idx = evt && actrls.concat([use1swi, use2swi, t0abtn, t0dbtn, v0abtn, v0dbtn])
         .findIndex(e => e.id === evt.target.id);
     if (typeof idx !== 'number' || idx < 0) { return; }
@@ -1846,7 +1861,7 @@ let fwg, rva2, rval, vbas, vusr,
       || t0cs.forEach(e => delete nm0sets.p2typs[e.parentElement.textContent.replace(/^\s/, "")]) )
     : idx < 11 ? ( !vbas || !v01inp.value ? hlps[9].classList.remove("dnone")
       : hlps[8].classList.remove("dnone") || ( nm0sets.p2vws[v01inp.value]
-        = { v0: ["V" + vbas + "-" + v01inp.value, v02inp.value], base: vbas,
+        = { v0: ["V" + vbas + "-" + v01inp.value, v02inp.value], base: vbas, ddoc: v03inp.value,
           cols: Array.from(colssel.options)
             .map((o, i) => o.selected && i).filter(e => typeof e === 'number'),
           sort: sortsel.value, desc: descswi.checked, filt: filtinp.value, cbxs: !hid,
@@ -1856,26 +1871,28 @@ let fwg, rva2, rval, vbas, vusr,
     idx !== 8 || !t01inp.value || t0sChg() || !(t01sel.value = t01inp.value)
     || (t01inp.value = t02inp.value = "") || t1sChg();
     idx !== 9 || !t0cs.length || t0sChg() || !txd1.DBNAME || t1sChg();
-    idx < 8 || idx > 9 || !txd1.DBNAME || (nm0cfgs[txd1.DBNAME].type0 = t01sel.value)
+    idx < 8 || idx > 9 || !txd1.DBNAME || ((nm0cfgs[txd1.DBNAME] || {}).type0 = t01sel.value)
     || (localStorage._nm0cfgs = JSON.stringify(nm0cfgs));
     idx < 10 || (idx < 11 && !v01inp.value) || (idx > 10 && !v0cs.length)
-    || viewApd(idx < 11 && nm0sets.p2vws[v01inp.value].v0[0]);
-    idx !== 10 || !v01inp.value || !(v01sel.value = nm0sets.p2vws[v01inp.value].v0[0])
+    || viewApd(idx > 10 ? null : (nm0sets.p2vws[v01inp.value] || "").v0[0]);
+    idx !== 10 || !v01inp.value || !(v01sel.value = (nm0sets.p2vws[v01inp.value] || "").v0[0])
     || (v01inp.value = v02inp.value = "");
     idx < 10 || !txd1.DBNAME || v01sel.selectedIndex > -1 || (v01sel.selectedIndex = 2);
-    idx < 10 || !txd1.DBNAME || !(nm0cfgs[txd1.DBNAME].view0 = v01sel.value)
+    idx < 10 || !txd1.DBNAME || !(((nm0cfgs[txd1.DBNAME] || {}).view0 = v01sel.value) || 1)
     || (localStorage._nm0cfgs = JSON.stringify(nm0cfgs));
     localStorage._nm0sets = JSON.stringify(nm0sets);
   },
   pdbOpen = () => {
-    let t0v = t01sel.value;
+    let cfg,
+      t0v = t01sel.value;
     pfacnt.innerHTML = fwg = null;
     !pdbssel.options[3] || (nmbulk.innerHTML = "");
     pdbnam.innerText = txd1.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value;
+    cfg = nm0cfgs[txd1.DBNAME] || "";
     pdbcre.innerText = !txd1.DBNAME ? ""
-      : new Date((nm0cfgs[txd1.DBNAME] || "").tsset || null).toLocaleString();
-    pdbusr.innerText = !txd1.DBNAME ? "" : (nm0cfgs[txd1.DBNAME] || "").user0;
-    pdbdsc.innerText = !txd1.DBNAME ? "" : (nm0cfgs[txd1.DBNAME] || "").descr;
+      : new Date(cfg.tsset || null).toLocaleString();
+    pdbusr.innerText = !txd1.DBNAME ? "" : cfg.user0;
+    pdbdsc.innerText = !txd1.DBNAME ? "" : cfg.descr;
     !window.PouchDB || !txd1.DBNAME ? (pdbseq.innerText = pdbtot.innerText = "")
     : new PouchDB(txd1.DBNAME).info()
       .then(r => [pdbtot.innerText, pdbseq.innerText] = [r.doc_count, r.update_seq]).catch(rsp2Show);
@@ -1885,8 +1902,8 @@ let fwg, rva2, rval, vbas, vusr,
       || vidx > 3 || !v02sel.selectedIndex || (viewsel.selectedIndex = vidx = 3 + v02sel.selectedIndex);
     Array.from(viewsel.options).forEach((o, i) => i < 4 || (o.disabled = !txd1.DBNAME));
     openswi.disabled || (openswi.checked = (txd1.DBNAME === nm0sets.dbdflt));
-    (t01sel.value = (nm0cfgs[txd1.DBNAME] || "").type0 || "scrap") === t0v || t1sChg();
-    v01sel.value = !txd1.DBNAME ? "" : viewsel.value = (nm0cfgs[txd1.DBNAME] || "").view0 || "";
+    (t01sel.value = cfg.type0 || "scrap") === t0v || t1sChg();
+    v01sel.value = !txd1.DBNAME ? "" : viewsel.value = cfg.view0 || "";
     v01sel.selectedIndex > -1 || (v01sel.selectedIndex = viewsel.selectedIndex = 2);
     viewChg();
     pdbssel.selectedIndex !== 1 || !(viewsel.selectedIndex = vidx = 2)
@@ -1897,26 +1914,28 @@ let fwg, rva2, rval, vbas, vusr,
     let ts0 = new Date().getTime();
     !/^{['"].+}$/.test(localStorage._nm0sets || "")
     || (nm0sets = fncTry(JSON.parse, localStorage._nm0sets) || {});
-    nm0sets && [ "uemail", "uname", "dbdflt", "vwdflt", "ddoc", "bedit",
+    nm0sets && [ "uemail", "uname", "dbdflt", "vwdflt", "bedit", //"ddoc",
       "usecfg", "useset", "p2typs", "p2vws" ].every(pty => nm0sets.hasOwnProperty(pty))
     || ( localStorage._nm0sets = JSON.stringify( nm0sets = Object.assign(
       { uemail: "", uname: "", dbdflt: "", vwdflt: "V2:organized",
-        ddoc: "", bedit: 0, usecfg: 0, useset: 0,
+        bedit: 0, usecfg: 0, useset: 0, //ddoc: "",
         p2typs: { mytype2: { t0: ["mytype2", "<em>[mytype2 description &hellip;]</em>"],
-            t1: { _id: "", _rev: "", key2: "", key3: "" } }},
+          t1: { _id: "", _rev: "", key2: "", key3: "" } }},
         p2vws: { myview2: { v0: ["V1-myview2", "<em>[myview2 description &hellip;]</em>"],
-            base: 1, cols: [], sort: "", desc: 0, filt: "", cbxs: 0, hdrs: 1, bods: 0 }} },
+          base: 1, ddoc: "", cols: [], sort: "", desc: 0, filt: "", cbxs: 0, hdrs: 1, bods: 0 }} },
       nm0sets || {} )));
+    //Object.values(nm0sets.p2vws).every(v => v.hasOwnProperty("ddoc"))
     !nm0sets.u2typs || delete nm0sets.u2typs; //temp cleanup
     !nm0sets.u2vws || delete nm0sets.u2vws; //temp cleanup
+    !nm0sets.hasOwnProperty("ddoc") || delete nm0sets.ddoc; //temp cleanup
     !/^{['"].+}$/.test(localStorage._nm0cfgs || "")
     || (nm0cfgs = fncTry(JSON.parse, localStorage._nm0cfgs) || {});
     nm0cfgs && !dbs.forEach(e => nm0cfgs[e] || (nm0cfgs[e] = {}))
+    && !Object.values(nm0cfgs).forEach(v => delete v.ddoc0) //temp cleanup
     && ["type0", "view0", "tsset", "tsdel", "user0", "descr"]
       .every(pty => Object.values(nm0cfgs).every(val => val.hasOwnProperty(pty)))
     || ( localStorage._nm0cfgs = JSON.stringify( nm0cfgs = Object.fromEntries(
       Object.entries(nm0cfgs).map( oe =>
-        //[uemail, uname, tscrtd, tsddel, dbdscr].forEach(e => delete oe[1].e) //temp cleanup
         [ oe[0], Object.assign(
           { type0: "scrap", view0: nm0sets.vwdflt, tsset: ts0, tsdel: 0,
             user0: nm0sets.uname || nm0sets.uemail || "", descr: oe[0] + " project data" },
@@ -1926,7 +1945,7 @@ let fwg, rva2, rval, vbas, vusr,
         .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
     !nm0sets.bedit || [moveinp, movebtn].forEach(elm => elm.classList.add("dnone"))
     || editbtn.classList.remove("dnone");
-    v03inp.value = nm0sets.ddoc;
+    //v04inp.value = nm0sets.ddoc;
     una2inp.value = nm0sets.uname || nm0sets.uemail;
     unaminp.value = nm0sets.uname;
     uemlinp.value = nm0sets.uemail;
