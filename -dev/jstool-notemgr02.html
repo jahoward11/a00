@@ -307,6 +307,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }
 #nmwrap .chelp { font-size: 10.5px; line-height: normal; margin-top: 3.5px; } /* 12px */
 #nmwrap .fsz10p5 { font-size: 10.5px; }
+#nmwrap .fsz14p { font-size: 14px; }
 #nmwrap .table { line-height: normal; } /* 16.5px */
 #nmwrap .lnht1m { line-height: 1; } /* 10.5px, 14px */
 #nmwrap .lnhtnml { line-height: normal; } /* 12px, 16.5px */
@@ -1105,9 +1106,9 @@ let fwg, rva2, rval, vbas, vusr,
   bulkTog = () => {
     let hid = vbas !== 1
         ? document.querySelector('#nmtbl thead:not(.dnone) td:first-of-type>input.dnone')
-        : document.querySelector('#nmdata .media-content>.pwrap>span.dnone');
+        : document.querySelector('#nmdata .media-content>details:first-of-type>summary>span.dnone');
     ( vbas !== 1 ? document.querySelectorAll(qslrs[4])
-      : document.querySelectorAll('#nmdata .media-content>.pwrap>span') )
+      : document.querySelectorAll('#nmdata .media-content>details:first-of-type>summary>span') )
       .forEach(e => e.className = hid ? "" : "dnone");
     if (hid) {
       blk2Tog();
@@ -1514,7 +1515,7 @@ let fwg, rva2, rval, vbas, vusr,
         nsX = nf => (nf || "").trim()
           .replace(/(.*?) *((?:\bde +|\bvon +|)['‘’\w-]+)([ ,]*\b[js]r\.?|[ ,]*\b[ivx]+|)$/i, "$2, $1$3"),
         rrs = rslt.rows.filter( r => r
-            && ( /anno|contact|event|memo|phone|post/.test((r.doc || r.value).file_type || "")
+            && ( /anno|contact|event|memo|phone|post/i.test((r.doc || r.value).file_type || "")
             || (ra = r.doc || r.value).name_full || ra.name_user || ra.name ) )
           .sort( (a, b) => !( na = nsX((ra = a.doc || a.value).name_full).replace(/[.,;:/]/g, "")
                 || ra.name_user || ra.name || ra._id )
@@ -1534,36 +1535,64 @@ let fwg, rva2, rval, vbas, vusr,
       <figcaption>${ ra.name_user || "" }</figcaption></figure>
     </div>
     <div class="media-content">
-      <div class=pwrap><span class=dnone><input type=checkbox /> </span><strong>${
-        nsX(ra.name_full) || ra.name_user || ra.name || ra._id }</strong>${
-        !ra.roles ? "" : "\n<em>" + ra.roles.join(", ") + "</em>" }
-<details>${ !ra.hasOwnProperty("bio_short")
-          ? "From/To/Subject/Headline/Reflink/Cr'd/Up'd/Subdir: [ ... ]"
-          : "<summary>Short Bio</summary>" + ra.bio_short }</details></div>
-      <div class=pwrap><details>${
-        !ra.hasOwnProperty("birthdate") ? ""
-          : "<strong>Birthdate:</strong> " + date1Fmt(ra.birthdate) + "\n" }${
-        !ra.hasOwnProperty("emails") ? ""
-          : "<strong>Emails:</strong> " + ra.emails.join(", ") + "\n" }${
-        !ra.hasOwnProperty("phones") ? ""
-          : "<strong>Phones:</strong> " + ra.phones.join(", ") + "\n" }${
-        !(ra.social_profiles || "").length ? ""
-          : "<strong>Social profiles:</strong> " + ra.social_profiles.join(", ") + "\n" }${
-        !(ra.project_urls || "").length ? ""
-          : "<strong>Project urls:</strong> " + ra.project_urls.join(", ") + "\n" }${
-        !ra.ts_created ? "" : "<strong>"
-            + (!/contact|phone/.test(ra.file_type || "") ? "Created on:" : "Joined team:")
-            + "</strong> " + date1Fmt(ra.ts_created) + "\n" }${
-        !ra.ts_updated ? ""
-          : "<strong>Last updated:</strong> " + date1Fmt(ra.ts_updated) + "\n" }</details></div>
+      <details>
+        <summary>
+          <span class=dnone>&nbsp;<input type=checkbox /> </span>
+          <strong>${ ra.from ? ra.from.replace(/ .*$/, "") //ra.name_full
+            : nsX(ra.name_full) || ra.name_user || ra.name || ra._id }</strong>
+          <em>${
+            /contact|phone/i.test(ra.file_type) || !ra.ts_created && !ra.file_created ? ""
+            : new Date(ra.ts_created || ra.file_created.timestamp || null).toLocaleString() }</em>
+        </summary>
+        <div class="pwrap fsz10p5">${
+          (!ra.roles ? "" : "<em class=\"fsz14p lnhtnml\">" + ra.roles.join(", ") + "</em>\n")
+          + (!ra.linkref ? "" : "PRJ REF: " + ra.linkref + "\n")
+          + (!ra.from ? "" : "FROM: " + ra.from + "\n")
+          + (!(ra.to || "").length ? "" : "TO: " + ra.to.join(", ") + "\n")
+          + (!ra._id ? "" : "NOTE ID: <a>" + ra._id + "</a>\n")
+          + ( ra.hasOwnProperty("bio_short") ? "SHORT BIO: " + ra.bio_short
+            : "PEOPLE/HEADLINE/CR'D/UP'D/SUBDIR: [ ... ]" ) }</div>
+      </details>
+      <details>
+        ${ !ra.subject && !/anno/i.test(ra.file_type) ? ""
+          : "<summary>" + (ra.subject || "Annotation") + "</summary>" }
+        <div class=pwrap>${ /memo|post/i.test(ra.file_type) ? ra.body : /anno/i.test(ra.file_type)
+          ? "<span class=fsz10p5>TAGS:&nbsp;</span>" + ra.tags
+            + "\n<span class=fsz10p5>TOC&nbsp;FMT:&nbsp;</span>" + ra.tocfmt
+            + "\n<span class=fsz10p5>STRIKES,&nbsp;INSERTS&nbsp;&amp;&nbsp;HIGHLIGHTS:</span>\n"
+            + ra.texthl.join("\n")
+          : ( !ra.hasOwnProperty("time") ? ""
+              : "<strong>Time:</strong> " + date1Fmt(ra.time) + "\n" )
+            + ( !ra.hasOwnProperty("place") ? ""
+              : "<strong>Place:</strong> " + date1Fmt(ra.place) + "\n" )
+            + ( !(ra.map_refs || "").length ? ""
+              : "<strong>Map refs:</strong> " + date1Fmt(ra.map_refs).join(", ") + "\n" )
+            + ( !ra.hasOwnProperty("description") ? ""
+              : "<strong>Description:</strong> " + date1Fmt(ra.description) + "\n" )
+            + ( !ra.hasOwnProperty("birthdate") ? ""
+              : "<strong>Birthdate:</strong> " + date1Fmt(ra.birthdate) + "\n" )
+            + ( !ra.hasOwnProperty("emails") ? ""
+              : "<strong>Emails:</strong> " + ra.emails.join(", ") + "\n" )
+            + ( !ra.hasOwnProperty("phones") ? ""
+              : "<strong>Phones:</strong> " + ra.phones.join(", ") + "\n" )
+            + ( !(ra.social_profiles || "").length ? ""
+              : "<strong>Social profiles:</strong> " + ra.social_profiles.join(", ") + "\n" )
+            + ( !(ra.project_urls || "").length ? ""
+              : "<strong>Project urls:</strong> " + ra.project_urls.join(", ") + "\n" )
+            + ( !ra.ts_created ? "" : "<strong>"
+                + (!/contact|phone/.test(ra.file_type || "") ? "Created on:" : "Joined team:")
+                + "</strong> " + date1Fmt(ra.ts_created) + "\n" )
+            + ( !ra.ts_updated ? ""
+              : "<strong>Last updated:</strong> " + date1Fmt(ra.ts_updated) + "\n" ) }</div>
+      </details>
     </div>
   </article>` ).join("") + "\n";
-      hdrsswi.onchange = evt => document.querySelectorAll('#nmdata .media-content>:first-child>details')
+      hdrsswi.onchange = evt => document.querySelectorAll('#nmdata .media-content>details:first-of-type')
         .forEach(e => e.open = evt.target.checked);
-      bodsswi.onchange = evt => document.querySelectorAll('#nmdata .media-content>:last-child>details')
+      bodsswi.onchange = evt => document.querySelectorAll('#nmdata .media-content>details:last-of-type')
         .forEach(e => e.open = evt.target.checked);
       document.querySelectorAll('#nmdata .media-left>.image>img').forEach(e => e.onclick = fileLoad);
-      document.querySelectorAll('#nmdata .media-content>.pwrap>span>input')
+      document.querySelectorAll('#nmdata .media-content>details:first-of-type>summary input')
       .forEach(inp => inp.onchange = blk2Tog);
       vidx > 8 && !(nm0sets.p2vws[vusr] || "").hdrs || hdrsswi.click();
       !(nm0sets.p2vws[vusr] || "").bods || bodsswi.click();
