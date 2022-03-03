@@ -335,10 +335,10 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap #imgain2 { width: 24px; text-align: center; }
 #nmwrap #imgain3 { font-size: calc(40px / 3); width: 192px; text-align: left; }
 #nmwrap #imgain3>span { color: revert; opacity: 0.5; }
-#vctrls #pdbssel { width: 136px; }
+#vctrls #pdbssel { width: 136px; padding: 0 4px; }
 #vctrls #ftotal { display: inline-block; min-width: 20px; }
 #vctrls #viewsel { width: 24px; }
-#vctrls #colssel, #vctrls #sortsel { width: 100px; }
+#vctrls #colssel, #vctrls #sortsel { width: 100px; padding: 0 4px; }
 #vctrls #descswi { margin-right: 2px; }
 #vctrls #filtinp { width: 168px; }
 #vctrls #moveinp { width: 114px; }
@@ -814,34 +814,39 @@ let fwg, rva2, rval, vbas, vusr,
     VIEW:   "", //"files-idxlist",
     OPTS:   {} //{ since: 0 }
   },
-  copts = [`
-          <option value="loc_subdir || (file_updated || file_created).subdir">Subdir</option>
-          <option value="id">Note ID</option>
-          <option value="file_type">Type</option>
-          <option value="file_updated.timestamp">Updated</option>
-          <option value="file_updated.username">Up'd By</option>
-          <option value="file_updated.version">Up'd Ver</option>
-          <option value="file_updated.misc || file_updated.notes">Up'd Misc</option>
-          <option value="file_created.timestamp">Created</option>
-          <option value="file_created.username">Cr'd By</option>
-          <option value="file_created.version">Cr'd Ver</option>
-          <option value="file_created.misc || file_created.notes">Cr'd Misc</option>
-          <option value="people">People</option>
-          <option value="name_user">Username</option>
-          <option value="image_src">Image</option>
-          <option value="linkref">Link Ref</option>
-          <option value="from">From</option>
-          <option value="to">To</option>
-          <option value="subject">Subject</option>
-          <option value="headline">Headline</option>
-          <option value="time">Time</option>
-          <option value="place">Place</option>
+  copt0 = `<option value="loc_subdir || (file_updated || file_created).subdir">Subdir</option>
+            <option value="id">Note ID</option>
+            <option value="file_type">Type</option>
+            <option value="file_updated.timestamp">Updated</option>
+            <option value="file_updated.username">Up'd By</option>
+            <option value="file_updated.version">Up'd Ver</option>
+            <option value="file_updated.misc || file_updated.notes">Up'd Misc</option>
+            <option value="file_created.timestamp">Created</option>
+            <option value="file_created.username">Cr'd By</option>
+            <option value="file_created.version">Cr'd Ver</option>
+            <option value="file_created.misc || file_created.notes">Cr'd Misc</option>
+            <option value="people">People</option>
+            <option value="name_user">Username</option>
+            <option value="image_src">Image</option>
+            <option value="linkref">Link Ref</option>
+            <option value="from">From</option>
+            <option value="to">To</option>
+            <option value="subject">Subject</option>
+            <option value="headline">Headline</option>
+            <option value="time">Time</option>
+            <option value="place">Place</option>`,
+  copts = [ `
+          <option value="name_full1">1st names</option>
+          <option value="name_full2">Last name</option>
+          ${ copt0 }
+        `, `
+          ${ copt0 }
           <option value="_attachments">Attach's</option>
         `, `
           <option value="seq">Chg Seq</option>
           <option value="id">Note ID</option>
           <option value="rev">Revision#</option>
-        `],
+        ` ],
   qslrs = [
     '#vctrls #colssel>option:nth-of-type(2), '
     + '#nmtbl thead:first-of-type td:nth-of-type(3), '
@@ -1245,12 +1250,12 @@ let fwg, rva2, rval, vbas, vusr,
     .catch(rsp2Show);
   },
   fileLoad = evt => {
-    let sdir = evt && evt.target.parentElement.previousElementSibling.textContent,
+    let sdir = vbas !== 1 && evt && evt.target.parentElement.previousElementSibling.textContent,
       txd2 = {
         DBNAME: txd1.DBNAME,
-        FILEID: !evt ? "" : /^[.-]/.test(sdir)
+        FILEID: !evt ? "" : sdir && /^[.-]/.test(sdir)
           ? sdir.replace(/\/$/, "") : evt.target.textContent || evt.target.dataset.fileid,
-        ATTKEY: !evt || !/^[.-]/.test(sdir) ? "" : evt.target.textContent,
+        ATTKEY: !evt || !sdir || !/^[.-]/.test(sdir) ? "" : evt.target.textContent,
         OPTS:   {
           //rev: vbas !== 5 ? null : evt.target.parentElement.parentElement.children[3].textContent
           //revs_info: true
@@ -1413,7 +1418,8 @@ let fwg, rva2, rval, vbas, vusr,
       : Array.from(colssel.selectedOptions)
         .map(o => `\n          <option value="${ o.value }">${ o.textContent }</option>`)
         .join("") + "\n        ";
-    sortsel.value = Array.from(sortsel.options).some(o => o.value === resel) ? resel : "id";
+    sortsel.value = resel || "id"; //Array.from(sortsel.options).some(o => o.value === resel)
+    sortsel.selectedIndex > -1 || (sortsel.selectedIndex = 0);
   },
   tblGen = evt => {
     let ss = ( evt && evt.target.id === "sortsel" ? sortsel.value
@@ -1535,40 +1541,47 @@ let fwg, rva2, rval, vbas, vusr,
       <figcaption>${ ra.name_user || "" }</figcaption></figure>
     </div>
     <div class="media-content">
-      <details>
+      <details class=cfield>
         <summary>
-          <span class=dnone>&nbsp;<input type=checkbox /> </span>
+          <span class=dnone>&nbsp;<input type=checkbox />&nbsp;</span>
           <strong>${ ra.from ? ra.from.replace(/ .*$/, "") //ra.name_full
             : nsX(ra.name_full) || ra.name_user || ra.name || ra._id }</strong>
           <em>${
-            /contact|phone/i.test(ra.file_type) || !ra.ts_created && !ra.file_created ? ""
+            /contact|event|phone/i.test(ra.file_type) || !ra.ts_created && !ra.file_created ? ""
             : new Date(ra.ts_created || ra.file_created.timestamp || null).toLocaleString() }</em>
         </summary>
         <div class="pwrap fsz10p5">${
           (!ra.roles ? "" : "<em class=\"fsz14p lnhtnml\">" + ra.roles.join(", ") + "</em>\n")
-          + (!ra.linkref ? "" : "PRJ REF: " + ra.linkref + "\n")
+          + (!ra.prjref && !ra.linkref ? "" : "LINK REF: " + (ra.prjref || ra.linkref) + "\n")
           + (!ra.from ? "" : "FROM: " + ra.from + "\n")
           + (!(ra.to || "").length ? "" : "TO: " + ra.to.join(", ") + "\n")
-          + (!ra._id ? "" : "NOTE ID: <a>" + ra._id + "</a>\n")
-          + ( ra.hasOwnProperty("bio_short") ? "SHORT BIO: " + ra.bio_short
-            : "PEOPLE/HEADLINE/CR'D/UP'D/SUBDIR: [ ... ]" ) }</div>
+          + (!ra.bio_short ? "" : "SHORT BIO: " + ra.bio_short.substring(0, 84) + "&hellip;\n")
+          + ( "NOTE ID: "
+            + (rb = ra.loc_subdir || (ra.file_updated || ra.file_created || "").subdir || "")
+            + (!rb ? "" : " / ") + "<a>" + ra._id + "</a>\n" )
+          + ( !/event/i.test(ra.file_type) || !ra.ts_created && !ra.file_created ? "" : "CREATED: "
+            + new Date(ra.ts_created || ra.file_created.timestamp || null).toLocaleString() + "\n" )
+          + ( !/event/i.test(ra.file_type) || !ra.ts_updated && !ra.file_updated ? "" : "UPDATED: "
+            + new Date(ra.ts_updated || ra.file_updated.timestamp || null).toLocaleString() ) }</div>
       </details>
-      <details>
-        ${ !ra.subject && !/anno/i.test(ra.file_type) ? ""
-          : "<summary>" + (ra.subject || "Annotation") + "</summary>" }
+      <details>${ /contact|phone/.test(ra.file_type) ? ""
+          : "<summary>" + ( !ra.subject && !ra.headline && !/anno/i.test(ra.file_type)
+            ? "&hellip;" : ra.subject || ra.headline || "Annotation" ) + "</summary>" }
         <div class=pwrap>${ /memo|post/i.test(ra.file_type) ? ra.body : /anno/i.test(ra.file_type)
-          ? "<span class=fsz10p5>TAGS:&nbsp;</span>" + ra.tags
-            + "\n<span class=fsz10p5>TOC&nbsp;FMT:&nbsp;</span>" + ra.tocfmt
-            + "\n<span class=fsz10p5>STRIKES,&nbsp;INSERTS&nbsp;&amp;&nbsp;HIGHLIGHTS:</span>\n"
+          ? "<strong class=fsz10p5>TAGS:&nbsp;</strong>" + ra.tags
+            + "\n<strong class=fsz10p5>TOC&nbsp;FMT:&nbsp;</strong>" + ra.tocfmt
+            + "\n<strong class=fsz10p5>STRIKES,&nbsp;INSERTS&nbsp;&amp;&nbsp;HIGHLIGHTS:</strong>\n"
             + ra.texthl.join("\n")
           : ( !ra.hasOwnProperty("time") ? ""
               : "<strong>Time:</strong> " + date1Fmt(ra.time) + "\n" )
             + ( !ra.hasOwnProperty("place") ? ""
-              : "<strong>Place:</strong> " + date1Fmt(ra.place) + "\n" )
+              : "<strong>Place:</strong> " + ra.place + "\n" )
             + ( !(ra.map_refs || "").length ? ""
-              : "<strong>Map refs:</strong> " + date1Fmt(ra.map_refs).join(", ") + "\n" )
+              : "<strong>Map refs:</strong> " + ra.map_refs.join(", ") + "\n" )
+            + ( !(ra.people || "").length ? ""
+              : "<strong>People:</strong> " + ra.people.join(", ") + "\n" )
             + ( !ra.hasOwnProperty("description") ? ""
-              : "<strong>Description:</strong> " + date1Fmt(ra.description) + "\n" )
+              : "<strong>Description:</strong> " + ra.description + "\n" )
             + ( !ra.hasOwnProperty("birthdate") ? ""
               : "<strong>Birthdate:</strong> " + date1Fmt(ra.birthdate) + "\n" )
             + ( !ra.hasOwnProperty("emails") ? ""
@@ -1580,7 +1593,7 @@ let fwg, rva2, rval, vbas, vusr,
             + ( !(ra.project_urls || "").length ? ""
               : "<strong>Project urls:</strong> " + ra.project_urls.join(", ") + "\n" )
             + ( !ra.ts_created ? "" : "<strong>"
-                + (!/contact|phone/.test(ra.file_type || "") ? "Created on:" : "Joined team:")
+                + (!/contact|phone/.test(ra.file_type) ? "Created on:" : "Joined team:")
                 + "</strong> " + date1Fmt(ra.ts_created) + "\n" )
             + ( !ra.ts_updated ? ""
               : "<strong>Last updated:</strong> " + date1Fmt(ra.ts_updated) + "\n" ) }</div>
@@ -1591,7 +1604,8 @@ let fwg, rva2, rval, vbas, vusr,
         .forEach(e => e.open = evt.target.checked);
       bodsswi.onchange = evt => document.querySelectorAll('#nmdata .media-content>details:last-of-type')
         .forEach(e => e.open = evt.target.checked);
-      document.querySelectorAll('#nmdata .media-left>.image>img').forEach(e => e.onclick = fileLoad);
+      document.querySelectorAll( '#nmdata .media-left>.image>img, #nmdata .media-content>details:first-of-type a' )
+      .forEach(e => e.onclick = fileLoad);
       document.querySelectorAll('#nmdata .media-content>details:first-of-type>summary input')
       .forEach(inp => inp.onchange = blk2Tog);
       vidx > 8 && !(nm0sets.p2vws[vusr] || "").hdrs || hdrsswi.click();
@@ -1719,7 +1733,7 @@ let fwg, rva2, rval, vbas, vusr,
     vidx < 4 || txd1.DBNAME || pdbssel.selectedIndex === 1 || (viewsel.selectedIndex = vidx = 0);
     vbas = viewsel.selectedIndex > 3 && +/\d/.exec(viewsel.value);
     if (vidx !== 2) {
-      (colssel.innerHTML = !vbas ? "" : copts[vbas !== 5 ? 0 : 1]);
+      (colssel.innerHTML = !vbas ? "" : copts[vbas < 2 ? 0 : vbas < 5 ? 1 : 2]);
       vidx > 3 || (sortsel.innerHTML = "") || (colssel.selectedIndex = -1);
       descswi.checked = false;
       bulkctrl.classList.add("dnone");
@@ -1736,7 +1750,8 @@ let fwg, rva2, rval, vbas, vusr,
         .filter(e => e).map(e => +e).sort().reverse()[0] || 1 ) ));
     vusr = "";
     ( vidx > 8 ? (nm0sets.p2vws[vusr = viewsel.value.replace(/^V\d-/, "")] || "").cols || []
-      : [[1,2,3,4,5], [0,1,2,3,4,5,21], [1,2,7,8,14,15,16,17], [0,1,2]][vidx - 5] || [] )
+      : [ [0,1,2,3,5,9,13,14,15,16,17,18,19,20,21,22],
+        [1,2,3,4,5], [0,1,2,3,4,5,21], [1,2,7,8,14,15,16,17], [0,1,2] ][vidx - 4] || [] )
     .forEach(n => colssel.options[n].selected = true);
     vidx < 4 || !colssel.innerHTML || colsTog();
     vidx < 9 || (descswi.checked = (nm0sets.p2vws[vusr] || "").desc);
