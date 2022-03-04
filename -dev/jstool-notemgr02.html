@@ -461,6 +461,9 @@ strong, mark, table th, .table, .table thead td, .table thead th,
       <td>Cr'd Ver</td>
       <td>Cr'd Misc</td>
       <td>People</td>
+      <td>Full Name</td>
+      <td>1st Names</td>
+      <td>Last Name</td>
       <td>Username</td>
       <td>Image</td>
       <td>Link Ref</td>
@@ -500,6 +503,9 @@ strong, mark, table th, .table, .table thead td, .table thead th,
       <td>Cr'd Ver</td>
       <td>Cr'd Misc</td>
       <td>People</td>
+      <td>Full Name</td>
+      <td>1st Names</td>
+      <td>Last Name</td>
       <td>Username</td>
       <td>Image</td>
       <td>Link Ref</td>
@@ -808,44 +814,44 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 <script src="../../a00/-res-js/pouchdb.min.js" type="text/javascript"></script>
 <script src="../../a00/-res-js/pouchdb.all-dbs.min.js" type="text/javascript"></script>
 <script type=module>
-let fwg, rva2, rval, vbas, vusr,
+let csvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   j = 0,  tidx = 0, vidx = 0,
   aurls = {},
   nm0cfgs = {},
   nm0sets = {},
+  rexsd = /^[.-][\w!.*+~-]+\/?$/,
+  rexns = /(.*?) *((?:\bde +|\bvon +|)['‘’\w-]+)([ ,]*\b[js]r\.?|[ ,]*\b[ivx]+|)$/i,
   txd1 = {
     DBNAME: "",
     FILEID: "_design/ecosorter",
     VIEW:   "", //"files-idxlist",
     OPTS:   {} //{ since: 0 }
   },
-  copt0 = `<option value="subdir">Subdir</option>
-            <option value="id">Note ID</option>
-            <option value="file_type">Type</option>
-            <option value="file_updated.timestamp">Updated</option>
-            <option value="file_updated.username">Up'd By</option>
-            <option value="file_updated.version">Up'd Ver</option>
-            <option value="file_updated.misc">Up'd Misc</option>
-            <option value="file_created.timestamp">Created</option>
-            <option value="file_created.username">Cr'd By</option>
-            <option value="file_created.version">Cr'd Ver</option>
-            <option value="file_created.misc">Cr'd Misc</option>
-            <option value="people">People</option>
-            <option value="name_user">Username</option>
-            <option value="image_src">Image</option>
-            <option value="linkref">Link Ref</option>
-            <option value="from">From</option>
-            <option value="to">To</option>
-            <option value="subject">Subject</option>
-            <option value="headline">Headline</option>
-            <option value="time">Time</option>
-            <option value="place">Place</option>`,
   copts = [ `
+          <option value="subdir">Subdir</option>
+          <option value="id">Note ID</option>
+          <option value="file_type">Type</option>
+          <option value="file_updated.timestamp">Updated</option>
+          <option value="file_updated.username">Up'd By</option>
+          <option value="file_updated.version">Up'd Ver</option>
+          <option value="file_updated.misc">Up'd Misc</option>
+          <option value="file_created.timestamp">Created</option>
+          <option value="file_created.username">Cr'd By</option>
+          <option value="file_created.version">Cr'd Ver</option>
+          <option value="file_created.misc">Cr'd Misc</option>
+          <option value="people">People</option>
+          <option value="name_full3">Full name</option>
           <option value="name_full1">1st names</option>
           <option value="name_full2">Last name</option>
-          ${ copt0 }
-        `, `
-          ${ copt0 }
+          <option value="name_user">Username</option>
+          <option value="image_src">Image</option>
+          <option value="linkref">Link Ref</option>
+          <option value="from">From</option>
+          <option value="to">To</option>
+          <option value="subject">Subject</option>
+          <option value="headline">Headline</option>
+          <option value="time">Time</option>
+          <option value="place">Place</option>
           <option value="_attachments">Attach's</option>
         `, `
           <option value="seq">Chg Seq</option>
@@ -1044,6 +1050,24 @@ let fwg, rva2, rval, vbas, vusr,
     + ( typeof tsx === 'string' && /^[\w:.-]*$/.test(tsx) ? tsx
       : (fncTry(v => new Date(v), tsx) || new Date()).toISOString().replace(/\.\w+$|[:-]/g, "") )
     + (typeof unx === 'string' && /^[\w@.-]*$/.test(unx) ? unx : "user000"),
+  nbrX = v => v && (Array.isArray(v) ? v : ("" + v).split("."))
+    .map(n => !n ? "" : ("" + n).length > 4 ? n : ("000" + n).substr(-4, 4)).join("."),
+  nmsX = (nf, x) => x === 1 || x < 2 && !csvs.includes("name_full2")
+      && (/_full1/.test(ss0) || !csvs.includes("name_full3"))
+    ? (!x && !csvs.includes("name_full1") ? "" : (nf || "").trim().replace(rexns, "$1"))
+    : x === 2 || !x && !csvs.includes("name_full1") && !csvs.includes("name_full3")
+    ? (nf || "").trim().replace(rexns, "$2")
+    : !/_full2/.test(ss0) ? nf || "" : (nf || "").trim().replace(rexns, "$2, $1$3"),
+  ptyX = v => ss0 === "subdir" ? v.loc_subdir || (v.file_updated || v.file_created || "").subdir
+    || ( !["loc_subdir", "file_updated", "file_created"].some(p => v.hasOwnProperty(p))
+      ? " " : "." )
+    : !ss1 ? ( !v[ss0] && /^[.-]./.test(v._id) && ss0 === "file_type" ? "(app assets)"
+      : /_full/.test(ss0) ? nmsX(v.name_full).replace(/[.,;:/]/g, "") || v.name_user || v._id
+      : ss0 === "_attachments" ? nbrX(Object.keys(v[ss0] || "").length)
+      : ss0 !== "file_type" ? v[ss0] : (v[ss0] || "").replace(/^eco-/, "") ) || " "
+    : ss1 !== "timestamp" ? v[ss0]
+      && (ss1 !== "version" ? v[ss0][ss1] : nbrX(v[ss0][ss1])) || " "
+    : v[ss0] && v[ss0][ss1] || v[ss0.replace(/^file/, "ts")] || " ",
   ordFlip = arr => !descswi.checked ? arr.sort() : arr.sort().reverse(),
   tr0Gen = (r, i) => `
     <tr${ vbas !== 2 ? "" : " hidden"}>
@@ -1063,6 +1087,9 @@ let fwg, rva2, rval, vbas, vusr,
       <td>${ (rval.file_created || "").version || "" }</td>
       <td>${ rval.file_created && (rval.file_created.misc || rval.file_created.notes) || "" }</td>
       <td>${ (rval.people || rval.contributors || []).join(", ") || "" }</td>
+      <td>${ nmsX(rval.name_full, 3) || "" }</td>
+      <td>${ nmsX(rval.name_full, 1) || "" }</td>
+      <td>${ nmsX(rval.name_full, 2) || "" }</td>
       <td>${ rval.name_user || "" }</td>
       <td>${ rval.image_src || "" }</td>
       <td>${ rval.linkref || "" }</td>
@@ -1076,8 +1103,8 @@ let fwg, rva2, rval, vbas, vusr,
     </tr>`,
   qd2Fmt = rows => rows.map( (r, i) =>
     !(rval = r.doc || r.value)._attachments && /^\./.test(r.id) ? ""
-    : /^[.-]/.test(r.id) ? (!i || (j = i)) && `
-    <tr id="${ r.id.replace(/^[.-]/, "_") }">
+    : /^[.-]./.test(r.id) ? (!i || (j = i)) && `
+    <tr id="${ r.id.replace(/^[.-]./, "_") }">
       <td colspan=20><a>&#x25b6;</a> <input type=checkbox class=dnone /> ${
         r.id.replace( /^[.-].+$/, m => m + " ("
           + (/^eco-assets$/.test(rval.file_type || "") ? "eco-" : "app ") + "assets)" ) }</td>
@@ -1129,7 +1156,7 @@ let fwg, rva2, rval, vbas, vusr,
   },
   filtExe = () => {
     let negs = /^-/.test(filtinp.value),
-      sepa = /^\/.+\/[gim]*$/.test(filtinp.value.trim()) ? eval(filtinp.value)
+      rexf = /^\/.+\/[gim]*$/.test(filtinp.value.trim()) ? eval(filtinp.value)
         : new RegExp(filtinp.value.replace(/^-/, "") || "^$", "gi");
     rsp2con.textContent = "";
     ( vbas !== 1 ? document.querySelectorAll(qslrs[4])
@@ -1148,18 +1175,18 @@ let fwg, rva2, rval, vbas, vusr,
       document.querySelectorAll('#nmtbl tbody>tr:not([id]):not([hidden])')
       .forEach( tr => Array.from(tr.children).forEach( (td, i) => {
         if (i && !td.classList.contains("dnone")) {
-          sepa.lastIndex = 0;
+          rexf.lastIndex = 0;
           !negs ? tr.classList.contains("match")
-            || (tr.className = sepa.test(td.textContent) ? "match" : "dnone")
+            || (tr.className = rexf.test(td.textContent) ? "match" : "dnone")
           : tr.classList.contains("dnone")
-            || (tr.className = !sepa.test(td.textContent) ? "match" : "dnone");
+            || (tr.className = !rexf.test(td.textContent) ? "match" : "dnone");
           negs || ( (i !== 2 ? td : td.firstChild).innerHTML
-            = (i !== 2 ? td : td.firstChild).innerHTML.replace(sepa, "<mark>$&</mark>") );
+            = (i !== 2 ? td : td.firstChild).innerHTML.replace(rexf, "<mark>$&</mark>") );
         }
       }));
     } else if (filtinp.value) {
       document.querySelectorAll(qslrs[5])
-      .forEach(e => e.innerHTML = e.innerHTML.replace(sepa, "<mark>$&</mark>"));
+      .forEach(e => e.innerHTML = e.innerHTML.replace(rexf, "<mark>$&</mark>"));
       document.querySelectorAll('#nmdata .media')
       .forEach(e => /<mark>/.test(e.innerHTML) != negs || e.classList.add("dnone"));
     }
@@ -1171,7 +1198,7 @@ let fwg, rva2, rval, vbas, vusr,
       fmove = evt && /movebtn/.test(evt.target.id),
       chks = document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:first-of-type>input:checked'),
       chkaf2 = !fmove ? Array.from(chks)
-          .filter(inp => !/^[.-]\w/.test(inp.parentElement.parentElement.children[1].textContent))
+          .filter(inp => !rexsd.test(inp.parentElement.parentElement.children[1].textContent))
         : Array.from(chks).filter( inp => inp.parentElement.parentElement.children[3]
           && !/^$|asset|attach/i ///^(?:anno|contact|memo|post|prjid|publmgr|scrap|srcdoc)$/
           .test(inp.parentElement.parentElement.children[3].textContent) ),
@@ -1255,13 +1282,12 @@ let fwg, rva2, rval, vbas, vusr,
     .catch(rsp2Show);
   },
   fileLoad = evt => {
-    let rexd = /^[.-][\w!.*+~-]+\/?$/,
-      sdir = vbas !== 1 && evt && evt.target.parentElement.previousElementSibling.textContent,
+    let sdir = vbas !== 1 && evt && evt.target.parentElement.previousElementSibling.textContent,
       txd2 = {
         DBNAME: txd1.DBNAME,
-        FILEID: !evt ? "" : sdir && rexd.test(sdir)
+        FILEID: !evt ? "" : sdir && rexsd.test(sdir)
           ? sdir.replace(/\/$/, "") : evt.target.textContent || evt.target.dataset.fileid,
-        ATTKEY: !evt || !sdir || !rexd.test(sdir) ? "" : evt.target.textContent,
+        ATTKEY: !evt || !sdir || !rexsd.test(sdir) ? "" : evt.target.textContent,
         OPTS:   {
           //rev: vbas !== 5 ? null : evt.target.parentElement.parentElement.children[3].textContent
           //revs_info: true
@@ -1391,6 +1417,20 @@ let fwg, rva2, rval, vbas, vusr,
     }
     blk2Tog();
   },
+  chksRstr = () => {
+    bulkctrl.classList.add("dnone");
+    filtctrl.classList.remove("dnone");
+    filtinp.value = moveinp.value = "";
+    document.querySelectorAll(qslrs[2]).forEach(anc => anc.innerHTML = "&#x25b6;");
+    document.querySelectorAll(qslrs[3]).forEach(inp => {
+      inp.checked = false;
+      inp.className = "dnone";
+    });
+    document.querySelectorAll('#nmtbl tbody>tr[id]>td:first-of-type>input')
+    .forEach(inp => inp.onchange = chksTog);
+    document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:first-of-type>input')
+    .forEach(inp => inp.onchange = blk2Tog);
+  },
   sdirXpd = evt => {
     let xpd = evt.target.textContent === "\u25b6",
       rowid = evt.target.parentElement.parentElement.id,
@@ -1424,32 +1464,12 @@ let fwg, rva2, rval, vbas, vusr,
       : Array.from(colssel.selectedOptions)
         .map(o => `\n          <option value="${ o.value }">${ o.textContent }</option>`)
         .join("") + "\n        ";
-    sortsel.value = resel || "id"; //Array.from(sortsel.options).some(o => o.value === resel)
-    sortsel.selectedIndex > -1 || (sortsel.selectedIndex = 0);
+    sortsel.value = resel || (vbas > 1 ? "id" : "name_full1");
+    //Array.from(sortsel.options).some(o => o.value === resel)
+    //sortsel.selectedIndex > -1 || (sortsel.selectedIndex = 0);
+    csvs = Array.from(colssel.selectedOptions).map(o => o.value);
   },
   tblGen = evt => {
-    let ss = sortsel.value.split("."),
-      //( evt && evt.target.id === "sortsel" ? sortsel.value
-      //: (nm0sets.p2vws[vusr] || "").sort || sortsel.value ).split("."),
-      chksRstr = () => {
-        bulkctrl.classList.add("dnone");
-        filtctrl.classList.remove("dnone");
-        filtinp.value = moveinp.value = "";
-        document.querySelectorAll(qslrs[2]).forEach(anc => anc.innerHTML = "&#x25b6;");
-        document.querySelectorAll(qslrs[3]).forEach(inp => {
-          inp.checked = false;
-          inp.className = "dnone";
-        });
-        document.querySelectorAll('#nmtbl tbody>tr[id]>td:first-of-type>input')
-        .forEach(inp => inp.onchange = chksTog);
-        document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:first-of-type>input')
-        .forEach(inp => inp.onchange = blk2Tog);
-      };
-    !evt || evt.target.id !== "descswi" || ( txd1.OPTS = {
-      //startkey: descswi.checked ? "~~~" : "",
-      //endkey: descswi.checked ? "" : "~~~",
-      descending: descswi.checked
-    });
     vbas !== 5 || new PouchDB(txd1.DBNAME)
     .changes(txd1.OPTS)
     .then(rslt => {
@@ -1457,10 +1477,10 @@ let fwg, rva2, rval, vbas, vusr,
       ftotal.innerText = dels.length;
       [nmthds[0], nmtfts[0]].forEach(e => e.classList.add("dnone"));
       [nmthds[1], nmtfts[1]].forEach(e => e.classList.remove("dnone"));
-      nmtbod.innerHTML = qd5Fmt( ss[0] === "seq" ? dels
+      nmtbod.innerHTML = qd5Fmt( ss0 === "seq" ? dels
         : ordFlip(dels.map(r => [r.id, r])).map(sr => sr[1]) );
       chksRstr();
-      colsTog(null, /^(?:id|seq)$/.test(ss[0]) ? ss[0] : "id");
+      evt && evt.target.id === "pdbssel" || colsTog(null, /^(?:id|seq)$/.test(ss0) ? ss0 : "id");
       vwFnlz(evt);
     }).catch(rsp2Show);
     vbas === 5 || new PouchDB(txd1.DBNAME)
@@ -1481,28 +1501,17 @@ let fwg, rva2, rval, vbas, vusr,
       [nmthds[1], nmtfts[1]].forEach(e => e.classList.add("dnone"));
       [nmthds[0], nmtfts[0]].forEach(e => e.classList.remove("dnone"));
       nmtbod.innerHTML = vbas !== 2
-      ? qd3Fmt( !ss[0] || vbas !== 4 && ss[0] === "id" || vbas === 4 && ss[1] === "timestamp"
-        ? rslt.rows
-        : ordFlip( ss[0] === "subdir" ? rslt.rows.map( r => [ (rval = r.doc || r.value).loc_subdir
-            || (rval.file_updated || rval.file_created || "").subdir
-            || ["loc_subdir", "file_updated", "file_created"].some(p => rval.hasOwnProperty(p))
-              && ".", r.id, r ])
-          : !ss[1] ? rslt.rows.map(r => [(r.doc || r.value)[ss[0]], r.id, r])
-          : ss[1] !== "timestamp"
-          ? rslt.rows.map(r => [((r.doc || r.value)[ss[0]] || "")[ss[1]], r.id, r])
-          : rslt.rows.map( r => [ (rval = r.doc || r.value)[ss[0]]
-            ? rval[ss[0]][ss[1]]
-            : rval[ss[0].replace(/^file/, "ts")], r.id, r ]) )
-        .map(sr => sr[2]) )
-      : qd2Fmt( ordFlip( rslt.rows.filter( r => /^[.-]/.test(r.id)
+      ? qd3Fmt( !ss0 || vbas !== 4 && ss0 === "id" || vbas === 4 && ss1 === "timestamp" ? rslt.rows
+        : ordFlip(rslt.rows.map(r => [ptyX(r.doc || r.value), r.id, r])).map(sr => sr[2]) )
+      : qd2Fmt( ordFlip( rslt.rows.filter( r => /^[.-]./.test(r.id)
           || (rval = r.doc || r.value).hasOwnProperty("loc_subdir")
           || rval.file_updated || rval.file_created )
-        .map( r => /^[.-]/.test(r.id) ? [r.id.replace(/^\.(.+)$/, "$1_"), null, r.id, r]
+        .map( r => /^[.-]./.test(r.id) ? [r.id.replace(/^\.(.+)$/, "$1_"), null, r.id, r]
           : [ (rval = r.doc || r.value).loc_subdir
               || (rval.file_updated || rval.file_created).subdir || ".",
-            !ss[1] ? rval[ss[0] || "id"] : (rval[ss[0]] || "")[ss[1]], r.id, r ] ) )
-        .map(sr => sr[3]) );
-      colsTog(null, ss.join(".") || "file_created.timestamp");
+            ptyX(r.doc || r.value), r.id, r ] ) ).map(sr => sr[3]) );
+      evt && evt.target.id === "pdbssel"
+      || colsTog(null, (!ss1 ? ss0 : [ss0, ss1].join("."))); //|| "file_created.timestamp"
       document.querySelectorAll(qslrs[1])
       .forEach(spn => spn.className = vbas !== 2 ? "" : "dnone");
       document.querySelectorAll(qslrs[2])
@@ -1515,11 +1524,6 @@ let fwg, rva2, rval, vbas, vusr,
     }).catch(rsp2Show);
   },
   clipsGen = evt => {
-    !evt || evt.target.id !== "descswi" || ( txd1.OPTS = {
-      //startkey: descswi.checked ? "~~~" : "",
-      //endkey: descswi.checked ? "" : "~~~",
-      descending: descswi.checked
-    });
     new PouchDB(txd1.DBNAME)
     .query(txd1.FILEID.replace(/^_design\//, "") + "/" + txd1.VIEW, txd1.OPTS)
     .catch( () => new PouchDB(txd1.DBNAME).allDocs({
@@ -1529,23 +1533,10 @@ let fwg, rva2, rval, vbas, vusr,
       include_docs: true }) )
     .then(rslt => {
       let ra, rb,
-        rexns = /(.*?) *((?:\bde +|\bvon +|)['‘’\w-]+)([ ,]*\b[js]r\.?|[ ,]*\b[ivx]+|)$/i,
-        csa = Array.from(sortsel.options).map(o => o.value),
-        [ss0, ss1] = sortsel.value.split("."),
-        nsX = nf => !csa.includes("name_full2")
-          ? (!csa.includes("name_full1") ? "" : nf.trim().replace(rexns, "$1"))
-          : !csa.includes("name_full1") ? nf.trim().replace(rexns, "$2")
-          : !/_full2/.test(ss0) ? nf || "" : (nf || "").trim().replace(rexns, "$2, $1$3"),
-        ssX = rx => ss1
-          ? (!/timestamp/.test(ss1) || rx[ss0] ? rx[ss0][ss1] : rx[ss0.replace(/^file/, "ts")])
-          : /subdir/.test(ss0) ? ( rx.loc_subdir || (rx.file_updated || rx.file_created || "").subdir
-            || ["loc_subdir", "file_updated", "file_created"].some(p => rx.hasOwnProperty(p)) && "." )
-          : !/_full/.test(ss0) ? rx[ss0]
-          : nsX(rx.name_full).replace(/[.,;:/]/g, "") || rx.name_user || rx._id,
         rrs = rslt.rows.filter( r => r
             && ( /anno|contact|event|memo|phone|post|scrap|srcdoc/i.test((r.doc || r.value).file_type)
             || ["name_full", "name_user"].some(p => (r.doc || r.value).hasOwnProperty(p)) ) )
-          .sort( (a, b) => !(ra = ssX(a.doc || a.value)) || !(rb = ssX(b.doc || b.value))
+          .sort( (a, b) => !(ra = ptyX(a.doc || a.value)) || !(rb = ptyX(b.doc || b.value))
             ? 0 : (ra < rb) == descswi.checked ? 1 : -1 );
       ftotal.innerText = rrs.length;
       nmdata.innerHTML = "\n  <span class=\"fltrt mtup3p5\">&ensp;Show all:&ensp;"
@@ -1564,7 +1555,7 @@ let fwg, rva2, rval, vbas, vusr,
         <summary>
           <span class=dnone>&nbsp;<input type=checkbox /></span>
           <strong>${ ra.from ? ra.from.replace(/ .*$/, "") //ra.name_full
-            : nsX(ra.name_full) || ra.name_user || ra.name || ra._id }</strong>
+            : nmsX(ra.name_full) || ra.name_user || ra.name || ra._id }</strong>
           <em>${
             !/anno|memo|post/i.test(ra.file_type)
               || !ra.ts_created && !ra.file_created && !ra.ts_updated && !ra.file_updated
@@ -1578,13 +1569,13 @@ let fwg, rva2, rval, vbas, vusr,
           + (!(ra.to || "").length ? "" : "TO: " + ra.to.join(", ") + "\n")
           + ( !ra.bio_short ? "" : "SHORT BIO: " + ra.bio_short.substring(0, 84)
             + (ra.bio_short.length < 86 ? "\n" : "&hellip;\n") )
-          + ( !csa.includes("id") ? "" : "NOTE ID: " + ( !csa.includes("subdir") ? ""
+          + ( !csvs.includes("id") ? "" : "NOTE ID: " + ( !csvs.includes("subdir") ? ""
               : (rb = ra.loc_subdir || (ra.file_updated || ra.file_created || "").subdir || "")
                 + (!rb ? "" : " / ") ) + "<a>" + ra._id + "</a>\n" )
-          + ( !csa.some(e => /timestamp/.test(e)) || /anno|memo|post/i.test(ra.file_type)
+          + ( !csvs.some(e => /timestamp/.test(e)) || /anno|memo|post/i.test(ra.file_type)
               || !ra.ts_created && !ra.file_created ? "" : "CREATED: "
             + new Date(ra.ts_created || ra.file_created.timestamp || null).toLocaleString() + "\n" )
-          + ( !csa.some(e => /timestamp/.test(e)) || /anno|memo|post/i.test(ra.file_type)
+          + ( !csvs.some(e => /timestamp/.test(e)) || /anno|memo|post/i.test(ra.file_type)
               || !ra.ts_updated && !ra.file_updated ? "" : "UPDATED: "
             + new Date(ra.ts_updated || ra.file_updated.timestamp || null).toLocaleString() ) }</div>
       </details>
@@ -1628,10 +1619,10 @@ let fwg, rva2, rval, vbas, vusr,
       </details>
     </div>
   </article>` ).join("") + "\n";
-      hdrsswi.onchange = evt => document.querySelectorAll('#nmdata .media-content>details:first-of-type')
-        .forEach(e => e.open = evt.target.checked);
-      bodsswi.onchange = evt => document.querySelectorAll('#nmdata .media-content>details:last-of-type')
-        .forEach(e => e.open = evt.target.checked);
+      hdrsswi.onchange = ev2 => document.querySelectorAll('#nmdata .media-content>details:first-of-type')
+        .forEach(e => e.open = ev2.target.checked);
+      bodsswi.onchange = ev2 => document.querySelectorAll('#nmdata .media-content>details:last-of-type')
+        .forEach(e => e.open = ev2.target.checked);
       document.querySelectorAll( '#nmdata .media-left>.image>img, #nmdata .media-content>details:first-of-type a' )
       .forEach(e => e.onclick = fileLoad);
       document.querySelectorAll('#nmdata .media-content>details:first-of-type>summary input')
@@ -1736,6 +1727,12 @@ let fwg, rva2, rval, vbas, vusr,
   viewRte = evt => {
     [nmflow, nmdata].forEach(e => e.classList.add("dnone"));
     nmtbod.innerHTML = nmdata.innerHTML = "";
+    [ss0, ss1] = sortsel.value.split("."); //!evt || evt.target.id !== "sortsel" ||
+    ( txd1.OPTS = { // used only if design doc is specified //!evt || evt.target.id !== "descswi" ||
+      //startkey: descswi.checked ? "~~~" : "",
+      //endkey: descswi.checked ? "" : "~~~",
+      descending: descswi.checked
+    });
     if (!window.PouchDB || !txd1.DBNAME) {
       ftotal.innerText = "_";
       window.PouchDB || !txd1.DBNAME || rsp2con.textContent
@@ -1761,7 +1758,7 @@ let fwg, rva2, rval, vbas, vusr,
     vidx < 4 || txd1.DBNAME || pdbssel.selectedIndex === 1 || (viewsel.selectedIndex = vidx = 0);
     vbas = viewsel.selectedIndex > 3 && +/\d/.exec(viewsel.value);
     if (vidx !== 2) {
-      (colssel.innerHTML = !vbas ? "" : copts[vbas < 2 ? 0 : vbas < 5 ? 1 : 2]);
+      (colssel.innerHTML = !vbas ? "" : copts[vbas < 5 ? 0 : 1]);
       vidx > 3 || (sortsel.innerHTML = "") || (colssel.selectedIndex = -1);
       descswi.checked = false;
       bulkctrl.classList.add("dnone");
@@ -1769,7 +1766,7 @@ let fwg, rva2, rval, vbas, vusr,
       filtinp.value = moveinp.value = "";
       v02inp.value = v01inp.value = "";
     }
-    if (vidx < 4 && evt && [nmflow, nmdata].every(e => e.classList.contains('dnone'))) {
+    if (vidx < 4 && evt && [nmflow, nmdata].every(e => e.classList.contains("dnone"))) {
       return tabActv(evt);
     }
     vidx < 4 || !(vkey = viewsel.value.replace(/-?\d+$|^V\d[:-]/g, "") || "myview")
@@ -1778,8 +1775,8 @@ let fwg, rva2, rval, vbas, vusr,
         .filter(e => e).map(e => +e).sort().reverse()[0] || 1 ) ));
     vusr = "";
     ( vidx > 8 ? (nm0sets.p2vws[vusr = viewsel.value.replace(/^V\d-/, "")] || "").cols || []
-      : [ [0,1,2,13,14,15,16,17,18,19,20,21,22],
-        [1,2,3,4,5], [0,1,2,3,4,5,21], [1,2,7,8,14,15,16,17], [0,1,2] ][vidx - 4] || [] )
+      : [ [0,13,14,15,16,17,18,19,20,21,22,23],
+        [1,2,3,4,5], [0,1,2,3,4,5,24], [1,2,7,8,17,18,19,20], [0,1,2] ][vidx - 4] || [] )
     .forEach(n => colssel.options[n].selected = true);
     vidx < 4 || !colssel.innerHTML || colsTog();
     vidx < 9 || (descswi.checked = (nm0sets.p2vws[vusr] || "").desc);
@@ -1900,7 +1897,8 @@ let fwg, rva2, rval, vbas, vusr,
     if (viewsel.options.length !== 9 + vw2s.length || add !== viewsel.value) {
       viewsel.innerHTML = Array.from(viewsel.options)
         .filter((o, i) => i < 9).map(o => "\n      " + o.outerHTML)
-        .concat(vw2s.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      ";
+        .concat( vw2s.map( e => "\n      <option"
+          + (txd1.DBNAME ? ">" : " disabled>") + e + "</option>" )).join("") + "\n      ";
       viewsel.value = add;
       v0sChg();
     }
