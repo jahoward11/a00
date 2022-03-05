@@ -853,9 +853,12 @@ let csvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   nm0cfgs = {},
   nm0sets = {},
   cntcs = {},
-  aurls = {
-    "avatar000.png": "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
-  },
+  hstys = [ "atom-one-dark.css", "atom-one-light.css", "github-gist.css", "github.css",
+    "googlecode.css", "tomorrow.css", "vs.css", "xcode.css", "xt256.css" ],
+  aurls = JSON.parse( `{
+    "avatar000.png": "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+    ${hstys.map(e => `"${e}": "../-res-hljs/${e}"`).join(",")}
+  }` ),
   rexsd = /^[.-][\w!.*+~-]+\/?$/,
   rexns = /(.*?) *((?:\bde +|\bvon +|)['‘’\w-]+)([ ,]*\b[js]r\.?|[ ,]*\b[ivx]+|)$/i,
   txd1 = {
@@ -1036,6 +1039,7 @@ let csvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     += ( !r || typeof r !== 'object' || r instanceof Error && r.constructor && !r.reason
       ? r : JSON.stringify(r, null, 2) ) + "\n\n",
   fncTry = (fnc, a, e) => { try { return fnc(a) } catch (err) { return e ? err : undefined }},
+  htmTxt = str => str.replace(/&(?=#?\w+;)/g, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;"),
   vtoStr = (v, sp) => v == null ? ""
     : v instanceof Error && v.constructor && !v.reason ? v
     : typeof v === 'object' ? JSON.stringify(v, null, sp)
@@ -1340,7 +1344,8 @@ let csvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     .catch(rsp2Show);
   },
   fileLoad = evt => {
-    let sdir = vbas > 1 && evt && evt.target.parentElement.previousElementSibling.textContent,
+    let blrdr,
+      sdir = vbas > 1 && evt && evt.target.parentElement.previousElementSibling.textContent,
       txd2 = {
         DBNAME: txd1.DBNAME,
         FILEID: !evt ? "" : sdir && rexsd.test(sdir)
@@ -1350,15 +1355,31 @@ let csvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           //rev: vbas < 5 ? null : evt.target.parentElement.parentElement.children[3].textContent
           //revs_info: true
         }
-      };
+      },
+      reximg = /\.giff?$|\.jpe?g$|\.png$/i,
+      rextxt = /\.html?$|\.m?js$|\.json$|\.md$|\.s?css$|\.te?xt$|\.\w{5,}$/i,
+      jb1 = str => !window.js_beautify || !/\.m?js$|\.html?$/i.test(txd2.ATTKEY)
+        ? vtoStr(str) : js_beautify( str,
+          { "indent_size": 2, "space_after_anon_function": 1,
+            "break-chained-methods": 1, "keep-array-indentation": 1 } ),
+      jp1 = str => "\n<pre class=\"dflow hljs\">" //#nmwrap pre>pre.hljs { margin: 0; white-space: inherit; }
+        + (!window.hljs ? htmTxt(jb1(str)) : hljs.highlightAuto(jb1(str)).value) + "</pre>"
+        + (!window.hljs ? "" : "<style>@import \"" + (aurls(nm0sets.hlsty) || "") + "\";</style>\n");
     //rsp2Show(txd2);
     if (!window.PouchDB || !txd2.DBNAME || !txd2.FILEID
-    || txd2.ATTKEY && !/\.giff?$|\.jpe?g$|\.png$/i.test(txd2.ATTKEY)) { return; }
+    || txd2.ATTKEY && !reximg.test(txd2.ATTKEY) && !rextxt.test(txd2.ATTKEY)) { return; }
     rsp2con.textContent = "";
     txd2.ATTKEY
     ? new PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
-      .then( abl => nmbulk.innerHTML = "\n<figure class=image><img src=\""
-        + (aurls[txd2.ATTKEY] || (aurls[txd2.ATTKEY] = URL.createObjectURL(abl))) + "\" /></figure>\n" )
+      .then( abl => reximg.test(txd2.ATTKEY)
+        ? nmbulk.innerHTML = "\n<figure class=image><img src=\""
+          + (aurls[txd2.ATTKEY] || (aurls[txd2.ATTKEY] = URL.createObjectURL(abl))) + "\" /></figure>\n"
+        : //!(/^blob:/.test(aurls[txd2.ATTKEY]) || (aurls[txd2.ATTKEY] = URL.createObjectURL(abl)))
+            !(blrdr = new FileReader())
+            || !( blrdr.onerror = err => !rsp2Show("Alert: Attachment not read.")
+              || !rsp2Show(blrdr.error) || rsp2Show(err) )
+            || !(blrdr.onload = () => nmbulk.innerHTML = jp1(blrdr.result))
+            || blrdr.readAsText(abl) )
       .catch(rsp2Show)
     : new PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS).then(doc => {
       let lnl, str,
@@ -1387,8 +1408,7 @@ let csvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       <button class="fltrt bsml ilink" data-seltrg=${"p0" + k}>sel</button>
     </div>
     <div class="field-body">
-      <textarea id=${"p0" + k} class=textarea rows=${taHt(k)}>${
-        str.replace(/&(?=#?\w+;)/g, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;")}</textarea>
+      <textarea id=${"p0" + k} class=textarea rows=${taHt(k)}>${htmTxt(str)}</textarea>
     </div>
   </div>` ).join("") + `
   <hr />
@@ -1751,8 +1771,8 @@ let csvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     </div>
     <div class="field-body">
       <textarea id=${"p0" + k} class=textarea rows=${taHt(k)}>${
-        vtoStr(fwg[k], !Array.isArray(fwg[k]) || typeof fwg[k][0] === 'object' ? 2 : null)
-        .replace(/&(?=#?\w+;)/g, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;") }</textarea>
+        htmTxt(vtoStr(fwg[k], !Array.isArray(fwg[k]) || typeof fwg[k][0] === 'object' ? 2 : null))
+     }</textarea>
     </div>
   </div>`).join("") + `
   <hr />
@@ -2084,11 +2104,11 @@ let csvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       });
     !/^{['"].+}$/.test(localStorage._nm0sets || "")
     || (nm0sets = fncTry(JSON.parse, localStorage._nm0sets) || {});
-    nm0sets && [ "uemail", "uname", "dbdflt", "vwdflt", "contcs", "bedit",
-      "usecfg", "useset", "p2typs", "p2vws" ].every(pty => nm0sets.hasOwnProperty(pty))
+    nm0sets && [ "uemail", "uname", "dbdflt", "vwdflt", "contcs", "bedit", "usecfg", "useset",
+      "hlsty", "p2typs", "p2vws" ].every(pty => nm0sets.hasOwnProperty(pty))
     || ( localStorage._nm0sets = JSON.stringify( nm0sets = Object.assign(
       { uemail: "", uname: "", dbdflt: "", vwdflt: "V2:organized",
-        contcs: "", bedit: 0, usecfg: 0, useset: 0,
+        contcs: "", bedit: 0, usecfg: 0, useset: 0, hlsty: "atom-one-light.css",
         p2typs: { mytype2: { t0: ["mytype2", "<em>[mytype2 description &hellip;]</em>"],
           t1: { _id: "", _rev: "", key2: "", key3: "" } }},
         p2vws: { myview2: { v0: ["V1-myview2", "<em>[myview2 description &hellip;]</em>"],
