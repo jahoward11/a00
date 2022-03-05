@@ -772,7 +772,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     &emsp;For convenience, choose a default database, and associated <em>view</em>, that will be directly opened and displayed at each&nbsp;startup.
   </p>
   <p class=dnone>
-    &emsp;Optionally, select a <em>contacts</em> database so that the app can lookup any photos or details of contacts that are referenced from within another, group-shared database. Note that photos must be stored all together as attachments of a <em>note</em> (created in your <em>contacts</em> database) that is named "<code class=hwsmok>-res-img</code>".
+    &emsp;Optionally, select a <em>contacts</em> database so that the app can locate any contact details or photos that are referenced from within another, group-shared database. Be aware that photos must be stored altogether as the attachments of a <em>note</em> (of your <em>contacts</em> database) that is specially named "<code class=hwsmok>-res-img</code>".
   </p>
   <p class=dnone>
     &emsp;Also optionally, identify yourself by username and/or email, which will be associated with every database that you create. This becomes useful if, for example, your DB data is ever synced to a cloud server and/or consolidated with other users' data; User identities facilitate a team's management of multiple&nbsp;DBs.
@@ -2032,10 +2032,10 @@ let csvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   },
   pdbSync = evt => {
     let cfg = nm0cfgs[txd1.DBNAME] || "";
-    if (evt && evt.target.id === "pfilbtn") {
-      originp.value = (cfg.remot || "").orig;
-      dbuninp.value = (cfg.remot || "").un;
-      dbpwinp.value = (cfg.remot || "").pw;
+    if (cfg && evt && evt.target.id === "pfilbtn") {
+      originp.value = (cfg.remot || "").orig || "";
+      dbuninp.value = (cfg.remot || "").un || "";
+      dbpwinp.value = (cfg.remot || "").pw || "";
     } else if (evt) {
       
     }
