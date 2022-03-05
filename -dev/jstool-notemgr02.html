@@ -1192,7 +1192,7 @@ let csvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     let hid = vbas > 1
         ? document.querySelector('#nmtbl thead:not(.dnone) td:first-of-type>input.dnone')
         : document.querySelector('#nmdata .media-content>details:first-of-type>summary>span.dnone');
-    ( vbas !== 1 ? document.querySelectorAll(qslrs[4])
+    ( vbas > 1 ? document.querySelectorAll(qslrs[4])
       : document.querySelectorAll('#nmdata .media-content>details:first-of-type>summary>span') )
       .forEach(e => e.className = hid ? "" : "dnone");
     if (hid) {
@@ -1207,7 +1207,7 @@ let csvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       rexf = /^\/.+\/[gim]*$/.test(filtinp.value.trim()) ? eval(filtinp.value)
         : new RegExp(filtinp.value.replace(/^-/, "") || "^$", "gi");
     rsp2con.textContent = "";
-    ( vbas !== 1 ? document.querySelectorAll(qslrs[4])
+    ( vbas > 1 ? document.querySelectorAll(qslrs[4])
       : document.querySelectorAll('#nmdata .media-content>details:first-of-type>summary input') )
       .forEach(inp => inp.checked = false);
     document.querySelectorAll('#nmtbl tbody>tr:not([id])').forEach(tr => {
@@ -1340,14 +1340,14 @@ let csvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     .catch(rsp2Show);
   },
   fileLoad = evt => {
-    let sdir = vbas !== 1 && evt && evt.target.parentElement.previousElementSibling.textContent,
+    let sdir = vbas > 1 && evt && evt.target.parentElement.previousElementSibling.textContent,
       txd2 = {
         DBNAME: txd1.DBNAME,
         FILEID: !evt ? "" : sdir && rexsd.test(sdir)
           ? sdir.replace(/\/$/, "") : evt.target.textContent || evt.target.dataset.fileid,
         ATTKEY: !evt || !sdir || !rexsd.test(sdir) ? "" : evt.target.textContent,
         OPTS:   {
-          //rev: vbas !== 5 ? null : evt.target.parentElement.parentElement.children[3].textContent
+          //rev: vbas < 5 ? null : evt.target.parentElement.parentElement.children[3].textContent
           //revs_info: true
         }
       };
@@ -1528,7 +1528,7 @@ let csvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     csvs = Array.from(colssel.selectedOptions).map(o => o.value);
   },
   tblGen = evt => {
-    vbas !== 5 || new PouchDB(txd1.DBNAME)
+    vbas < 5 || new PouchDB(txd1.DBNAME)
     .changes(txd1.OPTS)
     .then(rs => {
       let dels = rs.results.filter(r => r.deleted);
@@ -1551,7 +1551,7 @@ let csvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     .then(rs => {
       let calcSum = arr => !arr.length ? 0 : arr.reduce((s, v) => s + v);
       j = 0;
-      ftotal.innerText = vbas !== 2 ? rs.total_rows
+      ftotal.innerText = vbas !== 2 ? rs.rows.length //rs.total_rows
         : rs.rows.filter( r => (rval = r.doc || r.value).hasOwnProperty("loc_subdir")
             || rval.file_updated || rval.file_created ).length
           + calcSum( rs.rows.filter(r => (r.doc || r.value)._attachments)
