@@ -1569,16 +1569,17 @@ let csvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       descending:   descswi.checked,
       include_docs: true }) )
     .then(rs => {
-      let calcSum = arr => !arr.length ? 0 : arr.reduce((s, v) => s + v);
+      let rdc = rs.rows.length === 1 && !rs.rows[0].key && "" + rs.rows[0].value,
+        calcSum = arr => !arr.length ? 0 : arr.reduce((s, v) => s + v);
       j = 0;
-      ftotal.innerText = vbas !== 2 ? rs.rows.length //rs.total_rows
+      ftotal.innerText = rdc ? rdc : vbas !== 2 ? rs.rows.length //rs.total_rows
         : rs.rows.filter( r => (rval = r.doc || r.value).hasOwnProperty("loc_subdir")
             || rval.file_updated || rval.file_created ).length
           + calcSum( rs.rows.filter(r => (r.doc || r.value)._attachments)
             .map(r => Object.keys((r.doc || r.value)._attachments).length) );
       [nmthds[1], nmtfts[1]].forEach(e => e.classList.add("dnone"));
       [nmthds[0], nmtfts[0]].forEach(e => e.classList.remove("dnone"));
-      nmtbod.innerHTML = vbas !== 2
+      nmtbod.innerHTML = rdc ? "" : vbas !== 2
       ? qd3Fmt( !ss0 || vbas !== 4 && ss0 === "id" || vbas === 4 && ss1 === "timestamp" ? rs.rows
         : ordFlip(rs.rows.map(r => [ptyX(r.doc || r.value), r.id, r])).map(sr => sr[2]) )
       : qd2Fmt( ordFlip( rs.rows.filter( r => /^[.-]./.test(r.id)
@@ -1611,13 +1612,14 @@ let csvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       include_docs: true }) )
     .then(rs => {
       let ra, rb,
-        rrs = rs.rows.filter( r => r
+        rdc = rs.rows.length === 1 && !rs.rows[0].key && "" + rs.rows[0].value,
+        rrs = !rdc && rs.rows.filter( r => r
             && ( /anno|contact|event|memo|phone|post|scrap|srcdoc/i.test((r.doc || r.value).file_type)
             || ["name_full", "name_user"].some(p => (r.doc || r.value).hasOwnProperty(p)) ) )
           .sort( (a, b) => !(ra = ptyX(a.doc || a.value)) || !(rb = ptyX(b.doc || b.value))
             ? 0 : (ra < rb) == descswi.checked ? 1 : -1 );
-      ftotal.innerText = rrs.length;
-      nmdata.innerHTML = "\n  <span class=\"fltrt mtup3p5\">&ensp;Show all:&ensp;"
+      ftotal.innerText = rdc || rrs.length;
+      nmdata.innerHTML = rdc ? "" : "\n  <span class=\"fltrt mtup3p5\">&ensp;Show all:&ensp;"
       + "<label><input type=checkbox id=hdrsswi /> <a>headers</a></label>&ensp;"
       + "<label><input type=checkbox id=bodsswi /> <a>bodies</a></label></span>\n  <hr />"
       + (rrs.length ? "" : "\n  <p class=igreyd>&emsp;<em>[No results found &hellip;]</em></p>")
@@ -1712,6 +1714,7 @@ let csvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       </details>
     </div>
   </article>` ).join("") + "\n";
+      if (rdc) { return; }
       hdrsswi.onchange = ev2 => document.querySelectorAll('#nmdata .media-content>details:first-of-type')
         .forEach(e => e.open = ev2.target.checked);
       bodsswi.onchange = ev2 => document.querySelectorAll('#nmdata .media-content>details:last-of-type')
@@ -2161,8 +2164,7 @@ let csvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
 pdbssel.onchange = pdbOpen;
 viewsel.onchange = viewChg;
 colssel.onchange = colsTog;
-sortsel.onchange = viewRte;
-descswi.onchange = viewRte;
+[sortsel, descswi].forEach(elm => elm.onchange = viewRte);
 filtbtn.onclick = filtExe;
 blktrig.onclick = bulkTog;
 [movebtn, editbtn, delbtn].forEach(btn => btn.onclick = filesChg);
