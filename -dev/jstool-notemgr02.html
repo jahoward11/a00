@@ -1929,7 +1929,9 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       db0 = pdb0inp.value.trim(),
       hlps = pdbcfg.querySelectorAll('.chelp');
     hlps.forEach(e => e.classList.add("dnone"));
-    if (cfg && evt && /(dbpw|dbun|orig)inp|pw1swi|[tv]01sel/.test(evt.target.id)) {
+    if (!cfg || !evt) {
+      return;
+    } else if (/(dbpw|dbun|orig)inp|pw1swi|[tv]01sel/.test(evt.target.id)) {
       evt.target.id !== "originp" || (cfg.remot.orig = originp.value.trim());
       evt.target.id !== "dbuninp" || (cfg.remot.un = dbuninp.value.trim());
       evt.target.id !== "dbpwinp" || (cfg.remot.pw = !cfg.pw1 ? "" : dbpwinp.value.trim());
@@ -1938,9 +1940,9 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       evt.target.id !== "t01sel" || (cfg.type0 = t01sel.value);
       evt.target.id !== "v01sel" || (cfg.view0 = v01sel.value);
       localStorage._nm0cfgs = JSON.stringify(nm0cfgs);
-    } else if (evt && /dbd[01]btn/.test(evt.target.id)
+    } else if (/dbd[01]btn/.test(evt.target.id)
     && txd1.DBNAME && ddelinp.value === txd1.DBNAME && window.PouchDB) {
-      (cfg || {}).tsdel = ts0;
+      pdbdel.innerText = new Date(cfg.tsdel = ts0).toLocaleString();
       evt.target.id !== "dbd0btn" || new PouchDB(txd1.DBNAME).compact().then( trsp =>
           hlps[2].classList.remove("dnone") || rsp2Show(trsp) )
           //|| !vidx || (viewsel.selectedIndex = vidx = 0) || viewChg() )
@@ -1953,7 +1955,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         hlps[2].classList.remove("dnone") //todo: how will pdbcfg remain visible?
         || (pdbssel.selectedIndex = 0) || pdbOpen() || rsp2Show(trsp);
       }).catch(err => hlps[3].classList.remove("dnone") || rsp2Show(err));
-    } else if (evt && !txd1.DBNAME && una2inp.value && /[a-z][0-9a-z_]*/.test(db0) && window.PouchDB) {
+    } else if (!txd1.DBNAME && una2inp.value && /[a-z][0-9a-z_]*/.test(db0) && window.PouchDB) {
       new PouchDB(txd1.DBNAME = db0).info().then(trsp => {
         let dbs = Array.from(opensel.options).map(o => o.value).filter(e => e).concat("db0").sort();
         nm0cfgs[db0] = { type0: t01sel.value, view0: v01sel.value || nm0sets.vwdflt || "",
@@ -2104,23 +2106,25 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       hlps = pdbcfg.querySelectorAll('.chelp');
     !cfg || hlps.forEach(e => e.classList.add("dnone"));
     if (cfg && evt && evt.target.id === "pfilbtn") {
-      originp.value = (cfg.remot || "").orig || "";
-      dbuninp.value = (cfg.remot || "").un || "";
-      dbpwinp.value = (cfg.remot || "").pw || "";
+      originp.value = originp.value ? "" : (cfg.remot || "").orig || "";
+      dbuninp.value = dbuninp.value ? "" : (cfg.remot || "").un || "";
+      dbpwinp.value = dbpwinp.value ? "" : (cfg.remot || "").pw || "";
     } else if (cfg && evt && window.PouchDB) {
-      let ori = /^(https?:\/\/)(.+?)\/?$/.exec(txd2.orig || "") || [],
+      let ori = /^(https?:\/\/)(.+?)\/?$/.exec(cfg.remot.orig || "") || [],
         url = !(ori[1] && ori[2]) ? "" : ori[1]
-          + (!cfg.remot.un || !cfg.remot.pw ? "" : cfg.remot.un + ":" + cfg.remot.pw + "@")
-          + ori[2] + txd1.DBNAME,
+          + (!cfg.remot.un || !dbpwinp.value ? "" : cfg.remot.un + ":" + dbpwinp.value + "@")
+          + ori[2] + "/" + txd1.DBNAME,
         db2 = url && new PouchDB(url, { skip_setup: true });
       !db2 ? hlps[1].classList.remove("dnone")
       : new PouchDB(txd1.DBNAME).sync(db2, { live: false })
         .then(resp => {
+          pdbtot.innerHTML = "(last: " + pdbtot.innerHTML + ") &hellip;&quest;";
+          pdbseq.innerHTML = "(last: " + pdbseq.innerText + ") &hellip;&quest;";
           pdbupd.innerText = new Date(cfg.tsupd = new Date().getTime()).toLocaleString();
           (resp.push && resp.push.errors.length) || (resp.pull && resp.pull.errors.length)
           ? hlps[1].classList.remove("dnone") || rsp2Show(resp)
           : hlps[0].classList.remove("dnone") || nmbulk.innerHTML
-            || (nmbulk.innerHTML = "\n<pre class=pwrap>" + valStr(resp) + "</pre>\n");
+            || (nmbulk.innerHTML = "\n<pre class=pwrap>" + valStr(resp, 2) + "</pre>\n");
         }).catch(err => hlps[1].classList.remove("dnone") || rsp2Show(err));
     }
   },
