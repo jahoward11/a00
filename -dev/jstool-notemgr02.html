@@ -316,13 +316,11 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap .table { line-height: normal; } /* 16.5px */
 #nmwrap .lnht1m { line-height: 1; } /* 10.5px, 14px */
 #nmwrap .lnhtnml { line-height: normal; } /* 12px, 16.5px */
-#nmwrap .lnht21p { line-height: 21px; }
-#nmwrap .lnht24p { line-height: 24px; }
 #nmwrap .fltrt { float: right; }
 #nmwrap .alnrt { text-align: right; }
 #nmwrap .mtup3p5 { margin-top: -3.5px; }
 #nmwrap .cblock:not(:last-child) { margin-bottom: 21px; }
-#nmwrap .pwrap { word-wrap: normal; overflow-wrap: normal; white-space: pre-wrap; }
+#nmwrap .pwrap { white-space: pre-wrap; }
 #nmwrap .diblk, #nmwrap .btn1 { display: inline-block; }
 #nmwrap .dflow { display: flow-root; overflow-x: auto; }
 #nmwrap .dnone { display: none; }
@@ -892,7 +890,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     "googlecode.css", "tomorrow.css", "vs.css", "xcode.css", "xt256.css" ],
   aurls = JSON.parse( `{
     "avatar000.png": "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
-    ${hstys.map(e => `"${e}": "../-res-hljs/${e}"`).join(",")}
+    ${hstys.map(e => `"${e}": "../../a00/-res-hljs/${e}"`).join(",")}
   }` ),
   rexsd = /^[.-][\w!.*+~-]+\/?$/,
   rexns = /(.*?) *((?:\bde +|\bvon +|)['‘’\w-]+)([ ,]*\b[js]r\.?|[ ,]*\b[ivx]+|)$/i,
@@ -953,7 +951,14 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     + '#nmdata .media-content>details:first-of-type>summary>em, '
     + '#nmdata .media-content>details:first-of-type>div, '
     + '#nmdata .media-content>details:last-of-type>summary, '
-    + '#nmdata .media-content>details:last-of-type>div>div'
+    + '#nmdata .media-content>details:last-of-type>div>div',
+    '#nmtbl thead:not(.dnone) td:first-of-type>input.dnone',
+    '#nmdata .media-content>details:first-of-type>summary>span.dnone',
+    '#nmtbl tbody>tr:not([id])>td:first-of-type>input:checked',
+    '#nmdata .media-content>details:first-of-type>summary input:checked',
+    '#nmtbl tbody>tr:not([id])>td:first-of-type>input',
+    '#nmdata .media-content>details:first-of-type>summary input',
+    '#nmdata .media-left>.image>img, #nmdata .media-content>details:first-of-type a'
   ],
   nmthds = document.querySelectorAll('#nmtbl thead'),
   nmtbod = document.querySelector('#nmtbl tbody'),
@@ -1222,19 +1227,15 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     </tr>` ).join("") + "\n  ",
   blk2Tog = () => {
     if (vbas === 5) { return; }
-    let chks = vbas > 1
-        ? document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:first-of-type>input:checked')
-        : document.querySelectorAll('#nmdata .media-content>details:first-of-type>summary input:checked');
+    let chks = document.querySelectorAll(vbas > 1 ? qslrs[8] : qslrs[9]);
     (chks.length ? filtctrl : bulkctrl).classList.add("dnone");
     (chks.length ? bulkctrl : filtctrl).classList.remove("dnone");
   },
   bulkTog = () => {
-    let hid = vbas > 1
-        ? document.querySelector('#nmtbl thead:not(.dnone) td:first-of-type>input.dnone')
-        : document.querySelector('#nmdata .media-content>details:first-of-type>summary>span.dnone');
-    ( vbas > 1 ? document.querySelectorAll(qslrs[4])
-      : document.querySelectorAll('#nmdata .media-content>details:first-of-type>summary>span') )
-      .forEach(e => e.className = hid ? "" : "dnone");
+    let hid = document.querySelector(vbas > 1 ? qslrs[6] : qslrs[7]);
+    document.querySelectorAll( vbas > 1 ? qslrs[4]
+      : '#nmdata .media-content>details:first-of-type>summary>span' )
+    .forEach(e => e.className = hid ? "" : "dnone");
     if (hid) {
       blk2Tog();
     } else {
@@ -1247,9 +1248,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       rexf = /^\/.+\/[gim]*$/.test(filtinp.value.trim()) ? eval(filtinp.value)
         : new RegExp(filtinp.value.replace(/^-/, "") || "^$", "gi");
     rsp2con.textContent = "";
-    ( vbas > 1 ? document.querySelectorAll(qslrs[4])
-      : document.querySelectorAll('#nmdata .media-content>details:first-of-type>summary input') )
-      .forEach(inp => inp.checked = false);
+    document.querySelectorAll(vbas > 1 ? qslrs[4] : qslrs[11]).forEach(inp => inp.checked = 0);
     document.querySelectorAll('#nmtbl tbody>tr:not([id])').forEach(tr => {
       tr.classList.remove("dnone", "match");
       Array.from(tr.children)
@@ -1284,9 +1283,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     let hlps,
       fedit = evt && /editbtn|movebtn/.test(evt.target.id),
       fmove = evt && /movebtn/.test(evt.target.id),
-      chks = vbas > 1
-        ? document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:first-of-type>input:checked')
-        : document.querySelectorAll('#nmdata .media-content>details:first-of-type>summary input:checked'),
+      chks = document.querySelectorAll(vbas > 1 ? qslrs[8] : qslrs[9]),
       chkaf2 = vbas === 1 ? Array.from(chks) : !fmove ? Array.from(chks)
           .filter(inp => !rexsd.test(inp.parentElement.parentElement.children[1].textContent))
         : Array.from(chks).filter( inp => inp.parentElement.parentElement.children[3]
@@ -1340,15 +1337,14 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       },
       blkDspl = qrsp => {
         if (!window.qctxta) {
-          nmbulk.innerHTML = "\n  <button id=submbtn class=\"fltrt hgainl\">"
-            + "<span class=isucc>&#x27b6;</span> SUBMIT</button>"
-            + "\n  <div class=field>\n<h4>DB Bulk Action</h4>"
-            + "\n  <div class=\"alnrt chelp isucc dnone\">Data is submitted to local DB.</div>"
-            + "\n  <div class=\"alnrt chelp iwarn dnone\">Data-submission attempt failed.</div>\n</div>"
-            + "\n  <div class=\"cfield alnrt\">"
-            + "<button id=qselbtn class=\"bsml ilink\" data-seltrg=qctxta>sel</button></div>"
-            + "\n  <textarea id=qctxta class=textarea rows=31></textarea>"
-            + "\n  <div id=qchlp class=\"chelp iwarn dnone\"><strong>ALERT:</strong> Invalid JSON.</div>\n";
+          nmbulk.innerHTML = "" + `
+  <button id=submbtn class="fltrt hgainl"><span class=isucc>&#x27b6;</span> SUBMIT</button>
+  <div class=field>\n<h4>DB Bulk Action</h4>
+  <div class="alnrt chelp isucc dnone">Data is submitted to local DB.</div>
+  <div class="alnrt chelp iwarn dnone">Data-submission attempt failed.</div>\n</div>
+  <div class="cfield alnrt"><button id=qselbtn class="bsml ilink" data-seltrg=qctxta>sel</button></div>
+  <textarea id=qctxta class=textarea rows=31></textarea>
+  <div id=qchlp class="chelp iwarn dnone"><strong>ALERT:</strong> Invalid JSON.</div>\n`;
           submbtn.onclick = pchPut;
           qselbtn.onclick = txtaSel;
           qctxta.onblur = jsonVldt;
@@ -1363,8 +1359,8 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       dbq = txd2.DBNAME && window.PouchDB && new PouchDB(txd2.DBNAME);
     rsp2con.textContent = "";
     if (vbas > 1) {
-      document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:first-of-type>input')
-        .forEach(inp => inp.parentElement.parentElement.className = "");
+      document.querySelectorAll(qslrs[10])
+      .forEach(inp => inp.parentElement.parentElement.className = "");
       chkaf2.forEach(inp => inp.parentElement.parentElement.className = fedit ? "hsuccl" : "hwarnl");
     } else {
       document.querySelectorAll('#nmdata .media')
@@ -1395,7 +1391,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       reximg = /\.giff?$|\.jpe?g$|\.png$/i,
       rextxt = /\.html?$|\.m?js$|\.json$|\.md$|\.s?css$|\.te?xt$|\.\w{5,}$/i,
       jb1 = str => !window.js_beautify || !/\.m?js$|\.html?$/i.test(txd2.ATTKEY)
-        ? valStr(str) : js_beautify( str,
+        ? valStr(str, 2) : js_beautify( str,
           { "indent_size": 2, "space_after_anon_function": 1,
             "break-chained-methods": 1, "keep-array-indentation": 1 } ),
       jp1 = str => "\n<pre class=\"dflow hljs\">"
@@ -1413,12 +1409,13 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           + (aurls[txd2.ATTKEY] || (aurls[txd2.ATTKEY] = URL.createObjectURL(abl)))
           + "\" /></figure>\n"
         : //!(/^blob:/.test(aurls[txd2.ATTKEY]) || (aurls[txd2.ATTKEY] = URL.createObjectURL(abl)))
-            !(blrdr = new FileReader())
-            || !( blrdr.onerror = err => !rsp2Show("Alert: Attachment not read.")
-              || !rsp2Show(blrdr.error) || rsp2Show(err) )
-            || !(blrdr.onload = () => nmbulk.innerHTML = jp1(blrdr.result))
-            || blrdr.readAsText(abl) )
+          !(blrdr = new FileReader()) || !( blrdr.onerror = err =>
+            !rsp2Show("Alert: Attachment not read.") || !rsp2Show(blrdr.error) || rsp2Show(err) )
+          || !(blrdr.onload = () => nmbulk.innerHTML = jp1(blrdr.result)) || blrdr.readAsText(abl) )
       .catch(rsp2Show)
+    : /^~[a-z]/.test(txd2.FILEID) ? new PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS)
+        .then( doc => nmbulk.innerHTML
+          = "\n<pre class=pwrap>" + valStr(Object.assign({ _id: "", _rev: "" }, doc), 2) + "</pre>\n" )
     : new PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS).then(doc => {
       let lnl, str,
         taHt = k => ( lnl = ( ( str = valStr( fwg[k],
@@ -1539,14 +1536,10 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     filtctrl.classList.remove("dnone");
     filtinp.value = moveinp.value = "";
     document.querySelectorAll(qslrs[2]).forEach(anc => anc.innerHTML = "&#x25b6;");
-    document.querySelectorAll(qslrs[3]).forEach(inp => {
-      inp.checked = false;
-      inp.className = "dnone";
-    });
+    document.querySelectorAll(qslrs[3]).forEach(inp => (inp.checked = 0) || (inp.className = "dnone"));
     document.querySelectorAll('#nmtbl tbody>tr[id]>td:first-of-type>input')
     .forEach(inp => inp.onchange = chksTog);
-    document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:first-of-type>input')
-    .forEach(inp => inp.onchange = blk2Tog);
+    document.querySelectorAll(qslrs[10]).forEach(inp => inp.onchange = blk2Tog);
   },
   sdirXpd = evt => {
     let xpd = evt.target.textContent === "\u25b6",
@@ -1761,10 +1754,8 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       bodsswi.onchange = ev2 =>
         document.querySelectorAll('#nmdata .media-content>details:last-of-type')
         .forEach(e => e.open = ev2.target.checked);
-      document.querySelectorAll( '#nmdata .media-left>.image>img, #nmdata .media-content>details:first-of-type a' )
-      .forEach(e => e.onclick = fileLoad);
-      document.querySelectorAll('#nmdata .media-content>details:first-of-type>summary input')
-      .forEach(inp => inp.onchange = blk2Tog);
+      document.querySelectorAll(qslrs[12]).forEach(e => e.onclick = fileLoad);
+      document.querySelectorAll(qslrs[11]).forEach(inp => inp.onchange = blk2Tog);
       vidx > 8 && !(nm0sets.p2vws[vusr] || "").hdrs || hdrsswi.click();
       !(nm0sets.p2vws[vusr] || "").bods || bodsswi.click();
       vwFnlz(evt);
@@ -1853,8 +1844,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         !chgs || !p0_id.value || !txd1.DBNAME || !window.PouchDB || new PouchDB(txd1.DBNAME)
         .put(Object.assign({ _id: "", _rev: "" }, fwg), {}).then( trsp =>
           Object.keys(fwg).forEach( k => /^_id$|^_rev$/.test(k)
-            || window["p0" + k].classList.remove("isucc", "iwarn")
-            || (window["p0" + k].disabled = 1) )
+            || window["p0" + k].classList.remove("isucc", "iwarn") || (window["p0" + k].disabled = 1) )
           || (fwg = null) || hlps[0].classList.remove("dnone") || rsp2Show(trsp) )
         .catch(err => hlps[1].classList.remove("dnone") || rsp2Show(err));
       }; //fwgUpd;
@@ -1898,7 +1888,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     if (vidx !== 2) {
       (colssel.innerHTML = !vbas ? "" : copts[vbas < 5 ? 0 : 1]);
       vidx > 3 || (sortsel.innerHTML = "") || (colssel.selectedIndex = -1);
-      descswi.checked = false;
+      descswi.checked = 0;
       bulkctrl.classList.add("dnone");
       filtctrl.classList.remove("dnone");
       filtinp.value = moveinp.value = "";
@@ -2058,9 +2048,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     let hlps = pdbcfg.querySelectorAll('.chelp'),
       t0cs = t0tbod.querySelectorAll('[type=checkbox]:checked'),
       v0cs = v0tbod.querySelectorAll('[type=checkbox]:checked'),
-      hid = vbas && ( vbas > 1
-        ? document.querySelector('#nmtbl thead:not(.dnone) td:first-of-type>input.dnone')
-        : document.querySelector('#nmdata .media-content>details:first-of-type>summary>span.dnone') ),
+      hid = vbas && document.querySelector(vbas > 1 ? qslrs[6] : qslrs[7]),
       ps = ["dbdflt", "dbdflt", "vwdflt", "contcs", "uname", "uemail", "usecfg", "useset"], //"ddoc"
       idx = evt && actrls.concat([use1swi, use2swi, t0abtn, t0dbtn, v0abtn, v0dbtn])
         .findIndex(e => e.id === evt.target.id);
@@ -2106,9 +2094,9 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       hlps = pdbcfg.querySelectorAll('.chelp');
     !cfg || hlps.forEach(e => e.classList.add("dnone"));
     if (cfg && evt && evt.target.id === "pfilbtn") {
+      dbpwinp.value = originp.value ? "" : (cfg.remot || "").pw || "";
+      dbuninp.value = originp.value ? "" : (cfg.remot || "").un || "";
       originp.value = originp.value ? "" : (cfg.remot || "").orig || "";
-      dbuninp.value = dbuninp.value ? "" : (cfg.remot || "").un || "";
-      dbpwinp.value = dbpwinp.value ? "" : (cfg.remot || "").pw || "";
     } else if (cfg && evt && window.PouchDB) {
       let ori = /^(https?:\/\/)(.+?)\/?$/.exec(cfg.remot.orig || "") || [],
         url = !(ori[1] && ori[2]) ? "" : ori[1]
