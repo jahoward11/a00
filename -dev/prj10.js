@@ -155,7 +155,34 @@ const scrload = `//
 // import("../-res-js/ebook-annos.mjs").then(r => window["tocNavLtGen"] = r.tocNavLtGen).catch(respShow)
 // fetch("../-res-js/ebook-annos-fns.js").then(r => r.text()).then(respShow).catch(respShow)
 // localforage.getItem("tutor2js").then(respShow).catch(respShow)
-// PouchDB("mydb1").get("myfile").then(doc => doc.filefrags[0].contenttxt).then(respShow).catch(respShow)
+// PouchDB("mydb1").get("myfile").then(doc => doc.content).then(respShow).catch(respShow)
+
+/*
+txd2 = {
+  DBNAME: "db",
+  FILEID: "id",
+  ATTKEY: "key",
+  OPTS:   {
+    //rev: "str"
+    //revs_info: true
+  }
+}
+*/
+
+/*
+PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
+.then( abl => !(_.rdr = new FileReader())
+  || !(_.rdr.onerror = () => respShow(_.rdr.error))
+  || !(_.rdr.onload = () => respShow(_.rdr.result))
+  || _.rdr.readAsText(abl) );
+*/
+
+/*
+PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
+.then(abl => fetch(URL.createObjectURL(abl)).then(r => r.text()).then(respShow).catch(respShow)
+*/
+
+//!(/^blob:/.test(aurls[txd2.ATTKEY]) || (aurls[txd2.ATTKEY] = URL.createObjectURL(abl)))
 //`;
 
 const jstatqs = `//
