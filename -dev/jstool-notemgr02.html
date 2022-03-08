@@ -568,13 +568,14 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   <label class="fltrt mtup3p5 fsz10p5 lnht1m ilink"><input type=checkbox id=use1swi />
   Show<br />use guides</label>
   <h4>Database Setup &plus; Configuration</h4>
-  <h5>Cloned Remote Data Sync</h5>
+  <h5>Remote DB Clone, Sync</h5>
   <p class=dnone>
     &emsp;To <em>sync</em> the data of a remote database clone to the selected local database,
-    enter the website origin, username and password of your corresponding, <em>CouchDB</em> compatible
-    database account (e.g., <em>IBM Cloudant</em>); (Or, tap the <em>PREFILL</em> button to fill in
-    these fields with the account info that was previously stored on the device;) Then, when the device
-    is online (internet connected), tap the <em>SYNC</em> button,&nbsp;here.
+    enter the website origin, username and password of your corresponding, <em>CouchDB</em> compatible,
+    account database (e.g., on <em>IBM&nbsp;Cloudant</em>); (Or, tap the <em>PREFILL</em> button to
+    fill in these fields with the account info that was entered previously;) Then, when the device
+    is online (internet connected), tap the <em>SYNC</em> button,&nbsp;here. Wait about a minute for
+    confirmation of a successful <em>sync</em> operation.
   </p>
   <div class=cblock>
     <div class=cfield>
@@ -673,7 +674,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </p>
   <p class=dnone>
     &emsp;Be aware that a database <em>note</em>
-    (a.k.a., <em>file</em> or <em>document</em> or <em>entry</em>) is actually
+    (a.k.a., <em>file</em> or <em>document</em> or <em>Couch doc</em> or <em>entry</em>) is actually
     a stored JavaScript object (with arbitrary <em>keys</em> and&nbsp;<em>values</em>).
   </p>
   <p class=dnone>
@@ -883,20 +884,15 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 <script type=module>
 let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   j = 0,  tidx = 0, vidx = 0,
+  aurls = {},
+  cntcs = {},
   nm0cfgs = {},
   nm0sets = {},
-  cntcs = {},
-  hstys = [ "atom-one-dark.css", "atom-one-light.css", "github-gist.css", "github.css",
-    "googlecode.css", "tomorrow.css", "vs.css", "xcode.css", "xt256.css" ],
-  aurls = JSON.parse( `{
-    "avatar000.png": "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
-    ${hstys.map(e => `"${e}": "../../a00/-res-hljs/${e}"`).join(",")}
-  }` ),
   rexsd = /^[.-][\w!.*+~-]+\/?$/,
   rexns = /(.*?) *((?:\bde +|\bvon +|)['‘’\w-]+)([ ,]*\b[js]r\.?|[ ,]*\b[ivx]+|)$/i,
   txd1 = {
     DBNAME: "",
-    FILEID: "_design/ecosorter",
+    FILEID: "", //"_design/ecosorter",
     VIEW:   "", //"files-idxlist",
     OPTS:   {} //{ since: 0 }
   },
@@ -1075,9 +1071,9 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       miscellany: ""
     }
   },
-  rsp2Show = r => rsp2con.textContent
+  rsp2Show = r => { rsp2con.textContent
     += ( !r || typeof r !== 'object' || r instanceof Error && r.constructor && !r.reason
-      ? r : JSON.stringify(r, null, 2) ) + "\n\n",
+      ? r : JSON.stringify(r, null, 2) ) + "\n\n" },
   fncTry = (fnc, a, e) => { try { return fnc(a) } catch (err) { return e ? err : undefined }},
   htmTxt = str => str.replace(/&(?=#?\w+;)/g, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;"),
   valStr = (v, sp) => v == null ? ""
@@ -1125,7 +1121,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       }) ))
     .catch(rsp2Show)
     .then( () => (cntcsel.innerHTML = opensel.innerHTML = pdbssel.innerHTML = "")
-      || !hlps[1].classList.includes("dnone") || hlps[0].classList.remove("dnone") );
+      || !hlps[1].classList.contains("dnone") || hlps[0].classList.remove("dnone") );
     //.then(PouchDB.allDbs);
   },
   date0Fmt = nbr => !nbr ? "" : new Date(nbr).toISOString().replace(/T.+$/, ""),
@@ -1225,59 +1221,6 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       <td>${ d.id }</td>
       <td>${ d.changes[0].rev }</td>
     </tr>` ).join("") + "\n  ",
-  blk2Tog = () => {
-    if (vbas === 5) { return; }
-    let chks = document.querySelectorAll(vbas > 1 ? qslrs[8] : qslrs[9]);
-    (chks.length ? filtctrl : bulkctrl).classList.add("dnone");
-    (chks.length ? bulkctrl : filtctrl).classList.remove("dnone");
-  },
-  bulkTog = () => {
-    let hid = document.querySelector(vbas > 1 ? qslrs[6] : qslrs[7]);
-    document.querySelectorAll( vbas > 1 ? qslrs[4]
-      : '#nmdata .media-content>details:first-of-type>summary>span' )
-    .forEach(e => e.className = hid ? "" : "dnone");
-    if (hid) {
-      blk2Tog();
-    } else {
-      bulkctrl.classList.add("dnone");
-      filtctrl.classList.remove("dnone");
-    }
-  },
-  filtExe = () => {
-    let negs = /^-/.test(filtinp.value),
-      rexf = /^\/.+\/[gim]*$/.test(filtinp.value.trim()) ? eval(filtinp.value)
-        : new RegExp(filtinp.value.replace(/^-/, "") || "^$", "gi");
-    rsp2con.textContent = "";
-    document.querySelectorAll(vbas > 1 ? qslrs[4] : qslrs[11]).forEach(inp => inp.checked = 0);
-    document.querySelectorAll('#nmtbl tbody>tr:not([id])').forEach(tr => {
-      tr.classList.remove("dnone", "match");
-      Array.from(tr.children)
-      .forEach( (td, i) => !i || ( (i !== 2 ? td : td.firstChild).innerHTML
-        = (i !== 2 ? td : td.firstChild).innerHTML.replace(/<\/?mark>/g, "") ));
-    });
-    document.querySelectorAll(qslrs[5])
-    .forEach(e => e.innerHTML = e.innerHTML.replace(/<\/?mark>/g, ""));
-    document.querySelectorAll('#nmdata .media').forEach(e => e.classList.remove("dnone"));
-    if (vbas > 1 && filtinp.value) {
-      document.querySelectorAll('#nmtbl tbody>tr:not([id]):not([hidden])')
-      .forEach( tr => Array.from(tr.children).forEach( (td, i) => {
-        if (i && !td.classList.contains("dnone")) {
-          rexf.lastIndex = 0;
-          !negs ? tr.classList.contains("match")
-            || (tr.className = rexf.test(td.textContent) ? "match" : "dnone")
-          : tr.classList.contains("dnone")
-            || (tr.className = !rexf.test(td.textContent) ? "match" : "dnone");
-          negs || ( (i !== 2 ? td : td.firstChild).innerHTML
-            = (i !== 2 ? td : td.firstChild).innerHTML.replace(rexf, "<mark>$&</mark>") );
-        }
-      }));
-    } else if (filtinp.value) {
-      document.querySelectorAll(qslrs[5])
-      .forEach(e => e.innerHTML = e.innerHTML.replace(rexf, "<mark>$&</mark>"));
-      document.querySelectorAll('#nmdata .media')
-      .forEach(e => /<mark>/.test(e.innerHTML) != negs || e.classList.add("dnone"));
-    }
-  },
   filesChg = evt => {
     if (vbas === 5) { return; }
     let hlps,
@@ -1368,16 +1311,10 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       chkaf2.forEach( inp => [0,1,2,3,4].reduce((a, b) => a = a.parentElement, inp)
         .classList.add(fedit ? "hsuccl" : "hwarnl") );
     }
-    !dbq //|| ( txd2.FILEID === "_all_docs" ?
-      || dbq.allDocs(txd2.OPTS).then(rdataTfm).then(blkDspl)
-      //: txd2.FILEID === "_changes"
-      //? dbq.changes(txd2.OPTS).then(rdataTfm).then(blkDspl)
-      //: dbq.get(txd2.FILEID, txd2.OPTS).then(blkDspl) )
-    .catch(rsp2Show);
+    !dbq || dbq.allDocs(txd2.OPTS).then(rdataTfm).then(blkDspl).catch(rsp2Show);
   },
   fileLoad = evt => {
-    let blrdr,
-      sdir = vbas > 1 && evt && evt.target.parentElement.previousElementSibling.textContent,
+    let sdir = vbas > 1 && evt && evt.target.parentElement.previousElementSibling.textContent,
       txd2 = {
         DBNAME: txd1.DBNAME,
         FILEID: !evt ? "" : sdir && rexsd.test(sdir)
@@ -1397,36 +1334,36 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       jp1 = str => "\n<pre class=\"dflow hljs\">"
       //#nmwrap pre>pre.hljs { margin: 0; white-space: inherit; }
         + (!window.hljs ? htmTxt(jb1(str)) : hljs.highlightAuto(jb1(str)).value) + "</pre>"
-        + (!window.hljs ? "" : "<style>@import \"" + (aurls(nm0sets.hlsty) || "") + "\";</style>\n");
+        + (!window.hljs ? "" : "<style>@import \"" + (aurls(nm0sets.hlsty) || "") + "\";</style>\n"),
+      attVw = abl => reximg.test(txd2.ATTKEY) || abl && /^image/.test(abl.type)
+        ? nmbulk.innerHTML = "\n<figure class=image><img src=\""
+          + (aurls[txd2.ATTKEY] || abl && (aurls[txd2.ATTKEY] = URL.createObjectURL(abl)))
+          + "\" /></figure>\n"
+        : fetch(aurls[txd2.ATTKEY] || abl && (aurls[txd2.ATTKEY] = URL.createObjectURL(abl)))
+          .then(r => r.text()).then(str => nmbulk.innerHTML = jp1(str)).catch(rsp2Show);
     //rsp2Show(txd2);
     if (!window.PouchDB || !txd2.DBNAME || !txd2.FILEID
     || txd2.ATTKEY && !reximg.test(txd2.ATTKEY) && !rextxt.test(txd2.ATTKEY)) { return; }
     rsp2con.textContent = "";
-    txd2.ATTKEY
-    ? new PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
-      .then( abl => reximg.test(txd2.ATTKEY)
-        ? nmbulk.innerHTML = "\n<figure class=image><img src=\""
-          + (aurls[txd2.ATTKEY] || (aurls[txd2.ATTKEY] = URL.createObjectURL(abl)))
-          + "\" /></figure>\n"
-        : //!(/^blob:/.test(aurls[txd2.ATTKEY]) || (aurls[txd2.ATTKEY] = URL.createObjectURL(abl)))
-          !(blrdr = new FileReader()) || !( blrdr.onerror = err =>
-            !rsp2Show("Alert: Attachment not read.") || !rsp2Show(blrdr.error) || rsp2Show(err) )
-          || !(blrdr.onload = () => nmbulk.innerHTML = jp1(blrdr.result)) || blrdr.readAsText(abl) )
-      .catch(rsp2Show)
-    : /^~[a-z]/.test(txd2.FILEID) ? new PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS)
+    aurls[txd2.ATTKEY] ? tabActv() || attVw() : txd2.ATTKEY
+    ? tabActv() || new PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
+      .then(attVw).catch(rsp2Show)
+    : /^~[a-z]/.test(txd2.FILEID)
+    ? tabActv() || new PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS)
         .then( doc => nmbulk.innerHTML
           = "\n<pre class=pwrap>" + valStr(Object.assign({ _id: "", _rev: "" }, doc), 2) + "</pre>\n" )
+        .catch(rsp2Show)
     : new PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS).then(doc => {
-      let lnl, str,
-        taHt = k => ( lnl = ( ( str = valStr( fwg[k],
-              !Array.isArray(fwg[k]) || typeof fwg[k][0] === 'object' ? 2 : null ))
-            .match(/\n/g) || "" ).length ) > 8 || str.length > 400
-          ? 16 : lnl > 2 || str.length > 200 ? 8 : 2;
-      fwg = doc;
-      pfacnt.innerHTML = nmbulk.innerHTML = "";
-      [vctrls, nmflow, nmtabs, nmpans[tidx]].forEach(e => e.classList.add("dnone"));
-      nmdata.classList.remove("dnone");
-      nmdata.innerHTML = "" + `
+        let lnl, str,
+          taHt = k => ( lnl = ( ( str = valStr( fwg[k],
+                !Array.isArray(fwg[k]) || typeof fwg[k][0] === 'object' ? 2 : null ))
+              .match(/\n/g) || "" ).length ) > 8 || str.length > 400
+            ? 16 : lnl > 2 || str.length > 200 ? 8 : 2;
+        fwg = doc;
+        pfacnt.innerHTML = nmbulk.innerHTML = "";
+        [vctrls, nmflow, nmtabs, nmpans[tidx]].forEach(e => e.classList.add("dnone"));
+        nmdata.classList.remove("dnone");
+        nmdata.innerHTML = "" + `
   <button id=updbtn class="fltrt hgainl"><span class=isucc>&#x267a;</span> UPDATE</button>
   <div class=field>
     <button id=bckbtn class="hgainl ilink"><strong>&lang;</strong></button>
@@ -1459,47 +1396,100 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     </span><span class=ccntr>`
     + `<input type=text id=imganm2 placeholder="Rename as attachment&hellip;" /></span>
   </div>\n`;
-      bckbtn.onclick = () => (fwg = null) || [vctrls, nmtabs, nmpans[tidx]]
-          .forEach(e => e.classList.remove("dnone"))
-        || !vidx || (viewsel.selectedIndex = vidx = 0) || viewChg(); //viewBk
-      imgainp.onchange = () => imgain3.innerHTML = imgainp.files[1]
-        ? "<em>[" + imgainp.files.length + " files selected]</em>"
-        : imgainp.files[0] ? imgainp.files[0].name : "<span>Locate image&hellip;</span>";
-      updbtn.onclick = () => {
-        let ts0 = new Date().getTime(),
-          chgs = 0,
-          hlps = nmdata.querySelectorAll('.chelp');
-        hlps.forEach(e => e.classList.add("dnone"));
-        Array.from(nmdata.querySelectorAll('.label')).map(e => e.textContent)
-        .forEach( k => /^_id$|^_rev$/.test(k)
-          || !/isucc|iwarn/.test(window["p0" + k].className)
-          || !++chgs || (fwg[k] = typTest(window["p0" + k].value, 1)[2]) );
-        !fwg.hasOwnProperty("ts_updated") || (fwg.ts_updated = ts0);
-        !fwg.hasOwnProperty("file_updated") || [fwg.file_updated].forEach(p1 => {
-          p1.username = nm0sets.uname || nm0sets.uemail || "user000";
-          p1.timestamp = ts0;
-          p1.dborigin = /127\.0\.0|192\.168\.0|cloudant|localhost/.test(location.origin)
-            ? location.origin : [navigator.userAgent || navigator.userAgentData, location.origin];
-          p1.dbname = txd1.DBNAME;
-          !p1.hasOwnProperty("version") || (p1.version = p1.version.replace(/-?\d+$/, m => ++m));
-        });
-        !imgainp.files.length || !++chgs
-        || !(fwk.hasOwnProperty("_attachments") || (fwk._attachments = {}))
-        || imgainp.files.forEach( (f, i) =>
-          fwg._attachments[ !imganm2.value ? f.name : !imgainp.files[1]
-            ? imganm2.value : imganm2.value.replace(/(?=\.\w+$|$)/, i > 9 ? i : "0" + i) ]
-          = { content_type: f.type, data: f } );
-        !chgs || !txd2.DBNAME || !window.PouchDB || new PouchDB(txd2.DBNAME)
-        .put(Object.assign({ _id: "", _rev: "" }, fwg), txd2.OPTS).then( trsp =>
-          Object.keys(fwg).forEach( k => /^_id$|^_rev$/.test(k)
-            || window["p0" + k].classList.remove("isucc", "iwarn") )
-          || hlps[0].classList.remove("dnone") || rsp2Show(trsp) )
-        .catch(err => hlps[1].classList.remove("dnone") || rsp2Show(err));
-      }; //fwgUpd;
-      nmdata.querySelectorAll('.field-label button').forEach(e => e.onclick = txtaSel);
-      Object.keys(fwg).forEach(k => /^_id$|^_rev$/.test(k) || (window["p0" + k].onblur = dataVld));
-      tidx !== 1 || tabActv();
-    }).catch(rsp2Show);
+        bckbtn.onclick = () => (fwg = null) || [vctrls, nmtabs, nmpans[tidx]]
+            .forEach(e => e.classList.remove("dnone"))
+          || !vidx || (viewsel.selectedIndex = vidx = 0) || viewChg(); //viewBk
+        imgainp.onchange = () => imgain3.innerHTML = imgainp.files[1]
+          ? "<em>[" + imgainp.files.length + " files selected]</em>"
+          : imgainp.files[0] ? imgainp.files[0].name : "<span>Locate image&hellip;</span>";
+        updbtn.onclick = () => {
+          let ts0 = new Date().getTime(),
+            chgs = 0,
+            hlps = nmdata.querySelectorAll('.chelp');
+          hlps.forEach(e => e.classList.add("dnone"));
+          Array.from(nmdata.querySelectorAll('.label')).map(e => e.textContent)
+          .forEach( k => /^_id$|^_rev$/.test(k)
+            || !/isucc|iwarn/.test(window["p0" + k].className)
+            || !++chgs || (fwg[k] = typTest(window["p0" + k].value, 1)[2]) );
+          !fwg.hasOwnProperty("ts_updated") || (fwg.ts_updated = ts0);
+          !fwg.hasOwnProperty("file_updated") || [fwg.file_updated].forEach(p1 => {
+            p1.username = nm0sets.uname || nm0sets.uemail || "user000";
+            p1.timestamp = ts0;
+            p1.dborigin = /127\.0\.0|192\.168\.0|cloudant|localhost/.test(location.origin)
+              ? location.origin : [navigator.userAgent || navigator.userAgentData, location.origin];
+            p1.dbname = txd1.DBNAME;
+            !p1.hasOwnProperty("version") || (p1.version = p1.version.replace(/-?\d+$/, m => ++m));
+          });
+          !imgainp.files.length || !++chgs
+          || !(fwk.hasOwnProperty("_attachments") || (fwk._attachments = {}))
+          || imgainp.files.forEach( (f, i) =>
+            fwg._attachments[ !imganm2.value ? f.name : !imgainp.files[1]
+              ? imganm2.value : imganm2.value.replace(/(?=\.\w+$|$)/, i > 9 ? i : "0" + i) ]
+            = { content_type: f.type, data: f } );
+          !chgs || !txd2.DBNAME || !window.PouchDB || new PouchDB(txd2.DBNAME)
+          .put(Object.assign({ _id: "", _rev: "" }, fwg), txd2.OPTS).then( trsp =>
+            Object.keys(fwg).forEach( k => /^_id$|^_rev$/.test(k)
+              || window["p0" + k].classList.remove("isucc", "iwarn") )
+            || hlps[0].classList.remove("dnone") || rsp2Show(trsp) )
+          .catch(err => hlps[1].classList.remove("dnone") || rsp2Show(err));
+        }; //fwgUpd;
+        nmdata.querySelectorAll('.field-label button').forEach(e => e.onclick = txtaSel);
+        Object.keys(fwg).forEach(k => /^_id$|^_rev$/.test(k) || (window["p0" + k].onblur = dataVld));
+        tidx !== 1 || tabActv();
+      }).catch(rsp2Show);
+  },
+  filtExe = () => {
+    let negs = /^-/.test(filtinp.value),
+      rexf = /^\/.+\/[gim]*$/.test(filtinp.value.trim()) ? eval(filtinp.value)
+        : new RegExp(filtinp.value.replace(/^-/, "") || "^$", "gi");
+    rsp2con.textContent = "";
+    document.querySelectorAll(vbas > 1 ? qslrs[4] : qslrs[11]).forEach(inp => inp.checked = 0);
+    document.querySelectorAll('#nmtbl tbody>tr:not([id])').forEach(tr => {
+      tr.classList.remove("dnone", "match");
+      Array.from(tr.children)
+      .forEach( (td, i) => !i || ( (i !== 2 ? td : td.firstChild).innerHTML
+        = (i !== 2 ? td : td.firstChild).innerHTML.replace(/<\/?mark>/g, "") ));
+    });
+    document.querySelectorAll(qslrs[5])
+    .forEach(e => e.innerHTML = e.innerHTML.replace(/<\/?mark>/g, ""));
+    document.querySelectorAll('#nmdata .media').forEach(e => e.classList.remove("dnone"));
+    if (vbas > 1 && filtinp.value) {
+      document.querySelectorAll('#nmtbl tbody>tr:not([id]):not([hidden])')
+      .forEach( tr => Array.from(tr.children).forEach( (td, i) => {
+        if (i && !td.classList.contains("dnone")) {
+          rexf.lastIndex = 0;
+          !negs ? tr.classList.contains("match")
+            || (tr.className = rexf.test(td.textContent) ? "match" : "dnone")
+          : tr.classList.contains("dnone")
+            || (tr.className = !rexf.test(td.textContent) ? "match" : "dnone");
+          negs || ( (i !== 2 ? td : td.firstChild).innerHTML
+            = (i !== 2 ? td : td.firstChild).innerHTML.replace(rexf, "<mark>$&</mark>") );
+        }
+      }));
+    } else if (filtinp.value) {
+      document.querySelectorAll(qslrs[5])
+      .forEach(e => e.innerHTML = e.innerHTML.replace(rexf, "<mark>$&</mark>"));
+      document.querySelectorAll('#nmdata .media')
+      .forEach(e => /<mark>/.test(e.innerHTML) != negs || e.classList.add("dnone"));
+    }
+  },
+  blk2Tog = () => {
+    if (vbas === 5) { return; }
+    let chks = document.querySelectorAll(vbas > 1 ? qslrs[8] : qslrs[9]);
+    (chks.length ? filtctrl : bulkctrl).classList.add("dnone");
+    (chks.length ? bulkctrl : filtctrl).classList.remove("dnone");
+  },
+  bulkTog = () => {
+    let hid = document.querySelector(vbas > 1 ? qslrs[6] : qslrs[7]);
+    document.querySelectorAll( vbas > 1 ? qslrs[4]
+      : '#nmdata .media-content>details:first-of-type>summary>span' )
+    .forEach(e => e.className = hid ? "" : "dnone");
+    if (hid) {
+      blk2Tog();
+    } else {
+      bulkctrl.classList.add("dnone");
+      filtctrl.classList.remove("dnone");
+    }
   },
   vwFnlz = evt => {
     if (vidx > 8 && (!evt || evt.target.id === "viewsel")) {
@@ -2049,7 +2039,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       t0cs = t0tbod.querySelectorAll('[type=checkbox]:checked'),
       v0cs = v0tbod.querySelectorAll('[type=checkbox]:checked'),
       hid = vbas && document.querySelector(vbas > 1 ? qslrs[6] : qslrs[7]),
-      ps = ["dbdflt", "dbdflt", "vwdflt", "contcs", "uname", "uemail", "usecfg", "useset"], //"ddoc"
+      ps = ["dbdflt", "dbdflt", "vwdflt", "dbcntc", "uname", "uemail", "usecfg", "useset"], //"ddoc"
       idx = evt && actrls.concat([use1swi, use2swi, t0abtn, t0dbtn, v0abtn, v0dbtn])
         .findIndex(e => e.id === evt.target.id);
     if (typeof idx !== 'number' || idx < 0) { return; }
@@ -2092,7 +2082,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   pdbSync = evt => {
     let cfg = nm0cfgs[txd1.DBNAME],
       hlps = pdbcfg.querySelectorAll('.chelp');
-    !cfg || hlps.forEach(e => e.classList.add("dnone"));
+    hlps.forEach(e => e.classList.add("dnone"));
     if (cfg && evt && evt.target.id === "pfilbtn") {
       dbpwinp.value = originp.value ? "" : (cfg.remot || "").pw || "";
       dbuninp.value = originp.value ? "" : (cfg.remot || "").un || "";
@@ -2148,7 +2138,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     (!vidx || vidx > 3) && !tidx || tabActv();
   },
   pdbsGen = (dbs = []) => {
-    let dbp,
+    let db1,
       ts0 = new Date().getTime(),
       cntcLite = d => ({
         _id:       d._id,
@@ -2160,17 +2150,17 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       });
     !/^{['"].+}$/.test(localStorage._nm0sets || "")
     || (nm0sets = fncTry(JSON.parse, localStorage._nm0sets) || {});
-    nm0sets && [ "uemail", "uname", "dbdflt", "vwdflt", "contcs", "bedit", "usecfg", "useset",
+    nm0sets && [ "uemail", "uname", "dbcntc", "dbdflt", "vwdflt", "bedit", "usecfg", "useset",
       "hlsty", "p2typs", "p2vws" ].every(pty => nm0sets.hasOwnProperty(pty))
     || ( localStorage._nm0sets = JSON.stringify( nm0sets = Object.assign(
-      { uemail: "", uname: "", dbdflt: "", vwdflt: "V2:organized",
-        contcs: "", bedit: 0, usecfg: 0, useset: 0, hlsty: "atom-one-light.css",
+      { uemail: "", uname: "", dbcntc: "", dbdflt: "", vwdflt: "V2:organized",
+        bedit: 0, usecfg: 0, useset: 0, hlsty: "atom-one-light.css",
         p2typs: { mytype2: { t0: ["mytype2", "<em>[mytype2 description &hellip;]</em>"],
           t1: { _id: "", _rev: "", key2: "", key3: "" } }},
         p2vws: { myview2: { v0: ["V1-myview2", "<em>[myview2 description &hellip;]</em>"],
           base: 1, ddoc: "", cols: [], sort: "", desc: 0, filt: "", cbxs: 0, hdrs: 1, bods: 0 }} },
       nm0sets || {} )));
-    //Object.values(nm0sets.p2vws).every(v => v.hasOwnProperty("ddoc"))
+    !nm0sets.hasOwnProperty("contcs") || delete nm0sets.contcs; //temp cleanup
     !nm0sets.u2typs || delete nm0sets.u2typs; //temp cleanup
     !nm0sets.u2vws || delete nm0sets.u2vws; //temp cleanup
     !nm0sets.hasOwnProperty("ddoc") || delete nm0sets.ddoc; //temp cleanup
@@ -2192,7 +2182,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
     !nm0sets.bedit || [moveinp, movebtn].forEach(elm => elm.classList.add("dnone"))
     || editbtn.classList.remove("dnone");
-    cntcsel.value = nm0sets.contcs;
+    cntcsel.value = nm0sets.dbcntc;
     una2inp.value = nm0sets.uname || nm0sets.uemail;
     unaminp.value = nm0sets.uname;
     uemlinp.value = nm0sets.uemail;
@@ -2200,12 +2190,19 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     viewApd() || viewsel.options.length > 9 || v0sChg();
     t0sChg();
     t1sChg();
-    !cntcsel.value || !window.PouchDB || !(dbp = new PouchDB(nm0sets.contcs))
-    || !dbp.get("-res-img").then( adoc =>
+    [[ "-res-img", "avatar000.png",
+      "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y" ]]
+    .concat( !nm0sets.hlsty ? []
+      : [["-res-css", nm0sets.hlsty, "../../a00/-res-hljs/" + nm0sets.hlsty]] )
+    .forEach( ([f, k, v]) => !dbs.includes("a00") || !window.PouchDB ? (aurls[k] = v)
+      : new PouchDB("a00").getAttachment(f, k)
+        .then(abl => aurls[k] = URL.createObjectURL(abl)).catch(rsp2Show) );
+    !cntcsel.value || !window.PouchDB || !(db1 = new PouchDB(nm0sets.dbcntc))
+    || !db1.get("-res-img").then( adoc =>
       !adoc._attachments || Object.keys(adoc._attachments).forEach( akey =>
-        dbp.getAttachment("-res-img", akey)
-        .then(ablob => aurls[akey] = URL.createObjectURL(ablob)) ) ).catch(rsp2Show)
-    || dbp.allDocs({
+        db1.getAttachment("-res-img", akey)
+        .then(abl => aurls[akey] = URL.createObjectURL(abl)) ) ).catch(rsp2Show)
+    || db1.allDocs({
         startkey:     "!",
         endkey:       "!~",
         include_docs: true
@@ -2214,6 +2211,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     opensel.value = pdbssel.value = nm0sets.dbdflt;
     !pdbssel.value || pdbOpen();
   };
+window.nm0 = { aurls, cntcs, rsp2Show, valStr };
 pdbssel.onchange = pdbOpen;
 viewsel.onchange = viewChg;
 colssel.onchange = colsTog;
