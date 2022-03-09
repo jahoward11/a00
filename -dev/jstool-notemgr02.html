@@ -1236,8 +1236,8 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         DBNAME: txd1.DBNAME,
         FILEID: "_all_docs",
         OPTS:   {
-          keys:         chkaf2.map(inp => vbas === 1 ? inp.value
-            : inp.parentElement.parentElement.children[2].textContent),
+          keys: chkaf2.map( inp => vbas === 1 ? inp.value
+            : inp.parentElement.parentElement.children[2].textContent ),
           include_docs: fedit
         }
       },
@@ -1914,9 +1914,9 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     } else if (/(dbpw|dbun|orig)inp|pw1swi|[tv]01sel/.test(evt.target.id)) {
       evt.target.id !== "originp" || (cfg.remot.orig = originp.value.trim());
       evt.target.id !== "dbuninp" || (cfg.remot.un = dbuninp.value.trim());
-      evt.target.id !== "dbpwinp" || (cfg.remot.pw = !cfg.pw1 ? "" : dbpwinp.value.trim());
+      evt.target.id !== "dbpwinp" || (cfg.remot.pw = !cfg.remot.pw1 ? "" : dbpwinp.value.trim());
       evt.target.id !== "pw1swi"
-      || (cfg.remot.pw = !(cfg.pw1 = pw1swi.checked) ? "" : dbpwinp.value.trim());
+      || (cfg.remot.pw = !(cfg.remot.pw1 = pw1swi.checked) ? "" : dbpwinp.value.trim());
       evt.target.id !== "t01sel" || (cfg.type0 = t01sel.value);
       evt.target.id !== "v01sel" || (cfg.view0 = v01sel.value);
       localStorage._nm0cfgs = JSON.stringify(nm0cfgs);
@@ -1942,7 +1942,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           tsset: ts0, tsdel: 0, user0: una2inp.value.trim() || nm0sets.uname || nm0sets.uemail || "",
           descr: pdb1inp.value || db0 + " project data",
           remot: { un: dbuninp.value.trim() || nm0sets.uname || "", pw: dbpwinp.value.trim(),
-            orig: originp.value.trim(), publ: 0 }, pw1: pw1swi.checked };
+            pw1: pw1swi.checked, orig: originp.value.trim(), publ: 0 } };
         localStorage._nm0cfgs = JSON.stringify(nm0cfgs);
         [pdbssel, opensel, cntcsel].forEach( (e, i) => e.innerHTML
           = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
@@ -2114,7 +2114,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     originp.value = dbuninp.value = dbpwinp.value = "";
     pdbnam.innerText = txd1.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value;
     cfg = nm0cfgs[txd1.DBNAME] || "";
-    pw1swi.checked = cfg.pw1;
+    pw1swi.checked = (cfg.remot || "").pw1;
     pw1swi.disabled = !cfg;
     pdbupd.innerText = !txd1.DBNAME ? "" : new Date(cfg.tsupd || null).toLocaleString();
     pdbset.innerText = !txd1.DBNAME ? "" : new Date(cfg.tsset || null).toLocaleString();
@@ -2168,28 +2168,15 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     || (nm0cfgs = fncTry(JSON.parse, localStorage._nm0cfgs) || {});
     nm0cfgs && !dbs.forEach(e => nm0cfgs[e] || (nm0cfgs[e] = {}))
     && !Object.values(nm0cfgs).forEach(v => delete v.ddoc0) //temp cleanup
-    && ["type0", "view0", "tsset", "tsupd", "tsdel", "user0", "descr", "remot", "pw1"]
+    && ["type0", "view0", "tsset", "tsupd", "tsdel", "user0", "descr", "remot"]
       .every(pty => Object.values(nm0cfgs).every(val => val.hasOwnProperty(pty)))
     || ( localStorage._nm0cfgs = JSON.stringify( nm0cfgs = Object.fromEntries(
       Object.entries(nm0cfgs).map( oe =>
         [ oe[0], Object.assign(
           { type0: "scrap", view0: nm0sets.vwdflt, tsset: ts0, tsupd: ts0, tsdel: 0,
             user0: nm0sets.uname || nm0sets.uemail || "", descr: oe[0] + " project data",
-            remot: { un: nm0sets.uname || "", pw: "", orig: "", publ: 0 }, pw1: 0 },
+            remot: { un: nm0sets.uname || "", pw: "", pw1: 1 , orig: "", publ: 0 } },
           oe[1].user0 && oe[1] || {} )] ) )));
-    [pdbssel, opensel, cntcsel].forEach( (e, i) => e.innerHTML
-      = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
-        .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
-    !nm0sets.bedit || [moveinp, movebtn].forEach(elm => elm.classList.add("dnone"))
-    || editbtn.classList.remove("dnone");
-    cntcsel.value = nm0sets.dbcntc;
-    una2inp.value = nm0sets.uname || nm0sets.uemail;
-    unaminp.value = nm0sets.uname;
-    uemlinp.value = nm0sets.uemail;
-    !nm0sets.useset || use2swi.checked || use2swi.click();
-    viewApd() || viewsel.options.length > 9 || v0sChg();
-    t0sChg();
-    t1sChg();
     [[ "-res-img", "avatar000.png",
       "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y" ]]
     .concat( !nm0sets.hlsty ? []
@@ -2208,6 +2195,19 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         include_docs: true
       }).then(rs => rs.rows.forEach(r => cntcs[r.doc.name_user || r.doc._id] = cntcLite(r.doc)))
       .catch(rsp2Show);
+    [pdbssel, opensel, cntcsel].forEach( (e, i) => e.innerHTML
+      = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
+        .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
+    !nm0sets.bedit || [moveinp, movebtn].forEach(elm => elm.classList.add("dnone"))
+    || editbtn.classList.remove("dnone");
+    cntcsel.value = nm0sets.dbcntc;
+    una2inp.value = nm0sets.uname || nm0sets.uemail;
+    unaminp.value = nm0sets.uname;
+    uemlinp.value = nm0sets.uemail;
+    !nm0sets.useset || use2swi.checked || use2swi.click();
+    viewApd() || viewsel.options.length > 9 || v0sChg();
+    t0sChg();
+    t1sChg();
     opensel.value = pdbssel.value = nm0sets.dbdflt;
     !pdbssel.value || pdbOpen();
   };
