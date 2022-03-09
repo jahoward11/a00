@@ -956,6 +956,20 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     '#nmdata .media-content>details:first-of-type>summary input',
     '#nmdata .media-left>.image>img, #nmdata .media-content>details:first-of-type a'
   ],
+  atthtm = `
+  <hr />
+  <div class=cfield>
+    <span class="ccntr cleft">Add attachments</span><span class=ccntr><label>`
+      + `<input id=imgainp type=file multiple />`
+      + `<span id=imgain2 class="btn1 fsz10p5 hgainl ilink">&#x2726;</span>`
+      + `<span id=imgain3 class=btn1><span>Locate image&hellip;</span></span>
+    </label></span>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft">
+    </span><span class=ccntr>`
+    + `<input type=text id=imganm2 placeholder="Rename as attachment&hellip;" /></span>
+  </div>\n`,
   nmthds = document.querySelectorAll('#nmtbl thead'),
   nmtbod = document.querySelector('#nmtbl tbody'),
   nmtfts = document.querySelectorAll('#nmtbl tfoot'),
@@ -1327,14 +1341,14 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       },
       reximg = /\.giff?$|\.jpe?g$|\.png$/i,
       rextxt = /\.html?$|\.m?js$|\.json$|\.md$|\.s?css$|\.te?xt$|\.\w{5,}$/i,
-      jb1 = str => !window.js_beautify || !/\.m?js$|\.html?$/i.test(txd2.ATTKEY)
+      jb1 = str => !window.js_beautify || !/\.m?js$/i.test(txd2.ATTKEY)
         ? valStr(str, 2) : js_beautify( str,
           { "indent_size": 2, "space_after_anon_function": 1,
             "break-chained-methods": 1, "keep-array-indentation": 1 } ),
       jp1 = str => "\n<pre class=\"dflow hljs\">"
       //#nmwrap pre>pre.hljs { margin: 0; white-space: inherit; }
-        + (!window.hljs ? htmTxt(jb1(str)) : hljs.highlightAuto(jb1(str)).value) + "</pre>"
-        + (!window.hljs ? "" : "<style>@import \"" + (aurls(nm0sets.hlsty) || "") + "\";</style>\n"),
+        + (!window.hljs ? htmTxt(jb1(str)) : hljs.highlightAuto(jb1(str)).value) + "</pre>\n"
+        + (!window.hljs ? "" : "<style>@import \"" + (aurls[nm0sets.hlsty] || "") + "\";</style>\n"),
       attVw = abl => reximg.test(txd2.ATTKEY) || abl && /^image/.test(abl.type)
         ? nmbulk.innerHTML = "\n<figure class=image><img src=\""
           + (aurls[txd2.ATTKEY] || abl && (aurls[txd2.ATTKEY] = URL.createObjectURL(abl)))
@@ -1382,20 +1396,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     <div class="field-body">
       <textarea id=${"p0" + k} class=textarea rows=${taHt(k)}>${htmTxt(str)}</textarea>
     </div>
-  </div>` ).join("") + `
-  <hr />
-  <div class=cfield>
-    <span class="ccntr cleft">Add attachments</span><span class=ccntr><label>`
-      + `<input id=imgainp type=file multiple />`
-      + `<span id=imgain2 class="btn1 fsz10p5 hgainl ilink">&#x2726;</span>`
-      + `<span id=imgain3 class=btn1><span>Locate image&hellip;</span></span>
-    </label></span>
-  </div>
-  <div class=cfield>
-    <span class="ccntr cleft">
-    </span><span class=ccntr>`
-    + `<input type=text id=imganm2 placeholder="Rename as attachment&hellip;" /></span>
-  </div>\n`;
+  </div>` ).join("") + atthtm;
         bckbtn.onclick = () => (fwg = null) || [vctrls, nmtabs, nmpans[tidx]]
             .forEach(e => e.classList.remove("dnone"))
           || !vidx || (viewsel.selectedIndex = vidx = 0) || viewChg(); //viewBk
@@ -1784,12 +1785,12 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         !p0.hasOwnProperty("version") || p0.version || (p1.version = p0.version = "0.1.0");
       });
       !fwg.hasOwnProperty("from") || (fwg.from = un0);
-      pfacnt.innerHTML = "\n  <button id=savbtn class=\"fltrt hgainl\">"
-      + "<span class=isucc>&#x267a;</span> SAVE</button>"
-      + "\n  <div class=field>\n<h4>New Note</h4>"
-      + "\n  <div class=\"alnrt chelp isucc dnone\">New note is saved in local DB.</div>"
-      + "\n  <div class=\"alnrt chelp iwarn dnone\">New-note save attempt failed.</div>\n  </div>"
-      + Object.keys(fwg).map(k => /^_rev$/.test(k) ? "" : `
+      pfacnt.innerHTML = "" + `
+  <button id=savbtn class="fltrt hgainl"><span class=isucc>&#x267a;</span> SAVE</button>
+  <div class=field>\n<h4>New Note</h4>
+  <div class="alnrt chelp isucc dnone">New note is saved in local DB.</div>
+  <div class="alnrt chelp iwarn dnone">New-note save attempt failed.</div>
+  </div>` + Object.keys(fwg).map( k => /^_rev$/.test(k) ? "" : `
   <div class="field is-horizontal">
     <div class="field-label">
       <span class=label>${k}</span>
@@ -1800,20 +1801,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         htmTxt(valStr(fwg[k], !Array.isArray(fwg[k]) || typeof fwg[k][0] === 'object' ? 2 : null))
      }</textarea>
     </div>
-  </div>`).join("") + `
-  <hr />
-  <div class=cfield>
-    <span class="ccntr cleft">Add attachments</span><span class=ccntr><label>`
-      + `<input id=imgainp type=file multiple />`
-      + `<span id=imgain2 class="btn1 fsz10p5 hgainl ilink">&#x2726;</span>`
-      + `<span id=imgain3 class=btn1><span>Locate image&hellip;</span></span>
-    </label></span>
-  </div>
-  <div class=cfield>
-    <span class="ccntr cleft">
-    </span><span class=ccntr>`
-    + `<input type=text id=imganm2 placeholder="Rename as attachment&hellip;" /></span>
-  </div>\n`;
+  </div>` ).join("") + atthtm;
       imgainp.onchange = () => imgain3.innerHTML = imgainp.files[1]
         ? "<em>[" + imgainp.files.length + " files selected]</em>"
         : imgainp.files[0] ? imgainp.files[0].name : "<span>Locate image&hellip;</span>";
