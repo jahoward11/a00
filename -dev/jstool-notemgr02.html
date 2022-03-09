@@ -22,7 +22,7 @@ html {
 hr {
   display: block;
   background-color: Gainsboro;
-  height: 2px;
+  height: 1px;
   margin: 1.5em 0;
   border: none;
 }
@@ -568,6 +568,54 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   <label class="fltrt mtup3p5 fsz10p5 lnht1m ilink"><input type=checkbox id=use1swi />
   Show<br />use guides</label>
   <h4>Database Setup &plus; Configuration</h4>
+  <p class=dnone>
+    &emsp;You can switch to any previously created, local database by using
+    the 1<sup>st</sup> select list of the top control&nbsp;panel.
+  </p>
+  <h5>New Database Creation</h5>
+  <p class=dnone>
+    &emsp;To <em>create</em> a new local database, enter your username or email,
+    a new DB name and a short description of its intended purpose;
+    (And, optionally, set your own DB configurations, below;)
+    Then, tap the associated button,&nbsp;here.
+  </p>
+  <div class=cblock>
+    <div class=cfield>
+      <span class="ccntr cleft">Username or email</span><span class=ccntr><input type=text id=una2inp /></span>
+    </div>
+    <div class=cfield>
+      <span class="ccntr cleft">New DB name</span><span class=ccntr><input type=text id=pdb0inp /></span>
+    </div>
+    <div class=cfield>
+      <span class="ccntr cleft">DB description</span><span class=ccntr><input type=text id=pdb1inp /></span>
+    </div>
+    <div class=cfield>
+      <span class="ccntr cleft">
+      </span><span class=ccntr><button id=pdb0btn class="isucc hsuccl">CREATE</button></span>
+      <div class="chelp isucc dnone">DB creation is successful.</div>
+      <div class="chelp iwarn dnone">DB creation failed.</div>
+    </div>
+  </div>
+  <h5>Old Data Destruction</h5>
+  <p class=dnone>
+    &emsp;To <em>destroy</em> an existing database&mdash;or to <em>compact</em> it
+    (i.e., remove all versions of each <em>note</em> but the last one)&mdash;enter
+    the same name as the currently selected database and tap the appropriate button,&nbsp;here.
+  </p>
+  <div id=olddctrl class=cblock>
+    <div class=cfield>
+      <div class=fsz10p5><em>ALERT:</em> This operation cannot be reversed.</div>
+      <span class="ccntr cleft">Selected DB name</span><span class=ccntr><input type=text id=ddelinp /></span>
+    </div>
+    <div class=cfield>
+      <span class="ccntr cleft">
+      </span><span class=ccntr><button id=dbd0btn class="isucc hsuccl">
+      COMPACT</button></span><span class=ccntr><button id=dbd1btn class="iwarn hwarnl">
+      DESTROY</button></span>
+      <div class="chelp isucc dnone">Data destruction is successful.</div>
+      <div class="chelp iwarn dnone">Data destruction failed.</div>
+    </div>
+  </div>
   <h5>Remote DB Clone, Sync</h5>
   <p class=dnone>
     &emsp;To <em>sync</em> the data of a remote database clone to the selected local database,
@@ -599,50 +647,6 @@ strong, mark, table th, .table, .table thead td, .table thead th,
       SYNC</button></span>
       <div class="chelp isucc dnone">Data sync is successful.</div>
       <div class="chelp iwarn dnone">Data sync failed.</div>
-    </div>
-  </div>
-  <h5>Old Data Destruction</h5>
-  <p class=dnone>
-    &emsp;To <em>destroy</em> an existing database&mdash;or to <em>compact</em> it
-    (i.e., remove all versions of each <em>note</em> but the last one)&mdash;enter
-    the same name as the currently selected database and tap the appropriate button,&nbsp;here.
-  </p>
-  <div id=olddctrl class=cblock>
-    <div class=cfield>
-      <div class=fsz10p5><em>ALERT:</em> This operation cannot be reversed.</div>
-      <span class="ccntr cleft">Selected DB name</span><span class=ccntr><input type=text id=ddelinp /></span>
-    </div>
-    <div class=cfield>
-      <span class="ccntr cleft">
-      </span><span class=ccntr><button id=dbd0btn class="isucc hsuccl">
-      COMPACT</button></span><span class=ccntr><button id=dbd1btn class="iwarn hwarnl">
-      DESTROY</button></span>
-      <div class="chelp isucc dnone">Data destruction is successful.</div>
-      <div class="chelp iwarn dnone">Data destruction failed.</div>
-    </div>
-  </div>
-  <h5>New Database Creation</h5>
-  <p class=dnone>
-    &emsp;To <em>create</em> a new local database, enter your username or email,
-    a new DB name and a short description of its intended purpose;
-    (And, optionally, set your own DB configurations, below;)
-    Then, tap the associated button,&nbsp;here.
-  </p>
-  <div class=cblock>
-    <div class=cfield>
-      <span class="ccntr cleft">Username or email</span><span class=ccntr><input type=text id=una2inp /></span>
-    </div>
-    <div class=cfield>
-      <span class="ccntr cleft">New DB name</span><span class=ccntr><input type=text id=pdb0inp /></span>
-    </div>
-    <div class=cfield>
-      <span class="ccntr cleft">DB description</span><span class=ccntr><input type=text id=pdb1inp /></span>
-    </div>
-    <div class=cfield>
-      <span class="ccntr cleft">
-      </span><span class=ccntr><button id=pdb0btn class="isucc hsuccl">CREATE</button></span>
-      <div class="chelp isucc dnone">DB creation is successful.</div>
-      <div class="chelp iwarn dnone">DB creation failed.</div>
     </div>
   </div>
   <hr />
@@ -789,7 +793,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     &emsp;Optionally, select a <em>contacts</em> database so that the app can locate any contact
     details or photos that are referenced from within another, group-shared database. Be aware that
     photos must be stored altogether as the attachments of a <em>note</em> (of your <em>contacts</em>
-    database) that is specially named "<code class=hwsmok>-res-img</code>".
+    database) that is specially named "<code class="fsz10p5 hwsmok">-res-img</code>".
   </p>
   <p class=dnone>
     &emsp;Also optionally, identify yourself by username and/or email, which will be associated with
@@ -1939,9 +1943,9 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
             .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
         pdbssel.value = db0; //opensel.value = //openswi.click();
-        hlps[4].classList.remove("dnone");
+        hlps[0].classList.remove("dnone");
         rsp2Show(trsp);
-      }).catch(err => hlps[5].classList.remove("dnone") || rsp2Show(err));
+      }).catch(err => hlps[1].classList.remove("dnone") || rsp2Show(err));
     }
   },
   t1sChg = evt => {
@@ -2084,17 +2088,17 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           + (!cfg.remot.un || !dbpwinp.value ? "" : cfg.remot.un + ":" + dbpwinp.value + "@")
           + ori[2] + "/" + txd1.DBNAME,
         db2 = url && new PouchDB(url, { skip_setup: true });
-      !db2 ? hlps[1].classList.remove("dnone")
+      !db2 ? hlps[5].classList.remove("dnone")
       : new PouchDB(txd1.DBNAME).sync(db2, { live: false })
         .then(resp => {
           pdbtot.innerHTML = "(last: " + pdbtot.innerHTML + ") &hellip;&quest;";
           pdbseq.innerHTML = "(last: " + pdbseq.innerText + ") &hellip;&quest;";
           pdbupd.innerText = new Date(cfg.tsupd = new Date().getTime()).toLocaleString();
           (resp.push && resp.push.errors.length) || (resp.pull && resp.pull.errors.length)
-          ? hlps[1].classList.remove("dnone") || rsp2Show(resp)
-          : hlps[0].classList.remove("dnone") || nmbulk.innerHTML
+          ? hlps[5].classList.remove("dnone") || rsp2Show(resp)
+          : hlps[4].classList.remove("dnone") || nmbulk.innerHTML
             || (nmbulk.innerHTML = "\n<pre class=pwrap>" + valStr(resp, 2) + "</pre>\n");
-        }).catch(err => hlps[1].classList.remove("dnone") || rsp2Show(err));
+        }).catch(err => hlps[5].classList.remove("dnone") || rsp2Show(err));
     }
   },
   pdbOpen = () => {
