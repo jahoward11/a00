@@ -1296,9 +1296,11 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         if (!window.qctxta) {
           nmbulk.innerHTML = "" + `
   <button id=submbtn class="fltrt hgainl"><span class=isucc>&#x27b6;</span> SUBMIT</button>
-  <div class=field>\n<h4>DB Bulk Action</h4>
-  <div class="alnrt chelp isucc dnone">Data is submitted to local DB.</div>
-  <div class="alnrt chelp iwarn dnone">Data-submission attempt failed.</div>\n</div>
+  <div class=field>
+    <h4>DB Bulk Action</h4>
+    <div class="alnrt chelp isucc dnone">Data is submitted to local DB.</div>
+    <div class="alnrt chelp iwarn dnone">Data-submission attempt failed.</div>
+  </div>
   <div class="cfield alnrt"><button id=qselbtn class="bsml ilink" data-seltrg=qctxta>sel</button></div>
   <textarea id=qctxta class=textarea rows=31></textarea>
   <div id=qchlp class="chelp iwarn dnone"><strong>ALERT:</strong> Invalid JSON.</div>\n`;
@@ -1787,9 +1789,10 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       !fwg.hasOwnProperty("from") || (fwg.from = un0);
       pfacnt.innerHTML = "" + `
   <button id=savbtn class="fltrt hgainl"><span class=isucc>&#x267a;</span> SAVE</button>
-  <div class=field>\n<h4>New Note</h4>
-  <div class="alnrt chelp isucc dnone">New note is saved in local DB.</div>
-  <div class="alnrt chelp iwarn dnone">New-note save attempt failed.</div>
+  <div class=field>
+    <h4>New Note</h4>
+    <div class="alnrt chelp isucc dnone">New note is saved in local DB.</div>
+    <div class="alnrt chelp iwarn dnone">New-note save attempt failed.</div>
   </div>` + Object.keys(fwg).map( k => /^_rev$/.test(k) ? "" : `
   <div class="field is-horizontal">
     <div class="field-label">
@@ -2172,6 +2175,12 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     .forEach( ([f, k, v]) => !dbs.includes("a00") || !window.PouchDB ? (aurls[k] = v)
       : new PouchDB("a00").getAttachment(f, k)
         .then(abl => aurls[k] = URL.createObjectURL(abl)).catch(rsp2Show) );
+    !nm0sets.bedit || [moveinp, movebtn].forEach(elm => elm.classList.add("dnone"))
+    || editbtn.classList.remove("dnone");
+    [pdbssel, opensel, cntcsel].forEach( (e, i) => e.innerHTML
+      = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
+        .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
+    cntcsel.value = nm0sets.dbcntc || "";
     !cntcsel.value || !window.PouchDB || !(db1 = new PouchDB(nm0sets.dbcntc))
     || !db1.get("-res-img").then( adoc =>
       !adoc._attachments || Object.keys(adoc._attachments).forEach( akey =>
@@ -2183,20 +2192,14 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         include_docs: true
       }).then(rs => rs.rows.forEach(r => cntcs[r.doc.name_user || r.doc._id] = cntcLite(r.doc)))
       .catch(rsp2Show);
-    [pdbssel, opensel, cntcsel].forEach( (e, i) => e.innerHTML
-      = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
-        .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
-    !nm0sets.bedit || [moveinp, movebtn].forEach(elm => elm.classList.add("dnone"))
-    || editbtn.classList.remove("dnone");
-    cntcsel.value = nm0sets.dbcntc;
-    una2inp.value = nm0sets.uname || nm0sets.uemail;
-    unaminp.value = nm0sets.uname;
-    uemlinp.value = nm0sets.uemail;
+    una2inp.value = nm0sets.uname || nm0sets.uemail || "";
+    unaminp.value = nm0sets.uname || "";
+    uemlinp.value = nm0sets.uemail || "";
     !nm0sets.useset || use2swi.checked || use2swi.click();
     viewApd() || viewsel.options.length > 9 || v0sChg();
     t0sChg();
     t1sChg();
-    opensel.value = pdbssel.value = nm0sets.dbdflt;
+    opensel.value = pdbssel.value = nm0sets.dbdflt || "";
     !pdbssel.value || pdbOpen();
   };
 window.nm0 = { aurls, cntcs, rsp2Show, valStr };
