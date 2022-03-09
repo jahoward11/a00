@@ -922,37 +922,36 @@ three tutorials.
   have called the \`markdownit()\` function within our code.
 
  To make us more familiar with client-side web APIs, we will create
-a simple, local database for storing and organizing your personal
+a simple, local database for storing and organizing one's personal
 contacts (or other collection of notes, such as for a journal, a
 recipe book, a fitness log, etc.).
 
 - - - - -
-__*Tutorial Four: Building a*__ Contacts __*web app*__
+__*Tutorial Four: Building a*__ contacts __*web app*__
 
  1. Load the script for a third-party API called *PouchDB*, which is
     a convenient interface to the native, data-storage APIs used for
     saving and organizing data within the browser's built-in stores.
     + Use a native, data-fetching API to retrieve the script file
       from across the internet.
-    + Then, use a native, DOM-manipulation API to import and load the
+    + Then, use a native, DOM-manipulation API to inject and load the
       script into this app's webpage.
-    + *Aside:* In *Tutorials Part 3*, we had inconspicuously
-      retrieved, imported, loaded and used a similar, third-party API
-      called *LocalForage*. As we shall be able to do with *PouchDB*,
-      with *LocalForage* we could conveniently save and recall the
-      text that we had worked on within our search-and-replace app.
+    + *Aside:* Back in *Tutorials Part 3*, we had inconspicuously
+      retrieved, loaded and used a similar, third-party API called
+      *LocalForage*. As we shall also be able to do with *PouchDB*,
+      with *LocalForage* we could conveniently save and recall any
+      content that we had handled within the search-and-replace app.
       The difference is that *LocalForage* can be used to store data
-      only within a local, limited-use structure, which is convenient
-      for temporary or low-importance needs but not robust enough for
-      long-term storage needs; *PouchDB*, on the other hand, can be
-      used to create not just a few, plain-text memos but various
-      kinds and collections of data files that are then retrievable
-      in multiple, sometimes creative or elaborate ways.
+      only within a limiting, local structure, which is convenient
+      for temporary kinds of needs but is not robust enough for long-
+      term storage needs; *PouchDB*, on the other hand, can be used
+      to create not just short, plain-text memos but various kinds
+      and collections of data files that are then reordered and
+      retrieved in multiple, creative, sometimes elaborate ways.
 
- 2. Use *PouchDB* to create a _Contacts_ database that will contain
-    the contact information of your family and friends -- or, more
-    specifically, of all of the members of an organization to which
-    you belong.
+ 2. Use *PouchDB* to create a _contacts_ database that will contain
+    the contact information of your family, your friends, members of
+    an organization to which you belong, or anyone at all.
 
  3. Build a file-editing UI for entering the details of one contact;
     Give the UI certain functions from the *PouchDB* API for storing
@@ -961,23 +960,23 @@ __*Tutorial Four: Building a*__ Contacts __*web app*__
  4. Populate your database either with your own contacts or with a
     list of fabricated "contacts", to be used for demo purposes.
 
- 5. Use *PouchDB* to add a data file to your database that can serve
-    just to hold images, which we will use for holding and looking up
-    contact photos.
+ 5. Use *PouchDB* to add one more data file to your database that can
+    function just to hold images, which we will use for keeping and
+    looking up contact photos.
 
  6. Build a UI with special *PouchDB* functions for attaching images
-    to your image data file; Then add to the file (as attachments)
+    to your image-resource file; Then add to the file (as attachments)
     either your own contact photos or a collection of stock photos,
     to be used for demo purposes.
 
  7. Use *PouchDB* to generate, sort and display summary info of all
     of the contact files in your database; Include functionality for
-    re-using the editing UI (from step 3) to edit the details of a
+    re-using the editing UI (from step 3) to allow for editing of a
     user-selected contact.
 
  8. *Challenge:* Create more databases for other purposes -- such as
     for compiling journal entries, for saving recipes, for recording
-    workout descriptions and results as a fitness log, etc.
+    workout results in a fitness log, etc.
 
  More code, coming soon …
 */
