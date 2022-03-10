@@ -247,7 +247,7 @@ try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap";
       code, above, in which strings of HTML/CSS text are cumulatively
       assigned to the GUI variable (\`g1ui += " … "\`).
     + As we can see below, the entire GUI string was injected into
-      this web doc -- where it will remain as rendered (even after
+      this web page -- where it will remain as rendered (even after
       this tutorial is unloaded), unchanged from the way it was first
       designed, until it gets altered (overwritten) by another script.
     + *Challenge:* Un-comment (i.e., remove the \`//\` characters of)
@@ -336,7 +336,7 @@ g1Reset();
     rendered (displayed) anywhere on this page.
     + Un-comment an associated \`try { … } catch { … }\` line of code
       (following each block of HTML/CSS text) to inject into this web
-      doc, and display (down below), another game's GUI.
+      page, and display (down below), another game's GUI.
     + To generate the web-app code of a game -- for building a
       standalone game app (as in step's 2 and 3, above) -- make use of
       the text-generating commands already provided in step's 2 and 3.
@@ -932,10 +932,26 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
  1. Load the script for a third-party API called *PouchDB*, which is
     a convenient interface to the native, data-storage APIs used for
     saving and organizing data within the browser's built-in stores.
-    + Use a native, data-fetching API to retrieve the script file
-      from across the internet.
-    + Then, use a native, DOM-manipulation API to inject and load the
-      script into this app's webpage.
+    + *Option 1*: Uncomment the 1^st^ of the two code blocks that follow
+      (i.e., remove both leading \`//\` of its two lines of code).
+      * We use a native, data-fetching API via \`fetch()\` and
+        \`.createObjectURL()\` (2^nd^ line) to retrieve the *PouchDB*
+        script file from across the internet.
+      * Then, we use a native, DOM-manipulation API via
+        \`.createElement()\` and \`.appendChild()\` (1^st^ line) to
+        inject and load the script into this app's web page.
+    + *Option 2*: Or, uncomment the 2^nd^ of the two code blocks --
+      the single, \`try { … } catch { … }\` line of code.
+      * More simply and directly, we append to the body of the web-
+        page document a \`<script>\` tag that is given a pathname
+        to the *PouchDB* script file's location on the server.
+      * Note that option 2 uses the \`scrInj()\` function, which is
+        already defined by the calculator app, behind the scenes, and
+        uses the same DOM-manipulation API that we use in option 1.
+    + Option 1 is presented alongside option 2 to show alternate
+      possibilities; Thus, even though option 1 is unnecessary, its
+      value is in demonstrating at a stroke how two of the major
+      classes of native APIs may be put to use in combination.
     + *Aside:* Back in *Tutorials Part 3*, we had inconspicuously
       retrieved, loaded and used a similar, third-party API called
       *LocalForage*. As we shall also be able to do with *PouchDB*,
@@ -948,32 +964,51 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
       to create not just short, plain-text memos but various kinds
       and collections of data files that are then reordered and
       retrieved in multiple, creative, sometimes elaborate ways.
+*/
 
+// sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.body.appendChild(n); };
+// !!window.PouchDB || fetch("../-res-js/pouchdb.min.js").then(r => r.blob()).then(URL.createObjectURL).then(_.sc2Inj).catch(respShow)
+
+// try { !!PouchDB } catch { scrInj("../-res-js/pouchdb.min.js").catch(respShow) }
+
+/*
  2. Use *PouchDB* to create a _contacts_ database that will contain
     the contact information of your family, your friends, members of
     an organization to which you belong, or anyone at all.
+*/
 
+/*
  3. Build a file-editing UI for entering the details of one contact;
     Give the UI certain functions from the *PouchDB* API for storing
     each contact as a database file.
+*/
 
+/*
  4. Populate your database either with your own contacts or with a
     list of fabricated "contacts", to be used for demo purposes.
+*/
 
+/*
  5. Use *PouchDB* to add one more data file to your database that can
     function just to hold images, which we will use for keeping and
     looking up contact photos.
+*/
 
+/*
  6. Build a UI with special *PouchDB* functions for attaching images
     to your image-resource file; Then add to the file (as attachments)
     either your own contact photos or a collection of stock photos,
     to be used for demo purposes.
+*/
 
+/*
  7. Use *PouchDB* to generate, sort and display summary info of all
     of the contact files in your database; Include functionality for
     re-using the editing UI (from step 3) to allow for editing of a
     user-selected contact.
+*/
 
+/*
  8. *Challenge:* Create more databases for other purposes -- such as
     for compiling journal entries, for saving recipes, for recording
     workout results in a fitness log, etc.
