@@ -179,6 +179,10 @@ PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
 PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
 .then(abl => fetch(URL.createObjectURL(abl)).then(r => r.text()).then(respShow).catch(respShow)
 */
+/*
+sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.body.appendChild(n); };
+!!window.PouchDB || fetch("../-res-js/pouchdb.min.js").then(r => r.blob()).then(URL.createObjectURL).then(_.sc2Inj).catch(respShow)
+*/
 //!(/^blob:/.test(aurls[txd2.ATTKEY]) || (aurls[txd2.ATTKEY] = URL.createObjectURL(abl)))
 //`;
 
@@ -218,7 +222,7 @@ dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</titl
 respShow(dwrap[0] + bodGen(t2x) + dwrap[1] + scrGen(t2x) + dwrap[2])
 */`;
 
-const t3serepl = `//
+const t3search = `//
 t3x = xstor["JScode"]["tutorial3"];
 bodGen = src => "\\n" + src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui = /g, "").split(/;\\nsrui \\+= /).map(eval).join("").trim() + "\\n"; //
 scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
@@ -272,5 +276,5 @@ export {
   uiwidth, publdims, jscmds,
   bcaches, dscripts, scrload,
   jstatqs, itoken, t2puzls,
-  t3serepl, srtools
+  t3search, srtools
 };
