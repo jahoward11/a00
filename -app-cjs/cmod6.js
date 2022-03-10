@@ -933,25 +933,25 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
     a convenient interface to the native, data-storage APIs used for
     saving and organizing data within the browser's built-in stores.
     + *Option 1*: Uncomment the 1^st^ of the two code blocks that follow
-      (i.e., remove both leading \`//\` of its two lines of code).
-      * We use a native, data-fetching API via \`fetch()\` and
-        \`.createObjectURL()\` (2^nd^ line) to retrieve the *PouchDB*
-        script file from across the internet.
-      * Then, we use a native, DOM-manipulation API via
-        \`.createElement()\` and \`.appendChild()\` (1^st^ line) to
-        inject and load the script into this app's web page.
+      (i.e., remove leading \`//\` in both of its two lines of code).
+      * To retrieve the *PouchDB* script file from across the internet
+        we use a native, data-fetching API via \`fetch()\` and
+        \`.createObjectURL()\` (in the 2^nd^ line).
+      * Then, to inject and load the script into this app's web page
+        we use a native, DOM-manipulation API via \`.createElement()\`
+        and \`.appendChild()\` (in the 1^st^ line).
     + *Option 2*: Or, uncomment the 2^nd^ of the two code blocks --
       the single, \`try { … } catch { … }\` line of code.
       * More simply and directly, we append to the body of the web-
         page document a \`<script>\` tag that is given a pathname
         to the *PouchDB* script file's location on the server.
       * Note that option 2 uses the \`scrInj()\` function, which is
-        already defined by the calculator app, behind the scenes, and
+        predefined behind the scenes by the calculator app, and which
         uses the same DOM-manipulation API that we use in option 1.
     + Option 1 is presented alongside option 2 to show alternate
-      possibilities; Thus, even though option 1 is unnecessary, its
-      value is in demonstrating at a stroke how two of the major
-      classes of native APIs may be put to use in combination.
+      possibilities; Thus, even though option 1 has an unnecessary
+      extra step, its value is in demonstrating at a stroke how two
+      of the major classes of native APIs may be used in combination.
     + *Aside:* Back in *Tutorials Part 3*, we had inconspicuously
       retrieved, loaded and used a similar, third-party API called
       *LocalForage*. As we shall also be able to do with *PouchDB*,
@@ -975,7 +975,49 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
  2. Use *PouchDB* to create a _contacts_ database that will contain
     the contact information of your family, your friends, members of
     an organization to which you belong, or anyone at all.
+    + First, feel free to change the value of \`dbname\` in the
+      following code to any (valid) name you want for your new
+      _contacts_ database.
+    + Then, uncomment the following two lines of code to set up a new
+      DB and reserve the namespace of your DB within your browser.
+    + With this code we also establish a temporary access portal into
+      our DB's internal operations by assigning the newly created DB
+      object to a variable, \`dbobj\`. So, even though we will not see
+      a result from this operation right away, we will soon find out
+      if we're successful when we attempt to perform subsequent
+      operations on the \`dbobj\` variable.
+    + *Note*: An invalid DB name may cause unpredictable behaviors in
+      later operations. A valid DB name begins with a lowercase
+      letter and is composed of only characters that are one of
+      lowercase letters, numbers, underscores and dashes.
+    + *Alert*: *PouchDB* does not prevent the creation of a DB with an
+      invalid name. So, we must perform our own validity test -- and,
+      subsequently, interrupt our DB-creation operation if the value
+      of \`dbname\` fails our test.
 */
+
+// dbname = "cntcs-t4demo";
+// !window.PouchDB || !/^[a-z][0-9_a-z-]*$/.test(dbname) || (dbobj = new PouchDB(dbname))
+
+/*
+    + *Good to know, for later use*: To reverse this action at any time
+      -- i.e., to permanently erase the local DB (and any data that
+      it might contain) from your browser -- carefully insert the DB
+      name between the quotes of the following command; Then, execute
+      the command (retype it without its leading \`//\` characters)
+      when the *ENTRY* field of the calculator app is clear.
+*/
+
+// PouchDB("").destroy().then(respShow)
+
+/*
+    + *Also good to know*: To confirm that a local DB has been
+      completely erased from a device's browser, execute the
+      following command to see a list of all DBs that are
+      still present.
+*/
+
+// indexedDB.databases().then(respShow)
 
 /*
  3. Build a file-editing UI for entering the details of one contact;
