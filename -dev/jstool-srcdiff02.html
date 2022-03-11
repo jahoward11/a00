@@ -51,7 +51,8 @@ const s1finp = document.querySelector('#s1finp'),
   s2chkb = document.querySelector('#s2chkb'),
   s1rslt = document.querySelector('#s1rslt'),
   s2rslt = document.querySelector('#s2rslt'),
-  fncTry = (a, fnc, e) => { try { return fnc(a) } catch (err) { return e ? err : undefined }},
+  fncTry = (fnc, a, e) => { try { return fnc(a) }
+    catch (err) { return e > 1 ? a : e ? err : undefined } },
   diffGen = ([s1txt, s2txt]) => {
     if (!window.SourceDiff || !s1txt || !s2txt) {
       return s1rslt.innerHTML = s2rslt.innerHTML = "";
@@ -61,14 +62,14 @@ const s1finp = document.querySelector('#s1finp'),
     [s2rslt.innerHTML, s1rslt.innerHTML] = fmtr.formattedDiff(s2txt, s1txt);
   },
   datPrep = () => Promise.all( [s1finp.value, s2finp.value]
-      .map( k => Promise.resolve(fncTry(k, window.eval))
+      .map( k => Promise.resolve(fncTry(window.eval, k))
         .then(v => v != null ? v
           : localStorage.getItem(k) || window.localforage && localforage.getItem(k))
         .then(v => v == null ? ""
           : typeof v === 'object' ? JSON.stringify(v, null, 2)
           : typeof v !== 'string' ? "" + v
           : !/^{\s*['"][^]+}$|^\[[^]+\]$/.test(v.trim()) ? v
-          : JSON.stringify(fncTry(v, JSON.parse), null, 2) || v) ))
+          : JSON.stringify(fncTry(JSON.parse, v), null, 2) || v) ))
     .then(diffGen).catch(console.warn);
 [s1chkb, s2chkb].forEach( e => e.onchange = () => {
   [s1rslt, s2rslt].forEach(e => e.classList.remove("ht0", "ht2x"));
