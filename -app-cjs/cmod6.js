@@ -1073,12 +1073,12 @@ deui += "\\n<hr />\\n<button id=savbtn class=\\"fltrt hgainl\\"><span class=isuc
 deui += "\\n<div class=field>\\n<h4>New Contact</h4>";
 deui += "\\n<div class=\\"alnrt chelp isucc dnone\\">New contact is saved in local DB.</div>";
 deui += "\\n<div class=\\"alnrt chelp iwarn dnone\\">New-contact save attempt failed.</div>\\n</div>";
-deui += Object.entries(fwg).map(([k, v]) => rex0s.test(k) ? "" : _.fldG(k, v)).join("") + "\\n";
+deui += Object.entries(fwg).map(([k, v]) => _.rex0s.test(k) ? "" : _.fldG(k, v)).join("") + "\\n";
 
 // dbwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 // try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = deui; cmain.appendChild(ndiv); }
 
-!window.savbtn || ( savbtn.onclick = () => { let hlps = _.deui.querySelectorAll('.chelp'); hlps.forEach(e => e.classList.add("dnone")); Object.keys(_.fwg).forEach(k => rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))); !p0_id.value || !_.dbname || !window.PouchDB || PouchDB(_.dbname).put(Object.assign({ _id: "", _rev: "" }, _.fwg), {}).then( r => Object.keys(_.fwg).forEach(k => rex0s.test(k) || (window["p0" + k].disabled = 1)) || (_.fwg = null) || hlps[0].classList.remove("dnone") || respShow(r) ).catch(err => hlps[1].classList.remove("dnone") || respShow(err)); } );
+!window.savbtn || ( savbtn.onclick = () => { let hlps = _.deui.querySelectorAll('.chelp'); hlps.forEach(e => e.classList.add("dnone")); Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))); !p0_id.value || !_.dbname || !window.PouchDB || PouchDB(_.dbname).put(Object.assign({ _id: "", _rev: "" }, _.fwg), {}).then( r => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (window["p0" + k].disabled = 1)) || (_.fwg = null) || hlps[0].classList.remove("dnone") || respShow(r) ).catch(err => hlps[1].classList.remove("dnone") || respShow(err)); } );
 
 /*
  4. Populate your database either with your own contacts or with a
