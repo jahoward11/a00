@@ -1172,7 +1172,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       && (ss1 !== "version" ? v[ss0][ss1] : nbrX(v[ss0][ss1])) || " "
     : ss0 !== "file_updated"
     ? v[ss0] && v[ss0][ss1] || v[ss0.replace(/^file/, "ts")] || " "
-    : v[ss0] && v[ss0][ss1] || v.file_created && v.file_created[ss1]
+    : v[ss0] && v[ss0][ss1] || (v.file_created || "")[ss1]
       || v.ts_updated || v.ts_created || " ",
   ordFlip = arr => !descswi.checked ? arr.sort() : arr.sort().reverse(),
   tr0Gen = (r, i) => `
@@ -1618,7 +1618,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           || rval.file_updated || rval.file_created )
         .map( r => /^[.-]./.test(r.id) ? [r.id.replace(/^\.(.+)$/, "$1_"), null, r.id, r]
           : [ (rval = r.doc || r.value).loc_subdir
-              || (rval.file_updated || rval.file_created).subdir || ".",
+              || (rval.file_updated || rval.file_created || "").subdir || ".",
             ptyX(r.doc || r.value), r.id, r ] ) ).map(sr => sr[3]) );
       evt && evt.target.id === "pdbssel"
       || colsTog(null, (!ss1 ? ss0 : [ss0, ss1].join("."))); //|| "file_created.timestamp"
@@ -1675,7 +1675,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
               || !/anno|memo|post/i.test(ra.file_type)
               || !ra.ts_created && !ra.file_created && !ra.ts_updated && !ra.file_updated
             ? "" : new Date( ra.ts_updated || ra.ts_created
-              || (ra.file_updated || ra.file_created).timestamp || null ).toLocaleString() }</em>
+              || (ra.file_updated || ra.file_created || "").timestamp || null ).toLocaleString() }</em>
         </summary>
         <div class="pwrap fsz10p5">${
           ( !cvs.includes("roles") || !(ra.roles || "").length ? ""
@@ -1691,7 +1691,8 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
                 + (!rb ? "" : " / ") ) + "<a>" + ra._id + "</a>\n" )
           + ( !cvs.includes("file_created.timestamp") || /anno|memo|post/i.test(ra.file_type)
               || !ra.ts_created && !ra.file_created ? "" : "CREATED: "
-            + new Date(ra.ts_created || ra.file_created.timestamp || null).toLocaleString() + "\n" )
+            + new Date(ra.ts_created || (ra.file_created || "").timestamp || null).toLocaleString()
+            + "\n" )
           + ( !cvs.includes("file_updated.timestamp") || /anno|memo|post/i.test(ra.file_type)
               || !ra.ts_updated && !ra.file_updated ? "" : "UPDATED: "
             + new Date(ra.ts_updated || ra.file_updated.timestamp || null).toLocaleString() ) }</div>
@@ -2014,7 +2015,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       + "<input type=checkbox" + (i > 5 ? "" : " disabled")
       + " />&ensp;" + k + (i < 6 ? "" : "</label>")
       + "</td><td>" + v + "</td></tr>" ).join("") + "\n      ";
-    v02sel.innerHTML = Array.from(viewsel.options).filter((o, i) => i > 3)
+    v02sel.innerHTML = Array.from(viewsel.options).filter((o, i) => !i || i > 3)
       .map(o => "\n      <option>" + o.value + "</option>").join("") + "\n      ";
     v02sel.value = nm0sets.vwdflt || "";
   },
@@ -2128,7 +2129,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     openswi.disabled || (openswi.checked = (txd1.DBNAME === nm0sets.dbdflt));
     (t01sel.value = cfg.type0 || cfg && "scrap") === t0v || t1sChg();
     v01sel.value = !txd1.DBNAME ? "" : viewsel.value = cfg.view0 || "";
-    v01sel.selectedIndex > -1 || (v01sel.selectedIndex = viewsel.selectedIndex = 2);
+    v01sel.selectedIndex > -1 || (v01sel.selectedIndex = viewsel.selectedIndex = vidx = 0);
     viewChg();
     pdbssel.selectedIndex !== 1 || !(viewsel.selectedIndex = vidx = 2)
     || use1swi.checked || use1swi.click();
