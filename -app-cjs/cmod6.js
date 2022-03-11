@@ -817,7 +817,7 @@ hlp2Clr()
       messages displayed on a narrow, palm-width screen.
     + Within these prevalent size constraints, more often than we
       like our memos and reports do not display nicely.
-    + For reference, notice: The tutorial text is framed by the *ENTRY*
+    + *For reference, notice:* The tutorial text is framed by the *ENTRY*
       pane of the JavaScript Calculator; And even if viewed on a wide
       computer screen, each line of instruction could get clipped
       and become unreadable if it didn't continually wrap around
@@ -932,20 +932,20 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
  1. Load the script for a third-party API called *PouchDB*, which is
     a convenient interface to the native, data-storage APIs used for
     saving and organizing data within the browser's built-in stores.
-    + *Option 1*: Un-comment the 1^st^ of the two code blocks that follow
+    + *Option 1:* Un-comment the 1^st^ of the two code blocks that follow
       (i.e., remove leading \`//\` in both of its two lines of code).
       * To retrieve the *PouchDB* script file from across the internet
         we use a native, data-fetching API via \`fetch()\` and
-        \`.createObjectURL()\` (in the 2^nd^ line).
+        \`URL.createObjectURL()\` (in the 2^nd^ line).
       * Then, to inject and load the script into this app's web page
         we use a native, DOM-manipulation API via \`.createElement()\`
         and \`.appendChild()\` (in the 1^st^ line).
-    + *Option 2*: Or, un-comment the 2^nd^ of the two code blocks --
+    + *Option 2:* Or, un-comment the 2^nd^ of the two code blocks --
       the single, \`try { … } catch { … }\` line of code.
       * More simply and directly, we append to the body of the web-
-        page document a \`<script>\` tag that is given a pathname
-        to the *PouchDB* script file's location on the server.
-      * Note that option 2 uses the \`scrInj()\` function, which is
+        page document a \`<script>\` tag that contains a pathname to
+        the *PouchDB* script file's location on the server.
+      * Notice that option 2 uses a function \`scrInj()\`, which is
         predefined behind the scenes by the calculator app, and which
         uses the same DOM-manipulation API that we use in option 1.
     + Option 1 is presented alongside option 2 to show alternate
@@ -958,7 +958,7 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
       with *LocalForage* we could conveniently save and recall any
       content that we had handled within the search-and-replace app.
       The difference is that *LocalForage* can be used to store data
-      only within a limiting, local structure, which is convenient
+      only within a limited, local structure, which is convenient
       for temporary kinds of needs but is not robust enough for long-
       term storage needs; *PouchDB*, on the other hand, can be used
       to create not just short, plain-text memos but various kinds
@@ -975,22 +975,22 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
  2. Use *PouchDB* to create a _contacts_ database that will contain
     the contact information of your family, your friends, members of
     an organization to which you belong, or ... anyone at all.
-    + First, feel free to change the value of \`dbname\` in the
-      following code to any (valid) name you want for your new
+    + First, feel free to change the value of \`dbname\`, in the
+      following code, to any (valid) name you want for your new
       _contacts_ database.
-    + Then, un-comment the following two lines of code to set up a new
-      DB and reserve the namespace of your DB within your browser.
-    + With this code we also establish a temporary access portal into
-      our DB's internal operations by assigning the newly created DB
-      object to a variable, \`dbobj\`. So, even though we will not see
-      a result from this operation right away, we will soon find out
-      if we're successful when we attempt to perform subsequent
-      operations on the \`dbobj\` variable.
-    + *Note*: An invalid DB name may cause unpredictable behaviors in
+    + Then, un-comment the following two lines of code to set up a
+      new DB and reserve the namespace of your DB within your browser.
+    + Notice that with this code we also establish a temporary access
+      portal into our DB's internal operations by assigning the newly
+      created DB object to a variable, \`dbobj\`. So, even though we
+      do not see an immediate result from this operation, we will
+      soon find out if we're successful when we attempt to perform
+      subsequent operations via the \`dbobj\` variable.
+    + *Note:* An invalid DB name may cause unpredictable behaviors in
       later operations. A valid DB name begins with a lowercase
       letter and is composed of only characters that are one of
-      lowercase letters, numbers, underscores and dashes.
-    + *Alert*: *PouchDB* does not prevent the creation of a DB with an
+      lowercase letters, numbers, underscore and dash.
+    + *Alert:* *PouchDB* does not prevent the creation of a DB with an
       invalid name. So, we must perform our own validity test -- and,
       subsequently, interrupt our DB-creation operation if the value
       of \`dbname\` fails our test.
@@ -1000,7 +1000,7 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
 // !window.PouchDB || !/^[a-z][0-9_a-z-]*$/.test(dbname) || (dbobj = new PouchDB(dbname))
 
 /*
-    + *Good to know, for later use*: To reverse this action at any time
+    + *Good to know, for later use:* To reverse this action at any time
       -- i.e., to permanently erase the local DB (and any data that
       it might contain) from your browser -- carefully insert the DB
       name between the quotes of the following command; Then, execute
@@ -1011,7 +1011,7 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
 // PouchDB("").destroy().then(respShow)
 
 /*
-    + *Also good to know*: To confirm that a local DB has been
+    + *Also good to know:* To confirm that a local DB has been
       completely erased from a device's browser, execute the
       following command to see a list of all DBs that are
       still present.
@@ -1020,23 +1020,31 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
 // indexedDB.databases().then(respShow)
 
 /*
- 3. Build a file-editing UI for entering the details of one contact;
-    Give the UI certain functions from the *PouchDB* API for storing
+ 3. Build a data-entry UI for entering the details of one contact;
+    Give the UI applicable functions from the *PouchDB* API for storing
     each contact as a database file.
     + Un-comment the \`try { … } catch { … }\` line following the next
       code block to display (below, beneath the calculator) a basic
       contact data-entry form.
-    + The ID field is prefilled with a template, which must be edited
-      for every new contact that is added to the DB. For DB organi-
-      zation purposes, the template suggests prepending the ID with an
-      exclamation symbol \`!\` and generating a unique contact ID by
-      combining a group ID with the contact's username.
-    + *Note*: The ID field is not so important as a lookup detail
+    + Notice that some fields are prefilled with an array literal
+      (square brackets \`[]\`) that contains one set of quotes \`""\`.
+      This indicates that the value of that property may have more
+      than one string added. Every string entered must be wrapped
+      in a set of quotes \`""\`; And, multiple strings must be
+      separated by a comma \`,\`.
+    + Notice also that the ID field is prefilled with a text pattern.
+      This text must be specially edited for every new contact that
+      gets added to the DB. For DB organization purposes, the pattern
+      suggests prepending the ID with an exclamation symbol \`!\` and
+      generating a unique contact ID by combining a group ID with the
+      contact's username.
+    + *Note:* The ID property is not so important as a lookup detail
       about the contact. It is, however, important for DB operations.
-      The value in this field can be arbitrary -- but must be unique.
-      Conceptually, two contacts in the DB could, potentially, have
-      matching information in every field -- except one: the ID;
-      Otherwise, the DB could not distinguish one from the other.
+      The value of this property can be arbitrary -- but must be
+      unique. Conceptually, two different contacts in the DB could,
+      potentially, have matching information for every property
+      except one: the ID; Otherwise, the DB could not distinguish
+      one from the other.
 */
 
 rex0s = /^_rev|^file_|^ts_|^loc_/;
@@ -1044,7 +1052,7 @@ ctmpl = { _id: "!groupID-cUsername", _rev: "", file_type: "contact", ts_created:
 fwg = JSON.parse(JSON.stringify(ctmpl));
 fncTry = (fnc, a, e) => { try { return fnc(a) } catch (err) { return e > 1 ? a : e ? err : undefined }};
 valStr = (v, sp) => v == null ? "" : v instanceof Error && v.constructor && !v.reason ? v : typeof v === 'object' ? JSON.stringify(v, null, sp) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(_.fncTry(JSON.parse, v), null, sp) || v;
-fldG = (k, v) => "\\n<div class=\\"field is-horizontal\\">\\n<div class=\\"field-label\\"><span class=label>" + k + "</span></div>\\n<div class=\\"field-body\\">\\n<textarea id=p0" + k + " class=textarea rows=2>" + _.valStr(v, !Array.isArray(v) || typeof v[0] === 'object' ? 2 : null) + "\\n</textarea>\\n</div>\\n</div>";
+fldGen = (k, v) => "\\n<div class=\\"field is-horizontal\\">\\n<div class=\\"field-label\\"><span class=label>" + k + "</span></div>\\n<div class=\\"field-body\\">\\n<textarea id=p0" + k + " class=textarea rows=2>" + _.valStr(v) + "\\n</textarea>\\n</div>\\n</div>";
 deui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
 deui += "\\nhtml { box-sizing: border-box; color: DimGrey; min-width: 375px; overflow-wrap: break-word; }";
 deui += "\\nhr { margin: 1.5rem 0; }\\n[list]::-webkit-calendar-picker-indicator { display: none !important; }";
@@ -1069,21 +1077,42 @@ deui += "\\n#dbwrap .chelp { font-size: 12px; margin-top: 4px; }";
 deui += "\\n#dbwrap .fltrt { float: right; }";
 deui += "\\n#dbwrap .alnrt { text-align: right; }";
 deui += "\\n#dbwrap .dnone { display: none; }\\n</style>";
-deui += "\\n<hr />\\n<button id=savbtn class=\\"fltrt hgainl\\"><span class=isucc>&#x267a;</span> SAVE</button>";
+deui += "\\n<hr />\\n<div class=\\"fltrt cfield\\">\\n<button id=resbtn class=\\"ccntr hgainl\\"><span class=isucc>&orarr;</span> RESET</button>";
+deui += "<button id=savbtn class=\\"ccntr hgainl\\"><span class=isucc>&#x267a;</span> SAVE</button>\\n</div>";
 deui += "\\n<div class=field>\\n<h4>New Contact</h4>";
 deui += "\\n<div class=\\"alnrt chelp isucc dnone\\">New contact is saved in local DB.</div>";
 deui += "\\n<div class=\\"alnrt chelp iwarn dnone\\">New-contact save attempt failed.</div>\\n</div>";
-deui += Object.entries(fwg).map(([k, v]) => _.rex0s.test(k) ? "" : _.fldG(k, v)).join("") + "\\n";
+deui += Object.entries(fwg).map(([k, v]) => _.rex0s.test(k) ? "" : _.fldGen(k, v)).join("") + "\\n";
 
 // dbwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 // try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = deui; cmain.appendChild(ndiv); }
 
-!window.savbtn || ( savbtn.onclick = () => { let hlps = _.deui.querySelectorAll('.chelp'); hlps.forEach(e => e.classList.add("dnone")); Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))); !p0_id.value || !_.dbname || !window.PouchDB || PouchDB(_.dbname).put(Object.assign({ _id: "", _rev: "" }, _.fwg), {}).then( r => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (window["p0" + k].disabled = 1)) || (_.fwg = null) || hlps[0].classList.remove("dnone") || respShow(r) ).catch(err => hlps[1].classList.remove("dnone") || respShow(err)); } );
+!window.dbwrap || (hlps = dbwrap.querySelectorAll('.chelp'));
+!window.dbwrap || ( resbtn.onclick = () => _.hlps.forEach(e => e.classList.add("dnone")) || !(_.fwg = JSON.parse(JSON.stringify(ctmpl))) || Object.entries(_.fwg).forEach(([k, v]) => _.rex0s.test(k) || (window["p0" + k].value = _.valStr(v))) );
+!window.dbwrap || ( savbtn.onclick = () => { let ts = new Date().getTime(); ["ts_updated"].concat(_.fwg.ts_created ? [] : "ts_created").forEach(e => _.fwg[e] = ts); Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))); !_.fwg._id.value || !_.dbname || !window.PouchDB || PouchDB(_.dbname).put(_.fwg).then(r => hlps[0].classList.remove("dnone") || respShow(r)).catch(e => hlps[1].classList.remove("dnone") || respShow(e)); } );
 
 /*
  4. Populate your database either with your own contacts or with a
-    list of fabricated "contacts", to be used for demo purposes.
+    set of provided, pre-fabricated "contacts", meant to be used for
+    demo purposes.
+    + To see the data of 10 fake "contacts" before adding them to
+      your DB, un-comment the first of the following lines of code.
+    + To add these fake contacts to your DB, un-comment the second of
+      the following lines of code.
+    + *Alert:* To ensure that you do not repeatedly add fake contacts,
+      re-comment (de-activate) the second line of code after it has
+      executed once already.
+    + *To add other contacts to your DB:* For each contact that you
+      want included, fill out the data-entry form (below, beneath the
+      calculator); Then, tap the *SAVE* button at the top-right of
+      the form.
+    + To see a list of the contact IDs that exists in your DB at any
+      time, un-comment the third of the following lines of code.
 */
+
+// import("./fakecs.js").then(m => respShow(m.default)).catch(respShow)
+// import("./fakecs.js").then(m => m.default.forEach(c => _.dbobj.put(c).then(respShow).catch(respShow)))
+// dbobj.allDocs().then(respShow)
 
 /*
  5. Use *PouchDB* to add one more data file to your database that can
@@ -1092,10 +1121,10 @@ deui += Object.entries(fwg).map(([k, v]) => _.rex0s.test(k) ? "" : _.fldG(k, v))
 */
 
 /*
- 6. Build a UI with special *PouchDB* functions for attaching images
+ 6. Build a UI with applicable *PouchDB* functions for attaching images
     to your image-resource file; Then add to the file (as attachments)
-    either your own contact photos or a collection of stock photos,
-    to be used for demo purposes.
+    either your own contact photos or the provided collection of
+    stock photos, meant to be used for demo purposes.
 */
 
 /*
@@ -1104,9 +1133,9 @@ deui += Object.entries(fwg).map(([k, v]) => _.rex0s.test(k) ? "" : _.fldG(k, v))
 
 /*
  7. Use *PouchDB* to generate, sort and display summary info of all
-    of the contact files in your database; Include functionality for
-    re-using the editing UI (from step 3) to allow for editing of a
-    user-selected contact.
+    of the contacts in your database; Include functionality for
+    re-using the data-entry UI (from step 3) to allow for editing of
+    a user-selected contact.
 */
 
 /*
