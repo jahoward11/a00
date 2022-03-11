@@ -892,8 +892,6 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   cntcs = {},
   nm0cfgs = {},
   nm0sets = {},
-  rexsd = /^[.-][\w!.*+~-]+\/?$/,
-  rexns = /(.*?) *((?:\bde +|\bvon +|)['‘’\w-]+)([ ,]*\b[js]r\.?|[ ,]*\b[ivx]+|)$/i,
   txd1 = {
     DBNAME: "",
     FILEID: "", //"_design/ecosorter",
@@ -1089,6 +1087,8 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       miscellany: ""
     }
   },
+  rexsd = /^[.-][\w!.*+~-]+\/?$/,
+  rexns = /(?:m[rs]\b\.?|mrs\b\.?) *(.*?) *((?:\bde +|\bvon +|)['‘’\w-]+)([ ,]*\b[js]r\.?|[ ,]*\b[ivx]+|)$/i,
   rsp2Show = r => { rsp2con.textContent
     += ( !r || typeof r !== 'object' || r instanceof Error && r.constructor && !r.reason
       ? r : JSON.stringify(r, null, 2) ) + "\n\n" },
