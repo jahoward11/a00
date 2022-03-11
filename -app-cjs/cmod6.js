@@ -1013,8 +1013,8 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
 /*
     + *Also good to know:* To confirm that a local DB has been
       completely erased from a device's browser, execute the
-      following command to see a list of all DBs that are
-      still present.
+      following command to see a list of all DBs that are still
+      present. (List appears above, overtop the calculator.)
 */
 
 // indexedDB.databases().then(respShow)
@@ -1029,9 +1029,8 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
     + Notice that some fields are prefilled with an array literal
       (square brackets \`[]\`) that contains one set of quotes \`""\`.
       This indicates that the value of that property may have more
-      than one string added. Every string entered must be wrapped
-      in a set of quotes \`""\`; And, multiple strings must be
-      separated by a comma \`,\`.
+      than one string added. Strings must be wrapped in quotes \`""\`
+      and separated by a comma \`,\`.
     + Notice also that the ID field is prefilled with a text pattern.
       This text must be specially edited for every new contact that
       gets added to the DB. For DB organization purposes, the pattern
@@ -1088,26 +1087,27 @@ deui += Object.entries(fwg).map(([k, v]) => _.rex0s.test(k) ? "" : _.fldGen(k, v
 // try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = deui; cmain.appendChild(ndiv); }
 
 !window.dbwrap || (hlps = dbwrap.querySelectorAll('.chelp'));
-!window.dbwrap || ( resbtn.onclick = () => _.hlps.forEach(e => e.classList.add("dnone")) || !(_.fwg = JSON.parse(JSON.stringify(ctmpl))) || Object.entries(_.fwg).forEach(([k, v]) => _.rex0s.test(k) || (window["p0" + k].value = _.valStr(v))) );
+!window.dbwrap || ( resbtn.onclick = () => _.hlps.forEach(e => e.classList.add("dnone")) || !(_.fwg = JSON.parse(JSON.stringify(_.ctmpl))) || Object.entries(_.fwg).forEach(([k, v]) => _.rex0s.test(k) || (window["p0" + k].value = _.valStr(v))) );
 !window.dbwrap || ( savbtn.onclick = () => { let ts = new Date().getTime(); ["ts_updated"].concat(_.fwg.ts_created ? [] : "ts_created").forEach(e => _.fwg[e] = ts); Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))); !_.fwg._id.value || !_.dbname || !window.PouchDB || PouchDB(_.dbname).put(_.fwg).then(r => hlps[0].classList.remove("dnone") || respShow(r)).catch(e => hlps[1].classList.remove("dnone") || respShow(e)); } );
 
 /*
  4. Populate your database either with your own contacts or with a
-    set of provided, pre-fabricated "contacts", meant to be used for
+    provided set of pre-fabricated "contacts", meant to be used for
     demo purposes.
-    + To see the data of 10 fake "contacts" before adding them to
-      your DB, un-comment the first of the following lines of code.
-    + To add these fake contacts to your DB, un-comment the second of
-      the following lines of code.
-    + *Alert:* To ensure that you do not repeatedly add fake contacts,
-      re-comment (de-activate) the second line of code after it has
+    + To see the data of ten fake "contacts" before adding them to
+      your DB, un-comment the first of the following three lines of
+      code. (Data appears above, overtop the calculator.)
+    + To add these fake contacts to your DB all at once, un-comment
+      the second of the following three lines of code.
+    + *Tip:* To ensure that you do not repeatedly add the same contacts,
+      de-activate (re-comment) the second line of code after it has
       executed once already.
-    + *To add other contacts to your DB:* For each contact that you
-      want included, fill out the data-entry form (below, beneath the
-      calculator); Then, tap the *SAVE* button at the top-right of
-      the form.
-    + To see a list of the contact IDs that exists in your DB at any
-      time, un-comment the third of the following lines of code.
+    + *To add other contacts to your DB:* For each contact of your own
+      that you want to include, fill out the data-entry form (below,
+      beneath the calculator); Then, tap the *SAVE* button at the
+      top-right of the form.
+    + To see a list of the contact IDs that exist in your DB at any
+      time, un-comment the third of the following three lines of code.
 */
 
 // import("./fakecs.js").then(m => respShow(m.default)).catch(respShow)
