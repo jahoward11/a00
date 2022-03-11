@@ -666,7 +666,7 @@ srui += "\\n#srwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; o
 srui += "\\n#srwrap .cfield:not(:last-child) { margin-bottom: 8px; }";
 srui += "\\n#srwrap .ccntr:not(:last-of-type) { margin-right: 8px; }";
 srui += "\\n#srwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
-srui += "\\n#srwrap .cfield>.chelp { font-size: 12px; margin-top: 4px; }";
+srui += "\\n#srwrap .chelp { font-size: 12px; margin-top: 4px; }";
 srui += "\\n#sepainp, #rtrminp { width: 288px; }\\n#lfinp { width: 176px; }";
 srui += "\\n#trgrndr { display: flow-root; margin-top: 16px; border: dashed gainsboro; border-width: 1px 0; }";
 srui += "\\n</style>\\n<hr>\\n<h4 class=cfield><span onclick=txtaSel(srctxta)>Source</span></h4>";
@@ -709,14 +709,14 @@ srui += "\\n<div id=trgrndr class=cfield></div>\\n";
 */
 
 rxs = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:\\w+|\\(.*?\\)) *=> *\\S|^".*"$|^\\b[\\w.]+$/]; //
-fncTry = (a, fnc, e) => { try { return fnc(a) } catch (err) { return e ? err : undefined }};
+fncTry = (fnc, a, e) => { try { return fnc(a) } catch (err) { return e > 1 ? a : e ? err : undefined }};
 hlp2Clr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc"));
 rsltVw = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 2 ? rslt : "\\n<pre" + (ri < 2 ? ">" : " class=pwrap>") + rslt + "</pre>\\n"; };
 pfsRfr = () => !window.localforage || localforage.keys().then(ks => pfiles.innerHTML = ["trgtxta.value", "srctxta.value", "dentry.value", "respcon.textContent", "respcon.innerHTML"].concat(ks).map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(console.warn);
-datLoad = k => Promise.resolve(_.fncTry(k, window.eval)).then(v => v != null ? v : localStorage.getItem(k) || window.localforage && localforage.getItem(k)).then(v => v == null ? "" : typeof v === 'object' ? JSON.stringify(v, null, 2) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(_.fncTry(v, JSON.parse), null, 2) || v).then(v => trgtxta.value = v.replace(/(\\*\\/) $/gm, "$1").replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(console.warn);
+datLoad = k => Promise.resolve(_.fncTry(window.eval, k)).then(v => v != null ? v : localStorage.getItem(k) || window.localforage && localforage.getItem(k)).then(v => v == null ? "" : typeof v === 'object' ? JSON.stringify(v, null, 2) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(_.fncTry(JSON.parse, v), null, 2) || v).then(v => trgtxta.value = v.replace(/(\\*\\/) $/gm, "$1").replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(console.warn);
 window.txtaSel = e => _.hlp2Clr() || e.focus() || e.setSelectionRange(0, e.textLength);
 window.cntSwap = () => _.hlp2Clr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
-window.strPars = () => { let lm, r2, sv = sepainp.value, rv = rtrminp.value, h1P = y => [trgtxta, trghelp].forEach(e => e.classList.add(!y ? "iwarn" : "isucc")); _.hlp2Clr(); !_.rxs[2].test(rv.trim()) || (r2 = _.fncTry(rv, window.eval, 1)) instanceof Error && (trghelp.innerHTML = r2) && (r2 = null) /* !(trgtxta.value = r2 = "") && h1P() */; !_.rxs[0].test(sv) || ( trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made." ) && h1P(lm); _.rsltVw( srctxta.value.replace( !_.rxs[1].test(sv) ? sv : eval(sv), r2 || window.eval('"' + rv.replace(/(?=")/g, "\\\\") + '"') )); };
+window.strPars = () => { let lm, r2, sv = sepainp.value, rv = rtrminp.value, h1P = y => [trgtxta, trghelp].forEach(e => e.classList.add(!y ? "iwarn" : "isucc")); _.hlp2Clr(); !_.rxs[2].test(rv.trim()) || (r2 = _.fncTry(window.eval, rv, 1)) instanceof Error && (trghelp.innerHTML = r2) && (r2 = null) /* !(trgtxta.value = r2 = "") && h1P() */; !_.rxs[0].test(sv) || ( trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made." ) && h1P(lm); _.rsltVw( srctxta.value.replace( !_.rxs[1].test(sv) ? sv : eval(sv), r2 || window.eval('"' + rv.replace(/(?=")/g, "\\\\") + '"') )); };
 window.hlp3Clr = () => (lfhelp.innerHTML = "") || lfhelp.classList.remove("iwarn", "isucc");
 window.dataMgr = ox => { let key = lfinp.value.trim(); if (ox === 2) return !key || trgtxta.value || _.hlp2Clr() || _.datLoad(key); !key || !window.localforage || localforage[!ox ? "removeItem" : "setItem"](key, ox && "/*\\n" + trgtxta.value.replace(/\\*\\/$/gm, "$& ") + "\\n*/").then(() => _.pfsRfr() && (lfhelp.innerHTML = "USERdata file is " + (!ox ? "deleted." : "saved locally.")) && lfhelp.classList.add(!ox ? "iwarn" : "isucc")).catch(console.warn); }; //
 !window.srwrap || pfsRfr();
@@ -932,7 +932,7 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
  1. Load the script for a third-party API called *PouchDB*, which is
     a convenient interface to the native, data-storage APIs used for
     saving and organizing data within the browser's built-in stores.
-    + *Option 1*: Uncomment the 1^st^ of the two code blocks that follow
+    + *Option 1*: Un-comment the 1^st^ of the two code blocks that follow
       (i.e., remove leading \`//\` in both of its two lines of code).
       * To retrieve the *PouchDB* script file from across the internet
         we use a native, data-fetching API via \`fetch()\` and
@@ -940,7 +940,7 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
       * Then, to inject and load the script into this app's web page
         we use a native, DOM-manipulation API via \`.createElement()\`
         and \`.appendChild()\` (in the 1^st^ line).
-    + *Option 2*: Or, uncomment the 2^nd^ of the two code blocks --
+    + *Option 2*: Or, un-comment the 2^nd^ of the two code blocks --
       the single, \`try { … } catch { … }\` line of code.
       * More simply and directly, we append to the body of the web-
         page document a \`<script>\` tag that is given a pathname
@@ -974,11 +974,11 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
 /*
  2. Use *PouchDB* to create a _contacts_ database that will contain
     the contact information of your family, your friends, members of
-    an organization to which you belong, or anyone at all.
+    an organization to which you belong, or ... anyone at all.
     + First, feel free to change the value of \`dbname\` in the
       following code to any (valid) name you want for your new
       _contacts_ database.
-    + Then, uncomment the following two lines of code to set up a new
+    + Then, un-comment the following two lines of code to set up a new
       DB and reserve the namespace of your DB within your browser.
     + With this code we also establish a temporary access portal into
       our DB's internal operations by assigning the newly created DB
@@ -1023,7 +1023,62 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
  3. Build a file-editing UI for entering the details of one contact;
     Give the UI certain functions from the *PouchDB* API for storing
     each contact as a database file.
+    + Un-comment the \`try { … } catch { … }\` line following the next
+      code block to display (below, beneath the calculator) a basic
+      contact data-entry form.
+    + The ID field is prefilled with a template, which must be edited
+      for every new contact that is added to the DB. For DB organi-
+      zation purposes, the template suggests prepending the ID with an
+      exclamation symbol \`!\` and generating a unique contact ID by
+      combining a group ID with the contact's username.
+    + *Note*: The ID field is not so important as a lookup detail
+      about the contact. It is, however, important for DB operations.
+      The value in this field can be arbitrary -- but must be unique.
+      Conceptually, two contacts in the DB could, potentially, have
+      matching information in every field -- except one: the ID;
+      Otherwise, the DB could not distinguish one from the other.
 */
+
+rex0s = /^_rev|^file_|^ts_|^loc_/;
+ctmpl = { _id: "!groupID-cUsername", _rev: "", file_type: "contact", ts_created: 0, ts_updated: 0, loc_subdir: "", name_full: "", name_user: "", birthdate: "", roles: [""], emails: [""], phones: [""], locations: [""], social_profiles: [""], project_urls: [""], team_groups: [""], image_src: "", bio_short: "", miscellany: "" };
+fwg = JSON.parse(JSON.stringify(ctmpl));
+fncTry = (fnc, a, e) => { try { return fnc(a) } catch (err) { return e > 1 ? a : e ? err : undefined }};
+valStr = (v, sp) => v == null ? "" : v instanceof Error && v.constructor && !v.reason ? v : typeof v === 'object' ? JSON.stringify(v, null, sp) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(_.fncTry(JSON.parse, v), null, sp) || v;
+fldG = (k, v) => "\\n<div class=\\"field is-horizontal\\">\\n<div class=\\"field-label\\"><span class=label>" + k + "</span></div>\\n<div class=\\"field-body\\">\\n<textarea id=p0" + k + " class=textarea rows=2>" + _.valStr(v, !Array.isArray(v) || typeof v[0] === 'object' ? 2 : null) + "\\n</textarea>\\n</div>\\n</div>";
+deui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
+deui += "\\nhtml { box-sizing: border-box; color: DimGrey; min-width: 375px; overflow-wrap: break-word; }";
+deui += "\\nhr { margin: 1.5rem 0; }\\n[list]::-webkit-calendar-picker-indicator { display: none !important; }";
+deui += "\\n.textarea { background-color: white; border-color: #dbdbdb; border-radius: 4px; display: block; max-width: 100%; min-width: 100%; padding: calc(0.75em - 1px); resize: vertical; }";
+deui += "\\n.label { display: block; font-weight: 700;}";
+deui += "\\n.label:not(:last-child) { margin-bottom: 8px; }";
+deui += "\\n.field:not(:last-child) { margin-bottom: 12px; }";
+deui += "\\n.field-label .label { font-size: inherit; }";
+deui += "\\n.field-body .field .field { margin-bottom: 0; }";
+deui += "\\n@media screen and (max-width: 719px) { .field-label { margin-bottom: 8px; } }";
+deui += "\\n@media screen and (min-width: 720px), print { .field.is-horizontal { display: flex; } .field-label { flex-basis: 0; flex-grow: 1; flex-shrink: 0; margin-right: 24px; text-align: right; } .field-body { display: flex; flex-basis: 0; flex-grow: 5; flex-shrink: 1; } .field-body .field { margin-bottom: 0; } .field-body > .field { flex-shrink: 1; } .field-body > .field:not(.is-narrow) { flex-grow: 1; } .field-body > .field:not(:last-child) { margin-right: 12px; } }";
+deui += "\\n#dbwrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
+deui += "\\n#dbwrap button, #dbwrap input:not([type=checkbox]), #dbwrap select { height: 24px; vertical-align: bottom; }";
+deui += "\\n#dbwrap .hgainl { background-color: #ececec; }\\n#dbwrap .iwarn { color: Orange; }\\n#dbwrap .isucc { color: CornFlowerBlue; }";
+deui += "\\n#dbwrap textarea.iwarn { color: revert; border-color: Orange; }\\n#dbwrap textarea.isucc { color: revert; border-color: CornFlowerBlue; }";
+deui += "\\n#dbwrap .pwrap { white-space: pre-wrap; }";
+deui += "\\n#dbwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }";
+deui += "\\n#dbwrap .cfield:not(:last-child) { margin-bottom: 8px; }";
+deui += "\\n#dbwrap .ccntr:not(:last-of-type) { margin-right: 8px; }";
+deui += "\\n#dbwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
+deui += "\\n#dbwrap .chelp { font-size: 12px; margin-top: 4px; }";
+deui += "\\n#dbwrap .fltrt { float: right; }";
+deui += "\\n#dbwrap .alnrt { text-align: right; }";
+deui += "\\n#dbwrap .dnone { display: none; }\\n</style>";
+deui += "\\n<hr />\\n<button id=savbtn class=\\"fltrt hgainl\\"><span class=isucc>&#x267a;</span> SAVE</button>";
+deui += "\\n<div class=field>\\n<h4>New Contact</h4>";
+deui += "\\n<div class=\\"alnrt chelp isucc dnone\\">New contact is saved in local DB.</div>";
+deui += "\\n<div class=\\"alnrt chelp iwarn dnone\\">New-contact save attempt failed.</div>\\n</div>";
+deui += Object.entries(fwg).map(([k, v]) => rex0s.test(k) ? "" : _.fldG(k, v)).join("") + "\\n";
+
+// dbwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
+// try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = deui; cmain.appendChild(ndiv); }
+
+!window.savbtn || ( savbtn.onclick = () => { let hlps = _.deui.querySelectorAll('.chelp'); hlps.forEach(e => e.classList.add("dnone")); Object.keys(_.fwg).forEach(k => rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))); !p0_id.value || !_.dbname || !window.PouchDB || PouchDB(_.dbname).put(Object.assign({ _id: "", _rev: "" }, _.fwg), {}).then( r => Object.keys(_.fwg).forEach(k => rex0s.test(k) || (window["p0" + k].disabled = 1)) || (_.fwg = null) || hlps[0].classList.remove("dnone") || respShow(r) ).catch(err => hlps[1].classList.remove("dnone") || respShow(err)); } );
 
 /*
  4. Populate your database either with your own contacts or with a
@@ -1041,6 +1096,10 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
     to your image-resource file; Then add to the file (as attachments)
     either your own contact photos or a collection of stock photos,
     to be used for demo purposes.
+*/
+
+/*
+!window.imgainp || !imgainp.files.length || !(fwg.hasOwnProperty("_attachments") || (fwg._attachments = {})) || imgainp.files.forEach( (f, i) => fwg._attachments[ !imganm2.value ? f.name : !imgainp.files[1] ? imganm2.value : imganm2.value.replace(/(?=\.\w+$|$)/, i > 9 ? i : "0" + i) ] = { content_type: f.type, data: f } );
 */
 
 /*

@@ -75,9 +75,9 @@ sdui += "\\n<pre id=s2rslt></pre>\\n";
 try { sdwrap } catch { ndiv = document.createElement('div'); ndiv.id = "sdwrap"; ndiv.innerHTML = sdui; cmain.appendChild(ndiv); }
 try { SourceDiff } catch { scrInj("../-res-js/srcdiff.js").catch(respShow) }
 
-fncTry = (a, fnc, e) => { try { return fnc(a) } catch (err) { return e ? err : undefined }};
+fncTry = (fnc, a, e) => { try { return fnc(a) } catch (err) { return e > 1 ? a : e ? err : undefined }};
 diffGen = ([s1txt, s2txt]) => { if (!window.SourceDiff || !s1txt || !s2txt) { return s1rslt.innerHTML = s2rslt.innerHTML = ""; } let sdff = new SourceDiff.Diff(true), fmtr = new SourceDiff.DiffFormatter(sdff); [s2rslt.innerHTML, s1rslt.innerHTML] = fmtr.formattedDiff(s2txt, s1txt); };
-datPrep = () => Promise.all( [s1finp.value, s2finp.value].map( k => Promise.resolve(_.fncTry(k, window.eval)).then(v => v != null ? v : localStorage.getItem(k) || window.localforage && localforage.getItem(k)).then(v => v == null ? "" : typeof v === 'object' ? JSON.stringify(v, null, 2) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(_.fncTry(v, JSON.parse), null, 2) || v) )).then(_.diffGen).catch(console.warn);
+datPrep = () => Promise.all( [s1finp.value, s2finp.value].map( k => Promise.resolve(_.fncTry(window.eval, k)).then(v => v != null ? v : localStorage.getItem(k) || window.localforage && localforage.getItem(k)).then(v => v == null ? "" : typeof v === 'object' ? JSON.stringify(v, null, 2) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(_.fncTry(JSON.parse, v), null, 2) || v) )).then(_.diffGen).catch(console.warn);
 [s1chkb, s2chkb].forEach( e => e.onchange = () => { [s1rslt, s2rslt].forEach(e => e.classList.remove("ht0", "ht2x")); if (s1chkb.checked && s2chkb.checked) { s1rslt.classList.add("ht0"); s2rslt.classList.add("ht0"); } else if (s1chkb.checked) { s1rslt.classList.add("ht0"); s2rslt.classList.add("ht2x") } else if (s2chkb.checked) { s1rslt.classList.add("ht2x"); s2rslt.classList.add("ht0"); } });
 s1rslt.onscroll = () => { s2rslt.scrollLeft = s1rslt.scrollLeft; s2rslt.scrollTop = s1rslt.scrollTop; };
 s2rslt.onscroll = () => { s1rslt.scrollLeft = s2rslt.scrollLeft; s1rslt.scrollTop = s2rslt.scrollTop; };
