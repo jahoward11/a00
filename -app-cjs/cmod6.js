@@ -975,13 +975,13 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
  2. Use *PouchDB* to create a _contacts_ database that will contain
     the contact information of your family, your friends, members of
     an organization to which you belong, or ... anyone at all.
-    + First, feel free to change the value of \`dbname\`, in the
-      following code, to any (valid) name you want for your new
+    + First, in the following code, feel free to change the value of
+      \`dbname\` to any (valid) name you want for your new
       _contacts_ database.
     + Then, un-comment the following two lines of code to set up a
       new DB and reserve the namespace of your DB within your browser.
     + Notice that with this code we also establish a temporary access
-      portal into our DB's internal operations by assigning the newly
+      conduit into our DB's internal operations by assigning the newly
       created DB object to a variable, \`dbobj\`. So, even though we
       do not see an immediate result from this operation, we will
       soon find out if we're successful when we attempt to perform
@@ -1027,7 +1027,7 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
       code block to display (below, beneath the calculator) a basic
       contact data-entry form.
     + Notice that some fields are prefilled with an array literal
-      (square brackets \`[]\`) that contains one set of quotes \`""\`.
+      (square brackets \`[…]\`) that contains one set of quotes \`""\`.
       This indicates that the value of that property may have more
       than one string added. The strings of the array must each be
       wrapped in quotes \`""\` and separated by a comma \`,\`.
