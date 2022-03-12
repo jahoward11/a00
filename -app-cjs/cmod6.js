@@ -1043,7 +1043,7 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
       unique. Conceptually, two different contacts in the DB could,
       potentially, have matching information for every property
       except one: the ID property; Otherwise, the DB could not
-      distinguish one entry from the other.
+      distinguish one data file from the other.
 */
 
 rex0s = /^_rev|^file_|^ts_|^loc_/;
@@ -1094,7 +1094,7 @@ deui += Object.entries(fwg).map(([k, v]) => _.rex0s.test(k) ? "" : _.fldGen(k, v
  4. Populate your database either with your own contacts or with a
     provided set of pre-fabricated "contacts", meant to be used for
     demo purposes.
-    + To see the data of ten fake "contacts" before adding them to
+    + To see the data of ten fake contacts, before adding them to
       your DB, un-comment the first of the following three lines of
       code. (Data appears above, overtop the calculator.)
     + To add these fake contacts to your DB all at once, un-comment
@@ -1111,8 +1111,8 @@ deui += Object.entries(fwg).map(([k, v]) => _.rex0s.test(k) ? "" : _.fldGen(k, v
     + Notice in the \`.onclick\` code for the *SAVE* button how we add
       a new contact to the DB: We use the \`.put()\` command on the
       \`dbobj\` variable that was created in step 2. The single
-      argument of the \`.put()\` command is a JS object possessing
-      all of the contact's data that were entered into the form's
+      argument of our \`.put()\` command is a JS object possessing
+      all of the contact's data that was entered into the form's
       text fields.
     + To see a list of the contact IDs that exist in your DB at any
       time, un-comment the third of the following three lines of code.
