@@ -1029,21 +1029,21 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
     + Notice that some fields are prefilled with an array literal
       (square brackets \`[]\`) that contains one set of quotes \`""\`.
       This indicates that the value of that property may have more
-      than one string added. Strings must be wrapped in quotes \`""\`
-      and separated by a comma \`,\`.
+      than one string added. The strings of the array must each be
+      wrapped in quotes \`""\` and separated by a comma \`,\`.
     + Notice also that the ID field is prefilled with a text pattern.
       This text must be specially edited for every new contact that
       gets added to the DB. For DB organization purposes, the pattern
       suggests prepending the ID with an exclamation symbol \`!\` and
       generating a unique contact ID by combining a group ID with the
       contact's username.
-    + *Note:* The ID property is not so important as a lookup detail
-      about the contact. It is, however, important for DB operations.
-      The value of this property can be arbitrary -- but must be
+    + *Note:* The value of the ID property, as a lookup detail about
+      the contact, is not so important. However, it is important for
+      DB operations. The ID value can be arbitrary -- but must be
       unique. Conceptually, two different contacts in the DB could,
       potentially, have matching information for every property
-      except one: the ID; Otherwise, the DB could not distinguish
-      one from the other.
+      except one: the ID property; Otherwise, the DB could not
+      distinguish one entry from the other.
 */
 
 rex0s = /^_rev|^file_|^ts_|^loc_/;
@@ -1088,7 +1088,7 @@ deui += Object.entries(fwg).map(([k, v]) => _.rex0s.test(k) ? "" : _.fldGen(k, v
 
 !window.dbwrap || (hlps = dbwrap.querySelectorAll('.chelp'));
 !window.dbwrap || ( resbtn.onclick = () => _.hlps.forEach(e => e.classList.add("dnone")) || !(_.fwg = JSON.parse(JSON.stringify(_.ctmpl))) || Object.entries(_.fwg).forEach(([k, v]) => _.rex0s.test(k) || (window["p0" + k].value = _.valStr(v))) );
-!window.dbwrap || ( savbtn.onclick = () => { let ts = new Date().getTime(); ["ts_updated"].concat(_.fwg.ts_created ? [] : "ts_created").forEach(e => _.fwg[e] = ts); Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))); !_.fwg._id.value || !_.dbname || !window.PouchDB || PouchDB(_.dbname).put(_.fwg).then(r => hlps[0].classList.remove("dnone") || respShow(r)).catch(e => hlps[1].classList.remove("dnone") || respShow(e)); } );
+!window.dbwrap || ( savbtn.onclick = () => { let ts = new Date().getTime(); ["ts_updated"].concat(_.fwg.ts_created ? [] : "ts_created").forEach(e => _.fwg[e] = ts); Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))); !_.fwg._id.value || !_.dbobj || _.dbobj.put(_.fwg).then(r => hlps[0].classList.remove("dnone") || respShow(r)).catch(e => hlps[1].classList.remove("dnone") || respShow(e)); } );
 
 /*
  4. Populate your database either with your own contacts or with a
@@ -1098,7 +1098,9 @@ deui += Object.entries(fwg).map(([k, v]) => _.rex0s.test(k) ? "" : _.fldGen(k, v
       your DB, un-comment the first of the following three lines of
       code. (Data appears above, overtop the calculator.)
     + To add these fake contacts to your DB all at once, un-comment
-      the second of the following three lines of code.
+      the second of the following three lines of code. Notice in this
+      operation how we add each contact: We use the \`.put()\` command
+      on the \`dbobj\` variable that was created in step 2.
     + *Tip:* To ensure that you do not repeatedly add the same contacts,
       de-activate (re-comment) the second line of code after it has
       executed once already.
@@ -1106,6 +1108,12 @@ deui += Object.entries(fwg).map(([k, v]) => _.rex0s.test(k) ? "" : _.fldGen(k, v
       that you want to include, fill out the data-entry form (below,
       beneath the calculator); Then, tap the *SAVE* button at the
       top-right of the form.
+    + Notice in the \`.onclick\` code for the *SAVE* button how we add
+      a new contact to the DB: We use the \`.put()\` command on the
+      \`dbobj\` variable that was created in step 2. The single
+      argument of the \`.put()\` command is a JS object possessing
+      all of the contact's data that were entered into the form's
+      text fields.
     + To see a list of the contact IDs that exist in your DB at any
       time, un-comment the third of the following three lines of code.
 */
