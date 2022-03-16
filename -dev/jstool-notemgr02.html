@@ -391,7 +391,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   #nmdata .media-left>.image>figcaption { float: right; font-size: x-small; }
 }
 @media screen and (max-width: 719px) {
-  #nmdata .media-left>.media-left>.image { margin: 0; }
+  #nmdata .media-left>.image { margin: 0; }
   #nmdata .field-label>button.bsml, #pfacnt .field-label>button.bsml { margin: -16px 8px 0 0; }
 }
 @media screen and (min-width: 720px) and (max-width: 767px), print {
@@ -1143,8 +1143,8 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       || !hlps[1].classList.contains("dnone") || hlps[0].classList.remove("dnone") );
     //.then(PouchDB.allDbs);
   },
-  date0Fmt = nbr => !nbr ? "" : new Date(nbr).toISOString().replace(/T.+$/, ""),
-  date1Fmt = str => !str ? ""
+  ts1Fmt = nbr => !nbr ? "" : new Date(nbr).toISOString().replace(/T.+$/, ""),
+  ts2Fmt = str => !str ? ""
     : new Date(str).toUTCString().replace(/.+(\d{2} [a-z]{3} \d{4}).+/i, "$1"),
   imgLkup = doc => doc && aurls[ (doc.image_src || "").replace(/^(?!https?:).*\//, "")
     || (cntcs[(doc.file_updated || doc.file_created || "").username] || "").image_src
@@ -1184,11 +1184,11 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       <td>${ rval._id || r.id }</td>
       <td>${ (rval.file_type || "").replace(/^eco-/, "")
         || (!/^[.-]./.test(rval._id || r.id) ? "" : "(app assets)") }</td>
-      <td>${ date0Fmt(rval.ts_updated || (rval.file_updated || "").timestamp) }</td>
+      <td>${ ts1Fmt(rval.ts_updated || (rval.file_updated || "").timestamp) }</td>
       <td>${ (rval.file_updated || "").username || "" }</td>
       <td>${ (rval.file_updated || "").version || "" }</td>
       <td>${ rval.file_updated && (rval.file_updated.misc || rval.file_updated.notes) || "" }</td>
-      <td>${ date0Fmt(rval.ts_created || (rval.file_created || "").timestamp) }</td>
+      <td>${ ts1Fmt(rval.ts_created || (rval.file_created || "").timestamp) }</td>
       <td>${ (rval.file_created || "").username || "" }</td>
       <td>${ (rval.file_created || "").version || "" }</td>
       <td>${ rval.file_created && (rval.file_created.misc || rval.file_created.notes) || "" }</td>
@@ -1271,10 +1271,10 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
             _deleted: true
           }
       },
-      rdataTfm = rs => !rs.rows && !rs.results ? {} : {
+      rdataTfm = re => !re.rows && !re.results ? {} : {
         DBNAME: txd2.DBNAME,
         OPTS:   {},
-        docs:   (rs.rows || rs.results).map(row1Tfm) //.filter(d => !d._deleted)
+        docs:   (re.rows || re.results).map(row1Tfm) //.filter(d => !d._deleted)
       },
       jsonVldt = () => {
         rsp2con.textContent = "";
@@ -1580,8 +1580,8 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   tblGen = evt => {
     vbas < 5 || PouchDB(txd1.DBNAME)
     .changes(txd1.OPTS)
-    .then(rs => {
-      let dels = rs.results.filter(r => r.deleted);
+    .then(re => {
+      let dels = re.results.filter(r => r.deleted);
       ftotal.innerText = dels.length;
       [nmthds[0], nmtfts[0]].forEach(e => e.classList.add("dnone"));
       [nmthds[1], nmtfts[1]].forEach(e => e.classList.remove("dnone"));
@@ -1598,22 +1598,22 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       endkey:       descswi.checked != (vbas === 4) ? undefined : "~a",
       descending:   descswi.checked,
       include_docs: true }) )
-    .then(rs => {
+    .then(re => {
       let r2s,
-        rdc = rs.rows.length === 1 && !rs.rows[0].key && "" + rs.rows[0].value,
+        rdc = re.rows.length === 1 && !re.rows[0].key && "" + re.rows[0].value,
         calcSum = arr => !arr.length ? 0 : arr.reduce((s, v) => s + v);
       j = 0;
-      ftotal.innerText = rdc ? rdc : vbas !== 2 ? rs.rows.length //rs.total_rows
-        : ( r2s = rs.rows.filter( r => (rval = r.doc || r.value).hasOwnProperty("loc_subdir")
+      ftotal.innerText = rdc ? rdc : vbas !== 2 ? re.rows.length //re.total_rows
+        : ( r2s = re.rows.filter( r => (rval = r.doc || r.value).hasOwnProperty("loc_subdir")
             || rval.file_updated || rval.file_created )).length
           + calcSum( r2s.filter(r => (r.doc || r.value)._attachments)
             .map(r => Object.keys((r.doc || r.value)._attachments).length) );
       [nmthds[1], nmtfts[1]].forEach(e => e.classList.add("dnone"));
       [nmthds[0], nmtfts[0]].forEach(e => e.classList.remove("dnone"));
       nmtbod.innerHTML = rdc ? "" : vbas !== 2
-      ? qd3Fmt( !ss0 || vbas !== 4 && ss0 === "id" || vbas === 4 && ss1 === "timestamp" ? rs.rows
-        : ordFlip(rs.rows.map(r => [ptyX(r.doc || r.value), r.id, r])).map(sr => sr[2]) )
-      : qd2Fmt( ordFlip( rs.rows.filter( r => /^[.-]./.test(r.id)
+      ? qd3Fmt( !ss0 || vbas !== 4 && ss0 === "id" || vbas === 4 && ss1 === "timestamp" ? re.rows
+        : ordFlip(re.rows.map(r => [ptyX(r.doc || r.value), r.id, r])).map(sr => sr[2]) )
+      : qd2Fmt( ordFlip( re.rows.filter( r => /^[.-]./.test(r.id)
           || (rval = r.doc || r.value).hasOwnProperty("loc_subdir")
           || rval.file_updated || rval.file_created )
         .map( r => /^[.-]./.test(r.id) ? [r.id.replace(/^\.(.+)$/, "$1_"), null, r.id, r]
@@ -1641,10 +1641,10 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       //endkey:       descswi.checked ? undefined : "~a",
       descending:   descswi.checked,
       include_docs: true }) )
-    .then(rs => {
+    .then(re => {
       let ra, rb,
-        rdc = rs.rows.length === 1 && !rs.rows[0].key && "" + rs.rows[0].value,
-        rrs = !rdc && rs.rows.filter( r => r
+        rdc = re.rows.length === 1 && !re.rows[0].key && "" + re.rows[0].value,
+        rrs = !rdc && re.rows.filter( r => r
             && ( /anno|contact|event|memo|phone|post|scrap|srcdoc/i.test((r.doc || r.value).file_type)
             || ["name_full", "name_user"].some(p => (r.doc || r.value).hasOwnProperty(p)) ) )
           .sort( (a, b) => !(ra = ptyX(a.doc || a.value)) || !(rb = ptyX(b.doc || b.value))
@@ -1714,7 +1714,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
             + "<div class=lnhtnml>" + (rb = ra.texthl.join("\n")).substring(0, 255)
             + (rb.length < 257 ? "" : "&hellip;") + "</div>"
           : "<div>" + ( !cvs.includes("time") || !ra.hasOwnProperty("time") ? ""
-              : "<strong>Time:</strong> " + date1Fmt(ra.time) + "\n" )
+              : "<strong>Time:</strong> " + ts2Fmt(ra.time) + "\n" )
             + (( !cvs.includes("place") || !ra.hasOwnProperty("place") ? ""
               : "<strong>Place:</strong> " + ra.place + "\n" )
                 + ( !(ra.map_refs || "").length ? ""
@@ -1725,7 +1725,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
               : "<strong>Description:</strong> " + ra.description + "\n" )
             + ( !cvs.some(e => /name_full/.test(e)) ? ""
               : ( !ra.hasOwnProperty("birthdate") ? ""
-                  : "<strong>Birthdate:</strong> " + date1Fmt(ra.birthdate) + "\n" )
+                  : "<strong>Birthdate:</strong> " + ts2Fmt(ra.birthdate) + "\n" )
                 + ( !ra.hasOwnProperty("emails") ? ""
                   : "<strong>Emails:</strong> " + ra.emails.join(", ") + "\n" )
                 + ( !ra.hasOwnProperty("phones") ? ""
@@ -1739,9 +1739,9 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
                   : "<strong>Team groups:</strong> " + ra.team_groups.join(", ") + "\n" )
                 + ( !ra.ts_created ? "" : "<strong>"
                     + (!/contact|phone/.test(ra.file_type) ? "Created on:" : "Joined team:")
-                    + "</strong> " + date1Fmt(ra.ts_created) + "\n" )
+                    + "</strong> " + ts2Fmt(ra.ts_created) + "\n" )
                 + ( !ra.ts_updated ? ""
-                  : "<strong>Last updated:</strong> " + date1Fmt(ra.ts_updated) + "\n" ) )
+                  : "<strong>Last updated:</strong> " + ts2Fmt(ra.ts_updated) + "\n" ) )
             + "</div>" }</div>
       </details>
     </div>
@@ -2197,7 +2197,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         startkey:     "!",
         endkey:       "!~",
         include_docs: true
-      }).then(rs => rs.rows.forEach(r => cntcs[r.doc.name_user || r.doc._id] = cntcLite(r.doc)))
+      }).then(re => re.rows.forEach(r => cntcs[r.doc.name_user || r.doc._id] = cntcLite(r.doc)))
       .catch(rsp2Show);
     una2inp.value = nm0sets.uname || nm0sets.uemail || "";
     unaminp.value = nm0sets.uname || "";
