@@ -657,16 +657,16 @@ srui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
 srui += "\\nhtml { box-sizing: border-box; min-width: 375px; overflow-wrap: break-word; }";
 srui += "\\nhr { margin: 1.5rem 0; }\\n[list]::-webkit-calendar-picker-indicator { display: none !important; }";
 srui += "\\n#srwrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
-srui += "\\n#srwrap button, #srwrap input:not([type=checkbox]), #srwrap select { height: 24px; vertical-align: bottom; }";
+srui += "\\n#srwrap button, #srwrap input:not([type=checkbox]), #srwrap select { line-height: 24px; height: 24px; vertical-align: bottom; }";
+srui += "\\n#srwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }";
 srui += "\\n#srwrap textarea { display: block; font-size: medium; width: 100%; height: 288px; }";
 srui += "\\n#srwrap .iwarn { color: Orange; }\\n#srwrap .isucc { color: CornFlowerBlue; }";
 srui += "\\n#srwrap textarea.iwarn { color: revert; border-color: Orange; }\\n#srwrap textarea.isucc { color: revert; border-color: CornFlowerBlue; }";
-srui += "\\n#srwrap .pwrap { white-space: pre-wrap; }";
-srui += "\\n#srwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }";
 srui += "\\n#srwrap .cfield:not(:last-child) { margin-bottom: 8px; }";
 srui += "\\n#srwrap .ccntr:not(:last-of-type) { margin-right: 8px; }";
 srui += "\\n#srwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
 srui += "\\n#srwrap .chelp { font-size: 12px; margin-top: 4px; }";
+srui += "\\n#srwrap .pwrap { white-space: pre-wrap; }";
 srui += "\\n#sepainp, #rtrminp { width: 288px; }\\n#lfinp { width: 176px; }";
 srui += "\\n#trgrndr { display: flow-root; margin-top: 16px; border: dashed gainsboro; border-width: 1px 0; }";
 srui += "\\n</style>\\n<hr>\\n<h4 class=cfield><span onclick=txtaSel(srctxta)>Source</span></h4>";
@@ -681,7 +681,7 @@ srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=trghelp cl
 srui += "\\n<div class=cfield>\\n<datalist id=pfiles></datalist>\\n<span class=ccntr><input type=text id=lfinp list=pfiles placeholder=\\"filename/key/CMD&hellip;\\" onfocus=hlp3Clr() /></span><span class=ccntr><button onclick=dataMgr(2)>\\n<span>&uArr;</span></button></span><span class=ccntr><button onclick=dataMgr(1)>\\n<span class=isucc>&#x267a;</span> SAVE</button></span><span class=ccntr><button onclick=dataMgr()>\\n<span class=iwarn>&#x2715;</span> DEL</button></span>\\n<div id=lfhelp class=chelp></div>\\n</div>";
 srui += "\\n<div id=trgrndr class=cfield></div>\\n";
 
-// srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
+// srwrap.remove() // *Alert:* useful only if edit-testing the UI code above
 // try { srwrap } catch { ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = srui; cmain.appendChild(ndiv); }
 
 /*
@@ -722,8 +722,9 @@ window.dataMgr = ox => { let key = lfinp.value.trim(); if (ox === 2) return !key
 !window.srwrap || pfsRfr();
 
 /*
-   + *Optional:* Un-comment the following block of code to generate the
-     full source code (e.g., for building a standalone web app).
+   + *Optional:* Un-comment (i.e., remove the wrapping pair of JS block-
+     comment tags \`/* … */\` of) the following code block to generate
+     the full source code (e.g., for building a standalone web app).
 */
 
 /*
@@ -743,7 +744,7 @@ respShow(dwrap[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwrap[1] + scrGen(
 */
 
 /*
-srctxta.value || import("./spark.js").then(r => srctxta.value = r.dune.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(respShow); //
+srctxta.value || import("./spark.js").then(m => srctxta.value = m.dune.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(respShow); //
 sepainp.value = "/^.*?(\\\\bdune\\\\b).*\\\\n*|^.*\\\\n*/gim"; //
 rtrminp.value = "(m, c1, i) => { i || (window.it0 = 0); return !c1 ? \\"\\" : \\" \\" + ++it0 + \\". \\" + m; }";
 */
@@ -949,7 +950,7 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
         predefined behind the scenes by the calculator app, and which
         uses the same DOM-manipulation API that we use in option 1.
     + Option 1 is presented alongside option 2 to show alternate
-      possibilities; Thus, even though option 1 has an unnecessary
+      possibilities; And, even though option 1 has an unnecessary
       extra step, its value is in demonstrating at a stroke how two
       of the major classes of native APIs may be used in combination.
     + *Aside:* Back in *Tutorials Part 3*, we had inconspicuously
@@ -978,26 +979,29 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
     + First, in the following code, feel free to change the value of
       \`dbname\` to any (valid) name you want for your new
       _contacts_ database.
-    + Then, un-comment the following two lines of code to set up a
+    + Then, un-comment the following code block (i.e., remove the
+      wrapping pair of JS block-comment tags \`/* … */\`) to set up a
       new DB and reserve the namespace of your DB within your browser.
     + Notice that with this code we also establish a temporary access
-      conduit into our DB's internal operations by assigning the newly
-      created DB object to a variable, \`dbobj\`. So, even though we
-      do not see an immediate result from this operation, we will
+      conduit into our DB's internal operations by assigning the
+      newly created DB object to a variable, \`dbobj\`. So, even though
+      we do not see an immediate result from this operation, we will
       soon find out if we're successful when we attempt to perform
       subsequent operations via the \`dbobj\` variable.
     + *Note:* An invalid DB name may cause unpredictable behaviors in
       later operations. A valid DB name begins with a lowercase
       letter and is composed of only characters that are one of
       lowercase letters, numbers, underscore and dash.
-    + *Alert:* *PouchDB* does not prevent the creation of a DB with an
-      invalid name. So, we must perform our own validity test -- and,
-      subsequently, interrupt our DB-creation operation if the value
-      of \`dbname\` fails our test.
+    + *Alert:* The *PouchDB* API does not prevent the creation of a DB
+      with an invalid name. So, we must perform our own validity test
+      -- and, subsequently, interrupt our DB-creation operation if the
+      value of \`dbname\` fails our test.
 */
 
-// dbname = "cntcs-t4demo";
-// !window.PouchDB || !/^[a-z][0-9_a-z-]*$/.test(dbname) || (dbobj = new PouchDB(dbname))
+/*
+dbname = "cntcs-demo";
+!window.PouchDB || !/^[a-z][0-9_a-z-]*$/.test(dbname) || (dbobj = new PouchDB(dbname))
+*/
 
 /*
     + *Good to know, for later use:* To reverse this action at any time
@@ -1038,7 +1042,7 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
       generating a unique contact ID by combining a group ID with the
       contact's username.
     + *Note:* The value of the ID property, as a lookup detail about
-      the contact, is not so important. However, it is important for
+      the contact, is not so important; However, it is important for
       DB operations. The ID value can be arbitrary -- but must be
       unique. Conceptually, two different contacts in the DB could,
       potentially, have matching information for every property
@@ -1046,59 +1050,91 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
       distinguish one data file from the other.
 */
 
+d1ui = d2ui = d3ui = d4ui = d5ui = ""
 rex0s = /^_rev|^file_|^ts_|^loc_/;
 ctmpl = { _id: "!groupID-cUsername", _rev: "", file_type: "contact", ts_created: 0, ts_updated: 0, loc_subdir: "", name_full: "", name_user: "", birthdate: "", roles: [""], emails: [""], phones: [""], locations: [""], social_profiles: [""], project_urls: [""], team_groups: [""], image_src: "", bio_short: "", miscellany: "" };
 fwg = JSON.parse(JSON.stringify(ctmpl));
 fncTry = (fnc, a, e) => { try { return fnc(a) } catch (err) { return e > 1 ? a : e ? err : undefined }};
 valStr = (v, sp) => v == null ? "" : v instanceof Error && v.constructor && !v.reason ? v : typeof v === 'object' ? JSON.stringify(v, null, sp) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(_.fncTry(JSON.parse, v), null, sp) || v;
 fldGen = (k, v) => "\\n<div class=\\"field is-horizontal\\">\\n<div class=\\"field-label\\"><span class=label>" + k + "</span></div>\\n<div class=\\"field-body\\">\\n<textarea id=p0" + k + " class=textarea rows=2>" + _.valStr(v) + "\\n</textarea>\\n</div>\\n</div>";
-deui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
-deui += "\\nhtml { box-sizing: border-box; color: DimGrey; min-width: 375px; overflow-wrap: break-word; }";
-deui += "\\nhr { margin: 1.5rem 0; }\\n[list]::-webkit-calendar-picker-indicator { display: none !important; }";
-deui += "\\n.textarea { background-color: white; border-color: #dbdbdb; border-radius: 4px; display: block; max-width: 100%; min-width: 100%; padding: calc(0.75em - 1px); resize: vertical; }";
-deui += "\\n.label { display: block; font-weight: 700;}";
-deui += "\\n.label:not(:last-child) { margin-bottom: 8px; }";
-deui += "\\n.field:not(:last-child) { margin-bottom: 12px; }";
-deui += "\\n.field-label .label { font-size: inherit; }";
-deui += "\\n.field-body .field .field { margin-bottom: 0; }";
-deui += "\\n@media screen and (max-width: 719px) { .field-label { margin-bottom: 8px; } }";
-deui += "\\n@media screen and (min-width: 720px), print { .field.is-horizontal { display: flex; } .field-label { flex-basis: 0; flex-grow: 1; flex-shrink: 0; margin-right: 24px; text-align: right; } .field-body { display: flex; flex-basis: 0; flex-grow: 5; flex-shrink: 1; } .field-body .field { margin-bottom: 0; } .field-body > .field { flex-shrink: 1; } .field-body > .field:not(.is-narrow) { flex-grow: 1; } .field-body > .field:not(:last-child) { margin-right: 12px; } }";
-deui += "\\n#dbwrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
-deui += "\\n#dbwrap button, #dbwrap input:not([type=checkbox]), #dbwrap select { height: 24px; vertical-align: bottom; }";
-deui += "\\n#dbwrap .hgainl { background-color: #ececec; }\\n#dbwrap .iwarn { color: Orange; }\\n#dbwrap .isucc { color: CornFlowerBlue; }";
-deui += "\\n#dbwrap textarea.iwarn { color: revert; border-color: Orange; }\\n#dbwrap textarea.isucc { color: revert; border-color: CornFlowerBlue; }";
-deui += "\\n#dbwrap .pwrap { white-space: pre-wrap; }";
-deui += "\\n#dbwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }";
-deui += "\\n#dbwrap .cfield:not(:last-child) { margin-bottom: 8px; }";
-deui += "\\n#dbwrap .ccntr:not(:last-of-type) { margin-right: 8px; }";
-deui += "\\n#dbwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
-deui += "\\n#dbwrap .chelp { font-size: 12px; margin-top: 4px; }";
-deui += "\\n#dbwrap .fltrt { float: right; }";
-deui += "\\n#dbwrap .alnrt { text-align: right; }";
-deui += "\\n#dbwrap .dnone { display: none; }\\n</style>";
-deui += "\\n<hr />\\n<div class=\\"fltrt cfield\\">\\n<button id=resbtn class=\\"ccntr hgainl\\"><span class=isucc>&orarr;</span> RESET</button>";
-deui += "<button id=savbtn class=\\"ccntr hgainl\\"><span class=isucc>&#x267a;</span> SAVE</button>\\n</div>";
-deui += "\\n<div class=field>\\n<h4>New Contact</h4>";
-deui += "\\n<div class=\\"alnrt chelp isucc dnone\\">New contact is saved in local DB.</div>";
-deui += "\\n<div class=\\"alnrt chelp iwarn dnone\\">New-contact save attempt failed.</div>\\n</div>";
-deui += Object.entries(fwg).map(([k, v]) => _.rex0s.test(k) ? "" : _.fldGen(k, v)).join("") + "\\n";
+d1ui += "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
+d1ui += "\\nhtml { box-sizing: border-box; color: DimGrey; min-width: 375px; overflow-wrap: break-word; }";
+d1ui += "\\nhr { margin: 1.5rem 0; }\\n[list]::-webkit-calendar-picker-indicator { display: none !important; }";
+d1ui += "\\nfigure, .figure { margin: 1em 0; padding: 0 1em; }";
+d1ui += "\\n.image { display: block; position: relative; }";
+d1ui += "\\n.image img { display: block; height: auto; max-width: 100%; }";
+d1ui += "\\n.textarea { background-color: white; border-color: #dbdbdb; border-radius: 4px; display: block; max-width: 100%; min-width: 100%; padding: calc(0.75em - 1px); resize: vertical; }";
+d1ui += "\\n.label { display: block; font-weight: 700;}";
+d1ui += "\\n.label:not(:last-child) { margin-bottom: 8px; }";
+d1ui += "\\n.field:not(:last-child) { margin-bottom: 12px; }";
+d1ui += "\\n.field-label .label { font-size: inherit; }";
+d1ui += "\\n.field-body .field .field { margin-bottom: 0; }";
+d1ui += "\\n.media { align-items: flex-start; display: flex; text-align: inherit; }";
+d1ui += "\\n.media + .media { border-top: 1px solid rgba(219, 219, 219, 0.5); margin-top: 1rem; padding-top: 14px; 1rem; }";
+d1ui += "\\n.media-left, .media-right { flex-basis: auto; flex-grow: 0; flex-shrink: 0; }";
+d1ui += "\\n.media-left { margin-right: 1rem; }";
+d1ui += "\\n.media-right { margin-left: 1rem; }";
+d1ui += "\\n.media-content { flex-basis: auto; flex-grow: 1; flex-shrink: 1; text-align: inherit; }";
+d1ui += "\\n@media screen and (max-width: 719px) { .media-content { overflow-x: auto; } }";
+d1ui += "\\n@media screen and (max-width: 719px) { .field-label { margin-bottom: 8px; } }";
+d1ui += "\\n@media screen and (min-width: 720px), print { .field.is-horizontal { display: flex; } .field-label { flex-basis: 0; flex-grow: 1; flex-shrink: 0; margin-right: 24px; text-align: right; } .field-body { display: flex; flex-basis: 0; flex-grow: 5; flex-shrink: 1; } .field-body .field { margin-bottom: 0; } .field-body > .field { flex-shrink: 1; } .field-body > .field:not(.is-narrow) { flex-grow: 1; } .field-body > .field:not(:last-child) { margin-right: 12px; } }";
+d1ui += "\\n#dbwrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
+d1ui += "\\n#dbwrap a { color: #485fc7; cursor: pointer; text-decoration: none; }";
+d1ui += "\\n#dbwrap a:hover, #dbwrap .ilink:hover:not(:disabled) { color: CornFlowerBlue; }";
+d1ui += "\\n#dbwrap button, #dbwrap .btn1, #dbwrap input:not([type=checkbox]), #dbwrap select { background: #f8f8f8; color: Grey; line-height: 24px; height: 24px; padding: 0 8px; border: 0; vertical-align: bottom; }";
+d1ui += "\\n#dbwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }";
+d1ui += "\\n#dbwrap .hgainl { background-color: #ececec; }\\n#dbwrap .igreyd { color: DarkGrey; }\\n#dbwrap .ilink { color: #485fc7; }\\n#dbwrap .iwarn { color: Orange; }\\n#dbwrap .isucc { color: CornFlowerBlue; }";
+d1ui += "\\n#dbwrap textarea.iwarn { color: revert; border-color: Orange; }\\n#dbwrap textarea.isucc { color: revert; border-color: CornFlowerBlue; }";
+d1ui += "\\n#dbwrap .cfield:not(:last-child) { margin-bottom: 8px; }";
+d1ui += "\\n#dbwrap .ccntr:not(:last-of-type) { margin-right: 8px; }";
+d1ui += "\\n#dbwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
+d1ui += "\\n#dbwrap .ccntr.cleft { display: inline-block; line-height: 24px; width: 126px; text-align: right; white-space: nowrap; }";
+d1ui += "\\n#dbwrap .ccntr.cleft+.ccntr>input[type=text], #dbwrap .ccntr.cleft+.ccntr>select { width: 216px; }";
+d1ui += "\\n#dbwrap .chelp { font-size: 12px; margin-top: 4px; }";
+d1ui += "\\n#dbwrap .fsz0c75 { font-size: 0.75em; }";
+d1ui += "\\n#dbwrap .fsz1rem { font-size: 1rem; }";
+d1ui += "\\n#dbwrap .lnhtnml { line-height: normal; }";
+d1ui += "\\n#dbwrap .fltrt { float: right; }";
+d1ui += "\\n#dbwrap .alnrt { text-align: right; }";
+d1ui += "\\n#dbwrap .pwrap { white-space: pre-wrap; }";
+d1ui += "\\n#dbwrap .diblk, #dbwrap .btn1 { display: inline-block; vertical-align: top; }";
+d1ui += "\\n#dbwrap .dnone { display: none; }";
+d1ui += "\\n#dbwrap .media-left>.image.rspv128 { width: 128px; height: unset; margin: 0 1em 0 2em; padding: 0; }";
+d1ui += "\\n#dbwrap .media-left>.image>img { background-color: LightSteelBlue; min-height: 128px; cursor: pointer; }";
+d1ui += "\\n#dbwrap .media-left>.image>figcaption { font-size: small; font-style: italic; text-align: center; }";
+d1ui += "\\n@media screen and (max-width: 575px) { #dbwrap .media-left>.image.rspv128 { width: 48px; margin: 0; } #dbwrap .media-left>.image.rspv128>img { min-height: 48px; } #dbwrap .media-left>.image>figcaption { float: right; font-size: x-small; } }";
+d1ui += "\\n@media screen and (max-width: 719px) { #dbwrap .media-left>.image { margin: 0; } #dbwrap .field-label>button.bsml, #pfacnt .field-label>button.bsml { margin: -16px 8px 0 0; } }";
+d1ui += "\\n#dbwrap #a1inp { width: 0; padding: 0; }";
+d1ui += "\\n#dbwrap #a2inp { width: 24px; text-align: center; padding: 0; }";
+d1ui += "\\n#dbwrap #a3inp { font-size: calc(40px / 3); width: 192px; text-align: left; }";
+d1ui += "\\n#dbwrap #a3inp>span { color: revert; opacity: 0.5; }";
+d1ui += "\\n#dbwrap #cpanl { position: relative; top: -40px; }";
+d1ui += "\\n#dbwrap #sortsel { vertical-align: middle; }";
+d1ui += "\\n#dbwrap #imgdtl img { width: 48px; }\\n</style>";
+d2ui += "\\n<hr />\\n<div class=\\"fltrt cfield\\">\\n<button id=resbtn class=\\"ccntr hgainl\\"><span class=isucc>&orarr;</span> RESET</button>";
+d2ui += "<button id=savbtn class=\\"ccntr hgainl\\"><span class=isucc>&#x267a;</span> SAVE</button>\\n</div>";
+d2ui += "\\n<div class=field>\\n<h4>New Contact</h4>";
+d2ui += "\\n<div class=\\"alnrt chelp isucc dnone\\">New contact is saved in local DB.</div>";
+d2ui += "\\n<div class=\\"alnrt chelp iwarn dnone\\">New-contact save attempt failed.</div>\\n</div>";
+d2ui += Object.entries(fwg).map(([k, v]) => _.rex0s.test(k) ? "" : _.fldGen(k, v)).join("") + "\\n";
 
-// dbwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
-// try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = deui; cmain.appendChild(ndiv); }
+// dbwrap.remove() // *Alert:* useful only if edit-testing the UI code above
+// try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d2ui; cmain.appendChild(ndiv); }
 
-!window.dbwrap || (hlps = dbwrap.querySelectorAll('.chelp'));
-!window.dbwrap || ( resbtn.onclick = () => _.hlps.forEach(e => e.classList.add("dnone")) || !(_.fwg = JSON.parse(JSON.stringify(_.ctmpl))) || Object.entries(_.fwg).forEach(([k, v]) => _.rex0s.test(k) || (window["p0" + k].value = _.valStr(v))) );
-!window.dbwrap || ( savbtn.onclick = () => { let ts = new Date().getTime(); ["ts_updated"].concat(_.fwg.ts_created ? [] : "ts_created").forEach(e => _.fwg[e] = ts); Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))); !_.fwg._id.value || !_.dbobj || _.dbobj.put(_.fwg).then(r => hlps[0].classList.remove("dnone") || respShow(r)).catch(e => hlps[1].classList.remove("dnone") || respShow(e)); } );
+hlps = window.dbwrap && dbwrap.querySelectorAll('.chelp');
+hsRes = () => _.hlps.forEach(e => e.classList.add("dnone"));
+!window.resbtn || ( resbtn.onclick = () => _.hsRes() || !(_.fwg = JSON.parse(JSON.stringify(_.ctmpl))) || Object.entries(_.fwg).forEach(([k, v]) => _.rex0s.test(k) || (window["p0" + k].value = _.valStr(v))) );
+!window.savbtn || ( savbtn.onclick = () => { let ts = new Date().getTime(); ["ts_updated"].concat(_.fwg.ts_created ? [] : "ts_created").forEach(e => _.fwg[e] = ts); Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))); !_.fwg._id.value || _.dbobj.put(_.fwg).then(r => _.hlps[0].classList.remove("dnone") || respShow(r)).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)); } );
 
 /*
  4. Populate your database either with your own contacts or with a
     provided set of pre-fabricated "contacts", meant to be used for
     demo purposes.
-    + To see the data of ten fake contacts, before adding them to
-      your DB, un-comment the first of the following three lines of
+    + To see the data of ten fake contacts before adding them to
+      your DB, un-comment the first of the following five lines of
       code. (Data appears above, overtop the calculator.)
     + To add these fake contacts to your DB all at once, un-comment
-      the second of the following three lines of code. Notice in this
+      the second of the following five lines of code. Notice in this
       operation how we add each contact: We use the \`.put()\` command
       on the \`dbobj\` variable that was created in step 2.
     + *Tip:* To ensure that you do not repeatedly add the same contacts,
@@ -1114,44 +1150,155 @@ deui += Object.entries(fwg).map(([k, v]) => _.rex0s.test(k) ? "" : _.fldGen(k, v
       argument of our \`.put()\` command is a JS object possessing
       all of the contact's data that was entered into the form's
       text fields.
-    + To see a list of the contact IDs that exist in your DB at any
-      time, un-comment the third of the following three lines of code.
+    + *To see the data file (of a contact):* First, in the third of the
+      following five lines of code, carefully insert the file ID
+      between the quotes of the \`.get()\` command; Then, un-comment
+      that line of code. Notice in this operation how we retrieve
+      data from our DB: We use the \`.get()\` command on the \`dbobj\`
+      variable that was created in step 2.
+    + *To delete a contact (or any data file) in your DB:* First, in
+      the fourth of the following five lines of code, carefully
+      insert the file ID between the quotes of the \`.get()\` command;
+      Then, un-comment that line of code.
+    + *Tip:* To ensure that you do not repeatedly retrieve or delete
+      the same file, de-activate (re-comment) the third or fourth
+      line of code after it has executed once already.
+    + *To see at any time a list of the file IDs that exist in your DB:*
+      Un-comment the fifth of the following five lines of code.
 */
 
 // import("./fakecs.js").then(m => respShow(m.default)).catch(respShow)
 // import("./fakecs.js").then(m => m.default.forEach(c => _.dbobj.put(c).then(respShow).catch(respShow)))
+// dbobj.get("").then(respShow)
+// dbobj.get("").then(d => !(d = { _id: d._id, _rev: d._rev, _deleted: true }) || _.dbobj.put(d)).then(respShow).catch(respShow)
 // dbobj.allDocs().then(respShow)
 
 /*
- 5. Use *PouchDB* to add one more data file to your database that can
-    function just to hold images, which we will use for keeping and
-    looking up contact photos.
+ 5. Use *PouchDB* to add one more data file to your database that will
+    function just to hold images, which we will use as a ready-access
+    container for all of our contact photos.
+    + Un-comment the following line of code to add a new data file.
+    + As we did in step 4, notice that, again, we use the \`.put()\`
+      command on the \`dbobj\` variable to add a new file.
+    + Because this new file will function to hold images and not text
+      data, the only property value we need to give it is a file ID.
+      Thus, as argument of our \`.put()\` command, notice that we
+      directly insert a simple JS object in which we assign to its
+      \`_id\` key the value "-res-img".
+    + *Tip:* To ensure that you do not repeatedly add the same data
+      file, de-activate (re-comment) the following line of code after
+      it has executed once already.
 */
+
+// dbobj.put({ _id: "-res-img" }).then(respShow).catch(respShow)
 
 /*
  6. Build a UI with applicable *PouchDB* functions for attaching images
     to your image-resource file; Then add to the file (as attachments)
     either your own contact photos or the provided collection of
     stock photos, meant to be used for demo purposes.
+    + Un-comment the first three of the following code blocks (i.e.,
+      remove the one pair of JS block-comment tags \`/* … */\` that
+      wrap all three blocks) to remove the form UI and to display, in
+      its place, a different UI of controls for attaching an image.
+    + If you have photos of your own contacts already available on
+      your device, use the new controls to look them up and attach
+      them, one by one.
+    + If you want to attach the 10 stock photos that accompany the 10
+      fake contacts, un-comment the fourth code block that follows.
+    + *Tip:* To ensure that you do not repeatedly attach the same set
+      of stock photos, de-activate (re-comment) the fourth of the
+      following code blocks after it has executed once already.
 */
 
 /*
-!window.imgainp || !imgainp.files.length || !(fwg.hasOwnProperty("_attachments") || (fwg._attachments = {})) || imgainp.files.forEach( (f, i) => fwg._attachments[ !imganm2.value ? f.name : !imgainp.files[1] ? imganm2.value : imganm2.value.replace(/(?=\.\w+$|$)/, i > 9 ? i : "0" + i) ] = { content_type: f.type, data: f } );
+d3ui += "\\n<hr />\\n<div class=field>\\n<h4>Contact Photos</h4>\\n<p>\\n<div class=cfield>";
+d3ui += "\\n<span class=\\"ccntr cleft\\">Step A-1</span><span class=ccntr><label>";
+d3ui += "<input id=a1inp type=file />";
+d3ui += "<span id=a2inp class=\\"btn1 hgainl ilink\\">&#x2726;</span>";
+d3ui += "<span id=a3inp class=btn1><span>Locate image&hellip;</span></span>";
+d3ui += "\\n</label></span>\\n</div>";
+d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">Step A-2</span><span class=ccntr>";
+d3ui += "<input type=text id=n4inp placeholder=\\"Rename as attachment&hellip;\\" /></span>\\n</div>\\n";
+d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">Step A-3</span><span class=ccntr>";
+d3ui += "<button id=a4btn class=hgainl><span class=isucc>&oplus;</span> ATTACH</button></span>";
+d3ui += "\\n<div class=\\"chelp isucc dnone\\">Image is attached to \\"-res-img\\" file.</div>";
+d3ui += "\\n<div class=\\"chelp iwarn dnone\\">Image-attach attempt failed.</div>\\n</div>\\n</p>";
+d3ui += "\\n<p>\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">Step R-1</span><span class=ccntr>";
+d3ui += "<input type=text id=n5inp placeholder=\\"Attachment name&hellip;\\" /></span>\\n</div>\\n";
+d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">Step R-2</span><span class=ccntr>";
+d3ui += "<button id=a5btn class=hgainl><span class=iwarn>&otimes;</span> REMOVE</button></span>";
+d3ui += "\\n<div class=\\"chelp isucc dnone\\">Image is removed from \\"-res-img\\" file.</div>";
+d3ui += "\\n<div class=\\"chelp iwarn dnone\\">Image-removal attempt failed.</div>\\n</div>\\n</p>";
+d3ui += "\\n<details id=imgdtl open=true></details>\\n";
+
+!window.dbwrap || dbwrap.remove() // necessary to clear form UI from step 3
+try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d3ui; cmain.appendChild(ndiv); }
+
+ak = ""
+hlps = window.dbwrap && dbwrap.querySelectorAll('.chelp');
+imgsVw = () => imgdtl.innerHTML = "<summary>Gallery</summary>" + Object.entries(aurls).map(([k, v]) => "\\n<p><img src=" + v + " /> " + k + "</p>").join("") + "\\n";
+isRtrv = () => _.dbobj.get("-res-img").then( d => Promise.all( Object.keys(d._attachments || "").map( k => aurls[k] || _.dbobj.getAttachment("-res-img", k).then(b => aurls[k] = URL.createObjectURL(b)) ) ).then(_.imgsVw) ).catch(respShow);
+window.aurls = window.aurls || {};
+!window.a1inp || ( a1inp.onchange = () => a3inp.innerHTML = (a1inp.files[0] || "").name || "<span>Locate image&hellip;</span>" );
+!window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) || _.dbobj.get("-res-img").then(d => _.dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(r => _.hlps[0].classList.remove("dnone") || respShow(r) || _.isRtrv()).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)) );
+!window.a5btn || ( a5btn.onclick = () => _.hsRes() || !(_.ak = n5inp.value) || _.dbobj.get("-res-img").then(d => !d._attachments[_.ak] ? Promise.reject("Invalid key.") : _.dbobj.removeAttachment("-res-img", _.ak, d._rev)).then(r => _.hlps[2].classList.remove("dnone") || respShow(r) || !(delete aurls[_.ak]) || _.imgsVw()).catch(e => _.hlps[3].classList.remove("dnone") || respShow(e)) );
+!window.imgdtl || isRtrv();
+*/
+
+/*
+simgs = Array.from(Array(10)).map((e, i) => "stockimg" + i + ".jpg");
+!dbobj || dbobj.get("-res-img").then(d => { d._attachments || (d._attachments = {}); return Promise.all(_.simgs.map(e => fetch("../-res-img2/" + e).then(r => r.blob()))).then( bs => _.simgs.forEach( (e, i) => !(aurls[e] = URL.createObjectURL(bs[i])) || (d._attachments[e] = { content_type: bs[i].type, data: bs[i] }) ) || _.dbobj.put(d) ); }).then(respShow).then(_.imgsVw).catch(respShow)
 */
 
 /*
  7. Use *PouchDB* to generate, sort and display summary info of all
-    of the contacts in your database; Include functionality for
-    re-using the data-entry UI (from step 3) to allow for editing of
-    a user-selected contact.
+    of the contacts in your database; Include functionality for re-
+    using the data-entry UI (from step 3) to allow for editing of a
+    user-selected contact.
+*/
+
+/*
+d4ui += "\\n<hr />\\n<h4>Contact Directory</h4>\\n<div id=cpanl class=\\"alnrt\\">\\n<span class=\\"diblk ccntr\\">&ensp;Sort by:&ensp;";
+d4ui += "<select id=sortsel><option></option><option selected>First Name</option><option>Last Name</option><option>Username</option></select>&nbsp;<button id=csbtn class=\\"hgainl isucc\\">&orarr;</button></span>";
+d4ui += "\\n<span class=\\"diblk ccntr\\">&emsp;Show all:&ensp;";
+d4ui += "<label><input type=checkbox id=hdrsswi /> <a>headers</a></label>&ensp;";
+d4ui += "<label><input type=checkbox id=bodsswi /> <a>bodies</a></label></span>\\n</div>";
+d4ui += "\\n<div id=cdata></div>\\n";
+d5ui += 'd => \`\\\\n<article class=media>\\\\n<div class="media-left">\\\\n<figure class="image rspv128"><img src="\${ aurls[d.image_src] || "" }" data-fileid="\${ d._id }" />\`';
+d5ui += ' + \`\\\\n<figcaption>\${ d.name_user || "" }</figcaption></figure>\\\\n</div>\\\\n<div class="media-content">\\\\n<details class=cfield><summary><strong>\${ _.nmsX(d) }</strong></summary>\`';
+d5ui += ' + \`\\\\n<div class="pwrap fsz0c75">\${ (!(d.roles || "")[0] ? "" : "<em class=\\\\"fsz1rem lnhtnml\\\\">" + d.roles.join(", ") + "</em>\\\\n") + (!d.bio_short ? "" : "SHORT BIO: " + d.bio_short.substring(0, 255) + (d.bio_short.length < 257 ? "" : "&hellip;")) + "<!-- \\\\nNOTE ID: <a>" + d._id + "</a>\\\\nCREATED: " + new Date(d.ts_created || null).toLocaleString() + "\\\\nUPDATED: " + new Date(d.ts_updated || null).toLocaleString() + " -->" }</div>\\\\n</details>\`';
+d5ui += ' + \`\\\\n<details>\\\\n<div class=pwrap>\${ (!d.hasOwnProperty("birthdate") ? "" : "<strong>Birthdate:</strong> " + d.birthdate + "\\\\n") + (!d.hasOwnProperty("emails") ? "" : "<strong>Emails:</strong> " + d.emails.join(", ") + "\\\\n") + (!d.hasOwnProperty("phones") ? "" : "<strong>Phones:</strong> " + d.phones.join(", ") + "\\\\n")';
+d5ui += ' + (!(d.social_profiles || "")[0] ? "" : "<strong>Social profiles:</strong> " + d.social_profiles.join(", ") + "\\\\n") + (!(d.project_urls || "")[0] ? "" : "<strong>Project urls:</strong> " + d.project_urls.join(", ") + "\\\\n") + (!(d.team_groups || "")[0] ? "" : "<strong>Team groups:</strong> " + d.team_groups.join(", ") + "\\\\n") + (!d.ts_created ? "" : "<strong>Joined team:</strong> " + _.ts2Fmt(d.ts_created) + "\\\\n") + (!d.ts_updated ? "" : "<strong>Last updated:</strong> " + _.ts2Fmt(d.ts_updated) + "\\\\n") }</div>\\\\n</details>\\\\n</div>\\\\n</article>\`';
+
+!window.dbwrap || dbwrap.remove() // necessary to clear UIs from steps 3 &amp; 6
+try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = _.d1ui + _.d3ui + "\\n<div id=cform class=dnone>" + _.d2ui + "</div>" + _.d4ui; cmain.appendChild(_.ndiv); }
+
+rexts = /^m[rs]\\.? +|^mrs\\.? +|[.,;:/]/gi;
+rexns = /(?:m[rs]\\b\\.?|mrs\\b\\.?) *(.*?) *((?:\\bde +|\\bvon +|)['‘’\\w-]+)([ ,]*\\b[js]r\\.?|[ ,]*\\b[ivx]+|)$/i;
+qss = [ '#dbwrap .media-content>details:first-of-type', '#dbwrap .media-content>details:last-of-type', '#cdata .media-left>.image>img, #cdata .media-content>details:first-of-type a' ];
+hlps = window.dbwrap && dbwrap.querySelectorAll('.chelp');
+ts2Fmt = str => !str ? "" : new Date(str).toUTCString().replace(/.+(\\d{2} [a-z]{3} \\d{4}).+/i, "$1");
+nmsX = (d, x = sortsel.selectedIndex) => ( x < 2 ? d.name_full : x > 2 ? d.name_user : (d.name_full || "").trim().replace(_.rexns, "$2, $1$3") ) || d._id;
+hdsX = evt => document.querySelectorAll(_.qss[0]).forEach(e => e.open = evt.target.checked);
+bdsX = evt => document.querySelectorAll(_.qss[1]).forEach(e => e.open = evt.target.checked);
+cLoad = evt => (cform.className = cdata.innerHTML = "") || _.dbobj.get(evt.target.textContent || evt.target.dataset.fileid).then(d => Object.entries(_.fwg = d).forEach(([k, v]) => _.rex0s.test(k) || (window["p0" + k].value = _.valStr(v)))).catch(respShow);
+c1Gen = eval(d5ui);
+window.aurls = window.aurls || {};
+!window.a1inp || ( a1inp.onchange = () => a3inp.innerHTML = (a1inp.files[0] || "").name || "<span>Locate image&hellip;</span>" );
+!window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) || _.dbobj.get("-res-img").then(d => _.dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(r => _.hlps[0].classList.remove("dnone") || respShow(r) || _.isRtrv()).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)) );
+!window.a5btn || ( a5btn.onclick = () => _.hsRes() || !(_.ak = n5inp.value) || _.dbobj.get("-res-img").then(d => !d._attachments[_.ak] ? Promise.reject("Invalid key.") : _.dbobj.removeAttachment("-res-img", _.ak, d._rev)).then(r => _.hlps[2].classList.remove("dnone") || respShow(r) || !(delete aurls[_.ak]) || _.imgsVw()).catch(e => _.hlps[3].classList.remove("dnone") || respShow(e)) );
+!window.resbtn || ( resbtn.onclick = () => _.hsRes() || !(_.fwg = JSON.parse(JSON.stringify(_.ctmpl))) || Object.entries(_.fwg).forEach(([k, v]) => _.rex0s.test(k) || (window["p0" + k].value = _.valStr(v))) );
+!window.savbtn || ( savbtn.onclick = () => { let ts = new Date().getTime(); ["ts_updated"].concat(_.fwg.ts_created ? [] : "ts_created").forEach(e => _.fwg[e] = ts); Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))); !_.fwg._id.value || _.dbobj.put(_.fwg).then(r => _.hlps[4].classList.remove("dnone") || respShow(r)).catch(e => _.hlps[5].classList.remove("dnone") || respShow(e)); } );
+!window.imgdtl || (imgdtl.open = false) || isRtrv();
+!window.csbtn || ( csbtn.onclick = () => !(cform.className = "dnone") || _.dbobj.allDocs({ include_docs: true }).then(re => { let na, nb, rrs = re.rows.filter(r => r && ["name_full", "name_user"].some(p => r.doc.hasOwnProperty(p))).sort((a, b) => !sortsel.selectedIndex ? 0 : _.nmsX(a.doc).replace(_.rexts, "") > _.nmsX(b.doc).replace(_.rexts, "") ? 1 : -1); cdata.innerHTML = !rrs.length ? "\\n<p class=igreyd>&emsp;<em>[No results found &hellip;]</em></p>" : rrs.map(r => _.c1Gen(r.doc)).join("") + "\\n"; hdrsswi.onchange = _.hdsX; bodsswi.onchange = _.bdsX; document.querySelectorAll(_.qss[2]).forEach(e => e.onclick = _.cLoad); }).catch(respShow) );
+!window.cdata || csbtn.click();
 */
 
 /*
  8. *Challenge:* Create more databases for other purposes -- such as
     for compiling journal entries, for saving recipes, for recording
     workout results in a fitness log, etc.
-
- More code, coming soon …
 */
 //`;
 

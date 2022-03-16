@@ -46,7 +46,7 @@ body {
   background: #f8f8f8;
   color: Grey;
   font-size: 14px;
-  line-height: 0;
+  line-height: 24px;
   height: 24px;
   margin: 0;
   padding: 0 8px;
@@ -460,7 +460,7 @@ let q2Bcopy, q2Bhtml,
         try {
           xpri = xpri && xpri //[ \w\\,;:'"#=()-]
             .replace( /^(?=[\t ]*{)|^.*?(?=\/\/|<\/?\w+ [ \w]+=.+>|\(? *function\b[ \w]*\(.*?\) *{|\(? *(?:[$\wÀ-Ͽ]+|\([^)]*\)) *=>|$)/g,
-              m0 => m0.replace( /([ ([{]|^)(?:_\.|)([$_a-zÀ-Ͽ][$\wÀ-Ͽ]*)(?=\s*=\s*(?:$|[$\wÀ-Ͽ'"`([{./+-]))/gi,
+              m0 => m0.replace( /([ ({]|^)(?:_\.|)([$_a-zÀ-Ͽ][$\wÀ-Ͽ]*)(?=\s*=\s*(?:$|[$\wÀ-Ͽ'"`([{./+-]))/gi,
                 (m1, c1, c2) => _ks.push(c2) && c1 + "_." + c2 )
               .replace( /([\t =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([$_](?!\.)[$\wÀ-Ͽ]*|[A-Za-zÀ-Ͽ][$\wÀ-Ͽ]*)(?! *=)/g,
                 (m1, c1, c2) => window[c2] || !_ks.some(k => k === c2) ? m1 : c1 + "_." + c2 ) );
@@ -647,9 +647,9 @@ Promise.all(jsrcs.map(e => scrInj(e))).catch(respShow).then(() => {
   !/^http/.test(window.location.protocol) ? xlstGen(dload)
   : Promise.all( (cmods.some(e => /^\d+$/.test(e)) ? cmods : [1,2,3,4,5,6,7,8].concat(cmods))
       .map(e => !/^\d+$/.test(e) ? e : `cmod${e}.js`)
-      .map(fnm => fnm && import(/\//.test(fnm) ? fnm : "../-app-cjs/" + fnm).catch(respShow)) )
-    .then( rs => rs.forEach( (r, i) => !r || typeof r !== 'object'
-      || (xstor[r.groupname || "group" + (1 + i)] = r) ))
+      .map(fnm => fnm && import(/\//.test(fnm) ? fnm : "./" + fnm).catch(respShow)) )
+    .then( ms => ms.forEach( (m, i) => !m || typeof m !== 'object'
+      || (xstor[m.groupname || "group" + (1 + i)] = m) ))
     .then(() => xlstGen(dload))
     .catch(respShow);
   xsetinp || initLoad();
