@@ -220,7 +220,7 @@ g1ui += "\\n#g1wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 
 g1ui += "\\n#g1wrap .cfield { max-width: 359px; }";
 g1ui += "\\n#g1wrap .cfield:not(:last-child) { margin-bottom: 8px; }";
 g1ui += "\\n#g1wrap .ccntr:not(:last-of-type) { margin-right: 8px; }";
-g1ui += "\\n#g1wrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
+g1ui += "\\n#g1wrap :not(.cfield)>.ccntr { display: inline-block; height: 24px; margin-bottom: 8px; }";
 g1ui += "\\n#g1wrap .blank, #g1wrap .gtile { width: 61px; height: 61px; border: 4px solid White; }";
 g1ui += "\\n#g1wrap .gtile { background: LightSteelBlue; color: White; font-size: large; font-weight: bold; cursor: pointer; text-align: center; }";
 g1ui += "\\n#trows, #tcols { max-width: 36px; }";
@@ -370,7 +370,7 @@ g2ui += "\\n#g2wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 
 g2ui += "\\n#g2wrap .cfield { max-width: 359px; }";
 g2ui += "\\n#g2wrap .cfield:not(:last-child) { margin-bottom: 8px; }";
 g2ui += "\\n#g2wrap .ccntr:not(:last-of-type) { margin-right: 8px; }";
-g2ui += "\\n#g2wrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
+g2ui += "\\n#g2wrap :not(.cfield)>.ccntr { display: inline-block; height: 24px; margin-bottom: 8px; }";
 g2ui += "\\n#g2bcntr { position: relative; padding-top: 1px; }";
 g2ui += "\\n#g2circt { margin: 48px; border-collapse: collapse; }";
 g2ui += "\\n#g2circt td { width: 59px; height: 59px; border: 4px solid black; }";
@@ -410,7 +410,7 @@ g3ui += "\\n#g3wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 
 g3ui += "\\n#g3wrap .cfield { max-width: 359px; }";
 g3ui += "\\n#g3wrap .cfield:not(:last-child) { margin-bottom: 8px; }";
 g3ui += "\\n#g3wrap .ccntr:not(:last-of-type) { margin-right: 8px; }";
-g3ui += "\\n#g3wrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
+g3ui += "\\n#g3wrap :not(.cfield)>.ccntr { display: inline-block; height: 24px; margin-bottom: 8px; }";
 g3ui += "\\n#g3bcntr { position: relative; padding-top: 1px; }";
 g3ui += "\\n#g3panel { box-sizing: content-box; margin: 15px 16px; border: 4px solid DarkKhaki; border-collapse: collapse; }";
 g3ui += "\\n#g3panel td { background: beige; width: 40px; height: 40px; }";
@@ -664,7 +664,7 @@ srui += "\\n#srwrap .iwarn { color: Orange; }\\n#srwrap .isucc { color: CornFlow
 srui += "\\n#srwrap textarea.iwarn { color: revert; border-color: Orange; }\\n#srwrap textarea.isucc { color: revert; border-color: CornFlowerBlue; }";
 srui += "\\n#srwrap .cfield:not(:last-child) { margin-bottom: 8px; }";
 srui += "\\n#srwrap .ccntr:not(:last-of-type) { margin-right: 8px; }";
-srui += "\\n#srwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
+srui += "\\n#srwrap :not(.cfield)>.ccntr { display: inline-block; height: 24px; margin-bottom: 8px; }";
 srui += "\\n#srwrap .chelp { font-size: 12px; margin-top: 4px; }";
 srui += "\\n#srwrap .pwrap { white-space: pre-wrap; }";
 srui += "\\n#sepainp, #rtrminp { width: 288px; }\\n#lfinp { width: 176px; }";
@@ -977,7 +977,7 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
     the contact information of your family, your friends, members of
     an organization to which you belong, or ... anyone at all.
     + First, in the following code, feel free to change the value of
-      \`dbname\` to any (valid) name you want for your new _contacts_ DB.
+      \`dbname\` to any (valid) name you want for your new *contacts* DB.
     + Then, un-comment the following code block (i.e., remove the
       wrapping pair of JS block-comment tags \`/* … */\`) to set up a
       new DB and reserve the namespace of your DB within your browser.
@@ -993,8 +993,8 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
       lowercase letters, numbers, underscore and dash.
     + *Alert:* The *PouchDB* API does not prevent the creation of a DB
       with an invalid name. So, we must perform our own validity test
-      -- and, subsequently, interrupt our DB-creation operation if the
-      value of \`dbname\` fails our test.
+      -- and, subsequently, interrupt our DB-creation operation if
+      the value of \`dbname\` fails our test.
 */
 
 /*
@@ -1086,8 +1086,8 @@ d1ui += "\\n#dbwrap .hgainl { background-color: #ececec; }\\n#dbwrap .igreyd { c
 d1ui += "\\n#dbwrap textarea.iwarn { color: revert; border-color: Orange; }\\n#dbwrap textarea.isucc { color: revert; border-color: CornFlowerBlue; }";
 d1ui += "\\n#dbwrap .cfield:not(:last-child) { margin-bottom: 8px; }";
 d1ui += "\\n#dbwrap .ccntr:not(:last-of-type) { margin-right: 8px; }";
-d1ui += "\\n#dbwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
-d1ui += "\\n#dbwrap .ccntr.cleft { display: inline-block; line-height: 24px; width: 126px; text-align: right; white-space: nowrap; }";
+d1ui += "\\n#dbwrap :not(.cfield)>.ccntr { display: inline-block; height: 24px; margin-bottom: 8px; }";
+d1ui += "\\n#dbwrap .ccntr.cleft { display: inline-block; line-height: 24px; width: 126px; height: 24px; text-align: right; white-space: nowrap; }";
 d1ui += "\\n#dbwrap .ccntr.cleft+.ccntr>input[type=text], #dbwrap .ccntr.cleft+.ccntr>select { width: 216px; }";
 d1ui += "\\n#dbwrap .chelp { font-size: 12px; margin-top: 4px; }";
 d1ui += "\\n#dbwrap .fsz0c75 { font-size: 0.75em; }";
@@ -1112,10 +1112,10 @@ d1ui += "\\n#dbwrap #sortsel { vertical-align: middle; }";
 d1ui += "\\n#dbwrap #imgdtl img { width: 48px; }\\n</style>";
 d2ui += "\\n<hr />\\n<div class=\\"fltrt cfield\\">\\n<button id=resbtn class=\\"ccntr hgainl\\"><span class=isucc>&orarr;</span> RESET</button>";
 d2ui += "<button id=savbtn class=\\"ccntr hgainl\\"><span class=isucc>&#x267a;</span> SAVE</button>\\n</div>";
-d2ui += "\\n<div class=field>\\n<h4>New Contact</h4>";
+d2ui += "\\n<div class=field>\\n<h4>Edit Contact</h4>";
 d2ui += "\\n<div class=\\"alnrt chelp isucc dnone\\">New contact is saved in local DB.</div>";
 d2ui += "\\n<div class=\\"alnrt chelp iwarn dnone\\">New-contact save attempt failed.</div>\\n</div>";
-d2ui += Object.entries(fwg).map(([k, v]) => _.rex0s.test(k) ? "" : _.fldGen(k, v)).join("") + "\\n";
+d2ui += "\\n<div id=cform>" + Object.entries(_.fwg).map(([k, v]) => _.rex0s.test(k) ? "" : _.fldGen(k, v)).join("") + "\\n</div>\\n";
 
 // dbwrap.remove() // *Alert:* useful only if edit-testing the UI code above
 // try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d2ui; cmain.appendChild(ndiv); }
@@ -1232,7 +1232,7 @@ d3ui += "\\n<div class=\\"chelp isucc dnone\\">Image is removed from \\"-res-img
 d3ui += "\\n<div class=\\"chelp iwarn dnone\\">Image-removal attempt failed.</div>\\n</div>\\n</p>";
 d3ui += "\\n<details id=imgdtl open=true></details>\\n";
 
-!window.dbwrap || dbwrap.remove() // necessary to clear form UI from step 3
+!window.dbwrap || dbwrap.remove() // necessary to clear UI form from step 3
 try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d3ui; cmain.appendChild(ndiv); }
 
 ak = ""
@@ -1261,37 +1261,37 @@ simgs = Array.from(Array(10)).map((e, i) => "stockimg" + i + ".jpg");
       UI from step 6 and an initially hidden, data-entry form from
       step 3).
     + Notice in the \`.onclick\` code for the *list-generate* button
-      how we retrieve all DB contacts: We use the \`.allDocs()\`
+      \`csbtn\` how we retrieve all DB contacts: We use the \`.allDocs()\`
       command on the \`dbobj\` variable that was created in step 2.
       The argument of our \`.allDocs()\` command is a JS object that
-      requests a custom response: i.e., to include the data file (doc)
-      that is associated with each of the file IDs.
+      specifies a custom response -- to include the data file (doc)
+      that is associated with each file ID.
     + Tap on a contact's photo to empty the directory display, un-
-      hide the data-entry form and fill out the form's text fields
-      with the property values of the selected contact.
+      hide the data-entry form and fill into the form's text fields
+      the property values of the selected contact.
     + If you make changes to a contact's data (e.g., you enter the
       attachment name of a corresponding photo into the \`image_src\`
       property field), or if you create a new contact, commit the
       altered data file to the DB by tapping the *SAVE* button, at
       the top-right of the form.
-    + Reload the directory by tapping the button with a circular-
+    + Reload the directory list by tapping the button with a circular-
       arrow icon, connected to the *sort-by* select-list control.
     + Notice that we have only a few, limited controls for sorting
       and presenting the contacts' data: With these controls, we can
       list the contacts in order by first name, last name or username;
-      And, we can toggle the visibility of different pieces of info
-      about each contact.
+      And, we can toggle the visibility of two different pieces of
+      info about each contact.
     + *Challenge:* Design more controls; Or, engineer more variability
       into the existing controls. For example, how would you re-sort
-      a contact list in descending order -- or filter the list for
-      matching attributes: like a specific group membership, or a
-      birthdate that falls within a given time range?
+      a contact list in descending order? Or, how would you filter
+      the list for matching values -- like membership in a specific
+      group, or a birthdate that falls within a given time range?
 */
 
 /*
-d4ui += "\\n<hr />\\n<h4>Contact Directory</h4>\\n<div id=cpanl class=\\"alnrt\\">\\n<span class=\\"diblk ccntr\\">Sort by:&ensp;";
+d4ui += "\\n<hr />\\n<h4>Contact Directory</h4>\\n<div id=cpanl class=\\"alnrt\\">\\n<span class=ccntr>Sort by:&ensp;";
 d4ui += "<select id=sortsel><option></option><option selected>First Name</option><option>Last Name</option><option>Username</option></select>";
-d4ui += "<button id=csbtn class=\\"hgainl isucc\\">&orarr;</button></span><span class=\\"diblk ccntr\\">Show all:&ensp;";
+d4ui += "<button id=csbtn class=\\"hgainl isucc\\">&orarr;</button></span><span class=ccntr>Show all:&ensp;";
 d4ui += "<label><input type=checkbox id=hdrsswi /> <a>headers</a></label>&ensp;";
 d4ui += "<label><input type=checkbox id=bodsswi /> <a>bodies</a></label></span>\\n</div>\\n<div id=cdata></div>\\n";
 d5ui += 'd => \`\\\\n<article class=media>\\\\n<div class="media-left">\\\\n<figure class="image rspv128"><img src="\${ aurls[d.image_src] || "" }" data-fileid="\${ d._id }" />\`';
@@ -1301,10 +1301,10 @@ d5ui += ' + \`\\\\n<details>\\\\n<div class=pwrap>\${ (!d.hasOwnProperty("birthd
 d5ui += ' + (!(d.social_profiles || "")[0] ? "" : "<strong>Social profiles:</strong> " + d.social_profiles.join(", ") + "\\\\n") + (!(d.project_urls || "")[0] ? "" : "<strong>Project urls:</strong> " + d.project_urls.join(", ") + "\\\\n") + (!(d.team_groups || "")[0] ? "" : "<strong>Team groups:</strong> " + d.team_groups.join(", ") + "\\\\n") + (!d.ts_created ? "" : "<strong>Joined team:</strong> " + _.ts2Fmt(d.ts_created) + "\\\\n") + (!d.ts_updated ? "" : "<strong>Last updated:</strong> " + _.ts2Fmt(d.ts_updated) + "\\\\n") }</div>\\\\n</details>\\\\n</div>\\\\n</article>\`';
 
 !window.dbwrap || dbwrap.remove() // necessary to clear UIs from steps 3 &amp; 6
-try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = _.d1ui + _.d3ui + "\\n<div id=cform class=dnone>" + _.d2ui + "</div>" + _.d4ui; cmain.appendChild(_.ndiv); }
+try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d3ui + d2ui + d4ui; cmain.appendChild(ndiv); }
 
-rexts = /^m[rs]\\.? +|^mrs\\.? +|[.,;:/]/gi;
-rexns = /^(?:m[rs]\\b\\.?|mrs\\b\\.?) *(.*?) *((?:\\bde +|\\bvon +|)['‘’\\w-]+)([ ,]*\\b[js]r\\.?|[ ,]*\\b[ivx]+|)$/i;
+rexts = /^m[rs]\\.? +|^mrs\\.? +|[.,;:/]/gi; //
+rexns = /^(?:m[rs]\\b\\.?|mrs\\b\\.?) *(.*?) *((?:\\bde +|\\bvon +|)['‘’\\w-]+)([ ,]*\\b[js]r\\.?|[ ,]*\\b[ivx]+|)$/i; //
 qss = [ '#dbwrap .media-content>details:first-of-type', '#dbwrap .media-content>details:last-of-type', '#cdata .media-left>.image>img, #cdata .media-content>details:first-of-type a' ];
 hlps = window.dbwrap && dbwrap.querySelectorAll('.chelp');
 ts2Fmt = str => !str ? "" : new Date(str).toUTCString().replace(/.+(\\d{2} [a-z]{3} \\d{4}).+/i, "$1");
@@ -1316,10 +1316,10 @@ c1Gen = eval(d5ui);
 !window.a1inp || ( a1inp.onchange = () => a3inp.innerHTML = (a1inp.files[0] || "").name || "<span>Locate image&hellip;</span>" );
 !window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) || _.dbobj.get("-res-img").then(d => _.dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(r => _.hlps[0].classList.remove("dnone") || respShow(r) || _.isRtrv()).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)) );
 !window.a5btn || ( a5btn.onclick = () => _.hsRes() || !(_.ak = n5inp.value) || _.dbobj.get("-res-img").then(d => !d._attachments[_.ak] ? Promise.reject("Invalid key.") : _.dbobj.removeAttachment("-res-img", _.ak, d._rev)).then(r => _.hlps[2].classList.remove("dnone") || respShow(r) || !(delete aurls[_.ak]) || _.imgsVw()).catch(e => _.hlps[3].classList.remove("dnone") || respShow(e)) );
-!window.resbtn || ( resbtn.onclick = () => _.hsRes() || !(_.fwg = JSON.parse(JSON.stringify(_.ctmpl))) || Object.entries(_.fwg).forEach(([k, v]) => _.rex0s.test(k) || (window["p0" + k].value = _.valStr(v))) );
+!window.resbtn || ( resbtn.onclick = () => _.hsRes() || (cform.className = cdata.innerHTML = "") || !(_.fwg = JSON.parse(JSON.stringify(_.ctmpl))) || Object.entries(_.fwg).forEach(([k, v]) => _.rex0s.test(k) || (window["p0" + k].value = _.valStr(v))) );
 !window.savbtn || ( savbtn.onclick = () => { let ts = new Date().getTime(); ["ts_updated"].concat(_.fwg.ts_created ? [] : "ts_created").forEach(e => _.fwg[e] = ts); Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))); !_.fwg._id.value || _.dbobj.put(_.fwg).then(r => _.hlps[4].classList.remove("dnone") || respShow(r)).catch(e => _.hlps[5].classList.remove("dnone") || respShow(e)); } );
 !window.imgdtl || (imgdtl.open = false) || isRtrv();
-!window.csbtn || ( csbtn.onclick = () => !(cform.className = "dnone") || _.dbobj.allDocs({ include_docs: true }).then(re => { let rrs = re.rows.filter(r => r && ["name_full", "name_user"].some(p => r.doc.hasOwnProperty(p))).sort((a, b) => !sortsel.selectedIndex ? 0 : _.nmsX(a.doc).replace(_.rexts, "") > _.nmsX(b.doc).replace(_.rexts, "") ? 1 : -1); cdata.innerHTML = !rrs.length ? "\\n<p class=igreyd>&emsp;<em>[No results found &hellip;]</em></p>\\n" : rrs.map(r => _.c1Gen(r.doc)).join("") + "\\n"; bodsswi.checked = hdrsswi.checked = 0; hdrsswi.onchange = _.hdsX; bodsswi.onchange = _.bdsX; document.querySelectorAll(_.qss[2]).forEach(e => e.onclick = _.cLoad); }).catch(respShow) );
+!window.csbtn || ( csbtn.onclick = () => !(cform.className = "dnone") || (p0_id.value = "") || _.dbobj.allDocs({ include_docs: true }).then(re => { let rrs = re.rows.filter(r => r && ["name_full", "name_user"].some(p => r.doc.hasOwnProperty(p))).sort((a, b) => !sortsel.selectedIndex ? 0 : _.nmsX(a.doc).replace(_.rexts, "") > _.nmsX(b.doc).replace(_.rexts, "") ? 1 : -1); cdata.innerHTML = !rrs.length ? "\\n<p class=igreyd>&emsp;<em>[No results found &hellip;]</em></p>\\n" : rrs.map(r => _.c1Gen(r.doc)).join("") + "\\n"; bodsswi.checked = hdrsswi.checked = 0; hdrsswi.onchange = _.hdsX; bodsswi.onchange = _.bdsX; document.querySelectorAll(_.qss[2]).forEach(e => e.onclick = _.cLoad); }).catch(respShow) );
 !window.csbtn || csbtn.click();
 */
 

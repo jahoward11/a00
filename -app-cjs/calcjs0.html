@@ -133,6 +133,7 @@ body {
   pointer-events: none;
 }
 #cmain>#mctnr>#menulist {
+  color: transparent;
   width: 24px;
   height: 20px;
 }
@@ -238,6 +239,7 @@ body {
 #cmain .ccntr:not(:last-of-type) { margin-right: 8px; }
 #cmain :not(.cfield)>:not(.cfield)>.ccntr {
   display: inline-block;
+  height: 24px;
   margin-bottom: 8px;
 }
 #cmain .addns>.ccntr { margin-right: 0; }
@@ -246,7 +248,7 @@ body {
   margin-top: 4px;
 }
 #xctrls #xsetinp { width: 168px; }
-#xctrls #xsetlist { width: 24px; }
+#xctrls #xsetlist { color: transparent; width: 24px; }
 @media print {
   body { padding: 0; }
   #cgrid>#quad1A { box-shadow: inset 0 -1px LightGrey; }

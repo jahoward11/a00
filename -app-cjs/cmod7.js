@@ -13,7 +13,7 @@ bodGen = src => "\\n" + src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui
 scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
 uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
-// srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
+// srwrap.remove() // *Alert:* useful only if edit-testing the UI code above
 try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.strPars || scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(respShow); }
 
  // Un-comment the following two lines of code to generate the
@@ -55,7 +55,7 @@ sdui += "\\n#sdwrap .fltrt { float: right; }";
 sdui += "\\n#sdwrap .cfield:not(:last-child) { margin-bottom: 8px; }";
 sdui += "\\n#sdwrap .cfield.fltrt:not(:last-child) { margin: 0; }";
 sdui += "\\n#sdwrap .ccntr:not(:last-of-type) { margin-right: 8px; }";
-sdui += "\\n#sdwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }";
+sdui += "\\n#sdwrap :not(.cfield)>.ccntr { display: inline-block; height: 24px; margin-bottom: 8px; }";
 sdui += "\\n#sdwrap .inserted { background-color: #9E9; display: inline-block; min-width: 100%; }";
 sdui += "\\n#sdwrap .deleted { background-color: #E99; display: inline-block; min-width: 100%; }";
 sdui += "\\n#sdwrap .modified { background-color: #FD8; display: inline-block; min-width: 100%; }";
@@ -71,7 +71,7 @@ sdui += "\\n<span class=\\"cfield fltrt\\"><label class=ccntr><input type=text i
 sdui += "\\n<h4>SOURCE2 (original)</h4>";
 sdui += "\\n<pre id=s2rslt></pre>\\n";
 
-// srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
+// srwrap.remove() // *Alert:* useful only if edit-testing the UI code above
 try { sdwrap } catch { ndiv = document.createElement('div'); ndiv.id = "sdwrap"; ndiv.innerHTML = sdui; cmain.appendChild(ndiv); }
 try { SourceDiff } catch { scrInj("../-res-js/srcdiff.js").catch(respShow) }
 
