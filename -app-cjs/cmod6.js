@@ -1260,21 +1260,27 @@ simgs = Array.from(Array(10)).map((e, i) => "stockimg" + i + ".jpg");
       directory of all DB contacts (along with the image-management
       UI from step 6 and an initially hidden, data-entry form from
       step 3).
-    + Tap on a contact's photo to empty the directory display, un-hide
-      the data-entry form and fill out the form's text fields with the
-      property values of the selected contact.
+    + Notice in the \`.onclick\` code for the *list-generate* button
+      how we retrieve all DB contacts: We use the \`.allDocs()\`
+      command on the \`dbobj\` variable that was created in step 2.
+      The argument of our \`.allDocs()\` command is a JS object that
+      requests a custom response: i.e., to include the data file (doc)
+      that is associated with each of the file IDs.
+    + Tap on a contact's photo to empty the directory display, un-
+      hide the data-entry form and fill out the form's text fields
+      with the property values of the selected contact.
     + If you make changes to a contact's data (e.g., you enter the
       attachment name of a corresponding photo into the \`image_src\`
       property field), or if you create a new contact, commit the
-      altered data file to the DB by tapping the *SAVE* button, at the
-      top-right of the form.
-    + Reload the directory by tapping the button with a circular-arrow
-      icon, connected to the *sort-by* select-list control.
-    + Notice that we have only a few, limited controls for sorting and
-      presenting the contacts' data: With these controls, we can list
-      the contacts in order by first name, last name or username; And,
-      we can toggle the visibility of different pieces of info about
-      each contact.
+      altered data file to the DB by tapping the *SAVE* button, at
+      the top-right of the form.
+    + Reload the directory by tapping the button with a circular-
+      arrow icon, connected to the *sort-by* select-list control.
+    + Notice that we have only a few, limited controls for sorting
+      and presenting the contacts' data: With these controls, we can
+      list the contacts in order by first name, last name or username;
+      And, we can toggle the visibility of different pieces of info
+      about each contact.
     + *Challenge:* Design more controls; Or, engineer more variability
       into the existing controls. For example, how would you re-sort
       a contact list in descending order -- or filter the list for
@@ -1318,7 +1324,7 @@ c1Gen = eval(d5ui);
 */
 
 /*
- 8. *Challenge:* Create more databases for other purposes -- such as
+ 8. __*Challenge:*__ Create more databases for other purposes -- such as
     for compiling journal entries, for saving recipes, for recording
     workout results in a fitness log, etc.
 */
