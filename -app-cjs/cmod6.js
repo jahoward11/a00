@@ -930,7 +930,7 @@ recipe book, a fitness log, etc.).
 - - - - -
 __*Tutorial Four: Building a*__ contacts __*web app*__
 
- 1. Load the script for a third-party API called *PouchDB*, which is
+ 1. __Load the script for a third-party API__ called *PouchDB*, which is
     a convenient interface to the native, data-storage APIs used for
     saving and organizing data within the browser's built-in stores.
     + *Option 1:* Un-comment the 1^st^ of the two code blocks that follow
@@ -973,12 +973,11 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
 // try { !!PouchDB } catch { scrInj("../-res-js/pouchdb.min.js").catch(respShow) }
 
 /*
- 2. Use *PouchDB* to create a _contacts_ database that will contain
+ 2. Use *PouchDB* to __create a *contacts* database__ that will contain
     the contact information of your family, your friends, members of
     an organization to which you belong, or ... anyone at all.
     + First, in the following code, feel free to change the value of
-      \`dbname\` to any (valid) name you want for your new
-      _contacts_ database.
+      \`dbname\` to any (valid) name you want for your new _contacts_ DB.
     + Then, un-comment the following code block (i.e., remove the
       wrapping pair of JS block-comment tags \`/* … */\`) to set up a
       new DB and reserve the namespace of your DB within your browser.
@@ -1024,9 +1023,9 @@ dbname = "cntcs-demo";
 // indexedDB.databases().then(respShow)
 
 /*
- 3. Build a data-entry UI for entering the details of one contact;
+ 3. __Build a data-entry UI__ for entering the details of one contact;
     Give the UI applicable functions from the *PouchDB* API for storing
-    each contact as a database file.
+    each contact as a data file.
     + Un-comment the \`try { … } catch { … }\` line following the next
       code block to display (below, beneath the calculator) a basic
       contact data-entry form.
@@ -1127,7 +1126,7 @@ hsRes = () => _.hlps.forEach(e => e.classList.add("dnone"));
 !window.savbtn || ( savbtn.onclick = () => { let ts = new Date().getTime(); ["ts_updated"].concat(_.fwg.ts_created ? [] : "ts_created").forEach(e => _.fwg[e] = ts); Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))); !_.fwg._id.value || _.dbobj.put(_.fwg).then(r => _.hlps[0].classList.remove("dnone") || respShow(r)).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)); } );
 
 /*
- 4. Populate your database either with your own contacts or with a
+ 4. __Populate your database__ either with your own contacts or with a
     provided set of pre-fabricated "contacts", meant to be used for
     demo purposes.
     + To see the data of ten fake contacts before adding them to
@@ -1174,8 +1173,8 @@ hsRes = () => _.hlps.forEach(e => e.classList.add("dnone"));
 // dbobj.allDocs().then(respShow)
 
 /*
- 5. Use *PouchDB* to add one more data file to your database that will
-    function just to hold images, which we will use as a ready-access
+ 5. Use *PouchDB* to __add one more data file__ to your database that will
+    function just __to hold images__, which we will use as a ready-access
     container for all of our contact photos.
     + Un-comment the following line of code to add a new data file.
     + As we did in step 4, notice that, again, we use the \`.put()\`
@@ -1193,7 +1192,7 @@ hsRes = () => _.hlps.forEach(e => e.classList.add("dnone"));
 // dbobj.put({ _id: "-res-img" }).then(respShow).catch(respShow)
 
 /*
- 6. Build a UI with applicable *PouchDB* functions for attaching images
+ 6. __Build a UI__ with applicable *PouchDB* functions __for attaching images__
     to your image-resource file; Then add to the file (as attachments)
     either your own contact photos or the provided collection of
     stock photos, meant to be used for demo purposes.
@@ -1204,6 +1203,9 @@ hsRes = () => _.hlps.forEach(e => e.classList.add("dnone"));
     + If you have photos of your own contacts already available on
       your device, use the new controls to look them up and attach
       them, one by one.
+    + *Note:* Later, in step 7, you may then associate a contact with
+      a corresponding photo by entering the photo attachment name as
+      the value of the contact's \`image_src\` property.
     + If you want to attach the 10 stock photos that accompany the 10
       fake contacts, un-comment the fourth code block that follows.
     + *Tip:* To ensure that you do not repeatedly attach the same set
@@ -1213,20 +1215,18 @@ hsRes = () => _.hlps.forEach(e => e.classList.add("dnone"));
 
 /*
 d3ui += "\\n<hr />\\n<div class=field>\\n<h4>Contact Photos</h4>\\n<p>\\n<div class=cfield>";
-d3ui += "\\n<span class=\\"ccntr cleft\\">Step A-1</span><span class=ccntr><label>";
-d3ui += "<input id=a1inp type=file />";
-d3ui += "<span id=a2inp class=\\"btn1 hgainl ilink\\">&#x2726;</span>";
-d3ui += "<span id=a3inp class=btn1><span>Locate image&hellip;</span></span>";
-d3ui += "\\n</label></span>\\n</div>";
-d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">Step A-2</span><span class=ccntr>";
+d3ui += "\\n<span class=\\"ccntr cleft\\">Step <span class=fsz0c75>A-</span>1</span><span class=ccntr><label>";
+d3ui += "<input id=a1inp type=file /><span id=a2inp class=\\"btn1 hgainl ilink\\">&#x2726;</span>";
+d3ui += "<span id=a3inp class=btn1><span>Locate image&hellip;</span></span>\\n</label></span>\\n</div>";
+d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">Step <span class=fsz0c75>A-</span>2</span><span class=ccntr>";
 d3ui += "<input type=text id=n4inp placeholder=\\"Rename as attachment&hellip;\\" /></span>\\n</div>\\n";
-d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">Step A-3</span><span class=ccntr>";
+d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">Step <span class=fsz0c75>A-</span>3</span><span class=ccntr>";
 d3ui += "<button id=a4btn class=hgainl><span class=isucc>&oplus;</span> ATTACH</button></span>";
 d3ui += "\\n<div class=\\"chelp isucc dnone\\">Image is attached to \\"-res-img\\" file.</div>";
 d3ui += "\\n<div class=\\"chelp iwarn dnone\\">Image-attach attempt failed.</div>\\n</div>\\n</p>";
-d3ui += "\\n<p>\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">Step R-1</span><span class=ccntr>";
+d3ui += "\\n<p>\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">Step <span class=fsz0c75>R-</span>1</span><span class=ccntr>";
 d3ui += "<input type=text id=n5inp placeholder=\\"Attachment name&hellip;\\" /></span>\\n</div>\\n";
-d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">Step R-2</span><span class=ccntr>";
+d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">Step <span class=fsz0c75>R-</span>2</span><span class=ccntr>";
 d3ui += "<button id=a5btn class=hgainl><span class=iwarn>&otimes;</span> REMOVE</button></span>";
 d3ui += "\\n<div class=\\"chelp isucc dnone\\">Image is removed from \\"-res-img\\" file.</div>";
 d3ui += "\\n<div class=\\"chelp iwarn dnone\\">Image-removal attempt failed.</div>\\n</div>\\n</p>";
@@ -1252,19 +1252,42 @@ simgs = Array.from(Array(10)).map((e, i) => "stockimg" + i + ".jpg");
 */
 
 /*
- 7. Use *PouchDB* to generate, sort and display summary info of all
+ 7. Use *PouchDB* to generate, sort and __display summary info__ of all
     of the contacts in your database; Include functionality for re-
     using the data-entry UI (from step 3) to allow for editing of a
     user-selected contact.
+    + Un-comment the following set of code blocks to display a new
+      directory of all DB contacts (along with the image-management
+      UI from step 6 and an initially hidden, data-entry form from
+      step 3).
+    + Tap on a contact's photo to empty the directory display, un-hide
+      the data-entry form and fill out the form's text fields with the
+      property values of the selected contact.
+    + If you make changes to a contact's data (e.g., you enter the
+      attachment name of a corresponding photo into the \`image_src\`
+      property field), or if you create a new contact, commit the
+      altered data file to the DB by tapping the *SAVE* button, at the
+      top-right of the form.
+    + Reload the directory by tapping the button with a circular-arrow
+      icon, connected to the *sort-by* select-list control.
+    + Notice that we have only a few, limited controls for sorting and
+      presenting the contacts' data: With these controls, we can list
+      the contacts in order by first name, last name or username; And,
+      we can toggle the visibility of different pieces of info about
+      each contact.
+    + *Challenge:* Design more controls; Or, engineer more variability
+      into the existing controls. For example, how would you re-sort
+      a contact list in descending order -- or filter the list for
+      matching attributes: like a specific group membership, or a
+      birthdate that falls within a given time range?
 */
 
 /*
-d4ui += "\\n<hr />\\n<h4>Contact Directory</h4>\\n<div id=cpanl class=\\"alnrt\\">\\n<span class=\\"diblk ccntr\\">&ensp;Sort by:&ensp;";
-d4ui += "<select id=sortsel><option></option><option selected>First Name</option><option>Last Name</option><option>Username</option></select>&nbsp;<button id=csbtn class=\\"hgainl isucc\\">&orarr;</button></span>";
-d4ui += "\\n<span class=\\"diblk ccntr\\">&emsp;Show all:&ensp;";
+d4ui += "\\n<hr />\\n<h4>Contact Directory</h4>\\n<div id=cpanl class=\\"alnrt\\">\\n<span class=\\"diblk ccntr\\">Sort by:&ensp;";
+d4ui += "<select id=sortsel><option></option><option selected>First Name</option><option>Last Name</option><option>Username</option></select>";
+d4ui += "<button id=csbtn class=\\"hgainl isucc\\">&orarr;</button></span><span class=\\"diblk ccntr\\">Show all:&ensp;";
 d4ui += "<label><input type=checkbox id=hdrsswi /> <a>headers</a></label>&ensp;";
-d4ui += "<label><input type=checkbox id=bodsswi /> <a>bodies</a></label></span>\\n</div>";
-d4ui += "\\n<div id=cdata></div>\\n";
+d4ui += "<label><input type=checkbox id=bodsswi /> <a>bodies</a></label></span>\\n</div>\\n<div id=cdata></div>\\n";
 d5ui += 'd => \`\\\\n<article class=media>\\\\n<div class="media-left">\\\\n<figure class="image rspv128"><img src="\${ aurls[d.image_src] || "" }" data-fileid="\${ d._id }" />\`';
 d5ui += ' + \`\\\\n<figcaption>\${ d.name_user || "" }</figcaption></figure>\\\\n</div>\\\\n<div class="media-content">\\\\n<details class=cfield><summary><strong>\${ _.nmsX(d) }</strong></summary>\`';
 d5ui += ' + \`\\\\n<div class="pwrap fsz0c75">\${ (!(d.roles || "")[0] ? "" : "<em class=\\\\"fsz1rem lnhtnml\\\\">" + d.roles.join(", ") + "</em>\\\\n") + (!d.bio_short ? "" : "SHORT BIO: " + d.bio_short.substring(0, 255) + (d.bio_short.length < 257 ? "" : "&hellip;")) + "<!-- \\\\nNOTE ID: <a>" + d._id + "</a>\\\\nCREATED: " + new Date(d.ts_created || null).toLocaleString() + "\\\\nUPDATED: " + new Date(d.ts_updated || null).toLocaleString() + " -->" }</div>\\\\n</details>\`';
@@ -1275,7 +1298,7 @@ d5ui += ' + (!(d.social_profiles || "")[0] ? "" : "<strong>Social profiles:</str
 try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = _.d1ui + _.d3ui + "\\n<div id=cform class=dnone>" + _.d2ui + "</div>" + _.d4ui; cmain.appendChild(_.ndiv); }
 
 rexts = /^m[rs]\\.? +|^mrs\\.? +|[.,;:/]/gi;
-rexns = /(?:m[rs]\\b\\.?|mrs\\b\\.?) *(.*?) *((?:\\bde +|\\bvon +|)['‘’\\w-]+)([ ,]*\\b[js]r\\.?|[ ,]*\\b[ivx]+|)$/i;
+rexns = /^(?:m[rs]\\b\\.?|mrs\\b\\.?) *(.*?) *((?:\\bde +|\\bvon +|)['‘’\\w-]+)([ ,]*\\b[js]r\\.?|[ ,]*\\b[ivx]+|)$/i;
 qss = [ '#dbwrap .media-content>details:first-of-type', '#dbwrap .media-content>details:last-of-type', '#cdata .media-left>.image>img, #cdata .media-content>details:first-of-type a' ];
 hlps = window.dbwrap && dbwrap.querySelectorAll('.chelp');
 ts2Fmt = str => !str ? "" : new Date(str).toUTCString().replace(/.+(\\d{2} [a-z]{3} \\d{4}).+/i, "$1");
@@ -1284,15 +1307,14 @@ hdsX = evt => document.querySelectorAll(_.qss[0]).forEach(e => e.open = evt.targ
 bdsX = evt => document.querySelectorAll(_.qss[1]).forEach(e => e.open = evt.target.checked);
 cLoad = evt => (cform.className = cdata.innerHTML = "") || _.dbobj.get(evt.target.textContent || evt.target.dataset.fileid).then(d => Object.entries(_.fwg = d).forEach(([k, v]) => _.rex0s.test(k) || (window["p0" + k].value = _.valStr(v)))).catch(respShow);
 c1Gen = eval(d5ui);
-window.aurls = window.aurls || {};
 !window.a1inp || ( a1inp.onchange = () => a3inp.innerHTML = (a1inp.files[0] || "").name || "<span>Locate image&hellip;</span>" );
 !window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) || _.dbobj.get("-res-img").then(d => _.dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(r => _.hlps[0].classList.remove("dnone") || respShow(r) || _.isRtrv()).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)) );
 !window.a5btn || ( a5btn.onclick = () => _.hsRes() || !(_.ak = n5inp.value) || _.dbobj.get("-res-img").then(d => !d._attachments[_.ak] ? Promise.reject("Invalid key.") : _.dbobj.removeAttachment("-res-img", _.ak, d._rev)).then(r => _.hlps[2].classList.remove("dnone") || respShow(r) || !(delete aurls[_.ak]) || _.imgsVw()).catch(e => _.hlps[3].classList.remove("dnone") || respShow(e)) );
 !window.resbtn || ( resbtn.onclick = () => _.hsRes() || !(_.fwg = JSON.parse(JSON.stringify(_.ctmpl))) || Object.entries(_.fwg).forEach(([k, v]) => _.rex0s.test(k) || (window["p0" + k].value = _.valStr(v))) );
 !window.savbtn || ( savbtn.onclick = () => { let ts = new Date().getTime(); ["ts_updated"].concat(_.fwg.ts_created ? [] : "ts_created").forEach(e => _.fwg[e] = ts); Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))); !_.fwg._id.value || _.dbobj.put(_.fwg).then(r => _.hlps[4].classList.remove("dnone") || respShow(r)).catch(e => _.hlps[5].classList.remove("dnone") || respShow(e)); } );
 !window.imgdtl || (imgdtl.open = false) || isRtrv();
-!window.csbtn || ( csbtn.onclick = () => !(cform.className = "dnone") || _.dbobj.allDocs({ include_docs: true }).then(re => { let na, nb, rrs = re.rows.filter(r => r && ["name_full", "name_user"].some(p => r.doc.hasOwnProperty(p))).sort((a, b) => !sortsel.selectedIndex ? 0 : _.nmsX(a.doc).replace(_.rexts, "") > _.nmsX(b.doc).replace(_.rexts, "") ? 1 : -1); cdata.innerHTML = !rrs.length ? "\\n<p class=igreyd>&emsp;<em>[No results found &hellip;]</em></p>" : rrs.map(r => _.c1Gen(r.doc)).join("") + "\\n"; hdrsswi.onchange = _.hdsX; bodsswi.onchange = _.bdsX; document.querySelectorAll(_.qss[2]).forEach(e => e.onclick = _.cLoad); }).catch(respShow) );
-!window.cdata || csbtn.click();
+!window.csbtn || ( csbtn.onclick = () => !(cform.className = "dnone") || _.dbobj.allDocs({ include_docs: true }).then(re => { let rrs = re.rows.filter(r => r && ["name_full", "name_user"].some(p => r.doc.hasOwnProperty(p))).sort((a, b) => !sortsel.selectedIndex ? 0 : _.nmsX(a.doc).replace(_.rexts, "") > _.nmsX(b.doc).replace(_.rexts, "") ? 1 : -1); cdata.innerHTML = !rrs.length ? "\\n<p class=igreyd>&emsp;<em>[No results found &hellip;]</em></p>\\n" : rrs.map(r => _.c1Gen(r.doc)).join("") + "\\n"; bodsswi.checked = hdrsswi.checked = 0; hdrsswi.onchange = _.hdsX; bodsswi.onchange = _.bdsX; document.querySelectorAll(_.qss[2]).forEach(e => e.onclick = _.cLoad); }).catch(respShow) );
+!window.csbtn || csbtn.click();
 */
 
 /*
