@@ -303,13 +303,14 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   display: inline-block;
   line-height: 24px;
   width: 126px;
+  height: 24px;
 //margin-right: 8px;
   text-align: right;
   white-space: nowrap;
 }
 #nmwrap .ccntr.cleft+.ccntr>input[type=text],
 #nmwrap .ccntr.cleft+.ccntr>select { width: 216px; }
-#nmwrap :not(.cfield)>.ccntr { display: inline-block; margin-bottom: 8px; }
+#nmwrap :not(.cfield)>.ccntr { display: inline-block; height: 24px; margin-bottom: 8px; }
 #nmwrap .chelp { font-size: 10.5px; line-height: normal; margin-top: 3.5px; } /* 12px */
 #nmwrap .fsz10p5 { font-size: 10.5px; }
 #nmwrap .fsz14p { font-size: 14px; }
@@ -1088,7 +1089,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     }
   },
   rexsd = /^[.-][\w!.*+~-]+\/?$/,
-  rexns = /(?:m[rs]\b\.?|mrs\b\.?) *(.*?) *((?:\bde +|\bvon +|)['‘’\w-]+)([ ,]*\b[js]r\.?|[ ,]*\b[ivx]+|)$/i,
+  rexns = /^(?:m[rs]\b\.?|mrs\b\.?) *(.*?) *((?:\bde +|\bvon +|)['‘’\w-]+)([ ,]*\b[js]r\.?|[ ,]*\b[ivx]+|)$/i,
   rsp2Show = r => { rsp2con.textContent
     += ( !r || typeof r !== 'object' || r instanceof Error && r.constructor && !r.reason
       ? r : JSON.stringify(r, null, 2) ) + "\n\n" },
