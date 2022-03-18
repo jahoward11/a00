@@ -1679,11 +1679,11 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
               || (ra.file_updated || ra.file_created || "").timestamp || null ).toLocaleString() }</em>
         </summary>
         <div class="pwrap fsz10p5">${
-          ( !cvs.includes("roles") || !(ra.roles || "").length ? ""
+          ( !cvs.includes("roles") || !(ra.roles || "")[0] ? ""
             : "<em class=\"fsz14p lnhtnml\">" + ra.roles.join(", ") + "</em>\n" )
           + (!cvs.includes("linkref") || !ra.linkref ? "" : "LINK REF: " + ra.linkref + "\n")
           + (!cvs.includes("from") || !ra.from ? "" : "FROM: " + ra.from + "\n")
-          + (!cvs.includes("to") || !(ra.to || "").length ? "" : "TO: " + ra.to.join(", ") + "\n")
+          + (!cvs.includes("to") || !(ra.to || "")[0] ? "" : "TO: " + ra.to.join(", ") + "\n")
           + ( !cvs.some(e => /name_full/.test(e)) || !ra.bio_short ? "" : "SHORT BIO: "
             + ra.bio_short.substring(0, 255) + (ra.bio_short.length < 257 ? "\n" : "&hellip;\n") )
           + (!cvs.includes("file_type") || !ra.file_type ? "" : "NOTE TYPE: " + ra.file_type + "\n")
@@ -1718,9 +1718,9 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
               : "<strong>Time:</strong> " + ts2Fmt(ra.time) + "\n" )
             + (( !cvs.includes("place") || !ra.hasOwnProperty("place") ? ""
               : "<strong>Place:</strong> " + ra.place + "\n" )
-                + ( !(ra.map_refs || "").length ? ""
+                + ( !(ra.map_refs || "")[0] ? ""
                   : "<strong>Map refs:</strong> " + ra.map_refs.join(", ") + "\n" ))
-            + ( !cvs.includes("people") || !(ra.people || "").length ? ""
+            + ( !cvs.includes("people") || !(ra.people || "")[0] ? ""
               : "<strong>People:</strong> " + ra.people.join(", ") + "\n" )
             + ( !cvs.includes("time") || !ra.hasOwnProperty("description") ? ""
               : "<strong>Description:</strong> " + ra.description + "\n" )
@@ -1732,11 +1732,11 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
                 + ( !ra.hasOwnProperty("phones") ? ""
                   : "<strong>Phones:</strong> " + ra.phones.join(", ") + "\n" ) )
             + ( !cvs.includes("team_groups") ? ""
-              : ( !(ra.social_profiles || "").length ? ""
+              : ( !(ra.social_profiles || "")[0] ? ""
                   : "<strong>Social profiles:</strong> " + ra.social_profiles.join(", ") + "\n" )
-                + ( !(ra.project_urls || "").length ? ""
+                + ( !(ra.project_urls || "")[0] ? ""
                   : "<strong>Project urls:</strong> " + ra.project_urls.join(", ") + "\n" )
-                + ( !(ra.team_groups || "").length ? ""
+                + ( !(ra.team_groups || "")[0] ? ""
                   : "<strong>Team groups:</strong> " + ra.team_groups.join(", ") + "\n" )
                 + ( !ra.ts_created ? "" : "<strong>"
                     + (!/contact|phone/.test(ra.file_type) ? "Created on:" : "Joined team:")

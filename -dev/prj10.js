@@ -260,6 +260,14 @@ try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.strPars || scrInj(null, 'mo
 // window.jh1 = str => "<pre class=hljs>" + hljs.highlightAuto(!window.jb1 ? str : jb1(str)).value + "</pre><style>@import \\"../-res-hljs/atom-one-light.css\\"; #srwrap pre>pre.hljs { margin: 0; white-space: inherit; }</style>";
 //`;
 
+const t4cntcs = `//
+/*
+scrGen = src => src.match(/^(?:d1ui|hlps|imgsVw|rexts) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n").replace(/respShow/g, "console.error").replace(/;\\nwindow\\.(c1Gen = ).+/, (m, c1) => ",\\n  " + (c1 + c1Gen).replace(/\\b_\\.\\b/g, "") + ";\\nwindow.dbobj = window.PouchDB && new PouchDB(\\"" + dbobj.name + "\\");"); //
+dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Contacts Database</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/pouchdb.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
+respShow(dwrap[0] + dbwrap.outerHTML.replace(/\\n<hr>/, "") + dwrap[1] + scrGen(xstor.JScode.tutorial4) + dwrap[2])
+*/
+//`;
+
 const srtools = `//
 // to find misapplied emphasis/superscript markers in cmods
 /*
@@ -276,5 +284,5 @@ export {
   uiwidth, publdims, jscmds,
   bcaches, dscripts, scrload,
   jstatqs, itoken, t2puzls,
-  t3search, srtools
+  t3search, t4cntcs, srtools
 };
