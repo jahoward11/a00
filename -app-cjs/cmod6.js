@@ -999,7 +999,7 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
 
 /*
 dbname = "cntcs-demo";
-!window.PouchDB || !/^[a-z][0-9_a-z-]*$/.test(dbname) || (dbobj = new PouchDB(dbname))
+!window.PouchDB || !/^[a-z][0-9_a-z-]*$/.test(dbname) || (window.dbobj = new PouchDB(dbname))
 */
 
 /*
@@ -1049,12 +1049,13 @@ dbname = "cntcs-demo";
       distinguish one data file from the other.
 */
 
-d1ui = d2ui = d3ui = d4ui = d5ui = ""
+d1ui = d2ui = d3ui = d4ui = d5ui = ak = ""
 rex0s = /^_rev|^file_|^ts_|^loc_/;
 ctmpl = { _id: "!groupID-cUsername", _rev: "", file_type: "contact", ts_created: 0, ts_updated: 0, loc_subdir: "", name_full: "", name_user: "", birthdate: "", roles: [""], emails: [""], phones: [""], locations: [""], social_profiles: [""], project_urls: [""], team_groups: [""], image_src: "", bio_short: "", miscellany: "" };
 fwg = JSON.parse(JSON.stringify(ctmpl));
 fncTry = (fnc, a, e) => { try { return fnc(a) } catch (err) { return e > 1 ? a : e ? err : undefined }};
 valStr = (v, sp) => v == null ? "" : v instanceof Error && v.constructor && !v.reason ? v : typeof v === 'object' ? JSON.stringify(v, null, sp) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(_.fncTry(JSON.parse, v), null, sp) || v;
+//
 fldGen = (k, v) => "\\n<div class=\\"field is-horizontal\\">\\n<div class=\\"field-label\\"><span class=label>" + k + "</span></div>\\n<div class=\\"field-body\\">\\n<textarea id=p0" + k + " class=textarea rows=2>" + _.valStr(v) + "\\n</textarea>\\n</div>\\n</div>";
 d1ui += "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
 d1ui += "\\nhtml { box-sizing: border-box; color: DimGrey; min-width: 375px; overflow-wrap: break-word; }";
@@ -1115,15 +1116,16 @@ d2ui += "<button id=savbtn class=\\"ccntr hgainl\\"><span class=isucc>&#x267a;</
 d2ui += "\\n<div class=field>\\n<h4>Edit Contact</h4>";
 d2ui += "\\n<div class=\\"alnrt chelp isucc dnone\\">New contact is saved in local DB.</div>";
 d2ui += "\\n<div class=\\"alnrt chelp iwarn dnone\\">New-contact save attempt failed.</div>\\n</div>";
-d2ui += "\\n<div id=cform>" + Object.entries(_.fwg).map(([k, v]) => _.rex0s.test(k) ? "" : _.fldGen(k, v)).join("") + "\\n</div>\\n";
+d2ui += "\\n<div id=cform>" + Object.entries(_.fwg).map(([k, v]) => _.rex0s.test(k) ? "" : _.fldGen(k, v)).join("") + "\\n</div>";
 
 // dbwrap.remove() // *Alert:* useful only if edit-testing the UI code above
-// try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d2ui; cmain.appendChild(ndiv); }
+// try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d2ui + "\\n"; cmain.appendChild(ndiv); }
 
 hlps = window.dbwrap && dbwrap.querySelectorAll('.chelp');
 hsRes = () => _.hlps.forEach(e => e.classList.add("dnone"));
+//
 !window.resbtn || ( resbtn.onclick = () => _.hsRes() || !(_.fwg = JSON.parse(JSON.stringify(_.ctmpl))) || Object.entries(_.fwg).forEach(([k, v]) => _.rex0s.test(k) || (window["p0" + k].value = _.valStr(v))) );
-!window.savbtn || ( savbtn.onclick = () => { let ts = new Date().getTime(); ["ts_updated"].concat(_.fwg.ts_created ? [] : "ts_created").forEach(e => _.fwg[e] = ts); Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))); !_.fwg._id.value || _.dbobj.put(_.fwg).then(r => _.hlps[0].classList.remove("dnone") || respShow(r)).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)); } );
+!window.savbtn || ( savbtn.onclick = () => { let ts = new Date().getTime(); ["ts_updated"].concat(_.fwg.ts_created ? [] : "ts_created").forEach(e => _.fwg[e] = ts); Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))); !_.fwg._id.value || dbobj.put(_.fwg).then(r => _.hlps[0].classList.remove("dnone") || respShow(r)).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)); } );
 
 /*
  4. __Populate your database__ either with your own contacts or with a
@@ -1167,9 +1169,9 @@ hsRes = () => _.hlps.forEach(e => e.classList.add("dnone"));
 */
 
 // import("./fakecs.js").then(m => respShow(m.default)).catch(respShow)
-// import("./fakecs.js").then(m => m.default.forEach(c => _.dbobj.put(c).then(respShow).catch(respShow)))
+// import("./fakecs.js").then(m => m.default.forEach(c => dbobj.put(c).then(respShow).catch(respShow)))
 // dbobj.get("").then(respShow)
-// dbobj.get("").then(d => !(d = { _id: d._id, _rev: d._rev, _deleted: true }) || _.dbobj.put(d)).then(respShow).catch(respShow)
+// dbobj.get("").then(d => !(d = { _id: d._id, _rev: d._rev, _deleted: true }) || dbobj.put(d)).then(respShow).catch(respShow)
 // dbobj.allDocs().then(respShow)
 
 /*
@@ -1214,41 +1216,40 @@ hsRes = () => _.hlps.forEach(e => e.classList.add("dnone"));
 */
 
 /*
-d3ui += "\\n<hr />\\n<div class=field>\\n<h4>Contact Photos</h4>\\n<p>\\n<div class=cfield>";
-d3ui += "\\n<span class=\\"ccntr cleft\\">Step <span class=fsz0c75>A-</span>1</span><span class=ccntr><label>";
+d3ui += "\\n<hr />\\n<h4>Contact Photos</h4>\\n<div class=cfield>";
+d3ui += "\\n<span class=\\"ccntr cleft\\">A: step 1</span><span class=ccntr><label>";
 d3ui += "<input id=a1inp type=file /><span id=a2inp class=\\"btn1 hgainl ilink\\">&#x2726;</span>";
 d3ui += "<span id=a3inp class=btn1><span>Locate image&hellip;</span></span>\\n</label></span>\\n</div>";
-d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">Step <span class=fsz0c75>A-</span>2</span><span class=ccntr>";
-d3ui += "<input type=text id=n4inp placeholder=\\"Rename as attachment&hellip;\\" /></span>\\n</div>\\n";
-d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">Step <span class=fsz0c75>A-</span>3</span><span class=ccntr>";
+d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">step 2</span><span class=ccntr>";
+d3ui += "<input type=text id=n4inp placeholder=\\"Rename as attachment&hellip;\\" /></span>\\n</div>";
+d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">step 3</span><span class=ccntr>";
 d3ui += "<button id=a4btn class=hgainl><span class=isucc>&oplus;</span> ATTACH</button></span>";
 d3ui += "\\n<div class=\\"chelp isucc dnone\\">Image is attached to \\"-res-img\\" file.</div>";
-d3ui += "\\n<div class=\\"chelp iwarn dnone\\">Image-attach attempt failed.</div>\\n</div>\\n</p>";
-d3ui += "\\n<p>\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">Step <span class=fsz0c75>R-</span>1</span><span class=ccntr>";
-d3ui += "<input type=text id=n5inp placeholder=\\"Attachment name&hellip;\\" /></span>\\n</div>\\n";
-d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">Step <span class=fsz0c75>R-</span>2</span><span class=ccntr>";
+d3ui += "\\n<div class=\\"chelp iwarn dnone\\">Image-attach attempt failed.</div>\\n</div>\\n<p></p>";
+d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">R: step 1</span><span class=ccntr>";
+d3ui += "<input type=text id=n5inp placeholder=\\"Attachment name&hellip;\\" /></span>\\n</div>";
+d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">step 2</span><span class=ccntr>";
 d3ui += "<button id=a5btn class=hgainl><span class=iwarn>&otimes;</span> REMOVE</button></span>";
 d3ui += "\\n<div class=\\"chelp isucc dnone\\">Image is removed from \\"-res-img\\" file.</div>";
-d3ui += "\\n<div class=\\"chelp iwarn dnone\\">Image-removal attempt failed.</div>\\n</div>\\n</p>";
-d3ui += "\\n<details id=imgdtl open=true></details>\\n";
+d3ui += "\\n<div class=\\"chelp iwarn dnone\\">Image-removal attempt failed.</div>\\n</div>";
+d3ui += "\\n<details id=imgdtl open=true></details>";
 
 !window.dbwrap || dbwrap.remove() // necessary to clear UI form from step 3
-try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d3ui; cmain.appendChild(ndiv); }
+try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d3ui + "\\n"; cmain.appendChild(ndiv); hlps = dbwrap.querySelectorAll('.chelp'); }
 
-ak = ""
-hlps = window.dbwrap && dbwrap.querySelectorAll('.chelp');
 imgsVw = () => imgdtl.innerHTML = "<summary>Gallery</summary>" + Object.entries(aurls).map(([k, v]) => "\\n<p><img src=" + v + " /> " + k + "</p>").join("") + "\\n";
-isRtrv = () => _.dbobj.get("-res-img").then( d => Promise.all( Object.keys(d._attachments || "").map( k => aurls[k] || _.dbobj.getAttachment("-res-img", k).then(b => aurls[k] = URL.createObjectURL(b)) ) ).then(_.imgsVw) ).catch(respShow);
+isRtrv = () => !dbobj || dbobj.get("-res-img").then( d => Promise.all( Object.keys(d._attachments || "").map( k => aurls[k] || dbobj.getAttachment("-res-img", k).then(b => aurls[k] = URL.createObjectURL(b)) ) ).then(_.imgsVw) ).catch(respShow);
+//
 window.aurls = window.aurls || {};
 !window.a1inp || ( a1inp.onchange = () => a3inp.innerHTML = (a1inp.files[0] || "").name || "<span>Locate image&hellip;</span>" );
-!window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) || _.dbobj.get("-res-img").then(d => _.dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(r => _.hlps[0].classList.remove("dnone") || respShow(r) || _.isRtrv()).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)) );
-!window.a5btn || ( a5btn.onclick = () => _.hsRes() || !(_.ak = n5inp.value) || _.dbobj.get("-res-img").then(d => !d._attachments[_.ak] ? Promise.reject("Invalid key.") : _.dbobj.removeAttachment("-res-img", _.ak, d._rev)).then(r => _.hlps[2].classList.remove("dnone") || respShow(r) || !(delete aurls[_.ak]) || _.imgsVw()).catch(e => _.hlps[3].classList.remove("dnone") || respShow(e)) );
+!window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) || dbobj.get("-res-img").then(d => dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(r => _.hlps[0].classList.remove("dnone") || respShow(r) || _.isRtrv()).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)) );
+!window.a5btn || ( a5btn.onclick = () => _.hsRes() || !(_.ak = n5inp.value) || dbobj.get("-res-img").then(d => !d._attachments[_.ak] ? Promise.reject("Invalid key.") : dbobj.removeAttachment("-res-img", _.ak, d._rev)).then(r => _.hlps[2].classList.remove("dnone") || respShow(r) || !(delete aurls[_.ak]) || _.imgsVw()).catch(e => _.hlps[3].classList.remove("dnone") || respShow(e)) );
 !window.imgdtl || isRtrv();
 */
 
 /*
 simgs = Array.from(Array(10)).map((e, i) => "stockimg" + i + ".jpg");
-!dbobj || dbobj.get("-res-img").then(d => { d._attachments || (d._attachments = {}); return Promise.all(_.simgs.map(e => fetch("../-res-img2/" + e).then(r => r.blob()))).then( bs => _.simgs.forEach( (e, i) => !(aurls[e] = URL.createObjectURL(bs[i])) || (d._attachments[e] = { content_type: bs[i].type, data: bs[i] }) ) || _.dbobj.put(d) ); }).then(respShow).then(_.imgsVw).catch(respShow)
+!dbobj || dbobj.get("-res-img").then(d => { d._attachments || (d._attachments = {}); return Promise.all(_.simgs.map(e => fetch("../-res-img2/" + e).then(r => r.blob()))).then( bs => _.simgs.forEach( (e, i) => !(aurls[e] = URL.createObjectURL(bs[i])) || (d._attachments[e] = { content_type: bs[i].type, data: bs[i] }) ) || dbobj.put(d) ); }).then(respShow).then(_.imgsVw).catch(respShow)
 */
 
 /*
@@ -1293,7 +1294,7 @@ d4ui += "\\n<hr />\\n<h4>Contact Directory</h4>\\n<div id=cpanl class=\\"alnrt\\
 d4ui += "<select id=sortsel><option></option><option selected>First Name</option><option>Last Name</option><option>Username</option></select>";
 d4ui += "<button id=csbtn class=\\"hgainl isucc\\">&orarr;</button></span><span class=ccntr>Show all:&ensp;";
 d4ui += "<label><input type=checkbox id=hdrsswi /> <a>headers</a></label>&ensp;";
-d4ui += "<label><input type=checkbox id=bodsswi /> <a>bodies</a></label></span>\\n</div>\\n<div id=cdata></div>\\n";
+d4ui += "<label><input type=checkbox id=bodsswi /> <a>bodies</a></label></span>\\n</div>\\n<div id=cdata></div>";
 d5ui += 'd => \`\\\\n<article class=media>\\\\n<div class="media-left">\\\\n<figure class="image rspv128"><img src="\${ aurls[d.image_src] || "" }" data-fileid="\${ d._id }" />\`';
 d5ui += ' + \`\\\\n<figcaption>\${ d.name_user || "" }</figcaption></figure>\\\\n</div>\\\\n<div class="media-content">\\\\n<details class=cfield><summary><strong>\${ _.nmsX(d) }</strong></summary>\`';
 d5ui += ' + \`\\\\n<div class="pwrap fsz0c75">\${ (!(d.roles || "")[0] ? "" : "<em class=\\\\"fsz1rem lnhtnml\\\\">" + d.roles.join(", ") + "</em>\\\\n") + (!d.bio_short ? "" : "SHORT BIO: " + d.bio_short.substring(0, 255) + (d.bio_short.length < 257 ? "" : "&hellip;")) + "<!-- \\\\nNOTE ID: <a>" + d._id + "</a>\\\\nCREATED: " + new Date(d.ts_created || null).toLocaleString() + "\\\\nUPDATED: " + new Date(d.ts_updated || null).toLocaleString() + " -->" }</div>\\\\n</details>\`';
@@ -1301,25 +1302,25 @@ d5ui += ' + \`\\\\n<details>\\\\n<div class=pwrap>\${ (!d.hasOwnProperty("birthd
 d5ui += ' + (!(d.social_profiles || "")[0] ? "" : "<strong>Social profiles:</strong> " + d.social_profiles.join(", ") + "\\\\n") + (!(d.project_urls || "")[0] ? "" : "<strong>Project urls:</strong> " + d.project_urls.join(", ") + "\\\\n") + (!(d.team_groups || "")[0] ? "" : "<strong>Team groups:</strong> " + d.team_groups.join(", ") + "\\\\n") + (!d.ts_created ? "" : "<strong>Joined team:</strong> " + _.ts2Fmt(d.ts_created) + "\\\\n") + (!d.ts_updated ? "" : "<strong>Last updated:</strong> " + _.ts2Fmt(d.ts_updated) + "\\\\n") }</div>\\\\n</details>\\\\n</div>\\\\n</article>\`';
 
 !window.dbwrap || dbwrap.remove() // necessary to clear UIs from steps 3 &amp; 6
-try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d3ui + d2ui + d4ui; cmain.appendChild(ndiv); }
+try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d3ui + d2ui + d4ui + "\\n"; cmain.appendChild(ndiv); hlps = dbwrap.querySelectorAll('.chelp'); }
 
 rexts = /^m[rs]\\.? +|^mrs\\.? +|[.,;:/]/gi; //
 rexns = /^(?:m[rs]\\b\\.?|mrs\\b\\.?) *(.*?) *((?:\\bde +|\\bvon +|)['‘’\\w-]+)([ ,]*\\b[js]r\\.?|[ ,]*\\b[ivx]+|)$/i; //
 qss = [ '#dbwrap .media-content>details:first-of-type', '#dbwrap .media-content>details:last-of-type', '#cdata .media-left>.image>img, #cdata .media-content>details:first-of-type a' ];
-hlps = window.dbwrap && dbwrap.querySelectorAll('.chelp');
 ts2Fmt = str => !str ? "" : new Date(str).toUTCString().replace(/.+(\\d{2} [a-z]{3} \\d{4}).+/i, "$1");
 nmsX = (d, x = sortsel.selectedIndex) => ( x < 2 ? d.name_full : x > 2 ? d.name_user : (d.name_full || "").trim().replace(_.rexns, "$2, $1$3") ) || d._id;
 hdsX = evt => document.querySelectorAll(_.qss[0]).forEach(e => e.open = evt.target.checked);
 bdsX = evt => document.querySelectorAll(_.qss[1]).forEach(e => e.open = evt.target.checked);
-cLoad = evt => (cform.className = cdata.innerHTML = "") || _.dbobj.get(evt.target.textContent || evt.target.dataset.fileid).then(d => Object.entries(_.fwg = d).forEach(([k, v]) => _.rex0s.test(k) || (window["p0" + k].value = _.valStr(v)))).catch(respShow);
-c1Gen = eval(d5ui);
+cLoad = evt => (cform.className = cdata.innerHTML = "") || dbobj.get(evt.target.textContent || evt.target.dataset.fileid).then(d => Object.entries(_.fwg = d).forEach(([k, v]) => _.rex0s.test(k) || (window["p0" + k].value = _.valStr(v)))).catch(respShow);
+window.c1Gen = eval(d5ui);
+window.aurls = window.aurls || {};
 !window.a1inp || ( a1inp.onchange = () => a3inp.innerHTML = (a1inp.files[0] || "").name || "<span>Locate image&hellip;</span>" );
-!window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) || _.dbobj.get("-res-img").then(d => _.dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(r => _.hlps[0].classList.remove("dnone") || respShow(r) || _.isRtrv()).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)) );
-!window.a5btn || ( a5btn.onclick = () => _.hsRes() || !(_.ak = n5inp.value) || _.dbobj.get("-res-img").then(d => !d._attachments[_.ak] ? Promise.reject("Invalid key.") : _.dbobj.removeAttachment("-res-img", _.ak, d._rev)).then(r => _.hlps[2].classList.remove("dnone") || respShow(r) || !(delete aurls[_.ak]) || _.imgsVw()).catch(e => _.hlps[3].classList.remove("dnone") || respShow(e)) );
+!window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) || dbobj.get("-res-img").then(d => dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(r => _.hlps[0].classList.remove("dnone") || respShow(r) || _.isRtrv()).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)) );
+!window.a5btn || ( a5btn.onclick = () => _.hsRes() || !(_.ak = n5inp.value) || dbobj.get("-res-img").then(d => !d._attachments[_.ak] ? Promise.reject("Invalid key.") : dbobj.removeAttachment("-res-img", _.ak, d._rev)).then(r => _.hlps[2].classList.remove("dnone") || respShow(r) || !(delete aurls[_.ak]) || _.imgsVw()).catch(e => _.hlps[3].classList.remove("dnone") || respShow(e)) );
 !window.resbtn || ( resbtn.onclick = () => _.hsRes() || (cform.className = cdata.innerHTML = "") || !(_.fwg = JSON.parse(JSON.stringify(_.ctmpl))) || Object.entries(_.fwg).forEach(([k, v]) => _.rex0s.test(k) || (window["p0" + k].value = _.valStr(v))) );
-!window.savbtn || ( savbtn.onclick = () => { let ts = new Date().getTime(); ["ts_updated"].concat(_.fwg.ts_created ? [] : "ts_created").forEach(e => _.fwg[e] = ts); Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))); !_.fwg._id.value || _.dbobj.put(_.fwg).then(r => _.hlps[4].classList.remove("dnone") || respShow(r)).catch(e => _.hlps[5].classList.remove("dnone") || respShow(e)); } );
+!window.savbtn || ( savbtn.onclick = () => { let ts = new Date().getTime(); ["ts_updated"].concat(_.fwg.ts_created ? [] : "ts_created").forEach(e => _.fwg[e] = ts); Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))); !_.fwg._id.value || dbobj.put(_.fwg).then(r => _.hlps[4].classList.remove("dnone") || respShow(r)).catch(e => _.hlps[5].classList.remove("dnone") || respShow(e)); } );
 !window.imgdtl || (imgdtl.open = false) || isRtrv();
-!window.csbtn || ( csbtn.onclick = () => !(cform.className = "dnone") || (p0_id.value = "") || _.dbobj.allDocs({ include_docs: true }).then(re => { let rrs = re.rows.filter(r => r && ["name_full", "name_user"].some(p => r.doc.hasOwnProperty(p))).sort((a, b) => !sortsel.selectedIndex ? 0 : _.nmsX(a.doc).replace(_.rexts, "") > _.nmsX(b.doc).replace(_.rexts, "") ? 1 : -1); cdata.innerHTML = !rrs.length ? "\\n<p class=igreyd>&emsp;<em>[No results found &hellip;]</em></p>\\n" : rrs.map(r => _.c1Gen(r.doc)).join("") + "\\n"; bodsswi.checked = hdrsswi.checked = 0; hdrsswi.onchange = _.hdsX; bodsswi.onchange = _.bdsX; document.querySelectorAll(_.qss[2]).forEach(e => e.onclick = _.cLoad); }).catch(respShow) );
+!window.csbtn || ( csbtn.onclick = () => !(cform.className = "dnone") || (p0_id.value = "") || !dbobj || dbobj.allDocs({ include_docs: true }).then(re => { let rrs = re.rows.filter(r => r && ["name_full", "name_user"].some(p => r.doc.hasOwnProperty(p))).sort((a, b) => !sortsel.selectedIndex ? 0 : _.nmsX(a.doc).replace(_.rexts, "") > _.nmsX(b.doc).replace(_.rexts, "") ? 1 : -1); cdata.innerHTML = !rrs.length ? "\\n<p class=igreyd>&emsp;<em>[No results found &hellip;]</em></p>\\n" : rrs.map(r => c1Gen(r.doc)).join("") + "\\n"; bodsswi.checked = hdrsswi.checked = 0; hdrsswi.onchange = _.hdsX; bodsswi.onchange = _.bdsX; document.querySelectorAll(_.qss[2]).forEach(e => e.onclick = _.cLoad); }).catch(respShow) );
 !window.csbtn || csbtn.click();
 */
 

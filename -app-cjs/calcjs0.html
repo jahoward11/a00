@@ -248,7 +248,10 @@ body {
   margin-top: 4px;
 }
 #xctrls #xsetinp { width: 168px; }
-#xctrls #xsetlist { color: transparent; width: 24px; }
+#xctrls #xsetlist {
+  color: transparent;
+  width: 24px;
+}
 @media print {
   body { padding: 0; }
   #cgrid>#quad1A { box-shadow: inset 0 -1px LightGrey; }
@@ -460,7 +463,7 @@ let q2Bcopy, q2Bhtml,
         .split("\n"),
       reslts = xprsns.map(xpri => {
         try {
-          xpri = xpri && xpri //[ \w\\,;:'"#=()-]
+          xpri = xpri && xpri
             .replace( /^(?=[\t ]*{)|^.*?(?=\/\/|<\/?\w+ [ \w]+=.+>|\(? *function\b[ \w]*\(.*?\) *{|\(? *(?:[$\wÀ-Ͽ]+|\([^)]*\)) *=>|$)/g,
               m0 => m0.replace( /([ ({]|^)(?:_\.|)([$_a-zÀ-Ͽ][$\wÀ-Ͽ]*)(?=\s*=\s*(?:$|[$\wÀ-Ͽ'"`([{./+-]))/gi,
                 (m1, c1, c2) => _ks.push(c2) && c1 + "_." + c2 )
