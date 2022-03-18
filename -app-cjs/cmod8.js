@@ -22,8 +22,8 @@ try { pz1wrap } catch { uiDspl(bodGen(t2x)); !!window.g1Reset || scrInj(null, 'm
  // Un-comment the following two lines of code to generate the
 // full source code (e.g., for building a standalone web app).
 
-// dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
-// respShow(dwrap[0] + pz1wrap.outerHTML + dwrap[1] + scrGen(t2x) + dwrap[2])
+// dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
+// respShow(dwraps[0] + pz1wrap.outerHTML + dwraps[1] + scrGen(t2x) + dwraps[2])
 //`;
 
 const tiltmaze = `/*
@@ -90,8 +90,8 @@ g4Start();
 
 /*
 scrGen = src => "let " + src.match(/^dbar = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
-dwrap = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Tilt Maze</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
-respShow(dwrap[0] + g4wrap.outerHTML.replace(/\\n<hr>/, "") + dwrap[1] + scrGen(xstor.JSpuzzle.tiltmaze) + dwrap[2])
+dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Tilt Maze</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
+respShow(dwraps[0] + g4wrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(xstor.JSpuzzle.tiltmaze) + dwraps[2])
 */
 //`;
 
