@@ -10,6 +10,7 @@
 html {
   box-sizing: border-box;
   color: DimGrey;
+  font-size: 14px;
   min-width: 375px;
   overflow-wrap: break-word;
   text-rendering: optimizeLegibility;
@@ -18,17 +19,6 @@ html {
   -webkit-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
   text-size-adjust: 100%;
-}
-hr {
-  display: block;
-  background-color: Gainsboro;
-  height: 1px;
-  margin: 1.5em 0;
-  border: none;
-}
-figure, .figure {
-  margin: 1em 0;
-  padding: 0 1em;
 }
 p, dl, ol, ul, li, button, input, select, textarea, pre { margin: 0; }
 p:not(:last-child), dl:not(:last-child), ol:not(:last-child), ul:not(:last-child),
@@ -41,6 +31,17 @@ input[type=checkbox], input[type=radio] {
 }
 strong, mark, table th, .table, .table thead td, .table thead th,
 .table tfoot td, .table tfoot th { color: inherit; }
+hr {
+  display: block;
+  background-color: Gainsboro;
+  height: 1px;
+  margin: 1.5em 0;
+  border: none;
+}
+figure {
+  margin: 1em 0;
+  padding: 0 1em;
+}
 .image {
   display: block;
   position: relative;
@@ -52,7 +53,6 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 }
 .table {
   background-color: white;
-//color: #363636;
   border-collapse: collapse;
   border-spacing: 0;
 }
@@ -62,17 +62,14 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   padding: 0.5em 0.75em;
   vertical-align: top;
 }
-.table th { //color: #363636; }
 .table th:not([align]) { text-align: inherit; }
 .table thead { background-color: transparent; }
 .table thead td, .table thead th {
   border-width: 0 0 2px;
-//color: #363636;
 }
 .table tfoot { background-color: transparent; }
 .table tfoot td, .table tfoot th {
   border-width: 2px 0 0;
-//color: #363636;
 }
 .table tbody { background-color: transparent; }
 .table tbody tr:last-child td,
@@ -81,7 +78,6 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   background-color: white;
   border-color: #dbdbdb;
   border-radius: 4px;
-//color: #363636;
   display: block;
   max-width: 100%;
   min-width: 100%;
@@ -100,17 +96,15 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   position: relative;
 }
 .label {
-//color: #363636;
   display: block;
-//font-size: 14px; /* 1rem */
   font-weight: 700;
 }
 .label:not(:last-child) { margin-bottom: 0.5em; }
-.field:not(:last-child) { margin-bottom: 10.5px; /* 0.75rem */ }
+.field:not(:last-child) { margin-bottom: 0.75rem; }
 .field-label .label { font-size: inherit; }
 .field-body .field .field { margin-bottom: 0; }
 @media screen and (max-width: 719px) {
-  .field-label { margin-bottom: 7px; /* 0.5rem */ }
+  .field-label { margin-bottom: 0.5rem; }
 }
 @media screen and (min-width: 720px), print {
   .field.is-horizontal { display: flex; }
@@ -118,7 +112,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     flex-basis: 0;
     flex-grow: 1;
     flex-shrink: 0;
-    margin-right: 21px; /* 1.5rem */
+    margin-right: 1.5rem;
     text-align: right;
   }
   .field-body {
@@ -130,7 +124,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   .field-body .field { margin-bottom: 0; }
   .field-body > .field { flex-shrink: 1; }
   .field-body > .field:not(.is-narrow) { flex-grow: 1; }
-  .field-body > .field:not(:last-child) { margin-right: 10.5px; /* 0.75rem */ }
+  .field-body > .field:not(:last-child) { margin-right: 0.75rem; }
 }
 .level {
   align-items: center;
@@ -149,7 +143,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   justify-content: center;
 }
 @media screen and (max-width: 719px) {
-  .level-item:not(:last-child) { margin-bottom: 8px; } /* not Bulma */
+  .level-item:not(:last-child) { margin-bottom: 0.5rem; } /* not Bulma */
   .level-item > .level { display: flex; }
 }
 .media {
@@ -159,16 +153,16 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 }
 .media + .media {
   border-top: 1px solid rgba(219, 219, 219, 0.5);
-  margin-top: 14px; /* 1rem */
-  padding-top: 14px; /* 1rem */
+  margin-top: 1rem;
+  padding-top: 1rem;
 }
 .media-left, .media-right {
   flex-basis: auto;
   flex-grow: 0;
   flex-shrink: 0;
 }
-.media-left { margin-right: 14px; /* 1rem */ }
-.media-right { margin-left: 14px; /* 1rem */ }
+.media-left { margin-right: 1rem; }
+.media-right { margin-left: 1rem; }
 .media-content {
   flex-basis: auto;
   flex-grow: 1;
@@ -187,7 +181,6 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   -webkit-overflow-scrolling: touch;
   align-items: stretch;
   display: flex;
-//font-size: 1rem;
   justify-content: space-between;
   overflow: hidden;
   overflow-x: auto;
@@ -198,7 +191,6 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   border-bottom-color: #dbdbdb;
   border-bottom-style: solid;
   border-bottom-width: 1px;
-//color: #4a4a4a;
   display: flex;
   justify-content: center;
   margin-bottom: -1px;
@@ -230,17 +222,17 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap {
   font: normal 14px/1.5 BlinkMacSystemFont, -apple-system, Helvetica, Arial, sans-serif;
   max-width: 960px;
-  margin: 24px auto 96px;
+  margin: 1.5rem auto 96px;
 }
 #nmwrap h4, #nmwrap h5 { margin-bottom: 0; }
-#nmwrap h4:not(last-child), #nmwrap h5:not(last-child) { margin-bottom: 7px; }
-#nmwrap h4+h5 { margin-top: 14px; }
+#nmwrap h4:not(last-child), #nmwrap h5:not(last-child) { margin-bottom: 0.5rem; }
+#nmwrap h4 + h5 { margin-top: 1rem; }
 #nmwrap a {
   color: #485fc7;
   cursor: pointer;
   text-decoration: none;
 }
-#nmwrap a:hover { color: CornFlowerBlue; }
+#nmwrap a:hover, #nmwrap .ilink:hover:not(:disabled) { color: CornFlowerBlue; }
 #nmwrap .tabs a { color: DarkGrey; }
 #nmwrap .tabs a:hover {
   border-bottom-color: #363636;
@@ -253,15 +245,14 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap a:active, #nmwrap button:active, #nmwrap .btn1:active {
   box-shadow: 0 0 0 0.125em rgb(50 152 220 / 25%);
 }
-#nmwrap button, #nmwrap .btn1, #nmwrap input:not([type=checkbox]), #nmwrap select {
-//display: inline-block;
+#nmwrap button, #nmwrap .btn1,
+#nmwrap input:not([type=checkbox]):not([type=radio]), #nmwrap select {
   background: #f8f8f8;
   color: Grey;
-//font-size: 14px;
-  line-height: 24px;
-  height: 24px;
+  line-height: 1.5rem;
+  height: 1.5rem;
   margin: 0;
-  padding: 0 8px;
+  padding: 0 0.5rem;
   border: 0;
   border-radius: 0;
   vertical-align: bottom;
@@ -278,15 +269,35 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   text-overflow: ellipsis;
 }
 #nmwrap button.bsml {
-  line-height: 8px;
-  height: 16px;
-  padding: 4px;
+  line-height: 0.5rem;
+  height: 1rem;
+  padding: 0.25rem;
 }
 #nmwrap input::placeholder, #nmwrap input:disabled {
   color: revert;
   opacity: 0.5;
 }
-#nmwrap textarea { display: block; font: normal 10.5px monospace; width: 100%; }
+#nmwrap select { padding: 0 0.25rem; }
+#nmwrap thead, #nmwrap tfoot { font-weight: bold; }
+#nmwrap .table {
+  line-height: normal;
+  min-width: calc(219px + 35vw);
+  margin-left: 0.5rem;
+} /* 219/375px=58vw, 350/375px=93vw */
+#nmwrap .textarea { font: normal 0.75rem monospace; }
+#nmwrap .media-left>.image.rspv128 {
+  width: 128px;
+  height: unset;
+  margin: 0 1em 0 2em;
+  padding: 0;
+}
+#nmwrap .media-left>.image>img {
+  background-color: LightSteelBlue;
+  min-height: 128px;
+  cursor: pointer;
+}
+#nmwrap .media-left>.image>figcaption { font-size: small; font-style: italic; text-align: center; }
+#nmwrap .field-label>.label:not(:last-child) { margin-bottom: 0; }
 #nmwrap .hwsmok { background-color: Whitesmoke; }
 #nmwrap .hgainl { background-color: #ececec; } /* Gainsboro: #dcdcdc */
 #nmwrap .hwarnl { background-color: #fff6e6; }
@@ -295,84 +306,61 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 #nmwrap .ilink { color: #485fc7; }
 #nmwrap .iwarn { color: Orange; }
 #nmwrap .isucc, #nmwrap .ilink:hover:not(:disabled) { color: CornFlowerBlue; }
-#nmwrap textarea.iwarn { color: revert; border-color: Orange; }
-#nmwrap textarea.isucc { color: revert; border-color: CornFlowerBlue; }
-#nmwrap .cfield:not(:last-child) { margin-bottom: 8px; }
-#nmwrap .ccntr:not(:last-of-type) { margin-right: 8px; }
+#nmwrap .textarea.iwarn { color: revert; border-color: Orange; }
+#nmwrap .textarea.isucc { color: revert; border-color: CornFlowerBlue; }
+#nmwrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }
+#nmwrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }
+#nmwrap :not(.cfield)>.ccntr { display: inline-block; height: 1.5rem; margin-bottom: 0.5rem; }
 #nmwrap .ccntr.cleft {
   display: inline-block;
-  line-height: 24px;
+  line-height: 1.5rem;
   width: 126px;
-  height: 24px;
-//margin-right: 8px;
+  height: 1.5rem;
   text-align: right;
   white-space: nowrap;
 }
-#nmwrap .ccntr.cleft+.ccntr>input[type=text],
-#nmwrap .ccntr.cleft+.ccntr>select { width: 216px; }
-#nmwrap :not(.cfield)>.ccntr { display: inline-block; height: 24px; margin-bottom: 8px; }
-#nmwrap .chelp { font-size: 10.5px; line-height: normal; margin-top: 3.5px; } /* 12px */
-#nmwrap .fsz10p5 { font-size: 10.5px; }
-#nmwrap .fsz14p { font-size: 14px; }
-#nmwrap .table { line-height: normal; } /* 16.5px */
-#nmwrap .lnht1m { line-height: 1; } /* 10.5px, 14px */
+#nmwrap .ccntr.cleft + .ccntr>input[type=text], #nmwrap .ccntr.cleft + .ccntr>select { width: 216px; }
+#nmwrap .chelp { font-size: 0.75rem; line-height: normal; margin-top: 0.25rem; } /* 12px */
+#nmwrap .fsznml { font-size: normal; }
+#nmwrap .fsz0c75 { font-size: 0.75rem; }
 #nmwrap .lnhtnml { line-height: normal; } /* 12px, 16.5px */
+#nmwrap .lnht1c0 { line-height: 1; } /* 10.5px, 14px */
 #nmwrap .fltrt { float: right; }
 #nmwrap .alnrt { text-align: right; }
-#nmwrap .mtup3p5 { margin-top: -3.5px; }
-#nmwrap .cblock:not(:last-child) { margin-bottom: 21px; }
+#nmwrap .mtup0c25 { margin-top: -0.25rem; }
+#nmwrap .cblock:not(:last-child) { margin-bottom: 1.5rem; }
 #nmwrap .pwrap { white-space: pre-wrap; }
 #nmwrap .diblk, #nmwrap .btn1 { display: inline-block; }
 #nmwrap .dflow { display: flow-root; overflow-x: auto; }
 #nmwrap .dnone { display: none; }
-#nmwrap>#rsp2con {
+#nmwrap>#r2con {
   color: Orange;
   font: normal medium/1.25 monospace;
-//margin: 0;
   padding: 0;
   word-wrap: normal;
   overflow-wrap: normal;
   overflow-x: hidden;
   white-space: pre;
 }
-#nmwrap #imgainp { width: 0; padding: 0; }
-#nmwrap #imgain2 { width: 24px; text-align: center; }
-#nmwrap #imgain3 { font-size: calc(40px / 3); width: 192px; text-align: left; }
-#nmwrap #imgain3>span { color: revert; opacity: 0.5; }
-#vctrls #pdbssel { width: 136px; padding: 0 4px; }
+#nmwrap #a1inp { width: 0; padding: 0; }
+#nmwrap #a2inp { width: 1.5rem; text-align: center; }
+#nmwrap #a3inp { font-size: calc(40px / 3); calc(216px - 1.5rem); text-align: left; }
+#nmwrap #a3inp>span { color: revert; opacity: 0.5; }
+#vctrls #pdbssel { width: 136px; }
 #vctrls #ftotal { display: inline-block; min-width: 20px; }
-#vctrls #viewsel { width: 24px; }
-#vctrls #colssel, #vctrls #sortsel { width: 100px; padding: 0 4px; }
+#vctrls #viewsel { width: 1.5rem; }
+#vctrls #colssel, #vctrls #sortsel { width: 100px; }
 #vctrls #descswi { margin-right: 2px; }
 #vctrls #filtinp { width: 168px; }
 #vctrls #moveinp { width: 114px; }
-#nmtbl thead, #nmtbl tfoot { font-weight: bold; }
 #nmtbl td:first-of-type { white-space: nowrap; }
 #nmtbl td:nth-of-type(1), #nmtbl td:nth-of-type(2) { text-align: right; }
 #nmtbl td[colspan="20"] {
   background: Whitesmoke;
   text-align: left;
 }
-#nmdata .media-left>.image.rspv128 {
-  width: 128px;
-  height: unset;
-  margin: 0 1em 0 2em;
-  padding: 0;
-}
-#nmdata .media-left>.image>img {
-  background-color: LightSteelBlue;
-  min-height: 128px;
-  cursor: pointer;
-}
-#nmdata .media-left>.image>figcaption { font-style: italic; text-align: center; }
-#nmdata .field-label>.label:not(:last-child),
-#pfacnt .field-label>.label:not(:last-child) { margin-bottom: 0; }
 #nmtabs li:first-child>a { letter-spacing: -3px; }
-#nmbulk #qselbtn { margin-right: 8px; }
-#pdbcfg .table {
-  min-width: calc(219px + 35vw); /* 219/375px=58vw, 350/375px=93vw */
-  margin-left: 8px;
-}
+#nmbulk #qselbtn { margin-right: 0.5rem; }
 #pdbcfg #pdbtbl td:nth-of-type(1),
 #pdbcfg #t0tbod td:nth-of-type(1),
 #pdbcfg #v0tbod td:nth-of-type(1) {
@@ -383,17 +371,17 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 }
 #pdbcfg #typtbl td { padding: 5px 2.5px; }
 #pdbcfg #typtbl td:nth-of-type(1)>input { width: 120px; } /* 120/375px=32vw */
-#pdbcfg #typtbl td:nth-of-type(2)>select { width: 84px; padding: 0 4px; } /* 84/375px=22vw */
+#pdbcfg #typtbl td:nth-of-type(2)>select { width: 84px; } /* 84/375px=22vw */
 #pdbcfg #typtbl td:nth-of-type(3)>input { width: 35vw; } /* 131/375px=35vw */
-#nmsets #jselbtn { margin: -23px 8px 0 0; }
+#nmsets #jselbtn { margin: calc(-1.5rem + 1px) 0.5rem 0 0; }
 @media screen and (max-width: 575px) {
-  #nmdata .media-left>.image.rspv128 { width: 48px; margin: 0; }
-  #nmdata .media-left>.image.rspv128>img { min-height: 48px; }
-  #nmdata .media-left>.image>figcaption { float: right; font-size: x-small; }
+  #nmwrap .media-left>.image.rspv128 { width: 48px; margin: 0; }
+  #nmwrap .media-left>.image.rspv128>img { min-height: 48px; }
+  #nmwrap .media-left>.image>figcaption { float: right; font-size: x-small; }
 }
 @media screen and (max-width: 719px) {
-  #nmdata .media-left>.image { margin: 0; }
-  #nmdata .field-label>button.bsml, #pfacnt .field-label>button.bsml { margin: -16px 8px 0 0; }
+  #nmwrap .media-left>.image { margin: 0; }
+  #nmwrap .field-label>button.bsml { margin: -1rem 0.5rem 0 0; }
 }
 @media screen and (min-width: 720px) and (max-width: 767px), print {
   #vctrls #pdbssel { width: 120px; }
@@ -403,7 +391,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
 }
 </style>
 <h4 class=cfield>Note Manager</h4>
-<pre id=rsp2con></pre>
+<pre id=r2con></pre>
 <nav id=vctrls class="level cblock">
   <div class="level-item">
     <div class="level cfield">
@@ -566,7 +554,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   <div id=pfacnt class=dnone></div>
 </div>
 <div id=pdbcfg class="cblock dnone">
-  <label class="fltrt mtup3p5 fsz10p5 lnht1m ilink"><input type=checkbox id=use1swi />
+  <label class="fltrt mtup0c25 fsz0c75 lnht1c0 ilink"><input type=checkbox id=use1swi />
   Show<br />use guides</label>
   <h4>Database Setup &plus; Configuration</h4>
   <p class=dnone>
@@ -591,7 +579,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
       <span class="ccntr cleft">DB description</span><span class=ccntr><input type=text id=pdb1inp /></span>
     </div>
     <div class=cfield>
-      <span class="ccntr cleft">
+      <span class="ccntr cleft">&nbsp;
       </span><span class=ccntr><button id=pdb0btn class="isucc hsuccl">CREATE</button></span>
       <div class="chelp isucc dnone">DB creation is successful.</div>
       <div class="chelp iwarn dnone">DB creation failed.</div>
@@ -605,11 +593,11 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </p>
   <div id=olddctrl class=cblock>
     <div class=cfield>
-      <div class=fsz10p5><em>ALERT:</em> This operation cannot be reversed.</div>
+      <div class=fsz0c75><em>ALERT:</em> This operation cannot be reversed.</div>
       <span class="ccntr cleft">Selected DB name</span><span class=ccntr><input type=text id=ddelinp /></span>
     </div>
     <div class=cfield>
-      <span class="ccntr cleft">
+      <span class="ccntr cleft">&nbsp;
       </span><span class=ccntr><button id=dbd0btn class="isucc hsuccl">
       COMPACT</button></span><span class=ccntr><button id=dbd1btn class="iwarn hwarnl">
       DESTROY</button></span>
@@ -642,7 +630,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
       <a>Store password on device</a></label></span>
     </div>
     <div class=cfield>
-      <span class="ccntr cleft">
+      <span class="ccntr cleft">&nbsp;
       </span><span class=ccntr><button id=pfilbtn class="isucc hsuccl">
       PREFILL</button></span><span class=ccntr><button id=syncbtn class="isucc hsuccl">
       SYNC</button></span>
@@ -669,7 +657,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </table>
   <div class="cfield lnhtnml">
     &emsp;<label><input type=checkbox id=openswi disabled /> <a>Set as default DB</a></label>
-    <br />&emsp;&emsp; <span class=fsz10p5>(Open this DB directly on next startup.)</span>
+    <br />&emsp;&emsp; <span class=fsz0c75>(Open this DB directly on next startup.)</span>
   </div>
   <h5>"New Note" Type/Template</h5>
   <p class=dnone>
@@ -709,7 +697,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     <span class="ccntr cleft">Type description</span><span class=ccntr><input type=text id=t02inp /></span>
   </div>
   <div class=cfield>
-    <span class="ccntr cleft">
+    <span class="ccntr cleft">&nbsp;
     </span><span class=ccntr><button id=t0abtn class=hgainl><span class=isucc>&plus;</span>
     NEW TYPE</button></span>
     <div class="chelp isucc dnone">Add-type operation is successful.</div>
@@ -719,7 +707,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     <tbody id=t0tbod></tbody>
   </table>
   <div class=cfield>
-    <span class="ccntr cleft">
+    <span class="ccntr cleft">&nbsp;
     </span><span class=ccntr><button id=t0dbtn class=hgainl><span class=iwarn>&#x2715;</span>
     DEL TYPE</button></span>
     <div class="chelp isucc dnone">Delete-type operation is successful.</div>
@@ -765,7 +753,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     <span class="ccntr cleft"><em>View</em> description</span><span class=ccntr><input type=text id=v02inp /></span>
   </div>
   <div class=cfield>
-    <span class="ccntr cleft">
+    <span class="ccntr cleft">&nbsp;
     </span><span class=ccntr><button id=v0abtn class=hgainl><span class=isucc>&plus;</span>
     NEW VIEW</button></span>
     <div class="chelp isucc dnone">Add-view operation is successful.</div>
@@ -775,7 +763,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     <tbody id=v0tbod></tbody>
   </table>
   <div class=cfield>
-    <span class="ccntr cleft">
+    <span class="ccntr cleft">&nbsp;
     </span><span class=ccntr><button id=v0dbtn class=hgainl><span class=iwarn>&#x2715;</span>
     DEL VIEW</button></span>
     <div class="chelp isucc dnone">Delete-view operation is successful.</div>
@@ -783,7 +771,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
   </div>
 </div>
 <div id=nmsets class="cblock dnone">
-  <label class="fltrt mtup3p5 fsz10p5 lnht1m ilink"><input type=checkbox id=use2swi />
+  <label class="fltrt mtup0c25 fsz0c75 lnht1c0 ilink"><input type=checkbox id=use2swi />
   Show<br />use guides</label>
   <h4><em>Note Mgr</em> App Settings</h4>
   <p class=dnone>
@@ -794,7 +782,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     &emsp;Optionally, select a <em>contacts</em> database so that the app can locate any contact
     details or photos that are referenced from within another, group-shared database. Be aware that
     photos must be stored altogether as the attachments of a <em>note</em> (of your <em>contacts</em>
-    database) that is specially named&nbsp;"<code class="fsz10p5 hwsmok">-res-img</code>".
+    database) that is specially named&nbsp;"<code class="fsz0c75 hwsmok">-res-img</code>".
   </p>
   <p class=dnone>
     &emsp;Also optionally, identify yourself by username and/or email, which will be associated with
@@ -842,19 +830,19 @@ strong, mark, table th, .table, .table thead td, .table thead th,
     &emsp;<em>Pro Tip:</em> To view the available lists of <em>IndexedDB&nbsp;Storage</em> and
     <em>Local&nbsp;Storage</em> keys (or a key-specified value) before/after wiping data from the
     device, enter each of the following commands into the <em>Browser Command UI</em>,&nbsp;below.
-    <br />&emsp;&bull; <code class="fsz10p5 hwsmok">PouchDB.allDbs()</code>
+    <br />&emsp;&bull; <code class="fsz0c75 hwsmok">PouchDB.allDbs()</code>
     (<em>Note&nbsp;Mgr</em>&nbsp;DB&nbsp;names)
-    <br />&emsp;&bull; <code class="fsz10p5 hwsmok">indexedDB.databases()</code>
+    <br />&emsp;&bull; <code class="fsz0c75 hwsmok">indexedDB.databases()</code>
     (all&nbsp;DB&nbsp;names)
-    <br />&emsp;&bull; <code class="fsz10p5 hwsmok">{ let k, keys = []; for (k in localStorage)
+    <br />&emsp;&bull; <code class="fsz0c75 hwsmok">{ let k, keys = []; for (k in localStorage)
     keys.push(k); keys; }</code> (all&nbsp;<em>Local&nbsp;Storage</em>&nbsp;keys)
-    <br />&emsp;&bull; <code class="fsz10p5 hwsmok">localStorage._nm0sets</code>
+    <br />&emsp;&bull; <code class="fsz0c75 hwsmok">localStorage._nm0sets</code>
     (<em>Note&nbsp;Mgr</em>&nbsp;app&nbsp;settings)
-    <br />&emsp;&bull; <code class="fsz10p5 hwsmok">localStorage._nm0cfgs</code>&emsp;(<em>Note&nbsp;Mgr</em>&nbsp;DB&nbsp;configs)
+    <br />&emsp;&bull; <code class="fsz0c75 hwsmok">localStorage._nm0cfgs</code>&emsp;(<em>Note&nbsp;Mgr</em>&nbsp;DB&nbsp;configs)
   </p>
   <div id=wipectrl class=cblock>
     <div class=cfield>
-      <div class=fsz10p5><em>ALERT:</em> This operation cannot be reversed.</div>
+      <div class=fsz0c75><em>ALERT:</em> This operation cannot be reversed.</div>
       &emsp;<label class=iwarn><input type=checkbox id=slocswi /> Empty local storage</label>
       <br />&emsp;<label class=iwarn><input type=checkbox id=spdbswi /> Purge all local DBs</label>
     </div>
@@ -862,7 +850,7 @@ strong, mark, table th, .table, .table thead td, .table thead th,
       <span class="ccntr cleft">Username or email</span><span class=ccntr><input type=text id=wipeinp /></span>
     </div>
     <div class=cfield>
-      <span class="ccntr cleft">
+      <span class="ccntr cleft">&nbsp;
       </span><span class=ccntr><button id=wipebtn class="iwarn hwarnl">
       WIPE DATA</button></span>
       <div class="chelp isucc dnone">Data wipe is successful.</div>
@@ -963,14 +951,13 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   <hr />
   <div class=cfield>
     <span class="ccntr cleft">Add attachments</span><span class=ccntr><label>`
-      + `<input id=imgainp type=file multiple />`
-      + `<span id=imgain2 class="btn1 fsz10p5 hgainl ilink">&#x2726;</span>`
-      + `<span id=imgain3 class=btn1><span>Locate image&hellip;</span></span>
+      + `<input id=a1inp type=file multiple />`
+      + `<span id=a2inp class="btn1 fsz0c75 hgainl ilink">&#x2726;</span>`
+      + `<span id=a3inp class=btn1><span>Locate image&hellip;</span></span>
     </label></span>
   </div>
   <div class=cfield>
-    <span class="ccntr cleft">
-    </span><span class=ccntr>`
+    <span class="ccntr cleft">&nbsp;</span><span class=ccntr>`
     + `<input type=text id=imganm2 placeholder="Rename as attachment&hellip;" /></span>
   </div>\n`,
   nmthds = document.querySelectorAll('#nmtbl thead'),
@@ -1090,7 +1077,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   },
   rexsd = /^[.-][\w!.*+~-]+\/?$/,
   rexns = /^(?:m[rs]\b\.?|mrs\b\.?) *(.*?) *((?:\bde +|\bvon +|)['‘’\w-]+)([ ,]*\b[js]r\.?|[ ,]*\b[ivx]+|)$/i,
-  rsp2Show = r => { rsp2con.textContent
+  rsp2Show = r => { r2con.textContent
     += ( !r || typeof r !== 'object' || r instanceof Error && r.constructor && !r.reason
       ? r : JSON.stringify(r, null, 2) ) + "\n\n" },
   fncTry = (fnc, a, e) => { try { return fnc(a) }
@@ -1278,7 +1265,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         docs:   (re.rows || re.results).map(row1Tfm) //.filter(d => !d._deleted)
       },
       jsonVldt = () => {
-        rsp2con.textContent = "";
+        r2con.textContent = "";
         hlps.forEach(e => e.classList.add("dnone"));
         fncTry(JSON.parse, qctxta.value) ? qctxta.classList.remove("iwarn")
         : qctxta.classList.add("iwarn") || hlps[2].classList.remove("dnone");
@@ -1314,7 +1301,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           qselbtn.onclick = txtaSel;
           qctxta.onblur = jsonVldt;
         }
-        rsp2con.textContent = "";
+        r2con.textContent = "";
         hlps = nmbulk.querySelectorAll('.chelp');
         hlps.forEach(e => e.classList.add("dnone"));
         qctxta.classList.remove("iwarn");
@@ -1322,7 +1309,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         !tidx || tabActv();
       },
       dbq = txd2.DBNAME && window.PouchDB && PouchDB(txd2.DBNAME);
-    rsp2con.textContent = "";
+    r2con.textContent = "";
     if (vbas > 1) {
       document.querySelectorAll(qslrs[10])
       .forEach(inp => inp.parentElement.parentElement.className = "");
@@ -1366,7 +1353,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     //rsp2Show(txd2);
     if (!window.PouchDB || !txd2.DBNAME || !txd2.FILEID
     || txd2.ATTKEY && !reximg.test(txd2.ATTKEY) && !rextxt.test(txd2.ATTKEY)) { return; }
-    rsp2con.textContent = "";
+    r2con.textContent = "";
     aurls[txd2.ATTKEY] ? tabActv() || attVw() : txd2.ATTKEY
     ? tabActv() || PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
       .then(attVw).catch(rsp2Show)
@@ -1408,9 +1395,9 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         bckbtn.onclick = () => (fwg = null) || [vctrls, nmtabs, nmpans[tidx]]
             .forEach(e => e.classList.remove("dnone"))
           || !vidx || (viewsel.selectedIndex = vidx = 0) || viewChg(); //viewBk
-        imgainp.onchange = () => imgain3.innerHTML = imgainp.files[1]
-          ? "<em>[" + imgainp.files.length + " files selected]</em>"
-          : imgainp.files[0] ? imgainp.files[0].name : "<span>Locate image&hellip;</span>";
+        a1inp.onchange = () => a3inp.innerHTML = a1inp.files[1]
+          ? "<em>[" + a1inp.files.length + " files selected]</em>"
+          : a1inp.files[0] ? a1inp.files[0].name : "<span>Locate image&hellip;</span>";
         updbtn.onclick = () => {
           let ts0 = new Date().getTime(),
             chgs = 0,
@@ -1429,10 +1416,10 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
             p1.dbname = txd1.DBNAME;
             !p1.hasOwnProperty("version") || (p1.version = p1.version.replace(/-?\d+$/, m => ++m));
           });
-          !imgainp.files.length || !++chgs
+          !a1inp.files.length || !++chgs
           || !(fwg.hasOwnProperty("_attachments") || (fwg._attachments = {}))
-          || imgainp.files.forEach( (f, i) =>
-            fwg._attachments[ !imganm2.value ? f.name : !imgainp.files[1]
+          || a1inp.files.forEach( (f, i) =>
+            fwg._attachments[ !imganm2.value ? f.name : !a1inp.files[1]
               ? imganm2.value : imganm2.value.replace(/(?=\.\w+$|$)/, i > 9 ? i : "0" + i) ]
             = { content_type: f.type, data: f } );
           !chgs || !txd2.DBNAME || !window.PouchDB || PouchDB(txd2.DBNAME)
@@ -1451,7 +1438,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     let negs = /^-/.test(filtinp.value),
       rexf = /^\/.+\/[gim]*$/.test(filtinp.value.trim()) ? eval(filtinp.value)
         : new RegExp(filtinp.value.replace(/^-/, "") || "^$", "gi");
-    rsp2con.textContent = "";
+    r2con.textContent = "";
     document.querySelectorAll(vbas > 1 ? qslrs[4] : qslrs[11]).forEach(inp => inp.checked = 0);
     document.querySelectorAll('#nmtbl tbody>tr:not([id])').forEach(tr => {
       tr.classList.remove("dnone", "match");
@@ -1517,7 +1504,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       r2idx = rsidx[rsidx.findIndex(n => n === r1idx) + 1]
         || ((document.querySelector('#nmtbl tbody>tr:last-of-type') || "").rowIndex - 1),
       trows = document.querySelectorAll('#nmtbl tbody>tr');
-    rsp2con.textContent = "";
+    r2con.textContent = "";
     if (!evt.target.parentElement.parentElement.id) {
       evt.target.checked
       || document.querySelectorAll('#nmtbl tbody>tr:not([id])').forEach(tr => tr.className = "");
@@ -1651,7 +1638,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           .sort( (a, b) => !(ra = ptyX(a.doc || a.value)) || !(rb = ptyX(b.doc || b.value))
             ? 0 : (ra < rb) == descswi.checked ? 1 : -1 );
       ftotal.innerText = rdc || rrs.length;
-      nmdata.innerHTML = rdc ? "" : "\n  <span class=\"fltrt mtup3p5\">&ensp;Show all:&ensp;"
+      nmdata.innerHTML = rdc ? "" : "\n  <span class=\"fltrt mtup0c25\">&ensp;Show all:&ensp;"
       + "<label><input type=checkbox id=hdrsswi /> <a>headers</a></label>&ensp;"
       + "<label><input type=checkbox id=bodsswi /> <a>bodies</a></label></span>\n  <hr />"
       + (rrs.length ? "" : "\n  <p class=igreyd>&emsp;<em>[No results found &hellip;]</em></p>")
@@ -1672,15 +1659,15 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
             ? ((cntcs[rb] || "").name_full || rb).replace(/ .*$/, "")
             : !cvs.some(e => /name_full/.test(e)) ? ra._id
             : nmsX(ra.name_full) || ra.name_user || ra.name || ra._id }</strong>
-          <em class="diblk fsz10p5">${ !cvs.some(e => /timestamp/.test(e))
+          <em class="diblk fsz0c75">${ !cvs.some(e => /timestamp/.test(e))
               || !/anno|memo|post/i.test(ra.file_type)
               || !ra.ts_created && !ra.file_created && !ra.ts_updated && !ra.file_updated
             ? "" : new Date( ra.ts_updated || ra.ts_created
               || (ra.file_updated || ra.file_created || "").timestamp || null ).toLocaleString() }</em>
         </summary>
-        <div class="pwrap fsz10p5">${
+        <div class="pwrap fsz0c75">${
           ( !cvs.includes("roles") || !(ra.roles || "")[0] ? ""
-            : "<em class=\"fsz14p lnhtnml\">" + ra.roles.join(", ") + "</em>\n" )
+            : "<em class=\"fsznml lnhtnml\">" + ra.roles.join(", ") + "</em>\n" )
           + (!cvs.includes("linkref") || !ra.linkref ? "" : "LINK REF: " + ra.linkref + "\n")
           + (!cvs.includes("from") || !ra.from ? "" : "FROM: " + ra.from + "\n")
           + (!cvs.includes("to") || !(ra.to || "")[0] ? "" : "TO: " + ra.to.join(", ") + "\n")
@@ -1704,14 +1691,14 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
               ? (!ra.body && !ra.content && !ra.time ? "" : "&hellip;")
               : ra.subject || ra.headline || "Annotation" )
             + ( !cvs.includes("_attachments") || !ra._attachments ? ""
-              : " <span class=fsz10p5>(" + Object.keys(ra._attachments).length + " attach's)</span>" )
+              : " <span class=fsz0c75>(" + Object.keys(ra._attachments).length + " attach's)</span>" )
             + "</summary>" }
         <div class=pwrap>${ !/anno|contact|event|phone/i.test(ra.file_type)
           ? "<div class=lnhtnml>" + (rb = ra.body || ra.content || "").substring(0, 255)
             + (rb.length < 257 ? "" : "&hellip;") + "</div>"
-          : /anno/i.test(ra.file_type) ? "<div><span class=fsz10p5>TAGS:&nbsp;</span>" + ra.tags
-            + "\n<span class=fsz10p5>TOC&nbsp;FMT:&nbsp;</span>" + ra.tocfmt
-            + "\n<span class=fsz10p5>STRIKES,&nbsp;INSERTS&nbsp;&amp;&nbsp;HIGHLIGHTS:</span></div>"
+          : /anno/i.test(ra.file_type) ? "<div><span class=fsz0c75>TAGS:&nbsp;</span>" + ra.tags
+            + "\n<span class=fsz0c75>TOC&nbsp;FMT:&nbsp;</span>" + ra.tocfmt
+            + "\n<span class=fsz0c75>STRIKES,&nbsp;INSERTS&nbsp;&amp;&nbsp;HIGHLIGHTS:</span></div>"
             + "<div class=lnhtnml>" + (rb = ra.texthl.join("\n")).substring(0, 255)
             + (rb.length < 257 ? "" : "&hellip;") + "</div>"
           : "<div>" + ( !cvs.includes("time") || !ra.hasOwnProperty("time") ? ""
@@ -1812,9 +1799,9 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
      }</textarea>
     </div>
   </div>` ).join("") + atthtm;
-      imgainp.onchange = () => imgain3.innerHTML = imgainp.files[1]
-        ? "<em>[" + imgainp.files.length + " files selected]</em>"
-        : imgainp.files[0] ? imgainp.files[0].name : "<span>Locate image&hellip;</span>";
+      a1inp.onchange = () => a3inp.innerHTML = a1inp.files[1]
+        ? "<em>[" + a1inp.files.length + " files selected]</em>"
+        : a1inp.files[0] ? a1inp.files[0].name : "<span>Locate image&hellip;</span>";
       savbtn.onclick = () => {
         let chgs = 0,
           hlps = pfacnt.querySelectorAll('.chelp');
@@ -1823,10 +1810,10 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         .forEach( k => /^_id$|^_rev$/.test(k)
           || !/isucc|iwarn/.test(window["p0" + k].className)
           || !++chgs || (fwg[k] = typTest(window["p0" + k].value, 1)[2]) );
-        !imgainp.files.length || !++chgs
+        !a1inp.files.length || !++chgs
         || !(fwg.hasOwnProperty("_attachments") || (fwg._attachments = {}))
-        || imgainp.files.forEach( (f, i) =>
-          fwg._attachments[ !imganm2.value ? f.name : !imgainp.files[1]
+        || a1inp.files.forEach( (f, i) =>
+          fwg._attachments[ !imganm2.value ? f.name : !a1inp.files[1]
             ? imganm2.value : imganm2.value.replace(/(?=\.\w+$|$)/, i > 9 ? i : "0" + i) ]
           = { content_type: f.type, data: f } );
         !chgs || !p0_id.value || !txd1.DBNAME || !window.PouchDB || PouchDB(txd1.DBNAME)
@@ -1851,15 +1838,15 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     });
     if (!window.PouchDB || !txd1.DBNAME) {
       ftotal.innerText = "_";
-      window.PouchDB || !txd1.DBNAME || rsp2con.textContent
+      window.PouchDB || !txd1.DBNAME || r2con.textContent
       || rsp2Show("ALERT: PouchDB is not loaded. Database is inaccessible.");
       pdbssel.selectedIndex === 1
       || [nmflow, nmdata].some(e => !e.classList.contains('dnone')) || tabActv();
     } else if (vbas < 2) {
-      !vbas || (rsp2con.textContent = ""); // keep msg left by filesChg, fileLoad
+      !vbas || (r2con.textContent = ""); // keep msg left by filesChg, fileLoad
       !vbas ? tabActv() : nmdata.classList.remove("dnone") || clipsGen(evt);
     } else if (vbas) {
-      rsp2con.textContent = "";
+      r2con.textContent = "";
       nmflow.classList.remove("dnone");
       tblGen(evt);
     }
