@@ -1086,8 +1086,8 @@ d1ui += "\\n#dbwrap :not(.cfield)>.ccntr { display: inline-block; height: 1.5rem
 d1ui += "\\n#dbwrap .ccntr.cleft { display: inline-block; line-height: 1.5rem; width: 126px; height: 1.5rem; text-align: right; white-space: nowrap; }";
 d1ui += "\\n#dbwrap .ccntr.cleft + .ccntr>input[type=text], #dbwrap .ccntr.cleft + .ccntr>select { width: 216px; }";
 d1ui += "\\n#dbwrap .chelp { font-size: 0.75rem; line-height: normal; margin-top: 0.25rem; }";
-d1ui += "\\n#dbwrap .fsznml { font-size: normal; }";
 d1ui += "\\n#dbwrap .fsz0c75 { font-size: 0.75rem; }";
+d1ui += "\\n#dbwrap .fsz1c00 { font-size: 1rem; }";
 d1ui += "\\n#dbwrap .fltrt { float: right; }";
 d1ui += "\\n#dbwrap .alnrt { text-align: right; }";
 d1ui += "\\n#dbwrap .pwrap { white-space: pre-wrap; }";
@@ -1296,7 +1296,7 @@ d4ui += "<label><input type=checkbox id=hdrsswi /> <a>headers</a></label>&ensp;"
 d4ui += "<label><input type=checkbox id=bodsswi /> <a>bodies</a></label></span>\\n</div>\\n<div id=cdata></div>";
 d5ui += 'd => \`\\\\n<article class=media>\\\\n<div class="media-left">\\\\n<figure class="image rspv128"><img src="\${ aurls[d.image_src] || "" }" data-fileid="\${ d._id }" />\`';
 d5ui += ' + \`\\\\n<figcaption>\${ d.name_user || "" }</figcaption></figure>\\\\n</div>\\\\n<div class="media-content">\\\\n<details class=cfield><summary><strong>\${ _.nmsX(d) }</strong></summary>\`';
-d5ui += ' + \`\\\\n<div class="pwrap fsz0c75">\${ (!(d.roles || "")[0] ? "" : "<em class=\\\\"fsznml lnhtnml\\\\">" + d.roles.join(", ") + "</em>\\\\n") + (!d.bio_short ? "" : "SHORT BIO: " + d.bio_short.substring(0, 255) + (d.bio_short.length < 257 ? "" : "&hellip;")) + "<!-- \\\\nNOTE ID: <a>" + d._id + "</a>\\\\nCREATED: " + new Date(d.ts_created || null).toLocaleString() + "\\\\nUPDATED: " + new Date(d.ts_updated || null).toLocaleString() + " -->" }</div>\\\\n</details>\`';
+d5ui += ' + \`\\\\n<div class="pwrap fsz0c75">\${ (!(d.roles || "")[0] ? "" : "<em class=\\\\"fsz1c00 lnhtnml\\\\">" + d.roles.join(", ") + "</em>\\\\n") + (!d.bio_short ? "" : "SHORT BIO: " + d.bio_short.substring(0, 255) + (d.bio_short.length < 257 ? "" : "&hellip;")) + "<!-- \\\\nNOTE ID: <a>" + d._id + "</a>\\\\nCREATED: " + new Date(d.ts_created || null).toLocaleString() + "\\\\nUPDATED: " + new Date(d.ts_updated || null).toLocaleString() + " -->" }</div>\\\\n</details>\`';
 d5ui += ' + \`\\\\n<details>\\\\n<div class=pwrap>\${ (!d.hasOwnProperty("birthdate") ? "" : "<strong>Birthdate:</strong> " + d.birthdate + "\\\\n") + (!d.hasOwnProperty("emails") ? "" : "<strong>Emails:</strong> " + d.emails.join(", ") + "\\\\n") + (!d.hasOwnProperty("phones") ? "" : "<strong>Phones:</strong> " + d.phones.join(", ") + "\\\\n")';
 d5ui += ' + (!(d.social_profiles || "")[0] ? "" : "<strong>Social profiles:</strong> " + d.social_profiles.join(", ") + "\\\\n") + (!(d.project_urls || "")[0] ? "" : "<strong>Project urls:</strong> " + d.project_urls.join(", ") + "\\\\n") + (!(d.team_groups || "")[0] ? "" : "<strong>Team groups:</strong> " + d.team_groups.join(", ") + "\\\\n") + (!d.ts_created ? "" : "<strong>Joined team:</strong> " + _.ts2Fmt(d.ts_created) + "\\\\n") + (!d.ts_updated ? "" : "<strong>Last updated:</strong> " + _.ts2Fmt(d.ts_updated) + "\\\\n") }</div>\\\\n</details>\\\\n</div>\\\\n</article>\`';
 
