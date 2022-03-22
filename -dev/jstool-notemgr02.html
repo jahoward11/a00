@@ -321,10 +321,10 @@ figure {
 }
 #nmwrap .ccntr.cleft + .ccntr>input[type=text], #nmwrap .ccntr.cleft + .ccntr>select { width: 216px; }
 #nmwrap .chelp { font-size: 0.75rem; line-height: normal; margin-top: 0.25rem; } /* 12px */
-#nmwrap .fsznml { font-size: normal; }
 #nmwrap .fsz0c75 { font-size: 0.75rem; }
-#nmwrap .lnhtnml { line-height: normal; } /* 12px, 16.5px */
+#nmwrap .fsz1c00 { font-size: 1rem; }
 #nmwrap .lnht1c0 { line-height: 1; } /* 10.5px, 14px */
+#nmwrap .lnhtnml { line-height: normal; } /* 12px, 16.5px */
 #nmwrap .fltrt { float: right; }
 #nmwrap .alnrt { text-align: right; }
 #nmwrap .mtup0c25 { margin-top: -0.25rem; }
@@ -1667,7 +1667,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         </summary>
         <div class="pwrap fsz0c75">${
           ( !cvs.includes("roles") || !(ra.roles || "")[0] ? ""
-            : "<em class=\"fsznml lnhtnml\">" + ra.roles.join(", ") + "</em>\n" )
+            : "<em class=\"fsz1c00 lnhtnml\">" + ra.roles.join(", ") + "</em>\n" )
           + (!cvs.includes("linkref") || !ra.linkref ? "" : "LINK REF: " + ra.linkref + "\n")
           + (!cvs.includes("from") || !ra.from ? "" : "FROM: " + ra.from + "\n")
           + (!cvs.includes("to") || !(ra.to || "")[0] ? "" : "TO: " + ra.to.join(", ") + "\n")
