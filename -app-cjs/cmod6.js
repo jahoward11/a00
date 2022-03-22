@@ -216,7 +216,7 @@ __*Tutorial Two: Building a sliding-tiles puzzle (and other games)*__
 g1ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
 g1ui += "\\nhtml { box-sizing: border-box; min-width: 375px; }";
 g1ui += "\\nhr { margin: 1.5rem 0; }";
-g1ui += "\\n#g1wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 1.5rem 0; }";
+g1ui += "\\n#g1wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 24px 0; }";
 g1ui += "\\n#g1wrap .cfield { max-width: 359px; }";
 g1ui += "\\n#g1wrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }";
 g1ui += "\\n#g1wrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }";
@@ -366,7 +366,7 @@ g1Reset();
 g2ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
 g2ui += "\\nhtml { box-sizing: border-box; min-width: 375px; }";
 g2ui += "\\nhr { margin: 1.5rem 0; }";
-g2ui += "\\n#g2wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 1.5rem 0; }";
+g2ui += "\\n#g2wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 24px 0; }";
 g2ui += "\\n#g2wrap .cfield { max-width: 359px; }";
 g2ui += "\\n#g2wrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }";
 g2ui += "\\n#g2wrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }";
@@ -406,7 +406,7 @@ window.litSwi = (rx, cx) => { u2tog.checked ? window["n" + rx + cx].classList.to
 g3ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
 g3ui += "\\nhtml { box-sizing: border-box; min-width: 375px; }";
 g3ui += "\\nhr { margin: 1.5rem 0; }";
-g3ui += "\\n#g3wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 1.5rem 0; }";
+g3ui += "\\n#g3wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 24px 0; }";
 g3ui += "\\n#g3wrap .cfield { max-width: 359px; }";
 g3ui += "\\n#g3wrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }";
 g3ui += "\\n#g3wrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }";
@@ -656,7 +656,7 @@ str.replace(/(deaf)\\w+ (\\w+)\\./i, (m, c1, c2) => \`\${c1}? Or \${c2.replace(/
 srui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
 srui += "\\nhtml { box-sizing: border-box; min-width: 375px; overflow-wrap: break-word; }";
 srui += "\\nhr { margin: 1.5rem 0; }\\n[list]::-webkit-calendar-picker-indicator { display: none !important; }";
-srui += "\\n#srwrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 1.5rem auto; }";
+srui += "\\n#srwrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
 srui += "\\n#srwrap button, #srwrap input:not([type=checkbox]), #srwrap select { line-height: 1.5rem; height: 1.5rem; vertical-align: bottom; }";
 srui += "\\n#srwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }";
 srui += "\\n#srwrap textarea { display: block; font-size: medium; width: 100%; height: 288px; }";
@@ -1070,7 +1070,7 @@ d1ui += "\\n.media-left, .media-right { flex-basis: auto; flex-grow: 0; flex-shr
 d1ui += "\\n.media-left { margin-right: 1rem; }\\n.media-right { margin-left: 1rem; }";
 d1ui += "\\n.media-content { flex-basis: auto; flex-grow: 1; flex-shrink: 1; text-align: inherit; }";
 d1ui += "\\n@media screen and (max-width: 719px) { .media-content { overflow-x: auto; } }";
-d1ui += "\\n#dbwrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 1.5rem auto; }";
+d1ui += "\\n#dbwrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
 d1ui += "\\n#dbwrap a { color: #485fc7; cursor: pointer; text-decoration: none; }";
 d1ui += "\\n#dbwrap a:hover, #dbwrap .ilink:hover:not(:disabled) { color: CornFlowerBlue; }";
 d1ui += "\\n#dbwrap button, #dbwrap .btn1, #dbwrap input:not([type=checkbox]):not([type=radio]), #dbwrap select { background: #f8f8f8; color: Grey; line-height: 1.5rem; height: 1.5rem; margin: 0; padding: 0 0.5rem; border: 0; border-radius: 0; vertical-align: bottom; }";
