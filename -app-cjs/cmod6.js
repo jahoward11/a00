@@ -1075,7 +1075,7 @@ d1ui += "\\n#dbwrap a { color: #485fc7; cursor: pointer; text-decoration: none; 
 d1ui += "\\n#dbwrap a:hover, #dbwrap .ilink:hover:not(:disabled) { color: CornFlowerBlue; }";
 d1ui += "\\n#dbwrap button, #dbwrap .btn1, #dbwrap input:not([type=checkbox]):not([type=radio]), #dbwrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
 d1ui += "\\n#dbwrap input::placeholder, #dbwrap input:disabled { color: revert; opacity: 0.5; }";
-d1ui += "\\n#dbwrap select { padding: 0 0.25rem; vertical-align: bottom; }";
+d1ui += "\\n#dbwrap select { padding: 0 0.25rem; /* vertical-align: middle; */ }";
 d1ui += "\\n#dbwrap .media-left>.image.rspv128 { width: 128px; height: unset; margin: 0 1em 0 2em; padding: 0; }";
 d1ui += "\\n#dbwrap .media-left>.image>img { background-color: LightSteelBlue; min-height: 128px; cursor: pointer; }";
 d1ui += "\\n#dbwrap .media-left>.image>figcaption { font-size: small; font-style: italic; text-align: center; }";

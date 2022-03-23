@@ -36,6 +36,7 @@ g4ui += "\\nhtml { box-sizing: border-box; color: DimGrey; /* font-size: 14px; *
 g4ui += "\\nbutton, input, select { margin: 0; }\\nhr { margin: 1.5rem 0; }";
 g4ui += "\\n#g4wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 24px 0; }";
 g4ui += "\\n#g4wrap button, #g4wrap .btn1, #g4wrap input:not([type=checkbox]):not([type=radio]), #g4wrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
+g4ui += "\\n#g4wrap select { padding: 0 0.25rem; vertical-align: middle; }";
 g4ui += "\\n#g4wrap .cfield { max-width: 359px; }";
 g4ui += "\\n#g4wrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }";
 g4ui += "\\n#g4wrap .ccntr:not(:last-child) { margin-right: 0.5rem; }";
