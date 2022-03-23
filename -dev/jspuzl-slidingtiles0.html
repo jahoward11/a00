@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang=en>
+<title>Puzzles, JS Tutorial 2</title>
+<meta charset="utf-8">
+<meta name=viewport content="width=device-width, initial-scale=1">
+
+<div id="g1wrap">
+<style>
+*, *::before, *::after { box-sizing: inherit; }
+html { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }
+button, input, select { margin: 0; }
+hr { margin: 1.5rem 0; }
+#g1wrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px 0; }
+#g1wrap button, #g1wrap .btn1, #g1wrap input:not([type=checkbox]):not([type=radio]), #g1wrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }
+#g1wrap .cfield { max-width: 359px; }
+#g1wrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }
+#g1wrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }
+#g1wrap :not(.cfield)>.ccntr { display: inline-block; height: 1.5rem; margin-bottom: 0.5rem; }
+#g1wrap .blank, #g1wrap .gtile { width: 61px; height: 61px; border: 4px solid White; }
+#g1wrap .gtile { background: LightSteelBlue; color: White; font-size: large; font-weight: bold; cursor: pointer; text-align: center; }
+#trows, #tcols { max-width: 36px; }
+#g1board { margin: 12px; border-collapse: collapse; }
+#g1scor { position: relative; top: -8px; font-size: small; margin-left: 16px; }
+#g1movs { font-weight: bold; }
+</style>
+<h4 class="cfield">Sliding Tiles</h4>
+<div class="cfield"><em>Objective:</em> Order the characters from least to greatest—starting at the top left&nbsp;corner.</div>
+<div>
+<label class="ccntr"><select id="tnmrl">
+<option disabled="">Characters</option>
+<option>1 2 3 4 …</option>
+<option>I II III IV …</option>
+<option>A B C D …</option>
+<option>Α Β Γ Δ …</option>
+</select></label><label class="ccntr"><select id="tclrs">
+<option disabled="">Color Cascades</option>
+<option>No gradient</option>
+<option>Red gradient</option>
+<option>Gold gradient</option>
+<option>Blue gradient</option>
+<option>Rainbow pattern</option>
+</select></label>
+<label class="ccntr">Auto-shuffle <input type="checkbox" id="pshuf" checked=""></label>
+</div>
+<div>
+<label class="ccntr">Rows <input type="text" id="trows" value="4" size="2"></label>
+<label class="ccntr">Columns <input type="text" id="tcols" value="4" size="2"></label>
+<label class="ccntr"><input type="button" value="↻ NEW GAME" onclick="g1Reset()"></label>
+</div>
+<table id="g1board">
+<tbody><tr><td class="gtile" onclick="tileSli(0,0)">13</td><td class="gtile" onclick="tileSli(0,1)">6</td><td class="gtile" onclick="tileSli(0,2)">12</td><td class="blank"> </td></tr>
+<tr><td class="gtile" onclick="tileSli(1,0)">1</td><td class="gtile" onclick="tileSli(1,1)">2</td><td class="gtile" onclick="tileSli(1,2)">11</td><td class="gtile" onclick="tileSli(1,3)">3</td></tr>
+<tr><td class="gtile" onclick="tileSli(2,0)">7</td><td class="gtile" onclick="tileSli(2,1)">14</td><td class="gtile" onclick="tileSli(2,2)">15</td><td class="gtile" onclick="tileSli(2,3)">8</td></tr>
+<tr><td class="gtile" onclick="tileSli(3,0)">9</td><td class="gtile" onclick="tileSli(3,1)">5</td><td class="gtile" onclick="tileSli(3,2)">4</td><td class="gtile" onclick="tileSli(3,3)">10</td></tr>
+</tbody></table>
+<div id="g1scor" class="cfield">Count: <span id="g1movs">0</span></div>
+<div><input type="button" class="ccntr" value="RETRACT MOVE" onclick="m1Rvrs()"><input type="button" value="RESET COUNTER" onclick="c1Zero()"></div>
+</div>
+
+<script type=module>
+let tnx, tcx, psh, rval, cval, tmax, tovr, m1trk, unsh, cxs, shxs, shuf, tarr, cr1s, cr2s,
+  clrefs = [ "", "", ["#752424", "#9c3030", "#c33c3c", "#cf6363", "#db8a8a", "#e7b1b1", "#f3d8d8"], ["#856514", "#b1871b", "#dea821", "#e4ba4e", "#ebcb7a", "#f2dca6", "#f8eed3"], ["#2b506e", "#396a93", "#4785b8", "#6c9dc6", "#91b6d4", "#b6cee2", "#dae7f1"], ["#ff9999", "#ffcc99", "#fff099", "#99cc99", "#9999ff", "#cc99cc", "#d8bfd8"] ],
+  uara = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1],
+  urom = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"],
+  utoRom = v => { let s = ""; uara.forEach((ai, i) => { while (v % ai < v) { s += urom[i]; v -= ai; } }); return s; },
+  utoEng = v => { let i, codpts = []; while (v) { i = 0; while ((v - ++i) % 26); codpts.unshift(i + 64); v = (v - i) / 26; } return String.fromCodePoint(...codpts || 65); },
+  utoGre = v => { let i, codpts = []; while (v) { i = 0; while ((v - ++i) % 24); codpts.unshift((i < 18 ? i : 1 + i) + 912); v = (v - i) / 24; } return String.fromCodePoint(...codpts || 913); },
+  clRnk1s = () => unsh.map( v => clrefs[tcx][ cxs.find( x => tovr < 0 ? x === 6 || v <= cval || (v % cval > 0 && v % cval <= cval - rval + 1) || (v > cval * (1 + x) - rval + (1 + x) && v <= cval * (1 + x)) || (v - (1 + x) - (cval - rval)) % cval === 0 : x === 6 || v - tovr <= tmax * (1 + x) || (v - (1 + x)) % tmax === 0 )]),
+  clRnk2s = () => unsh.map( v => ( tovr < 0 ? v <= cval - rval || (v - 1 - (cval - rval)) % (1 + cval) !== 0 || v > 7 * cval : v - 1 < tovr || (v - 1 - tovr) % (1 + tmax) !== 0 || v - 1 - tovr > 7 * tmax ) ? 'White' : tcx < 5 ? 'Gold' : 'LimeGreen' ),
+  nAlt = v => tnx == 2 ? utoRom(v) : tnx == 3 ? utoEng(v) : tnx == 4 ? utoGre(v) : v,
+  isSolva = () => { let ctinvs = shxs.filter(e => e.v).map(e => e.i + 1).reduce((a, b, i, f) => a + f.slice(i + 1).reduce((c, d) => c + (d > b ? 0 : 1), 0), 0); return (ctinvs + (cval % 2 === 1 ? 0 : rval - Math.ceil((shuf.indexOf(0) + 1) / cval))) % 2 === 0; },
+  posSwap = (p0, p1) => [tarr[p0][p1], tarr[p0][p1 + 1]] = [tarr[p0][p1 + 1], tarr[p0][p1]],
+  gbdGen = () => g1board.innerHTML = tarr.map( (e, i) => "\n<tr>" + e.map( (f, j) => f === 0 ? "<td class=blank> </td>" : `<td class=gtile ${!cr1s ? "" : `style="background:${cr1s[f]};color:${cr2s[f]};" `}onclick=tileSli(${i},${j})>${f}</td>` ).join("") + "</tr>" ).join("") + "\n";
+window.c1Zero = () => (m1trk = []) && (g1movs.innerHTML = 0);
+window.g1Reset = () => { tnx = tnmrl.selectedIndex; tcx = tclrs.selectedIndex; psh = pshuf.checked; rval = +trows.value; cval = +tcols.value; tmax = rval <= cval ? rval : cval; tovr = (rval - cval) * tmax; c1Zero(); unsh = Array.from(Array(rval * cval).keys()); cxs = Array.from(Array(tmax > 7 ? 7 : tmax).keys()); [cr1s, cr2s] = tcx < 2 ? [0, 0] : [clRnk1s(), clRnk2s()]; unsh = unsh.slice(1).map(nAlt).concat(0); tcx < 2 || ([cr1s, cr2s] = [cr1s, cr2s].map(e => Object.fromEntries(unsh.map((v, i) => [v, e[i + 1]])))); shxs = unsh.map((v, i) => ({ i, v, o: Math.random() })).sort((a, b) => !psh || a.o - b.o); shuf = shxs.map(e => e.v); tarr = Array.from(Array(rval)).map(() => shuf.splice(0, cval)); shuf = tarr.flat(); isSolva() || (shuf[0] && shuf[1] ? posSwap(0, 0) : posSwap(rval - 1, cval - 2)); gbdGen(); };
+window.tileSli = (rx, cx, bkup) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (tarr[p0] || "")[p1] === 0); !bl || (bkup || m1trk.push([bl[0], bl[1]])) && ([tarr[bl[0]][bl[1]], tarr[rx][cx]] = [tarr[rx][cx], 0]) && ( g1movs.innerHTML = "" + tarr !== "" + unsh ? m1trk.length + " moves" : "<em>Puzzle solved in " + m1trk.length + " moves!</em>" ) && gbdGen(); };
+window.m1Rvrs = () => !(m1trk || "").length || tileSli(... m1trk.pop(), 1);
+g1Reset();
+</script>
+</html>

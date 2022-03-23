@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang=en>
+<title>Puzzles, JS Tutorial 2</title>
+<meta charset="utf-8">
+<meta name=viewport content="width=device-width, initial-scale=1">
+
+<div id="g3wrap">
+<style>
+*, *::before, *::after { box-sizing: inherit; }
+html { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }
+button, input, select { margin: 0; }
+hr { margin: 1.5rem 0; }
+#g3wrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px 0; }
+#g3wrap button, #g3wrap .btn1, #g3wrap input:not([type=checkbox]):not([type=radio]), #g3wrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }
+#g3wrap .cfield { max-width: 359px; }
+#g3wrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }
+#g3wrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }
+#g3wrap :not(.cfield)>.ccntr { display: inline-block; height: 1.5rem; margin-bottom: 0.5rem; }
+#g3bcntr { position: relative; padding-top: 1px; }
+#g3panel { box-sizing: content-box; margin: 15px 16px; border: 4px solid DarkKhaki; border-collapse: collapse; }
+#g3panel td { background: beige; width: 40px; height: 40px; }
+#g3panel td.chkr0 { background: LightSlateGrey; }
+#g3panel td.chkr1 { background: Gainsboro; }
+#g3panel td.jdest { box-shadow: inset 0 0 0 5px White; }
+#g3board { position: absolute; top: 0; margin: 7px; border-spacing: 27px; }
+#g3board td { background: Black; width: 15px; height: 15px; border-radius: 8px; box-shadow: inset 1px 0 3px 2px Grey; cursor: pointer; }
+#g3board td.nohol { background: Transparent; box-shadow: none; }
+#g3board td.phead { background: Red; box-shadow: -1px -1px 0 3px red, 1px 1px 8px 3px grey; }
+#g3scor { position: relative; top: -8px; font-size: small; margin-left: 16px; }
+#g3movs { font-weight: bold; }
+</style>
+<h4 class="cfield">Pegs</h4>
+<div class="cfield"><em>Objective:</em> Remove all board pegs but&nbsp;one.</div>
+<div class="cfield"><em>How to play:</em> A move is made by jumping one peg with an adjacent peg; The jumped peg is&nbsp;removed.<br>Tap on a peg to select it for jumping—Then, if you have a choice, tap on a highlighted hole to select it for that peg's&nbsp;destination.</div>
+<div>
+<span class="ccntr"><select id="ppatt">
+<option>—Startup Pattern—</option>
+<option>Cross Symbol</option>
+<option>Plus Sign</option>
+<option>North Tower</option>
+<option>Arrow in Flight</option>
+<option>Egyptian Pyramid</option>
+<option>Red Diamond</option>
+<option>Solitaire</option>
+</select></span><span class="ccntr"><input type="button" value="↻ RESTART" onclick="g3Reset()"></span>
+</div>
+<div id="g3bcntr">
+<table id="g3panel"><tbody>
+<tr><td class="chkr0"></td><td class="chkr1"></td><td></td><td></td><td></td><td class="chkr1"></td><td class="chkr0"></td></tr>
+<tr><td class="chkr1"></td><td class="chkr0"></td><td></td><td></td><td></td><td class="chkr0"></td><td class="chkr1"></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td class="chkr1"></td><td class="chkr0"></td><td></td><td></td><td></td><td class="chkr0"></td><td class="chkr1"></td></tr>
+<tr><td class="chkr0"></td><td class="chkr1"></td><td></td><td></td><td></td><td class="chkr1"></td><td class="chkr0"></td></tr>
+</tbody></table>
+<table id="g3board"><tbody>
+<tr><td class="nohol"></td><td class="nohol"></td><td id="h02" onclick="pegJmp(0,2)"></td><td id="h03" onclick="pegJmp(0,3)"></td><td id="h04" onclick="pegJmp(0,4)"></td><td class="nohol"></td><td class="nohol"></td></tr>
+<tr><td class="nohol"></td><td class="nohol"></td><td id="h12" onclick="pegJmp(1,2)"></td><td id="h13" onclick="pegJmp(1,3)"></td><td id="h14" onclick="pegJmp(1,4)"></td><td class="nohol"></td><td class="nohol"></td></tr>
+<tr><td id="h20" onclick="pegJmp(2,0)"></td><td id="h21" onclick="pegJmp(2,1)"></td><td id="h22" onclick="pegJmp(2,2)"></td><td id="h23" onclick="pegJmp(2,3)"></td><td id="h24" onclick="pegJmp(2,4)"></td><td id="h25" onclick="pegJmp(2,5)"></td><td id="h26" onclick="pegJmp(2,6)"></td></tr>
+<tr><td id="h30" onclick="pegJmp(3,0)"></td><td id="h31" onclick="pegJmp(3,1)"></td><td id="h32" onclick="pegJmp(3,2)"></td><td id="h33" onclick="pegJmp(3,3)"></td><td id="h34" onclick="pegJmp(3,4)"></td><td id="h35" onclick="pegJmp(3,5)"></td><td id="h36" onclick="pegJmp(3,6)"></td></tr>
+<tr><td id="h40" onclick="pegJmp(4,0)"></td><td id="h41" onclick="pegJmp(4,1)"></td><td id="h42" onclick="pegJmp(4,2)"></td><td id="h43" onclick="pegJmp(4,3)"></td><td id="h44" onclick="pegJmp(4,4)"></td><td id="h45" onclick="pegJmp(4,5)"></td><td id="h46" onclick="pegJmp(4,6)"></td></tr>
+<tr><td class="nohol"></td><td class="nohol"></td><td id="h52" onclick="pegJmp(5,2)"></td><td id="h53" onclick="pegJmp(5,3)"></td><td id="h54" onclick="pegJmp(5,4)"></td><td class="nohol"></td><td class="nohol"></td></tr>
+<tr><td class="nohol"></td><td class="nohol"></td><td id="h62" onclick="pegJmp(6,2)"></td><td id="h63" onclick="pegJmp(6,3)"></td><td id="h64" onclick="pegJmp(6,4)"></td><td class="nohol"></td><td class="nohol"></td></tr>
+</tbody></table>
+</div>
+<div id="g3scor" class="cfield">Count: <span id="g3movs">0</span></div>
+<div class="cfield"><input type="button" class="ccntr" value="RETRACT MOVE" onclick="m3Rvrs()"><input type="button" value="RESET COUNTER" onclick="c3Zero()"></div>
+<div class="cfield"><label class="ccntr"><input type="checkbox" id="u3tog"> Allow free peg placement—Suspend&nbsp;counter</label></div>
+</div>
+
+<script type=module>
+let jopts, peg0s,
+  m3trk = [],
+  a0t6 = [0, 1, 2, 3, 4, 5, 6],
+  p3sol = a0t6.map(r => a0t6.map(c => "" + [r, c])).flat(),
+  g3panel = window.g3panel || document.createElement('table'),
+  p3tds = Array.from(g3panel.querySelectorAll('tr')).map(e => e.querySelectorAll('td')),
+  osGen = (r, c) => [ [[r, c], [r - 1, c], [r - 2, c]], [[r, c], [r, c - 1], [r, c - 2]], [[r, c], [r, c + 1], [r, c + 2]], [[r, c], [r + 1, c], [r + 2, c]] ],
+  osClr = () => g3panel.querySelectorAll('.jdest').forEach(e => e.className = ""),
+  pegsRplc = (jps, bkup) => osClr() || (jopts = 0) || (bkup || m3trk.push(jps)) && jps.forEach(([r, c]) => window["h" + r + c].classList.toggle("phead")) || u3tog.checked || ( g3movs.innerHTML = g3board.querySelectorAll('.phead').length !== 1 ? m3trk.length + " jumps" : "<em>Puzzle solved with " + m3trk.length + " jumps!</em>" );
+[ [0,0], [0,1], [], [0,5], [0,6], [1,0], [1,1], [], [1,5], [1,6], [], [5,0], [5,1], [], [5,5], [5,6], [6,0], [6,1], [], [6,5], [6,6] ].forEach( ([r, c], i) => r == null || !p3tds[r] || (p3tds[r][c].className = i % 2 === 0 ? "chkr0" : "chkr1") );
+[47, 42, 40, 35, 12, 7, 5, 0].forEach(e => p3sol.splice(e, 2));
+p3sol.splice(16, 1);
+peg0s = [ "", ["1,3", "2,2", "2,3", "2,4", "3,3", "4,3"], ["1,3", "2,3", "3,1", "3,2", "3,3", "3,4", "3,5", "4,3", "5,3"], ["0,2", "0,3", "0,4", "1,2", "1,3", "1,4", "2,2", "2,3", "2,4", "3,2", "3,4"], ["1,4", "2,0", "2,1", "2,4", "2,5", "3,0", "3,1", "3,2", "3,3", "3,4", "3,5", "3,6", "4,0", "4,1", "4,4", "4,5", "5,4"], ["1,3", "2,2", "2,3", "2,4", "3,1", "3,2", "3,3", "3,4", "3,5", "4,0", "4,1", "4,2", "4,3", "4,4", "4,5", "4,6"], p3sol.filter((e, i) => ![0, 2, 6, 12, 19, 25, 29, 31].includes(i)), p3sol ];
+window.c3Zero = () => (m3trk = []) && (g3movs.innerHTML = 0);
+window.g3Reset = () => osClr() || c3Zero() || a0t6.forEach( r => a0t6.forEach( c => !window["h" + r + c] || window["h" + r + c].classList[peg0s[ppatt.selectedIndex].includes("" + [r, c]) ? "add" : "remove"]("phead") ) );
+window.pegJmp = (rx, cx) => { let jx, ph1 = window["h" + rx + cx].classList.contains("phead"); jopts = !ph1 ? jopts : osGen(rx, cx); u3tog.checked ? osClr() || (jopts = 0) || window["h" + rx + cx].classList.toggle("phead") : !ph1 ? !p3tds[rx][cx].className || pegsRplc(jopts.find(e => "" + e[2] === "" + [rx, cx])) : osClr() || jopts.forEach( ([[], [r1, c1], [r2, c2]], i) => !window["h" + r1 + c1] || !window["h" + r1 + c1].classList.contains("phead") || !window["h" + r2 + c2] || window["h" + r2 + c2].className || (p3tds[r2][c2].className = "jdest") && (jx = i) ); return u3tog.checked || ( jx == null ? jopts = 0 : (p3tds[rx][cx].className = "jdest") && g3panel.querySelectorAll('.jdest').length > 2 || pegsRplc(jopts[jx]) ); };
+window.m3Rvrs = () => !(m3trk || "").length || pegsRplc(m3trk.pop(), 1);
+</script>
+</html>

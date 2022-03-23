@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang=en>
+<title>Puzzles, JS Tutorial 2</title>
+<meta charset="utf-8">
+<meta name=viewport content="width=device-width, initial-scale=1">
+
+<div id="g2wrap">
+<style>
+*, *::before, *::after { box-sizing: inherit; }
+html { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }
+button, input, select { margin: 0; }
+hr { margin: 1.5rem 0; }
+#g2wrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px 0; }
+#g2wrap button, #g2wrap .btn1, #g2wrap input:not([type=checkbox]):not([type=radio]), #g2wrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }
+#g2wrap .cfield { max-width: 359px; }
+#g2wrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }
+#g2wrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }
+#g2wrap :not(.cfield)>.ccntr { display: inline-block; height: 1.5rem; margin-bottom: 0.5rem; }
+#g2bcntr { position: relative; padding-top: 1px; }
+#g2circt { margin: 48px; border-collapse: collapse; }
+#g2circt td { width: 59px; height: 59px; border: 4px solid black; }
+#g2board { position: absolute; top: 0; margin: 16px; border-spacing: 8px; }
+#g2board td { background: MediumOrchid; width: 51px; height: 51px; border-radius: 26px; box-shadow: 0 0 16px 4px Orchid; cursor: pointer; }
+#g2board td.ldark { background: Indigo; box-shadow: 0 0 16px 4px Grey; }
+#g2scor { position: relative; top: -12px; font-size: small; margin-left: 16px; }
+#g2movs { font-weight: bold; }
+</style>
+<h4 class="cfield">Lights Out</h4>
+<div class="cfield"><em>Objective:</em> Switch all matrix lights off.</div>
+<div class="cfield"><em>Game Action:</em> Switching a diode in this lighting matrix also switches any directly connected up-, down-, left- or right- diodes.</div>
+<div>
+<span class="ccntr"><select id="lpatt">
+<option>—Startup Pattern—</option>
+<option>Treasure marker (in 4)</option>
+<option>Lucy's diamond (in 5)</option>
+<option>Eight-pocket table (in 5)</option>
+<option>Picasso emoji (in 5)</option>
+<option>Peep holes (in 6)</option>
+<option>Split screen (in 6)</option>
+<option>Square target (in 9)</option>
+<option>Bi-polar opposites (in 11)</option>
+<option>Central light out (in 12)</option>
+<option>Road caution marks (in 15)</option>
+</select></span><span class="ccntr"><input type="button" value="↻ RESTART" onclick="g2Reset()"></span>
+</div>
+<div id="g2bcntr">
+<table id="g2circt"><tbody>
+<tr><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
+<table id="g2board"><tbody>
+<tr><td id="n00" onclick="litSwi(0,0)"></td><td id="n01" onclick="litSwi(0,1)"></td><td id="n02" onclick="litSwi(0,2)"></td><td id="n03" onclick="litSwi(0,3)"></td><td id="n04" onclick="litSwi(0,4)"></td></tr>
+<tr><td id="n10" onclick="litSwi(1,0)"></td><td id="n11" onclick="litSwi(1,1)"></td><td id="n12" onclick="litSwi(1,2)"></td><td id="n13" onclick="litSwi(1,3)"></td><td id="n14" onclick="litSwi(1,4)"></td></tr>
+<tr><td id="n20" onclick="litSwi(2,0)"></td><td id="n21" onclick="litSwi(2,1)"></td><td id="n22" onclick="litSwi(2,2)"></td><td id="n23" onclick="litSwi(2,3)"></td><td id="n24" onclick="litSwi(2,4)"></td></tr>
+<tr><td id="n30" onclick="litSwi(3,0)"></td><td id="n31" onclick="litSwi(3,1)"></td><td id="n32" onclick="litSwi(3,2)"></td><td id="n33" onclick="litSwi(3,3)"></td><td id="n34" onclick="litSwi(3,4)"></td></tr>
+<tr><td id="n40" onclick="litSwi(4,0)"></td><td id="n41" onclick="litSwi(4,1)"></td><td id="n42" onclick="litSwi(4,2)"></td><td id="n43" onclick="litSwi(4,3)"></td><td id="n44" onclick="litSwi(4,4)"></td></tr>
+</tbody></table>
+</div>
+<div id="g2scor" class="cfield">Count: <span id="g2movs">0</span></div>
+<div class="cfield"><span class="ccntr"><input type="button" value="RESET COUNTER" onclick="c2Zero()"></span></div>
+<div class="cfield"><label class="ccntr"><input type="checkbox" id="u2tog"> Allow single-diode toggle—Suspend&nbsp;counter</label></div>
+</div>
+
+<script type=module>
+let m2trk = 0,
+  lit0s = [ "", ["0,0", "0,4", "1,1", "1,3", "2,2", "3,1", "3,3", "4,0", "4,4"], ["0,2", "1,1", "1,3", "2,0", "2,4", "3,1", "3,3", "4,2"], ["0,0", "0,2", "0,4", "2,0", "2,4", "4,0", "4,2", "4,4"], ["2,1", "2,3", "3,2", "4,1", "4,2", "4,3"], ["2,1", "2,3"], ["0,2", "1,2", "2,2", "3,2", "4,2"], ["1,1", "1,2", "1,3", "2,1", "2,3", "3,1", "3,2", "3,3"], ["0,4", "4,0"], ["2,2"], ["0,2", "1,1", "2,0", "2,4", "3,3", "4,2"] ];
+window.c2Zero = () => g2movs.innerHTML = m2trk = 0;
+window.g2Reset = () => c2Zero() || [0, 1, 2, 3, 4].forEach( r => [0, 1, 2, 3, 4].forEach( c => window["n" + r + c].classList[lit0s[lpatt.selectedIndex].includes("" + [r, c]) ? "add" : "remove"]("ldark") ) );
+window.litSwi = (rx, cx) => { u2tog.checked ? window["n" + rx + cx].classList.toggle("ldark") : [[rx - 1, cx], [rx, cx - 1], [rx, cx], [rx, cx + 1], [rx + 1, cx]].forEach( ([r, c]) => r < 0 || c < 0 || r > 4 || c > 4 || window["n" + r + c].classList.toggle("ldark") ); u2tog.checked || ( g2movs.innerHTML = [0, 1, 2, 3, 4].some( r => [0, 1, 2, 3, 4].some(c => !window["n" + r + c].classList.contains("ldark")) ) ? ++m2trk + " switches" : "<em>Puzzle solved with " + ++m2trk + " switches!</em>" ); };
+</script>
+</html>
