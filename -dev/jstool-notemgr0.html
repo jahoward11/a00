@@ -220,7 +220,7 @@ figure {
 .tabs .icon:last-child { margin-left: 0.5em; }
 .tabs.is-centered ul { justify-content: center; }
 #nmwrap {
-  font: normal 14px/1.5 BlinkMacSystemFont, -apple-system, Helvetica, Arial, sans-serif;
+  font: normal 1rem/1.5 BlinkMacSystemFont, -apple-system, Helvetica, Arial, sans-serif;
   max-width: 960px;
   margin: 24px auto 96px;
 }
@@ -280,6 +280,12 @@ figure {
   padding: 0 0.25rem;
   vertical-align: top;
 }
+#nmwrap select.anone {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+#nmwrap select.anone::-ms-expand { display: none; }
 #nmwrap pre:not(.pwrap) {
   white-space: pre;
   overflow-wrap: normal;
@@ -960,7 +966,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   <div class=cfield>
     <span class="ccntr cleft">Add attachments</span><span class=ccntr><label>`
       + `<input id=a1inp type=file multiple />`
-      + `<span id=a2inp class="btn1 fsz0c75 hgainl ilink">&#x2726;</span>`
+      + `<span id=a2inp class="btn1 hgainl ilink">&#x2726;</span>`
       + `<span id=a3inp class=btn1><span>Locate image&hellip;</span></span>
     </label></span>
   </div>
@@ -1965,7 +1971,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       evt.target.parentElement.previousElementSibling
       || evt.target.parentElement.parentElement.nextElementSibling
       || !evt.target.value || !(ntr = document.createElement('tr'))
-      || !( ntr.innerHTML = "<td><input type=text /></td><td><select>" + dtOpts()
+      || !( ntr.innerHTML = "<td><input type=text /></td><td><select class=anone>" + dtOpts()
         + "</select></td><td><input type=text /></td>" ) || !t1tbod.appendChild(ntr)
       || ntr.querySelectorAll('input, select').forEach(e => e.onchange = t1sChg);
       return t01inp.value || ( t01inp.value = tkey + ( 1
@@ -1977,7 +1983,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         ? pftyps[t01sel.value] || pftyps.new : nm0sets.p2typs[t01sel.value].t1 )
       .concat([["", ""]]).map( ([k, v], i) => k === "_rev" ? ""
         : "\n      <tr><td><input type=text value=\"" + k + "\"" + (i ? "" : " disabled")
-          + " /></td><td><select" + (i ? ">" : " disabled>") + dtOpts(typTest(v)[1])
+          + " /></td><td><select class=anone" + (i ? ">" : " disabled>") + dtOpts(typTest(v)[1])
           + "</select></td><td><input type=text value='"
           + valStr(v) + "' /></td></tr>" ).join("") + "\n      ";
     t1tbod.querySelectorAll('input, select').forEach(e => e.onchange = t1sChg);
