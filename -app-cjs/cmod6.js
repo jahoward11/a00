@@ -216,7 +216,7 @@ __*Tutorial Two: Building a sliding-tiles puzzle (and other games)*__
 g1ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
 g1ui += "\\nhtml { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }";
 g1ui += "\\nbutton, input, select { margin: 0; }\\nhr { margin: 1.5rem 0; }";
-g1ui += "\\n#g1wrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px 0; }";
+g1ui += "\\n#g1wrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px 0; }";
 g1ui += "\\n#g1wrap button, #g1wrap .btn1, #g1wrap input:not([type=checkbox]):not([type=radio]), #g1wrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
 g1ui += "\\n#g1wrap .cfield { max-width: 359px; }\\n#g1wrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }";
 g1ui += "\\n#g1wrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }";
@@ -232,7 +232,7 @@ g1ui += "\\n<div>\\n<label class=ccntr><select id=tnmrl>\\n<option disabled>Char
 g1ui += ["1 2 3 4 &hellip;", "I II III IV &hellip;", "A B C D &hellip;", "Α Β Γ Δ &hellip;"].map(e => "<option>" + e + "</option>").join("\\n");
 g1ui += "\\n</select></label><label class=ccntr><select id=tclrs>\\n<option disabled>Color Cascades</option>\\n";
 g1ui += ["No gradient", "Red gradient", "Gold gradient", "Blue gradient", "Rainbow pattern"].map(e => "<option>" + e + "</option>").join("\\n");
-g1ui += "\\n</select></label>\\n<label class=ccntr>Auto-shuffle <input type=checkbox id=pshuf checked></label>\\n</div>\\n<div>";
+g1ui += "\\n</select></label><label class=ccntr>Auto-shuffle <input type=checkbox id=pshuf checked></label>\\n</div>\\n<div>";
 g1ui += "\\n<label class=ccntr>Rows <input type=text id=trows value=4 size=2></label>";
 g1ui += "\\n<label class=ccntr>Columns <input type=text id=tcols value=4 size=2></label>";
 g1ui += "\\n<label class=ccntr><input type=button value=\\"&orarr; NEW GAME\\" onclick=g1Reset()></label>\\n</div>";
@@ -366,7 +366,7 @@ g1Reset();
 g2ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
 g2ui += "\\nhtml { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }";
 g2ui += "\\nbutton, input, select { margin: 0; }\\nhr { margin: 1.5rem 0; }";
-g2ui += "\\n#g2wrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px 0; }";
+g2ui += "\\n#g2wrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px 0; }";
 g2ui += "\\n#g2wrap button, #g2wrap .btn1, #g2wrap input:not([type=checkbox]):not([type=radio]), #g2wrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
 g2ui += "\\n#g2wrap .cfield { max-width: 359px; }\\n#g2wrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }";
 g2ui += "\\n#g2wrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }";
@@ -406,7 +406,7 @@ window.litSwi = (rx, cx) => { u2tog.checked ? window["n" + rx + cx].classList.to
 g3ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
 g3ui += "\\nhtml { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }";
 g3ui += "\\nbutton, input, select { margin: 0; }\\nhr { margin: 1.5rem 0; }";
-g3ui += "\\n#g3wrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px 0; }";
+g3ui += "\\n#g3wrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px 0; }";
 g3ui += "\\n#g3wrap button, #g3wrap .btn1, #g3wrap input:not([type=checkbox]):not([type=radio]), #g3wrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
 g3ui += "\\n#g3wrap .cfield { max-width: 359px; }\\n#g3wrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }";
 g3ui += "\\n#g3wrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }";
@@ -657,7 +657,7 @@ srui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
 srui += "\\nhtml { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }";
 srui += "\\nbutton, input, select { margin: 0; }\\nhr { margin: 1.5rem 0; }\\n[list]::-webkit-calendar-picker-indicator { display: none !important; }";
 srui += "\\n.textarea { background-color: white; border-color: #dbdbdb; border-radius: 4px; display: block; max-width: 100%; min-width: 100%; padding: calc(0.75em - 1px); resize: vertical; }";
-srui += "\\n#srwrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
+srui += "\\n#srwrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
 srui += "\\n#srwrap button, #srwrap .btn1, #srwrap input:not([type=checkbox]):not([type=radio]), #srwrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
 srui += "\\n#srwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }\\n#srwrap .textarea { height: 288px; }";
 srui += "\\n#srwrap .iwarn { color: Orange; }\\n#srwrap .isucc { color: CornFlowerBlue; }";
@@ -1070,12 +1070,13 @@ d1ui += "\\n.media-left, .media-right { flex-basis: auto; flex-grow: 0; flex-shr
 d1ui += "\\n.media-left { margin-right: 1rem; }\\n.media-right { margin-left: 1rem; }";
 d1ui += "\\n.media-content { flex-basis: auto; flex-grow: 1; flex-shrink: 1; text-align: inherit; }";
 d1ui += "\\n@media screen and (max-width: 719px) { .media-content { overflow-x: auto; } }";
-d1ui += "\\n#dbwrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
+d1ui += "\\n#dbwrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
 d1ui += "\\n#dbwrap a { color: #485fc7; cursor: pointer; text-decoration: none; }";
 d1ui += "\\n#dbwrap a:hover, #dbwrap .ilink:hover:not(:disabled) { color: CornFlowerBlue; }";
 d1ui += "\\n#dbwrap button, #dbwrap .btn1, #dbwrap input:not([type=checkbox]):not([type=radio]), #dbwrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
 d1ui += "\\n#dbwrap input::placeholder, #dbwrap input:disabled { color: revert; opacity: 0.5; }";
 d1ui += "\\n#dbwrap select { padding: 0 0.25rem; /* vertical-align: middle; */ }";
+d1ui += "\\n#dbwrap select.anone { -webkit-appearance: none; -moz-appearance: none; appearance: none; }\\n#dbwrap select.anone::-ms-expand { display: none; }";
 d1ui += "\\n#dbwrap .media-left>.image.rspv128 { width: 128px; height: unset; margin: 0 1em 0 2em; padding: 0; }";
 d1ui += "\\n#dbwrap .media-left>.image>img { background-color: LightSteelBlue; min-height: 128px; cursor: pointer; }";
 d1ui += "\\n#dbwrap .media-left>.image>figcaption { font-size: small; font-style: italic; text-align: center; }";
@@ -1095,7 +1096,7 @@ d1ui += "\\n#dbwrap .diblk, #dbwrap .btn1 { display: inline-block; }";
 d1ui += "\\n#dbwrap .dnone { display: none; }";
 d1ui += "\\n#dbwrap #a1inp { width: 0; padding: 0; }";
 d1ui += "\\n#dbwrap #a2inp { width: 1.5rem; text-align: center; padding: 0; }";
-d1ui += "\\n#dbwrap #a3inp { font-size: calc(5rem / 6); width: calc(216px - 1.5rem); text-align: left; }";
+d1ui += "\\n#dbwrap #a3inp { width: calc(216px - 1.5rem); text-align: left; }";
 d1ui += "\\n#dbwrap #a3inp>span { color: revert; opacity: 0.5; }";
 d1ui += "\\n#dbwrap #cpanl { position: relative; top: -2.5rem; }";
 d1ui += "\\n#dbwrap #imgdtl img { width: 48px; }";
@@ -1216,7 +1217,7 @@ formGen = (k, v) => cform.innerHTML = Object.entries(_.fwg).map(([k, v]) => _.re
 /*
 d3ui += "\\n<hr />\\n<h4>Contact Photos</h4>\\n<div class=cfield>";
 d3ui += "\\n<span class=\\"ccntr cleft\\"><em>A:</em> step 1</span><span class=ccntr><label>";
-d3ui += "<input id=a1inp type=file /><span id=a2inp class=\\"btn1 fsz0c75 hgainl ilink\\">&#x2726;</span>";
+d3ui += "<input id=a1inp type=file /><span id=a2inp class=\\"btn1 hgainl ilink\\">&#x2726;</span>";
 d3ui += "<span id=a3inp class=btn1><span>Locate image&hellip;</span></span>\\n</label></span>\\n</div>";
 d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">step 2</span><span class=ccntr>";
 d3ui += "<input type=text id=n4inp placeholder=\\"Rename as attachment&hellip;\\" /></span>\\n</div>";
@@ -1289,7 +1290,7 @@ simgs = Array.from(Array(10)).map((e, i) => "stockimg" + i + ".jpg");
 
 /*
 d4ui += "\\n<hr />\\n<h4>Contact Directory</h4>\\n<div id=cpanl class=\\"alnrt\\">\\n<span class=ccntr>Sort by:&ensp;";
-d4ui += "<select id=sortsel><option></option><option selected>first name</option><option>last name</option><option>username</option></select>";
+d4ui += "<select id=sortsel class=anone><option></option><option selected>first name</option><option>last name</option><option>username</option></select>";
 d4ui += "<button id=csbtn class=\\"hgainl isucc\\">&orarr;</button></span> <span class=ccntr>Show all:&ensp;";
 d4ui += "<label><input type=checkbox id=hdrsswi /> <a>headers</a></label>&ensp;";
 d4ui += "<label><input type=checkbox id=bodsswi /> <a>bodies</a></label></span>\\n</div>\\n<div id=cdata></div>";

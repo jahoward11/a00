@@ -43,7 +43,7 @@ line-level changes.
 xdui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
 xdui += "\\nhtml { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }";
 xdui += "\\nbutton, input, select { margin: 0; }\\nhr { margin: 1.5rem 0; }\\n[list]::-webkit-calendar-picker-indicator { display: none !important; }";
-xdui += "\\n#xdwrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
+xdui += "\\n#xdwrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
 xdui += "\\n#xdwrap h4 { margin: 0 0 0.75rem; }";
 xdui += "\\n#xdwrap button, #xdwrap .btn1, #xdwrap input:not([type=checkbox]):not([type=radio]), #xdwrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
 xdui += "\\n#xdwrap input[type=text] { width: 144px; }";
