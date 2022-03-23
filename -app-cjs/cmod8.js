@@ -32,13 +32,14 @@ __TILT MAZE__
 */
 
 g4ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
-g4ui += "\\nhtml { box-sizing: border-box; min-width: 375px; }";
-g4ui += "\\nhr { margin: 1.5rem 0; }";
+g4ui += "\\nhtml { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; }";
+g4ui += "\\nbutton, input, select { margin: 0; }\\nhr { margin: 1.5rem 0; }";
 g4ui += "\\n#g4wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 24px 0; }";
+g4ui += "\\n#g4wrap button, #g4wrap .btn1, #g4wrap input:not([type=checkbox]):not([type=radio]), #g4wrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
 g4ui += "\\n#g4wrap .cfield { max-width: 359px; }";
-g4ui += "\\n#g4wrap .cfield:not(:last-child) { margin-bottom: 8px; }";
-g4ui += "\\n#g4wrap .ccntr:not(:last-child) { margin-right: 8px; }";
-g4ui += "\\n#g4wrap :not(.cfield)>.ccntr { display: inline-block; height: 24px; margin-bottom: 8px; }";
+g4ui += "\\n#g4wrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }";
+g4ui += "\\n#g4wrap .ccntr:not(:last-child) { margin-right: 0.5rem; }";
+g4ui += "\\n#g4wrap :not(.cfield)>.ccntr { display: inline-block; height: 1.5rem; margin-bottom: 0.5rem; }";
 g4ui += "\\n#g4board { margin: 16px; }";
 g4ui += "\\n#g4board>canvas { border: 8px solid Tan; background: radial-gradient(White, #ffeccc 80%, #e2cfb6); }";
 g4ui += "\\n#g4scor { position: relative; top: -12px; font-size: small; margin-left: 16px; }";

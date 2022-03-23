@@ -214,11 +214,11 @@ __*Tutorial Two: Building a sliding-tiles puzzle (and other games)*__
 
 // __* * * SLIDING TILES * * *__
 g1ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
-g1ui += "\\nhtml { box-sizing: border-box; min-width: 375px; }";
-g1ui += "\\nhr { margin: 1.5rem 0; }";
-g1ui += "\\n#g1wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 24px 0; }";
-g1ui += "\\n#g1wrap .cfield { max-width: 359px; }";
-g1ui += "\\n#g1wrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }";
+g1ui += "\\nhtml { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }";
+g1ui += "\\nbutton, input, select { margin: 0; }\\nhr { margin: 1.5rem 0; }";
+g1ui += "\\n#g1wrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px 0; }";
+g1ui += "\\n#g1wrap button, #g1wrap .btn1, #g1wrap input:not([type=checkbox]):not([type=radio]), #g1wrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
+g1ui += "\\n#g1wrap .cfield { max-width: 359px; }\\n#g1wrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }";
 g1ui += "\\n#g1wrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }";
 g1ui += "\\n#g1wrap :not(.cfield)>.ccntr { display: inline-block; height: 1.5rem; margin-bottom: 0.5rem; }";
 g1ui += "\\n#g1wrap .blank, #g1wrap .gtile { width: 61px; height: 61px; border: 4px solid White; }";
@@ -228,16 +228,16 @@ g1ui += "\\n#g1board { margin: 12px; border-collapse: collapse; }";
 g1ui += "\\n#g1scor { position: relative; top: -8px; font-size: small; margin-left: 16px; }\\n#g1movs { font-weight: bold; }";
 g1ui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Sliding Tiles</h4>";
 g1ui += "\\n<div class=cfield><em>Objective:</em> Order the characters from least to greatest&mdash;starting at the top left&nbsp;corner.</div>";
-g1ui += "\\n<div>\\n<span class=ccntr><select id=tnmrl>\\n<option disabled>Characters</option>\\n";
+g1ui += "\\n<div>\\n<label class=ccntr><select id=tnmrl>\\n<option disabled>Characters</option>\\n";
 g1ui += ["1 2 3 4 &hellip;", "I II III IV &hellip;", "A B C D &hellip;", "Α Β Γ Δ &hellip;"].map(e => "<option>" + e + "</option>").join("\\n");
-g1ui += "\\n</select></span><span class=ccntr><select id=tclrs>\\n<option disabled>Color Cascades</option>\\n";
+g1ui += "\\n</select></label><label class=ccntr><select id=tclrs>\\n<option disabled>Color Cascades</option>\\n";
 g1ui += ["No gradient", "Red gradient", "Gold gradient", "Blue gradient", "Rainbow pattern"].map(e => "<option>" + e + "</option>").join("\\n");
-g1ui += "\\n</select></span>\\n<label class=ccntr>Auto-shuffle <input type=checkbox id=pshuf checked></label>\\n</div>\\n<div>";
+g1ui += "\\n</select></label>\\n<label class=ccntr>Auto-shuffle <input type=checkbox id=pshuf checked></label>\\n</div>\\n<div>";
 g1ui += "\\n<label class=ccntr>Rows <input type=text id=trows value=4 size=2></label>";
 g1ui += "\\n<label class=ccntr>Columns <input type=text id=tcols value=4 size=2></label>";
-g1ui += "\\n<span class=ccntr><input type=button value=\\"&orarr; NEW GAME\\" onclick=g1Reset()></span>\\n</div>";
+g1ui += "\\n<label class=ccntr><input type=button value=\\"&orarr; NEW GAME\\" onclick=g1Reset()></label>\\n</div>";
 g1ui += "\\n<table id=g1board></table>\\n<div id=g1scor class=cfield>Count: <span id=g1movs>0</span></div>";
-g1ui += "\\n<div><span class=ccntr><input type=button value=\\"RETRACT MOVE\\" onclick=m1Rvrs()></span><span class=ccntr><input type=button value=\\"RESET COUNTER\\" onclick=c1Zero()></span></div>\\n";
+g1ui += "\\n<div><input type=button class=ccntr value=\\"RETRACT MOVE\\" onclick=m1Rvrs()><input type=button value=\\"RESET COUNTER\\" onclick=c1Zero()></div>\\n";
 
 // g1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap"; ndiv.innerHTML = g1ui; cmain.appendChild(ndiv); }
@@ -318,7 +318,7 @@ g1Reset();
       of code.
 */
 
-// respcon.innerHTML = "" // clears any orange text (in case GUI text is still visible)
+// recon.innerHTML = "" // clears any orange text (in case GUI text is still visible)
 // scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
 // localforage.getItem("tutor2js").then(val => respShow(_.scrGen(val))).catch(respShow)
 
@@ -364,11 +364,11 @@ g1Reset();
 
 // __* * * LIGHTS OUT * * *__
 g2ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
-g2ui += "\\nhtml { box-sizing: border-box; min-width: 375px; }";
-g2ui += "\\nhr { margin: 1.5rem 0; }";
-g2ui += "\\n#g2wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 24px 0; }";
-g2ui += "\\n#g2wrap .cfield { max-width: 359px; }";
-g2ui += "\\n#g2wrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }";
+g2ui += "\\nhtml { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }";
+g2ui += "\\nbutton, input, select { margin: 0; }\\nhr { margin: 1.5rem 0; }";
+g2ui += "\\n#g2wrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px 0; }";
+g2ui += "\\n#g2wrap button, #g2wrap .btn1, #g2wrap input:not([type=checkbox]):not([type=radio]), #g2wrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
+g2ui += "\\n#g2wrap .cfield { max-width: 359px; }\\n#g2wrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }";
 g2ui += "\\n#g2wrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }";
 g2ui += "\\n#g2wrap :not(.cfield)>.ccntr { display: inline-block; height: 1.5rem; margin-bottom: 0.5rem; }";
 g2ui += "\\n#g2bcntr { position: relative; padding-top: 1px; }";
@@ -404,11 +404,11 @@ window.litSwi = (rx, cx) => { u2tog.checked ? window["n" + rx + cx].classList.to
 
 // __* * * PEGS * * *__
 g3ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
-g3ui += "\\nhtml { box-sizing: border-box; min-width: 375px; }";
-g3ui += "\\nhr { margin: 1.5rem 0; }";
-g3ui += "\\n#g3wrap { font: normal medium Helvetica, Arial, sans-serif; margin: 24px 0; }";
-g3ui += "\\n#g3wrap .cfield { max-width: 359px; }";
-g3ui += "\\n#g3wrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }";
+g3ui += "\\nhtml { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }";
+g3ui += "\\nbutton, input, select { margin: 0; }\\nhr { margin: 1.5rem 0; }";
+g3ui += "\\n#g3wrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px 0; }";
+g3ui += "\\n#g3wrap button, #g3wrap .btn1, #g3wrap input:not([type=checkbox]):not([type=radio]), #g3wrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
+g3ui += "\\n#g3wrap .cfield { max-width: 359px; }\\n#g3wrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }";
 g3ui += "\\n#g3wrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }";
 g3ui += "\\n#g3wrap :not(.cfield)>.ccntr { display: inline-block; height: 1.5rem; margin-bottom: 0.5rem; }";
 g3ui += "\\n#g3bcntr { position: relative; padding-top: 1px; }";
@@ -434,7 +434,7 @@ g3ui += "\\n</tbody></table>\\n<table id=g3board><tbody>";
 g3ui += [0, 1, 2, 3, 4, 5, 6].map(r => "\\n<tr>" + [0, 1, 2, 3, 4, 5, 6].map(c => "<td " + (["0,0", "0,1", "0,5", "0,6", "1,0", "1,1", "1,5", "1,6", "5,0", "5,1", "5,5", "5,6", "6,0", "6,1", "6,5", "6,6"].includes("" + [r, c]) ? "class=nohol" : \`id=h\${r}\${c} onclick=pegJmp(\${r},\${c})\`) + "></td>").join("") + "</tr>").join("");
 g3ui += "\\n</tbody></table>\\n</div>";
 g3ui += "\\n<div id=g3scor class=cfield>Count: <span id=g3movs>0</span></div>";
-g3ui += "\\n<div class=cfield><span class=ccntr><input type=button value=\\"RETRACT MOVE\\" onclick=m3Rvrs()></span><input type=button value=\\"RESET COUNTER\\" onclick=c3Zero()></span></div>";
+g3ui += "\\n<div class=cfield><input type=button class=ccntr value=\\"RETRACT MOVE\\" onclick=m3Rvrs()><input type=button value=\\"RESET COUNTER\\" onclick=c3Zero()></div>";
 g3ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u3tog> Allow free peg placement&mdash;Suspend&nbsp;counter</label></div>\\n";
 
 // g3wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
@@ -654,30 +654,30 @@ str.replace(/(deaf)\\w+ (\\w+)\\./i, (m, c1, c2) => \`\${c1}? Or \${c2.replace(/
 */
 
 srui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
-srui += "\\nhtml { box-sizing: border-box; min-width: 375px; overflow-wrap: break-word; }";
-srui += "\\nhr { margin: 1.5rem 0; }\\n[list]::-webkit-calendar-picker-indicator { display: none !important; }";
+srui += "\\nhtml { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }";
+srui += "\\nbutton, input, select { margin: 0; }\\nhr { margin: 1.5rem 0; }\\n[list]::-webkit-calendar-picker-indicator { display: none !important; }";
+srui += "\\n.textarea { background-color: white; border-color: #dbdbdb; border-radius: 4px; display: block; max-width: 100%; min-width: 100%; padding: calc(0.75em - 1px); resize: vertical; }";
 srui += "\\n#srwrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
-srui += "\\n#srwrap button, #srwrap input:not([type=checkbox]), #srwrap select { line-height: 1.5rem; height: 1.5rem; vertical-align: bottom; }";
-srui += "\\n#srwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }";
-srui += "\\n#srwrap textarea { display: block; font-size: medium; width: 100%; height: 288px; }";
+srui += "\\n#srwrap button, #srwrap .btn1, #srwrap input:not([type=checkbox]):not([type=radio]), #srwrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
+srui += "\\n#srwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }\\n#srwrap .textarea { height: 288px; }";
 srui += "\\n#srwrap .iwarn { color: Orange; }\\n#srwrap .isucc { color: CornFlowerBlue; }";
-srui += "\\n#srwrap textarea.iwarn { color: revert; border-color: Orange; }\\n#srwrap textarea.isucc { color: revert; border-color: CornFlowerBlue; }";
+srui += "\\n#srwrap .textarea.iwarn { color: revert; border-color: Orange; }\\n#srwrap .textarea.isucc { color: revert; border-color: CornFlowerBlue; }";
 srui += "\\n#srwrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }";
 srui += "\\n#srwrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }";
 srui += "\\n#srwrap :not(.cfield)>.ccntr { display: inline-block; height: 1.5rem; margin-bottom: 0.5rem; }";
-srui += "\\n#srwrap .chelp { font-size: 0.75rem; margin-top: 0.25rem; }";
+srui += "\\n#srwrap .chelp { font-size: 0.75rem; line-height: normal; margin-top: 0.25rem; }";
 srui += "\\n#srwrap .pwrap { white-space: pre-wrap; }";
 srui += "\\n#sepainp, #rtrminp { width: 288px; }\\n#lfinp { width: 176px; }";
 srui += "\\n#trgrndr { display: flow-root; margin-top: 1rem; border: dashed gainsboro; border-width: 1px 0; }";
 srui += "\\n</style>\\n<hr>\\n<h4 class=cfield><span onclick=txtaSel(srctxta)>Source</span></h4>";
-srui += "\\n<div class=cfield><textarea id=srctxta></textarea></div>";
+srui += "\\n<div class=cfield><textarea id=srctxta class=textarea></textarea></div>";
 srui += "\\n<div class=cfield><label class=ccntr><input type=text id=sepainp> Search</label></div>";
 srui += "\\n<div class=cfield><label class=ccntr><input type=text id=rtrminp> Replace</label></div>";
 srui += "\\n<div class=cfield>\\n<span class=ccntr><input type=button value=\\"&rlhar; SWAP\\" onclick=cntSwap()></span><span class=ccntr><select id=rndrsel>\\n";
 srui += ["No render", "PRE render", "PRE-wrap render", "Normal render"].map(e => "<option>" + e + "</option>").join("\\n");
 srui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x2964; PARSE\\" onclick=strPars()></span>\\n</div>";
 srui += "\\n<h4 class=cfield><span onclick=txtaSel(trgtxta)>Target</span></h4>";
-srui += "\\n<div class=cfield><textarea id=trgtxta></textarea><div id=trghelp class=chelp></div></div>";
+srui += "\\n<div class=cfield><textarea id=trgtxta class=textarea></textarea><div id=trghelp class=chelp></div></div>";
 srui += "\\n<div class=cfield>\\n<datalist id=pfiles></datalist>\\n<span class=ccntr><input type=text id=lfinp list=pfiles placeholder=\\"filename/key/CMD&hellip;\\" onfocus=hlp3Clr() /></span><span class=ccntr><button onclick=dataMgr(2)>\\n<span>&uArr;</span></button></span><span class=ccntr><button onclick=dataMgr(1)>\\n<span class=isucc>&#x267a;</span> SAVE</button></span><span class=ccntr><button onclick=dataMgr()>\\n<span class=iwarn>&#x2715;</span> DEL</button></span>\\n<div id=lfhelp class=chelp></div>\\n</div>";
 srui += "\\n<div id=trgrndr class=cfield></div>\\n";
 
@@ -712,7 +712,7 @@ rxs = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:\\w+|\\(.*?\\)) *=> *\\
 fncTry = (fnc, a, e) => { try { return fnc(a) } catch (err) { return e > 1 ? a : e ? err : undefined }};
 hlp2Clr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc"));
 rsltVw = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 2 ? rslt : "\\n<pre" + (ri < 2 ? ">" : " class=pwrap>") + rslt + "</pre>\\n"; };
-pfsRfr = () => !window.localforage || localforage.keys().then(ks => pfiles.innerHTML = ["trgtxta.value", "srctxta.value", "dentry.value", "respcon.textContent", "respcon.innerHTML"].concat(ks).map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(console.warn);
+pfsRfr = () => !window.localforage || localforage.keys().then(ks => pfiles.innerHTML = ["trgtxta.value", "srctxta.value", "dentry.value", "recon.textContent", "recon.innerHTML"].concat(ks).map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(console.warn);
 datLoad = k => Promise.resolve(_.fncTry(window.eval, k)).then(v => v != null ? v : localStorage.getItem(k) || window.localforage && localforage.getItem(k)).then(v => v == null ? "" : typeof v === 'object' ? JSON.stringify(v, null, 2) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(_.fncTry(JSON.parse, v), null, 2) || v).then(v => trgtxta.value = v.replace(/(\\*\\/) $/gm, "$1").replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(console.warn);
 window.txtaSel = e => _.hlp2Clr() || e.focus() || e.setSelectionRange(0, e.textLength);
 window.cntSwap = () => _.hlp2Clr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
@@ -729,7 +729,7 @@ window.dataMgr = ox => { let key = lfinp.value.trim(); if (ox === 2) return !key
 
 /*
 scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
-dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
+dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
 respShow(dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(xstor.JScode.tutorial3) + dwraps[2])
 */
 
@@ -1052,7 +1052,7 @@ dbname = "cntcs-demo";
 d1ui = d2ui = d3ui = d4ui = d5ui = ""
 d1ui += "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
 d1ui += "\\nhtml { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }";
-d1ui += "\\nhr { margin: 1.5rem 0; }";
+d1ui += "\\nbutton, input, select { margin: 0; }\\nhr { margin: 1.5rem 0; }";
 d1ui += "\\nfigure { margin: 1em 0; padding: 0 1em; }";
 d1ui += "\\n.image { display: block; position: relative; }";
 d1ui += "\\n.image img { display: block; height: auto; max-width: 100%; }";
@@ -1073,9 +1073,9 @@ d1ui += "\\n@media screen and (max-width: 719px) { .media-content { overflow-x: 
 d1ui += "\\n#dbwrap { font: normal medium Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
 d1ui += "\\n#dbwrap a { color: #485fc7; cursor: pointer; text-decoration: none; }";
 d1ui += "\\n#dbwrap a:hover, #dbwrap .ilink:hover:not(:disabled) { color: CornFlowerBlue; }";
-d1ui += "\\n#dbwrap button, #dbwrap .btn1, #dbwrap input:not([type=checkbox]):not([type=radio]), #dbwrap select { background: #f8f8f8; color: Grey; line-height: 1.5rem; height: 1.5rem; margin: 0; padding: 0 0.5rem; border: 0; border-radius: 0; vertical-align: bottom; }";
+d1ui += "\\n#dbwrap button, #dbwrap .btn1, #dbwrap input:not([type=checkbox]):not([type=radio]), #dbwrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
 d1ui += "\\n#dbwrap input::placeholder, #dbwrap input:disabled { color: revert; opacity: 0.5; }";
-d1ui += "\\n#dbwrap select { padding: 0 0.25rem; }";
+d1ui += "\\n#dbwrap select { padding: 0 0.25rem; vertical-align: bottom; }";
 d1ui += "\\n#dbwrap .media-left>.image.rspv128 { width: 128px; height: unset; margin: 0 1em 0 2em; padding: 0; }";
 d1ui += "\\n#dbwrap .media-left>.image>img { background-color: LightSteelBlue; min-height: 128px; cursor: pointer; }";
 d1ui += "\\n#dbwrap .media-left>.image>figcaption { font-size: small; font-style: italic; text-align: center; }";
@@ -1083,8 +1083,8 @@ d1ui += "\\n#dbwrap .hgainl { background-color: #ececec; }\\n#dbwrap .igreyd { c
 d1ui += "\\n#dbwrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }";
 d1ui += "\\n#dbwrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }";
 d1ui += "\\n#dbwrap :not(.cfield)>.ccntr { display: inline-block; height: 1.5rem; margin-bottom: 0.5rem; }";
-d1ui += "\\n#dbwrap .ccntr.cleft { display: inline-block; line-height: 1.5rem; width: 126px; height: 1.5rem; text-align: right; white-space: nowrap; }";
-d1ui += "\\n#dbwrap .ccntr.cleft + .ccntr>input[type=text], #dbwrap .ccntr.cleft + .ccntr>select { width: 216px; }";
+d1ui += "\\n#dbwrap .cleft { display: inline-block; line-height: 1.5rem; width: 126px; height: 1.5rem; text-align: right; white-space: nowrap; }";
+d1ui += "\\n#dbwrap .cleft + .ccntr>input[type=text], #dbwrap .cleft + .ccntr>select { width: 216px; }";
 d1ui += "\\n#dbwrap .chelp { font-size: 0.75rem; line-height: normal; margin-top: 0.25rem; }";
 d1ui += "\\n#dbwrap .fsz0c75 { font-size: 0.75rem; }";
 d1ui += "\\n#dbwrap .fsz1c00 { font-size: 1rem; }";
@@ -1095,10 +1095,9 @@ d1ui += "\\n#dbwrap .diblk, #dbwrap .btn1 { display: inline-block; }";
 d1ui += "\\n#dbwrap .dnone { display: none; }";
 d1ui += "\\n#dbwrap #a1inp { width: 0; padding: 0; }";
 d1ui += "\\n#dbwrap #a2inp { width: 1.5rem; text-align: center; padding: 0; }";
-d1ui += "\\n#dbwrap #a3inp { font-size: calc(40px / 3); width: calc(216px - 1.5rem); text-align: left; }";
+d1ui += "\\n#dbwrap #a3inp { font-size: calc(5rem / 6); width: calc(216px - 1.5rem); text-align: left; }";
 d1ui += "\\n#dbwrap #a3inp>span { color: revert; opacity: 0.5; }";
 d1ui += "\\n#dbwrap #cpanl { position: relative; top: -2.5rem; }";
-d1ui += "\\n#dbwrap #sortsel { vertical-align: middle; }";
 d1ui += "\\n#dbwrap #imgdtl img { width: 48px; }";
 d1ui += "\\n@media screen and (max-width: 575px) { #dbwrap .media-left>.image.rspv128 { width: 48px; margin: 0; } #dbwrap .media-left>.image.rspv128>img { min-height: 48px; } #dbwrap .media-left>.image>figcaption { float: right; font-size: x-small; } }";
 d1ui += "\\n@media screen and (max-width: 719px) { #dbwrap .media-left>.image { margin: 0; } }\\n</style>";
@@ -1294,11 +1293,11 @@ d4ui += "<select id=sortsel><option></option><option selected>first name</option
 d4ui += "<button id=csbtn class=\\"hgainl isucc\\">&orarr;</button></span> <span class=ccntr>Show all:&ensp;";
 d4ui += "<label><input type=checkbox id=hdrsswi /> <a>headers</a></label>&ensp;";
 d4ui += "<label><input type=checkbox id=bodsswi /> <a>bodies</a></label></span>\\n</div>\\n<div id=cdata></div>";
-d5ui += 'd => \`\\\\n<article class=media>\\\\n<div class="media-left">\\\\n<figure class="image rspv128"><img src="\${ aurls[d.image_src] || "" }" data-fileid="\${ d._id }" />\`';
-d5ui += ' + \`\\\\n<figcaption>\${ d.name_user || "" }</figcaption></figure>\\\\n</div>\\\\n<div class="media-content">\\\\n<details class=cfield><summary><strong>\${ _.nmsX(d) }</strong></summary>\`';
-d5ui += ' + \`\\\\n<div class="pwrap fsz0c75">\${ (!(d.roles || "")[0] ? "" : "<em class=\\\\"fsz1c00 lnhtnml\\\\">" + d.roles.join(", ") + "</em>\\\\n") + (!d.bio_short ? "" : "SHORT BIO: " + d.bio_short.substring(0, 255) + (d.bio_short.length < 257 ? "" : "&hellip;")) + "<!-- \\\\nNOTE ID: <a>" + d._id + "</a>\\\\nCREATED: " + new Date(d.ts_created || null).toLocaleString() + "\\\\nUPDATED: " + new Date(d.ts_updated || null).toLocaleString() + " -->" }</div>\\\\n</details>\`';
-d5ui += ' + \`\\\\n<details>\\\\n<div class=pwrap>\${ (!d.hasOwnProperty("birthdate") ? "" : "<strong>Birthdate:</strong> " + d.birthdate + "\\\\n") + (!d.hasOwnProperty("emails") ? "" : "<strong>Emails:</strong> " + d.emails.join(", ") + "\\\\n") + (!d.hasOwnProperty("phones") ? "" : "<strong>Phones:</strong> " + d.phones.join(", ") + "\\\\n")';
-d5ui += ' + (!(d.social_profiles || "")[0] ? "" : "<strong>Social profiles:</strong> " + d.social_profiles.join(", ") + "\\\\n") + (!(d.project_urls || "")[0] ? "" : "<strong>Project urls:</strong> " + d.project_urls.join(", ") + "\\\\n") + (!(d.team_groups || "")[0] ? "" : "<strong>Team groups:</strong> " + d.team_groups.join(", ") + "\\\\n") + (!d.ts_created ? "" : "<strong>Joined team:</strong> " + _.ts2Fmt(d.ts_created) + "\\\\n") + (!d.ts_updated ? "" : "<strong>Last updated:</strong> " + _.ts2Fmt(d.ts_updated) + "\\\\n") }</div>\\\\n</details>\\\\n</div>\\\\n</article>\`';
+d5ui += 'd => \`\\\\n<article class=media>\\\\n<div class="media-left">\\\\n<figure class="image rspv128"><img src="\${ aurls[d.image_src] || "" }" data-fileid="\${ d._id }" />\`'; //
+d5ui += ' + \`\\\\n<figcaption>\${ d.name_user || "" }</figcaption></figure>\\\\n</div>\\\\n<div class="media-content">\\\\n<details class=cfield><summary><strong>\${ _.nmsX(d) }</strong></summary>\`'; //
+d5ui += ' + \`\\\\n<div class="pwrap fsz0c75">\${ (!(d.roles || "")[0] ? "" : "<em class=\\\\"fsz1c00 lnhtnml\\\\">" + d.roles.join(", ") + "</em>\\\\n") + (!d.bio_short ? "" : "SHORT BIO: " + d.bio_short.substring(0, 255) + (d.bio_short.length < 257 ? "" : "&hellip;")) + "<!-- \\\\nNOTE ID: <a>" + d._id + "</a>\\\\nCREATED: " + new Date(d.ts_created || null).toLocaleString() + "\\\\nUPDATED: " + new Date(d.ts_updated || null).toLocaleString() + " -->" }</div>\\\\n</details>\`'; //
+d5ui += ' + \`\\\\n<details>\\\\n<div class=pwrap>\${ (!d.hasOwnProperty("birthdate") ? "" : "<strong>Birthdate:</strong> " + d.birthdate + "\\\\n") + (!d.hasOwnProperty("emails") ? "" : "<strong>Emails:</strong> " + d.emails.join(", ") + "\\\\n") + (!d.hasOwnProperty("phones") ? "" : "<strong>Phones:</strong> " + d.phones.join(", ") + "\\\\n")'; //
+d5ui += ' + (!(d.social_profiles || "")[0] ? "" : "<strong>Social profiles:</strong> " + d.social_profiles.join(", ") + "\\\\n") + (!(d.project_urls || "")[0] ? "" : "<strong>Project urls:</strong> " + d.project_urls.join(", ") + "\\\\n") + (!(d.team_groups || "")[0] ? "" : "<strong>Team groups:</strong> " + d.team_groups.join(", ") + "\\\\n") + (!d.ts_created ? "" : "<strong>Joined team:</strong> " + _.ts2Fmt(d.ts_created) + "\\\\n") + (!d.ts_updated ? "" : "<strong>Last updated:</strong> " + _.ts2Fmt(d.ts_updated) + "\\\\n") }</div>\\\\n</details>\\\\n</div>\\\\n</article>\`'; //
 
 !window.dbwrap || dbwrap.remove() // necessary to clear UI from step 3 or 6
 try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d3ui + d2ui + d4ui + "\\n"; cmain.appendChild(ndiv); hlps = dbwrap.querySelectorAll('.chelp'); }

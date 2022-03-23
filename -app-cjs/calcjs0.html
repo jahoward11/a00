@@ -42,17 +42,16 @@ body {
 }
 #cmain sub { bottom: -0.25em; }
 #cmain sup { top: -0.5em; }
-#cmain button, #cmain input:not([type=checkbox]), #cmain select {
+#cmain button, #cmain .btn1,
+#cmain input:not([type=checkbox]):not([type=radio]), #cmain select {
   background: #f8f8f8;
   color: Grey;
-  font-size: 14px;
-  line-height: 24px;
-  height: 24px;
-  margin: 0;
-  padding: 0 8px;
+  font-size: calc(5rem / 6);
+  line-height: 1.5rem;
+  height: 1.5rem;
+  padding: 0 0.5rem;
   border: 0;
   border-radius: 0;
-  vertical-align: bottom;
 }
 #cmain button, #cmain input[type=button], #cmain select { cursor: pointer; }
 #cmain input::placeholder { opacity: 0.5; }
@@ -62,7 +61,7 @@ body {
   appearance: none;
 }
 #cmain select.anone::-ms-expand { display: none; }
-#cgrid pre, #cmain>#respcon {
+#cgrid pre, #cmain>#recon {
   background-color: unset;
   color: unset;
   font: normal medium/1.25 monospace;
@@ -75,6 +74,10 @@ body {
 }
 #cgrid .pagebb { line-height: 0; }
 #cgrid .dnote { color: LightSteelBlue; }
+#cgrid .codin {
+  background: White;
+  color: Silver;
+}
 #cgrid .vert { position: absolute; }
 #cgrid .dvnd {
   position: absolute;
@@ -111,7 +114,7 @@ body {
   line-height: 1;
   vertical-align: bottom;
 }
-#cmain>#respcon {
+#cmain>#recon {
   color: Orange;
   padding: 0;
 }
@@ -225,7 +228,7 @@ body {
 #cmain .slist { position: relative; }
 #cmain .slist::after {
   position: absolute;
-  top: 3px;
+  top: 7px;
   right: 8px;
   color: Grey;
   content: " ";
@@ -235,17 +238,17 @@ body {
   opacity: 0.5;
   pointer-events: none;
 }
-#cmain .cfield:not(:last-child) { margin-bottom: 8px; }
-#cmain .ccntr:not(:last-of-type) { margin-right: 8px; }
+#cmain .cfield:not(:last-child) { margin-bottom: 0.5rem; }
+#cmain .ccntr:not(:last-of-type) { margin-right: 0.5rem; }
 #cmain :not(.cfield)>:not(.cfield)>.ccntr {
   display: inline-block;
-  height: 24px;
-  margin-bottom: 8px;
+  height: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 #cmain .addns>.ccntr { margin-right: 0; }
 #cmain .chelp {
-  font-size: 12px;
-  margin-top: 4px;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
 }
 #xctrls #xsetinp { width: 168px; }
 #xctrls #xsetlist {
@@ -281,7 +284,7 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
 
 </xmp>
 <h4 id="cheadg">JavaScript Calculator</h4>
-<pre id="respcon"></pre>
+<pre id="recon"></pre>
 <span id="mctnr"><select id="menulist" class="anone" title="CalcJS View Options">
   <option></option>
   <option>&nbsp;&pm; Lock/unlock screen zoom</option>
@@ -313,7 +316,7 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
   .then(reg => window.console.log("SW registration succeeded. Scope: " + reg.scope))
   .catch(err => window.console.log("SW registration failed: " + err));
 </script>
-<script src="../-res-js/localforage.min.js" type="text/javascript"></script>
+<script src="../../a00/-res-js/localforage.min.js" type="text/javascript"></script>
 <script type="module">
 let q2Bcopy, q2Bhtml,
   cmods = [], dload = "", jsrcs = [], v0set = 0, val0s = [],
@@ -321,7 +324,7 @@ let q2Bcopy, q2Bhtml,
     || document.querySelector('head>meta[name=viewport]'),
   datxmp = document.querySelector('#cmain>#datxmp'),
   cheadg = document.querySelector('#cmain>#cheadg'),
-  respcon = document.querySelector('#cmain>#respcon'),
+  recon = document.querySelector('#cmain>#recon'),
   menulist = document.querySelector('#cmain>#mctnr>#menulist'),
   cgrid = document.querySelector('#cmain>#cgrid'),
   quad1A = document.querySelector('#cgrid>#quad1A'),
@@ -336,7 +339,7 @@ let q2Bcopy, q2Bhtml,
   xbtndel = document.querySelector('#xctrls #xbtndel'),
   xcshelp = document.querySelector('#xctrls #xcshelp'),
   helpClr = () => !xcshelp || (xcshelp.innerHTML = "") || xcshelp.classList.remove("iwarn", "isucc"),
-  respShow = resp => { respcon.textContent
+  respShow = resp => { recon.textContent
     += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
       ? resp : JSON.stringify(resp, null, 2) ) + "\n\n" },
   zoomTog = zoff => metavp.setAttribute( 'content', "width=device-width, "
@@ -409,7 +412,7 @@ let q2Bcopy, q2Bhtml,
         .replace(/\n+$|^\n+|^<head>\n?|^#cmain \.iwarn[^]+?\n(?=@media print {\n)|,\n *xsetLoad = [^]+?(?=;\nwindow\.xstor =)|^ *!\/\^http.+xlstGen[^]+?;\n|\n*<script\b.*><\/script>(?=$|<\/body>)|\n?<\/body>$/gim, "")
         .replace(/^(<\/style>)[^]*?(?=<div .+><\/div>$)/im, "$1\n</head>\n<body>\n")
         .replace(/^(<xmp id="datxmp".*?>)[^]*?(?=<\/xmp>)/im, (m, c1) => c1 + "\n" + dentry.value + "\n")
-        .replace(/^(<pre id="respcon">)[^]*?(?=<\/pre>)/im, "$1")
+        .replace(/^(<pre id="recon">)[^]*?(?=<\/pre>)/im, "$1")
         .replace( /^(<div id="cgrid".*?>\n *<pre id="quad1A".*?>)[^]*?(<\/pre><pre id="quad1B".*?>)[^]*?(<\/pre>\n *<pre id="quad2A".*?>)[^]+?(?=\n<\/div>)/im,
           '$1$2$3</pre><pre id="quad2B" contenteditable=true></pre>\n  <ul id="symlist" class="is-hidden"></ul>' )
         .replace(/^<div id="xctrls".*?>[^]+?\n(?=let q2Bcopy,)/im, "</main>\n<script type=\"text/javascript\">\n(function () {\n'use strict';\n")
@@ -453,7 +456,7 @@ let q2Bcopy, q2Bhtml,
     evt.preventDefault();
   },
   xprsEval = () => {
-    v0set ? (respcon.textContent = "") : ++v0set && !val0s.length || ((xsetlist || "").value = "")
+    v0set ? (recon.textContent = "") : ++v0set && !val0s.length || ((xsetlist || "").value = "")
       || val0s.forEach(v => v && (dentry.value = dentry.value.replace(v[0], v[1])));
     let $ = {}, _ = {}, _ks = [], rslt,
       xprsns = (dentry.value || "")
@@ -496,6 +499,7 @@ let q2Bcopy, q2Bhtml,
           .replace(/\b__(.+?)__\b/g, "<strong>$1</strong>")
           .replace(/\^(?=\S)(.*?\S)\^/g, "<sup>$1</sup>")
           .replace(/~(?=\S)(.*?\S)~/g, "<sub>$1</sub>")
+          .replace(/`(?=\S)(.*?\S)`/g, "`<span class=codin>$1</span>`")
           .replace( /([^$.\wÀ-Ͽ]|^)(a)(?= )/gi, //"$1<x>$2</x>")
             (m, c1, c2) => c1 + "&#x" + c2.charCodeAt(0).toString(16) + ";" )
           .replace(/\u2b1a\u034f/g, "&nbsp;")
