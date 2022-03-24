@@ -272,11 +272,13 @@ figure {
   height: 1rem;
   padding: 0.25rem;
 }
-#nmwrap input::placeholder, #nmwrap input:disabled {
-  color: revert;
+#nmwrap input::placeholder, #nmwrap input:disabled, #nmwrap select:disabled,
+#nmwrap textarea::placeholder, #nmwrap textarea:disabled {
+  color: unset;
   opacity: 0.5;
 }
-#nmwrap select {
+/* #nmwrap input:disabled:not([type=checkbox]):not([type=radio]) { color: #333; } */
+#nmwrap select:not(.anone) {
   padding: 0 0.25rem;
   vertical-align: top;
 }
@@ -357,12 +359,11 @@ figure {
   white-space: pre;
 }
 #nmwrap #a1inp { width: 0; padding: 0; }
-#nmwrap #a2inp { width: 1.5rem; text-align: center; }
+#nmwrap #a2inp { width: 1.5rem; padding: 0; text-align: center; }
 #nmwrap #a3inp { font-size: calc(5rem / 6); width: calc(216px - 1.5rem); text-align: left; }
 #nmwrap #a3inp>span { color: revert; opacity: 0.5; }
 #vctrls #pdbssel { width: 136px; }
-#vctrls #ftotal { display: inline-block; min-width: 21px; }
-#vctrls #viewsel { width: 1.5rem; }
+#vctrls #viewsel { width: 2rem; }
 #vctrls #colssel, #vctrls #sortsel { width: 100px; }
 #vctrls #descswi { margin-right: 2px; }
 #vctrls #filtinp { width: 168px; }
@@ -410,11 +411,11 @@ figure {
   <div class="level-item">
     <div class="level cfield">
       <span class=ccntr><select id=pdbssel title="DB-open select list">
-      </select></span><span class=ccntr><select id=viewsel title="Notelist-view select list">
-        <option></option>
-        <option>&plus; New Note</option>
-        <option>&check;&thinsp;DB Config</option>
-        <option>&#x2732; Settings</option>
+      </select></span><span class=ccntr><select id=viewsel class=anone title="Notelist-view select list">
+        <option>&nbsp;</option>
+        <option>&nbsp;&plus; New Note</option>
+        <option>&nbsp;&check;&thinsp;DB Config</option>
+        <option>&nbsp;&#x2732; Settings</option>
         <option disabled>V1:noteclips</option>
         <option disabled>V2:organized</option>
         <option disabled>V3:mutables</option>
@@ -2007,7 +2008,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       v0s = [ ["", ""], ["V1:noteclips", "Preview <em>event</em>/<em>memo</em>/<em>contact</em>'s"],
           ["V2:organized", "Notes/attach's by subdirectory"], ["V3:mutables", "All updatable notes"],
           ["V4:statics", "All one-off text posts (<em>memo</em>s)"],
-          ["V5:deleted", "All discarded-note IDs"] ]
+          ["V5:deleted", "All discarded note IDs"] ]
         .concat(Object.values(nm0sets.p2vws).map(vo => vo.v0));
     v01sel.innerHTML = v0s.map( ([k, v]) =>
       "\n      <option>" + k + "</option>" ).join("") + "\n      ";
