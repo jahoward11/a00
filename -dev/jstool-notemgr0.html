@@ -374,6 +374,7 @@ figure {
   background: WhiteSmoke;
   text-align: left;
 }
+#nmdata #bckbtn { vertical-align: top; }
 #nmtabs li:first-child>a { letter-spacing: -3px; }
 #nmbulk #qselbtn { margin-right: 7px; }
 #pdbcfg #pdbtbl td:nth-of-type(1),
@@ -2097,6 +2098,10 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       !db2 ? hlps[5].classList.remove("dnone")
       : new PouchDB(txd1.DBNAME).sync(db2, { live: false })
         .then(trsp => {
+          viewsel.selectedIndex = vidx = 2;
+          ftotal.innerText = "_";
+          nmflow.classList.add("dnone");
+          nmtbod.innerHTML = vusr = vbas = "";
           pdbtot.innerHTML = "(last: " + pdbtot.innerHTML + ") &hellip;&quest;";
           pdbseq.innerHTML = "(last: " + pdbseq.innerText + ") &hellip;&quest;";
           pdbupd.innerText = new Date(cfg.tsupd = new Date().getTime()).toLocaleString();
