@@ -1267,8 +1267,8 @@ simgs = Array.from(Array(10)).map((e, i) => "stockimg" + i + ".jpg");
       specifies a custom response -- to include the data file (doc)
       that is associated with each file ID.
     + Tap on a contact's photo to empty the directory display, un-
-      hide the data-entry form and fill into the form's text fields
-      the property values of the selected contact.
+      hide the data-entry form and fill out the form's text fields
+      with the property values of the selected contact.
     + If you make changes to a contact's data (e.g., you enter the
       attachment name of a corresponding photo into the \`image_src\`
       property field), or if you create a new contact, commit the
