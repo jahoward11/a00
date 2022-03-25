@@ -5,13 +5,13 @@ const groupname = "JSpuzzle";
 const collection1 = `/*
 __Puzzle Collection I: from JS Tutorial 2__
  This module option functions only to render three puzzle GUIs
-from the code written in the \`JScode\` module's data files:
+from the demo code written in the \`JScode\` module's data files:
 - SLIDING TILES
 - LIGHTS OUT
 - PEGS
 */
 
-t2x = xstor["JScode"]["tutorial2"];
+t2x = xstor.JScode.tutorial2;
 bodGen = src => "\\n<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/;$|^g\\dui = /g, "").split(/;\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n") + "\\n"; //
 scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
 uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "pz1wrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
@@ -93,7 +93,7 @@ g4Start();
 /*
 scrGen = src => "let " + src.match(/^dbar = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
 dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Tilt Maze</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
-respShow(dwraps[0] + g4wrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(xstor.JSpuzzle.tiltmaze) + dwraps[2])
+respShow(dwraps[0] + g4wrap.outerHTML.replace(/\\n<hr>|<canvas>[^]*?<\\/canvas>/g, "") + dwraps[1] + scrGen(xstor.JSpuzzle.tiltmaze) + dwraps[2])
 */
 //`;
 
