@@ -275,8 +275,8 @@ const srtools = `//
  srctxta.textContent = JSON.stringify(xstor.util, null, 2);
  srctxta.value = srctxta.innerHTML;
  sepainp.value = "/.+/g";
- rtrminp.value = 'm => m.replace(/(?<!\\\\\\\\)\\\\\\\\n/g, "\\\\n").replace(/\\\\*.+?\\\\*|\\\\^.+?\\\\^|\\\\`.+?\\\\`/g, "<mark>$&</mark>")'; //
- // rtrminp.value = 'm => m.replace(/([^\\\\\\\\])\\\\\\\\n/g, "$1\\\\n").replace(/([^\\\\\\\\])\\\\\\\\n/g, "$1\\\\n").replace(/\\\\*.+?\\\\*|\\\\^.+?\\\\^|\\\\`.+?\\\\`/g, "<mark>$&</mark>")'; //
+ rtrminp.value = 'm => m.replace(/(?<!\\\\\\\\)\\\\\\\\n/g, "\\\\n").replace(/\\\\*.+?\\\\*|\\\\^.+?\\\\^|\`.+?\`/g, "<mark>$&</mark>")'; //
+ // rtrminp.value = 'm => m.replace(/([^\\\\\\\\])\\\\\\\\n/g, "$1\\\\n").replace(/([^\\\\\\\\])\\\\\\\\n/g, "$1\\\\n").replace(/\\\\*.+?\\\\*|\\\\^.+?\\\\^|\`.+?\`/g, "<mark>$&</mark>")'; //
 */
 //`;
 
