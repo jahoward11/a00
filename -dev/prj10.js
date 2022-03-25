@@ -215,7 +215,7 @@ fetch("https:/" + "/iam.cloud.ibm.com/identity/token", opts).then(resp => resp.t
 
 const t2puzls = `/*
 
-t2x = xstor["JScode"]["tutorial2"];
+t2x = xstor.JScode.tutorial2;
 bodGen = src => "\\n<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/;$|^g\\dui = /g, "").split(/;\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n") + "\\n"; //
 scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
 dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=pz1wrap>", "</div>\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
@@ -223,7 +223,7 @@ respShow(dwraps[0] + bodGen(t2x) + dwraps[1] + scrGen(t2x) + dwraps[2])
 */`;
 
 const t3search = `//
-t3x = xstor["JScode"]["tutorial3"];
+t3x = xstor.JScode.tutorial3;
 bodGen = src => "\\n" + src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui = /g, "").split(/;\\nsrui \\+= /).map(eval).join("").trim() + "\\n"; //
 scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
 uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
@@ -232,10 +232,10 @@ uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; 
 try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.strPars || scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(respShow); }
 
 // dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
-// srctxta.value = (dwraps[0] + srwrap.outerHTML + dwraps[1] + scrGen(t3x) + dwraps[2]);
+// srctxta.value = (dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(t3x) + dwraps[2]);
 
 // /spark/.test(window.location.search) || (window.location.search = "cmods=spark.js,../-dev/prj10.js&dload=t3srepl");
-// srctxta.value = xstor["sparknotes"]["mythology"].replace(/\\n\\*\\/$|^\\/\\*\\n/g, ""); //
+// srctxta.value = xstor.sparknotes.mythology.replace(/\\n\\*\\/$|^\\/\\*\\n/g, ""); //
 // srctxta.value || import("./spark.js").then(r => srctxta.value = r.mythology.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(respShow); //
 // sepainp.value = "/^.*?(\\\\bmyth).*\\\\n*|^.*\\\\n*/gim"; //
 // rtrminp.value = "(m, c1, i) => { i || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" <strong>\\" + ++it1 + \\".</strong> <em>[line \\" + it0 + \\"]</em>\\\\n\\" + m.replace(/\\\\bmyth/gi, \\"<mark>$&</mark>\\"); }";
@@ -275,8 +275,8 @@ const srtools = `//
  srctxta.textContent = JSON.stringify(xstor.util, null, 2);
  srctxta.value = srctxta.innerHTML;
  sepainp.value = "/.+/g";
- rtrminp.value = 'm => m.replace(/(?<!\\\\\\\\)\\\\\\\\n/g, "\\\\n").replace(/\\\\*.+?\\\\*|\\\\^.+?\\\\^/g, "<mark>$&</mark>")'; //
- // rtrminp.value = 'm => m.replace(/([^\\\\\\\\])\\\\\\\\n/g, "$1\\\\n").replace(/([^\\\\\\\\])\\\\\\\\n/g, "$1\\\\n").replace(/\\\\*.+?\\\\*|\\\\^.+?\\\\^/g, "<mark>$&</mark>")'; //
+ rtrminp.value = 'm => m.replace(/(?<!\\\\\\\\)\\\\\\\\n/g, "\\\\n").replace(/\\\\*.+?\\\\*|\\\\^.+?\\\\^|\\\\`.+?\\\\`/g, "<mark>$&</mark>")'; //
+ // rtrminp.value = 'm => m.replace(/([^\\\\\\\\])\\\\\\\\n/g, "$1\\\\n").replace(/([^\\\\\\\\])\\\\\\\\n/g, "$1\\\\n").replace(/\\\\*.+?\\\\*|\\\\^.+?\\\\^|\\\\`.+?\\\\`/g, "<mark>$&</mark>")'; //
 */
 //`;
 
