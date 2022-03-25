@@ -278,10 +278,10 @@ figure {
   opacity: 0.5;
 }
 /* #nmwrap input:disabled:not([type=checkbox]):not([type=radio]) { color: #333; } */
-#nmwrap select:not(.anone) {
-  padding: 0 0.25rem;
-  vertical-align: top;
-}
+#nmwrap select[multiple], #nmwrap .btn1,
+#nmwrap .ccntr button, #nmwrap .ccntr input[type=button],
+#nmwrap .ccntr input[type=text], #nmwrap .ccntr select { vertical-align: top; }
+#nmwrap select:not(.anone) { padding: 0 0.25rem; }
 #nmwrap select.anone {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -335,7 +335,7 @@ figure {
   text-align: right;
   white-space: nowrap;
 }
-#nmwrap .cleft + .ccntr>input[type=text], #nmwrap .cleft + .ccntr>select { width: 216px; }
+#nmwrap .cleft + .ccntr input[type=text], #nmwrap .cleft + .ccntr select { width: 216px; }
 #nmwrap .chelp { font-size: 0.75rem; line-height: normal; margin-top: 0.25rem; } /* 12px */
 #nmwrap .fsz0c75 { font-size: 0.75rem; }
 #nmwrap .fsz1c00 { font-size: 1rem; }
@@ -374,7 +374,6 @@ figure {
   background: WhiteSmoke;
   text-align: left;
 }
-#nmdata #bckbtn { vertical-align: top; }
 #nmtabs li:first-child>a { letter-spacing: -3px; }
 #nmbulk #qselbtn { margin-right: 7px; }
 #pdbcfg #pdbtbl td:nth-of-type(1),
@@ -1391,7 +1390,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         nmdata.innerHTML = "" + `
   <button id=updbtn class="fltrt hgainl"><span class=isucc>&#x267a;</span> UPDATE</button>
   <div class=field>
-    <button id=bckbtn class="hgainl ilink"><strong>&lang;</strong></button>
+    <button id=bckbtn class="btn1 hgainl ilink"><strong>&lang;</strong></button>
     <span class="btn1 opq0" disabled>${txd2.DBNAME} &sol;</span> ${
         !(rval = fwg.loc_subdir || (fwg.file_updated || fwg.file_created || "").subdir) ? ""
         : "<span class=\"btn1 opq0\" disabled>" + rval + " &sol;</span>" }

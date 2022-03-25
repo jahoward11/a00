@@ -7,15 +7,15 @@
 <div id="g4wrap">
 <style>
 *, *::before, *::after { box-sizing: inherit; }
-html { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; }
+html { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }
 button, input, select { margin: 0; }
 hr { margin: 1.5rem 0; }
-#g4wrap { font: normal 1rem Helvetica, Arial, sans-serif; margin: 24px 0; }
+#g4wrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px 0; }
 #g4wrap button, #g4wrap .btn1, #g4wrap input:not([type=checkbox]):not([type=radio]), #g4wrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }
-#g4wrap select { padding: 0 0.25rem; /* vertical-align: middle; */ }
+#g4wrap select:not(.anone) { padding: 0 0.25rem; }
 #g4wrap .cfield { max-width: 359px; }
 #g4wrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }
-#g4wrap .ccntr:not(:last-child) { margin-right: 0.5rem; }
+#g4wrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }
 #g4wrap :not(.cfield)>.ccntr { display: inline-block; height: 1.5rem; margin-bottom: 0.5rem; }
 #g4board { margin: 16px; }
 #g4board>canvas { border: 8px solid Tan; background: radial-gradient(White, #ffeccc 80%, #e2cfb6); }
