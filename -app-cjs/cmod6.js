@@ -1105,27 +1105,30 @@ d1ui += "\\n@media screen and (max-width: 575px) { #dbwrap .media-left>.image.rs
 d1ui += "\\n@media screen and (max-width: 719px) { #dbwrap .media-left>.image { margin: 0; } }\\n</style>";
 d2ui += "\\n<hr />\\n<div class=\\"fltrt cfield\\">\\n<button id=resbtn class=\\"ccntr hgainl\\"><span class=isucc>&orarr;</span> RESET</button>";
 d2ui += "<button id=savbtn class=\\"ccntr hgainl\\"><span class=isucc>&#x267a;</span> SAVE</button>\\n</div>";
-d2ui += "\\n<div class=field>\\n<h4>Edit Contact</h4>";
+d2ui += "\\n<div class=field>\\n<h4>Edit Data File</h4>";
 d2ui += "\\n<div class=\\"alnrt chelp isucc dnone\\">New contact is saved in local DB.</div>";
 d2ui += "\\n<div class=\\"alnrt chelp iwarn dnone\\">New-contact save attempt failed.</div>\\n</div>";
-d2ui += "\\n<form id=cform></form>";
+d2ui += "\\n<form id=dform></form>";
 
 // dbwrap.remove() // *Alert:* useful only if edit-testing the UI code above
 // try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d2ui + "\\n"; cmain.appendChild(ndiv); }
 
-ak = ""
+fwg = ak = ""
 fncTry = (fnc, a, e) => { try { return fnc(a) } catch (err) { return e > 1 ? a : e ? err : undefined }};
 valStr = (v, sp) => v == null ? "" : v instanceof Error && v.constructor && !v.reason ? v : typeof v === 'object' ? JSON.stringify(v, null, sp) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(_.fncTry(JSON.parse, v), null, sp) || v;
 rex0s = /^_rev|^file_|^ts_|^loc_/;
-ctmpl = { _id: "!groupID-cUsername", _rev: "", file_type: "contact", ts_created: 0, ts_updated: 0, loc_subdir: "", name_full: "", name_user: "", birthdate: "", roles: [""], emails: [""], phones: [""], locations: [""], social_profiles: [""], project_urls: [""], team_groups: [""], image_src: "", bio_short: "", miscellany: "" };
-fwg = JSON.parse(JSON.stringify(ctmpl));
+t1src = { _id: "", _rev: "", file_type: "srcdoc", file_created: { username: "", timestamp: 0, dborigin: "", dbname: "", subdir: "", misc: "" }, file_updated: { username: "", timestamp: 0, dborigin: "", dbname: "", subdir: "", misc: "" }, media_type: "text/plain", content: "" };
+t2evt = { _id: "idGen(\\"~E\\", ts0, un0)", _rev: "", file_type: "event", file_created: { username: "", timestamp: 0, dborigin: "", dbname: "", subdir: "" }, file_updated: { username: "", timestamp: 0, dborigin: "", dbname: "", subdir: "" }, headline: "", time: "", place: "", map_refs: [""], people: [""], description: "" };
+t3mem = { _id: "idGen(\\"~m\\", ts0, un0)", _rev: "", file_type: "memo", file_created: { username: "", timestamp: 0, dborigin: "", dbname: "", subdir: "" }, linkref: "", from: "", to: [""], subject: "", body: "" };
+t4cnt = { _id: "!groupID-cUsername", _rev: "", file_type: "contact", ts_created: 0, ts_updated: 0, loc_subdir: "", name_full: "", name_user: "", birthdate: "", roles: [""], emails: [""], phones: [""], locations: [""], social_profiles: [""], project_urls: [""], team_groups: [""], image_src: "", bio_short: "", miscellany: "" };
+dbtmpl = t4cnt;
 hlps = window.dbwrap && dbwrap.querySelectorAll('.chelp');
 hsRes = () => _.hlps.forEach(e => e.classList.add("dnone"));
-formGen = (k, v) => cform.innerHTML = Object.entries(_.fwg).map(([k, v]) => _.rex0s.test(k) ? "" : "\\n<div class=\\"field is-horizontal\\">\\n<div class=\\"field-label\\"><span class=label>" + k + "</span></div>\\n<div class=\\"field-body\\">\\n<textarea id=p0" + k + " class=textarea rows=2>" + _.valStr(v) + "\\n</textarea>\\n</div>\\n</div>").join("") + "\\n";
+d0Upd = () => { let ts = new Date().getTime(); !_.fwg.hasOwnProperty("ts_created") || ((_.fwg.ts_created ? {} : _.fwg).ts_created = _.fwg.ts_updated = ts); !_.fwg.file_created || [[_.fwg.file_created, _.fwg.file_updated]].forEach(([p0, p1]) => { !p0.timestamp || (p0 = {}); p1 = p1 || {}; p1.username = p0.username = fwg._id.replace(/.+?-/, ""); p1.timestamp = p0.timestamp = ts; p1.dborigin = p0.dborigin = /127\\.0\\.0|192\\.168\\.0|cloudant|localhost/.test(location.origin) ? location.origin : [navigator.userAgent || navigator.userAgentData, location.origin]; p1.dbname = p0.dbname = dbobj.name; }); !_.fwg.hasOwnProperty("from") || _.fwg.from || (_.fwg.from = _.fwg._id.replace(/.+?-/, "")); };
+formGen = () => dform.innerHTML = Object.entries(_.fwg).map(([k, v]) => _.rex0s.test(k) ? "" : "\\n<div class=\\"field is-horizontal\\">\\n<div class=\\"field-label\\"><span class=label>" + k + "</span></div>\\n<div class=\\"field-body\\">\\n<textarea id=p0" + k + " class=textarea rows=2>" + _.valStr(v) + "\\n</textarea>\\n</div>\\n</div>").join("") + "\\n";
 //
-!window.cform || formGen();
-!window.resbtn || ( resbtn.onclick = () => _.hsRes() || !(_.fwg = JSON.parse(JSON.stringify(_.ctmpl))) || Object.entries(_.fwg).forEach(([k, v]) => _.rex0s.test(k) || (window["p0" + k].value = _.valStr(v))) );
-!window.savbtn || ( savbtn.onclick = () => { let ts = new Date().getTime(); ["ts_updated"].concat(_.fwg.ts_created ? [] : "ts_created").forEach(e => _.fwg[e] = ts); Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))); !_.fwg._id.value || dbobj.put(_.fwg).then(r => _.hlps[0].classList.remove("dnone") || respShow(r)).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)); } );
+!window.resbtn || ( resbtn.onclick = () => _.hsRes() || !(_.fwg = JSON.parse(JSON.stringify(_.dbtmpl))) || _.formGen() )();
+!window.savbtn || ( savbtn.onclick = () => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))) || !_.fwg._id || _.d0Upd() || dbobj.put(_.fwg).then(r => _.hlps[0].classList.remove("dnone") || respShow(r)).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)) );
 
 /*
  4. __Populate your database__ either with your own contacts or with a
@@ -1198,9 +1201,9 @@ formGen = (k, v) => cform.innerHTML = Object.entries(_.fwg).map(([k, v]) => _.re
     to your image-resource file; Then add to the file (as attachments)
     either your own contact photos or the provided collection of
     stock photos, meant to be used for demo purposes.
-    + Un-comment the first three of the following code blocks (i.e.,
+    + Un-comment the first four of the following code blocks (i.e.,
       remove the one pair of JS block-comment tags \`/* … */\` that
-      wrap all three blocks) to remove the form UI and to display, in
+      wrap all four blocks) to remove the form UI and to display, in
       its place, a different UI of controls for attaching an image.
     + If you have photos of your own contacts already available on
       your device, use the new controls to look them up and attach
@@ -1209,9 +1212,9 @@ formGen = (k, v) => cform.innerHTML = Object.entries(_.fwg).map(([k, v]) => _.re
       a corresponding photo by entering the photo attachment name as
       the value of the contact's \`image_src\` property.
     + If you want to attach the 10 stock photos that accompany the 10
-      fake contacts, un-comment the fourth code block that follows.
+      fake contacts, un-comment the fifth code block that follows.
     + *Tip:* To ensure that you do not repeatedly attach the same set
-      of stock photos, de-activate (re-comment) the fourth of the
+      of stock photos, de-activate (re-comment) the fifth of the
       following code blocks after it has executed once already.
 */
 
@@ -1258,11 +1261,11 @@ simgs = Array.from(Array(10)).map((e, i) => "stockimg" + i + ".jpg");
     using the data-entry UI (from step 3) to allow for editing of a
     user-selected contact.
     + Un-comment the following set of code blocks to display a new
-      directory of all DB contacts (along with the image-management
+      directory of all DB contacts -- along with the image-management
       UI from step 6 and an initially hidden, data-entry form from
-      step 3).
+      step 3.
     + Notice in the \`.onclick\` code for the *list-generate* button
-      \`csbtn\` how we retrieve all DB contacts: We use the \`.allDocs()\`
+      \`nsbtn\` how we retrieve all DB contacts: We use the \`.allDocs()\`
       command on the \`dbobj\` variable that was created in step 2.
       The argument of our \`.allDocs()\` command is a JS object that
       specifies a custom response -- to include the data file (doc)
@@ -1273,7 +1276,7 @@ simgs = Array.from(Array(10)).map((e, i) => "stockimg" + i + ".jpg");
     + If you make changes to a contact's data (e.g., you enter the
       attachment name of a corresponding photo into the \`image_src\`
       property field), or if you create a new contact, commit the
-      altered data file to the DB by tapping the *SAVE* button, at
+      modified data file to the DB by tapping the *SAVE* button, at
       the top-right of the form.
     + Reload the directory list by tapping the button with a circular-
       arrow icon, connected to the *sort-by* select-list control.
@@ -1292,9 +1295,9 @@ simgs = Array.from(Array(10)).map((e, i) => "stockimg" + i + ".jpg");
 /*
 d4ui += "\\n<hr />\\n<h4>Contact Directory</h4>\\n<div id=cpanl class=\\"alnrt\\">\\n<span class=ccntr>Sort by:&ensp;";
 d4ui += "<select id=sortsel class=anone><option></option><option selected>first name</option><option>last name</option><option>username</option></select>";
-d4ui += "<button id=csbtn class=\\"hgainl isucc\\">&orarr;</button></span> <span class=ccntr>Show all:&ensp;";
+d4ui += "<button id=nsbtn class=\\"hgainl isucc\\">&orarr;</button></span> <span class=ccntr>Show all:&ensp;";
 d4ui += "<label><input type=checkbox id=hdrsswi /> <a>headers</a></label>&ensp;";
-d4ui += "<label><input type=checkbox id=bodsswi /> <a>bodies</a></label></span>\\n</div>\\n<div id=cdata></div>";
+d4ui += "<label><input type=checkbox id=bodsswi /> <a>bodies</a></label></span>\\n</div>\\n<div id=ndata></div>";
 d5ui += 'd => \`\\\\n<article class=media>\\\\n<div class="media-left">\\\\n<figure class="image rspv128"><img src="\${ aurls[d.image_src] || "" }" data-fileid="\${ d._id }" />\`'; //
 d5ui += ' + \`\\\\n<figcaption>\${ d.name_user || "" }</figcaption></figure>\\\\n</div>\\\\n<div class="media-content">\\\\n<details class=cfield><summary><strong>\${ _.nmsX(d) }</strong></summary>\`'; //
 d5ui += ' + \`\\\\n<div class="pwrap fsz0c75">\${ (!(d.roles || "")[0] ? "" : "<em class=\\\\"fsz1c00 lnhtnml\\\\">" + d.roles.join(", ") + "</em>\\\\n") + (!d.bio_short ? "" : "SHORT BIO: " + d.bio_short.substring(0, 255) + (d.bio_short.length < 257 ? "" : "&hellip;")) + "<!-- \\\\nNOTE ID: <a>" + d._id + "</a>\\\\nCREATED: " + new Date(d.ts_created || null).toLocaleString() + "\\\\nUPDATED: " + new Date(d.ts_updated || null).toLocaleString() + " -->" }</div>\\\\n</details>\`'; //
@@ -1306,29 +1309,47 @@ try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap";
 
 rexts = /^m[rs]\\.? +|^mrs\\.? +|[.,;:/]/gi; //
 rexns = /^(?:m[rs]\\b\\.?|mrs\\b\\.?) *(.*?) *((?:\\bde +|\\bvon +|)['‘’\\w-]+)([ ,]*\\b[js]r\\.?|[ ,]*\\b[ivx]+|)$/i; //
-qss = [ '#dbwrap .media-content>details:first-of-type', '#dbwrap .media-content>details:last-of-type', '#cdata .media-left>.image>img, #cdata .media-content>details:first-of-type a' ];
+qss = [ '#dbwrap .media-content>details:first-of-type', '#dbwrap .media-content>details:last-of-type', '#ndata .media-left>.image>img, #ndata .media-content>details:first-of-type a' ];
 ts2Fmt = str => !str ? "" : new Date(str).toUTCString().replace(/.+(\\d{2} [a-z]{3} \\d{4}).+/i, "$1");
+idGen = (pfx, tsx, unx) => (/^[a-z~][a-z]$/i.test("" + pfx) ? pfx : "~p") + ( typeof tsx === 'string' && /^[\\w:.-]*$/.test(tsx) ? tsx : (fncTry(v => new Date(v), tsx) || new Date()).toISOString().replace(/\\.\\w+$|[:-]/g, "") ) + (typeof unx === 'string' && /^[\\w@.-]*$/.test(unx) ? unx : "user000");
 nmsX = (d, x = sortsel.selectedIndex) => ( x < 2 ? d.name_full : x > 2 ? d.name_user : (d.name_full || "").trim().replace(_.rexns, "$2, $1$3") ) || d._id;
 hdsX = evt => document.querySelectorAll(_.qss[0]).forEach(e => e.open = evt.target.checked);
 bdsX = evt => document.querySelectorAll(_.qss[1]).forEach(e => e.open = evt.target.checked);
-cLoad = evt => (cform.className = cdata.innerHTML = "") || dbobj.get(evt.target.textContent || evt.target.dataset.fileid).then(d => Object.entries(_.fwg = d).forEach(([k, v]) => _.rex0s.test(k) || (window["p0" + k].value = _.valStr(v)))).catch(respShow);
-window.c1Gen = eval(d5ui);
+dLoad = evt => dbobj.get(evt.target.textContent || evt.target.dataset.fileid).then(d => !(_.fwg = d) || (dform.className = ndata.innerHTML = "") || _.formGen()).catch(respShow);
+fRes = () => { _.fwg = JSON.parse(JSON.stringify(_.dbtmpl)); !/idGen\\(.*\\)$/.test(_.fwg._id.trim()) || (_.fwg._id = eval(_.fwg._id)); };
+window.n1Gen = eval(d5ui);
 window.aurls = window.aurls || {};
-!window.cform || formGen();
 !window.a1inp || ( a1inp.onchange = () => a3inp.innerHTML = (a1inp.files[0] || "").name || "<span>Locate image&hellip;</span>" );
 !window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) || dbobj.get("-res-img").then(d => dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(r => _.hlps[0].classList.remove("dnone") || respShow(r) || _.isRtrv()).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)) );
 !window.a5btn || ( a5btn.onclick = () => _.hsRes() || !(_.ak = n5inp.value) || dbobj.get("-res-img").then(d => !d._attachments[_.ak] ? Promise.reject("Invalid key.") : dbobj.removeAttachment("-res-img", _.ak, d._rev)).then(r => _.hlps[2].classList.remove("dnone") || respShow(r) || !(delete aurls[_.ak]) || _.imgsVw()).catch(e => _.hlps[3].classList.remove("dnone") || respShow(e)) );
-!window.resbtn || ( resbtn.onclick = () => _.hsRes() || (cform.className = cdata.innerHTML = "") || !(_.fwg = JSON.parse(JSON.stringify(_.ctmpl))) || Object.entries(_.fwg).forEach(([k, v]) => _.rex0s.test(k) || (window["p0" + k].value = _.valStr(v))) );
-!window.savbtn || ( savbtn.onclick = () => { let ts = new Date().getTime(); ["ts_updated"].concat(_.fwg.ts_created ? [] : "ts_created").forEach(e => _.fwg[e] = ts); Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))); !_.fwg._id.value || dbobj.put(_.fwg).then(r => _.hlps[4].classList.remove("dnone") || respShow(r)).catch(e => _.hlps[5].classList.remove("dnone") || respShow(e)); } );
+!window.resbtn || ( resbtn.onclick = () => _.hsRes() || _.fRes() || (dform.className = ndata.innerHTML = "") || _.formGen() )();
+!window.savbtn || ( savbtn.onclick = () => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))) || !_.fwg._id || _.d0Upd() || dbobj.put(_.fwg).then(r => _.hlps[4].classList.remove("dnone") || respShow(r)).catch(e => _.hlps[5].classList.remove("dnone") || respShow(e)) );
 !window.imgdtl || (imgdtl.open = false) || isRtrv();
-!window.csbtn || ( csbtn.onclick = () => !(cform.className = "dnone") || (p0_id.value = "") || !dbobj || dbobj.allDocs({ include_docs: true }).then(re => { let rrs = re.rows.filter(r => r && ["name_full", "name_user"].some(p => r.doc.hasOwnProperty(p))).sort((a, b) => !sortsel.selectedIndex ? 0 : _.nmsX(a.doc).replace(_.rexts, "") > _.nmsX(b.doc).replace(_.rexts, "") ? 1 : -1); cdata.innerHTML = !rrs.length ? "\\n<p class=igreyd>&emsp;<em>[No contacts found &hellip;]</em></p>\\n" : rrs.map(r => c1Gen(r.doc)).join("") + "\\n"; bodsswi.checked = hdrsswi.checked = 0; hdrsswi.onchange = _.hdsX; bodsswi.onchange = _.bdsX; document.querySelectorAll(_.qss[2]).forEach(e => e.onclick = _.cLoad); }).catch(respShow) );
-!window.csbtn || csbtn.click();
+!window.nsbtn || ( nsbtn.onclick = () => !(dform.className = "dnone") || (p0_id.value = "") || !dbobj || dbobj.allDocs({ include_docs: true }).then(re => { let rrs = re.rows.filter(r => r && ["name_full", "name_user"].some(p => r.doc.hasOwnProperty(p))).sort((a, b) => !sortsel.selectedIndex ? 0 : _.nmsX(a.doc).replace(_.rexts, "") > _.nmsX(b.doc).replace(_.rexts, "") ? 1 : -1); ndata.innerHTML = !rrs.length ? "\\n<p class=igreyd>&emsp;<em>[No contacts found &hellip;]</em></p>\\n" : rrs.map(r => n1Gen(r.doc)).join("") + "\\n"; bodsswi.checked = hdrsswi.checked = 0; hdrsswi.onchange = _.hdsX; bodsswi.onchange = _.bdsX; document.querySelectorAll(_.qss[2]).forEach(e => e.onclick = _.dLoad); }).catch(respShow) );
+!window.nsbtn || nsbtn.click();
 */
 
 /*
- 8. __*Challenge:*__ Create more databases for other purposes -- such as
-    for compiling journal entries, for saving recipes, for recording
-    workout results in a fitness log, etc.
+ 8. __*Optional challenge:*__ Create more databases for other purposes --
+    such as for compiling journal entries, for saving recipes, for
+    recording workout results in a fitness log, etc.
+    + First, in the following code, feel free to change the values of
+      \`dbtmpl\` and \`dbname\` for your new DB. For quick-startup, four
+      different template options and corresponding DB names are
+      provided -- out of which \`t1src\` and \`recipes-home\` are
+      currently selected (assigned).
+    + Also, in the UI code for displaying summary info above (step 7),
+      change the "Contact Directory" heading to something appropriate
+      to the purpose of your DB -- like, "Note Summaries".
+    + Then, un-comment the following code block to set up a new DB,
+      which can be populated and used in the same way as (i.e., with
+      the same controls that we created for) your *contacts* DB.
+*/
+
+/*
+dbtmpl = t1src; // t2evt; t3mem; t4cnt;
+dbname = "recipes-home"; // "log-workouts"; "journal2022"; "contacs-work";
+!window.PouchDB || !/^[a-z][0-9_a-z-]*$/.test(dbname) || (window.dbobj = new PouchDB(dbname))
 */
 //`;
 
