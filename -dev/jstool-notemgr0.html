@@ -1423,7 +1423,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
             || !/isucc|iwarn/.test(window["p0" + k].className)
             || !++chgs || (fwg[k] = typTest(window["p0" + k].value, 1)[2]) );
           !fwg.hasOwnProperty("ts_updated") || (fwg.ts_updated = ts0);
-          !fwg.hasOwnProperty("file_updated") || [fwg.file_updated].forEach(p1 => {
+          !fwg.file_updated || [fwg.file_updated].forEach(p1 => {
             p1.username = nm0sets.uname || nm0sets.uemail || "user000";
             p1.timestamp = ts0;
             p1.dborigin = /127\.0\.0|192\.168\.0|cloudant|localhost/.test(location.origin)
@@ -1683,11 +1683,11 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         <div class="pwrap fsz0c75">${
           ( !cvs.includes("roles") || !(ra.roles || "")[0] ? ""
             : "<em class=\"fsz1c00 lnhtnml\">" + ra.roles.join(", ") + "</em>\n" )
+          + ( !cvs.some(e => /name_full/.test(e)) || !ra.bio_short ? "" : "SHORT BIO: "
+            + ra.bio_short.substring(0, 255) + (ra.bio_short.length < 257 ? "\n" : "&hellip;\n") )
           + (!cvs.includes("linkref") || !ra.linkref ? "" : "LINK REF: " + ra.linkref + "\n")
           + (!cvs.includes("from") || !ra.from ? "" : "FROM: " + ra.from + "\n")
           + (!cvs.includes("to") || !(ra.to || "")[0] ? "" : "TO: " + ra.to.join(", ") + "\n")
-          + ( !cvs.some(e => /name_full/.test(e)) || !ra.bio_short ? "" : "SHORT BIO: "
-            + ra.bio_short.substring(0, 255) + (ra.bio_short.length < 257 ? "\n" : "&hellip;\n") )
           + (!cvs.includes("file_type") || !ra.file_type ? "" : "NOTE TYPE: " + ra.file_type + "\n")
           + ( !cvs.includes("id") ? "" : "NOTE ID: " + ( !cvs.includes("subdir") ? ""
               : (rb = ra.loc_subdir || (ra.file_updated || ra.file_created || "").subdir || "")
@@ -1785,8 +1785,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         (nm0sets.p2typs[t01sel.value] || "").t1 || pftyps[t01sel.value] || pftyps.new ));
       !/^idGen\(.*\)$/.test(fwg._id.trim()) || (fwg._id = eval(fwg._id));
       !fwg.hasOwnProperty("ts_created") || (fwg.ts_updated = fwg.ts_created = ts0);
-      [[fwg.file_created, fwg.file_updated]].forEach(([p0, p1]) => {
-        if (!p0) { return; }
+      !fwg.file_created || [[fwg.file_created, fwg.file_updated]].forEach(([p0, p1]) => {
         p1 = p1 || {};
         p1.username = p0.username = nm0sets.uname || nm0sets.uemail;
         p1.timestamp = p0.timestamp = ts0;
