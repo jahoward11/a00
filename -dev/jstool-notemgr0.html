@@ -986,6 +986,15 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       _id: "",
       _rev: ""
     },
+    scrap: {
+      _id: "",
+      _rev: "",
+      file_type: "scrap",
+      ts_created: 0,
+      ts_updated: 0,
+      loc_subdir: "",
+      content: ""
+    },
     srcdoc: {
       _id: "",
       _rev: "",
@@ -1007,15 +1016,6 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         misc: ""
       },
       media_type: "text/plain",
-      content: ""
-    },
-    scrap: {
-      _id: "",
-      _rev: "",
-      file_type: "scrap",
-      ts_created: 0,
-      ts_updated: 0,
-      loc_subdir: "",
       content: ""
     },
     event: {
@@ -1041,7 +1041,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       place: "",
       map_refs: [""],
       people: [""],
-      description: "",
+      description: ""
     },
     memo: {
       _id: "idGen(\"~m\", ts0, un0)",
@@ -1991,8 +1991,8 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     !evt || evt.target.id !== "t01sel" || cfgsUpd(evt);
   },
   t0sChg = () => {
-    let t0s = [ ["", ""], ["srcdoc", "Web source document"],
-        ["scrap", "No-frills, plain-text note"], ["event", "Calendaring item or logging record"],
+    let t0s = [ ["", ""], ["scrap", "No-frills, plain-text note"],
+        ["srcdoc", "Web source document"], ["event", "Calendaring item or logging record"],
         ["memo", "Short memorandum or text msg"], ["contact", "Person's contact information"] ]
         .concat(Object.values(nm0sets.p2typs).map(to => to.t0));
     t01sel.innerHTML = t0s.map( ([k, v], i) =>
