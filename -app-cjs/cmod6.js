@@ -970,7 +970,7 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
 // sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.body.appendChild(n); };
 // !!window.PouchDB || fetch("../-res-js/pouchdb.min.js").then(r => r.blob()).then(URL.createObjectURL).then(_.sc2Inj).catch(respShow)
 
-// try { !!PouchDB } catch { scrInj("../-res-js/pouchdb.min.js").catch(respShow) }
+// try { !!PouchDB } catch { scrInj("../-res-js/pouchdb.min.js").then(respShow).catch(respShow) }
 
 /*
  2. Use *PouchDB* to __create a *contacts* database__ that will contain
@@ -1110,20 +1110,21 @@ d2ui += "\\n<form id=dform></form>";
 
 fwg = ak = ""
 fncTry = (fnc, a, e) => { try { return fnc(a) } catch (err) { return e > 1 ? a : e ? err : undefined }};
+htmTxt = str => str.replace(/&(?=#?\\w+;)/g, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;");
 valStr = (v, sp) => v == null ? "" : v instanceof Error && v.constructor && !v.reason ? v : typeof v === 'object' ? JSON.stringify(v, null, sp) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(_.fncTry(JSON.parse, v), null, sp) || v;
-rex0s = /^_rev|^file_|^ts_|^loc_/;
+rex0s = /^_rev|^file_|^loc_|^media_|^ts_/;
 t1src = { _id: "", _rev: "", file_type: "srcdoc", file_created: { username: "", timestamp: 0, dborigin: "", dbname: "", subdir: "", misc: "" }, file_updated: { username: "", timestamp: 0, dborigin: "", dbname: "", subdir: "", misc: "" }, media_type: "text/plain", content: "" };
-t2evt = { _id: "idGen(\\"~E\\", \\"ts\\", 0)", _rev: "", file_type: "event", file_created: { username: "", timestamp: 0, dborigin: "", dbname: "", subdir: "" }, file_updated: { username: "", timestamp: 0, dborigin: "", dbname: "", subdir: "" }, headline: "", time: "", place: "", map_refs: [""], people: [""], description: "" };
-t3mem = { _id: "idGen(\\"~m\\", \\"ts\\", 0)", _rev: "", file_type: "memo", file_created: { username: "", timestamp: 0, dborigin: "", dbname: "", subdir: "" }, linkref: "", from: "", to: [""], subject: "", body: "" };
+t2evt = { _id: "idGen(\\"~E\\", ts0, 0)", _rev: "", file_type: "event", file_created: { username: "", timestamp: 0, dborigin: "", dbname: "", subdir: "" }, file_updated: { username: "", timestamp: 0, dborigin: "", dbname: "", subdir: "" }, headline: "", time: "", place: "", map_refs: [""], people: [""], description: "" };
+t3mem = { _id: "idGen(\\"~m\\", ts0, 0)", _rev: "", file_type: "memo", file_created: { username: "", timestamp: 0, dborigin: "", dbname: "", subdir: "" }, linkref: "", from: "", to: [""], subject: "", body: "" };
 t4cnt = { _id: "!groupID-cUsername", _rev: "", file_type: "contact", ts_created: 0, ts_updated: 0, loc_subdir: "", name_full: "", name_user: "", birthdate: "", roles: [""], emails: [""], phones: [""], locations: [""], social_profiles: [""], project_urls: [""], team_groups: [""], image_src: "", bio_short: "", miscellany: "" };
 dtmpl = t4cnt;
 hlps = window.dbwrap && dbwrap.querySelectorAll('.chelp');
 hsRes = () => _.hlps.forEach(e => e.classList.add("dnone"));
 d0Upd = () => { let ts = new Date().getTime(); !_.fwg.hasOwnProperty("ts_created") || ((_.fwg.ts_created ? {} : _.fwg).ts_created = _.fwg.ts_updated = ts); !_.fwg.file_created || [[_.fwg.file_created, _.fwg.file_updated]].forEach(([p0, p1]) => { !p0.timestamp || (p0 = {}); p1 = p1 || {}; p1.username = p0.username = fwg._id.replace(/.+?-/, ""); p1.timestamp = p0.timestamp = ts; p1.dborigin = p0.dborigin = /127\\.0\\.0|192\\.168\\.0|cloudant|localhost/.test(location.origin) ? location.origin : [navigator.userAgent || navigator.userAgentData, location.origin]; p1.dbname = p0.dbname = dbobj.name; }); !_.fwg.hasOwnProperty("from") || _.fwg.from || (_.fwg.from = _.fwg._id.replace(/.+?-/, "")); };
-formGen = () => dform.innerHTML = Object.entries(_.fwg).map(([k, v]) => _.rex0s.test(k) ? "" : "\\n<div class=\\"field is-horizontal\\">\\n<div class=\\"field-label\\"><span class=label>" + k + "</span></div>\\n<div class=\\"field-body\\">\\n<textarea id=p0" + k + " class=textarea rows=2>" + _.valStr(v) + "\\n</textarea>\\n</div>\\n</div>").join("") + "\\n";
+formGen = () => dform.innerHTML = Object.entries(Object.assign({ _id: "", _rev: null }, _.fwg)).map(([k, v]) => _.rex0s.test(k) ? "" : "\\n<div class=\\"field is-horizontal\\">\\n<div class=\\"field-label\\"><span class=label>" + k + "</span></div>\\n<div class=\\"field-body\\">\\n<textarea id=p0" + k + " class=textarea rows=" + (/_attach|configs|content|body|file/.test(k) ? 8 : 2) + ">" + _.htmTxt(_.valStr(v)) + "\\n</textarea>\\n</div>\\n</div>").join("") + "\\n";
 //
 !window.resbtn || ( resbtn.onclick = () => _.hsRes() || !(_.fwg = JSON.parse(JSON.stringify(_.dtmpl))) || _.formGen() )();
-!window.savbtn || ( savbtn.onclick = () => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))) || !_.fwg._id || _.d0Upd() || dbobj.put(_.fwg).then(r => _.hlps[0].classList.remove("dnone") || respShow(r)).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)) );
+!window.savbtn || ( savbtn.onclick = () => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))) || !_.fwg._id || _.d0Upd() || dbobj.put(Object.assign({ _id: "", _rev: null }, _.fwg)).then(r => _.hlps[0].classList.remove("dnone") || respShow(r)).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)) );
 
 /*
  4. __Populate your database__ either with your own contacts or with a
@@ -1214,7 +1215,7 @@ formGen = () => dform.innerHTML = Object.entries(_.fwg).map(([k, v]) => _.rex0s.
 */
 
 /*
-d3ui += "\\n<hr />\\n<h4>Contact Photos</h4>\\n<div class=cfield>";
+d3ui += "\\n<hr />\\n<h4>Images Manager</h4>\\n<div class=cfield>";
 d3ui += "\\n<span class=\\"ccntr cleft\\"><em>A:</em> step 1</span><span class=ccntr><label>";
 d3ui += "<input id=a1inp type=file /><span id=a2inp class=\\"btn1 hgainl ilink\\">&#x2726;</span>";
 d3ui += "<span id=a3inp class=btn1><span>Locate image&hellip;</span></span>\\n</label></span>\\n</div>";
@@ -1293,12 +1294,12 @@ d4ui += "<select id=sortsel class=anone>" + ["", "first name", "last name", "use
 d4ui += "<button id=nsbtn class=\\"hgainl isucc\\">&orarr;</button></span> <span class=ccntr>Show all:&ensp;";
 d4ui += "<label><input type=checkbox id=hdrsswi /> <a>headers</a></label>&ensp;";
 d4ui += "<label><input type=checkbox id=bodsswi /> <a>bodies</a></label></span>\\n</div>\\n<div id=ndata></div>";
-d5ui += 'd => \`\\\\n<article class=media>\\\\n<div class="media-left">\\\\n<figure class="image rspv128"><img src="\${ aurls[d.image_src] || "" }" data-fileid="\${ d._id }" />\\\\n<figcaption>\${ d.name_user || "" }</figcaption></figure>\\\\n</div>\`'; //
-d5ui += ' + \`\\\\n<div class="media-content">\\\\n<details class=cfield><summary><strong>\${ _.nmsX(d) }</strong> <em class="diblk fsz0c75">\${ !/memo|post/i.test(d.file_type) ? "" : new Date( d.ts_updated || d.ts_created || (d.file_updated || d.file_created || "").timestamp || null ).toLocaleString() }</em></summary>\\\\n<div class="pwrap fsz0c75">\`'; //
-d5ui += ' + (!(d.roles || "")[0] ? "" : "<em class=\\\\"fsz1c00 lnhtnml\\\\">" + d.roles.join(", ") + "</em>\\\\n") + (!d.bio_short ? "" : "SHORT BIO: " + d.bio_short.substring(0, 255) + (d.bio_short.length < 257 ? "" : "&hellip;")) + (!d.linkref ? "" : "LINK REF: " + d.linkref + "\\\\n") + (!d.from ? "" : "FROM: " + d.from + "\\\\n") + (!(d.to || "")[0] ? "" : "TO: " + d.to.join(", ") + "\\\\n") + (!/srcdoc/i.test(d.file_type) ? "" : "CREATED: " + new Date(d.ts_created || (d.file_created || "").timestamp || null).toLocaleString() + "\\\\nUPDATED: " + new Date(d.ts_updated || (d.file_updated || "").timestamp || null).toLocaleString() + "\\\\n")'; //
-d5ui += ' + \`</div>\\\\n</details>\\\\n<details>\${ !/event|memo|post|srcdoc/i.test(d.file_type) ? "" : "<summary>" + (d.subject || d.headline || "&hellip;") + "</summary>" }\\\\n<div class=pwrap>\${ (_.ak = d.body || d.content || "").substring(0, 255) + (_.ak.length < 257 ? "" : "&hellip;") + (!d.hasOwnProperty("time") ? "" : "<strong>Time:</strong> " + _.ts2Fmt(d.time) + "\\\\n") + (!d.hasOwnProperty("place") ? "" : "<strong>Place:</strong> " + d.place + "\\\\n")'; //
+d5ui += 'd => \`\\\\n<article class=media>\\\\n<div class="media-left">\\\\n<figure class="image rspv128"><img src="\${ aurls[d.image_src] || "" }" data-fileid="\${ d._id }" />\\\\n<figcaption>\${ d.name_user || "" }</figcaption></figure>\\\\n</div>'; //
+d5ui += '\\\\n<div class="media-content">\\\\n<details class=cfield><summary><strong>\${ _.nmsX(d) }</strong> <em class="diblk fsz0c75">\${ !/anno|memo|post/i.test(d.file_type) ? "" : new Date( d.ts_updated || d.ts_created || (d.file_updated || d.file_created || "").timestamp || null ).toLocaleString() }</em></summary>\\\\n<div class="pwrap fsz0c75">\`'; //
+d5ui += ' + (!(d.roles || "")[0] ? "" : "<em class=\\\\"fsz1c00 lnhtnml\\\\">" + d.roles.join(", ") + "</em>\\\\n") + (!d.bio_short ? "" : "SHORT BIO: " + d.bio_short.substring(0, 255) + (d.bio_short.length < 257 ? "\\\\n" : "&hellip;\\\\n")) + (!d.linkref ? "" : "LINK REF: " + d.linkref + "\\\\n") + (!d.from ? "" : "FROM: " + d.from + "\\\\n") + (!(d.to || "")[0] ? "" : "TO: " + d.to.join(", ") + "\\\\n") + (/anno|contact|memo|phone|post/i.test(d.file_type) ? "" : "NOTE TYPE: " + d.file_type + "\\\\nCREATED: " + new Date(d.ts_created || (d.file_created || "").timestamp || null).toLocaleString() + "\\\\nUPDATED: " + new Date(d.ts_updated || (d.file_updated || "").timestamp || null).toLocaleString() + "\\\\n")'; //
+d5ui += ' + \`</div>\\\\n</details>\\\\n<details>\${ !/anno|event|memo|post|srcdoc/i.test(d.file_type) ? "" : "<summary>" + (d.subject || d.headline || "&hellip;") + "</summary>" }\\\\n<div class=pwrap>\${ _.htmTxt(_.ak = d.body || d.content || (d.filefrags || [""])[0].contenttxt || "").substring(0, 255) + (_.ak.length < 257 ? "" : "&hellip;") + (!d.hasOwnProperty("time") ? "" : "<strong>Time:</strong> " + _.ts2Fmt(d.time) + "\\\\n") + (!d.hasOwnProperty("place") ? "" : "<strong>Place:</strong> " + d.place + "\\\\n")'; //
 d5ui += ' + (!(d.map_refs || "")[0] ? "" : "<strong>Map refs:</strong> " + d.map_refs.join(", ") + "\\\\n") + (!(d.people || "")[0] ? "" : "<strong>People:</strong> " + d.people.join(", ") + "\\\\n") + (!d.hasOwnProperty("description") ? "" : "<strong>Description:</strong> " + d.description + "\\\\n") + (!d.hasOwnProperty("birthdate") ? "" : "<strong>Birthdate:</strong> " + d.birthdate + "\\\\n") + (!d.hasOwnProperty("emails") ? "" : "<strong>Emails:</strong> " + d.emails.join(", ") + "\\\\n") + (!d.hasOwnProperty("phones") ? "" : "<strong>Phones:</strong> " + d.phones.join(", ") + "\\\\n")'; //
-d5ui += ' + (!(d.social_profiles || "")[0] ? "" : "<strong>Social profiles:</strong> " + d.social_profiles.join(", ") + "\\\\n") + (!(d.project_urls || "")[0] ? "" : "<strong>Project urls:</strong> " + d.project_urls.join(", ") + "\\\\n") + (!(d.team_groups || "")[0] ? "" : "<strong>Team groups:</strong> " + d.team_groups.join(", ") + "\\\\n") + ( !/contact/i.test(d.file_type) ? "" : (!d.ts_created ? "" : "<strong>Joined team:</strong> " + _.ts2Fmt(d.ts_created) + "\\\\n") + (!d.ts_updated ? "" : "<strong>Last updated:</strong> " + _.ts2Fmt(d.ts_updated) + "\\\\n") ) }</div>\\\\n</details>\\\\n</div>\\\\n</article>\`'; //
+d5ui += ' + (!(d.social_profiles || "")[0] ? "" : "<strong>Social profiles:</strong> " + d.social_profiles.join(", ") + "\\\\n") + (!(d.project_urls || "")[0] ? "" : "<strong>Project urls:</strong> " + d.project_urls.join(", ") + "\\\\n") + (!(d.team_groups || "")[0] ? "" : "<strong>Team groups:</strong> " + d.team_groups.join(", ") + "\\\\n") + ( !/contact|phone/i.test(d.file_type) ? "" : (!d.ts_created ? "" : "<strong>Joined team:</strong> " + _.ts2Fmt(d.ts_created) + "\\\\n") + (!d.ts_updated ? "" : "<strong>Last updated:</strong> " + _.ts2Fmt(d.ts_updated) + "\\\\n") ) }</div>\\\\n</details>\\\\n</div>\\\\n</article>\`'; //
 
 !window.dbwrap || dbwrap.remove() // necessary to clear UI from step 3 or 6
 try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d3ui + d2ui + d4ui + "\\n"; cmain.appendChild(ndiv); hlps = dbwrap.querySelectorAll('.chelp'); }
@@ -1307,23 +1308,22 @@ rexts = /^m[rs]\\.? +|^mrs\\.? +|[.,;:/]/gi; //
 rexns = /^(?:m[rs]\\b\\.?|mrs\\b\\.?) *(.*?) *((?:\\bde +|\\bvon +|)['‘’\\w-]+)([ ,]*\\b[js]r\\.?|[ ,]*\\b[ivx]+|)$/i; //
 qss = [ '#dbwrap .media-content>details:first-of-type', '#dbwrap .media-content>details:last-of-type', '#ndata .media-left>.image>img, #ndata .media-content>details:first-of-type a' ];
 ts2Fmt = str => !str ? "" : new Date(str).toUTCString().replace(/.+(\\d{2} [a-z]{3} \\d{4}).+/i, "$1");
-idGen = (pfx, tsx, unx) => (/^[a-z~][a-z]$/i.test("" + pfx) ? pfx : "~p") + ( typeof tsx === 'string' && /^[\\w:.-]*$/.test(tsx) ? tsx : (fncTry(v => new Date(v), tsx) || new Date()).toISOString().replace(/\\.\\w+$|[:-]/g, "") ) + (typeof unx === 'string' && /^[\\w@.-]*$/.test(unx) ? unx : "user000");
+idGen = (pfx, tsx, unx) => (/^[a-z~][a-z]$/i.test("" + pfx) ? pfx : "~p") + ( typeof tsx === 'string' && /^[\\w:.-]*$/.test(tsx) ? tsx : (_.fncTry(v => new Date(v), tsx) || new Date()).toISOString().replace(/\\.\\w+$|[:-]/g, "") ) + (typeof unx === 'string' && /^[\\w@.-]*$/.test(unx) ? unx : "user000");
 nmsX = (d, x = sortsel.selectedIndex) => ( x === 3 ? d.name_user : x < 2 ? d.name_full : x < 3 && (d.name_full || "").trim().replace(_.rexns, "$2, $1$3") ) || d.from || d._id;
-ptyX = (d, x = sortsel.selectedIndex) => x > 4 ? d[sortsel.value] || " " : x > 3 ? "" + (d.file_updated || d.file_created || "").timestamp || d.ts_updated || d.ts_created || " " : _.nmsX(d);
+ptyX = (d, x = sortsel.selectedIndex) => x > 4 ? d[sortsel.value] || " " : x > 3 ? (d.file_updated || d.file_created || "").timestamp || d.ts_updated || d.ts_created || " " : _.nmsX(d).replace(_.rexts, "");
 hdsX = evt => document.querySelectorAll(_.qss[0]).forEach(e => e.open = evt.target.checked);
 bdsX = evt => document.querySelectorAll(_.qss[1]).forEach(e => e.open = evt.target.checked);
 dLoad = evt => dbobj.get(evt.target.textContent || evt.target.dataset.fileid).then(d => !(_.fwg = d) || (dform.className = ndata.innerHTML = "") || _.formGen()).catch(respShow);
-fRes = () => { _.fwg = JSON.parse(JSON.stringify(_.dtmpl)); !/idGen\\(.*\\)$/.test(_.fwg._id.trim()) || (_.fwg._id = eval(_.fwg._id)); };
+fRes = () => { let ts0 = new Date().getTime(); _.fwg = JSON.parse(JSON.stringify(_.dtmpl)); !/^idGen\\(.*\\)$/.test(_.fwg._id.trim()) || (_.fwg._id = eval("_." + _.fwg._id)); };
 window.n1Gen = eval(d5ui);
 window.aurls = window.aurls || {};
 !window.a1inp || ( a1inp.onchange = () => a3inp.innerHTML = (a1inp.files[0] || "").name || "<span>Locate image&hellip;</span>" );
 !window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) || dbobj.get("-res-img").then(d => dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(r => _.hlps[0].classList.remove("dnone") || respShow(r) || _.isRtrv()).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)) );
 !window.a5btn || ( a5btn.onclick = () => _.hsRes() || !(_.ak = n5inp.value) || dbobj.get("-res-img").then(d => !d._attachments[_.ak] ? Promise.reject("Invalid key.") : dbobj.removeAttachment("-res-img", _.ak, d._rev)).then(r => _.hlps[2].classList.remove("dnone") || respShow(r) || !(delete aurls[_.ak]) || _.imgsVw()).catch(e => _.hlps[3].classList.remove("dnone") || respShow(e)) );
 !window.resbtn || ( resbtn.onclick = () => _.hsRes() || _.fRes() || (dform.className = ndata.innerHTML = "") || _.formGen() )();
-!window.savbtn || ( savbtn.onclick = () => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))) || !_.fwg._id || _.d0Upd() || dbobj.put(_.fwg).then(r => _.hlps[4].classList.remove("dnone") || respShow(r)).catch(e => _.hlps[5].classList.remove("dnone") || respShow(e)) );
+!window.savbtn || ( savbtn.onclick = () => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))) || !_.fwg._id || _.d0Upd() || dbobj.put(Object.assign({ _id: "", _rev: null }, _.fwg)).then(r => _.hlps[4].classList.remove("dnone") || respShow(r)).catch(e => _.hlps[5].classList.remove("dnone") || respShow(e)) );
 !window.imgdtl || (imgdtl.open = false) || isRtrv();
-!window.nsbtn || ( nsbtn.onclick = () => !(dform.className = "dnone") || (p0_id.value = "") || !dbobj || dbobj.allDocs({ include_docs: true }).then(re => { let rrs = re.rows.filter(r => r && r.doc.file_type).sort((a, b) => !sortsel.selectedIndex ? 0 : _.ptyX(a.doc).replace(_.rexts, "") > _.ptyX(b.doc).replace(_.rexts, "") ? 1 : -1); ndata.innerHTML = !rrs.length ? "\\n<p class=igreyd>&emsp;<em>[No contacts found &hellip;]</em></p>\\n" : rrs.map(r => n1Gen(r.doc)).join("") + "\\n"; bodsswi.checked = hdrsswi.checked = 0; hdrsswi.onchange = _.hdsX; bodsswi.onchange = _.bdsX; document.querySelectorAll(_.qss[2]).forEach(e => e.onclick = _.dLoad); }).catch(respShow) );
-!window.nsbtn || nsbtn.click();
+!window.nsbtn || ( nsbtn.onclick = () => !(dform.className = "dnone") || (p0_id.value = "") || !dbobj || dbobj.allDocs({ include_docs: true }).then(re => { let rrs = re.rows.filter(r => r && r.doc.file_type).sort((a, b) => !sortsel.selectedIndex ? 0 : _.ptyX(a.doc) > _.ptyX(b.doc) ? 1 : -1); ndata.innerHTML = !rrs.length ? "\\n<p class=igreyd>&emsp;<em>[No data files found &hellip;]</em></p>\\n" : rrs.map(r => n1Gen(r.doc)).join("") + "\\n"; bodsswi.checked = hdrsswi.checked = 0; hdrsswi.onchange = _.hdsX; bodsswi.onchange = _.bdsX; document.querySelectorAll(_.qss[2]).forEach(e => e.onclick = _.dLoad); }).catch(respShow) )();
 */
 
 /*
@@ -1337,7 +1337,7 @@ window.aurls = window.aurls || {};
       currently selected (assigned).
     + Also, in the above UI code for displaying summary info (step 7),
       change the "Contact Directory" heading to something appropriate
-      to the purpose of your DB -- like, "Note Summaries".
+      for the purpose of your DB -- like, "Note Summaries".
     + Then, un-comment the following code block to set up a new DB,
       which can be populated and used in the same way as (i.e., with
       the same controls that we created for) your *contacts* DB.
@@ -1345,7 +1345,7 @@ window.aurls = window.aurls || {};
 
 /*
 dtmpl = t1src; // t2evt; t3mem; t4cnt;
-dbase = "recipes-home"; // "log-workouts"; "journal2022"; "contacs-work";
+dbase = "recipes-home"; // "log-workouts"; "journal2022"; "contacts-work";
 !window.PouchDB || !/^[a-z][0-9_a-z-]*$/.test(dbase) || (window.dbobj = new PouchDB(dbase))
 */
 //`;
