@@ -1921,7 +1921,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       localStorage._nm0cfgs = JSON.stringify(nm0cfgs);
     } else if (/dbd[01]btn/.test(evt.target.id)
     && txd1.DBNAME && ddelinp.value === txd1.DBNAME && window.PouchDB) {
-      pdbdel.innerText = new Date(cfg.tsdel = ts0).toLocaleString();
+      cfg.tsdel = ts0;
       evt.target.id !== "dbd0btn" || PouchDB(txd1.DBNAME).compact().then( trsp =>
           hlps[2].classList.remove("dnone") || rsp2Show(trsp) )
           //|| !vidx || (viewsel.selectedIndex = vidx = 0) || viewChg() )
@@ -1949,9 +1949,9 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
             .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
         pdbssel.value = db0; //opensel.value = //openswi.click();
+        pdbOpen(1);
         hlps[0].classList.remove("dnone");
-        nmbulk.innerHTML
-        || (nmbulk.innerHTML = "\n<pre class=pwrap>" + valStr(trsp, 2) + "</pre>\n");
+        nmbulk.innerHTML = "\n<pre class=pwrap>" + valStr(trsp, 2) + "</pre>\n";
       }).catch(err => hlps[1].classList.remove("dnone") || rsp2Show(err));
     }
   },
@@ -2107,7 +2107,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           pdbupd.innerText = new Date(cfg.tsupd = new Date().getTime()).toLocaleString();
           (trsp.push && trsp.push.errors.length) || (trsp.pull && trsp.pull.errors.length)
           ? hlps[5].classList.remove("dnone") || rsp2Show(trsp)
-          : hlps[4].classList.remove("dnone") || nmbulk.innerHTML
+          : hlps[4].classList.remove("dnone")
             || (nmbulk.innerHTML = "\n<pre class=pwrap>" + valStr(trsp, 2) + "</pre>\n");
         }).catch(err => hlps[5].classList.remove("dnone") || rsp2Show(err));
     }
@@ -2129,20 +2129,24 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     !window.PouchDB || !txd1.DBNAME ? (pdbseq.innerText = pdbtot.innerText = "")
     : PouchDB(txd1.DBNAME).info()
       .then(r => [pdbtot.innerText, pdbseq.innerText] = [r.doc_count, r.update_seq]).catch(rsp2Show);
+    pdbssel.selectedIndex < 2
+    ? pfahlp.classList.remove("dnone") || pfacnt.classList.add("dnone")
+      || !(openswi.disabled = 1) || (viewsel.selectedIndex = vidx = evt === 0 ? 2 : 0)
+    : pfahlp.classList.add("dnone") || pfacnt.classList.remove("dnone")
+      || (openswi.disabled = 0) || evt === 1 || vidx > 3 || !v02sel.selectedIndex
+      || (viewsel.selectedIndex = vidx = 3 + v02sel.selectedIndex);
+    Array.from(viewsel.options).forEach((o, i) => i < 4 || (o.disabled = !txd1.DBNAME));
+    openswi.checked = (txd1.DBNAME === nm0sets.dbdflt);
+    (t01sel.value = cfg.type0 || cfg && "scrap") === t0v || t1sChg();
+    v02inp.value = v01inp.value = v03inp.value = t02inp.value = t01inp.value = "";
     if (evt === 0) {
-      viewsel.selectedIndex = vidx = 2;
       ftotal.innerText = "_";
       nmflow.classList.add("dnone");
-      nmtbod.innerHTML = vusr = vbas = "";
+      v01sel.value = nmtbod.innerHTML = vusr = vbas = "";
+    } else if (evt === 1) {
+      v01sel.value = cfg.view0 || "";
+      v01sel.selectedIndex > -1 || (v01sel.selectedIndex = 0);
     } else {
-      pdbssel.selectedIndex < 2 ? (openswi.checked = viewsel.selectedIndex = vidx = 0)
-        || pfahlp.classList.remove("dnone") || pfacnt.classList.add("dnone")
-        || (openswi.disabled = 1)
-      : pfahlp.classList.add("dnone") || pfacnt.classList.remove("dnone")
-        || (openswi.disabled = 0) || vidx > 3 || !v02sel.selectedIndex
-        || (viewsel.selectedIndex = vidx = 3 + v02sel.selectedIndex);
-      openswi.disabled || (openswi.checked = (txd1.DBNAME === nm0sets.dbdflt));
-      (t01sel.value = cfg.type0 || cfg && "scrap") === t0v || t1sChg();
       v01sel.value = !txd1.DBNAME ? "" : viewsel.value = cfg.view0 || "";
       v01sel.selectedIndex > -1 || (v01sel.selectedIndex = viewsel.selectedIndex = vidx = 0);
       viewChg();
@@ -2150,7 +2154,6 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       || use1swi.checked || use1swi.click();
       (!vidx || vidx > 3) && !tidx || tabActv();
     }
-    Array.from(viewsel.options).forEach((o, i) => i < 4 || (o.disabled = !txd1.DBNAME));
   },
   pdbsGen = (dbs = []) => {
     let db1,
