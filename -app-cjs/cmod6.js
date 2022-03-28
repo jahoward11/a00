@@ -1100,7 +1100,7 @@ d1ui += "\\n@media screen and (max-width: 575px) { #dbwrap .media-left>.image.rs
 d1ui += "\\n@media screen and (max-width: 719px) { #dbwrap .media-left>.image { margin: 0; } }\\n</style>";
 d2ui += "\\n<hr />\\n<div class=\\"fltrt cfield\\">\\n<button id=resbtn class=\\"ccntr hgainl\\"><span class=isucc>&orarr;</span> RESET</button>";
 d2ui += "<button id=savbtn class=\\"ccntr hgainl\\"><span class=isucc>&#x267a;</span> SAVE</button>\\n</div>";
-d2ui += "\\n<div class=field>\\n<h4>Edit Data File</h4>";
+d2ui += "\\n<div class=field>\\n<h4>Data File Editor</h4>";
 d2ui += "\\n<div class=\\"alnrt chelp isucc dnone\\">New contact is saved in local DB.</div>";
 d2ui += "\\n<div class=\\"alnrt chelp iwarn dnone\\">New-contact save attempt failed.</div>\\n</div>";
 d2ui += "\\n<form id=dform></form>";
@@ -1289,7 +1289,7 @@ simgs = Array.from(Array(10)).map((e, i) => "stockimg" + i + ".jpg");
 */
 
 /*
-d4ui += "\\n<hr />\\n<h4>Contact Directory</h4>\\n<div id=cpanl class=\\"alnrt\\">\\n<span class=ccntr>Sort by:&ensp;";
+d4ui += "\\n<hr />\\n<h4>Contacts Directory</h4>\\n<div id=cpanl class=\\"alnrt\\">\\n<span class=ccntr>Sort by:&ensp;";
 d4ui += "<select id=sortsel class=anone>" + ["", "first name", "last name", "username", "timestamp", "headline", "subject", "from", "to"].map((e, i) => "<option" + (i !== 1 ? ">" : " selected>") + e + "</option>").join("") + "</select>";
 d4ui += "<button id=nsbtn class=\\"hgainl isucc\\">&orarr;</button></span> <span class=ccntr>Show all:&ensp;";
 d4ui += "<label><input type=checkbox id=hdrsswi /> <a>headers</a></label>&ensp;";
@@ -1313,8 +1313,8 @@ nmsX = (d, x = sortsel.selectedIndex) => ( x === 3 ? d.name_user : x < 2 ? d.nam
 ptyX = (d, x = sortsel.selectedIndex) => x > 4 ? d[sortsel.value] || " " : x > 3 ? (d.file_updated || d.file_created || "").timestamp || d.ts_updated || d.ts_created || " " : _.nmsX(d).replace(_.rexts, "");
 hdsX = evt => document.querySelectorAll(_.qss[0]).forEach(e => e.open = evt.target.checked);
 bdsX = evt => document.querySelectorAll(_.qss[1]).forEach(e => e.open = evt.target.checked);
-dLoad = evt => dbobj.get(evt.target.textContent || evt.target.dataset.fileid).then(d => !(_.fwg = d) || (dform.className = ndata.innerHTML = "") || _.formGen()).catch(respShow);
 fRes = () => { let ts0 = new Date().getTime(); _.fwg = JSON.parse(JSON.stringify(_.dtmpl)); !/^idGen\\(.*\\)$/.test(_.fwg._id.trim()) || (_.fwg._id = eval("_." + _.fwg._id)); };
+dLoad = evt => dbobj.get(evt.target.textContent || evt.target.dataset.fileid).then(d => !(_.fwg = d) || (dform.className = ndata.innerHTML = "") || _.formGen()).catch(respShow);
 window.n1Gen = eval(d5ui);
 window.aurls = window.aurls || {};
 !window.a1inp || ( a1inp.onchange = () => a3inp.innerHTML = (a1inp.files[0] || "").name || "<span>Locate image&hellip;</span>" );
@@ -1336,7 +1336,7 @@ window.aurls = window.aurls || {};
       provided -- out of which \`t1src\` and "recipes-home" are
       currently selected (assigned).
     + Also, in the above UI code for displaying summary info (step 7),
-      change the "Contact Directory" heading to something appropriate
+      change the "Contacts Directory" heading to something appropriate
       for the purpose of your DB -- like, "Note Summaries".
     + Then, un-comment the following code block to set up a new DB,
       which can be populated and used in the same way as (i.e., with
