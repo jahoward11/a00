@@ -258,8 +258,8 @@ try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.strPars || scrInj(null, 'mo
 
 const t4cntcs = `//
 /*
-scrGen = src => src.match(/^(?:ak|imgsVw|rexts) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n").replace(/respShow/g, "console.error").replace(/;\\nwindow\\.(c1Gen = ).+/, (m, c1) => ",\\n  " + (c1 + c1Gen).replace(/\\b_\\.\\b/g, "") + ";\\nwindow.dbobj = window.PouchDB && new PouchDB(\\"" + dbobj.name + "\\");"); //
-dPreps = d => d.replace(/\\n<hr>/, "").replace(/(<details id="?imgdtl.*?>)[^]*?(?=<\\/details>)|(<form id="?cform.*?>)[^]*?(?=<\\/form>)|(<div id="?cdata.*?>)[^]*(?=<\\/div>\\s*<\\/div>)/g, "$1$2$3"); //
+scrGen = src => src.match(/^(?:fwg|imgsVw|rexts) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n").replace(/respShow/g, "console.warn").replace(/;\\nwindow\\.(n1Gen = ).+/, (m, c1) => ",\\n  " + (c1 + n1Gen).replace(/\\b_\\.\\b/g, "") + ";\\nwindow.dbobj = window.PouchDB && new PouchDB(\\"" + dbobj.name + "\\");"); //
+dPreps = d => d.replace(/\\n<hr>/, "").replace(/(<details id="?imgdtl.*?>)[^]*?(?=<\\/details>)|(<form id="?dform.*?>)[^]*?(?=<\\/form>)|(<div id="?ndata.*?>)[^]*(?=<\\/div>\\s*<\\/div>)/g, "$1$2$3"); //
 dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Contacts Database</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/pouchdb.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
 respShow(dwraps[0] + dPreps(dbwrap.outerHTML) + dwraps[1] + scrGen(xstor.JScode.tutorial4) + dwraps[2])
 */
