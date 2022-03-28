@@ -1908,7 +1908,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       db0 = pdb0inp.value.trim(),
       hlps = pdbcfg.querySelectorAll('.chelp');
     hlps.forEach(e => e.classList.add("dnone"));
-    if (!cfg || !evt) {
+    if (!evt || !cfg && !/pdb0btn/.test(evt.target.id)) {
       return;
     } else if (/(dbpw|dbun|orig)inp|pw1swi|[tv]01sel/.test(evt.target.id)) {
       evt.target.id !== "originp" || (cfg.remot.orig = originp.value.trim());
@@ -1931,18 +1931,20 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         [pdbssel, opensel, cntcsel].forEach( (e, i) => e.innerHTML
           = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
             .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
-        hlps[2].classList.remove("dnone") //todo: how will pdbcfg remain visible?
-        || (pdbssel.selectedIndex = 0) || pdbOpen() || rsp2Show(trsp);
+        //cfg.remot.pw = ""; localStorage._nm0cfgs = JSON.stringify(nm0cfgs);
+        hlps[2].classList.remove("dnone")
+        || (pdbssel.selectedIndex = 0) || pdbOpen(0) || rsp2Show(trsp);
       }).catch(err => hlps[3].classList.remove("dnone") || rsp2Show(err));
     } else if (!txd1.DBNAME && una2inp.value && /^[a-z][0-9_a-z-]*$/.test(db0) && window.PouchDB) {
       new PouchDB(txd1.DBNAME = db0).info().then(trsp => {
-        let dbs = Array.from(opensel.options).map(o => o.value).filter(e => e).concat("db0").sort();
-        nm0cfgs[db0] = { type0: t01sel.value, view0: v01sel.value || nm0sets.vwdflt || "",
+        let dbs = Array.from(opensel.options).map(o => o.value).filter(e => e).concat(db0).sort();
+        nm0cfgs[db0] || !( nm0cfgs[db0] = { type0: t01sel.value,
+          view0: v01sel.value || nm0sets.vwdflt || "",
           tsset: ts0, tsdel: 0, user0: una2inp.value.trim() || nm0sets.uname || nm0sets.uemail || "",
           descr: pdb1inp.value || db0 + " project data",
           remot: { un: dbuninp.value.trim() || nm0sets.uname || "", pw: dbpwinp.value.trim(),
-            pw1: pw1swi.checked, orig: originp.value.trim(), publ: 0 } };
-        localStorage._nm0cfgs = JSON.stringify(nm0cfgs);
+            pw1: pw1swi.checked, orig: originp.value.trim(), publ: 0 } })
+        || (localStorage._nm0cfgs = JSON.stringify(nm0cfgs));
         [pdbssel, opensel, cntcsel].forEach( (e, i) => e.innerHTML
           = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
             .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
@@ -2110,7 +2112,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         }).catch(err => hlps[5].classList.remove("dnone") || rsp2Show(err));
     }
   },
-  pdbOpen = () => {
+  pdbOpen = evt => {
     let cfg,
       t0v = t01sel.value;
     pfacnt.innerHTML = fwg = null;
@@ -2127,19 +2129,28 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     !window.PouchDB || !txd1.DBNAME ? (pdbseq.innerText = pdbtot.innerText = "")
     : PouchDB(txd1.DBNAME).info()
       .then(r => [pdbtot.innerText, pdbseq.innerText] = [r.doc_count, r.update_seq]).catch(rsp2Show);
-    pdbssel.selectedIndex < 2 ? (openswi.checked = viewsel.selectedIndex = vidx = 0)
-      || pfahlp.classList.remove("dnone") || pfacnt.classList.add("dnone") || (openswi.disabled = 1)
-    : pfahlp.classList.add("dnone") || pfacnt.classList.remove("dnone") || (openswi.disabled = 0)
-      || vidx > 3 || !v02sel.selectedIndex || (viewsel.selectedIndex = vidx = 3 + v02sel.selectedIndex);
+    if (evt === 0) {
+      viewsel.selectedIndex = vidx = 2;
+      ftotal.innerText = "_";
+      nmflow.classList.add("dnone");
+      nmtbod.innerHTML = vusr = vbas = "";
+    } else {
+      pdbssel.selectedIndex < 2 ? (openswi.checked = viewsel.selectedIndex = vidx = 0)
+        || pfahlp.classList.remove("dnone") || pfacnt.classList.add("dnone")
+        || (openswi.disabled = 1)
+      : pfahlp.classList.add("dnone") || pfacnt.classList.remove("dnone")
+        || (openswi.disabled = 0) || vidx > 3 || !v02sel.selectedIndex
+        || (viewsel.selectedIndex = vidx = 3 + v02sel.selectedIndex);
+      openswi.disabled || (openswi.checked = (txd1.DBNAME === nm0sets.dbdflt));
+      (t01sel.value = cfg.type0 || cfg && "scrap") === t0v || t1sChg();
+      v01sel.value = !txd1.DBNAME ? "" : viewsel.value = cfg.view0 || "";
+      v01sel.selectedIndex > -1 || (v01sel.selectedIndex = viewsel.selectedIndex = vidx = 0);
+      viewChg();
+      pdbssel.selectedIndex !== 1 || !(viewsel.selectedIndex = vidx = 2)
+      || use1swi.checked || use1swi.click();
+      (!vidx || vidx > 3) && !tidx || tabActv();
+    }
     Array.from(viewsel.options).forEach((o, i) => i < 4 || (o.disabled = !txd1.DBNAME));
-    openswi.disabled || (openswi.checked = (txd1.DBNAME === nm0sets.dbdflt));
-    (t01sel.value = cfg.type0 || cfg && "scrap") === t0v || t1sChg();
-    v01sel.value = !txd1.DBNAME ? "" : viewsel.value = cfg.view0 || "";
-    v01sel.selectedIndex > -1 || (v01sel.selectedIndex = viewsel.selectedIndex = vidx = 0);
-    viewChg();
-    pdbssel.selectedIndex !== 1 || !(viewsel.selectedIndex = vidx = 2)
-    || use1swi.checked || use1swi.click();
-    (!vidx || vidx > 3) && !tidx || tabActv();
   },
   pdbsGen = (dbs = []) => {
     let db1,
