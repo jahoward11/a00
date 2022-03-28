@@ -1709,7 +1709,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
               : " <span class=fsz0c75>(" + Object.keys(ra._attachments).length + " attach's)</span>" )
             + "</summary>" }
         <div class=pwrap>${ !/anno|contact|event|phone/i.test(ra.file_type)
-          ? "<div class=lnhtnml>" + (rb = ra.body || ra.content || "").substring(0, 255)
+          ? "<div class=lnhtnml>" + htmTxt(rb = ra.body || ra.content || (ra.filefrags || [""])[0].contenttxt || "").substring(0, 255)
             + (rb.length < 257 ? "" : "&hellip;") + "</div>"
           : /anno/i.test(ra.file_type) ? "<div><span class=fsz0c75>TAGS:&nbsp;</span>" + ra.tags
             + "\n<span class=fsz0c75>TOC&nbsp;FMT:&nbsp;</span>" + ra.tocfmt
