@@ -1308,7 +1308,7 @@ rexts = /^m[rs]\\.? +|^mrs\\.? +|[.,;:/]/gi; //
 rexns = /^(?:m[rs]\\b\\.?|mrs\\b\\.?) *(.*?) *((?:\\bde +|\\bvon +|)['‘’\\w-]+)([ ,]*\\b[js]r\\.?|[ ,]*\\b[ivx]+|)$/i; //
 qss = [ '#dbwrap .media-content>details:first-of-type', '#dbwrap .media-content>details:last-of-type', '#ndata .media-left>.image>img, #ndata .media-content>details:first-of-type a' ];
 ts2Fmt = str => !str ? "" : new Date(str).toUTCString().replace(/.+(\\d{2} [a-z]{3} \\d{4}).+/i, "$1");
-idGen = (pfx, tsx, unx) => (/^[a-z~][a-z]$/i.test("" + pfx) ? pfx : "~p") + ( typeof tsx === 'string' && /^[\\w:.-]*$/.test(tsx) ? tsx : (_.fncTry(v => new Date(v), tsx) || new Date()).toISOString().replace(/\\.\\w+$|[:-]/g, "") ) + (typeof unx === 'string' && /^[\\w@.-]*$/.test(unx) ? unx : "user000");
+idGen = (pfx, tsx, unx) => (/^[a-z~][a-z]$/i.test("" + pfx) ? pfx : "~p") + ( typeof tsx === 'string' && /^[\\w:.-]*$/.test(tsx) ? tsx : (_.fncTry(v => new Date(v), tsx) || new Date()).toISOString().replace(/\\.\\w+$|[:-]/g, "") ) + (typeof unx === 'string' && /^[\\w@.-]*$/.test(unx) ? unx : "user000"); //
 nmsX = (d, x = sortsel.selectedIndex) => ( x === 3 ? d.name_user : x < 2 ? d.name_full : x < 3 && (d.name_full || "").trim().replace(_.rexns, "$2, $1$3") ) || d.from || d._id;
 ptyX = (d, x = sortsel.selectedIndex) => x > 4 ? d[sortsel.value] || " " : x > 3 ? (d.file_updated || d.file_created || "").timestamp || d.ts_updated || d.ts_created || " " : _.nmsX(d).replace(_.rexts, "");
 hdsX = evt => document.querySelectorAll(_.qss[0]).forEach(e => e.open = evt.target.checked);
