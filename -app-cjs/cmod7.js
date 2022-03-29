@@ -2,6 +2,22 @@
 
 const groupname = "JStool";
 
+const notemgr = `/*
+__Note Manager: based on concepts from JS Tutorial 4__
+ This module option functions only to render a fairly complete
+Note-Manager UI -- one that extends the functionality of the
+demo code written in the \`JScode\` module's data files.
+*/
+
+window.nmwrap || import("./nmgr.js").then(r => { let ndiv = document.createElement('div'); ndiv.id = "nmwrap"; ndiv.innerHTML = "\\n<hr />\\n" + r.nmwrap + "\\n"; cmain.appendChild(ndiv); return Promise.all(["../-res-js/pouchdb.min.js", "../-res-js/pouchdb.all-dbs.min.js"].map(scrInj)).then(() => scrInj(null, 'module', "\\n" + r.nmscr + "\\n")); }).catch(respShow)
+
+ // Un-comment the following line of code to generate the
+// full source code (e.g., for building a standalone web app).
+// *Alert:* This app's code is lengthy (about 2300 lines).
+
+// import("./nmgr.js").then(r => respShow(r.dwraps[0] + r.nmwrap + r.dwraps[1] + r.nmscr + r.dwraps[2])).catch(respShow)
+//`;
+
 const search = `/*
 __Search and Replace: from JS Tutorial 3__
  This module option functions only to render a Search-&amp;-Replace UI
@@ -63,7 +79,7 @@ xdui += "\\n#xdwrap .modified-light { background-color: #fcffb6; /* display: inl
 xdui += "\\n#xdwrap .padding { background-color: LightGrey; display: inline-block; min-width: 100%; }";
 xdui += "\\n@media screen and (min-height: 864px), print and (max-width: 734px),";
 xdui += "\\nprint and (min-width: 738px) and (max-width: 785px) { #xdwrap pre { height: 384px; } #xdwrap pre.ht2x { height: 768px; } }";
-xdui += "\\n</style>\\n<hr>\\n<datalist id=pfile2></datalist>";
+xdui += "\\n</style>\\n<hr />\\n<datalist id=pfile2></datalist>";
 xdui += "\\n<span class=\\"cfield fltrt\\"><label class=ccntr><input type=text id=s1inp list=pfile2 placeholder=\\"filename/key/CMD&hellip;\\" /></label><label class=\\"ccntr isucc\\"><input type=checkbox id=s1swi /> hide</label></span>";
 xdui += "\\n<h4>SOURCE1 (edited)</h4>";
 xdui += "\\n<pre id=s1rslt></pre>";
@@ -95,5 +111,5 @@ respShow(dwraps[0] + xdwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGe
 //`;
 
 export {
-  groupname, search, textdiff
+  groupname, notemgr, search, textdiff
 };

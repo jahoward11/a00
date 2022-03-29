@@ -181,9 +181,9 @@ uConv("MCXI")
 
 ucShow = () => ucout.value = _.uConv(!/^[+-]?(?:\\d+\\.?|\\d*\\.\\d+)(?:e[+-]?\\d+|)|^0x[\\da-f]+$/i.test(ucinp.value) ? ucinp.value : +ucinp.value, ulist0.value, ulist1.value);
 opts = ["", "inches", "feet", "yards", "miles", "meters", "ft/s", "mph", "m/s", "km/h", "Fahrenheit", "Celsius", "Kelvin"].map(e => "<option>" + e + "</option>").join("\\n");
-ucui = "\\n<hr style=\\"margin: 1.5rem 0;\\">\\n<h4 class=cfield>Unit Converter</h4>";
-ucui += "\\n<div class=cfield><span class=ccntr><input type=text id=ucinp placeholder=\\"Enter measurement&hellip;\\"></span><span class=ccntr><select id=ulist0>\\n";
-ucui += opts + "\\n</select></span></div>\\n<div class=cfield><span class=ccntr><input type=text id=ucout readonly></span><span class=ccntr><select id=ulist1>\\n";
+ucui = "\\n<hr style=\\"margin: 1.5rem 0;\\" />\\n<h4 class=cfield>Unit Converter</h4>";
+ucui += "\\n<div class=cfield><span class=ccntr><input type=text id=ucinp placeholder=\\"Enter measurement&hellip;\\" /></span><span class=ccntr><select id=ulist0>\\n";
+ucui += opts + "\\n</select></span></div>\\n<div class=cfield><span class=ccntr><input type=text id=ucout readonly /></span><span class=ccntr><select id=ulist1>\\n";
 ucui += opts + "\\n</select></span></div>\\n";
 // try { ucwrap } catch { ndiv = document.createElement('div'); ndiv.id = "ucwrap"; ndiv.innerHTML = ucui; cmain.appendChild(ndiv); }
 // [ucinp, ulist0, ulist1].forEach((e, i) => e[!i ? 'onblur' : 'onchange'] = _.ucShow)
@@ -226,18 +226,18 @@ g1ui += "\\n#g1wrap .gtile { background: LightSteelBlue; color: White; font-size
 g1ui += "\\n#trows, #tcols { max-width: 36px; }";
 g1ui += "\\n#g1board { margin: 12px; border-collapse: collapse; }";
 g1ui += "\\n#g1scor { position: relative; top: -8px; font-size: small; margin-left: 16px; }\\n#g1movs { font-weight: bold; }";
-g1ui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Sliding Tiles</h4>";
+g1ui += "\\n</style>\\n<hr />\\n<h4 class=cfield>Sliding Tiles</h4>";
 g1ui += "\\n<div class=cfield><em>Objective:</em> Order the characters from least to greatest&mdash;starting at the top left&nbsp;corner.</div>";
 g1ui += "\\n<div>\\n<label class=ccntr><select id=tnmrl>\\n<option disabled>Characters</option>\\n";
 g1ui += ["1 2 3 4 &hellip;", "I II III IV &hellip;", "A B C D &hellip;", "Α Β Γ Δ &hellip;"].map(e => "<option>" + e + "</option>").join("\\n");
 g1ui += "\\n</select></label><label class=ccntr><select id=tclrs>\\n<option disabled>Color Cascades</option>\\n";
 g1ui += ["No gradient", "Red gradient", "Gold gradient", "Blue gradient", "Rainbow pattern"].map(e => "<option>" + e + "</option>").join("\\n");
-g1ui += "\\n</select></label><label class=ccntr>Auto-shuffle <input type=checkbox id=pshuf checked></label>\\n</div>\\n<div>";
-g1ui += "\\n<label class=ccntr>Rows <input type=text id=trows value=4 size=2></label>";
-g1ui += "\\n<label class=ccntr>Columns <input type=text id=tcols value=4 size=2></label>";
-g1ui += "\\n<label class=ccntr><input type=button value=\\"&orarr; NEW GAME\\" onclick=g1Reset()></label>\\n</div>";
+g1ui += "\\n</select></label><label class=ccntr>Auto-shuffle <input type=checkbox id=pshuf checked /></label>\\n</div>\\n<div>";
+g1ui += "\\n<label class=ccntr>Rows <input type=text id=trows value=4 size=2 /></label>";
+g1ui += "\\n<label class=ccntr>Columns <input type=text id=tcols value=4 size=2 /></label>";
+g1ui += "\\n<label class=ccntr><input type=button value=\\"&orarr; NEW GAME\\" onclick=g1Reset() /></label>\\n</div>";
 g1ui += "\\n<table id=g1board></table>\\n<div id=g1scor class=cfield>Count: <span id=g1movs>0</span></div>";
-g1ui += "\\n<div><input type=button class=ccntr value=\\"RETRACT MOVE\\" onclick=m1Rvrs()><input type=button value=\\"RESET COUNTER\\" onclick=c1Zero()></div>\\n";
+g1ui += "\\n<div><input type=button class=ccntr value=\\"RETRACT MOVE\\" onclick=m1Rvrs() /><input type=button value=\\"RESET COUNTER\\" onclick=c1Zero() /></div>\\n";
 
 // g1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap"; ndiv.innerHTML = g1ui; cmain.appendChild(ndiv); }
@@ -378,20 +378,20 @@ g2ui += "\\n#g2board { position: absolute; top: 0; margin: 16px; border-spacing:
 g2ui += "\\n#g2board td { background: MediumOrchid; width: 51px; height: 51px; border-radius: 26px; box-shadow: 0 0 16px 4px Orchid; cursor: pointer; }";
 g2ui += "\\n#g2board td.ldark { background: Indigo; box-shadow: 0 0 16px 4px Grey; }";
 g2ui += "\\n#g2scor { position: relative; top: -12px; font-size: small; margin-left: 16px; }\\n#g2movs { font-weight: bold; }";
-g2ui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Lights Out</h4>";
+g2ui += "\\n</style>\\n<hr />\\n<h4 class=cfield>Lights Out</h4>";
 g2ui += "\\n<div class=cfield><em>Objective:</em> Switch all matrix lights off.</div>";
 g2ui += "\\n<div class=cfield><em>Game Action:</em> Switching a diode in this lighting matrix also switches any directly connected up-, down-, left- or right- diodes.</div>";
 g2ui += "\\n<div>\\n<span class=ccntr><select id=lpatt>";
 g2ui += ["&mdash;Startup Pattern&mdash;", "Treasure marker (in 4)", "Lucy's diamond (in 5)", "Eight-pocket table (in 5)", "Picasso emoji (in 5)", "Peep holes (in 6)", "Split screen (in 6)", "Square target (in 9)", "Bi-polar opposites (in 11)", "Central light out (in 12)", "Road caution marks (in 15)"].map(e => \`\\n<option>\${e}</option>\`).join("");
-g2ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&orarr; RESTART\\" onclick=g2Reset()></span>\\n</div>";
+g2ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&orarr; RESTART\\" onclick=g2Reset() /></span>\\n</div>";
 g2ui += "\\n<div id=g2bcntr>\\n<table id=g2circt><tbody>";
 g2ui += [0, 1, 2, 3].map(r => "\\n<tr>" + [0, 1, 2, 3].map(c => "<td></td>").join("") + "</tr>").join("");
 g2ui += "\\n</tbody></table>\\n<table id=g2board><tbody>";
 g2ui += [0, 1, 2, 3, 4].map(r => "\\n<tr>" + [0, 1, 2, 3, 4].map(c => \`<td id=n\${r}\${c} onclick=litSwi(\${r},\${c})></td>\`).join("") + "</tr>").join("");
 g2ui += "\\n</tbody></table>\\n</div>";
 g2ui += "\\n<div id=g2scor class=cfield>Count: <span id=g2movs>0</span></div>";
-g2ui += "\\n<div class=cfield><span class=ccntr><input type=button value=\\"RESET COUNTER\\" onclick=c2Zero()></span></div>";
-g2ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u2tog> Allow single-diode toggle&mdash;Suspend&nbsp;counter</label></div>\\n";
+g2ui += "\\n<div class=cfield><span class=ccntr><input type=button value=\\"RESET COUNTER\\" onclick=c2Zero() /></span></div>";
+g2ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u2tog /> Allow single-diode toggle&mdash;Suspend&nbsp;counter</label></div>\\n";
 
 // g2wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 // try { g2wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g2wrap"; ndiv.innerHTML = g2ui; cmain.appendChild(ndiv); }
@@ -422,20 +422,20 @@ g3ui += "\\n#g3board td { background: Black; width: 15px; height: 15px; border-r
 g3ui += "\\n#g3board td.nohol { background: Transparent; box-shadow: none; }";
 g3ui += "\\n#g3board td.phead { background: Red; box-shadow: -1px -1px 0 3px red, 1px 1px 8px 3px grey; }";
 g3ui += "\\n#g3scor { position: relative; top: -8px; font-size: small; margin-left: 16px; }\\n#g3movs { font-weight: bold; }";
-g3ui += "\\n</style>\\n<hr>\\n<h4 class=cfield>Pegs</h4>";
+g3ui += "\\n</style>\\n<hr />\\n<h4 class=cfield>Pegs</h4>";
 g3ui += "\\n<div class=cfield><em>Objective:</em> Remove all board pegs but&nbsp;one.</div>";
 g3ui += "\\n<div class=cfield><em>How to play:</em> A move is made by jumping one peg with an adjacent peg; The jumped peg is&nbsp;removed.<br>Tap on a peg to select it for jumping&mdash;Then, if you have a choice, tap on a highlighted hole to select it for that peg's&nbsp;destination.</div>";
 g3ui += "\\n<div>\\n<span class=ccntr><select id=ppatt>\\n";
 g3ui += ["&mdash;Startup Pattern&mdash;", "Cross Symbol", "Plus Sign", "North Tower", "Arrow in Flight", "Egyptian Pyramid", "Red Diamond", "Solitaire"].map(e => "<option>" + e + "</option>").join("\\n");
-g3ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&orarr; RESTART\\" onclick=g3Reset()></span>";
+g3ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&orarr; RESTART\\" onclick=g3Reset() /></span>";
 g3ui += "\\n</div>\\n<div id=g3bcntr>\\n<table id=g3panel><tbody>";
 g3ui += [0, 1, 2, 3, 4, 5, 6].map(r => "\\n<tr>" + [0, 1, 2, 3, 4, 5, 6].map(c => "<td></td>").join("") + "</tr>").join("");
 g3ui += "\\n</tbody></table>\\n<table id=g3board><tbody>";
 g3ui += [0, 1, 2, 3, 4, 5, 6].map(r => "\\n<tr>" + [0, 1, 2, 3, 4, 5, 6].map(c => "<td " + (["0,0", "0,1", "0,5", "0,6", "1,0", "1,1", "1,5", "1,6", "5,0", "5,1", "5,5", "5,6", "6,0", "6,1", "6,5", "6,6"].includes("" + [r, c]) ? "class=nohol" : \`id=h\${r}\${c} onclick=pegJmp(\${r},\${c})\`) + "></td>").join("") + "</tr>").join("");
 g3ui += "\\n</tbody></table>\\n</div>";
 g3ui += "\\n<div id=g3scor class=cfield>Count: <span id=g3movs>0</span></div>";
-g3ui += "\\n<div class=cfield><input type=button class=ccntr value=\\"RETRACT MOVE\\" onclick=m3Rvrs()><input type=button value=\\"RESET COUNTER\\" onclick=c3Zero()></div>";
-g3ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u3tog> Allow free peg placement&mdash;Suspend&nbsp;counter</label></div>\\n";
+g3ui += "\\n<div class=cfield><input type=button class=ccntr value=\\"RETRACT MOVE\\" onclick=m3Rvrs() /><input type=button value=\\"RESET COUNTER\\" onclick=c3Zero() /></div>";
+g3ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u3tog /> Allow free peg placement&mdash;Suspend&nbsp;counter</label></div>\\n";
 
 // g3wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 // try { g3wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g3wrap"; ndiv.innerHTML = g3ui; cmain.appendChild(ndiv); }
@@ -669,13 +669,13 @@ srui += "\\n#srwrap .chelp { font-size: 0.75rem; line-height: normal; margin-top
 srui += "\\n#srwrap .pwrap { white-space: pre-wrap; }";
 srui += "\\n#sepainp, #rtrminp { width: 288px; }\\n#lfinp { width: 176px; }";
 srui += "\\n#trgrndr { display: flow-root; margin-top: 1rem; border: dashed gainsboro; border-width: 1px 0; }";
-srui += "\\n</style>\\n<hr>\\n<h4 class=cfield><span onclick=txtaSel(srctxta)>Source</span></h4>";
+srui += "\\n</style>\\n<hr />\\n<h4 class=cfield><span onclick=txtaSel(srctxta)>Source</span></h4>";
 srui += "\\n<div class=cfield><textarea id=srctxta class=textarea></textarea></div>";
-srui += "\\n<div class=cfield><label class=ccntr><input type=text id=sepainp> Search</label></div>";
-srui += "\\n<div class=cfield><label class=ccntr><input type=text id=rtrminp> Replace</label></div>";
-srui += "\\n<div class=cfield>\\n<span class=ccntr><input type=button value=\\"&rlhar; SWAP\\" onclick=cntSwap()></span><span class=ccntr><select id=rndrsel>\\n";
+srui += "\\n<div class=cfield><label class=ccntr><input type=text id=sepainp /> Search</label></div>";
+srui += "\\n<div class=cfield><label class=ccntr><input type=text id=rtrminp /> Replace</label></div>";
+srui += "\\n<div class=cfield>\\n<span class=ccntr><input type=button value=\\"&rlhar; SWAP\\" onclick=cntSwap() /></span><span class=ccntr><select id=rndrsel>\\n";
 srui += ["No render", "PRE render", "PRE-wrap render", "Normal render"].map(e => "<option>" + e + "</option>").join("\\n");
-srui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x2964; PARSE\\" onclick=strPars()></span>\\n</div>";
+srui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x2964; PARSE\\" onclick=strPars() /></span>\\n</div>";
 srui += "\\n<h4 class=cfield><span onclick=txtaSel(trgtxta)>Target</span></h4>";
 srui += "\\n<div class=cfield><textarea id=trgtxta class=textarea></textarea><div id=trghelp class=chelp></div></div>";
 srui += "\\n<div class=cfield>\\n<datalist id=pfiles></datalist>\\n<span class=ccntr><input type=text id=lfinp list=pfiles placeholder=\\"filename/key/CMD&hellip;\\" onfocus=hlp3Clr() /></span><span class=ccntr><button onclick=dataMgr(2)>\\n<span>&uArr;</span></button></span><span class=ccntr><button onclick=dataMgr(1)>\\n<span class=isucc>&#x267a;</span> SAVE</button></span><span class=ccntr><button onclick=dataMgr()>\\n<span class=iwarn>&#x2715;</span> DEL</button></span>\\n<div id=lfhelp class=chelp></div>\\n</div>";
