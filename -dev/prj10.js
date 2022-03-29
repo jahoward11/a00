@@ -1,6 +1,6 @@
 /* JavaScript module */
 
-const groupname = "util";
+const _module = "util";
 
 const varkeys = `//
 { _ks = _ks.concat(["T1", "T2"]) };
@@ -150,7 +150,7 @@ const scrload = `//
 // !!window.markdownit || Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).then(respShow).catch(respShow)
 // !!(window.hljs && window.js_beautify) || Promise.all(["../-res-js/highlight.pack.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then(respShow).catch(respShow)
 
-// import("../-dev/prj10.js").then(r => (xstor[r.groupname] = r) && xlstGen()).catch(respShow)
+// import("../-dev/prj10.js").then(r => (xstor[r._module] = r) && xlstGen()).catch(respShow)
 // import("../-dev/prj10.js").then(r => respShow(r.jscmds)).catch(respShow)
 // import("../-res-js/ebook-annos.mjs").then(r => window["tocNavLtGen"] = r.tocNavLtGen).catch(respShow)
 // fetch("../-res-js/ebook-annos-fns.js").then(r => r.text()).then(respShow).catch(respShow)
@@ -277,7 +277,7 @@ const srtools = `//
 //`;
 
 export {
-  groupname, varkeys, nformat,
+  _module, varkeys, nformat,
   uiwidth, publdims, jscmds,
   bcaches, dscripts, scrload,
   jstatqs, itoken, t2puzls,
