@@ -1215,7 +1215,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   qd2Fmt = rows => rows.map( (r, i) =>
     !(rval = r.doc || r.value)._attachments && /^\./.test(r.id) ? ""
     : /^[.-]./.test(r.id) ? (!i || (j = i)) && `
-    <tr id="${ r.id.replace(/^[.-]./, "_") }">
+    <tr id="${ r.id.replace(/^[.-]/, "_") }">
       <td colspan=20><a>&#x25b6;</a> <input type=checkbox class=dnone /> ${
         r.id.replace( /^[.-].+$/, m => m + " ("
           + (/^eco-assets$/.test(rval.file_type || "") ? "eco-" : "app ") + "assets)" ) }</td>
@@ -1880,8 +1880,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       descswi.checked = 0;
       bulkctrl.classList.add("dnone");
       filtctrl.classList.remove("dnone");
-      filtinp.value = moveinp.value = "";
-      v02inp.value = v01inp.value = "";
+      v02inp.value = v01inp.value = filtinp.value = moveinp.value = "";
     }
     if (vidx < 4 && evt && [nmflow, nmdata].every(e => e.classList.contains("dnone"))) {
       return tabActv(evt);
@@ -2117,7 +2116,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       t0v = t01sel.value;
     pfacnt.innerHTML = fwg = null;
     !pdbssel.options[3] || (nmbulk.innerHTML = "");
-    originp.value = dbuninp.value = dbpwinp.value = "";
+    dbpwinp.value = dbuninp.value = originp.value = "";
     pdbnam.innerText = txd1.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value;
     cfg = nm0cfgs[txd1.DBNAME] || "";
     pw1swi.checked = (cfg.remot || "").pw1;
@@ -2138,15 +2137,18 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     Array.from(viewsel.options).forEach((o, i) => i < 4 || (o.disabled = !txd1.DBNAME));
     openswi.checked = (txd1.DBNAME === nm0sets.dbdflt);
     (t01sel.value = cfg.type0 || cfg && "scrap") === t0v || t1sChg();
-    v02inp.value = v01inp.value = v03inp.value = t02inp.value = t01inp.value = "";
     if (evt === 0) {
       ftotal.innerText = "_";
       nmflow.classList.add("dnone");
       v01sel.value = nmtbod.innerHTML = vusr = vbas = "";
+      v02inp.value = v01inp.value = v03inp.value = "";
     } else if (evt === 1) {
       v01sel.value = cfg.view0 || "";
       v01sel.selectedIndex > -1 || (v01sel.selectedIndex = 0);
+      v02inp.value = v01inp.value = v03inp.value = "";
     } else {
+      wipeinp.value = ddelinp.value = pdb1inp.value = pdb0inp.value = "";
+      spdbswi.checked = slocswi.checked = 0;
       v01sel.value = !txd1.DBNAME ? "" : viewsel.value = cfg.view0 || "";
       v01sel.selectedIndex > -1 || (v01sel.selectedIndex = viewsel.selectedIndex = vidx = 0);
       viewChg();
