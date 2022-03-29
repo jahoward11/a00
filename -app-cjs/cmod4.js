@@ -1,6 +1,6 @@
 /* JavaScript module */
 
-const groupname = "lifescience";
+const _module = "lifescience";
 
 const biology = `/*
 __AP^®^ BIOLOGY EQUATIONS AND FORMULAS__
@@ -204,5 +204,5 @@ __pH Value__
 */`;
 
 export {
-  groupname, biology
+  _module, biology
 };

@@ -1,6 +1,6 @@
 /* JavaScript module */
 
-const groupname = "JStool";
+const _module = "JStool";
 
 const notemgr = `/*
 __Note Manager: based on concepts from JS Tutorial 4__
@@ -111,5 +111,5 @@ respShow(dwraps[0] + xdwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGe
 //`;
 
 export {
-  groupname, notemgr, search, textdiff
+  _module, notemgr, search, textdiff
 };

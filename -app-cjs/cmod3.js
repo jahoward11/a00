@@ -1,6 +1,6 @@
 /* JavaScript module */
 
-const groupname = "finance"
+const _module = "finance"
 
 const homeloan = `
 // __Home Loan Scenarios__
@@ -70,5 +70,5 @@ const homeloan = `
 //`;
 
 export {
-  groupname, homeloan
+  _module, homeloan
 };

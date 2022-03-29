@@ -1,6 +1,6 @@
 /* JavaScript module */
 
-const groupname = "engineering"
+const _module = "engineering"
 
 const dimensions = `/*
 __Dimensions of Common Use__
@@ -211,5 +211,5 @@ $c3 = c
 //`;
 
 export {
-  groupname, dimensions, triangles
+  _module, dimensions, triangles
 };

@@ -1,6 +1,6 @@
 /* JavaScript module */
 
-const groupname = "JScode";
+const _module = "JScode";
 
 const tutorial1 = `/*
 __JavaScript Coding Tutorials, Part 1__
@@ -1167,8 +1167,8 @@ formGen = () => dform.innerHTML = Object.entries(Object.assign({ _id: "", _rev: 
       Un-comment the fifth of the following five lines of code.
 */
 
-// import("./fakecs.js").then(m => respShow(m.default)).catch(respShow)
-// import("./fakecs.js").then(m => m.default.forEach(c => dbobj.put(c).then(respShow).catch(respShow)))
+// import("./fakes.js").then(m => respShow(m.default)).catch(respShow)
+// import("./fakes.js").then(m => m.default.forEach(c => dbobj.put(c).then(respShow).catch(respShow)))
 // dbobj.get("").then(respShow)
 // dbobj.get("").then(d => !(d = { _id: d._id, _rev: d._rev, _deleted: true }) || dbobj.put(d)).then(respShow).catch(respShow)
 // dbobj.allDocs().then(respShow)
@@ -1351,6 +1351,6 @@ dbase = "recipes-home"; // "log-workouts"; "journal2022"; "contacts-work";
 //`;
 
 export {
-  groupname, tutorial1, tutorial2,
+  _module, tutorial1, tutorial2,
   tutorial3, tutorial4
 };

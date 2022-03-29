@@ -1,6 +1,6 @@
 /* JavaScript module */
 
-const groupname = "statistics";
+const _module = "statistics";
 
 const analysis1 = `/*
 __Statistical Analysis Tools, Part 1__
@@ -394,5 +394,5 @@ try { jStat } catch { scrInj("../-res-js/jstat-tdist.js").then(xprsEval).catch(r
 //`
 
 export {
-  groupname, analysis1, analysis2, analysis3
+  _module, analysis1, analysis2, analysis3
 };

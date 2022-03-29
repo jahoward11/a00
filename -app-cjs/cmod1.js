@@ -1,6 +1,6 @@
 /* JavaScript module */
 
-const groupname = "APPguide"
+const _module = "APPguide"
 
 const calcdemo1 = `
  p = 5
@@ -152,5 +152,5 @@ const calcdemo1 = `
 //`;
 
 export {
-  groupname, calcdemo1
+  _module, calcdemo1
 };

@@ -29,6 +29,7 @@ body {
   height: 100vh;
 }
 #cmain {
+  font-size: 16px;
   max-width: 720px;
   margin: 0 auto;
 }
@@ -46,10 +47,10 @@ body {
 #cmain input:not([type=checkbox]):not([type=radio]), #cmain select {
   background: #f8f8f8;
   color: Grey;
-  font-size: calc(5rem / 6);
-  line-height: 1.5rem;
-  height: 1.5rem;
-  padding: 0 0.5rem;
+  font-size: calc(80px / 6); /* 5rem */
+  line-height: 24px; /* 1.5rem */
+  height: 24px; /* 1.5rem */
+  padding: 0 8px; /* 0.5rem */
   border: 0;
   border-radius: 0;
 }
@@ -238,17 +239,17 @@ body {
   opacity: 0.5;
   pointer-events: none;
 }
-#cmain .cfield:not(:last-child) { margin-bottom: 0.5rem; }
-#cmain .ccntr:not(:last-of-type) { margin-right: 0.5rem; }
+#cmain .cfield:not(:last-child) { margin-bottom: 8px; } /* 0.5rem */
+#cmain .ccntr:not(:last-of-type) { margin-right: 8px; } /* 0.5rem */
 #cmain :not(.cfield)>:not(.cfield)>.ccntr {
   display: inline-block;
-  height: 1.5rem;
-  margin-bottom: 0.5rem;
+  height: 24px; /* 1.5rem */
+  margin-bottom: 8px; /* 0.5rem */
 }
 #cmain .addns>.ccntr { margin-right: 0; }
 #cmain .chelp {
-  font-size: 0.75rem;
-  margin-top: 0.25rem;
+  font-size: 12px; /* 0.75rem */
+  margin-top: 4px; /* 0.25rem */
 }
 #xctrls #xsetinp { width: 168px; }
 #xctrls #xsetlist {
@@ -609,7 +610,7 @@ let q2Bcopy, q2Bhtml,
     xsetlist.innerHTML = "\n      <option></option>"
     + [["USERdata", lfks]].concat(Object.entries(xstor)).map( (oe, i) => i && !oe[1] ? ""
       : "\n      <optgroup label=\"" + oe[0] + "/\">"
-        + (!i ? oe[1] : Object.keys(oe[1]).filter(e => e !== "groupname"))
+        + (!i ? oe[1] : Object.keys(oe[1]).filter(e => e !== "_module"))
           .map(e => "\n        <option>" + e + "</option>").join("")
         + "\n      </optgroup>" ).join("") + "\n    ";
     (xsetlist.value = seln || "") && xsetlist.value
@@ -658,7 +659,7 @@ Promise.all(jsrcs.map(e => scrInj(e))).catch(respShow).then(() => {
       .map(e => !/^\d+$/.test(e) ? e : `cmod${e}.js`)
       .map(fnm => fnm && import(/\//.test(fnm) ? fnm : "./" + fnm).catch(respShow)) )
     .then( ms => ms.forEach( (m, i) => !m || typeof m !== 'object'
-      || (xstor[m.groupname || "group" + (1 + i)] = m) ))
+      || (xstor[m._module || "module" + (1 + i)] = m) ))
     .then(() => xlstGen(dload))
     .catch(respShow);
   xsetinp || initLoad();

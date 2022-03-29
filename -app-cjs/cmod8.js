@@ -1,6 +1,6 @@
 /* JavaScript module */
 
-const groupname = "JSpuzzle";
+const _module = "JSpuzzle";
 
 const collection1 = `/*
 __Puzzle Collection I: from JS Tutorial 2__
@@ -106,5 +106,5 @@ __CHESS__
 //`;
 
 export {
-  groupname, collection1, tiltmaze, chess
+  _module, collection1, tiltmaze, chess
 };

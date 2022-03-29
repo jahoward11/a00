@@ -1,6 +1,6 @@
 /* JavaScript module */
 
-const groupname = "sparknotes";
+const _module = "sparknotes";
 
 const dune = `/*
 ### Dune
@@ -615,5 +615,5 @@ With so much cultural and intellectual matter adopted from another race, the Rom
 */`;
 
 export {
-  groupname, dune, mythology
+  _module, dune, mythology
 };

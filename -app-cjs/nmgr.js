@@ -349,6 +349,7 @@ figure {
 #nmwrap>#r2con {
   color: Orange;
   font: normal medium/1.25 monospace;
+  margin: 0;
   padding: 0;
   word-wrap: normal;
   overflow-wrap: normal;
@@ -397,9 +398,15 @@ figure {
 }
 @media screen and (min-width: 720px) and (max-width: 767px), print {
   #vctrls #pdbssel { width: 120px; }
-  #vctrls #colssel, #vctrls #sortsel { width: 90px; }
+  #vctrls #colssel, #vctrls #sortsel { width: 84px; }
   #vctrls #filtinp { width: 150px; }
   #vctrls #moveinp { width: 96px; }
+}
+@media screen and (min-width: 720px) {
+  #cmain #vctrls #pdbssel { width: 120px; }
+  #cmain #vctrls #colssel, #cmain #vctrls #sortsel { width: 84px; }
+  #cmain #vctrls #filtinp { width: 150px; }
+  #cmain #vctrls #moveinp { width: 96px; }
 }
 </style>
 <h4 class=cfield>Note Manager</h4>
@@ -418,14 +425,14 @@ figure {
         <option disabled>V3:mutables</option>
         <option disabled>V4:statics</option>
         <option disabled>V5:deleted</option>
-      </select></span><span class=ccntr>Total: <span id=ftotal>_</span></span>
+      </select></span><span class=ccntr>Total: <span id=ftotal>_</span>&nbsp;</span>
     </div>
   </div>
   <div class="level-item">
     <div class="level cfield">
       <span class=ccntr><select id=colssel multiple size=1 title="Show/hide-columns select list">
       </select></span><span class=ccntr><select id=sortsel title="Sort-column select list">
-      </select></span><span class=ccntr><label title="Notelist sort order"><input type=checkbox id=descswi /><a>Z-A</a></label></span>
+      </select></span><span class=ccntr><label title="Notelist sort order"><input type=checkbox id=descswi /><a>Z-A</a></label>&nbsp;</span>
     </div>
   </div>
   <div class="level-item">
