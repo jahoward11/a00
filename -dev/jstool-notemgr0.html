@@ -295,9 +295,8 @@ figure {
 #nmwrap thead, #nmwrap tfoot { font-weight: bold; }
 #nmwrap .table {
   line-height: normal;
-  width: calc(219px + 35vw);
-  margin-left: 0.5rem;
-} /* 219/375px=58vw, 350/375px=93vw */
+  max-width: 960px;
+}
 #nmwrap .textarea { font: normal 0.75rem monospace; }
 #nmwrap .media-left>.image.rspv128 {
   width: 128px;
@@ -376,6 +375,11 @@ figure {
 }
 #nmtabs li:first-child>a { letter-spacing: -3px; }
 #nmbulk #qselbtn { margin-right: 7px; }
+#pdbcfg .table {
+  width: calc(219px + 35vw); /* 219/375px=58vw, 350/375px=93vw */
+  max-width: calc(960px - 0.5rem);
+  margin-left: 0.5rem;
+}
 #pdbcfg #pdbtbl td:nth-of-type(1),
 #pdbcfg #t0tbod td:nth-of-type(1),
 #pdbcfg #v0tbod td:nth-of-type(1) {
@@ -387,7 +391,10 @@ figure {
 #pdbcfg #typtbl td { padding: 5px 2.5px; }
 #pdbcfg #typtbl td:nth-of-type(1)>input { width: 120px; } /* 120/375px=32vw */
 #pdbcfg #typtbl td:nth-of-type(2)>select { width: 84px; } /* 84/375px=22vw */
-#pdbcfg #typtbl td:nth-of-type(3)>input { width: 35vw; } /* 131/375px=35vw */
+#pdbcfg #typtbl td:nth-of-type(3)>input {
+  width: 35vw; /* 131/375px=35vw */
+  max-width: calc(960px - 0.5rem - 120px - 84px - 15px);
+}
 #nmsets #jselbtn { margin: -23px 7px 0 0; }
 @media screen and (max-width: 575px) {
   #nmwrap .media-left>.image.rspv128 { width: 48px; margin: 0; }
