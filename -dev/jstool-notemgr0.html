@@ -295,7 +295,7 @@ figure {
 #nmwrap thead, #nmwrap tfoot { font-weight: bold; }
 #nmwrap .table {
   line-height: normal;
-  min-width: calc(219px + 35vw);
+  width: calc(219px + 35vw);
   margin-left: 0.5rem;
 } /* 219/375px=58vw, 350/375px=93vw */
 #nmwrap .textarea { font: normal 0.75rem monospace; }
@@ -404,7 +404,9 @@ figure {
   #vctrls #filtinp { width: 150px; }
   #vctrls #moveinp { width: 96px; }
 }
-@media screen and (min-width: 720px) {
+@media screen and (min-width: 768px) {
+  #cmain #pdbcfg .table { max-width: calc(720px - 0.5rem); }
+  #cmain #pdbcfg #typtbl td:nth-of-type(3)>input { max-width: calc(720px - 0.5rem - 120px - 84px - 15px); }
   #cmain #vctrls #pdbssel { width: 120px; }
   #cmain #vctrls #colssel, #cmain #vctrls #sortsel { width: 84px; }
   #cmain #vctrls #filtinp { width: 150px; }
