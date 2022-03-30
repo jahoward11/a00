@@ -1084,7 +1084,8 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     }
   },
   rexsd = /^[.-][\\w!.*+~-]+\\/?$/,
-  rexns = /^(?:m[rs]\\b\\.?|mrs\\b\\.?) *(.*?) *((?:\\bde +|\\bvon +|)['‘’\\w-]+)([ ,]*\\b[js]r\\.?|[ ,]*\\b[ivx]+|)$/i,
+  rexts = /^m[rs]\\.? +|^mrs\\.? +|[.,;:/]/gi,
+  rexns = /^(?:m[rs]\\b\\.?|mrs\\b\\.?|) *(.*?) *((?:\\bde +|\\bvon +|)['‘’\\w-]+)([ ,]*\\b[js]r\\.?|[ ,]*\\b[ivx]+|)$/i,
   rsp2Show = r => { r2con.textContent
     += ( !r || typeof r !== 'object' || r instanceof Error && r.constructor && !r.reason
       ? r : JSON.stringify(r, null, 2) ) + "\\n\\n" },
@@ -1157,19 +1158,19 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     : x === 2 || !x && !cvs.includes("name_full1") && !cvs.includes("name_full3")
     ? (nf || "").trim().replace(rexns, "$2")
     : !/name_full2/.test(ss0) ? nf || "" : (nf || "").trim().replace(rexns, "$2, $1$3"),
-  ptyX = v => ss0 === "subdir" ? v.loc_subdir || (v.file_updated || v.file_created || "").subdir
-    || ( !["loc_subdir", "file_updated", "file_created"].some(p => v.hasOwnProperty(p))
+  ptyX = d => ss0 === "subdir" ? d.loc_subdir || (d.file_updated || d.file_created || "").subdir
+    || ( !["loc_subdir", "file_updated", "file_created"].some(p => d.hasOwnProperty(p))
       ? " " : "." )
-    : !ss1 ? ( !v[ss0] && /^[.-]./.test(v._id) && ss0 === "file_type" ? "(app assets)"
-      : /name_full/.test(ss0) ? nmsX(v.name_full).replace(/[.,;:/]/g, "") || v.name_user || v._id
-      : ss0 === "_attachments" ? nbrX(Object.keys(v[ss0] || "").length)
-      : ss0 !== "file_type" ? v[ss0] : (v[ss0] || "").replace(/^eco-/, "") ) || " "
-    : ss1 !== "timestamp" ? v[ss0]
-      && (ss1 !== "version" ? v[ss0][ss1] : nbrX(v[ss0][ss1])) || " "
+    : !ss1 ? ( !d[ss0] && /^[.-]./.test(d._id) && ss0 === "file_type" ? "(app assets)"
+      : /name_full/.test(ss0) ? nmsX(d.name_full).replace(rexts, "") || d.name_user || d._id
+      : ss0 === "_attachments" ? nbrX(Object.keys(d[ss0] || "").length)
+      : ss0 !== "file_type" ? d[ss0] : (d[ss0] || "").replace(/^eco-/, "") ) || " "
+    : ss1 !== "timestamp" ? d[ss0]
+      && (ss1 !== "version" ? d[ss0][ss1] : nbrX(d[ss0][ss1])) || " "
     : ss0 !== "file_updated"
-    ? v[ss0] && v[ss0][ss1] || v[ss0.replace(/^file/, "ts")] || " "
-    : v[ss0] && v[ss0][ss1] || (v.file_created || "")[ss1]
-      || v.ts_updated || v.ts_created || " ",
+    ? d[ss0] && d[ss0][ss1] || d[ss0.replace(/^file/, "ts")] || " "
+    : d[ss0] && d[ss0][ss1] || (d.file_created || "")[ss1]
+      || d.ts_updated || d.ts_created || " ",
   ordFlip = arr => !descswi.checked ? arr.sort() : arr.sort().reverse(),
   tr0Gen = (r, i) => \`
     <tr\${ vbas !== 2 ? "" : " hidden"}>
@@ -1641,8 +1642,9 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       let ra, rb,
         rdc = re.rows.length === 1 && !re.rows[0].key && "" + re.rows[0].value,
         rrs = !rdc && re.rows.filter( r => r
-            && ( /anno|contact|event|memo|phone|post|scrap|srcdoc/i.test((r.doc || r.value).file_type)
-            || ["name_full", "name_user"].some(p => (r.doc || r.value).hasOwnProperty(p)) ) )
+            && ( (ra = r.doc || r.value).file_type && /^[!0-9a-z]/i.test(ra._id)
+              || /anno|event|memo|post/i.test(ra.file_type) || !ra.file_type
+              && ["name_full", "name_user"].some(p => ra.hasOwnProperty(p)) ) )
           .sort( (a, b) => !(ra = ptyX(a.doc || a.value)) || !(rb = ptyX(b.doc || b.value))
             ? 0 : (ra < rb) == descswi.checked ? 1 : -1 );
       ftotal.innerText = rdc || rrs.length;

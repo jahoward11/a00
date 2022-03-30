@@ -1305,7 +1305,7 @@ d5ui += ' + (!(d.social_profiles || "")[0] ? "" : "<strong>Social profiles:</str
 try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d3ui + d2ui + d4ui + "\\n"; cmain.appendChild(ndiv); hlps = dbwrap.querySelectorAll('.chelp'); }
 
 rexts = /^m[rs]\\.? +|^mrs\\.? +|[.,;:/]/gi; //
-rexns = /^(?:m[rs]\\b\\.?|mrs\\b\\.?) *(.*?) *((?:\\bde +|\\bvon +|)['‘’\\w-]+)([ ,]*\\b[js]r\\.?|[ ,]*\\b[ivx]+|)$/i; //
+rexns = /^(?:m[rs]\\b\\.?|mrs\\b\\.?|) *(.*?) *((?:\\bde +|\\bvon +|)['‘’\\w-]+)([ ,]*\\b[js]r\\.?|[ ,]*\\b[ivx]+|)$/i; //
 qss = [ '#dbwrap .media-content>details:first-of-type', '#dbwrap .media-content>details:last-of-type', '#ndata .media-left>.image>img, #ndata .media-content>details:first-of-type a' ];
 ts2Fmt = str => !str ? "" : new Date(str).toUTCString().replace(/.+(\\d{2} [a-z]{3} \\d{4}).+/i, "$1");
 idGen = (pfx, tsx, unx) => (/^[a-z~][a-z]$/i.test("" + pfx) ? pfx : "~p") + ( typeof tsx === 'string' && /^[\\w:.-]*$/.test(tsx) ? tsx : (_.fncTry(v => new Date(v), tsx) || new Date()).toISOString().replace(/\\.\\w+$|[:-]/g, "") ) + (typeof unx === 'string' && /^[\\w@.-]*$/.test(unx) ? unx : "user000"); //
