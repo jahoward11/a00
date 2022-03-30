@@ -226,7 +226,6 @@ figure {
 }
 #nmwrap h4, #nmwrap h5 { margin-bottom: 0; }
 #nmwrap h4:not(last-child), #nmwrap h5:not(last-child) { margin-bottom: 0.5rem; }
-#nmwrap h4 + h5 { margin-top: 1rem; }
 #nmwrap a {
   color: #485fc7;
   cursor: pointer;
@@ -420,9 +419,9 @@ figure {
       <span class=ccntr><select id=pdbssel title="DB-open select list">
       </select></span><span class=ccntr><select id=viewsel class=anone title="Notelist-view select list">
         <option>&nbsp;</option>
-        <option>&nbsp;&plus; New Note</option>
-        <option>&nbsp;&check;&thinsp;DB Config</option>
-        <option>&nbsp;&#x2732; Settings</option>
+        <option>&nbsp;&plus;&ensp;New Note</option>
+        <option>&nbsp;&check; DB Config</option>
+        <option>&nbsp;&#x2732;&ensp;Settings</option>
         <option disabled>V1:noteclips</option>
         <option disabled>V2:organized</option>
         <option disabled>V3:mutables</option>
@@ -590,22 +589,20 @@ figure {
     (And, optionally, set your own DB configurations, below;)
     Then, tap the associated button,&nbsp;here.
   </p>
-  <div class=cblock>
-    <div class=cfield>
-      <span class="ccntr cleft">Username or email</span><span class=ccntr><input type=text id=una2inp /></span>
-    </div>
-    <div class=cfield>
-      <span class="ccntr cleft">New DB name</span><span class=ccntr><input type=text id=pdb0inp /></span>
-    </div>
-    <div class=cfield>
-      <span class="ccntr cleft">DB description</span><span class=ccntr><input type=text id=pdb1inp /></span>
-    </div>
-    <div class=cfield>
-      <span class="ccntr cleft">&nbsp;
-      </span><span class=ccntr><button id=pdb0btn class="isucc hsuccl">CREATE</button></span>
-      <div class="chelp isucc dnone">DB creation is successful.</div>
-      <div class="chelp iwarn dnone">DB creation failed.</div>
-    </div>
+  <div class=cfield>
+    <span class="ccntr cleft">Username or email</span><span class=ccntr><input type=text id=una2inp /></span>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft">New DB name</span><span class=ccntr><input type=text id=pdb0inp /></span>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft">DB description</span><span class=ccntr><input type=text id=pdb1inp /></span>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft">&nbsp;
+    </span><span class=ccntr><button id=pdb0btn class="isucc hsuccl">CREATE</button></span>
+    <div class="chelp isucc dnone">DB creation is successful.</div>
+    <div class="chelp iwarn dnone">DB creation failed.</div>
   </div>
   <h5>Old Data Destruction</h5>
   <p class=dnone>
@@ -613,19 +610,17 @@ figure {
     (i.e., remove all versions of each <em>note</em> but the last one)&mdash;enter
     the same name as the currently selected database and tap the appropriate button,&nbsp;here.
   </p>
-  <div id=olddctrl class=cblock>
-    <div class=cfield>
-      <div class=fsz0c75><em>ALERT:</em> This operation cannot be reversed.</div>
-      <span class="ccntr cleft">Selected DB name</span><span class=ccntr><input type=text id=ddelinp /></span>
-    </div>
-    <div class=cfield>
-      <span class="ccntr cleft">&nbsp;
-      </span><span class=ccntr><button id=dbd0btn class="isucc hsuccl">
-      COMPACT</button></span><span class=ccntr><button id=dbd1btn class="iwarn hwarnl">
-      DESTROY</button></span>
-      <div class="chelp isucc dnone">Data destruction is successful.</div>
-      <div class="chelp iwarn dnone">Data destruction failed.</div>
-    </div>
+  <div class=cfield>
+    <div class=fsz0c75><em>ALERT:</em> This operation cannot be reversed.</div>
+    <span class="ccntr cleft">Selected DB name</span><span class=ccntr><input type=text id=ddelinp /></span>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft">&nbsp;
+    </span><span class=ccntr><button id=dbd0btn class="isucc hsuccl">
+    COMPACT</button></span><span class=ccntr><button id=dbd1btn class="iwarn hwarnl">
+    DESTROY</button></span>
+    <div class="chelp isucc dnone">Data destruction is successful.</div>
+    <div class="chelp iwarn dnone">Data destruction failed.</div>
   </div>
   <h5>Remote DB Clone, Sync</h5>
   <p class=dnone>
@@ -636,29 +631,27 @@ figure {
     is online (internet connected), tap the <em>SYNC</em> button,&nbsp;here. Wait about a minute for
     confirmation of a successful <em>sync</em> operation.
   </p>
-  <div class=cblock>
-    <div class=cfield>
-      <span class="ccntr cleft">DB origin</span><span class=ccntr><input type=text id=originp /></span>
-    </div>
-    <div class=cfield>
-      <span class="ccntr cleft">Username</span><span class=ccntr><input type=text id=dbuninp /></span>
-    </div>
-    <div class=cfield>
-      <span class="ccntr cleft">Password</span><span class=ccntr><input type=text id=dbpwinp /></span>
-    </div>
-    <div class=cfield>
-      <span class="ccntr cleft">
-      PW prefill</span><span class=ccntr><label><input type=checkbox id=pw1swi disabled />
-      <a>Store password on device</a></label></span>
-    </div>
-    <div class=cfield>
-      <span class="ccntr cleft">&nbsp;
-      </span><span class=ccntr><button id=pfilbtn class="isucc hsuccl">
-      PREFILL</button></span><span class=ccntr><button id=syncbtn class="isucc hsuccl">
-      SYNC</button></span>
-      <div class="chelp isucc dnone">Data sync is successful.</div>
-      <div class="chelp iwarn dnone">Data sync failed.</div>
-    </div>
+  <div class=cfield>
+    <span class="ccntr cleft">DB origin</span><span class=ccntr><input type=text id=originp /></span>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft">Username</span><span class=ccntr><input type=text id=dbuninp /></span>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft">Password</span><span class=ccntr><input type=text id=dbpwinp /></span>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft">
+    PW prefill</span><span class=ccntr><label><input type=checkbox id=pw1swi disabled />
+    <a>Store password on device</a></label></span>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft">&nbsp;
+    </span><span class=ccntr><button id=pfilbtn class="isucc hsuccl">
+    PREFILL</button></span><span class=ccntr><button id=syncbtn class="isucc hsuccl">
+    SYNC</button></span>
+    <div class="chelp isucc dnone">Data sync is successful.</div>
+    <div class="chelp iwarn dnone">Data sync failed.</div>
   </div>
   <hr />
   <h4>About the Selected, Local DB</h4>
@@ -862,22 +855,20 @@ figure {
     (<em>Note&nbsp;Mgr</em>&nbsp;app&nbsp;settings)
     <br />&emsp;&bull; <code class="fsz0c75 hwsmok">localStorage._nm0cfgs</code>&emsp;(<em>Note&nbsp;Mgr</em>&nbsp;DB&nbsp;configs)
   </p>
-  <div id=wipectrl class=cblock>
-    <div class=cfield>
-      <div class=fsz0c75><em>ALERT:</em> This operation cannot be reversed.</div>
-      &emsp;<label class=iwarn><input type=checkbox id=slocswi /> Empty local storage</label>
-      <br />&emsp;<label class=iwarn><input type=checkbox id=spdbswi /> Purge all local DBs</label>
-    </div>
-    <div class=cfield>
-      <span class="ccntr cleft">Username or email</span><span class=ccntr><input type=text id=wipeinp /></span>
-    </div>
-    <div class=cfield>
-      <span class="ccntr cleft">&nbsp;
-      </span><span class=ccntr><button id=wipebtn class="iwarn hwarnl">
-      WIPE DATA</button></span>
-      <div class="chelp isucc dnone">Data wipe is successful.</div>
-      <div class="chelp iwarn dnone">Data-wipe attempt failed.</div>
-    </div>
+  <div class=cfield>
+    <div class=fsz0c75><em>ALERT:</em> This operation cannot be reversed.</div>
+    &emsp;<label class=iwarn><input type=checkbox id=slocswi /> Empty local storage</label>
+    <br />&emsp;<label class=iwarn><input type=checkbox id=spdbswi /> Purge all local DBs</label>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft">Username or email</span><span class=ccntr><input type=text id=wipeinp /></span>
+  </div>
+  <div class=cfield>
+    <span class="ccntr cleft">&nbsp;
+    </span><span class=ccntr><button id=wipebtn class="iwarn hwarnl">
+    WIPE DATA</button></span>
+    <div class="chelp isucc dnone">Data wipe is successful.</div>
+    <div class="chelp iwarn dnone">Data-wipe attempt failed.</div>
   </div>
   <hr />
   <h4>Browser Command UI</h4>
@@ -1937,6 +1928,8 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         [pdbssel, opensel, cntcsel].forEach( (e, i) => e.innerHTML
           = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
             .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
+        opensel.value = nm0sets.dbdflt || "";
+        cntcsel.value = nm0sets.dbcntc || "";
         //cfg.remot.pw = ""; localStorage._nm0cfgs = JSON.stringify(nm0cfgs);
         hlps[2].classList.remove("dnone")
         || (pdbssel.selectedIndex = 0) || pdbOpen(0) || rsp2Show(trsp);
@@ -1954,6 +1947,8 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         [pdbssel, opensel, cntcsel].forEach( (e, i) => e.innerHTML
           = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
             .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
+        opensel.value = nm0sets.dbdflt || "";
+        cntcsel.value = nm0sets.dbcntc || "";
         pdbssel.value = db0; //opensel.value = //openswi.click();
         pdbOpen(1);
         hlps[0].classList.remove("dnone");
