@@ -149,6 +149,7 @@ const scrload = `//
 // window.SourceDiff || scrInj("../-res-js/srcdiff.js").then(respShow).catch(respShow)
 // !!window.markdownit || Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).then(respShow).catch(respShow)
 // !!(window.hljs && window.js_beautify) || Promise.all(["../-res-js/highlight.pack.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then(respShow).catch(respShow)
+// !!window.PouchDB || scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js")).catch(respShow)
 
 // import("../-dev/prj10.js").then(r => (xstor[r._module] = r) && xlstGen()).catch(respShow)
 // import("../-dev/prj10.js").then(r => respShow(r.jscmds)).catch(respShow)
@@ -156,6 +157,7 @@ const scrload = `//
 // fetch("../-res-js/ebook-annos-fns.js").then(r => r.text()).then(respShow).catch(respShow)
 // localforage.getItem("tutor2js").then(respShow).catch(respShow)
 // PouchDB("mydb1").get("myfile").then(doc => doc.content).then(respShow).catch(respShow)
+// PouchDB.allDbs().then(respShow)
 
 /*
 txd2 = {
@@ -174,6 +176,7 @@ PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
   || _.rdr.readAsText(abl) ); //!(/^blob:/.test(aurls[txd2.ATTKEY]) || (aurls[txd2.ATTKEY] = URL.createObjectURL(abl)))
 */
 
+// txd2 = { DBNAME: "db", FILEID: "id", ATTKEY: "key", OPTS: {} };
 // PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => fetch(URL.createObjectURL(abl)).then(r => r.text()).then(respShow).catch(respShow)
 
 /*
@@ -225,7 +228,7 @@ scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[
 uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
 // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
-try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.strPars || scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(respShow); }
+// try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.strPars || scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(respShow); }
 
 // dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
 // srctxta.value = (dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(t3x) + dwraps[2]);
