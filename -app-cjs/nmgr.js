@@ -900,7 +900,8 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     DBNAME: "",
     FILEID: "", //"_design/ecosorter",
     VIEW:   "", //"files-idxlist",
-    OPTS:   {} //{ since: 0 }
+    OPTS:   {}, //{ since: 0 }
+    u1s:    []
   },
   copts = [ \`
           <option value="subdir">Subdir</option>
@@ -1638,9 +1639,14 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     }).catch(rsp2Show);
   },
   clipsGen = evt => {
-    PouchDB(txd1.DBNAME)
-    .query(txd1.FILEID.replace(/^_design\\//, "") + "/" + txd1.VIEW, txd1.OPTS)
-    .catch( () => PouchDB(txd1.DBNAME).allDocs({
+    let db1 = window.PouchDB && PouchDB(txd1.DBNAME);
+    !db1 || ( txd1.u1s.includes(txd1.DBNAME) ? Promise.resolve()
+      : !txd1.u1s.push(txd1.DBNAME) || db1.get("-res-img").then( adoc =>
+          !adoc._attachments || Promise.all( Object.keys(adoc._attachments)
+            .map( akey => db1.getAttachment("-res-img", akey)
+              .then(abl => aurls[akey] = URL.createObjectURL(abl)) ) ) ).catch(() => "") )
+    .then( () => db1.query(txd1.FILEID.replace(/^_design\\//, "") + "/" + txd1.VIEW, txd1.OPTS)
+    .catch( () => db1.allDocs({
       //startkey:     descswi.checked ? "~a" : undefined,
       //endkey:       descswi.checked ? undefined : "~a",
       descending:   descswi.checked,
@@ -1763,7 +1769,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       vidx > 8 && !(nm0sets.p2vws[vusr] || "").hdrs || hdrsswi.click();
       !(nm0sets.p2vws[vusr] || "").bods || bodsswi.click();
       vwFnlz(evt);
-    }).catch(rsp2Show);
+    }) ).catch(rsp2Show);
   },
   tabActv = evt => {
     tidx === 2 || pdbcfg.querySelectorAll('.chelp').forEach(e => e.classList.add("dnone"));
@@ -2216,8 +2222,8 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       = ["\\n      <option></option>", i ? "" : "\\n      <option>&plus; New DB</option>"]
         .concat(dbs.map(e => "\\n      <option>" + e + "</option>")).join("") + "\\n      " );
     cntcsel.value = nm0sets.dbcntc || "";
-    !cntcsel.value || !window.PouchDB || !(db1 = PouchDB(nm0sets.dbcntc))
-    || !db1.get("-res-img").then( adoc =>
+    !cntcsel.value || !window.PouchDB || !txd1.u1s.push(nm0sets.dbcntc)
+    || !(db1 = PouchDB(nm0sets.dbcntc)).get("-res-img").then( adoc =>
       !adoc._attachments || Object.keys(adoc._attachments).forEach( akey =>
         db1.getAttachment("-res-img", akey)
         .then(abl => aurls[akey] = URL.createObjectURL(abl)) ) ).catch(rsp2Show)
@@ -2237,7 +2243,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     opensel.value = pdbssel.value = nm0sets.dbdflt || "";
     !pdbssel.value || pdbOpen();
   };
-window.nm0 = { aurls, cntcs, rsp2Show, valStr };
+window.nm0 = { aurls, cntcs, txd1, rsp2Show, valStr };
 pdbssel.onchange = pdbOpen;
 viewsel.onchange = viewChg;
 colssel.onchange = colsTog;
