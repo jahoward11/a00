@@ -659,7 +659,7 @@ srui += "\\nbutton, input, select { margin: 0; }\\nhr { margin: 1.5rem 0; }\\n[l
 srui += "\\n.textarea { background-color: white; border-color: #dbdbdb; border-radius: 4px; display: block; max-width: 100%; min-width: 100%; padding: calc(0.75em - 1px); resize: vertical; }";
 srui += "\\n#srwrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
 srui += "\\n#srwrap button, #srwrap .btn1, #srwrap input:not([type=checkbox]):not([type=radio]), #srwrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
-srui += "\\n#srwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }\\n#srwrap .textarea { height: 288px; }";
+srui += "\\n#srwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }";
 srui += "\\n#srwrap .iwarn { color: Orange; }\\n#srwrap .isucc { color: CornFlowerBlue; }";
 srui += "\\n#srwrap .textarea.iwarn { color: revert; border-color: Orange; }\\n#srwrap .textarea.isucc { color: revert; border-color: CornFlowerBlue; }";
 srui += "\\n#srwrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }";
@@ -667,7 +667,7 @@ srui += "\\n#srwrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }";
 srui += "\\n#srwrap :not(.cfield)>.ccntr { display: inline-block; height: 1.5rem; margin-bottom: 0.5rem; }";
 srui += "\\n#srwrap .chelp { font-size: 0.75rem; line-height: normal; margin-top: 0.25rem; }";
 srui += "\\n#srwrap .pwrap { white-space: pre-wrap; }";
-srui += "\\n#sepainp, #rtrminp { width: 288px; }\\n#lfinp { width: 176px; }";
+srui += "\\n#srctxta, #trgtxta { font-family: system-ui; height: 288px; }\\n#sepainp, #rtrminp { width: 288px; }\\n#lfinp { width: 176px; }";
 srui += "\\n#trgrndr { display: flow-root; margin-top: 1rem; border: dashed gainsboro; border-width: 1px 0; }";
 srui += "\\n</style>\\n<hr />\\n<h4 class=cfield><span onclick=txtaSel(srctxta)>Source</span></h4>";
 srui += "\\n<div class=cfield><textarea id=srctxta class=textarea></textarea></div>";
@@ -1121,7 +1121,7 @@ dtmpl = t4cnt;
 hlps = window.dbwrap && dbwrap.querySelectorAll('.chelp');
 hsRes = () => _.hlps.forEach(e => e.classList.add("dnone"));
 d0Upd = () => { let ts = new Date().getTime(); !_.fwg.hasOwnProperty("ts_created") || ((_.fwg.ts_created ? {} : _.fwg).ts_created = _.fwg.ts_updated = ts); !_.fwg.file_created || [[_.fwg.file_created, _.fwg.file_updated]].forEach(([p0, p1]) => { !p0.timestamp || (p0 = {}); p1 = p1 || {}; p1.username = p0.username = fwg._id.replace(/.+?-/, ""); p1.timestamp = p0.timestamp = ts; p1.dborigin = p0.dborigin = /127\\.0\\.0|192\\.168\\.0|cloudant|localhost/.test(location.origin) ? location.origin : [navigator.userAgent || navigator.userAgentData, location.origin]; p1.dbname = p0.dbname = dbobj.name; }); !_.fwg.hasOwnProperty("from") || _.fwg.from || (_.fwg.from = _.fwg._id.replace(/.+?-/, "")); };
-formGen = () => dform.innerHTML = Object.entries(Object.assign({ _id: "", _rev: null }, _.fwg)).map(([k, v]) => _.rex0s.test(k) ? "" : "\\n<div class=\\"field is-horizontal\\">\\n<div class=\\"field-label\\"><span class=label>" + k + "</span></div>\\n<div class=\\"field-body\\">\\n<textarea id=p0" + k + " class=textarea rows=" + (/_attach|configs|content|body|file/.test(k) ? 8 : 2) + ">" + _.htmTxt(_.valStr(v)) + "\\n</textarea>\\n</div>\\n</div>").join("") + "\\n";
+formGen = () => dform.innerHTML = Object.entries(Object.assign({ _id: "", _rev: null }, _.fwg)).map(([k, v]) => _.rex0s.test(k) ? "" : "\\n<div class=\\"field is-horizontal\\">\\n<div class=\\"field-label\\"><span class=label>" + k + "</span></div>\\n<div class=\\"field-body\\">\\n<textarea id=p0" + k + " class=textarea rows=" + (/_attach|configs|content|body|file[f_]/.test(k) ? 8 : 2) + ">" + _.htmTxt(_.valStr(v)) + "\\n</textarea>\\n</div>\\n</div>").join("") + "\\n";
 //
 !window.resbtn || ( resbtn.onclick = () => _.hsRes() || !(_.fwg = JSON.parse(JSON.stringify(_.dtmpl))) || _.formGen() )();
 !window.savbtn || ( savbtn.onclick = () => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))) || !_.fwg._id || _.d0Upd() || dbobj.put(Object.assign({ _id: "", _rev: null }, _.fwg)).then(r => _.hlps[0].classList.remove("dnone") || respShow(r)).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)) );
