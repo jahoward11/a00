@@ -1,0 +1,66 @@
+html {
+//font-size: 14px;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+strong, mark, table th { color: inherit; }
+body {
+  color: DimGrey;
+//font-family: 'Crimson Text', Times, serif;
+//font-size: medium;
+//line-height: 1.25;
+  max-width: 648px;
+//min-width: var(--mobile-min-width, 560px);
+  margin: 3em auto;
+  padding: 0 8px;
+  overflow-wrap: break-word;
+}
+hr {
+  margin: 1em 0;
+  border: 1px solid Gainsboro;
+}
+figure, .figure {
+  margin: 1em 0;
+  padding: 0 1em;
+}
+a {
+  color: #485fc7;
+  text-decoration: none;
+}
+a:hover { color: CornFlowerBlue; }
+img {
+  max-width: calc(50% - 4px);
+  max-height: 432px;
+}
+figure>img { max-width: 100%; }
+pre, xmp {
+//font-family: monospace;
+//font-size: medium;
+  white-space: pre-wrap;
+}
+table {
+  margin-bottom: 1rem;
+  border-collapse: collapse;
+//word-break: break-all;
+}
+table td, table th {
+  font-family: 'Montserrat', Verdana, Geneva, sans-serif;
+  font-size: small;
+  padding: 0.25em;
+}
+table td:not([align]), table th:not([align]) { text-align: left; }
+table td { vertical-align: top; }
+@media print {
+  body { width: 648px; margin: 0 auto; padding: 0; }
+  img:not([height]) { max-height: 324px; }
+  .pageba { page-break-after: always; break-after: page; }
+  .pagebb { page-break-before: always; break-before: page; margin-top: 0; }
+}
+@media print and (min-width: 365px) and (max-width: 554px),
+print and (min-width: 558px) and (max-width: 734px),
+print and (min-width: 738px) and (max-width: 785px),
+print and (min-width: 787px) and (max-width: 952px),
+print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safari */
+  html { width: 768px; }
+}
