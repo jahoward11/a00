@@ -1,0 +1,113 @@
+/*! minireset.css v0.0.6 | MIT License | github.com/jgthms/minireset.css */
+*, *::before, *::after { box-sizing: inherit; }
+html {
+  box-sizing: border-box;
+  background-color: white;
+  font-size: 16px;
+  min-width: 300px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+html, body, p, ol, ul, li, dl, dt, dd,
+blockquote, figure, fieldset, legend, textarea,
+pre, iframe, hr, h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+}
+body, button, input, optgroup, select, textarea {
+  font-family: BlinkMacSystemFont, -apple-system,
+    "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+body {
+  color: #4a4a4a;
+  font-size: 1em;
+  font-weight: 400;
+  line-height: 1.5;
+}
+fieldset, iframe { border: 0; }
+article, aside, figure, footer,
+header, hgroup, hr, section { display: block; }
+hr {
+  background-color: whitesmoke;
+  height: 2px;
+  margin: 1.5rem 0;
+  border: none;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-size: 100%;
+  font-weight: normal;
+}
+ul { list-style: none; }
+span {
+  font-style: inherit;
+  font-weight: inherit;
+}
+small { font-size: 0.875em; }
+strong {
+  color: #363636;
+  font-weight: 700;
+}
+a {
+  color: #485fc7;
+  cursor: pointer;
+  text-decoration: none;
+}
+a strong { color: currentColor; }
+a:hover { color: #363636; }
+button, input, select, textarea { margin: 0; }
+input[type="checkbox"], input[type="radio"] { vertical-align: baseline; }
+img, video {
+  max-width: 100%;
+  height: auto;
+}
+code, pre {
+  font-family: monospace;
+  -moz-osx-font-smoothing: auto;
+  -webkit-font-smoothing: auto;
+}
+code {
+  background-color: whitesmoke;
+  color: #da1039;
+  font-size: 0.875em;
+  font-weight: normal;
+  padding: 0.25em 0.5em 0.25em;
+}
+pre {
+  background-color: whitesmoke;
+  color: #4a4a4a;
+  font-size: 0.875em;
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  white-space: pre;
+  word-wrap: normal;
+  -webkit-overflow-scrolling: touch;
+}
+pre code {
+  background-color: transparent;
+  color: currentColor;
+  font-size: 1em;
+  padding: 0;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+td, th { padding: 0; }
+table td, table th { vertical-align: top; }
+table td:not([align]), table th:not([align]) { text-align: inherit; }
+table th { color: #363636; }
+@-webkit-keyframes spinAround {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(359deg); }
+}
+@keyframes spinAround {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(359deg); }
+}
