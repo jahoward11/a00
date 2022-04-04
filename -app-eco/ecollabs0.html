@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Ecollabs 0.12</title>
+<title>Ecollabs 0.13</title>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="mobile-web-app-capable" content="yes" />
@@ -2212,12 +2212,15 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 #ecoesp0:not(.fldswaps) #jdedft .dftbtnc>.button,
 #ecoesp0:not(.fldswaps) #jdepty .ptybtnc>.button:nth-of-type(1),
 #ecoesp0 #jdepty:not(.ptydiffs) .ptybtnc>.button:nth-of-type(2) { display: none; }
+#ecoesp0 #publpre .select>select, #ecoesp0 #publmet .input,
+#ecoesp0 #publcmt .select>select, #ecoesp0 #publcmt #uplfpath,
+#ecoesp0 #eftass #irename, #ecoesp0 #toolswap .input,
+#ecoesp0 #toolswap .select>select, #ecoesp0 #toolapp .select>select { width: 216px; }
+#ecoesp0 #publmet .label.has-text-right,
+#ecoesp0 #toolapp .label.has-text-right { width: 126px; }
+#ecoesp0 #publpre #rm2chgs { margin-top: 21px; }
+#ecoesp0 #publmet .textarea { width: 216px; min-width: 216px; }
 #ecoesp0 #eftass .file { width: 339px; }
-#ecoesp0 #eftass #irename, #ecoesp0 #toolswap input[type=text],
-#ecoesp0 #toolswap .select>select, #ecoesp0 #toolapp .select>select,
-#ecoesp0 #publpre .select>select, #ecoesp0 #publcmts .select>select,
-#ecoesp0 #publcmts #uplfpath { width: 216px; }
-#ecoesp0 #tooljscon #jsclist { width: 100%; }
 #ecoesp0 #toolswap #swaptxta.wrapoff {
   word-wrap: normal;
   overflow-wrap: normal;
@@ -2225,9 +2228,8 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
   -webkit-overflow-scrolling: touch;
   white-space: pre;
 }
-#ecoesp0 #toolapp .label.has-text-right { width: 126px; }
+#ecoesp0 #tooljscon #jsclist { width: 100%; }
 #ecoesp0 #toolapp br+.button { margin-top: 7px; }
-#ecoesp0 #publpre #rm2chgs { margin-top: 21px; }
 #ecoesp0 .footspacer { min-height: 288px; }
 
 @media screen and (max-height: 394px) {
@@ -2791,8 +2793,14 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         </li>
         <li>
           <a class="has-text-grey-light" onclick="EC1.tabs5Tog(1)">
+            <span class="icon is-small is-size-4">&num;</span>
+            <span>Meta</span>
+          </a>
+        </li>
+        <li>
+          <a class="has-text-grey-light" onclick="EC1.tabs5Tog(2)">
             <span class="icon is-small is-size-4">&#x27b6;</span>
-            <span>Commits</span>
+            <span>Commit</span>
           </a>
         </li>
       </ul>
@@ -2827,7 +2835,41 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
       </div>
       <div id="rm2chgs" class="has-text-grey-light"></div>
     </div>
-    <div id="publcmts" class="is-hidden">
+    <div id="publmet">
+      <div class="field label has-text-grey">Data-file meta re-assignments</div>
+      <div class="field is-grouped">
+        <label class="control label has-text-right has-text-grey">Owner</label>
+        <span class="control">
+          <input type="text" id="sdirinp" class="input" onfocus="EC1.formFoc()" />
+        </span>
+      </div>
+      <div class="field is-grouped">
+        <label class="control label has-text-right has-text-grey">Subdirectory</label>
+        <span class="control">
+          <input type="text" id="sdirinp" class="input" onfocus="EC1.formFoc()" />
+        </span>
+      </div>
+      <div class="field is-grouped">
+        <label class="control label has-text-right has-text-grey">Version</label>
+        <span class="control">
+          <input type="text" id="versinp" class="input" onfocus="EC1.formFoc()" />
+        </span>
+      </div>
+      <div class="field is-grouped">
+        <label class="control label has-text-right has-text-grey">Miscellany</label>
+        <span class="control">
+          <textarea id="misctxta" class="textarea" onfocus="EC1.formFoc()"></textarea>
+        </span>
+      </div>
+      <hr />
+      <div class="field is-grouped">
+        <label class="control label has-text-right has-text-grey">Delete file?</label>
+        <span class="control"><label class="checkbox has-text-danger">
+          <input type="checkbox" id="delswi" /> Yes
+        </label></span>
+      </div>
+    </div>
+    <div id="publcmt" class="is-hidden">
       <div class="field">
         <div class="label has-text-grey">1. <span class="has-text-weight-normal">Select a LOCal (device) DB and add to it the working (currently loaded) file.</span>
         </div>
@@ -4051,7 +4093,8 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         <span class="control select">
           <select onfocus="EC1.formFoc()" onchange="EC1.epsUpd(4)">
            <option>&check; Prepress</option>
-           <option>&#x27b6; Commits</option>
+           <option>&num; Meta</option>
+           <option>&#x27b6; Commit</option>
           </select>
         </span>
       </div>
@@ -5253,7 +5296,7 @@ const hostibm = /\.cloudant\.com$/.test(window.location.host),
       scrInjPr("./" + ATT_KEYS[0])
       .then(() => { asstsLoad(Promise.resolve()); })
       .catch(err => { asstsLoad(Promise.reject()); });
-    } else if (!('indexedDB' in window)) {
+    } else if (!window.indexedDB) {
       asstsLoad(Promise.reject());
     } else {
       idbReq = window.indexedDB.open("_pouch_" + DB_NAMES[0]); //, DB_VERSION);
@@ -5299,10 +5342,11 @@ const hostibm = /\.cloudant\.com$/.test(window.location.host),
   };
 !platiphn || document.querySelector('head>meta[name=viewport]')
   .setAttribute('content', "width=device-width, maximum-scale=1"); //, user-scalable=yes
-!rmtready || !('serviceWorker' in window.navigator)
+!rmtready || !window.navigator.serviceWorker
 ? iniStratgz()
 : window.navigator.serviceWorker.getRegistration().then( reg =>
-    reg && reg.active // a.k.a. window.navigator.serviceWorker.controller
+    reg && /\/-app-eco\/!sw-ecollabs\.js$/.test(reg.active.scriptURL)
+    // reg.active a.k.a. window.navigator.serviceWorker.controller
     ? iniStratgz()
     : window.navigator.serviceWorker.register("../-app-eco/!sw-ecollabs.js") //, { scope: "../" })
       .then(reg => {
