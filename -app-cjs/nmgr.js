@@ -1,6 +1,10 @@
 /* JavaScript module: Note Manager */
 
-const dwraps = ["<!DOCTYPE html>\n<html lang=en>\n<title>Note Manager</title>\n<meta charset=\"utf-8\">\n<meta name=viewport content=\"width=device-width, initial-scale=1\">\n\n", "\n\n<script src=\"../../a00/-res-js/pouchdb.min.js\" type=\"text/javascript\"></script>\n<script src=\"../../a00/-res-js/pouchdb.all-dbs.min.js\" type=\"text/javascript\"></script>\n<script type=module>\n", "\n</script>\n</html>"];
+const dwraps = [
+  "<!DOCTYPE html>\n<html lang=en>\n<title>Note Manager</title>\n<meta charset=\"utf-8\">\n<meta name=viewport content=\"width=device-width, initial-scale=1\">\n\n",
+  "\n\n<script src=\"../../a00/-res-js/pouchdb.min.js\" type=\"text/javascript\"></script>\n<script src=\"../../a00/-res-js/pouchdb.all-dbs.min.js\" type=\"text/javascript\"></script>\n<script type=module>\n",
+  "\n</script>\n</html>"
+];
 
 const nmwrap = `<style>
 *, *::before, *::after { box-sizing: inherit; }
@@ -140,8 +144,8 @@ figure {
   justify-content: center;
 }
 @media screen and (max-width: 719px) {
-  .level-item:not(:last-child) { margin-bottom: 0.5rem; } /* not Bulma */
-  .level-item > .level { display: flex; }
+  .level-item:not(:last-child) { margin-bottom: 0.75rem; }
+  .level-item > .level { display: flex; } /* not Bulma */
 }
 .media {
   align-items: flex-start;

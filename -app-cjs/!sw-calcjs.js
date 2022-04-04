@@ -26,8 +26,9 @@ self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(cacheName).then(cache => {
       console.log("[Service Worker] Caching: appShellFiles + appContent");
-      appShellFiles.concat(appContent).forEach(e => rcvd1[e] = 1);
-      return cache.addAll(appShellFiles.concat(appContent));
+      appShellFiles.concat(appContent)
+      .forEach(e => rcvd1[e.replace(/^\.\./, location.origin + "/a00")] = 1);
+      return cache.addAll(Object.keys(rcvd1));
     }) );
 });
 
