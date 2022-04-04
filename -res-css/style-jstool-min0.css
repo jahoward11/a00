@@ -33,7 +33,7 @@ figure { margin: 1em 0; padding: 0 1em; }
 .level { align-items: center; justify-content: space-between; }
 @media screen and (min-width: 720px), print { .level { display: flex; } .level > .level-item:not(.is-narrow) { flex-grow: 1; } }
 .level-item { align-items: center; display: flex; flex-basis: auto; flex-grow: 0; flex-shrink: 0; justify-content: center; }
-@media screen and (max-width: 719px) { .level-item:not(:last-child) { margin-bottom: 0.5rem; } /* not Bulma */ .level-item > .level { display: flex; } }
+@media screen and (max-width: 719px) { .level-item:not(:last-child) { margin-bottom: 0.75rem; } .level-item > .level { display: flex; } /* not Bulma */ }
 .media { align-items: flex-start; display: flex; text-align: inherit; }
 .media + .media { border-top: 1px solid rgba(219, 219, 219, 0.5); margin-top: 1rem; padding-top: 1rem; }
 .media-left, .media-right { flex-basis: auto; flex-grow: 0; flex-shrink: 0; }
@@ -51,7 +51,7 @@ figure { margin: 1em 0; padding: 0 1em; }
 .tabs .icon:first-child { margin-right: 0.5em; }
 .tabs .icon:last-child { margin-left: 0.5em; }
 .tabs.is-centered ul { justify-content: center; }
-/* JS tool elements */
+/* JStool elements */
 #twrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px 0; }
 #twrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }
 #twrap { font: normal 1rem/1.5 BlinkMacSystemFont, -apple-system, Helvetica, Arial, sans-serif; max-width: 960px; margin: 24px auto 96px; }

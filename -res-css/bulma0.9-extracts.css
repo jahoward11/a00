@@ -1153,6 +1153,25 @@ table th { color: #363636; }
 .control.has-icons-left .icon.is-left { left: 0; }
 
 /* Bulma components v0.9.3:4563 */
+.level {
+  align-items: center;
+  justify-content: space-between;
+}
+@media screen and (min-width: 769px), print {
+  .level { display: flex; }
+  .level > .level-item:not(.is-narrow) { flex-grow: 1; }
+}
+.level-item {
+  align-items: center;
+  display: flex;
+  flex-basis: auto;
+  flex-grow: 0;
+  flex-shrink: 0;
+  justify-content: center;
+}
+@media screen and (max-width: 768px) {
+  .level-item:not(:last-child) { margin-bottom: 0.75rem; }
+}
 .media {
   align-items: flex-start;
   display: flex;
