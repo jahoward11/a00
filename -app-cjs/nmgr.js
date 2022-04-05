@@ -1272,7 +1272,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       row1Tfm = r1 => {
         !fmove || !r1 || !r1.doc || ( r1.doc.hasOwnProperty("loc_subdir")
           ? (r1.doc.loc_subdir = moveinp.value)
-          : (r1.doc.file_updated || r1.doc.file_created || {}).subdir = moveinp.value );
+          : (r1.doc.file_updated || r1.doc.file_created || "").subdir = moveinp.value );
         return fedit ? Object.assign({ _id: "", _rev: null }, (r1 || "").doc)
         : {
             _id:  r1.key || r1.id,
@@ -2085,14 +2085,14 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     idx !== 8 || !t01inp.value || t0sChg() || !(t01sel.value = t01inp.value)
     || (t01inp.value = t02inp.value = "") || t1sChg();
     idx !== 9 || !t0cs.length || t0sChg() || !txd1.DBNAME || t1sChg();
-    idx < 8 || idx > 9 || !txd1.DBNAME || ((nm0cfgs[txd1.DBNAME] || {}).type0 = t01sel.value)
+    idx < 8 || idx > 9 || !txd1.DBNAME || ((nm0cfgs[txd1.DBNAME] || "").type0 = t01sel.value)
     || (localStorage._nm0cfgs = JSON.stringify(nm0cfgs));
     idx < 10 || (idx < 11 && !v01inp.value) || (idx > 10 && !v0cs.length) || viewApd();
     //|| viewApd(idx > 10 ? null : (nm0sets.p2vws[v01inp.value] || "").v0[0]);
     idx !== 10 || !v01inp.value || !(v01sel.value = (nm0sets.p2vws[v01inp.value] || "").v0[0])
     || (v01inp.value = v02inp.value = "");
     idx < 10 || !txd1.DBNAME || v01sel.selectedIndex > -1 || (v01sel.selectedIndex = 2);
-    idx < 10 || !txd1.DBNAME || !(((nm0cfgs[txd1.DBNAME] || {}).view0 = v01sel.value) || 1)
+    idx < 10 || !txd1.DBNAME || !(((nm0cfgs[txd1.DBNAME] || "").view0 = v01sel.value) || 1)
     || (localStorage._nm0cfgs = JSON.stringify(nm0cfgs));
     localStorage._nm0sets = JSON.stringify(nm0sets);
   },
