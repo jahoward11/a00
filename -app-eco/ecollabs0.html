@@ -16,7 +16,7 @@
 <link href="../-res-img/icon-96.png" sizes="96x96" rel="apple-touch-icon" />
 <link href="../-res-img/icon-144.png" sizes="144x144" rel="apple-touch-icon" />
 <link href="../-res-img/icon-192.png" sizes="192x192" rel="apple-touch-icon" />
-<link href="../-app-eco/eco.webmanifest" rel="manifest" />
+<link href="../-app-eco/!eco.webmanifest" rel="manifest" />
 <!-- display: fullscreen, standalone, minimal-ui, browser -->
 <style type="text/css">
 /* * * Bulma utilities v0.9.3:2 * * */
@@ -2835,7 +2835,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
       </div>
       <div id="rm2chgs" class="has-text-grey-light"></div>
     </div>
-    <div id="publmet">
+    <div id="publmet" class="is-hidden">
       <div class="field label has-text-grey">Data-file meta re-assignments</div>
       <div class="field is-grouped">
         <label class="control label has-text-right has-text-grey">Owner</label>
@@ -4093,7 +4093,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         <span class="control select">
           <select onfocus="EC1.formFoc()" onchange="EC1.epsUpd(4)">
            <option>&check; Prepress</option>
-           <option>&num; Meta</option>
+           <option>&num;&ensp;Meta</option>
            <option>&#x27b6; Commit</option>
           </select>
         </span>
@@ -4105,9 +4105,9 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         <span class="control select">
           <select onfocus="EC1.formFoc()" onchange="EC1.epsUpd(5)">
            <option>&#x2667; Types</option>
-           <option>&#x29ce; Swap</option>
+           <option>&#x29ce;&ensp;Swap</option>
            <option>&#x2b21; JSCon</option>
-           <option>&#x2732; App</option>
+           <option>&#x2732;&ensp;App</option>
           </select>
         </span>
       </div>
@@ -4421,7 +4421,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 {{#if filesscr}}
 <optgroup label="DB scrap files">
   {{#each filesscr}}
-  <option>{{this}}</option>
+  <option value="{{this.[1]}}">{{this.[0]}}{{this.[1]}}</option>
   {{/each}}
 </optgroup>
 {{/if}}
@@ -4960,7 +4960,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 {{else}}
 <div class="field has-addons control is-marginless">
   <span class="control">
-    <button class="button is-static has-text-info is-size-7 tabontxta{{#unless filefrags}} bdradtr4{{/unless}}{{#unless file_type}}{{#unless media_type}}{{#unless filefrags}} bdrwid0{{/unless}}{{/unless}}{{/unless}}">
+    <button class="button is-static has-text-info is-size-7 tabontxta{{#unless filefrags}} bdradtr4{{/unless}}{{#unless ../typtxt}}{{#unless filefrags}} bdrwid0{{/unless}}{{/unless}}">
       CONTENT
     </button>
   </span>
@@ -4987,10 +4987,10 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
     {{#each filefrags}}
   <textarea class="textarea {{#unless @first}}is-hidden{{/unless}}" rows="22" placeholder="{{lookup @root.pholds @index}}" onfocus="EC1.formFoc('#dftbtnc0')" onblur="EC1.jdeDftUpd()">{{contenttxt}}</textarea>
     {{/each}}
-  {{else if media_type}}
-  <textarea class="textarea" rows="22" placeholder="{{#if ../eco-scrap}}Scrap-file{{else if ../eco-srcdoc}}Source-document{{else}}Database-file{{/if}} text." onfocus="EC1.formFoc('#dftbtnc0')" onblur="EC1.jdeDftUpd('content')">{{content}}</textarea>
+  {{else if ../typtxt}}
+  <textarea class="textarea" rows="22" placeholder="{{#if ../eco-scrap}}Scrap-file{{else if ../eco-srcdoc}}Source-document{{else}}Nonstandard DB-file{{/if}} text." onfocus="EC1.formFoc('#dftbtnc0')" onblur="EC1.jdeDftUpd('content')">{{content}}</textarea>
   {{else}}
-  <textarea class="textarea{{#unless content}} fllbk{{/unless}}" rows="22" {{#unless content}}placeholder="Loaded data has no file content to edit." disabled{{else}}placeholder="Nonstandard DB-file text." onfocus="EC1.formFoc('#dftbtnc0')" onblur="EC1.jdeDftUpd('content')"{{/unless}}>{{content}}</textarea>
+  <textarea class="textarea fllbk" rows="22" placeholder="Loaded data has no file content to edit." disabled></textarea>
   {{/if}}
 </div>
 {{/if}}
@@ -5152,7 +5152,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 <option></option>
 {{#each rmtitems}}
 {{#if DBNAME}}
-{{#if DBORIGIN}}
+{{#if DBORIG}}
 <option value="{{DBNAME}}">REM: {{seltxt}}</option>
 {{else}}
 <option value="{{DBNAME}}">*___: ({{seltxt}})</option>
@@ -5219,7 +5219,7 @@ const hostibm = /\.cloudant/.test(window.location.host),
     "-res-js", "-res-js", "-res-js", "-app-eco"],
   ATT_KEYS = ["pouchdb.min.js", "pouchdb.all-dbs.min.js", "appid.min.js",
     "", "markdown-it.min.js", "handlebars.min.js",
-    "localforage.nopromises.min.js", "highlight.pack.js", "dropbox-oauth2.js", "eco-ctrl.js"],
+    "localforage.min.js", "highlight.pack.js", "dropbox-oauth2.js", "eco-ctrl.js"],
   MDIT_REFS = ["markdown-it.min.js", "markdown-it-attrs.browser.js", "abbr", "container",
     "deflist", "emoji-light", "footnote", "for-inline", "ins", "mark", "sub", "sup",
     "anchor", "decorate", "implicit-figures"], //"emoji",
@@ -5244,15 +5244,15 @@ const hostibm = /\.cloudant/.test(window.location.host),
   },
   scrInjPr = (urlblob, type, charset) => new Promise((rslv, rjct) => {
     urlblob || rjct("**Alert: Script URL (or attachment BLOb) was not provided.");
-    let scrnew = document.createElement('script');
-    scrnew.src = urlblob instanceof Blob ? URL.createObjectURL(urlblob) : urlblob;
-    scrnew.type = type || 'text/javascript';
-    !charset || scrnew.setAttribute('charset', charset);
-    !rmtready || scrnew.setAttribute('crossorigin', 'use-credentials');
-    //scrnew.async = false; //respShow(err),
-    scrnew.onerror = err => rjct("**Alert: Script resource GET/load error occured.");
-    scrnew.onload = rslv;
-    !urlblob || document.querySelector('#iniscripts').appendChild(scrnew);
+    let nscr = document.createElement('script');
+    nscr.src = urlblob instanceof Blob ? URL.createObjectURL(urlblob) : urlblob;
+    nscr.type = type || 'text/javascript';
+    !charset || nscr.setAttribute('charset', charset);
+    !rmtready || nscr.setAttribute('crossorigin', 'use-credentials');
+    //nscr.async = false; //respShow(err),
+    nscr.onerror = err => rjct("**Alert: Script resource GET/load error occured.");
+    nscr.onload = rslv;
+    !urlblob || document.querySelector('#iniscripts').appendChild(nscr);
   }),
   asstsLoad = pchinjpr => pchinjpr
     .then(() => dbpch = window.PouchDB && new PouchDB(DB_NAMES[0]))
@@ -5274,7 +5274,7 @@ const hostibm = /\.cloudant/.test(window.location.host),
     .catch(() => scrInjPr(INI_ASSETS[5]).catch(respShow))
     .then(() => dbpch && dbpch.getAttachment(FILE_IDS[6], ATT_KEYS[6])).then(scrInjPr)
     .catch(() => scrInjPr(INI_ASSETS[6]).catch(respShow))
-    .then( () => window.localforage && window.localforage.config({
+    .then( () => window.localforage && localforage.config({
       name        : "ecoAppFileSys",
       version     : 1,
     //size        : 4980736, // Size of database, in bytes. WebSQL-only for now.
@@ -5300,7 +5300,7 @@ const hostibm = /\.cloudant/.test(window.location.host),
     } else if (!window.indexedDB) {
       asstsLoad(Promise.reject());
     } else {
-      idbReq = window.indexedDB.open("_pouch_" + DB_NAMES[0]); //, DB_VERSION);
+      idbReq = indexedDB.open("_pouch_" + DB_NAMES[0]); //, DB_VERSION);
       idbReq.onerror = event => window.console.warn(event.target.error); //respShow
       idbReq.onupgradeneeded = idbReq.onblocked = event => {
         event.target.transaction.abort();

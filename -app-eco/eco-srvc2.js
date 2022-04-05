@@ -809,8 +809,8 @@ const s1txta = document.querySelector('#diff-s1txta'),
   s2rslt = document.querySelector('main>#s2rslt'),
   diffExe = () => {
     if (!window.SourceDiff || !s1txta || !s2txta) { return; }
-    let diff = new window.SourceDiff.Diff(true), // true = ignore leading whitespace
-      formatter = new window.SourceDiff.DiffFormatter(diff),
+    let diff = new SourceDiff.Diff(true), // true = ignore leading whitespace
+      formatter = new SourceDiff.DiffFormatter(diff),
       results = formatter.formattedDiff(s2txta.value, s1txta.value);
     s1rslt.innerHTML = results[1];
     s2rslt.innerHTML = results[0];
@@ -1016,11 +1016,11 @@ main>#recon {
 (function() {
 'use strict';
 let j = 0, rva0, rval, vidx = 0,
-  txdata = {
-    DBNAME:  (document.querySelector('#ecoesp0 #pchlist') || "").value || null,
-    FILEID:  "_design/ecosorter",
-    VIEW:    "files-idxlist",
-    OPTIONS: { since: 0 }
+  txd1 = {
+    DBNAME: (document.querySelector('#ecoesp0 #pchlist') || "").value || null,
+    FILEID: "_design/ecosorter",
+    VIEW:   "files-idxlist",
+    OPTS:   { since: 0 }
   },
   sellists = [\`
           <option value="file_updated.subdir">Subdir</option>
@@ -1190,9 +1190,9 @@ let j = 0, rva0, rval, vidx = 0,
           && /^(?:anno|post|prjid|publmgr|srcdoc)$/
           .test(inp.parentElement.parentElement.children[3].textContent) ),
       txd2 = {
-        DBNAME:  txdata.DBNAME,
-        FILEID:  "_all_docs",
-        OPTIONS: {
+        DBNAME: txd1.DBNAME,
+        FILEID: "_all_docs",
+        OPTS:   {
           keys: chkaf2.map(inp => inp.parentElement.parentElement.children[2].textContent),
           include_docs: fmove
         }
@@ -1212,15 +1212,15 @@ let j = 0, rva0, rval, vidx = 0,
         DBNAME: txd2.DBNAME,
         docs:   (rslt.rows || rslt.results).map(row1Tfm) //.filter(d => !d._deleted)
       },
-      dbq = txd2.DBNAME && window.PouchDB && new window.PouchDB(txd2.DBNAME);
+      dbq = txd2.DBNAME && window.PouchDB && new PouchDB(txd2.DBNAME);
     !fmove || Array.from(chks).forEach(inp => inp.parentElement.parentElement.className = null);
     chkaf2.forEach( inp => inp.parentElement.parentElement.className
       = fmove ? "has-background-warning-light" : "has-background-danger-light" );
     !dbq || ( txd2.FILEID === "_all_docs"
-      ? dbq.allDocs(txd2.OPTIONS).then(rdataTfm).then(rd2Qcon)
+      ? dbq.allDocs(txd2.OPTS).then(rdataTfm).then(rd2Qcon)
       : txd2.FILEID === "_changes"
-      ? dbq.changes(txd2.OPTIONS).then(rdataTfm).then(rd2Qcon)
-      : dbq.get(txd2.FILEID, txd2.OPTIONS).then(respShow) )
+      ? dbq.changes(txd2.OPTS).then(rdataTfm).then(rd2Qcon)
+      : dbq.get(txd2.FILEID, txd2.OPTS).then(respShow) )
     .catch(respShow);
   },
   fileLoad = evt => {
@@ -1229,9 +1229,9 @@ let j = 0, rva0, rval, vidx = 0,
       qcontxta = document.querySelector('#econav0 #qcontxta'),
       fwinflux = document.querySelector('#ecoguides .button[disabled]'),
       txd2 = {
-        DBNAME:  txdata.DBNAME,
-        FILEID:  evt.target.textContent,
-        OPTIONS: {
+        DBNAME: txd1.DBNAME,
+        FILEID: evt.target.textContent,
+        OPTS:   {
           rev: vidx !== 3 ? null : evt.target.parentElement.parentElement.children[3].textContent,
           revs_info: true
         }
@@ -1313,7 +1313,7 @@ let j = 0, rva0, rval, vidx = 0,
     sortsel.value = Array.from(sortsel.options).some(o => o.value === resel) ? resel : "id";
   },
   tblGen = evt => {
-    if (!window.PouchDB || !txdata.DBNAME) {
+    if (!window.PouchDB || !txd1.DBNAME) {
       return recon.textContent ? null
       : respShow("Alert: PouchDB is not loaded or no database has been selected.");
     }
@@ -1332,13 +1332,13 @@ let j = 0, rva0, rval, vidx = 0,
         document.querySelectorAll('main tbody>tr:not([id])>td:first-of-type>input')
         .forEach(inp => inp.addEventListener('change', fileActv));
       };
-    !evt || evt.target.id !== "descswi" || ( txdata.OPTIONS = {
-      //startkey: descswi.checked ? "~~~" : "",
-      //endkey: descswi.checked ? "" : "~~~",
+    !evt || evt.target.id !== "descswi" || ( txd1.OPTS = {
+      //startkey:   descswi.checked ? "~~~" : "",
+      //endkey:     descswi.checked ? "" : "~~~",
       descending: descswi.checked
     });
-    vidx !== 3 || new window.PouchDB(txdata.DBNAME)
-    .changes(txdata.OPTIONS || {})
+    vidx !== 3 || new PouchDB(txd1.DBNAME)
+    .changes(txd1.OPTS)
     .then(rslt => {
       let dels = rslt.results.filter(r => r.deleted);
       rtotal.textContent = dels.length;
@@ -1353,9 +1353,9 @@ let j = 0, rva0, rval, vidx = 0,
 \`;
       sortsel.value = /^(?:id|seq)$/.test(ss[0]) ? ss[0] : "id";
     }).catch(respShow);
-    vidx === 3 || new window.PouchDB(txdata.DBNAME)
-    .query(txdata.FILEID.replace(/^_design\\//, "") + "/" + txdata.VIEW, txdata.OPTIONS || {})
-    .catch( () => new window.PouchDB(txdata.DBNAME).allDocs({
+    vidx === 3 || new PouchDB(txd1.DBNAME)
+    .query(txd1.FILEID.replace(/^_design\\//, "") + "/" + txd1.VIEW, txd1.OPTS)
+    .catch( () => new PouchDB(txd1.DBNAME).allDocs({
       startkey: descswi.checked != (vidx === 2) ? "~a" : undefined,
       endkey: descswi.checked != (vidx === 2) ? undefined : "~a",
       descending: descswi.checked,
@@ -1399,7 +1399,7 @@ let j = 0, rva0, rval, vidx = 0,
     vidx = evt.currentTarget.value; //evt.target.parentElement.dataset.vidx
     cmtabs.forEach(li => li.classList.remove("is-active"));
     cmtabs[vidx].classList.add("is-active");
-    txdata.VIEW = vidx === 2 ? "files-static" : "files-idxlist";
+    txd1.VIEW = vidx === 2 ? "files-static" : "files-idxlist";
     colssel.innerHTML = sellists[vidx === 3 ? 1 : 0];
     vidx !== 1 || (colssel.options[18].selected = colssel.options[0].selected = true);
     if (vidx === 2) {
@@ -1528,11 +1528,11 @@ main>#postbd .media-content .prewrap {
 'use strict';
 let elsmed, fpl, fxa, pcntcs, rval, uimg, unm,
   rslt1 = {},
-  txdata = {
-    DBNAME:  (document.querySelector('#ecoesp0 #pchlist') || "").value || null,
-    FILEID:  "_design/ecosorter",
-    VIEW:    "files-static",
-    OPTIONS: {
+  txd1 = {
+    DBNAME: (document.querySelector('#ecoesp0 #pchlist') || "").value || null,
+    FILEID: "_design/ecosorter",
+    VIEW:   "files-static",
+    OPTS:   {
       //startkey: ["A"], endkey: ["B"]
       //startkey: ["P"], endkey: ["Q"]
     }
@@ -1633,9 +1633,9 @@ document.querySelector('main>#cfilt>#pcntcs').innerHTML = "\\n      "
   .map(e => \`<option value="\${ e }"></option>\`)
   .concat(\`<option value="\${ pcntcs.join() }">(all names)</option>\`)
   .join("\\n      ") + "\\n    ";
-!txdata.DBNAME || new window.PouchDB(txdata.DBNAME) //"ecosorter/files-static"
-.query(txdata.FILEID.replace(/^_design\\//, "") + "/" + txdata.VIEW, txdata.OPTIONS || {})
-.catch(() => new window.PouchDB(txdata.DBNAME).allDocs({ startkey: "~a", include_docs: true }))
+!txd1.DBNAME || new PouchDB(txd1.DBNAME) //"ecosorter/files-static"
+.query(txd1.FILEID.replace(/^_design\\//, "") + "/" + txd1.VIEW, txd1.OPTS)
+.catch(() => new PouchDB(txd1.DBNAME).allDocs({ startkey: "~a", include_docs: true }))
 .then( rslt0 => rslt1.rows = (rslt0.rows || [])
   .sort( (a, b) => !(rval = a.doc || a.value) || !rval.file_created ? 0
     : (rval.file_created.timestamp - (b.doc || b.value).file_created.timestamp) )

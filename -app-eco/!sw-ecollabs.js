@@ -27,8 +27,8 @@ const cacheName = "ecollabs-v00.13",
   ],
   rcvd1 = {},
   tstamp = Date.now(),
-  sepaupds = /\/a00\/(?:(?:-app-eco\/|-dev.*?\/)[\w.-]+\??|-res-css\/(?:reset|style)[\w.-]+|-res-js\/ebook-annos-fns\.js)$|\.cloudant\.com\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|-res-\w+\/u\d\d[\w.-]+$/,
-  sepakprs = /\/a00\/[\w/.-]+\??$|\.cloudant\.com\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|-res-\w+\/u\d\d[\w.-]+$|\/oauth\/v4\/.+\/(?:openid-configuration|publickeys)$|\/eco\/projects$|\/\/fonts\.gstatic\.com\/|\.gravatar\.com\/avatar\//;
+  sepaupds = /\/a00\/(?:(?:-app-eco\/|-dev.*?\/)[\w.-]+\??|-res-css\/(?:reset|style)[\w.-]+|-res-js\/ebook-annos-fns\.js)$|\.cloudant[\w.]+\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|-res-\w+\/u\d\d[\w.-]+$/,
+  sepakprs = /\/a00\/[\w/.-]+\??$|\.cloudant[\w.]+\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|-res-\w+\/u\d\d[\w.-]+$|\/oauth\/v4\/.+\/(?:openid-configuration|publickeys)$|\/eco\/projects$|\/\/fonts\.gstatic\.com\/|\.gravatar\.com\/avatar\//;
 
 self.addEventListener('install', e => {
   console.log("[Service Worker] Installing new cache: " + cacheName);
