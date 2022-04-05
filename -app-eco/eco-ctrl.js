@@ -26,7 +26,8 @@ const hostibm = /\.cloudant/.test(window.location.host) && window.location.origi
   platiphn = (window.navigator.userAgentData || window.navigator).platform === 'iPhone',
   protfile = window.location.protocol === 'file:',
   a00orig = "https://46a849c5-a061-44b5-92ee-6279f6974d5f-bluemix.cloudantnosqldb.appdomain.cloud",
-  a00path = (protfile || hostibm ? "../.." : hostlh || a00orig) + "/a00",
+  a00path = ( protfile || hostibm || /\.github\.io$/.test(window.location.host)
+    ? "../.." : hostlh || a00orig ) + "/a00",
   asseturls = {
     "eco-srvc1.js":           a00path + "/-app-eco/eco-srvc1.js",
     "eco-srvc2.js":           a00path + "/-app-eco/eco-srvc2.js",

@@ -5201,7 +5201,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 (function () {
 'use strict';
 var dbpch, idbrslt, idbReq;
-const hostibm = /\.cloudant\.com$/.test(window.location.host),
+const hostibm = /\.cloudant/.test(window.location.host),
   hostlh = /^localhost:\d+$|^(?:192\.168|127\.0|0\.0)\.0\.\d+:\d+$/.test(window.location.host)
     && window.location.origin,
   platipd2 = (window.navigator.userAgentData || window.navigator).platform === 'MacIntel'
@@ -5209,8 +5209,9 @@ const hostibm = /\.cloudant\.com$/.test(window.location.host),
   platiphn = (window.navigator.userAgentData || window.navigator).platform === 'iPhone',
   protfile = window.location.protocol === 'file:',
   rmtready = /^http/.test(window.location.protocol) && window.navigator.onLine,
-  a00orig = "https://b41897c5-1ba0-4adb-a2f6-4b7ab462c950-bluemix.cloudant.com",
-  a00path = (protfile || hostibm ? "../.." : hostlh || a00orig) + "/a00",
+  a00orig = "https://46a849c5-a061-44b5-92ee-6279f6974d5f-bluemix.cloudantnosqldb.appdomain.cloud",
+  a00path = ( protfile || hostibm || /\.github\.io$/.test(window.location.host)
+    ? "../.." : hostlh || a00orig ) + "/a00",
   qcontxta = document.querySelector('#econav0 #qcontxta'),
   DB_NAMES = ["a00"], //DB_VERSIONS = [5],
   DB_STORES = ["document-store", "by-sequence", "attach-store"],
@@ -5254,9 +5255,9 @@ const hostibm = /\.cloudant\.com$/.test(window.location.host),
     !urlblob || document.querySelector('#iniscripts').appendChild(scrnew);
   }),
   asstsLoad = pchinjpr => pchinjpr
-    .then(() => dbpch = window.PouchDB && new window.PouchDB(DB_NAMES[0]))
+    .then(() => dbpch = window.PouchDB && new PouchDB(DB_NAMES[0]))
     .catch( () => scrInjPr(INI_ASSETS[0])
-      .catch(err => respShow(err) && respShow("**Alert: pouchdb.js is not preloaded.")) )
+      .catch(err => respShow(err) && respShow("**Alert: pouchdb.min.js is not preloaded.")) )
     .then(() => dbpch && dbpch.info()).catch(respShow)
     .then(() => dbpch && dbpch.getAttachment(FILE_IDS[1], ATT_KEYS[1])).then(scrInjPr)
     .catch(() => scrInjPr(INI_ASSETS[1]).catch(respShow))
