@@ -3,7 +3,7 @@
 const cacheName = "ecollabs-v00.13",
   cacheKeeplist = [cacheName],
   appShellFiles = [
-    "../-app-eco/eco.webmanifest",
+    "../-app-eco/!eco.webmanifest",
     "../-app-eco/ecollabs0.html",
     "../-app-eco/eco-ctrl.js",
     "../-app-eco/eco-srvc1.js",

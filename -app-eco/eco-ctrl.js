@@ -19,15 +19,14 @@ var appid, dbpch, eb1dflt, file2nd, filewkg, fldfoc, idtoks, prjsenet, tm0disc, 
   updseq = {},
   updts0 = tstamp0;
 const hostibm = /\.cloudant[\w.]+$/.test(window.location.host) && window.location.origin,
-  hostlh = /^localhost:\d+$|^(?:192\.168|127\.0|0\.0)\.0\.\d+:\d+$/.test(window.location.host)
-    && window.location.origin,
+  hostlh = /^localhost:\d+$|^(?:127\.0|192\.168)\.0\.\d+:\d+$/.test(window.location.host),
   platipd2 = (window.navigator.userAgentData || window.navigator).platform === 'MacIntel'
     && window.screen.height === 1024 && window.screen.width === 768,
   platiphn = (window.navigator.userAgentData || window.navigator).platform === 'iPhone',
   protfile = window.location.protocol === 'file:',
   a00orig = "https://46a849c5-a061-44b5-92ee-6279f6974d5f-bluemix.cloudantnosqldb.appdomain.cloud",
-  a00path = ( protfile || hostibm || /\.github\.io$/.test(window.location.host)
-    ? "../.." : hostlh || a00orig ) + "/a00",
+  a00path = ( protfile || hostlh || hostibm || /\.github\.io$/.test(window.location.host)
+    ? "../.." : a00orig ) + "/a00",
   asseturls = {
     "eco-srvc1.js":           a00path + "/-app-eco/eco-srvc1.js",
     "eco-srvc2.js":           a00path + "/-app-eco/eco-srvc2.js",
@@ -357,9 +356,9 @@ const ECOTMPLS = {
           htmlscriptload: "",
           features: [
             {
-              label: "",
               switchon: false,
-              inptxt: ""
+              keytxt: "",
+              valtxt: ""
             }
           ],
           deftxt: "function (str) {\n  return str\n  ;\n}"
@@ -429,8 +428,33 @@ const ECOTMPLS = {
     loc_subdir: "",
     content: ""
   },
+  event: {
+    _id: "4-event", //"idGen(\"~E\", ts0, un0)"
+    _rev: "",
+    file_type: "eco-event",
+    file_created: {
+      username: "",
+      timestamp: 0,
+      dborigin: "",
+      dbname: "",
+      subdir: ""
+    },
+    file_updated: {
+      username: "",
+      timestamp: 0,
+      dborigin: "",
+      dbname: "",
+      subdir: ""
+    },
+    headline: "",
+    time: "",
+    place: "",
+    map_refs: [""],
+    people: [""],
+    description: ""
+  },
   prjid: {
-    _id: "4-prjid",
+    _id: "5-prjid",
     _rev: "",
     file_type: "eco-prjid",
     file_created: {
@@ -452,23 +476,6 @@ const ECOTMPLS = {
     descr_short: "This project is about ...",
     descr_extd: ""
   },
-  post: {
-    _id: "5-post",
-    _rev: "",
-    file_type: "eco-post",
-    file_created: {
-      username: "",
-      timestamp: 0,
-      dborigin: "",
-      dbname: "",
-      subdir: ""
-    },
-    linkref: "",
-    from: "",
-    to: [""],
-    subject: "",
-    body: ""
-  },
   anno: {
     _id: "6-anno",
     _rev: "",
@@ -485,8 +492,25 @@ const ECOTMPLS = {
     tocfmt: "",
     texthl: [""]
   },
+  memo: {
+    _id: "7-memo", //"idGen(\"~m\", ts0, un0)"
+    _rev: "",
+    file_type: "eco-memo",
+    file_created: {
+      username: "",
+      timestamp: 0,
+      dborigin: "",
+      dbname: "",
+      subdir: ""
+    },
+    linkref: "",
+    from: "",
+    to: [""],
+    subject: "",
+    body: ""
+  },
   assets: {
-    _id: "7-assets",
+    _id: "8-assets",
     _rev: "",
     file_type: "eco-assets",
     ts_created: 0,
@@ -495,7 +519,7 @@ const ECOTMPLS = {
     _attachments: {}
   },
   contact: {
-    _id: "8-contact",
+    _id: "9-contact", //"!groupID-cUsername"
     _rev: "",
     file_type: "eco-contact",
     ts_created: 0,
@@ -583,7 +607,7 @@ import dcharClean from "../../a00/-app-eco/eco-srvc3.mjs";
 let mycon = document.querySelector('#containerid');
 mycon.innerHTML = dcharClean(mycon.innerHTML);
 </script>`,
-    features: [{ label: "", switchon: false, inptxt: "" }],
+    features: [{ switchon: false, keytxt: "", valtxt: "" }],
     fnc: null
   },
   dchar2code: {
@@ -595,7 +619,7 @@ import dchar2code from "../../a00/-app-eco/eco-srvc3.mjs";
 let mycon = document.querySelector('#containerid');
 mycon.innerHTML = dchar2code(mycon.innerHTML);
 </script>`,
-    features: [{ label: "", switchon: false, inptxt: "" }],
+    features: [{ switchon: false, keytxt: "", valtxt: "" }],
     fnc: null
   },
   srcCodeIncl: {
@@ -618,7 +642,7 @@ import srcCodeIncl from "../../a00/-app-eco/eco-srvc3.mjs";
 let mycon = document.querySelector('#containerid');
 mycon.innerHTML = srcCodeIncl(mycon.innerHTML);
 </script>`,
-    features: [{ label: "", switchon: false, inptxt: "" }, {}],
+    features: [{ switchon: false, keytxt: "", valtxt: "" }, {}],
     fnc: null
   },
   moduleIX: {
@@ -634,7 +658,7 @@ import moduleIX from "../../a00/-app-eco/eco-srvc3.mjs";
 let mycon = document.querySelector('#containerid');
 mycon.innerHTML = moduleIX(mycon.innerHTML);
 </script>`,
-    features: [{ label: "", switchon: false, inptxt: "" }],
+    features: [{ switchon: false, keytxt: "", valtxt: "" }],
     fnc: null
   },
   annosGlDeploy: {
@@ -646,7 +670,7 @@ import annosGlDeploy from "../../a00/-app-eco/eco-srvc3.mjs";
 let mycon = document.querySelector('#containerid');
 mycon.innerHTML = annosGlDeploy(mycon.innerHTML);
 </script>`,
-    features: [{ label: "", switchon: false, inptxt: "" }],
+    features: [{ switchon: false, keytxt: "", valtxt: "" }],
     fnc: null
   },
   hdgIDGen: {
@@ -658,7 +682,7 @@ import hdgIDGen from "../../a00/-app-eco/eco-srvc3.mjs";
 let mycon = document.querySelector('#containerid');
 mycon.innerHTML = hdgIDGen(mycon.innerHTML);
 </script>`,
-    features: [{ label: "", switchon: false, inptxt: "" }],
+    features: [{ switchon: false, keytxt: "", valtxt: "" }],
     fnc: null
   },
   menubarGen: {
@@ -670,7 +694,7 @@ import menubarGen from "../../a00/-app-eco/eco-srvc3.mjs";
 let mycon = document.querySelector('#containerid');
 mycon.innerHTML = menubarGen(mycon.innerHTML);
 </script>`,
-    features: [{ label: "", switchon: false, inptxt: "" }],
+    features: [{ switchon: false, keytxt: "", valtxt: "" }],
     fnc: null
   },
   headerGen: {
@@ -684,7 +708,7 @@ import headerGen from "../../a00/-app-eco/eco-srvc3.mjs";
 let mycon = document.querySelector('#containerid');
 mycon.innerHTML = headerGen(mycon.innerHTML);
 </script>`,
-    features: [{ label: "", switchon: false, inptxt: "" }],
+    features: [{ switchon: false, keytxt: "", valtxt: "" }],
     fnc: null
   },
   mdtblConv21: {
@@ -696,7 +720,7 @@ import mdtblConv21 from "../../a00/-app-eco/eco-srvc3.mjs";
 let mycon = document.querySelector('#containerid');
 mycon.innerHTML = mdtblConv21(mycon.innerHTML);
 </script>`,
-    features: [{ label: "", switchon: false, inptxt: "" }],
+    features: [{ switchon: false, keytxt: "", valtxt: "" }],
     fnc: null
   },
   mditPrepPhase2: {
@@ -708,7 +732,7 @@ import mditPrepPhase2 from "../../a00/-app-eco/eco-srvc3.mjs";
 let mycon = document.querySelector('#containerid');
 mycon.innerHTML = mditPrepPhase2(mycon.innerHTML);
 </script>`,
-    features: [{ label: "", switchon: false, inptxt: "" }],
+    features: [{ switchon: false, keytxt: "", valtxt: "" }],
     fnc: null
   },
   mditPrepPhase5: {
@@ -720,7 +744,7 @@ import mditPrepPhase5 from "../../a00/-app-eco/eco-srvc3.mjs";
 let mycon = document.querySelector('#containerid');
 mycon.innerHTML = mditPrepPhase5(mycon.innerHTML);
 </script>`,
-    features: [{ label: "", switchon: false, inptxt: "" }],
+    features: [{ switchon: false, keytxt: "", valtxt: "" }],
     fnc: null
   },
   markdownit: {
@@ -778,30 +802,30 @@ window.onload = function () {
 };
 </script>`,
     features: [
-      { label: "HTML", switchon: true },
-      { label: "xhtmlOut", switchon: true },
-      { label: "breaks", switchon: false },
-      { label: "linkify", switchon: true },
-      { label: "typographer", switchon: false },
-      { label: "highlight", switchon: false, inptxt: "" },
-      { label: "markdownitAbbr", switchon: true },
-      { label: "markdownitContainer", switchon: false, inptxt: "tip, note, alert" },
-      { label: "markdownitDeflist", switchon: true },
-      { label: "markdownitEmoji", switchon: false },
-      { label: "markdownitFootnote", switchon: true },
-      { label: "markdownitForInline", switchon: false, inptxt: "" },
-      { label: "markdownitIns", switchon: true },
-      { label: "markdownitMark", switchon: true },
-      { label: "markdownitSub", switchon: true },
-      { label: "markdownitSup", switchon: true },
-      { label: "markdownItAnchor", switchon: true, inptxt: "3" },
-      { label: "markdownItAttrs", switchon: false },
-      { label: "markdownItDecorate", switchon: true },
-      { label: "markdownItImplicitFigures", switchon: true }
+      { switchon: 1, keytxt: "HTML" },
+      { switchon: 1, keytxt: "xhtmlOut" },
+      { switchon: 0, keytxt: "breaks" },
+      { switchon: 1, keytxt: "linkify" },
+      { switchon: 0, keytxt: "typographer" },
+      { switchon: 0, keytxt: "highlight", valtxt: "" },
+      { switchon: 1, keytxt: "markdownitAbbr" },
+      { switchon: 0, keytxt: "markdownitContainer", valtxt: "tip, note, alert" },
+      { switchon: 1, keytxt: "markdownitDeflist" },
+      { switchon: 0, keytxt: "markdownitEmoji" },
+      { switchon: 1, keytxt: "markdownitFootnote" },
+      { switchon: 0, keytxt: "markdownitForInline", valtxt: "" },
+      { switchon: 1, keytxt: "markdownitIns" },
+      { switchon: 1, keytxt: "markdownitMark" },
+      { switchon: 1, keytxt: "markdownitSub" },
+      { switchon: 1, keytxt: "markdownitSup" },
+      { switchon: 1, keytxt: "markdownItAnchor", valtxt: "3" },
+      { switchon: 0, keytxt: "markdownItAttrs" },
+      { switchon: 1, keytxt: "markdownItDecorate" },
+      { switchon: 1, keytxt: "markdownItImplicitFigures" }
     ],
     fnc: function (str, idx, feats = []) {
       let fts2 = ECOMODJS.markdownit.features
-          .map(o2 => feats.find(o1 => o1.label === o2.label) || o2),
+          .map(o2 => feats.find(o1 => o1.keytxt === o2.keytxt) || o2),
         mdit = window.markdownit && window.markdownit({
           html: fts2[0].switchon,
           xhtmlOut: fts2[1].switchon,
@@ -809,7 +833,7 @@ window.onload = function () {
           linkify: fts2[3].switchon,
           typographer: fts2[4].switchon,
           highlight: !fts2[5].switchon ? null : cblock => {
-            let lang = (feats.find(o => o.label === "highlight") || "").inptxt;
+            let lang = (feats.find(o => o.keytxt === "highlight") || "").valtxt;
             if (lang && window.hljs && window.hljs.getLanguage(lang)) {
               try { return window.hljs.highlight(lang, cblock).value;
               } catch (err) { msgHandl("hljs lang error: " + err); }
@@ -822,14 +846,14 @@ window.onload = function () {
       if (!mdit) { return str;
       } else {
         fts2.forEach( (o, i) =>
-          i < 6 || [7, 11, 16, 19].includes(i) || !o.switchon || !window[o.label]
-          || (mdit = mdit.use(window[o.label])) );
-        !fts2[7].switchon || !window.markdownitContainer || (fts2[7].inptxt || "").split(/ *[ ,;] */)
+          i < 6 || [7, 11, 16, 19].includes(i) || !o.switchon || !window[o.keytxt]
+          || (mdit = mdit.use(window[o.keytxt])) );
+        !fts2[7].switchon || !window.markdownitContainer || (fts2[7].valtxt || "").split(/ *[ ,;] */)
           .forEach(e => mdit = mdit.use(window.markdownitContainer, e));
         !fts2[11].switchon || !window.markdownitForInline
         || (mdit = mdit.use(window.markdownitForInline), 'foo_replace', 'text', fooReFnc(tokens, idx));
         !fts2[16].switchon || !window.markdownItAnchor
-        || (mdit = mdit.use(window.markdownItAnchor, { level: +fts2[16].inptxt, permalink: false }));
+        || (mdit = mdit.use(window.markdownItAnchor, { level: +fts2[16].valtxt, permalink: false }));
         !fts2[19].switchon || !window.markdownItImplicitFigures
         || (mdit = mdit.use(window.markdownItImplicitFigures, { dataType: false, figcaption: true, tabindex: false }));
         return mdit.render(str);
@@ -869,7 +893,7 @@ window.onload = function () {
   + "\\n</body>\\n</html>\\n";
 })();
 </script>`,
-    features: [{ label: "", switchon: false, inptxt: "" }],
+    features: [{ switchon: false, keytxt: "", valtxt: "" }],
     fnc: function (str) {
       let tit = /^<(title\b)(.*?)>(.+?)<\/\1>$/im.exec(str)
           || /^<(h\d|p)\b.*? (?:id|class)=(['"]?)title\2>(.+?)<\/\1>$/im.exec(str)
@@ -1040,7 +1064,7 @@ function influxSet(yes) {
     }
   }
   fgenbtns.forEach(e => e.disabled = fwinflux);
-  !filewkg || filewkg.file_type !== "eco-contact" || !/^![a-z]{3}/.test(filewkg._id)
+  !filewkg || filewkg.file_type !== "eco-contact" || !/^![0-9a-z]+-[0-9a-z]+$/.test(filewkg._id)
   || (fgenbtns[6].disabled = false);
   fgenhlps.forEach(e => fwinflux ? e.classList.remove("is-hidden") : e.classList.add("is-hidden"));
   !pf2togswi.checked
@@ -1566,11 +1590,11 @@ function jdeDftGen() {
       tscre:  tscre && new Date(tscre).toLocaleString(),
       tsupd:  tsupd && new Date(tsupd).toLocaleString(),
       fimg:   jfw.file_type === "eco-prjid" && !jfw.image_src ? null
-        : /^eco-(?:contact|prjid)$/.test(jfw.file_type) && EC2.u2Blob(jfw.image_src),
-      plinks: /^eco-(?:anno|post)$/.test(jfw.file_type) && (pf3stor.dbpubl || [])
+        : /\b(?:contact|prjid)$/.test(jfw.file_type) && EC2.u2Blob(jfw.image_src),
+      plinks: /\b(?:anno|memo|post)$/.test(jfw.file_type) && (pf3stor.dbpubl || [])
         .filter(e => e && !/-s\d\d+$|\.(?!json$)\w{2,4}$/.test(e[1]))
         .map(e => e[1].replace(/(?:-[dv]?[.\d]+|)\.\w{2,4}$/, "")).sort(),
-      pcntcs: jfw.file_type === "eco-post" && ( pcntcs = Object.keys(tm0cntcs)
+      pcntcs: /\b(?:event|memo|post)$/.test(jfw.file_type) && ( pcntcs = Object.keys(tm0cntcs)
         .map(e => e.replace(/[^\w.@-]+/g, "-")) ).concat(pcntcs.join()),
       adhl:   (jfw.texthl || []).join("\n"),
       pholds: !(jfw.file_type === "eco-publmgr" || jfw.filefrags) ? []
@@ -1599,7 +1623,7 @@ function jdeDftGen() {
       + new Date(jfw.file_created.timestamp).toISOString()
         .replace(/\.\w+$/g, "").replace(/T/, " ");
   } else if (/^~[a-z]{3}P/.test(jfw._id) && jfw.file_created) {
-    context.file_ref = (jfw.from || jfw.file_created.username) + ", Post "
+    context.file_ref = (jfw.from || jfw.file_created.username) + ", Memo "
       + new Date(jfw.file_created.timestamp).toISOString()
         .replace(/\.\w+$/g, "").replace(/T/, " ");
   } else if (/^~[A-Z]{4}_/.test(jfw._id)) {
@@ -1621,7 +1645,7 @@ function swapListGen() {
       .concat( !filewkg ? []
         : filewkg.file_type === "eco-srcdoc" ? [["Source doc: CONTENT", "content"]]
         : filewkg.file_type === "eco-scrap" ? [["Scrap file: CONTENT", "content"]]
-        : filewkg.file_type === "eco-post" ? [["Post file: BODY TEXT", "body"]]
+        : /^eco-(?:memo|post)$/.test(filewkg.file_type) ? [["Memo file: BODY TEXT", "body"]]
         : !filewkg.filefrags ? []
         : filewkg.filefrags.map(o => ["Publish mgr: " + o.labeltxt, null]) )
   };
@@ -2036,13 +2060,14 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       && !tm0disc.filter(e => /^-./.test(e)).some(e => unm.indexOf(e.replace(/^-/, "")) > -1),
     ecoPrefmt = (ufile = {}) => {
       let etmpl = ECOTMPLS[/\w+$/.exec(ufile.file_type)] || {};
-      ["file_created", "file_updated"].forEach((p, i) => {
+      ufile.file_type !== "eco-post" || (ufile.file_type = "eco-memo"); // temp cleanup
+      ["file_created", "file_updated"].forEach((p, i) => { // temp cleanup
         if (etmpl[p] && ufile[p] && ufile[p].hasOwnProperty("notes")) {
           ufile[p].misc = ufile[p].notes;
           delete ufile[p].notes;
           ufile[p] = objAssn1(etmpl[p], ufile[p]);
         }
-      }); // temp cleanup
+      });
       if (ufile.file_type === "eco-contact" && !ufile.hasOwnProperty("loc_subdir")) {
       } else if (ufile.file_type === "eco-scrap" && ufile.hasOwnProperty("media_type")) {
         delete ufile.media_type; // temp cleanup
@@ -2089,16 +2114,17 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         ufile.filefrags.forEach(o => delete o["$$hashKey"]);
       }
       scu.forEach( (o, i) => pcfgu.scriptsconstr[i].features = o.features.map( o2 =>
-        o2.hasOwnProperty("label") && !o2.hasOwnProperty("inputbox") && !o2.txtabox ? o2 : {
-          label:    o2.id || o2.label || "",
+        o2.hasOwnProperty("keytxt") && !o2.hasOwnProperty("label") && !o2.hasOwnProperty("inptxt")
+        && !o2.hasOwnProperty("inputbox") && !o2.txtabox ? o2 : {
           switchon: o2.switchon || false,
-          inptxt:   o2.inputbox || "",
-          deftxt:   o2.txtabox
+          keytxt:   o2.id || o2.label || o2.keytxt || "",
+          valtxt:   o2.inputbox || o2.inptxt || "",
+          txtabox:  o2.txtabox
         } )); // temp cleanup
-      scu[0].deftxt || scu.forEach( (o, i) => !(scu[i].features || [{}])[0].deftxt // temp cleanup
-        || (pcfgu.scriptsconstr[i].deftxt = scu[i].features[0].deftxt)
-        && (pcfgu.scriptsconstr[i].features[0].inptxt = pcfgu.scriptsconstr[i].features[0].label = "")
-        || delete pcfgu.scriptsconstr[i].features[0].deftxt );
+      scu[0].deftxt || scu.forEach( (o, i) => !(scu[i].features || [{}])[0].txtabox // temp cleanup
+        || !(pcfgu.scriptsconstr[i].deftxt = scu[i].features[0].txtabox)
+        || (pcfgu.scriptsconstr[i].features[0].valtxt = pcfgu.scriptsconstr[i].features[0].keytxt = "")
+        || delete pcfgu.scriptsconstr[i].features[0].txtabox );
       !tmp1pc || Object.keys(pcfgu).forEach( k =>
           Object.values(/^linksc/.test(k) ? pcfgu[k] : pcfgu[k][0]).toString()
             === Object.values(/^linksc/.test(k) ? pcfge[k] : pcfge[k][0]).toString()
@@ -2287,11 +2313,12 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       eftypes[ filewkg.file_type === "eco-publmgr" || filewkg.filefrags ? 1
       : filewkg.file_type === "eco-srcdoc" || filewkg.media_type && filewkg.file_created ? 2
       : filewkg.file_type === "eco-scrap" ? 3
-      : filewkg.file_type === "eco-prjid" || /^~DBID_/.test(filewkg._id) ? 4
-      : filewkg.file_type === "eco-post" || /^~[a-z]{3}P/.test(filewkg._id) ? 5
-      : filewkg.file_type === "eco-anno" || /^~[a-z]{3}A/.test(filewkg._id) ? 6
-      : filewkg.file_type === "eco-assets" || /^[.-]/.test(filewkg._id) ? 7
-      : filewkg.file_type === "eco-contact" || /^!/.test(filewkg._id) ? 8 : 0 ]
+      : filewkg.file_type === "eco-event" || /^~E\d{8}/.test(filewkg._id) ? 4
+      : filewkg.file_type === "eco-prjid" || /^~DBID_/.test(filewkg._id) ? 5
+      : filewkg.file_type === "eco-anno" || /^~[a-z]{3}A|^~a\d{8}/.test(filewkg._id) ? 6
+      : /^eco-(?:memo|post)$/.test(filewkg.file_type) || /^~[a-z]{3}P|^~[mp]\d{8}/.test(filewkg._id) ? 7
+      : filewkg.file_type === "eco-assets" || /^[.-]./.test(filewkg._id) ? 8
+      : filewkg.file_type === "eco-contact" || /^!./.test(filewkg._id) ? 9 : 0 ]
       .classList.remove("is-hidden");
       destindr === false || publResets(); // necessary only for dirlist.value, imga*
       !cbfnc || cbfnc();
@@ -3018,7 +3045,7 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
   // modifies: filewkg meta-properties mainly, ext'l content if present, fileref in 7 special cases
   // returns only: (modified) fileref or false
   // fileref is modified internally only for:
-  // id "~DVIZ_*|~TMP0_*" or type "eco- assets/prjid/post/anno/contact"
+  // id "~DVIZ_*|~TMP0_*" or type "eco- assets/prjid/memo/post/anno/contact"
   filewkg._id || (filewkg._id = fileref);
   if (!filewkg.file_type || !/^eco-/.test(filewkg.file_type)) {
     return fileref;
@@ -3085,15 +3112,16 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
     filewkg.file_type || (filewkg.file_type = "eco-prjid");
     ptys0Add("file_created");
     fileref = fileref.replace(/^~DBID_/, "");
-  } else if ( (/^eco-(?:anno|post)$/.test(filewkg.file_type) || /^~[a-z]{3}[AP]/.test(filewkg._id))
-  && ucallsgn && ( pchutrg || lfnew || !/^~[a-z]{3}[AP]\d{8}/.test(filewkg._id)
-  || /^(?:Anno|Post)\d{8}/.test(fileref) && filewkg._id.replace(/^~[a-z]{3}[AP]/, "")
-  !== fileref.replace(/^(?:Anno|Post)/, "") )) {
-    /^eco-(?:anno|post)$/.test(filewkg.file_type)
-    || (filewkg.file_type = "eco-" + (/^...A(?=\d{8})/.test(filewkg._id) ? "anno" : "post"));
-    filewkg._id = "~" + ucallsgn
-    + (/[AP](?=\d{8})/.exec(filewkg._id) || /a|p/.exec(filewkg.file_type) || ["P"])[0].toUpperCase()
-    + new Date(tstamp1).toISOString().replace(/\.\w+$|[:-]/g, "");
+  } else if ( (/^eco-(?:anno|memo|post)$/.test(filewkg.file_type)
+  || /^~[a-z]{3}[AP]|^~[amp]\d{8}/.test(filewkg._id))
+  && ucallsgn && ( pchutrg || lfnew || !/^~[a-z]{3}[AP]\d{8}|^~[amp]\d{8}/.test(filewkg._id)
+  || /^(?:Anno|Memo|Post)\d{8}/.test(fileref) && filewkg._id.replace(/^~[a-z]{3}[AP]|^~[amp]/, "")
+  !== fileref.replace(/^(?:Anno|Memo|Post)/, "") )) {
+    /^eco-(?:anno|memo|post)$/.test(filewkg.file_type)
+    || (filewkg.file_type = "eco-" + (/^~(?:a|...A)\d{8}/.test(filewkg._id) ? "anno" : "memo"));
+    filewkg._id = "~"
+    + (/[am](?=\d{8})/i.exec(filewkg._id) || /a|m/i.exec(filewkg.file_type) || ["m"])[0].toLowerCase()
+    + new Date(tstamp1).toISOString().replace(/\.\w+$|[:-]/g, "") + ucallsgn;
     filewkg._rev = "";
     ptys0Add("file_created");
     !filewkg.linkref || filewkg.file_created.subdir
@@ -3101,15 +3129,16 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
         .find(e => e && e.join("").indexOf(filewkg.linkref) > -1) || [] )
       .join("") ).replace(/\/.+$/, "") );
     !filewkg.hasOwnProperty("from") || filewkg.from || (filewkg.from = epsets.uname);
-    !/^my(?:anno|post)\d\d$/.test(fileref)
-    || (fileref = filewkg._id.replace(/^~[a-z]{3}(A|P)/, (m, c1) => c1 === "A" ? "Anno" : "Post"));
-  } else if ( (filewkg.file_type === "eco-contact" || /^![a-z]{3}/i.test(fileref))
-  && ( !/^![a-z]{3}/i.test(filewkg._id)
+    !/^my(?:anno|memo|post)\d\d$/.test(fileref)
+    || ( fileref = filewkg._id.replace(/^~[a-z]{3}(A)|^~(a)\d{8}/,
+      (m, c1, c2) => c1 || c2 ? "Anno" : "Memo") );
+  } else if ( (filewkg.file_type === "eco-contact" || /^![0-9a-z]+-[0-9a-z]+$/i.test(fileref))
+  && ( !/^![0-9a-z]+-[0-9a-z]+$/i.test(filewkg._id)
   || ![filewkg._id, filewkg._id.replace(/^!/, ""), filewkg.name_user, filewkg.name_full]
   .some(p => p === fileref) )) {
-    filewkg._id = /^![a-z]{3}/i.test(fileref) ? fileref
-    : "!" + anumlIncr((pf3stor.dbcntc.pop() || "__")[1].replace(/^!?([a-z]{3}|).*$/i, "$1"))
-      + (dbpch && dbpch.name || "").replace(/^a00_|^(?=.)/, "-");
+    filewkg._id = /^![0-9a-z]+-[0-9a-z]+$/i.test(fileref) ? fileref
+    : "!" + (dbpch && dbpch.name || "").replace(/^a00_|^(?=.)/, "") + "-"
+      + anumlIncr((pf3stor.dbcntc.pop() || "__")[1].replace(/^(?:![0-9a-z]+-|)([a-z]{3})$/i, "$1"));
     filewkg._rev = "";
     filewkg.ts_created = tstamp1;
     !filewkg.name_user ? ( filewkg.name_user = /^\w/.test(fileref) ? fileref.replace(/[^\w.@-]+/g, "-")
@@ -3641,7 +3670,7 @@ jdePtyUpd(rowslr, ptyk, plak, plai, plbgi) {
   EC1.formBlr();
   if ( (typpmgr || /^eco-(?:prjid|srcdoc)$/.test(filewkg.file_type)) && /^[34]$/.test(rowslr) && plai === 2
   || (/^eco-(?:contact|scrap)$/.test(filewkg.file_type) && /s[34]>/.test(rowslr))
-  || (/^eco-(?:anno|post)$/.test(filewkg.file_type) && rowslr === 3 && plai === 2) ) {
+  || (/^eco-(?:anno|memo|post)$/.test(filewkg.file_type) && rowslr === 3 && plai === 2) ) {
     /^\d+$/.test(fldmfd.value.trim()) && (valfldm2 = +fldmfd.value.trim());
   } else if (typpmgr && ((rowslr === 6 && plai === 2) || (rowslr === 9 && /^[13]$/.test(plai)))) {
     valfldm2 = boolrpr(valfldm2);
@@ -4151,12 +4180,12 @@ ibmConnect() {
   }
 },
 wdGen(pdata) { return webdocGen(1, pdata); },
-u2Blob(url) { // also triggered by dviz-posts, dviz-contacts, prjDiscGen, jdeDftGen
+u2Blob(url) { // also triggered by dviz-memos, dviz-contacts, prjDiscGen, jdeDftGen
   return asseturls[(url || "").replace(/^\S*\//, "")] || asseturls[url]
   || ( (url || "").replace(/^(?!https?:\/\/)\S*\//i, "")
     && url.replace(/^\.\.\/\.\./, hostibm || a00orig) ) || url;
 },
-objQA(key = "", fbx) { // also triggered by dviz-posts, rsrcsXGet, qconRetrvD
+objQA(key = "", fbx) { // also triggered by dviz-memos, rsrcsXGet, qconRetrvD
   let pty,
     rsltFbk = rslt => pty && fbx ? "" : /^keys$/i.test(pty) && Object.keys(rslt) || rslt,
     ptyTest = d => pty = key.replace(!d ? /^\w+\.(.+)$|.*/ : /^\w+\.(\d+)$|.*/, "$1"),
@@ -4267,7 +4296,7 @@ diffGen(evt, txt1, txt2) { // also triggered by dviz-dboxupd
     parseconfigs: Object.assign( difftmpl.parseconfigs, {
       scriptsconstr: [{
         fncname:  "srctxtaWraps", filepath: "", usedescription: "", htmlscriptload: "",
-        features: [{ label: "", switchon: false, inptxt: "" }],
+        features: [{ switchon: false, keytxt: "", valtxt: "" }],
         deftxt:   `function (str, idx) {
   return '<textarea id="diff-s' + (1 + idx) + 'txta" class="is-hidden">\\n'
   + str.replace(/<(?=\\/textarea>)/g, "&lt;")
@@ -4398,7 +4427,7 @@ qconSyncD() {
     msgHandl(ECOINSTR[1]);
   }
 },
-qconRetrvD(cbfnc, errfnc) { // also triggered by guideLoad, dviz-idxlist, dviz-posts, dviz-dboxupd
+qconRetrvD(cbfnc, errfnc) { // also triggered by guideLoad, dviz-idxlist, dviz-memos, dviz-dboxupd
 // ### http console input ###
 // *any results from the following txs get sent to preview/jdedft/jderaw*
 // 1 blank: reset edit space
@@ -4591,14 +4620,14 @@ discAdd(discsync) {
   let ucallsgn = (/^!([a-z]{3})/.exec((tm0cntcs[epsets.uname] || "")._id) || [])[1],
     attlist = document.querySelector('#econav0 #attlist'),
     pfslist = document.querySelector('#econav0 #pfslist'),
-    postinp = document.querySelector('#ecoesp0 #postinp'),
-    posttxta = document.querySelector('#ecoesp0 #posttxta'),
+    memoinp = document.querySelector('#ecoesp0 #memoinp'),
+    memotxta = document.querySelector('#ecoesp0 #memotxta'),
     rmttxd = dbpch && txCrdtlz(caccts.find(e => e.DBNAME === dbpch.name)) || {},
     tstamp1 = Date.now(),
     cobj = {
-      _id:  "~" + ucallsgn + "P" + new Date(tstamp1).toISOString().replace(/\.\w+$|[:-]/g, ""),
+      _id:  "~" + "m" + new Date(tstamp1).toISOString().replace(/\.\w+$|[:-]/g, "") + ucallsgn,
       _rev: "",
-      file_type: "eco-post",
+      file_type: "eco-memo",
       file_created: {
         username:  epsets.uname,
         timestamp: tstamp1,
@@ -4610,10 +4639,10 @@ discAdd(discsync) {
         .replace(/(?:-\w?[.\d]+|)\.\w+(?: *\*[^a-z]*|)$|^\./g, ""),
       from:   epsets.uname,
       to:     "",
-      subject:postinp.value,
-      body:   posttxta.value
+      subject:memoinp.value,
+      body:   memotxta.value
     };
-  if (!ucallsgn || !posttxta.value || !dbpch) {
+  if (!ucallsgn || !memotxta.value || !dbpch) {
     return !discsync || !rmttxd.DBNAME || !rmttxd.DBORIG
     || couchSync(Object.assign({ RMTFR: !tm0urole }, rmttxd));
   } else if (tm0urole) {
@@ -4871,7 +4900,7 @@ logOut() {
     localStorage.removeItem("_ecopresets");
     localStorage.removeItem("_ecopchupds");
     localStorage.removeItem("_ecoclientid");
-    localStorage.removeItem("_ecodiscendpt");
+    localStorage.removeItem("_ecodscendpt");
     localStorage.removeItem("__dbat");
     !window.localforage
     || localforage.keys( (err, keys) => err ? msgHandl(err)
@@ -4946,11 +4975,12 @@ logOut() {
     try {
       await appid.init({
         clientId: localStorage["_ecoclientid"] || "c570c7f9-e551-4ecf-8003-690f379d40fb",
-        discoveryEndpoint: localStorage["_ecodiscendpt"]
+        discoveryEndpoint: localStorage["_ecodscendpt"]
           || "https://us-south.appid.cloud.ibm.com/oauth/v4/e66d3795-51bb-48ad-9b9c-ae7ebe0ece27/.well-known/openid-configuration"
       });
     } catch (err) {
-      return msgHandl(err);
+      prjsenet = {};
+      msgHandl(err);
     }
   } else { prjsenet = {}; }
   tmplpdblist = await Handlebars.compile(document.querySelector('#pdblist-tmpl').innerHTML);

@@ -2491,7 +2491,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
     Alternatively, load a new template at any time by selecting one under <span class="is-italic">App templates</span> in the <span class="is-italic">File-load</span> select list of the <span class="has-text-weight-bold is-italic">Craft</span> control panel. A file can then be edited from within any one of the three editing (<span class="has-text-weight-bold is-italic">File Edit</span>, <span class="has-text-weight-bold is-italic">JSO-Pty Edit</span> and <span class="has-text-weight-bold is-italic">JSON/Text Edit</span>) screens, all found within the <span class="has-text-weight-bold is-italic">Craft</span> control panel of the <span class="is-italic">Navbar</span>.
   </div>
   <div class="field">
-    Learn more about database-file templates&mdash;and about each of the eight, <span class="has-text-weight-bold is-italic">E</span>collabs file types&mdash;by navigating directly (i.e., without loading a template yet) to <span class="has-text-weight-bold is-italic">Custom Tools > Types</span>.
+    Learn more about database-file templates&mdash;and about each of the nine, <span class="has-text-weight-bold is-italic">E</span>collabs file types&mdash;by navigating directly (i.e., without loading a template yet) to <span class="has-text-weight-bold is-italic">Custom Tools > Types</span>.
   </div>
   <form id="tmplrad" class="field control has-text-grey">
     <label class="radio">
@@ -2507,24 +2507,28 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
       <span class="has-text-weight-bold">3-scrap</span>: Scrap File
     </label>
     <br /><label class="radio">
-      <input type="radio" name="tmplrad" value="prjid" />
-      <span class="has-text-weight-bold">4-prjid</span>: Project Identity
+      <input type="radio" name="tmplrad" value="event" />
+      <span class="has-text-weight-bold">4-event</span>: Calendar Item
     </label>
     <br /><label class="radio">
-      <input type="radio" name="tmplrad" value="post" />
-      <span class="has-text-weight-bold">5-post</span>: Communication Post
+      <input type="radio" name="tmplrad" value="prjid" />
+      <span class="has-text-weight-bold">5-prjid</span>: Project Identity
     </label>
     <br /><label class="radio">
       <input type="radio" name="tmplrad" value="anno" />
       <span class="has-text-weight-bold">6-anno</span>: Annotation File
     </label>
     <br /><label class="radio">
+      <input type="radio" name="tmplrad" value="memo" />
+      <span class="has-text-weight-bold">7-memo</span>: Communication Post
+    </label>
+    <br /><label class="radio">
       <input type="radio" name="tmplrad" value="assets" />
-      <span class="has-text-weight-bold">7-assets</span>: Web-Assets File
+      <span class="has-text-weight-bold">8-assets</span>: Web-Assets File
     </label>
     <br /><label class="radio">
       <input type="radio" name="tmplrad" value="contact" />
-      <span class="has-text-weight-bold">8-contact</span>: Contact Data
+      <span class="has-text-weight-bold">9-contact</span>: Contact Data
     </label>
   </form>
   <div class="field control">
@@ -2836,11 +2840,11 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
       <div id="rm2chgs" class="has-text-grey-light"></div>
     </div>
     <div id="publmet" class="is-hidden">
-      <div class="field label has-text-grey">Data-file meta re-assignments</div>
+      <div class="field label has-text-grey-light">Data-file meta re-assignments</div>
       <div class="field is-grouped">
         <label class="control label has-text-right has-text-grey">Owner</label>
         <span class="control">
-          <input type="text" id="sdirinp" class="input" onfocus="EC1.formFoc()" />
+          <input type="text" id="ownrinp" class="input" onfocus="EC1.formFoc()" />
         </span>
       </div>
       <div class="field is-grouped">
@@ -2853,6 +2857,12 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         <label class="control label has-text-right has-text-grey">Version</label>
         <span class="control">
           <input type="text" id="versinp" class="input" onfocus="EC1.formFoc()" />
+        </span>
+      </div>
+      <div class="field is-grouped">
+        <label class="control label has-text-right has-text-grey">Contributors</label>
+        <span class="control">
+          <textarea id="peoptxta" class="textarea" onfocus="EC1.formFoc()"></textarea>
         </span>
       </div>
       <div class="field is-grouped">
@@ -2992,7 +3002,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
           Working with <span class="has-text-weight-bold is-italic">E</span><span class="has-text-grey-light">collabs</span> Files
         </div>
         <div class="field">
-          <span class="has-text-weight-bold is-italic">E</span>collabs files are <span class="is-italic">database</span> files that are structured in one of eight ways&mdash;i.e., as one of eight file <span class="is-italic">types</span>. Each type meets a general need; and together the eight types make up a sufficiently complete, fundamental toolset for most team publishing projects. Note that custom file types are also possible&mdash;when none of the eight, bundled templates can support a special case.
+          <span class="has-text-weight-bold is-italic">E</span>collabs files are <span class="is-italic">database</span> files that are structured in one of nine ways&mdash;i.e., as one of nine file <span class="is-italic">types</span>. Each type meets a general need; and together the nine types make up a sufficiently complete, fundamental toolset for most team publishing projects. Note that custom file types are also possible&mdash;when none of the nine, bundled templates can support a special case.
         </div>
         <div class="field">
           When a file is loaded, the <span class="has-text-weight-bold is-italic">Craft</span> control panel provides a <span class="is-italic">SAVE</span> and <span class="is-italic">DEL</span> button for temporary, local (device) storage of a working file. However, a working file does not get included in the remote (team) database until the file is "committed" to the local database (and the remote DB is "synced" to the local DB)&mdash;using the <span class="has-text-weight-bold is-italic">Final Prep &amp; Publish</span> control panel.
@@ -3001,7 +3011,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
           Notice that when no file is loaded, some general-purpose, starter features are accessible below.
         </div>
         <div class="field">
-          Load a template or file of any of the (eight) core types to see (in this screen) more specific helper features related to that file's type. The following list is only an overview of the basic uses of each kind of template.
+          Load a template or file of any of the (nine) core types to see (in this screen) more specific helper features related to that file's type. The following list is only an overview of the basic uses of each kind of template.
         </div>
         <dl class="has-text-grey">
           <dt><span class="has-text-weight-bold">1-publmgr</span></dt>
@@ -3010,15 +3020,17 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
           <dd><span class="is-italic">Source Document:</span> Edit copy (a plain-text file), intended to be the content of all, or some part, of a live web doc.</dd>
           <dt><span class="has-text-weight-bold">3-scrap</span></dt>
           <dd><span class="is-italic">Scrap File:</span> A plain-text file used for incidental, non-interactive note-keeping&mdash;i.e., for holding details that would not directly get applied to any one, live web doc.</dd>
-          <dt><span class="has-text-weight-bold">4-prjid</span></dt>
+          <dt><span class="has-text-weight-bold">4-event</span></dt>
+          <dd><span class="is-italic">Calendar Item:</span> Aids both in scheduling future events and in recording past events.</dd>
+          <dt><span class="has-text-weight-bold">5-prjid</span></dt>
           <dd><span class="is-italic">Project Identity:</span> Location for formal statements on a team project's intended purpose.</dd>
-          <dt><span class="has-text-weight-bold">5-post</span></dt>
-          <dd><span class="is-italic">Communication Post:</span> Can be used as an in-house memorandum or as a basic unit of an ongoing, team chat.</dd>
           <dt><span class="has-text-weight-bold">6-anno</span></dt>
           <dd><span class="is-italic">Annotation File:</span> Applies highlights, margin notes, sorting tags and a TOC directly to a publication.</dd>
-          <dt><span class="has-text-weight-bold">7-assets</span></dt>
+          <dt><span class="has-text-weight-bold">7-memo</span></dt>
+          <dd><span class="is-italic">Communication Post:</span> Can be used as an in-house memorandum or as a basic unit of an ongoing, team chat.</dd>
+          <dt><span class="has-text-weight-bold">8-assets</span></dt>
           <dd><span class="is-italic">Web-Assets File:</span> Web assets (HTML files, images, fonts, etc.&mdash;necessary elements of a live web doc) may be housed within, and organized by, these database files.</dd>
-          <dt><span class="has-text-weight-bold">8-contact</span></dt>
+          <dt><span class="has-text-weight-bold">9-contact</span></dt>
           <dd><span class="is-italic">Contact Data:</span> A storage place for all contact information about one team member or associate.</dd>
         </dl>
         <hr />
@@ -3359,6 +3371,31 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
       </div>
       <div class="eftype has-text-grey-light is-hidden">
         <div class="title is-4 has-text-grey">
+          <span class="has-text-weight-normal">FILE TYPE:</span> eco-event
+        </div>
+        <div class="field">
+          <span class="has-text-weight-bold">Description:</span>
+          This database file type is useful for scheduling future events and/or recording current and past events. Multiple event files may be used to generate various kinds of calendars&mdash;e.g., as a sequential list, in a familiar month-by-month layout, etc.
+        </div>
+        <div class="field">
+          <span class="has-text-weight-bold">Advantages:</span>
+          An <span class="is-italic">event</span> file can be adapted for other, non-calendaring purposes&mdash;such as writing spreadsheet-like data rows (entries) in real time, or compiling research notes over an extended time period.
+        </div>
+        <hr />
+        <div class="label has-text-grey">Pro Tips</div>
+        <ul>
+          <li>
+            <span class="has-text-weight-bold">Template:</span>
+            A custom, <span class="is-italic">event</span> template may be created by prefixing an <span class="is-italic">event</span> file ID with "<span class="is-family-code">~TMP4_</span>". Also, if a template is placed in a central, team-organization database, it is then made available from within any project database.
+          </li>
+          <li>
+            <span class="is-italic">event</span> <span class="has-text-weight-bold">file ID:</span>
+            The file ID of a new <span class="is-italic">event</span> file is automatically generated by the app. The string conforms to a special, user-time-code pattern for efficient sorting&mdash;e.g., "<span class="is-family-code">~E20200315T083045abf</span>".
+          </li>
+        </ul>
+      </div>
+      <div class="eftype has-text-grey-light is-hidden">
+        <div class="title is-4 has-text-grey">
           <span class="has-text-weight-normal">FILE TYPE:</span> eco-prjid
         </div>
         <div class="field">
@@ -3376,7 +3413,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         <ul>
           <li>
             <span class="has-text-weight-bold">Template:</span>
-            A custom, <span class="is-italic">prjid</span> template may be created by prefixing a <span class="is-italic">prjid</span> file ID with "<span class="is-family-code">~TMP4_</span>". (Note that no "<span class="is-family-code">~DBID_</span>" prefix is necessary for a template.) Also, if a template is placed in a central, team-organization database, it is then made available from within any project database.
+            A custom, <span class="is-italic">prjid</span> template may be created by prefixing a <span class="is-italic">prjid</span> file ID with "<span class="is-family-code">~TMP5_</span>". (Note that no "<span class="is-family-code">~DBID_</span>" prefix is necessary for a template.) Also, if a template is placed in a central, team-organization database, it is then made available from within any project database.
           </li>
         </ul>
         <hr />
@@ -3414,49 +3451,6 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
       </div>
       <div class="eftype has-text-grey-light is-hidden">
         <div class="title is-4 has-text-grey">
-          <span class="has-text-weight-normal">FILE TYPE:</span> eco-post
-        </div>
-        <div class="field">
-          <span class="has-text-weight-bold">Description:</span>
-          This database file type is useful for "private" in-house communications and for public feedback on a team's live publication(s).
-        </div>
-        <div class="field">
-          A (static, communication) <span class="is-italic">post</span> file is created and added to the database by the app when a team member or visitor posts a comment on the <span class="has-text-weight-bold is-italic">Discuss</span> screen for a (loaded) publication.
-        </div>
-        <div class="field">
-          Additionally, a user may use a <span class="is-italic">post</span> file to send a message with a more specific purpose&mdash;such as sharing a requested report with the team leader, handing out assignments to individual team members, or pitching a not-yet-existing project idea to a select few members of the team.
-        </div>
-        <div class="field">
-          <span class="has-text-weight-bold">Caution:</span>
-          All database files are accessible to all team members&mdash;and possibly (if the database is ever made public) to anyone. Therefore, no <span class="is-italic">post</span>-file communication should be considered private between just the sender and the recipient(s) named in the <span class="is-italic">post</span>.
-        </div>
-        <div class="field">
-          <span class="has-text-weight-bold">Advantages:</span>
-          Note that, while ordinary e&#x2011;mail or texting can be a more efficient means of communication in many instances, using <span class="is-italic">post</span> files yields other benefits. All <span class="is-italic">post</span> files of a project are kept together, within the project database; so, maintaining an easy-access record of all project-related communications is convenient. Also, a <span class="is-italic">post</span> file can be adapted for other, non-communication purposes&mdash;such as writing spreadsheet-like data rows (entries) in real time, or compiling research notes over an extended time period.
-        </div>
-        <hr />
-        <div class="label has-text-grey">Pro Tips</div>
-        <ul>
-          <li>
-            <span class="has-text-weight-bold">Template:</span>
-            A custom, <span class="is-italic">post</span> template may be created by prefixing a <span class="is-italic">post</span> file ID with "<span class="is-family-code">~TMP5_</span>". Also, if a template is placed in a central, team-organization database, it is then made available from within any project database.
-          </li>
-          <li>
-            <span class="is-italic">post</span> <span class="has-text-weight-bold">file ID:</span>
-            The file ID of a new <span class="is-italic">post</span> file is automatically generated by the app. The string conforms to a special, user-time-code pattern for efficient sorting&mdash;e.g., "<span class="is-family-code">~abfP20200315T083045</span>".
-          </li>
-          <li>
-            <span class="has-text-weight-bold">User identity:</span>
-            A user can create a <span class="is-italic">post</span> file only if the user is identified within the app via one of three methods:
-            <ol>
-              <li>Logging in with a Google, a Facebook or an IBM account upon start-up and entry;</li>
-              <li>Creating a TEAM contact file and declaring the same username both in the contact file and in the app presets;</li>
-              <li>Making oneself the sole team member&mdash;when no team-organization database exists&mdash;by simply providing a username in the app presets.</li>
-          </li>
-        </ul>
-      </div>
-      <div class="eftype has-text-grey-light is-hidden">
-        <div class="title is-4 has-text-grey">
           <span class="has-text-weight-normal">FILE TYPE:</span> eco-anno
         </div>
         <div class="field">
@@ -3481,7 +3475,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
           </li>
           <li>
             <span class="is-italic">anno</span> <span class="has-text-weight-bold">file ID:</span>
-            The file ID of a new <span class="is-italic">anno</span> file is automatically generated by the app. The string conforms to a special, user-time-code pattern for efficient sorting&mdash;e.g., "<span class="is-family-code">~abfA20200315T083045</span>".
+            The file ID of a new <span class="is-italic">anno</span> file is automatically generated by the app. The string conforms to a special, user-time-code pattern for efficient sorting&mdash;e.g., "<span class="is-family-code">~a20200315T083045abf</span>".
           </li>
           <li>
             <span class="has-text-weight-bold">LINK TO field:</span>
@@ -3584,6 +3578,49 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
           </li>
         </ul>
       </div>
+      <div class="eftype has-text-grey-light is-hidden">
+        <div class="title is-4 has-text-grey">
+          <span class="has-text-weight-normal">FILE TYPE:</span> eco-memo
+        </div>
+        <div class="field">
+          <span class="has-text-weight-bold">Description:</span>
+          This database file type is useful for "private" in-house communications and for public feedback on a team's live publication(s).
+        </div>
+        <div class="field">
+          A (static, communication) <span class="is-italic">memo</span> file is created and added to the database by the app when a team member or visitor posts a comment on the <span class="has-text-weight-bold is-italic">Discuss</span> screen for a (loaded) publication.
+        </div>
+        <div class="field">
+          Additionally, a user may use a <span class="is-italic">memo</span> file to send a message with a more specific purpose&mdash;such as sharing a requested report with the team leader, handing out assignments to individual team members, or pitching a not-yet-existing project idea to a select few members of the team.
+        </div>
+        <div class="field">
+          <span class="has-text-weight-bold">Caution:</span>
+          All database files are accessible to all team members&mdash;and possibly (if the database is ever made public) to anyone. Therefore, no <span class="is-italic">memo</span>-file communication should be considered private between just the sender and the recipient(s) named in the <span class="is-italic">memo</span>.
+        </div>
+        <div class="field">
+          <span class="has-text-weight-bold">Advantages:</span>
+          Note that, while ordinary e&#x2011;mail or texting can be a more efficient means of communication in many instances, using <span class="is-italic">memo</span> files yields other benefits. All <span class="is-italic">memo</span> files of a project are kept together, within the project database; so, maintaining an easy-access record of all project-related communications is convenient. Also, a <span class="is-italic">memo</span> file can be adapted for other, non-communication purposes&mdash;such as writing spreadsheet-like data rows (entries) in real time, or compiling research notes over an extended time period.
+        </div>
+        <hr />
+        <div class="label has-text-grey">Pro Tips</div>
+        <ul>
+          <li>
+            <span class="has-text-weight-bold">Template:</span>
+            A custom, <span class="is-italic">memo</span> template may be created by prefixing a <span class="is-italic">memo</span> file ID with "<span class="is-family-code">~TMP7_</span>". Also, if a template is placed in a central, team-organization database, it is then made available from within any project database.
+          </li>
+          <li>
+            <span class="is-italic">memo</span> <span class="has-text-weight-bold">file ID:</span>
+            The file ID of a new <span class="is-italic">memo</span> file is automatically generated by the app. The string conforms to a special, user-time-code pattern for efficient sorting&mdash;e.g., "<span class="is-family-code">~m20200315T083045abf</span>".
+          </li>
+          <li>
+            <span class="has-text-weight-bold">User identity:</span>
+            A user can create a <span class="is-italic">memo</span> file only if the user is identified within the app via one of three methods:
+            <ol>
+              <li>Logging in with a Google, a Facebook or an IBM account upon start-up and entry;</li>
+              <li>Creating a TEAM contact file and declaring the same username both in the contact file and in the app presets;</li>
+              <li>Making oneself the sole team member&mdash;when no team-organization database exists&mdash;by simply providing a username in the app presets.</li>
+          </li>
+        </ul>
+      </div>
       <div id="eftass" class="eftype has-text-grey-light is-hidden">
         <div class="title is-4 has-text-grey">
           <span class="has-text-weight-normal">FILE TYPE:</span> eco-assets
@@ -3632,7 +3669,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         <ul>
           <li>
             <span class="has-text-weight-bold">Template:</span>
-            A custom, <span class="is-italic">assets</span> template may be created by prefixing an <span class="is-italic">assets</span> file ID with "<span class="is-family-code">~TMP7_</span>". Also, if a template is placed in a central, team-organization database, it is then made available from within any project database.
+            A custom, <span class="is-italic">assets</span> template may be created by prefixing an <span class="is-italic">assets</span> file ID with "<span class="is-family-code">~TMP8_</span>". Also, if a template is placed in a central, team-organization database, it is then made available from within any project database.
           </li>
           <li>
             <span class="is-italic">assets</span> <span class="has-text-weight-bold">file ID:</span>
@@ -3757,11 +3794,11 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         <ul>
           <li>
             <span class="has-text-weight-bold">Template:</span>
-            A custom, <span class="is-italic">contact</span> template may be created by prefixing a <span class="is-italic">contact</span> file ID with "<span class="is-family-code">~TMP8_</span>". Also, if a template is placed in a central, team-organization database, it is then made available from within any project database.
+            A custom, <span class="is-italic">contact</span> template may be created by prefixing a <span class="is-italic">contact</span> file ID with "<span class="is-family-code">~TMP9_</span>". Also, if a template is placed in a central, team-organization database, it is then made available from within any project database.
           </li>
           <li>
             <span class="is-italic">contact</span> <span class="has-text-weight-bold">file ID:</span>
-            The file ID of a new <span class="is-italic">contact</span> file is automatically generated by the app. The string conforms to a special, user-team-code pattern for efficient sorting&mdash;e.g., "<span class="is-family-code">!abf-myteam</span>".
+            The file ID of a new <span class="is-italic">contact</span> file is automatically generated by the app. The string conforms to a special, user-team-code pattern for efficient sorting&mdash;e.g., "<span class="is-family-code">!myteam-abf</span>".
           </li>
         </ul>
         <hr />
@@ -4510,7 +4547,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
     <div class="panel-block is-block">
       <label class="has-text-grey-light">Load:</label>
       <label class="has-text-link mlft2">
-        <input type="checkbox" onchange="EC2.discTog(event)"{{#if (lookup dload 0)}} checked{{/if}} />Posts
+        <input type="checkbox" onchange="EC2.discTog(event)"{{#if (lookup dload 0)}} checked{{/if}} />Memos
       </label>
       <label class="has-text-link mlft2">
         <input type="checkbox" onchange="EC2.discTog(event)"{{#if (lookup dload 1)}} checked{{/if}} />Annos
@@ -4595,16 +4632,16 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
       </span>
     </div>
     <div class="field control">
-      <input id="postinp" type="text" class="input" placeholder="Subject" onfocus="EC1.formFoc(0)" onblur="EC1.formBlr()" {{#if disbl}}disabled{{/if}} />
+      <input id="memoinp" type="text" class="input" placeholder="Subject" onfocus="EC1.formFoc(0)" onblur="EC1.formBlr()" {{#if disbl}}disabled{{/if}} />
     </div>
     <div class="field control">
-      <textarea id="posttxta" class="textarea" placeholder="Message" onfocus="EC1.formFoc(0)" onblur="EC1.formBlr()" {{#if disbl}}disabled{{/if}}></textarea>
+      <textarea id="memotxta" class="textarea" placeholder="Message" onfocus="EC1.formFoc(0)" onblur="EC1.formBlr()" {{#if disbl}}disabled{{/if}}></textarea>
     </div>
     <span class="txtaprf is-pulled-right">
-      <a class="button is-white has-text-weight-normal has-text-link" onclick="EC1.txtaSel('posttxta', 1)">
+      <a class="button is-white has-text-weight-normal has-text-link" onclick="EC1.txtaSel('memotxta', 1)">
         &#x25f0;sel
       </a>
-      <a class="button is-white has-text-weight-normal has-text-link" onclick="EC1.txtaSel('posttxta', 0)">
+      <a class="button is-white has-text-weight-normal has-text-link" onclick="EC1.txtaSel('memotxta', 0)">
         &#x22a0;clr
       </a>
     </span>
@@ -4747,7 +4784,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
   <textarea class="textarea" rows="8" onfocus="EC1.formFoc('#dftbtnc7')" onblur="EC1.jdeDftUpd('bio_short', 10)">{{bio_short}}</textarea>
 </div>
 
-{{else if ../eco-post}}
+{{else if ../eco-memo}}
 <div class="field has-addons">
   <span class="control">
     <button class="button is-static has-text-info taboninp">LINK TO</button>
@@ -4890,6 +4927,89 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 <div class="field">
   <textarea class="textarea" rows="20" onfocus="EC1.formFoc('#dftbtnc3')" onblur="EC1.jdeDftUpd('texthl', 6)">{{../adhl}}</textarea>
 </div>
+
+{{else if ../eco-event}}
+<div class="field has-addons">
+  <span class="control">
+    <button class="button is-static has-text-info taboninp">HEADLINE</button>
+  </span>
+  <span class="control is-expanded">
+    <input type="text" class="input is-fullwidth" onfocus="EC1.formFoc('#dftbtnc0')" onblur="EC1.jdeDftUpd('headline', 2, 1)" value="{{headline}}" />
+  </span>
+  <span id="dftbtnc0" class="dftbtnc posl2 is-hidden">
+    <a class="button is-white has-text-link" onclick="EC1.swapExe()">
+      &#x21cc;
+    </a>
+  </span>
+</div>
+<div class="field has-addons">
+  <span class="control">
+    <button class="button is-static has-text-info taboninp">TIME</button>
+  </span>
+  <span class="control is-expanded">
+    <input type="text" class="input is-fullwidth" onfocus="EC1.formFoc('#dftbtnc1')" onblur="EC1.jdeDftUpd('time', 3, 1)" value="{{time}}" />
+  </span>
+  <span id="dftbtnc1" class="dftbtnc posl2 is-hidden">
+    <a class="button is-white has-text-link" onclick="EC1.swapExe()">
+      &#x21cc;
+    </a>
+  </span>
+</div>
+<div class="field has-addons">
+  <span class="control">
+    <button class="button is-static has-text-info taboninp">PLACE</button>
+  </span>
+  <span class="control is-expanded">
+    <input type="text" class="input is-fullwidth" onfocus="EC1.formFoc('#dftbtnc2')" onblur="EC1.jdeDftUpd('place', 4, 1)" value="{{place}}" />
+  </span>
+  <span id="dftbtnc2" class="dftbtnc posl2 is-hidden">
+    <a class="button is-white has-text-link" onclick="EC1.swapExe()">
+      &#x21cc;
+    </a>
+  </span>
+</div>
+<div class="field has-addons">
+  <span class="control">
+    <button class="button is-static has-text-info taboninp">MAP REFS</button>
+  </span>
+  <span class="control is-expanded">
+    <input type="text" class="input is-fullwidth" onfocus="EC1.formFoc('#dftbtnc3')" onblur="EC1.jdeDftUpd('map_refs', 5, 1)" value="{{map_refs}}" />
+  </span>
+  <span id="dftbtnc3" class="dftbtnc posl2 is-hidden">
+    <a class="button is-white has-text-link" onclick="EC1.swapExe()">
+      &#x21cc;
+    </a>
+  </span>
+</div>
+<div class="field has-addons">
+  <span class="control">
+    <button class="button is-static has-text-info taboninp">PEOPLE</button>
+  </span>
+  <span class="control is-expanded">
+    <input type="text" class="input is-fullwidth" onfocus="EC1.formFoc('#dftbtnc4')" onblur="EC1.jdeDftUpd('people', 6, 1)" list="eco0pcntcs" value="{{people}}" />
+  </span>
+  <span id="dftbtnc4" class="dftbtnc posl2 is-hidden">
+    <a class="button is-white has-text-link" onclick="EC1.swapExe()">
+      &#x21cc;
+    </a>
+  </span>
+</div>
+<div class="control">
+  <button class="button is-static has-text-info is-size-7 tabontxta">DESCRIPTION</button>
+  <span id="dftbtnc5" class="dftbtnc posr2 is-hidden">
+    <a class="button is-white has-text-link" onclick="EC1.swapExe()">
+      &#x21cc;swp
+    </a>
+  </span>
+</div>
+<div class="field">
+  <textarea class="textarea" rows="18" onfocus="EC1.formFoc('#dftbtnc5')" onblur="EC1.jdeDftUpd('description', 8)">{{description}}</textarea>
+</div>
+<datalist id="eco0pcntcs">
+  {{#each ../pcntcs}}
+  <option value="{{this}}">{{#if @last}}(all names){{/if}}</option>
+  {{/each}}
+</datalist>
 
 {{else if ../eco-prjid}}
 <figure class="image is-128x128 has-background-light is-pulled-right">
@@ -5201,17 +5321,16 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 (function () {
 'use strict';
 var dbpch, idbrslt, idbReq;
-const hostibm = /\.cloudant/.test(window.location.host),
-  hostlh = /^localhost:\d+$|^(?:192\.168|127\.0|0\.0)\.0\.\d+:\d+$/.test(window.location.host)
-    && window.location.origin,
+const hostibm = /\.cloudant[\w.]+$/.test(window.location.host),
+  hostlh = /^localhost:\d+$|^(?:127\.0|192\.168)\.0\.\d+:\d+$/.test(window.location.host),
   platipd2 = (window.navigator.userAgentData || window.navigator).platform === 'MacIntel'
     && window.screen.height === 1024 && window.screen.width === 768,
   platiphn = (window.navigator.userAgentData || window.navigator).platform === 'iPhone',
   protfile = window.location.protocol === 'file:',
   rmtready = /^http/.test(window.location.protocol) && window.navigator.onLine,
   a00orig = "https://46a849c5-a061-44b5-92ee-6279f6974d5f-bluemix.cloudantnosqldb.appdomain.cloud",
-  a00path = ( protfile || hostibm || /\.github\.io$/.test(window.location.host)
-    ? "../.." : hostlh || a00orig ) + "/a00",
+  a00path = ( protfile || hostlh || hostibm || /\.github\.io$/.test(window.location.host)
+    ? "../.." : a00orig ) + "/a00",
   qcontxta = document.querySelector('#econav0 #qcontxta'),
   DB_NAMES = ["a00"], //DB_VERSIONS = [5],
   DB_STORES = ["document-store", "by-sequence", "attach-store"],
@@ -5293,11 +5412,7 @@ const hostibm = /\.cloudant/.test(window.location.host),
     .then(() => idbReq = dbpch = null)
     .catch(respShow),
   iniStratgz = () => {
-    if (protfile && platipd2) {
-      scrInjPr("./" + ATT_KEYS[0])
-      .then(() => { asstsLoad(Promise.resolve()); })
-      .catch(err => { asstsLoad(Promise.reject()); });
-    } else if (!window.indexedDB) {
+    if (!window.indexedDB) {
       asstsLoad(Promise.reject());
     } else {
       idbReq = indexedDB.open("_pouch_" + DB_NAMES[0]); //, DB_VERSION);
@@ -5354,7 +5469,8 @@ const hostibm = /\.cloudant/.test(window.location.host),
         window.console.log("SW registration succeeded. Scope: " + reg.scope);
         //window.location.reload();
         iniStratgz();
-      }).catch(err => window.console.log("SW registration failed: " + err)) );
+      }).catch(err => window.console.warn("SW registration failed: " + err)) )
+  .catch(respShow);
 })();
 </script>
 </body>
