@@ -2217,7 +2217,10 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 #ecoesp0 #eftass #irename, #ecoesp0 #toolswap .input,
 #ecoesp0 #toolswap .select>select, #ecoesp0 #toolapp .select>select { width: 216px; }
 #ecoesp0 #publmet .label.has-text-right,
-#ecoesp0 #toolapp .label.has-text-right { width: 126px; }
+#ecoesp0 #toolapp .label.has-text-right {
+  line-height: 1.25;
+  width: 126px;
+}
 #ecoesp0 #publpre #rm2chgs { margin-top: 21px; }
 #ecoesp0 #publmet .textarea { width: 216px; min-width: 216px; }
 #ecoesp0 #eftass .file { width: 339px; }
@@ -2840,42 +2843,48 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
       <div id="rm2chgs" class="has-text-grey-light"></div>
     </div>
     <div id="publmet" class="is-hidden">
-      <div class="field label has-text-grey-light">Data-file meta re-assignments</div>
+      <div class="field label has-text-grey-light">Metadata (indexable properties) of the working file</div>
       <div class="field is-grouped">
-        <label class="control label has-text-right has-text-grey">Owner</label>
+        <label class="control label has-text-right has-text-grey">subdirectory</label>
         <span class="control">
-          <input type="text" id="ownrinp" class="input" onfocus="EC1.formFoc()" />
+          <input type="text" id="sdirinp" class="input" onfocus="EC1.formFoc()" disabled />
         </span>
       </div>
       <div class="field is-grouped">
-        <label class="control label has-text-right has-text-grey">Subdirectory</label>
+        <label class="control label has-text-right has-text-grey">file ID</label>
         <span class="control">
-          <input type="text" id="sdirinp" class="input" onfocus="EC1.formFoc()" />
+          <input type="text" id="jfidinp" class="input" onfocus="EC1.formFoc()" disabled />
         </span>
       </div>
       <div class="field is-grouped">
-        <label class="control label has-text-right has-text-grey">Version</label>
+        <label class="control label has-text-right has-text-grey"><span class="has-text-weight-normal is-italic">publmgr</span><br />version</label>
         <span class="control">
-          <input type="text" id="versinp" class="input" onfocus="EC1.formFoc()" />
+          <input type="text" id="versinp" class="input" onfocus="EC1.formFoc()" disabled />
         </span>
       </div>
       <div class="field is-grouped">
-        <label class="control label has-text-right has-text-grey">Contributors</label>
+        <label class="control label has-text-right has-text-grey">owner</label>
         <span class="control">
-          <textarea id="peoptxta" class="textarea" onfocus="EC1.formFoc()"></textarea>
+          <input type="text" id="ownrinp" class="input" onfocus="EC1.formFoc()" disabled />
         </span>
       </div>
       <div class="field is-grouped">
-        <label class="control label has-text-right has-text-grey">Miscellany</label>
+        <label class="control label has-text-right has-text-grey"><span class="has-text-weight-normal is-italic">publmgr</span><br />contributors</label>
         <span class="control">
-          <textarea id="misctxta" class="textarea" onfocus="EC1.formFoc()"></textarea>
+          <textarea id="peoptxta" class="textarea" onfocus="EC1.formFoc()" disabled></textarea>
+        </span>
+      </div>
+      <div class="field is-grouped">
+        <label class="control label has-text-right has-text-grey">miscellany</label>
+        <span class="control">
+          <textarea id="misctxta" class="textarea" onfocus="EC1.formFoc()" disabled></textarea>
         </span>
       </div>
       <hr />
       <div class="field is-grouped">
         <label class="control label has-text-right has-text-grey">Delete file?</label>
         <span class="control"><label class="checkbox has-text-danger">
-          <input type="checkbox" id="delswi" /> Yes
+          <input type="checkbox" id="delswi" disabled /> Yes
         </label></span>
       </div>
     </div>
@@ -3115,7 +3124,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         </div>
         <div class="field">
           <span class="has-text-weight-bold">Description:</span>
-          This database file type is useful for managing a living publication (live web doc). This type of file can either contain all of the content and code of a resulting web doc, or else combine and organize data from external files&mdash;while yet containing some or none of the end content and code.
+          This data-file type is useful for managing a living publication (live web doc). This type of file can either contain all of the content and code of a resulting web doc, or else combine and organize data from external files&mdash;while yet containing some or none of the end content and code.
         </div>
         <div class="field">
           A loaded <span class="is-italic">publmgr</span> (publish-manager) file will always freshly render something new when the <span class="has-text-weight-bold is-italic">Preview</span> screen is selected. What gets rendered&mdash;the publication (web doc)&mdash;depends upon the inerplay of content and code provided to it.
@@ -3329,7 +3338,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         </div>
         <div class="field">
           <span class="has-text-weight-bold">Description:</span>
-          This database file type is useful as a source of content for one or more publications (web docs).
+          This data-file type is useful as a source of content for one or more publications (web docs).
         </div>
         <div class="field">
           Presuming that a <span class="is-italic">publmgr</span> file has been set up to import and parse external data for a publication (web doc), a <span class="is-italic">srcdoc</span> (source-document) file provides that external data. It can contain nothing more than pure content&mdash;free of markup, styling or anything else that distracts from the composition process. Also, strategic use of <span class="is-italic">srcdoc</span> files allows for the organizing of content or code into logical chunks&mdash;in order to accomodate a division of tasks based on team dynamics or other workflow needs.
@@ -3352,7 +3361,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         </div>
         <div class="field">
           <span class="has-text-weight-bold">Description:</span>
-          This database file type serves as a ready-use notepad&mdash;used in a way similar to a common, legal pad. Thus, if no legal pad is handy when needing to take down some notes, a <span class="is-italic">scrap</span> file will substitute nicely.
+          This data-file type serves as a ready-use notepad&mdash;used in a way similar to a common, legal pad. Thus, if no legal pad is handy when needing to take down some notes, a <span class="is-italic">scrap</span> file will substitute nicely.
         </div>
         <div class="field">
           A <span class="is-italic">scrap</span> file is lightweight&mdash;essentially holding just plain text. It does not have any inherent relationship to the project files of the database in which it resides and, so, functions well as a place apart from any one project for safe-keeping random, miscellaneous thoughts.
@@ -3375,11 +3384,12 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         </div>
         <div class="field">
           <span class="has-text-weight-bold">Description:</span>
-          This database file type is useful for scheduling future events and/or recording current and past events. Multiple event files may be used to generate various kinds of calendars&mdash;e.g., as a sequential list, in a familiar month-by-month layout, etc.
+          This data-file type is useful for scheduling future events and/or recording current and past events.
         </div>
         <div class="field">
           <span class="has-text-weight-bold">Advantages:</span>
-          An <span class="is-italic">event</span> file can be adapted for other, non-calendaring purposes&mdash;such as writing spreadsheet-like data rows (entries) in real time, or compiling research notes over an extended time period.
+          Multiple event files may be combined to generate various kinds of calendars&mdash;e.g., as a sequential list, in a familiar month-by-month layout, etc.
+          Also, an <span class="is-italic">event</span> file can be adapted for other, non-calendaring purposes&mdash;such as writing spreadsheet-like data rows (entries) in real time, or compiling research notes over an extended time period.
         </div>
         <hr />
         <div class="label has-text-grey">Pro Tips</div>
@@ -3400,7 +3410,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         </div>
         <div class="field">
           <span class="has-text-weight-bold">Description:</span>
-          This database file type is useful for defining a project's purpose. When a project idea is first conceived by someone on the team, the purpose of the potential, new project&mdash;shaped into words&mdash;can be entered into the fields of a <span class="is-italic">prjid</span> (project identity) file.
+          This data-file type is useful for defining a project's purpose. When a project idea is first conceived by someone on the team, the purpose of the potential, new project&mdash;shaped into words&mdash;can be entered into the fields of a <span class="is-italic">prjid</span> (project identity) file.
         </div>
         <div class="field">
           Additionally, a <span class="is-italic">prjid</span> file "announces" the contents of a database. When an existing database is selected by an interested visitor at the web app entryway, a preview block is displayed. For each project (or, team-organization) database, the preview block can be customized by creating a corresponding <span class="is-italic">prjid</span> file&mdash;one that resides, either, within the same database, or else with others in a central, team-organization database.
@@ -3455,7 +3465,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         </div>
         <div class="field">
           <span class="has-text-weight-bold">Description:</span>
-          This database file type is useful for applying to a digital publication: sorting tags, a Table of Contents, a chapter-paragraph counter, and colorful, visual marks&mdash;i.e., draft-editing marks such as highlights, strikes and margin notes.
+          This data-file type is useful for applying to a digital publication: sorting tags, a Table of Contents, a chapter-paragraph counter, and colorful, visual marks&mdash;i.e., draft-editing marks such as highlights, strikes and margin notes.
         </div>
         <div class="field">
           An <span class="is-italic">anno</span> (a static, annotation) file takes <span class="is-family-code">markdown</span> data (minimal, plain-text markup characters) that gets converted into HTML, inline-markup tags. When the data is activated by a user, the markup tags are applied to a publication, and the publication webpage is re-rendered in the <span class="has-text-weight-bold is-italic">Preview</span> screen&mdash;making the intended highlights, strikes and margin notes visible.
@@ -3571,7 +3581,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
                 <br />&emsp;The "<span class="is-family-code">\v</span>" at the end of a string indicates to the parser that the string on the next line is found within the same paragraph&mdash;following the previous string yet separated from that string by unaffected, inline characters.
               </li>
               <li>
-                <span class="is-italic has-text-weight-bold">Comment:</span>
+                <span class="is-italic has-text-weight-bold">Commenting:</span>
                 Insert a comment (e.g., a note to self) anywhere throughout by prepending the comment text with two forward slashes&mdash;e.g., "<span class="is-family-code">//comment text</span>". Commented text has no effect on the publication being annotated. Note that this feature is useful also for experimentally deactivating a line with a search string, a search pattern, an insert or a switch.
               </li>
             </ul>
@@ -3584,7 +3594,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         </div>
         <div class="field">
           <span class="has-text-weight-bold">Description:</span>
-          This database file type is useful for "private" in-house communications and for public feedback on a team's live publication(s).
+          This data-file type is useful for "private" in-house communications and for public feedback on a team's live publication(s).
         </div>
         <div class="field">
           A (static, communication) <span class="is-italic">memo</span> file is created and added to the database by the app when a team member or visitor posts a comment on the <span class="has-text-weight-bold is-italic">Discuss</span> screen for a (loaded) publication.
@@ -3627,7 +3637,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         </div>
         <div class="field">
           <span class="has-text-weight-bold">Description:</span>
-          This database file type functions like a folder or subdirectory. It contains "attachment" files, which are generally assets for the Web&mdash;such as webpages and images. All attached, web assets of a database are made accessible for viewing in the <span class="has-text-weight-bold is-italic">Preview</span> screen from the <span class="is-italic">Preview</span> select list&mdash;located on the <span class="is-italic">Navbar</span>, or at the top of the <span class="is-italic">Navbar</span> <span class="has-text-weight-bold">&equiv;</span> menu.
+          This data-file type functions like a folder or subdirectory. It contains "attachment" files, which are generally assets for the Web&mdash;such as webpages and images. All attached, web assets of a database are made accessible for viewing in the <span class="has-text-weight-bold is-italic">Preview</span> screen from the <span class="is-italic">Preview</span> select list&mdash;located on the <span class="is-italic">Navbar</span>, or at the top of the <span class="is-italic">Navbar</span> <span class="has-text-weight-bold">&equiv;</span> menu.
         </div>
         <div class="field">
           An <span class="is-italic">image</span> may be attached to this type of file only by using the following controls.
@@ -3701,7 +3711,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         </div>
         <div class="field">
           <span class="has-text-weight-bold">Description:</span>
-          This database file type facilitates team-member communication. A <span class="is-italic">contact</span> file functions primarily to associate a team member with a unique avatar (photo) and username&mdash;and to make explicit his or her role(s) on the team.
+          This data-file type facilitates team-member communication. A <span class="is-italic">contact</span> file functions primarily to associate a team member with a unique avatar (photo) and username&mdash;and to make explicit his or her role(s) on the team.
         </div>
         <div class="field">
           Secondarily, <span class="is-italic">contact</span> files readily make accessible to each team member additional bio and contact info of the other members.
