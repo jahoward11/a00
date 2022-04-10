@@ -2834,7 +2834,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
             </span>
           </span>
           <span class="control">
-            <button id="rm2btn" class="button is-warning is-outlined" onclick="EC2.dbsSync({RMTFROM: true})" &#x21d3; disabled>
+            <button id="rm2btn" class="button is-warning is-outlined" onclick="EC2.dbsSync({RMTFR:1})" &#x21d3; disabled>
               &#x27b2; Import Data
             </button>
           </span>
@@ -2847,37 +2847,37 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
       <div class="field is-grouped">
         <label class="control label has-text-right has-text-grey">subdirectory</label>
         <span class="control">
-          <input type="text" id="sdirinp" class="input" onfocus="EC1.formFoc()" disabled />
+          <input type="text" id="sdirinp" class="input" onfocus="EC1.formFoc()" onchange="EC1.metaChg()" disabled />
         </span>
       </div>
       <div class="field is-grouped">
         <label class="control label has-text-right has-text-grey">file ID</label>
         <span class="control">
-          <input type="text" id="jfidinp" class="input" onfocus="EC1.formFoc()" disabled />
+          <input type="text" id="jfidinp" class="input" onfocus="EC1.formFoc()" onchange="EC1.metaChg()" disabled />
         </span>
       </div>
       <div class="field is-grouped">
-        <label class="control label has-text-right has-text-grey"><span class="has-text-weight-normal is-italic">publmgr</span><br />version</label>
+        <label class="control label has-text-right has-text-grey"><span class="has-text-weight-normal is-italic">publmgr</span><br />next version</label>
         <span class="control">
-          <input type="text" id="versinp" class="input" onfocus="EC1.formFoc()" disabled />
+          <input type="text" id="versinp" class="input" onfocus="EC1.formFoc()" onchange="EC1.metaChg(event, 'v')" disabled />
         </span>
       </div>
       <div class="field is-grouped">
         <label class="control label has-text-right has-text-grey">owner</label>
         <span class="control">
-          <input type="text" id="ownrinp" class="input" onfocus="EC1.formFoc()" disabled />
+          <input type="text" id="ownrinp" class="input" onfocus="EC1.formFoc()" onchange="EC1.metaChg(event, 'username')" disabled />
         </span>
       </div>
       <div class="field is-grouped">
         <label class="control label has-text-right has-text-grey"><span class="has-text-weight-normal is-italic">publmgr</span><br />contributors</label>
         <span class="control">
-          <textarea id="peoptxta" class="textarea" onfocus="EC1.formFoc()" disabled></textarea>
+          <textarea id="peoptxta" class="textarea" rows="3" onfocus="EC1.formFoc()" onchange="EC1.metaChg(event, 0)" disabled></textarea>
         </span>
       </div>
       <div class="field is-grouped">
         <label class="control label has-text-right has-text-grey">miscellany</label>
         <span class="control">
-          <textarea id="misctxta" class="textarea" onfocus="EC1.formFoc()" disabled></textarea>
+          <textarea id="misctxta" class="textarea" rows="3" onfocus="EC1.formFoc()" onchange="EC1.metaChg(event, 'misc')" disabled></textarea>
         </span>
       </div>
       <hr />
