@@ -1843,7 +1843,8 @@ function jdePtyGen(rowslr, plai, plbgi) {
       .add(misctxta.value !== jfw.file_updated.misc ? "is-warning" : "is-success");
     } else {
       [sdirinp, jfidinp, versinp, ownrinp, peoptxta, misctxta]
-      .forEach(e => e.disabled || ["is-warning", "is-success"].forEach(f => e.classList.remove(f)));
+      .forEach( e => e.disabled || ["is-warning", "is-success"].forEach(f => e.classList.remove(f))
+        || (e.value = "") || (e.disabled = 1) );
       delswi.checked = delswi.disabled = jfidinp.disabled = 0;
       jfidinp.classList.add("is-success");
       jfidinp.value = jfw._id;
