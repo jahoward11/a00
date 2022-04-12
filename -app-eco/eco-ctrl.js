@@ -1007,6 +1007,15 @@ function pfsResets() {
   EC1.pfsSel();
 }
 
+function indrChg(elm, val, ref) {
+  let eq = val === (ref || elm.value);
+  /is-warning/.test(elm.className) && !ref || (elm.value = ref || val || "");
+  !/\bis-[sw]/.test(elm.className) && eq
+  || !(/is-warning/.test(elm.className) || ref || (eq = true))
+  || elm.classList.remove(eq ? "is-warning" : "is-success")
+  || elm.classList.add(!eq ? "is-warning" : "is-success");
+};
+
 function updDisbl() {
   document.querySelectorAll('#econav0 #fupdbtnc>button, #ecoesp0 #pchbtn')
   .forEach(e => e.disabled = true);
@@ -1822,46 +1831,30 @@ function jdePtyGen(rowslr, plai, plbgi) {
     || (plbx.selectedIndex = plbgi);
     EC1.ptySel(rowslr);
   }
-  if (filewkg) {
-    if (rowslr !== false) {
-      EC1.pfsInp();
-      versinp.classList.contains("is-warning")
-      || (versinp.value = jfw.file_updated.version.replace(/\d+$/, m => ++m));
-      ownrinp.classList.contains("is-warning") || (ownrinp.value = jfw.file_updated.username);
-      peoptxta.classList.contains("is-warning") || (peoptxta.value = jfw.contributors);
-      misctxta.classList.contains("is-warning") || (misctxta.value = jfw.file_updated.misc);
-      [versinp, ownrinp, peoptxta, misctxta]
-      .forEach(e => e.disabled || ["is-warning", "is-success"].forEach(f => e.classList.remove(f)));
-      versinp.disabled || versinp.classList
-      .add( versinp.value !== jfw.file_updated.version.replace(/\d+$/, m => ++m)
-        ? "is-warning" : "is-success" );
-      ownrinp.disabled || ownrinp.classList
-      .add(ownrinp.value !== jfw.file_updated.username ? "is-warning" : "is-success");
-      peoptxta.disabled || peoptxta.classList
-      .add(peoptxta.value !== "" + jfw.contributors ? "is-warning" : "is-success");
-      misctxta.disabled || misctxta.classList
-      .add(misctxta.value !== jfw.file_updated.misc ? "is-warning" : "is-success");
-    } else {
-      [sdirinp, jfidinp, versinp, ownrinp, peoptxta, misctxta]
-      .forEach( e => e.disabled || ["is-warning", "is-success"].forEach(f => e.classList.remove(f))
-        || (e.value = "") || (e.disabled = 1) );
-      delswi.checked = delswi.disabled = jfidinp.disabled = 0;
-      jfidinp.classList.add("is-success");
-      jfidinp.value = jfw._id;
-      !(jfw.file_updated || jfw.hasOwnProperty("loc_subdir")) || (sdirinp.disabled = 0)
-      || (sdirinp.value = !jfw.file_updated ? jfw.loc_subdir : jfw.file_updated.subdir);
-      !sdirinp.value || sdirinp.classList.add("is-success");
-      if (jfw.file_updated) {
-        ownrinp.disabled = 0;
-        !(ownrinp.value = jfw.file_updated.username) || ownrinp.classList.add("is-success");
-        !jfw.file_updated.hasOwnProperty("misc") || (misctxta.disabled = 0)
-        || !(misctxta.value = jfw.file_updated.misc) || misctxta.classList.add("is-success");
-      }
-      if (jfw.file_type === "eco-publmgr") {
-        peoptxta.disabled = versinp.disabled = 0;
-        !(versinp.value = jfw.file_updated.version.replace(/\d+$/, m => ++m)) || versinp.classList.add("is-success");
-        !(peoptxta.value = jfw.contributors) || peoptxta.classList.add("is-success");
-      }
+  if (filewkg && rowslr !== false) {
+    EC1.pfsInp();
+    versinp.disabled || indrChg(versinp, jfw.file_updated.version.replace(/\d+$/, m => ++m));
+    ownrinp.disabled || indrChg(ownrinp, jfw.file_updated.username);
+    peoptxta.disabled || indrChg(peoptxta, "" + jfw.contributors);
+    misctxta.disabled || indrChg(misctxta, jfw.file_updated.misc);
+  } else if (filewkg) {
+    [sdirinp, jfidinp, versinp, ownrinp, peoptxta, misctxta]
+    .forEach( e => e.disabled || ["is-warning", "is-success"].forEach(f => e.classList.remove(f))
+      || (e.value = "") || (e.disabled = 1) );
+    delswi.checked = delswi.disabled = jfidinp.disabled = 0;
+    jfidinp.value = jfw._id;
+    !(jfw.file_updated || jfw.hasOwnProperty("loc_subdir")) || (sdirinp.disabled = 0)
+    || (sdirinp.value = !jfw.file_updated ? jfw.loc_subdir : jfw.file_updated.subdir);
+    if (jfw.file_updated) {
+      ownrinp.disabled = 0;
+      ownrinp.value = jfw.file_updated.username;
+      !jfw.file_updated.hasOwnProperty("misc") || (misctxta.disabled = 0)
+      || (misctxta.value = jfw.file_updated.misc);
+    }
+    if (jfw.file_type === "eco-publmgr") {
+      peoptxta.disabled = versinp.disabled = 0;
+      versinp.value = jfw.file_updated.version.replace(/\d+$/, m => ++m);
+      peoptxta.value = jfw.contributors;
     }
   }
 }
@@ -3527,14 +3520,10 @@ pfsInp(noflux, btnsdis) { // also triggered by jdePtyGen, dataDispl, metaChg, sw
   }
   if (filewkg) {
     dirref = fileref.replace(/^(?:\.\.\/|)\.?(-?\w.*?)\/.+|.+/, "$1");
-    jfidinp.value = fileref.replace(!dirref ? /\/$|^(?:\.\.\/|)\.?/g : /^(?:\.\.\/|).*?\//, "");
-    sdirinp.disabled || ( sdirinp.value = dirref
-      || (!filewkg.file_updated ? filewkg.loc_subdir : filewkg.file_updated.subdir) );
-    sdirinp.disabled || ["is-warning", "is-success"].forEach(e => sdirinp.classList.remove(e))
-    || sdirinp.classList.add( sdirinp.value !== ( !filewkg.file_updated ? filewkg.loc_subdir
-      : filewkg.file_updated.subdir ) ? "is-warning" : "is-success" );
-    ["is-warning", "is-success"].forEach(e => jfidinp.classList.remove(e));
-    jfidinp.classList.add(jfidinp.value !== filewkg._id ? "is-warning" : "is-success");
+    jfidinp.value = fileref.replace(!dirref ? /\/$|^(?:\.\.\/|)/g : /^(?:\.\.\/|).*?\//, "");
+    sdirinp.disabled || indrChg( sdirinp,
+      (!filewkg.file_updated ? filewkg.loc_subdir : filewkg.file_updated.subdir) || "", dirref );
+    jfidinp.disabled || indrChg(jfidinp, filewkg._id, jfidinp.value);
   }
   if (noflux) {
     influxSet(2);
