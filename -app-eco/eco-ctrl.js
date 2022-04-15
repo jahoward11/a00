@@ -944,8 +944,8 @@ function msgHandl(msg) {
 };
 
 function jsonParse(jobj) {
-  try { return (jobj = JSON.parse(jobj)) != null && typeof jobj !== 'number' ? jobj
-    : msgHandl("Alert: #/null was provided instead of JSON-object text.") && undefined;
+  try { return (jobj = JSON.parse(jobj)) != null && typeof jobj === 'object' ? jobj
+    : msgHandl("Alert: #/bool/null was provided instead of JSON-object text.") && undefined;
   } catch (err) { msgHandl("Alert: Invalid JSON-object text was provided.\n" + err); }
 }
 
@@ -958,11 +958,9 @@ function imgWrap(url) {
 
 function srcvPrep(str = "", lang) {
   let ntxta = document.createElement('textarea');
-  ntxta.innerHTML = str = "" + str;
-  return !window.hljs || lang === "nohighlight"
-  ? ntxta.outerHTML.replace(/<\/textarea>\s*$|^\s*<textarea.*?>/gi, "")
-  : lang ? window.hljs.highlight(lang, str, true).value
-  : window.hljs.highlightAuto(str).value;
+  ntxta.textContent = str = "" + str;
+  return !window.hljs || lang === "nohighlight" ? ntxta.innerHTML
+  : !lang ? hljs.highlightAuto(str).value : hljs.highlight(lang, str, true).value;
 }
 
 function rdataFetch(txdata = {}, idx = 0) {
