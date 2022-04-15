@@ -944,8 +944,9 @@ function msgHandl(msg) {
 };
 
 function jsonParse(jobj) {
-  try { return JSON.parse(jobj);
-  } catch (err) { msgHandl("Alert: Invalid JSON text was provided.\n" + err); }
+  try { return (jobj = JSON.parse(jobj)) != null && typeof jobj !== 'number' ? jobj
+    : msgHandl("Alert: #/null was provided instead of JSON-object text.") && undefined;
+  } catch (err) { msgHandl("Alert: Invalid JSON-object text was provided.\n" + err); }
 }
 
 function imgWrap(url) {
@@ -1010,9 +1011,9 @@ function pfsResets() {
 
 function indrChg(elm, val, ref) {
   let eq = val === (ref || elm.value);
-  /is-warning/.test(elm.className) && !ref || (elm.value = ref || val || "");
+  /is-warning/.test(elm.className) && !ref || (elm.value = ref != null ? ref : val || "");
   !/\bis-[sw]/.test(elm.className) && eq
-  || !(/is-warning/.test(elm.className) || ref || (eq = true))
+  || !(/is-warning/.test(elm.className) || ref != null || (eq = true))
   || elm.classList.remove(eq ? "is-warning" : "is-success")
   || elm.classList.add(!eq ? "is-warning" : "is-success");
 };
@@ -1662,7 +1663,14 @@ function swapListGen() {
       .concat( !filewkg ? []
         : filewkg.file_type === "eco-srcdoc" ? [["Source doc: CONTENT", "content"]]
         : filewkg.file_type === "eco-scrap" ? [["Scrap file: CONTENT", "content"]]
-        : /^eco-(?:memo|post)$/.test(filewkg.file_type) ? [["Memo file: BODY TEXT", "body"]]
+        : filewkg.file_type === "eco-event" ? [["Event file: DESCRIPTION", "description"]]
+        : filewkg.file_type === "eco-prjid"
+          ? [["Project ID: SHORT DESCR", "descr_short"], ["Project ID: EXT'D DESCR", "descr_extd"]]
+        : filewkg.file_type === "eco-anno" ? [["Anno file: HIGHLIGHTS", "texthl"]]
+        : filewkg.file_type === "eco-memo" ? [["Memo file: BODY TEXT", "body"]]
+        : filewkg.file_type === "eco-assets" ? [["Assets file: DESCRIPTION", "description"]]
+        : filewkg.file_type === "eco-contact"
+          ? [["Contact file: SHORT BIO", "bio_short"], ["Contact file: MISCELLANY", "miscellany"]]
         : !filewkg.filefrags ? []
         : filewkg.filefrags.map(o => ["Publish mgr: " + o.labeltxt, null]) )
   };
@@ -2706,8 +2714,8 @@ function txdPrep(filepath) {
     loadobj = /^{['"].+}$/.test(txsjson) && jsonParse(txsjson)
       || /^\[.*{['"].+}\]$/.test(txsjson)
       && ( /^(?:_.*\.|)\d+$|^(?!_)[\w!.*+~-]+$/.test(valcon)
-        && ( jsonParse(txsjson)[valcon.replace(/^(?:_.*\.|)(\d+)$/, "$1")]
-        || jsonParse(txsjson).find(e => e.DBNAME === valcon) ) || jsonParse(txsjson) )
+        && ( (jsonParse(txsjson) || "")[valcon.replace(/^(?:_.*\.|)(\d+)$/, "$1")]
+        || (jsonParse(txsjson) || []).find(e => e.DBNAME === valcon) ) || jsonParse(txsjson) )
       || txsjson,
     rmturl = (caccts.find(e => /^a\d\d/.test(e.DBNAME) && e.DBORIG) || "").DBORIG
       || hostibm || a00orig,
@@ -3410,6 +3418,20 @@ tabs0Tog(idx, exit) { // also triggered by dataDispl, dropboxTx, blobHandl, prvT
     idx < 2 || !valpfs || !nbaropen || EC1.navTog();
   }
 },
+txtaSel(txtaid, sel) {
+  let utxta = document.querySelector((txtaid === "qcontxta" ? '#econav0 #' : '#ecoesp0 #') + txtaid);
+  if (txtaid === "swaptxta") {
+    utxta.classList.remove("is-warning", "is-success");
+    document.querySelector('#ecoesp0 #toolswap .help').innerHTML = "";
+  }
+  if (sel) {
+    utxta.focus();
+    utxta.setSelectionRange(0, utxta.textLength);
+  } else { //clr
+    utxta.value = txtaid !== "jsctxta" ? "" : "> ";
+    txtaid !== "jsctxta" || (document.querySelector('#ecoesp0 #jsclist').selectedIndex = 0);
+  }
+},
 qconTog(idx) { // also triggered by ibmConnect
   let qcswi = document.querySelector('#econav0 #qcswi'),
     qcswi1 = document.querySelector('#econav0 #qcswi>.icon:nth-of-type(1)'),
@@ -3425,20 +3447,6 @@ qconTog(idx) { // also triggered by ibmConnect
     qcswi1.classList.add("is-hidden");
     qcswi2.classList.remove("is-hidden");
     qcctrls.forEach(e => e.classList.remove("is-hidden"));
-  }
-},
-txtaSel(txtaid, sel) {
-  let utxta = document.querySelector((txtaid === "qcontxta" ? '#econav0 #' : '#ecoesp0 #') + txtaid);
-  if (txtaid === "swaptxta") {
-    utxta.classList.remove("is-warning", "is-success");
-    document.querySelector('#ecoesp0 #toolswap .help').innerHTML = "";
-  }
-  if (sel) {
-    utxta.focus();
-    utxta.setSelectionRange(0, utxta.textLength);
-  } else { //clr
-    utxta.value = txtaid !== "jsctxta" ? "" : "> ";
-    txtaid !== "jsctxta" || (document.querySelector('#ecoesp0 #jsclist').selectedIndex = 0);
   }
 },
 pfsSel(resel, cbfnc) { // also triggered by pfsResets, pfsListGen, couchAtt, tmplLoad
@@ -3723,7 +3731,7 @@ jdeDftUpd(ptyk, dnbr, inp) { // also triggered by swapExe
     ptyvfw = ptyk ? filewkg[ptyk] : filewkg.filefrags && filewkg.filefrags[idx].contenttxt,
     fldmfd = !dnbr ? document.querySelector('#ecoesp0 #jdedft textarea:not(.is-hidden)')
       : document.querySelector('#ecoesp0 #jdedft>div:nth-of-type(' + dnbr + ')' + (inp ? ' input' : '>textarea'));
-  fldfoc = fldmfd;
+  fldfoc = !epsets.swapchks[0] ? null : fldmfd;
   !epsets.swapchks[0] || (document.querySelector('#ecoesp0 #prsebtn').disabled = !fldfoc);
   EC1.formBlr();
   if ( fldmfd && ptyvfw !== undefined && (ptyvfw || "").toString()
@@ -3753,7 +3761,7 @@ jdePtyUpd(rowslr, ptyk, plak, plai, plbgi) {
     pachild = papath.pop(),
     paparent = papath.reduce((o, k) => o[k], filewkg),
     rawtxta = document.querySelector('#ecoesp0 #rawtxta');
-  fldfoc = fldmfd;
+  fldfoc = !epsets.swapchks[0] ? null : fldmfd;
   !epsets.swapchks[0] || (document.querySelector('#ecoesp0 #prsebtn').disabled = !fldfoc);
   EC1.formBlr();
   if ( (typpmgr || /^eco-(?:prjid|srcdoc)$/.test(filewkg.file_type)) && /^[34]$/.test(rowslr) && plai === 2
@@ -3841,7 +3849,7 @@ jdePtyUpd(rowslr, ptyk, plak, plai, plbgi) {
 jdeRawUpd(noflux) { // also triggered by swapExe, dviz-dboxupd
   let jdata,
     rawtxta = document.querySelector('#ecoesp0 #rawtxta');
-  fldfoc = rawtxta;
+  fldfoc = !epsets.swapchks[0] ? null : fldmfd;
   !epsets.swapchks[0] || (document.querySelector('#ecoesp0 #prsebtn').disabled = !fldfoc);
   EC1.formBlr();
   jdeRawAlert();
@@ -3873,18 +3881,6 @@ tabs5Tog(idx) { // also triggered by ibmConnect
   !publpnls[idx]
   || document.querySelector('#ecoesp0 ' + publpnls[idx]).classList.remove("is-hidden");
 },
-tabs6Tog(idx) { // also triggered by ibmConnect
-  let tooltabs = document.querySelectorAll('#ecoesp0 #tooltabs>ul>li'),
-    toolas = document.querySelectorAll('#ecoesp0 #tooltabs>ul>li>a'),
-    toolpnls = ["#tooltypes", "#toolswap", "#tooljscon", "#toolapp"];
-  document.querySelector('#ecoesp0 #tooltabs>ul>li.is-active>a').classList.add("has-text-grey-light");
-  document.querySelector('#ecoesp0 #tooltabs>ul>li.is-active').classList.remove("is-active");
-  !tooltabs[idx] || tooltabs[idx].classList.add("is-active");
-  !toolas[idx] || toolas[idx].classList.remove("has-text-grey-light");
-  toolpnls.forEach(e => document.querySelector('#ecoesp0 ' + e).classList.add("is-hidden"));
-  !toolpnls[idx]
-  || document.querySelector('#ecoesp0 ' + toolpnls[idx]).classList.remove("is-hidden");
-},
 metaChg(evt, pty) {
   if (!evt) {
     let pfsinp = document.querySelector('#econav0 #pfsinp'),
@@ -3899,6 +3895,18 @@ metaChg(evt, pty) {
       ? "" + filewkg.contributors : pty !== "v" ? filewkg.file_updated[pty]
       : filewkg.file_updated.version.replace(/\d+$/, m => ++m) ) ? "is-warning" : "is-success" );
   }
+},
+tabs6Tog(idx) { // also triggered by ibmConnect
+  let tooltabs = document.querySelectorAll('#ecoesp0 #tooltabs>ul>li'),
+    toolas = document.querySelectorAll('#ecoesp0 #tooltabs>ul>li>a'),
+    toolpnls = ["#tooltypes", "#toolswap", "#tooljscon", "#toolapp"];
+  document.querySelector('#ecoesp0 #tooltabs>ul>li.is-active>a').classList.add("has-text-grey-light");
+  document.querySelector('#ecoesp0 #tooltabs>ul>li.is-active').classList.remove("is-active");
+  !tooltabs[idx] || tooltabs[idx].classList.add("is-active");
+  !toolas[idx] || toolas[idx].classList.remove("has-text-grey-light");
+  toolpnls.forEach(e => document.querySelector('#ecoesp0 ' + e).classList.add("is-hidden"));
+  !toolpnls[idx]
+  || document.querySelector('#ecoesp0 ' + toolpnls[idx]).classList.remove("is-hidden");
 },
 swplTog() { // also triggered by xsrcTog, ibmConnect
   let ebran1 = document.querySelector('#econav0 #ebran1'),
@@ -5051,7 +5059,7 @@ logOut() {
   || (localStorage["_couchaccts"] = localStorage["_couchdbaccts"])
   && localStorage.removeItem("_couchdbaccts"); // temp cleanup
   !/^\[.*{['"].+}\]$/.test(localStorage["_couchaccts"] || "")
-  || (caccts = jsonParse(localStorage["_couchaccts"]).filter(e => e && typeof e === 'object'));
+  || (caccts = (jsonParse(localStorage["_couchaccts"]) || []).filter(e => e && typeof e === 'object'));
   !/^{['"].+}$/.test(localStorage["_ecopresets"])
   || (epsets = jsonParse(localStorage["_ecopresets"]));
   epsets && ["dbdflt", "prvmode", "hlstyle", "discload", "discdays", "tabsdflt", "swapchks", "appchks"]

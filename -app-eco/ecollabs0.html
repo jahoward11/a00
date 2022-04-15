@@ -4794,7 +4794,18 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
   </span>
 </div>
 <div class="field">
-  <textarea class="textarea" rows="8" onfocus="EC1.formFoc('#dftbtnc7')" onblur="EC1.jdeDftUpd('bio_short', 10)">{{bio_short}}</textarea>
+  <textarea class="textarea" rows="4" onfocus="EC1.formFoc('#dftbtnc7')" onblur="EC1.jdeDftUpd('bio_short', 10)">{{bio_short}}</textarea>
+</div>
+<div class="control">
+  <button class="button is-static has-text-info is-size-7 tabontxta">MISCELLANY</button>
+  <span id="dftbtnc8" class="dftbtnc posr2 is-hidden">
+    <a class="button is-white has-text-link" onclick="EC1.swapExe()">
+      &#x21cc;swp
+    </a>
+  </span>
+</div>
+<div class="field">
+  <textarea class="textarea" rows="4" onfocus="EC1.formFoc('#dftbtnc8')" onblur="EC1.jdeDftUpd('miscellany', 12)">{{miscellany}}</textarea>
 </div>
 
 {{else if ../eco-memo}}
