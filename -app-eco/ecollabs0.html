@@ -2214,8 +2214,8 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 #ecoesp0 #jdepty:not(.ptydiffs) .ptybtnc>.button:nth-of-type(2) { display: none; }
 #ecoesp0 #publpre .select>select, #ecoesp0 #publmet .input,
 #ecoesp0 #publcmt .select>select, #ecoesp0 #publcmt #uplfpath,
-#ecoesp0 #eftass #irename, #ecoesp0 #toolswap .input,
-#ecoesp0 #toolswap .select>select, #ecoesp0 #toolapp .select>select { width: 216px; }
+#ecoesp0 #eftass #irename, #ecoesp0 #toolswap .select>select,
+#ecoesp0 #toolswap .input, #ecoesp0 #toolapp .select>select { width: 216px; }
 #ecoesp0 #publmet .label.has-text-right,
 #ecoesp0 #toolapp .label.has-text-right {
   line-height: 1.25;
@@ -2266,6 +2266,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
   #ecoesp0 #jdepty.pf2on .ptybtnc { margin-top: -25.2px; }
   #ecoesp0 #jdepty:not(.pf2on) .ptybtnc { left: 0; }
   #ecoesp0 #jdepty .field-label>.control:not(:last-child) { margin-bottom: 7px; }
+  #ecoesp0 #publmet .input, #ecoesp0 #publmet .textarea { width: 432px; }
 }
 @media print {
   #ecorender>.srcview, #ecosrcview>.srcview, #ecoguides { top: 0; }
@@ -2574,13 +2575,14 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
       <br />Tip: This step ensures that you have all the current file changes made by others before you submit your file changes.
       <br />Alert: If two or more people are editing the same file at the same time, the more recently committed version will overwrite the changes made in a previously committed version&mdash;thus, someone's changes will be lost.
     </li>
-    <li>Navigate to <span class="has-text-weight-bold is-italic">Final Prep &amp; Publish > Commits</span>.</li>
+    <li>Navigate to <span class="has-text-weight-bold is-italic">Final Prep &amp; Publish > Commit</span>.</li>
     <li>
       Follow each of the four numbered steps, in sequence&mdash;
       <br />(1) to formally insert a <span class="is-italic">publmgr</span> build file into the project database;
       <br />(2) to generate and insert a resulting web doc;
       <br />(3) to share the publishing files (build files and web doc) with the team; and, finally,
-      <br />(4) to publish the web doc to a public server.</li>
+      <br />(4) to publish the web doc to a public server.
+    </li>
     <li>After confirming that a working file has been committed (updated) to the database, clean up unecessary files on the device by deleting the original, temporary file&mdash;found under <span class="is-italic">LOCAL temporary files</span> in the <span class="is-italic">File-load</span> select list; a file now flagged with an asterisk and revision number.</li>
   </ol>
   <div class="field">
@@ -2847,8 +2849,9 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
       <div class="field is-grouped">
         <label class="control label has-text-right has-text-grey">subdirectory</label>
         <span class="control">
-          <input type="text" id="sdirinp" class="input" onfocus="EC1.formFoc()" onchange="EC1.metaChg()" disabled />
+          <input type="text" id="sdirinp" class="input" list="picksdirs" onfocus="EC1.formFoc()" onchange="EC1.metaChg()" disabled />
         </span>
+        <datalist id="picksdirs"></datalist>
       </div>
       <div class="field is-grouped">
         <label class="control label has-text-right has-text-grey">file ID</label>
@@ -3384,7 +3387,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         </div>
         <div class="field">
           <span class="has-text-weight-bold">Description:</span>
-          This data-file type is useful for scheduling future events and/or recording current and past events.
+          This data-file type is useful for scheduling future events and recording current or past events.
         </div>
         <div class="field">
           <span class="has-text-weight-bold">Advantages:</span>
@@ -3455,7 +3458,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
             <br />Note: If the <span class="is-italic">assets</span> file containing the image is in a different database, a relative path to that file must be included&mdash;e.g., "<span class="is-family-code">../../myresourcedb/-res-img/prjcoverphoto.jpg</span>".
             <br />Note: The <span class="is-italic">IMAGE</span> field can also accept an absolute URL of any public image on the Web.
           </li>
-          <li>After all other fields have been updated, navigate to <span class="has-text-weight-bold is-italic">Final Prep &amp; Publish > Commits</span>.</li>
+          <li>After all other fields have been updated, navigate to <span class="has-text-weight-bold is-italic">Final Prep &amp; Publish > Commit</span>.</li>
           <li>In row 1, tap <span class="is-italic">Add File</span>.</li>
         </ol>
       </div>
@@ -3700,7 +3703,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         </div>
         <ol>
           <li>Load a <span class="is-italic">publmgr</span> file.</li>
-          <li>Navigate to <span class="has-text-weight-bold is-italic">Final Prep &amp; Publish > Commits</span>.</li>
+          <li>Navigate to <span class="has-text-weight-bold is-italic">Final Prep &amp; Publish > Commit</span>.</li>
           <li>In row 2, select the <span class="is-italic">assets</span>-file destination for the <span class="is-italic">webpage</span>.</li>
           <li>In row 2, tap <span class="is-italic">Add HTML</span>.</li>
         </ol>
@@ -3882,7 +3885,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
           <li>
             After all other fields have been updated&mdash;
             <br /><span class="is-italic">Admin/Lead</span>:
-            navigate to <span class="has-text-weight-bold is-italic">Final Prep &amp; Publish > Commits</span>; then, in row 1, tap <span class="is-italic">Add File</span>.
+            navigate to <span class="has-text-weight-bold is-italic">Final Prep &amp; Publish > Commit</span>; then, in row 1, tap <span class="is-italic">Add File</span>.
             <br /><span class="is-italic">Contributor/Reviewer</span>:
             follow steps 4&ndash;8 of "<span class="has-text-weight-bold is-italic">To update your own <span class="has-text-weight-normal is-italic">contact</span> file</span>", given above.
           </li>
