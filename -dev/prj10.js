@@ -114,7 +114,8 @@ Array.from(Array(5).keys())
 
 // respShow( Object.fromEntries( Object.entries(SourceDiff).map(oe => [oe[0], oe[1].toString()]) ))
 // respShow(Array.from(document.querySelectorAll('[id]')).map(e => e.id))
-// respShow( document.querySelector('script:nth-of-type(3)').textContent.replace( /^(?:const|let|var|)  ?\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)\\n|(.*\\n|.+)/gim, (m, c1) => c1 ? "" : m.replace(/(?:[^=a-z]|= *(?=\\d+[,;]|""|''|\\[\\]|\\{\\})|[a-z](?!\\w* *[,;=]))*(?:\\n|=.+|(\\w+.))/gi, "$1") ).trim().split(/\\W/) ) //
+// respShow( document.querySelectorAll('script')[2].textContent.replace( /^(?:const|let|var|window\\.| ) ?\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)\\n|^function +(\\w+.).+|(.*\\n|.+)/gim, (m, c1, c2) => c2 ? "" : c1 || m.replace(/(?:[^=a-z]|= *(?=\\d+[,;]|""|''|\\[\\]|\\{\\})|[a-z](?!\\w* *[.,;=]))*(?:\\n|=.+|((?:window\\.|)\\w+.))/gi, "$1") ).trim().split(/[^.\\w]/) ) //
+// fetch("../-app-eco/eco-ctrl.js").then(r => r.text()).then( s => s.replace( /^(?:const|let|var|window\\.| ) ?\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)\\n|^function +(\\w+.).+|(.*\\n|.+)/gim, (m, c1, c2) => c2 ? "" : c1 || m.replace(/(?:[^=a-z]|= *(?=\\d+[,;]|""|''|\\[\\]|\\{\\})|[a-z](?!\\w* *[.,;=]))*(?:\\n|=.+|((?:window\\.|)\\w+.))/gi, "$1") ).trim().split(/[^.\\w]/) ).then(respShow).catch(respShow) //
 //`;
 
 const bcaches = `//
@@ -179,10 +180,8 @@ PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
 // txd2 = { DBNAME: "db", FILEID: "id", ATTKEY: "key", OPTS: {} };
 // PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => fetch(URL.createObjectURL(abl)).then(r => r.text()).then(respShow).catch(respShow)
 
-/*
-sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.body.appendChild(n); };
-!!window.PouchDB || fetch("../-res-js/pouchdb.min.js").then(r => r.blob()).then(URL.createObjectURL).then(_.sc2Inj).catch(respShow)
-*/
+// sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.body.appendChild(n); };
+// !!window.PouchDB || fetch("../-res-js/pouchdb.min.js").then(r => r.blob()).then(URL.createObjectURL).then(_.sc2Inj).catch(respShow)
 //`;
 
 const jstatqs = `//
@@ -231,12 +230,8 @@ uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; 
 // try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.strPars || scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(respShow); }
 
 // dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
-// srctxta.value = (dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(t3x) + dwraps[2]);
-
-/*
- srctxta.textContent = (dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(t3x) + dwraps[2]);
- srctxta.value = recon.innerHTML = srctxta.innerHTML;
-*/
+// srctxta.textContent = (dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(t3x) + dwraps[2]);
+// srctxta.value = recon.innerHTML = srctxta.innerHTML;
 
 // /spark/.test(window.location.search) || (window.location.search = "cmods=spark.js,../-dev/prj10.js&dload=t3srepl");
 // srctxta.value = xstor.sparknotes.mythology.replace(/\\n\\*\\/$|^\\/\\*\\n/g, ""); //
@@ -274,7 +269,7 @@ respShow(dwraps[0] + dPreps(dbwrap.outerHTML) + dwraps[1] + scrGen(xstor.JScode.
 //`;
 
 const srtools = `//
-// to find misapplied emphasis/superscript markers in cmods
+// to find misapplied emphasis/superscript/code markers in cmods
 /*
  srctxta.textContent = JSON.stringify(xstor.util, null, 2);
  srctxta.value = srctxta.innerHTML;
