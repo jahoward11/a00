@@ -381,7 +381,7 @@ let q2Bcopy, q2Bhtml,
     || qrys.push("title=" + window.encodeURIComponent(cheadg.textContent));
     !(xsetlist || "").value || qrys.push("dload=" + window.encodeURIComponent(xsetlist.value));
     quad2B.click();
-    (xsetinp || "").value = quad2A.innerHTML = quad1B.innerHTML = quad1A.innerHTML = "";
+    (xsetinp || {}).value = quad2A.innerHTML = quad1B.innerHTML = quad1A.innerHTML = "";
     quad2B.innerHTML = "// __To preserve view settings to URL:__"
     + "\n// 1. Edit &amp; un-comment settings, below --"
     + "\n   // combining desired parts into a one-line expression."
@@ -457,7 +457,7 @@ let q2Bcopy, q2Bhtml,
     evt.preventDefault();
   },
   xprsEval = () => {
-    v0set ? (recon.textContent = "") : ++v0set && !val0s.length || ((xsetlist || "").value = "")
+    v0set ? (recon.textContent = "") : ++v0set && !val0s.length || ((xsetlist || {}).value = "")
       || val0s.forEach(v => v && (dentry.value = dentry.value.replace(v[0], v[1])));
     let $ = {}, _ = {}, _ks = [], rslt,
       xprsns = (dentry.value || "")
@@ -560,7 +560,7 @@ let q2Bcopy, q2Bhtml,
       quad2B.innerHTML = q2Bcopy;
       q2Bcopy = q2Bhtml = null;
     } else if (!symlist.className) {
-      (xsetlist || "").value = "";
+      (xsetlist || {}).value = "";
       helpClr();
       document.querySelector('#scrnmask').className = symlist.className = "is-hidden";
       q2Bcopy = q2Bhtml = null;
