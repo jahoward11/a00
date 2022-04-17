@@ -564,7 +564,7 @@ let q2Bcopy, q2Bhtml,
       helpClr();
       document.querySelector('#scrnmask').className = symlist.className = "is-hidden";
       q2Bcopy = q2Bhtml = null;
-      dentr.value = quad2B.textContent //.replace(/\n+$|^\n+/g, "")
+      dentr.value = quad2B.textContent.replace(/\n+$/, "")
         .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/\\t/g, "\t"));
       xprsEval();
     }
