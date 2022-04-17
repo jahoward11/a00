@@ -399,7 +399,7 @@ let q2Bcopy, q2Bhtml,
     + "\n  // dload= | load specified data set into *ENTRY* field"
     + "\n  // val0s= | re-assign initial values of pre-loaded data set"
     + "\n  // jsrcs= | inject supplemental JavaScript resources\n\n// "
-    + (dentry.type ? "window_location_search" : "window.location.search") + " = \"" + qrys.join("&")
+    + (dentr.type ? "window_location_search" : "window.location.search") + " = \"" + qrys.join("&")
     + "\"\n // + \"" + (!qrys.length ? "" : "&") + "cmods=\" + encodeURIComponent(\"3,5,prj42.mjs\")"
     + ((xsetlist || "").value ? "" : "\n // + \"&dload=\" + encodeURIComponent(\"https://host/pathname\")")
     + "\n // + \"&val0s=\" + encodeURIComponent(\"a:10,b:20,c:30\")"
@@ -412,7 +412,7 @@ let q2Bcopy, q2Bhtml,
       + (document.querySelector('#ecorender') || document.documentElement).innerHTML
         .replace(/\n+$|^\n+|^<head>\n?|^#cmain \.iwarn[^]+?\n(?=@media print {\n)|,\n *xsetLoad = [^]+?(?=;\nwindow\.xstor =)|^ *!\/\^http.+xlstGen[^]+?;\n|\n*<script\b.*><\/script>(?=$|<\/body>)|\n?<\/body>$/gim, "")
         .replace(/^(<\/style>)[^]*?(?=<div .+><\/div>$)/im, "$1\n</head>\n<body>\n")
-        .replace(/^(<xmp id="datxmp".*?>)[^]*?(?=<\/xmp>)/im, (m, c1) => c1 + "\n" + dentry.value + "\n")
+        .replace(/^(<xmp id="datxmp".*?>)[^]*?(?=<\/xmp>)/im, (m, c1) => c1 + "\n" + dentr.value + "\n")
         .replace(/^(<pre id="recon">)[^]*?(?=<\/pre>)/im, "$1")
         .replace( /^(<div id="cgrid".*?>\n *<pre id="quad1A".*?>)[^]*?(<\/pre><pre id="quad1B".*?>)[^]*?(<\/pre>\n *<pre id="quad2A".*?>)[^]+?(?=\n<\/div>)/im,
           '$1$2$3</pre><pre id="quad2B" contenteditable=true></pre>\n  <ul id="symlist" class="is-hidden"></ul>' )
@@ -440,7 +440,7 @@ let q2Bcopy, q2Bhtml,
       [cgrid, xctrls].forEach(e => e.classList.toggle("is-hidden"));
     } else if (/[45]/.test(idx)) {
       gridAdj(idx);
-    } else if (idx === 6 && ((xsetlist || "").value || !dentry.value)) {
+    } else if (idx === 6 && ((xsetlist || "").value || !dentr.value)) {
       viewSet();
     } else if (idx === 7) {
       calcCopy();
@@ -458,9 +458,9 @@ let q2Bcopy, q2Bhtml,
   },
   xprsEval = () => {
     v0set ? (recon.textContent = "") : ++v0set && !val0s.length || ((xsetlist || {}).value = "")
-      || val0s.forEach(v => v && (dentry.value = dentry.value.replace(v[0], v[1])));
+      || val0s.forEach(v => v && (dentr.value = (dentr.value || "").replace(v[0], v[1])));
     let $ = {}, _ = {}, _ks = [], rslt,
-      xprsns = (dentry.value || "")
+      xprsns = (dentr.value || "")
         .replace(/^\/\*(?:\s*?\n|)([^]*?)\n?[\t ]*\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
         .replace(/^(?:[^\n\/]|\/(?!\/))+;(?= *\/\/$|$)/gm, "$& \"\"")
         .replace(/&Tab;/g, "\t").replace(/(?:[^$.\wÀ-Ͽ]|^)\$(?=[$_a-zÀ-Ͽ])/gi, "$&.")
@@ -549,8 +549,8 @@ let q2Bcopy, q2Bhtml,
         rnge = rnge < 0.15 ? 0 : rnge > 0.85 ? 1 : rnge;
         document.querySelector('#scrnmask').className = symlist.className = "";
         q2Bcopy = quad2B.innerHTML;
-        quad2B.innerHTML = (dentry.value || "").replace(/&(?=#?\w+;)/g, "&amp;")
-          .replace(/<(?=[!/?a-z])/gi, "&lt;") + (!dentry.value ? "" : "\n<br>");
+        quad2B.innerHTML = (dentr.value || "").replace(/&(?=#?\w+;)/g, "&amp;")
+          .replace(/<(?=[!/?a-z])/gi, "&lt;") + (!dentr.value ? "" : "\n<br>");
         !(q2Bhtml = quad2B.innerHTML)
         || window.getSelection().setPosition( quad2B.firstChild, !rnge ? 0
           : quad2B.textContent.indexOf("\n", quad2B.textContent.length * rnge - 1) + 1 );
@@ -564,7 +564,7 @@ let q2Bcopy, q2Bhtml,
       helpClr();
       document.querySelector('#scrnmask').className = symlist.className = "is-hidden";
       q2Bcopy = q2Bhtml = null;
-      dentry.value = quad2B.innerText.replace(/\n+$|^\n+/g, "")
+      dentr.value = quad2B.textContent //.replace(/\n+$|^\n+/g, "")
         .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/\\t/g, "\t"));
       xprsEval();
     }
@@ -573,7 +573,7 @@ let q2Bcopy, q2Bhtml,
     : window.fetch(dload, { credentials: 'omit' })
       .then( resp => /\.json$|^https?:\/\/\w[\w.:-]*\/\w[\w-]*\/\w[\w!.*+~-]*$/.test(dload)
         ? resp.json() : resp.text() )
-      .then( val => dentry.value = val == null ? "" : val.content
+      .then( val => dentr.value = val == null ? "" : val.content
         || (typeof val !== 'object' ? "" + val : "// " + JSON.stringify(val)) )
       .then(xprsEval).catch(respShow),
   xsetLoad = (evt = { target: "" }) => {
@@ -582,9 +582,9 @@ let q2Bcopy, q2Bhtml,
     if (!evt.target.id && /^https?:\/\/.+$/.test(dload)) {
       return initLoad();
     } else if (evt.target.id === "xsetlist" && !xsetlist.value) {
-      xsetlist.value = xsetinp.value = dentry.value = "";
+      xsetlist.value = xsetinp.value = dentr.value = "";
       return xprsEval();
-    } else if (evt.target.id === "xsetinp" && dentry.value) {
+    } else if (evt.target.id === "xsetinp" && dentr.value) {
       return xsetlist.value === xsetinp.value.replace(/.+\//, "")
       || xsetlist.value === xsetinp.value
       || (xsetlist.value = "");
@@ -597,10 +597,10 @@ let q2Bcopy, q2Bhtml,
     xsetinp.value && (!xsetlist.value || xsetlist.value === xsetinp.value.replace(/.+\//, ""))
     || (xsetinp.value = (optg === "USERdata/" ? "" : optg) + xsetlist.value);
     !optg || ( optg !== "USERdata/"
-    ? ( dentry.value = ((xstor[optg.replace(/\/$/, "")] || "")[xsetlist.value] || "")
+    ? ( dentr.value = ((xstor[optg.replace(/\/$/, "")] || "")[xsetlist.value] || "")
       .replace(/\n+$|^\n+/g, "") ) && xprsEval()
     : !window.localforage || localforage.getItem(xsetinp.value)
-      .then( val => dentry.value = val == null ? "" : val.content
+      .then( val => dentr.value = val == null ? "" : val.content
         || (typeof val !== 'object' ? "" + val : "// " + JSON.stringify(val)) )
       .then(xprsEval)
       .catch(respShow) );
@@ -620,7 +620,7 @@ let q2Bcopy, q2Bhtml,
     helpClr();
     xsetinp.value = xsetinp.value.trim();
     !xsetinp.value || !window.localforage
-    || localforage.setItem(xsetinp.value, dentry.value)
+    || localforage.setItem(xsetinp.value, dentr.value)
       .then( () => xlstGen(xsetinp.value)
         && (xcshelp.innerHTML = "Expression set is saved in local storage.")
         && xcshelp.classList.add("isucc") )
@@ -637,8 +637,8 @@ let q2Bcopy, q2Bhtml,
       .catch(respShow);
   };
 window.xstor = {};
-window.dentry = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
-  || { value: datxmp.innerHTML.replace(/\n+$|^\n+/g, "") };
+window.dentr = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
+  || { value: datxmp.textContent };
 window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
   /^jsrcs=./.test(qi) ? (jsrcs = window.decodeURIComponent(qi.replace(/^jsrcs=/, "")).split(/[ ,]+/))
   : /^cmods=./.test(qi) ? (cmods = window.decodeURIComponent(qi.replace(/^cmods=/, "")).split(/[ ,]+/))
