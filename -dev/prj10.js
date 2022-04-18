@@ -115,7 +115,8 @@ Array.from(Array(5).keys())
 // respShow( Object.fromEntries( Object.entries(SourceDiff).map(oe => [oe[0], oe[1].toString()]) ))
 // respShow(Array.from(document.querySelectorAll('[id]')).map(e => e.id))
 // respShow( document.querySelectorAll('script')[2].textContent.replace( /^(?:const|let|var|window\\.| ) ?\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)\\n|^function +(\\w+.).+|(.*\\n|.+)/gim, (m, c1, c2) => c2 ? "" : c1 || m.replace(/(?:[^=a-z]|= *(?=\\d+[,;]|""|''|\\[\\]|\\{\\})|[a-z](?!\\w* *[.,;=]))*(?:\\n|=.+|((?:window\\.|)\\w+.))/gi, "$1") ).trim().split(/[^.\\w]/) ) //
-// fetch("../-app-eco/eco-ctrl.js").then(r => r.text()).then( s => s.replace( /^(?:const|let|var|window\\.| ) ?\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)\\n|^function +(\\w+.).+|(.*\\n|.+)/gim, (m, c1, c2) => c2 ? "" : c1 || m.replace(/(?:[^=a-z]|= *(?=\\d+[,;]|""|''|\\[\\]|\\{\\})|[a-z](?!\\w* *[.,;=]))*(?:\\n|=.+|((?:window\\.|)\\w+.))/gi, "$1") ).trim().split(/[^.\\w]/) ).then(respShow).catch(respShow) //
+// fetch("../-app-eco/eco-ctrl.js").then(r => r.text()).then( s => s.replace( /^(?:const|let|var| ) ?\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)\\n|^(?:function +|(?=window\\.))((?:window\\.|)\\w+.)(?:.+;$|[^]+?\\n[\\]}];?\\n)|(.*\\n|.+)/gim, (m, c1, c2) => c2 ? "" : c1 || m.replace(/(?:[^=a-z]|= *(?=\\d+[,;]|""|''|\\[\\]|\\{\\})|[a-z](?!\\w* *[.,;=]))*(?:\\n|=.+|(\\w+.))/gi, "$1") ).trim().split(/[^.\\w]/) ).then(respShow).catch(respShow) //
+// fetch("../-app-eco/eco-ctrl.js").then(r => r.text()).then(s => s.replace(/[^]+\\n(function srcvPrep.+(?:\\n.+)+?(?:}[;,]?|[;,](?=\\n[\\n\\S]))\\n)[^]+/, "$1")).then(respShow).catch(respShow) //
 //`;
 
 const bcaches = `//
