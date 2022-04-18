@@ -941,7 +941,7 @@ function msgHandl(msg) {
   msg instanceof Error && window.console.error(msg);
   document.querySelector('#econav0 #qcontxta').value
   += "\n\n  * * * * *\n" + msgPrefmt(msg).trim().replace(/^/gm, "  ") + "\n  * * * * *\n";
-};
+}
 
 function jsonParse(jobj) {
   try { return (jobj = JSON.parse(jobj)) != null && typeof jobj === 'object' ? jobj
@@ -1014,13 +1014,13 @@ function indrChg(elm, val, ref) {
   || !(/is-warning/.test(elm.className) || ref != null || (eq = true))
   || elm.classList.remove(eq ? "is-warning" : "is-success")
   || elm.classList.add(!eq ? "is-warning" : "is-success");
-};
+}
 
 function updDisbl() {
   document.querySelectorAll('#econav0 #fupdbtnc>button, #ecoesp0 #pchbtn')
   .forEach(e => e.disabled = true);
   msgHandl(ECOINSTR[6]);
-};
+}
 
 function tswapHide() {
   fldfoc = null;
@@ -1041,7 +1041,7 @@ function xsrcTog() {
     ebran1.classList.remove("has-text-link", eb1dflt);
     ebran1.classList.add("has-text-danger");
   }
-};
+}
 
 function influxSet(yes) {
   let fgenbtns = document.querySelectorAll('#ecoguides .button, #ecoesp0 #tooltypes .button'),
@@ -1498,7 +1498,8 @@ function pfsListGen(fileref, publupd, filelf) {
     lflistGen = keys => { // note: unexpected lf behavior because of promise-wrap
       !keys || !keys.length ? dbsallGet()
       : Promise.all( keys.map( k => localforage.getItem(k).then( val =>
-        [ !(sdir = val.loc_subdir || (val.file_updated || val.file_created || "").subdir)
+        [ !(val = jsonParse(val))
+          || !(sdir = val.loc_subdir || (val.file_updated || val.file_created || "").subdir)
           ? "" : sdir + "/", k ] )))
       .then(els => context.fileslf = els.sort())
       .then(dbsallGet)
@@ -1678,7 +1679,7 @@ function swapListGen() {
 function jdePtyGen(rowslr, plai, plbgi) {
   let pi, j2e, jdsela, j2sela, jdselb, jdstr, jdinp, jdval, j2esleft, plax, plbx,
     sdirinp = document.querySelector('#ecoesp0 #sdirinp'),
-    jfidinp = document.querySelector('#ecoesp0 #jfidinp'),
+    pfidinp = document.querySelector('#ecoesp0 #pfidinp'),
     versinp = document.querySelector('#ecoesp0 #versinp'),
     ownrinp = document.querySelector('#ecoesp0 #ownrinp'),
     peoptxta = document.querySelector('#ecoesp0 #peoptxta'),
@@ -1849,11 +1850,11 @@ function jdePtyGen(rowslr, plai, plbgi) {
     peoptxta.disabled || indrChg(peoptxta, "" + jfw.contributors, peoptxta.value);
     misctxta.disabled || indrChg(misctxta, jfw.file_updated.misc);
   } else if (filewkg) {
-    [sdirinp, jfidinp, versinp, ownrinp, peoptxta, misctxta]
+    [sdirinp, pfidinp, versinp, ownrinp, peoptxta, misctxta]
     .forEach( e => e.disabled || ["is-warning", "is-success"].forEach(f => e.classList.remove(f))
       || (e.value = "") || (e.disabled = 1) );
-    delswi.checked = delswi.disabled = jfidinp.disabled = 0;
-    jfidinp.value = jfw._id;
+    delswi.checked = delswi.disabled = pfidinp.disabled = 0;
+    pfidinp.value = jfw._id;
     !(jfw.file_updated || jfw.hasOwnProperty("loc_subdir")) || (sdirinp.disabled = 0)
     || (sdirinp.value = !jfw.file_updated ? jfw.loc_subdir : jfw.file_updated.subdir);
     if (jfw.file_updated) {
@@ -1903,7 +1904,7 @@ function rmtListGen() {
 
 function fwResets(invalid) {
   let eftypes = document.querySelectorAll('#ecoesp0 #tooltypes>.eftype'),
-    metas = document.querySelectorAll('#ecoesp0 #sdirinp, #ecoesp0 #jfidinp, #ecoesp0 #versinp, #ecoesp0 #ownrinp, #ecoesp0 #peoptxta, #ecoesp0 #misctxta, #ecoesp0 #delswi');
+    metas = document.querySelectorAll('#ecoesp0 #sdirinp, #ecoesp0 #pfidinp, #ecoesp0 #versinp, #ecoesp0 #ownrinp, #ecoesp0 #peoptxta, #ecoesp0 #misctxta, #ecoesp0 #delswi');
   lnkstor = [];
   filewkg = reniscurr = tmp1pc = tmp1ff
   = document.querySelector('#ecoesp0 #jdepty').innerHTML
@@ -3523,7 +3524,7 @@ pfsInp(noflux, btnsdis) { // also triggered by jdePtyGen, dataDispl, metaChg, sw
     btnfupd = document.querySelector('#econav0 #fupdbtnc>button'),
     pchbtn = document.querySelector('#ecoesp0 #pchbtn'),
     sdirinp = document.querySelector('#ecoesp0 #sdirinp'),
-    jfidinp = document.querySelector('#ecoesp0 #jfidinp');
+    pfidinp = document.querySelector('#ecoesp0 #pfidinp');
   if (fileref.replace(/^(?:\.\.\/|)(?:.*\/(?=.)|)/, "") !== pfsref) { // allow file creation/duplication
     pfsflg1.classList.add("is-hidden");
     pfsflg1.classList.remove("has-text-warning", "has-text-danger");
@@ -3534,9 +3535,9 @@ pfsInp(noflux, btnsdis) { // also triggered by jdePtyGen, dataDispl, metaChg, sw
     dirref = fileref.replace(/^(?:\.\.\/|)\.?(-?\w.*)\/.+|.+/, "$1");
     sdirinp.disabled || indrChg( sdirinp,
       (!filewkg.file_updated ? filewkg.loc_subdir : filewkg.file_updated.subdir) || "", dirref );
-    jfidinp.value = fileref.replace(/\/$|^(?:\.\.\/|)(?:.*\/(?=.)|)/g, "");
-    filewkg.file_type !== "eco-assets" || (jfidinp.value = jfidinp.value.replace(/^(?=\w)/, "."));
-    indrChg(jfidinp, filewkg._id, jfidinp.value);
+    pfidinp.value = fileref.replace(/\/$|^(?:\.\.\/|)(?:.*\/(?=.)|)/g, "");
+    filewkg.file_type !== "eco-assets" || (pfidinp.value = pfidinp.value.replace(/^(?=\w)/, "."));
+    indrChg(pfidinp, filewkg._id, pfidinp.value);
   }
   if (noflux) {
     influxSet(2);
@@ -3883,9 +3884,9 @@ metaChg(evt, pty) {
   if (!evt) {
     let pfsinp = document.querySelector('#econav0 #pfsinp'),
       sdirinp = document.querySelector('#ecoesp0 #sdirinp'),
-      jfidinp = document.querySelector('#ecoesp0 #jfidinp');
+      pfidinp = document.querySelector('#ecoesp0 #pfidinp');
     pfsinp.value = sdirinp.value + (!sdirinp.value ? "" : "/")
-    + jfidinp.value.replace(/\/$|^\.(?=\w)/g, "") + (!/^[.-]./.test(jfidinp.value) ? "" : "/");
+    + pfidinp.value.replace(/\/$|^\.(?=\w)/g, "") + (!/^[.-]./.test(pfidinp.value) ? "" : "/");
     EC1.pfsInp();
   } else {
     ["is-warning", "is-success"].forEach(e => evt.target.classList.remove(e));

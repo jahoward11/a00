@@ -2856,7 +2856,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
       <div class="field is-grouped">
         <label class="control label has-text-right has-text-grey">file ID</label>
         <span class="control">
-          <input type="text" id="jfidinp" class="input" onfocus="EC1.formFoc()" onchange="EC1.metaChg()" disabled />
+          <input type="text" id="pfidinp" class="input" onfocus="EC1.formFoc()" onchange="EC1.metaChg()" disabled />
         </span>
       </div>
       <div class="field is-grouped">
@@ -3997,8 +3997,6 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
           <option>screen.width</option>
           <option>location.href</option>
           <option>navigator.onLine</option>
-          <option>navigator.userAgent</option>
-          <option>navigator.userAgentData</option>
           <option>
             Object.fromEntries(
 &#x2028; ["onLine", "appCodeName", "appName", "platform", "product", "vendor", "userAgent", "userAgentData"]
@@ -4036,9 +4034,10 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
           <option>document.querySelector('#ecolinks').innerHTML</option>
           <option>document.querySelector('#iniscripts').innerHTML.replace(/(?=&lt;\w)/g, "\n")</option>
           <option>document.querySelector('#iniscripts&gt;script:last-child').outerHTML</option>
-          <option>sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.querySelector('#iniscripts').appendChild(n); }</option>
           <option>document.querySelector('#ecoscripts').innerHTML</option>
+          <option>document.querySelector('body&gt;script:last-child').outerHTML</option>
           <option>Array.from(document.querySelectorAll('script')).map(e => e.src)</option>
+          <option>sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.querySelector('#iniscripts').appendChild(n); }</option>
           <option>getComputedStyle(document.documentElement).width</option>
           <option>getComputedStyle(document.documentElement).font</option>
           <option>Array.from(document.styleSheets).map(ss =&gt; ss.href)</option>
@@ -4051,10 +4050,10 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 &#x2028; keys.map(k =&gt; ({ url: k.url, mode: k.mode, dest: k.destination })) )))
           </option>
           <option>
-            fetch("./eco-ctrl.js").then(r => r.text())
-&#x2028; .then( s => s.replace( /^(?:const|let|var|window\.| ) ?\b[ ,\w]+(?: *= .+|);?(?: *\/\/ *|)\n|^function (\w+.).+|(.*\n|.+)/gim,
-&#x2028; (m, c1, c2) => c2 ? "" : c1 || m.replace(/(?:[^=a-z]|= *(?=\d+[,;]|""|''|\[\]|\{\})|[a-z](?!\w* *[.,;=]))*(?:\n|=.+|((?:window\.|)\w+.))/gi, "$1") )
-&#x2028; .trim().split(/[^.\w]/) )
+            fetch("./eco-ctrl.js").then(r => r.text()).then( s => s
+&#x2028;  .replace( /^(?:const|let|var| ) ?\b[ ,\w]+(?: *= .+|);?(?: *\/\/ *|)\n|^(?:function +|(?=window\.))((?:window\.|)\w+.)(?:.+;$|[^]+?\n[\]}];?\n)|(.*\n|.+)/gim,
+&#x2028;    (m, c1, c2) => c2 ? "" : c1 || m.replace(/(?:[^=a-z]|= *(?=\d+[,;]|""|''|\[\]|\{\})|[a-z](?!\w* *[.,;=]))*(?:\n|=.+|((?:window\.|)\w+.))/gi, "$1") )
+&#x2028;  .trim().split(/[^.\w]/) )
           </option>
           <option>
             Object.keys(window).filter( pty =&gt;
