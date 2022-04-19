@@ -1498,7 +1498,7 @@ function pfsListGen(fileref, publupd, filelf) {
     lflistGen = keys => { // note: unexpected lf behavior because of promise-wrap
       !keys || !keys.length ? dbsallGet()
       : Promise.all( keys.map( k => localforage.getItem(k).then( val =>
-        [ !(val = jsonParse(val))
+        [ typeof val !== 'object' && !(val = jsonParse(val))
           || !(sdir = val.loc_subdir || (val.file_updated || val.file_created || "").subdir)
           ? "" : sdir + "/", k ] )))
       .then(els => context.fileslf = els.sort())
