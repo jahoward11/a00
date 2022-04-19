@@ -929,7 +929,7 @@ function msgPrefmt(msg, con) {
   let robj, stk;
   return !msg || typeof msg === 'function' || msg instanceof RegExp ? "" + msg
   : msg instanceof XMLHttpRequest
-    ? ( !(/^{['"].+}$/.test(msg.response) && (robj = jsonParse(msg.response)))
+    ? ( !(/^{".+}$/.test(msg.response) && (robj = jsonParse(msg.response)))
       ? msg.response : JSON.stringify(robj, null, 2) )
   : typeof msg !== 'object' || msg instanceof Promise
     || msg instanceof Error && msg.constructor && !msg.reason
@@ -1498,7 +1498,7 @@ function pfsListGen(fileref, publupd, filelf) {
     lflistGen = keys => { // note: unexpected lf behavior because of promise-wrap
       !keys || !keys.length ? dbsallGet()
       : Promise.all( keys.map( k => localforage.getItem(k).then( val =>
-        [ typeof val !== 'object' && !(val = jsonParse(val))
+        [ !/^{".+}$/.test(val) || !(val = jsonParse(val))
           || !(sdir = val.loc_subdir || (val.file_updated || val.file_created || "").subdir)
           ? "" : sdir + "/", k ] )))
       .then(els => context.fileslf = els.sort())
@@ -1963,7 +1963,7 @@ function rsrcsXGet(txdata = {}) {
       } else if (/^\/\/.+$/.test(txdata.FILEID) && window.localforage) {
         // note: unexpected lf behavior because of promise-wrap
         return localforage.getItem(txdata.FILEID.replace(/^\/\//, ""))
-        .then(val => !/^{['"].+}$/.test(val) ? val : (jsonParse(val) || "").content).catch(msgPrefmt);
+        .then(val => !/^{".+}$/.test(val) ? val : (jsonParse(val) || "").content).catch(msgPrefmt);
       } else if (/^\$ *\w*(?:\b[.(].+|)$/.test(txdata.FILEID)) {
         aobj = EC2.objQA(txdata.FILEID.replace(/^\$ */, ""), 1);
         return aobj == null ? ""
@@ -2304,7 +2304,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         .catch(() => scrInj(a3i))
       : scrInj(a3i);
     };
-  if ( typeof udata === 'string' && /^{\s*['"][^]+}$|^\[[^]+\]$/.test(udata.trim())
+  if ( typeof udata === 'string' && /^{\s*"[^]+}$|^\[[^]+\]$/.test(udata.trim())
   && (udobj = jsonParse(udata)) ) {
     return dataDispl(udobj, destindr, cbfnc, cfgs);
   }
@@ -2533,7 +2533,7 @@ function annosGet(fileref = "") {
     .then( keys => Promise.all(
       keys.map( k => !/\*\(\d+\)$/.test(k) && localforage.getItem(k)
         .then(val => {
-          if ( /^{['"].+}$/.test(val) && (lnkr = (val = jsonParse(val) || "").linkref)
+          if ( /^{".+}$/.test(val) && (lnkr = (val = jsonParse(val) || "").linkref)
           && typeof lnkr === 'string' && fileref.indexOf(lnkr) > -1 ) {
             fcps.push({
               unm: (val.file_created || "").username,
@@ -2707,11 +2707,11 @@ function txdPrep(filepath) {
 //   - acct-arr is always returned (unless _-key/idx/DBNAME is provided)
 //   - & is used only by couchSync as fallback -- only when txdata is unempty but misfmt'd for sync-ops
   let valcon = document.querySelector('#econav0 #qcontxta').value.trim(),
-    txdata = /^{\s*['"][^]+}$|^\[[^]*{\s*['"][^]+}\s*\]$/.test(valcon) && jsonParse(valcon) || {},
+    txdata = /^{\s*"[^]+}$|^\[[^]*{\s*"[^]+}\s*\]$/.test(valcon) && jsonParse(valcon) || {},
     txsjson = localStorage[ /^_(?!\.\d+$)[\w!.*+~-]+$/.test(valcon)
       ? valcon.replace(/\.\d+$/, "") : "_couchaccts" ],
-    loadobj = /^{['"].+}$/.test(txsjson) && jsonParse(txsjson)
-      || /^\[.*{['"].+}\]$/.test(txsjson)
+    loadobj = /^{".+}$/.test(txsjson) && jsonParse(txsjson)
+      || /^\[.*{".+}\]$/.test(txsjson)
       && ( /^(?:_.*\.|)\d+$|^(?!_)[\w!.*+~-]+$/.test(valcon)
         && ( (jsonParse(txsjson) || "")[valcon.replace(/^(?:_.*\.|)(\d+)$/, "$1")]
         || (jsonParse(txsjson) || []).find(e => e.DBNAME === valcon) ) || jsonParse(txsjson) )
@@ -3487,7 +3487,7 @@ pfsSel(resel, cbfnc) { // also triggered by pfsResets, pfsListGen, couchAtt, tmp
           msgHandl(err);
         } else {
           influxSet(false);
-          dataDispl(val || "", resel ? false : null);
+          dataDispl(val, resel ? false : null);
         } // catch all
       });
     } else if ((flgapp = optg === "APP templates") || /^TEAM (?:data visuals|templates)$/.test(optg)) {
@@ -5057,9 +5057,9 @@ logOut() {
   localStorage["_couchaccts"] || !localStorage["_couchdbaccts"]
   || (localStorage["_couchaccts"] = localStorage["_couchdbaccts"])
   && localStorage.removeItem("_couchdbaccts"); // temp cleanup
-  !/^\[.*{['"].+}\]$/.test(localStorage["_couchaccts"] || "")
+  !/^\[.*{".+}\]$/.test(localStorage["_couchaccts"] || "")
   || (caccts = (jsonParse(localStorage["_couchaccts"]) || []).filter(e => e && typeof e === 'object'));
-  !/^{['"].+}$/.test(localStorage["_ecopresets"])
+  !/^{".+}$/.test(localStorage["_ecopresets"])
   || (epsets = jsonParse(localStorage["_ecopresets"]));
   epsets && ["dbdflt", "prvmode", "hlstyle", "discload", "discdays", "tabsdflt", "swapchks", "appchks"]
     .every(pty => epsets.hasOwnProperty(pty))
