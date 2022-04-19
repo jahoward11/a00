@@ -3294,7 +3294,7 @@ pdbInp() {
   }
 },
 navTog() { // also triggered by attSel, tabs0Tog, formFoc
-  document.querySelector('#navscreenmask').classList.toggle("is-hidden");
+  document.querySelector('#navscrmask').classList.toggle("is-hidden");
   document.querySelectorAll('#econav0 .navbar-burger, #econav0>#econavbar')
   .forEach(e => e.classList.toggle("is-active"));
 },
