@@ -2394,7 +2394,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       !cbfnc || cbfnc();
     }).catch(msgHandl);
   } else if (destindr === 2) { // load 2nd file for pty diffs
-    file2nd = typeof udata !== 'object' ? null
+    file2nd = typeof udata !== 'object' ? {}
       : Object.assign( Array.isArray(udata) ? []
         : !udata.hasOwnProperty("_id") && (!filewkg || !filewkg.hasOwnProperty("_id"))
         ? {} : { _id: "", _rev: "" }, udata );
@@ -4292,7 +4292,7 @@ ibmConnect() {
 wdGen(pdata) { return webdocGen(1, pdata); },
 u2Blob(url) { // also triggered by dviz-memos, dviz-contacts, prjDiscGen, jdeDftGen
   return asseturls[(url || "").replace(/^\S*\//, "")] || asseturls[url]
-  || ( (url || "").replace(/^(?!https?:\/\/)\S*\//i, "")
+  || ( (url || "").replace(/^(?!https?:\/\/)\S*\//i, "") && !/^\.\.\/\.\.\/a00\//.test(url)
     && url.replace(/^\.\.\/\.\./, hostibm || a00orig) ) || url;
 },
 objQA(key = "", fbx) { // also triggered by dviz-memos, rsrcsXGet, qconRetrvD
