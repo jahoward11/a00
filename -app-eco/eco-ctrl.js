@@ -949,20 +949,6 @@ function jsonParse(jobj) {
   } catch (err) { msgHandl("Alert: Invalid JSON-object text was provided.\n" + err); }
 }
 
-function imgWrap(url) {
-  return '<link href="' + a00path
-  + '/-res-css/bulma0.9-minireset.css" type="text/css" rel="stylesheet" />'
-  + '\n<section class="section">\n<main class="container content">\n  <figure><img src="'
-  + url + '" /></figure>\n</main>\n</section>\n';
-}
-
-function srcvPrep(str = "", lang) {
-  let ntxta = document.createElement('textarea');
-  ntxta.textContent = str = "" + str;
-  return !window.hljs || lang === "nohighlight" ? ntxta.innerHTML
-  : !lang ? hljs.highlightAuto(str).value : hljs.highlight(lang, str, true).value;
-}
-
 function rdataFetch(txdata = {}, idx = 0) {
   let prms = txdata.prms;
   !prms || typeof prms !== 'object'
@@ -985,6 +971,20 @@ function rdataFetch(txdata = {}, idx = 0) {
   .then( resp => resp[ txdata.bmts && txdata.bmts[idx] || txdata.bmet
     || ( /^blob:|\.giff?$|\.jpe?g$|\.png$/.test(txdata.url) ? 'blob'
     : /\.json$/.test(txdata.url) ? 'json' : 'text' ) ]() );
+}
+
+function imgWrap(url) {
+  return '<link href="' + a00path
+  + '/-res-css/bulma0.9-minireset.css" type="text/css" rel="stylesheet" />'
+  + '\n<section class="section">\n<main class="container content">\n  <figure><img src="'
+  + url + '" /></figure>\n</main>\n</section>\n';
+}
+
+function srcvPrep(str = "", lang) {
+  let ntxta = document.createElement('textarea');
+  ntxta.textContent = str = "" + str;
+  return !window.hljs || lang === "nohighlight" ? ntxta.innerHTML
+  : !lang ? hljs.highlightAuto(str).value : hljs.highlight(lang, str, true).value;
 }
 
 function emodeSet() {
