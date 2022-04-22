@@ -482,7 +482,7 @@ let q2Bcopy, q2Bhtml,
     || qrys.push("title=" + window.encodeURIComponent(cheadg.textContent));
     !(xsetlist || "").value || qrys.push("dload=" + window.encodeURIComponent(xsetlist.value));
     quad2B.click();
-    (xsetinp || "").value = quad2A.innerHTML = quad1B.innerHTML = quad1A.innerHTML = "";
+    (xsetinp || {}).value = quad2A.innerHTML = quad1B.innerHTML = quad1A.innerHTML = "";
     quad2B.innerHTML = "// __To preserve view settings to URL:__"
     + "\\n// 1. Edit &amp; un-comment settings, below --"
     + "\\n   // combining desired parts into a one-line expression."
@@ -500,7 +500,7 @@ let q2Bcopy, q2Bhtml,
     + "\\n  // dload= | load specified data set into *ENTRY* field"
     + "\\n  // val0s= | re-assign initial values of pre-loaded data set"
     + "\\n  // jsrcs= | inject supplemental JavaScript resources\\n\\n// "
-    + (dentry.type ? "window_location_search" : "window.location.search") + " = \\"" + qrys.join("&")
+    + (dentr.type ? "window_location_search" : "window.location.search") + " = \\"" + qrys.join("&")
     + "\\"\\n // + \\"" + (!qrys.length ? "" : "&") + "cmods=\\" + encodeURIComponent(\\"3,5,prj42.mjs\\")"
     + ((xsetlist || "").value ? "" : "\\n // + \\"&dload=\\" + encodeURIComponent(\\"https://host/pathname\\")")
     + "\\n // + \\"&val0s=\\" + encodeURIComponent(\\"a:10,b:20,c:30\\")"
@@ -513,7 +513,7 @@ let q2Bcopy, q2Bhtml,
       + (document.querySelector('#ecorender') || document.documentElement).innerHTML
         .replace(/\\n+$|^\\n+|^<head>\\n?|^#cmain \\.iwarn[^]+?\\n(?=@media print {\\n)|,\\n *xsetLoad = [^]+?(?=;\\nwindow\\.xstor =)|^ *!\\/\\^http.+xlstGen[^]+?;\\n|\\n*<script\\b.*><\\/script>(?=$|<\\/body>)|\\n?<\\/body>$/gim, "")
         .replace(/^(<\\/style>)[^]*?(?=<div .+><\\/div>$)/im, "$1\\n</head>\\n<body>\\n")
-        .replace(/^(<xmp id="datxmp".*?>)[^]*?(?=<\\/xmp>)/im, (m, c1) => c1 + "\\n" + dentry.value + "\\n")
+        .replace(/^(<xmp id="datxmp".*?>)[^]*?(?=<\\/xmp>)/im, (m, c1) => c1 + "\\n" + dentr.value + "\\n")
         .replace(/^(<pre id="recon">)[^]*?(?=<\\/pre>)/im, "$1")
         .replace( /^(<div id="cgrid".*?>\\n *<pre id="quad1A".*?>)[^]*?(<\\/pre><pre id="quad1B".*?>)[^]*?(<\\/pre>\\n *<pre id="quad2A".*?>)[^]+?(?=\\n<\\/div>)/im,
           '$1$2$3</pre><pre id="quad2B" contenteditable=true></pre>\\n  <ul id="symlist" class="is-hidden"></ul>' )
@@ -541,7 +541,7 @@ let q2Bcopy, q2Bhtml,
       [cgrid, xctrls].forEach(e => e.classList.toggle("is-hidden"));
     } else if (/[45]/.test(idx)) {
       gridAdj(idx);
-    } else if (idx === 6 && ((xsetlist || "").value || !dentry.value)) {
+    } else if (idx === 6 && ((xsetlist || "").value || !dentr.value)) {
       viewSet();
     } else if (idx === 7) {
       calcCopy();
@@ -558,10 +558,10 @@ let q2Bcopy, q2Bhtml,
     evt.preventDefault();
   },
   xprsEval = () => {
-    v0set ? (recon.textContent = "") : ++v0set && !val0s.length || ((xsetlist || "").value = "")
-      || val0s.forEach(v => v && (dentry.value = dentry.value.replace(v[0], v[1])));
+    v0set ? (recon.textContent = "") : ++v0set && !val0s.length || ((xsetlist || {}).value = "")
+      || val0s.forEach(v => v && (dentr.value = (dentr.value || "").replace(v[0], v[1])));
     let $ = {}, _ = {}, _ks = [], rslt,
-      xprsns = (dentry.value || "")
+      xprsns = (dentr.value || "")
         .replace(/^\\/\\*(?:\\s*?\\n|)([^]*?)\\n?[\\t ]*\\*\\/$/gm, (m, c1) => c1.replace(/^[\\t ]*/gm, "$&//"))
         .replace(/^(?:[^\\n\\/]|\\/(?!\\/))+;(?= *\\/\\/$|$)/gm, "$& \\"\\"")
         .replace(/&Tab;/g, "\\t").replace(/(?:[^$.\\wÀ-Ͽ]|^)\\$(?=[$_a-zÀ-Ͽ])/gi, "$&.")
@@ -650,8 +650,8 @@ let q2Bcopy, q2Bhtml,
         rnge = rnge < 0.15 ? 0 : rnge > 0.85 ? 1 : rnge;
         document.querySelector('#scrnmask').className = symlist.className = "";
         q2Bcopy = quad2B.innerHTML;
-        quad2B.innerHTML = (dentry.value || "").replace(/&(?=#?\\w+;)/g, "&amp;")
-          .replace(/<(?=[!/?a-z])/gi, "&lt;") + (!dentry.value ? "" : "\\n<br>");
+        quad2B.innerHTML = (dentr.value || "").replace(/&(?=#?\\w+;)/g, "&amp;")
+          .replace(/<(?=[!/?a-z])/gi, "&lt;") + (!dentr.value ? "" : "\\n<br>");
         !(q2Bhtml = quad2B.innerHTML)
         || window.getSelection().setPosition( quad2B.firstChild, !rnge ? 0
           : quad2B.textContent.indexOf("\\n", quad2B.textContent.length * rnge - 1) + 1 );
@@ -661,11 +661,11 @@ let q2Bcopy, q2Bhtml,
       quad2B.innerHTML = q2Bcopy;
       q2Bcopy = q2Bhtml = null;
     } else if (!symlist.className) {
-      (xsetlist || "").value = "";
+      (xsetlist || {}).value = "";
       helpClr();
       document.querySelector('#scrnmask').className = symlist.className = "is-hidden";
       q2Bcopy = q2Bhtml = null;
-      dentry.value = quad2B.innerText.replace(/\\n+$|^\\n+/g, "")
+      dentr.value = quad2B.innerText.replace(/\\n+$|^\\n+/g, "")
         .replace(/^.*?(?=\\/\\/|$)/gm, m => m.replace(/\\\\t/g, "\\t"));
       xprsEval();
     }
@@ -674,12 +674,12 @@ let q2Bcopy, q2Bhtml,
     : window.fetch(dload, { credentials: 'omit' })
       .then( resp => /\\.json$|^https?:\\/\\/\\w[\\w.:-]*\\/\\w[\\w-]*\\/\\w[\\w!.*+~-]*$/.test(dload)
         ? resp.json() : resp.text() )
-      .then( val => dentry.value = val == null ? "" : val.content
+      .then( val => dentr.value = val == null ? "" : val.content
         || (typeof val !== 'object' ? "" + val : "// " + JSON.stringify(val)) )
       .then(xprsEval).catch(respShow);
 window.xstor = {};
-window.dentry = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
-  || { value: datxmp.innerHTML.replace(/\\n+$|^\\n+/g, "") };
+window.dentr = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
+  || { value: datxmp.textContent };
 window.location.search.replace(/^\\?/, "").split("&").forEach( qi =>
   /^jsrcs=./.test(qi) ? (jsrcs = window.decodeURIComponent(qi.replace(/^jsrcs=/, "")).split(/[ ,]+/))
   : /^cmods=./.test(qi) ? (cmods = window.decodeURIComponent(qi.replace(/^cmods=/, "")).split(/[ ,]+/))
@@ -864,7 +864,7 @@ main td[colspan="20"] {
   background: WhiteSmoke;
   text-align: left;
 }
-main>#recon {
+main>#r2con {
   color: Orange;
   font-size: medium;
   margin: 0;
@@ -888,11 +888,11 @@ main>#recon {
     <li value="3"><a>Deleted</a></li>
   </ul>
 </nav>
-<pre id="recon"></pre>
+<pre id="r2con"></pre>
 <nav class="level">
   <div class="level-item">
     <span>
-      <span class="has-text-weight-bold">Total:</span> <span id="rtotal">0</span>
+      <span class="has-text-weight-bold">Total:</span> <span id="ftotal">0</span>
     </span>
   </div>
   <div class="level-item">
@@ -932,7 +932,7 @@ main>#recon {
         </span>
       </span>
       <span class="control">
-        <a id="bulktrg">&#x2611;</a>
+        <a id="blktrig">&#x2611;</a>
       </span>
     </div>
   </div>
@@ -945,32 +945,38 @@ main>#recon {
         <input type="checkbox" class="is-hidden" />
       </td>
       <td>Subdir</td>
-      <td>Filename</td>
-      <td>File Type</td>
+      <td>File ID</td>
+      <td>Type</td>
       <td>Updated</td>
       <td>Up'd By</td>
       <td>Up'd Ver</td>
-      <td>Up'd Notes</td>
+      <td>Up'd Misc</td>
       <td>Created</td>
       <td>Cr'd By</td>
       <td>Cr'd Ver</td>
-      <td>Cr'd Notes</td>
-      <td>Cntrbtrs</td>
-      <td>User Name</td>
+      <td>Cr'd Misc</td>
+      <td>Full Name</td>
+      <td>Username</td>
+      <td>Roles</td>
+      <td>Groups</td>
       <td>Image</td>
       <td>Link Ref</td>
       <td>From</td>
       <td>To</td>
       <td>Subject</td>
-      <td>Att's</td>
+      <td>Headline</td>
+      <td>Time</td>
+      <td>Place</td>
+      <td>People</td>
+      <td>Attach's</td>
     </tr>
   </thead>
   <thead class="is-hidden">
     <tr>
       <td># <input type="checkbox" class="is-hidden" /></td>
       <td>Chg Seq</td>
-      <td>DB File ID</td>
-      <td>Revision #</td>
+      <td>File ID</td>
+      <td>Revision#</td>
     </tr>
   </thead>
   <tbody></tbody>
@@ -981,32 +987,38 @@ main>#recon {
         <input type="checkbox" class="is-hidden" />
       </td>
       <td>Subdir</td>
-      <td>Filename</td>
-      <td>File Type</td>
+      <td>File ID</td>
+      <td>Type</td>
       <td>Updated</td>
       <td>Up'd By</td>
       <td>Up'd Ver</td>
-      <td>Up'd Notes</td>
+      <td>Up'd Misc</td>
       <td>Created</td>
       <td>Cr'd By</td>
       <td>Cr'd Ver</td>
-      <td>Cr'd Notes</td>
-      <td>Cntrbtrs</td>
-      <td>User Name</td>
+      <td>Cr'd Misc</td>
+      <td>Full Name</td>
+      <td>Username</td>
+      <td>Roles</td>
+      <td>Groups</td>
       <td>Image</td>
       <td>Link Ref</td>
       <td>From</td>
       <td>To</td>
       <td>Subject</td>
-      <td>Att's</td>
+      <td>Headline</td>
+      <td>Time</td>
+      <td>Place</td>
+      <td>People</td>
+      <td>Attach's</td>
     </tr>
   </tfoot>
   <tfoot class="is-hidden">
     <tr>
       <td># <input type="checkbox" class="is-hidden" /></td>
       <td>Chg Seq</td>
-      <td>DB File ID</td>
-      <td>Revision #</td>
+      <td>File ID</td>
+      <td>Revision#</td>
     </tr>
   </tfoot>
 </table>
@@ -1015,39 +1027,46 @@ main>#recon {
 <script type="text/javascript">
 (function() {
 'use strict';
-let j = 0, rva0, rval, vidx = 0,
+let rva2, rval, ss0, ss1,
+  j = 0, vidx = 0,
   txd1 = {
     DBNAME: (document.querySelector('#ecoesp0 #pchlist') || "").value || null,
-    FILEID: "_design/ecosorter",
-    VIEW:   "files-idxlist",
-    OPTS:   { since: 0 }
+    FILEID: "", //"_design/ecosorter",
+    VIEW:   "", //"files-idxlist",
+    OPTS:   {} //{ since: 0 }
   },
-  sellists = [\`
-          <option value="file_updated.subdir">Subdir</option>
-          <option value="id" selected>Filename</option>
-          <option value="file_type" selected>File Type</option>
-          <option value="file_updated.timestamp" selected>Updated</option>
-          <option value="file_updated.username" selected>Up'd By</option>
-          <option value="file_updated.version" selected>Up'd Ver</option>
-          <option value="file_updated.notes">Up'd Notes</option>
+  copts = [ \`
+          <option value="subdir">Subdir</option>
+          <option value="id">File ID</option>
+          <option value="file_type">Type</option>
+          <option value="file_updated.timestamp">Updated</option>
+          <option value="file_updated.username">Up'd By</option>
+          <option value="file_updated.version">Up'd Ver</option>
+          <option value="file_updated.misc">Up'd Misc</option>
           <option value="file_created.timestamp">Created</option>
           <option value="file_created.username">Cr'd By</option>
           <option value="file_created.version">Cr'd Ver</option>
-          <option value="file_created.notes">Cr'd Notes</option>
-          <option value="contributors">Cntrbtrs</option>
-          <option value="name_user">User Name</option>
+          <option value="file_created.misc">Cr'd Misc</option>
+          <option value="name_full">Full name</option>
+          <option value="name_user">Username</option>
+          <option value="roles">Roles</option>
+          <option value="team_groups">Groups</option>
           <option value="image_src">Image</option>
           <option value="linkref">Link Ref</option>
           <option value="from">From</option>
           <option value="to">To</option>
           <option value="subject">Subject</option>
-          <option value="_attachments">Att's</option>
+          <option value="headline">Headline</option>
+          <option value="time">Time</option>
+          <option value="place">Place</option>
+          <option value="people">People</option>
+          <option value="_attachments">Attach's</option>
         \`, \`
-          <option value="seq" selected>Chg Seq</option>
-          <option value="id" selected>DB File ID</option>
-          <option value="rev" selected>Revision #</option>
-        \`],
-  strslrs = [
+          <option value="seq">Chg Seq</option>
+          <option value="id">File ID</option>
+          <option value="rev">Revision#</option>
+        \` ],
+  qslrs = [
     'main #colssel>option:nth-of-type(2), '
     + 'main thead:first-of-type td:nth-of-type(3), '
     + 'main tfoot:first-of-type td:nth-of-type(3)',
@@ -1062,7 +1081,7 @@ let j = 0, rva0, rval, vidx = 0,
     + 'main tfoot:not(.is-hidden) td:first-of-type>input'
   ],
   cmtabs = document.querySelectorAll('main>nav.tabs li'),
-  rtotal = document.querySelector('main #rtotal'),
+  ftotal = document.querySelector('main #ftotal'),
   colssel = document.querySelector('main #colssel'),
   sortsel = document.querySelector('main #sortsel'),
   descswi = document.querySelector('main #descswi'),
@@ -1070,116 +1089,96 @@ let j = 0, rva0, rval, vidx = 0,
   filtbtn = document.querySelector('main #filtbtn'),
   filtctrl = document.querySelector('main #filtctrl'),
   bulkctrl = document.querySelector('main #bulkctrl'),
-  bulktrg = document.querySelector('main #bulktrg'),
-  recon = document.querySelector('main>#recon'),
-  cmtheads = document.querySelectorAll('main thead'),
-  cmtbody = document.querySelector('main tbody'),
-  cmtfoots = document.querySelectorAll('main tfoot'),
-  respShow = resp => recon.textContent
-    += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
-      ? resp : JSON.stringify(resp, null, 2) ) + "\\n\\n",
-  orderFlip = arr => !descswi.checked ? arr.sort() : arr.sort().reverse(),
-  date0Fmt = nbr => !nbr ? "" : new Date(nbr).toISOString().replace(/T.+$/, ""),
-  tr0Gen = (r, i) =>
-\`    <tr\${ vidx ? "" : " hidden"}>
-      <td>\${ 1 + i - j } <input type="checkbox" class="is-hidden" /></td>
-      <td>\${ (rval = r.doc || r.value).file_updated
-        ? (rval.file_updated.subdir || ".") + "/" : "" }</td>
+  blktrig = document.querySelector('main #blktrig'),
+  r2con = document.querySelector('main>#r2con'),
+  cmthds = document.querySelectorAll('main thead'),
+  cmtbod = document.querySelector('main tbody'),
+  cmtfts = document.querySelectorAll('main tfoot'),
+  rsp2Show = r => { r2con.textContent
+    += ( !r || typeof r !== 'object' || r instanceof Error && r.constructor && !r.reason
+      ? r : JSON.stringify(r, null, 2) ) + "\\n\\n" },
+  ts1Fmt = nbr => !nbr ? "" : new Date(nbr).toISOString().replace(/T.+$/, ""),
+  nbrX = v => v && (Array.isArray(v) ? v : ("" + v).split("."))
+    .map(n => !n ? "" : ("" + n).length > 4 ? n : ("000" + n).substr(-4, 4)).join("."),
+  ptyX = d => ss0 === "subdir" ? d.loc_subdir || (d.file_updated || d.file_created || "").subdir
+    || ( !["loc_subdir", "file_updated", "file_created"].some(p => d.hasOwnProperty(p))
+      ? " " : "." )
+    : !ss1 ? ( !d[ss0] && /^[.-]./.test(d._id) && ss0 === "file_type" ? "(app assets)"
+      : /name_full/.test(ss0) ? d.name_full.replace(/^m[rs]\\.? +|^mrs\\.? +|[.,;:/]/gi, "")
+        || d.name_user || d._id
+      : ss0 === "_attachments" ? nbrX(Object.keys(d[ss0] || "").length)
+      : ss0 !== "file_type" ? d[ss0] : (d[ss0] || "").replace(/^eco-/, "") ) || " "
+    : ss1 !== "timestamp" ? d[ss0]
+      && (ss1 !== "version" ? d[ss0][ss1] : nbrX(d[ss0][ss1])) || " "
+    : ss0 !== "file_updated"
+    ? d[ss0] && d[ss0][ss1] || d[ss0.replace(/^file/, "ts")] || " "
+    : d[ss0] && d[ss0][ss1] || (d.file_created || "")[ss1]
+      || d.ts_updated || d.ts_created || " ",
+  ordFlip = arr => !descswi.checked ? arr.sort() : arr.sort().reverse(),
+  tr0Gen = (r, i) => \`
+    <tr\${ vidx ? "" : " hidden"}>
+      <td>\${ 1 + i - j } <input type=checkbox class="is-hidden" /></td>
+      <td>\${ (rval = r.doc || r.value).hasOwnProperty("loc_subdir")
+        ? (rval.loc_subdir || ".") + "/" : rval.file_updated || rval.file_created
+        ? ((rval.file_updated || rval.file_created).subdir || ".") + "/" : "" }</td>
       <td>\${ rval._id || r.id }</td>
       <td>\${ (rval.file_type || "").replace(/^eco-/, "")
         || (!/^[.-]./.test(rval._id || r.id) ? "" : "(app assets)") }</td>
-      <td>\${ date0Fmt(rval.ts_updated
-        || rval.file_updated && rval.file_updated.timestamp) }</td>
-      <td>\${ rval.file_updated && rval.file_updated.username || "" }</td>
-      <td>\${ rval.file_updated && rval.file_updated.version || "" }</td>
-      <td>\${ rval.file_updated && rval.file_updated.notes || "" }</td>
-      <td>\${ date0Fmt(rval.ts_created
-        || rval.file_created && rval.file_created.timestamp) }</td>
-      <td>\${ rval.file_created && rval.file_created.username || "" }</td>
-      <td>\${ rval.file_created && rval.file_created.version || "" }</td>
-      <td>\${ rval.file_created && rval.file_created.notes || "" }</td>
-      <td>\${ (rval.contributors || []).join(", ") || "" }</td>
+      <td>\${ ts1Fmt(rval.ts_updated || (rval.file_updated || "").timestamp) }</td>
+      <td>\${ (rval.file_updated || "").username || "" }</td>
+      <td>\${ (rval.file_updated || "").version || "" }</td>
+      <td>\${ rval.file_updated && (rval.file_updated.misc) || "" }</td>
+      <td>\${ ts1Fmt(rval.ts_created || (rval.file_created || "").timestamp) }</td>
+      <td>\${ (rval.file_created || "").username || "" }</td>
+      <td>\${ (rval.file_created || "").version || "" }</td>
+      <td>\${ rval.file_created && (rval.file_created.misc) || "" }</td>
+      <td>\${ rval.name_full || "" }</td>
       <td>\${ rval.name_user || "" }</td>
+      <td>\${ [rval.roles].flat().join(", ") || "" }</td>
+      <td>\${ [rval.team_groups].flat().join(", ") || "" }</td>
       <td>\${ rval.image_src || "" }</td>
       <td>\${ rval.linkref || "" }</td>
       <td>\${ rval.from || "" }</td>
-      <td>\${ (rval.to || []).join(", ") || "" }</td>
+      <td>\${ [rval.to].flat().join(", ") || "" }</td>
       <td>\${ rval.subject || "" }</td>
+      <td>\${ rval.headline || "" }</td>
+      <td>\${ rval.time || "" }</td>
+      <td>\${ rval.place || "" }</td>
+      <td>\${ [rval.people || rval.contributors].flat().join(", ") || "" }</td>
       <td>\${ Object.keys(rval._attachments || "").length || "" }</td>
     </tr>\`,
-  qd0Fmt = rows => "\\n" + rows.map( (r, i) =>
+  qd2Fmt = rows => "\\n" + rows.map( (r, i) =>
     !(rval = r.doc || r.value)._attachments && /^\\./.test(r.id) ? ""
     : /^[.-]/.test(r.id) ? (!i || (j = i)) &&
 \`    <tr id="\${ r.id.replace(/^[.-]/, "_") }">
       <td colspan="20"><a>&#x25b6;</a> <input type="checkbox" class="is-hidden" /> \${
         r.id.replace( /^[.-].+$/, m => m + " ("
-          + (/^eco-assets$/.test(rval.file_type || "") ? "eco-" : "app ") + "assets)" ) }</td>
-    </tr>\\n\` + orderFlip(Object.keys(rval._attachments || "")).map( (k, i2) =>
+          + (/^eco-assets$/.test(rval.file_type) ? "eco-" : "app ") + "assets)" ) }</td>
+    </tr>\\n\` + ordFlip(Object.keys(rval._attachments || "")).map( (k, i2) =>
 \`    <tr hidden>
       <td>\${ 1 + i2 } <input type="checkbox" class="is-hidden" /></td>
       <td>\${ r.id + "/" }</td>
       <td colspan="18">\${ !rval._attachments[k] ? k
         : k + " (" + Math.ceil(+rval._attachments[k].length / 1000) + "k)" }</td>
     </tr>\` ).join("\\n")
-    : !i || !(rva0 = rows[i - 1].doc || rows[i - 1].value).file_updated
-      || rval.file_updated.subdir !== rva0.file_updated.subdir
+    : !i || !(rva2 = rows[i - 1].doc || rows[i - 1].value).file_updated
+      || rval.file_updated.subdir !== rva2.file_updated.subdir
     ? (!i || (j = i)) &&
 \`    <tr id="\${ rval.file_updated.subdir || "_" }">
       <td colspan="20"><a>&#x25b6;</a> <input type="checkbox" class="is-hidden" /> \${
         rval.file_updated.subdir || "/" }</td>
     </tr>\\n\` + tr0Gen(r, i)
     : tr0Gen(r, i) ).join("\\n") + "\\n  ",
-  qd1Fmt = rows => "\\n" + rows.map(tr0Gen).join("\\n") + "\\n  ",
-  qd3Fmt = dels => "\\n" + dels.map( (d, i) =>
+  qd3Fmt = rows => "\\n" + rows.map(tr0Gen).join("\\n") + "\\n  ",
+  qd5Fmt = dels => "\\n" + dels.map( (d, i) =>
 \`    <tr>
       <td>\${ 1 + i } <input type="checkbox" class="is-hidden" /></td>
       <td>\${ d.seq }</td>
       <td>\${ d.id }</td>
       <td>\${ d.changes[0].rev }</td>
     </tr>\` ).join("\\n") + "\\n  ",
-  blk2Tog = () => {
-    if (vidx === 3) { return; }
-    let chks = document.querySelectorAll('main tbody>tr:not([id])>td:first-of-type>input:checked');
-    (chks.length ? filtctrl : bulkctrl).classList.add("is-hidden");
-    (chks.length ? bulkctrl : filtctrl).classList.remove("is-hidden");
-  },
-  bulkTog = () => {
-    let hid = document.querySelector('main thead:not(.is-hidden) td:first-of-type>input.is-hidden');
-    document.querySelectorAll(strslrs[4])
-    .forEach(inp => inp.className = hid ? "" : "is-hidden");
-    if (hid) {
-      blk2Tog();
-    } else {
-      bulkctrl.classList.add("is-hidden");
-      filtctrl.classList.remove("is-hidden");
-    }
-  },
-  filtExe = () => {
-    let anti = /^-/.test(filtinp.value),
-      sepa = /^\\/.+\\/[gim]*$/.test(filtinp.value) ? eval(filtinp.value)
-        : new RegExp(filtinp.value.replace(/^-/, "") || "^$", "g");
-    document.querySelectorAll(strslrs[4]).forEach(inp => inp.checked = false);
-    document.querySelectorAll('main tbody>tr:not([id])').forEach(tr => {
-      tr.classList.remove("is-hidden", "match");
-      Array.from(tr.children)
-      .forEach((td, i) => !i || (td.innerHTML = td.innerHTML.replace(/<\\/?mark>/g, "")));
-    });
-    if (filtinp.value) {
-      document.querySelectorAll('main tbody>tr:not([id]):not([hidden])')
-      .forEach( tr => Array.from(tr.children).forEach( (td, i) => {
-        if (i && !td.classList.contains("is-hidden")) {
-          sepa.lastIndex = 0;
-          !anti ? tr.classList.contains("match")
-            || (tr.className = sepa.test(td.textContent) ? "match" : "is-hidden")
-          : tr.classList.contains("is-hidden")
-            || (tr.className = !sepa.test(td.textContent) ? "match" : "is-hidden");
-          anti || (td.innerHTML = td.textContent.replace(sepa, "<mark>$&</mark>"));
-        }
-      }));
-    }
-  },
   filesChg = evt => {
-    if (vidx === 3) { return; }
+    if (vidx > 2) { return; }
     let fmove = evt.target.id === "movebtn",
       qcontxta = document.querySelector('#econav0 #qcontxta'),
       moveinp = document.querySelector('main #moveinp'),
@@ -1200,7 +1199,7 @@ let j = 0, rva0, rval, vidx = 0,
       rd2Qcon = rd2 => !qcontxta || (qcontxta.value = JSON.stringify(rd2, null, 2)),
       row1Tfm = r1 => {
         !fmove || !r1 || !r1.doc
-        || ((r1.doc.file_updated || r1.doc.file_created || "").subdir = moveinp.value || "");
+        || ((r1.doc.file_updated || r1.doc.file_created || {}).subdir = moveinp.value || "");
         return fmove ? Object.assign({ _id: "", _rev: null }, (r1 || "").doc)
         : {
             _id:  r1.key || r1.id,
@@ -1208,11 +1207,11 @@ let j = 0, rva0, rval, vidx = 0,
             _deleted: true
           }
       },
-      rdataTfm = rslt => !rslt.rows && !rslt.results ? {} : {
+      rdataTfm = re => !re.rows && !re.results ? {} : {
         DBNAME: txd2.DBNAME,
-        docs:   (rslt.rows || rslt.results).map(row1Tfm) //.filter(d => !d._deleted)
+        docs:   (re.rows || re.results).map(row1Tfm) //.filter(d => !d._deleted)
       },
-      dbq = txd2.DBNAME && window.PouchDB && new PouchDB(txd2.DBNAME);
+      dbq = txd2.DBNAME && window.PouchDB && PouchDB(txd2.DBNAME);
     !fmove || Array.from(chks).forEach(inp => inp.parentElement.parentElement.className = null);
     chkaf2.forEach( inp => inp.parentElement.parentElement.className
       = fmove ? "has-background-warning-light" : "has-background-danger-light" );
@@ -1220,8 +1219,8 @@ let j = 0, rva0, rval, vidx = 0,
       ? dbq.allDocs(txd2.OPTS).then(rdataTfm).then(rd2Qcon)
       : txd2.FILEID === "_changes"
       ? dbq.changes(txd2.OPTS).then(rdataTfm).then(rd2Qcon)
-      : dbq.get(txd2.FILEID, txd2.OPTS).then(respShow) )
-    .catch(respShow);
+      : dbq.get(txd2.FILEID, txd2.OPTS).then(rsp2Show) )
+    .catch(rsp2Show);
   },
   fileLoad = evt => {
     let td1txt = evt.target.parentElement.parentElement.children[1].textContent,
@@ -1242,6 +1241,47 @@ let j = 0, rva0, rval, vidx = 0,
       && EC1.attSel()
     : fwinflux || !qcontxta
       || (qcontxta.value = JSON.stringify(txd2, null, 2)); //|| !window.EC2 ...&& EC2.qconRetrvD();
+  },
+  filtExe = () => {
+    let anti = /^-/.test(filtinp.value),
+      sepa = /^\\/.+\\/[gim]*$/.test(filtinp.value) ? eval(filtinp.value)
+        : new RegExp(filtinp.value.replace(/^-/, "") || "^$", "g");
+    document.querySelectorAll(qslrs[4]).forEach(inp => inp.checked = false);
+    document.querySelectorAll('main tbody>tr:not([id])').forEach(tr => {
+      tr.classList.remove("is-hidden", "match");
+      Array.from(tr.children)
+      .forEach((td, i) => !i || (td.innerHTML = td.innerHTML.replace(/<\\/?mark>/g, "")));
+    });
+    if (filtinp.value) {
+      document.querySelectorAll('main tbody>tr:not([id]):not([hidden])')
+      .forEach( tr => Array.from(tr.children).forEach( (td, i) => {
+        if (i && !td.classList.contains("is-hidden")) {
+          sepa.lastIndex = 0;
+          !anti ? tr.classList.contains("match")
+            || (tr.className = sepa.test(td.textContent) ? "match" : "is-hidden")
+          : tr.classList.contains("is-hidden")
+            || (tr.className = !sepa.test(td.textContent) ? "match" : "is-hidden");
+          anti || (td.innerHTML = td.textContent.replace(sepa, "<mark>$&</mark>"));
+        }
+      }));
+    }
+  },
+  blk2Tog = () => {
+    if (vidx > 2) { return; }
+    let chks = document.querySelectorAll('main tbody>tr:not([id])>td:first-of-type>input:checked');
+    (chks.length ? filtctrl : bulkctrl).classList.add("is-hidden");
+    (chks.length ? bulkctrl : filtctrl).classList.remove("is-hidden");
+  },
+  bulkTog = () => {
+    let hid = document.querySelector('main thead:not(.is-hidden) td:first-of-type>input.is-hidden');
+    document.querySelectorAll(qslrs[4])
+    .forEach(inp => inp.className = hid ? "" : "is-hidden");
+    if (hid) {
+      blk2Tog();
+    } else {
+      bulkctrl.classList.add("is-hidden");
+      filtctrl.classList.remove("is-hidden");
+    }
   },
   ancAdd1 = td2 => {
     let nanc = document.createElement('a');
@@ -1266,7 +1306,7 @@ let j = 0, rva0, rval, vidx = 0,
     if (!evt.target.parentElement.parentElement.id) {
       evt.target.checked
       || document.querySelectorAll('main tbody>tr:not([id])').forEach(tr => tr.className = null);
-      document.querySelectorAll(strslrs[4]).forEach(inp => inp.checked = evt.target.checked);
+      document.querySelectorAll(qslrs[4]).forEach(inp => inp.checked = evt.target.checked);
       document.querySelectorAll('main tbody>tr:not([id])>td:nth-of-type(3)')
       .forEach(td2 => evt.target.checked ? ancAdd1(td2) : td2.innerHTML = td2.textContent);
     } else {
@@ -1280,6 +1320,18 @@ let j = 0, rva0, rval, vidx = 0,
     }
     blk2Tog();
   },
+  chksRstr = () => {
+    bulkctrl.classList.add("is-hidden");
+    filtctrl.classList.remove("is-hidden");
+    filtinp.value = moveinp.value = "";
+    document.querySelectorAll(qslrs[2]).forEach(anc => anc.innerHTML = "&#x25b6;");
+    document.querySelectorAll(qslrs[3])
+    .forEach(inp => (inp.checked = 0) || (inp.className = "is-hidden"));
+    document.querySelectorAll('main tbody>tr[id]>td:first-of-type>input')
+    .forEach(inp => inp.onchange = chksTog);
+    document.querySelectorAll('main tbody>tr:not([id])>td:first-of-type>input')
+    .forEach(inp => inp.onchange = fileActv);
+  },
   sdirXpd = evt => {
     let xpd = evt.target.textContent === "\\u25b6",
       rowid = evt.target.parentElement.parentElement.id,
@@ -1289,12 +1341,12 @@ let j = 0, rva0, rval, vidx = 0,
       r2idx = rsidx[rsidx.findIndex(n => n === r1idx) + 1]
         || ((document.querySelector('main tbody>tr:last-of-type') || "").rowIndex - 1),
       trows = document.querySelectorAll('main tbody>tr');
-    //respShow([r1idx, r2idx, rowid].join(", "));
+    //rsp2Show([r1idx, r2idx, rowid].join(", "));
     if (rowid) {
       evt.target.innerHTML = !xpd ? "&#x25b6;" : "&#x25bc;";
       while (++r1idx < r2idx) { trows[r1idx].hidden = !xpd; }
     } else {
-      document.querySelectorAll(strslrs[2])
+      document.querySelectorAll(qslrs[2])
       .forEach(a => a.innerHTML = !xpd ? "&#x25b6;" : "&#x25bc;");
       document.querySelectorAll('main tbody>tr[id]>td:first-of-type>a')
       .forEach(a => a.innerHTML = !xpd ? "&#x25b6;" : "&#x25bc;");
@@ -1307,126 +1359,96 @@ let j = 0, rva0, rval, vidx = 0,
     document.querySelectorAll('main :not(.is-hidden)>tr')
     .forEach( tr => Array.from(tr.children).forEach( (td, i) =>
       td.className = !i || opts.indexOf(i) > -1 ? "" : "is-hidden" ));
-    sortsel.innerHTML = "\\n" + Array.from(colssel.selectedOptions)
-    .map(o => \`          <option value="\${ o.value }">\${ o.textContent }</option>\`)
-    .join("\\n") + "\\n        ";
-    sortsel.value = Array.from(sortsel.options).some(o => o.value === resel) ? resel : "id";
+    sortsel.innerHTML = vidx > 2 ? \`
+        <option value=seq>Chg Seq</option>
+        <option value=id>File ID</option>\\n\`
+    : "\\n" + Array.from(colssel.selectedOptions)
+      .map(o => \`          <option value="\${ o.value }">\${ o.textContent }</option>\`)
+      .join("\\n") + "\\n        ";
+    sortsel.value = resel || "id"; //Array.from(sortsel.options).some(o => o.value === resel) ?
   },
   tblGen = evt => {
     if (!window.PouchDB || !txd1.DBNAME) {
-      return recon.textContent ? null
-      : respShow("Alert: PouchDB is not loaded or no database has been selected.");
+      ftotal.innerText = "_";
+      return window.PouchDB || !txd1.DBNAME || r2con.textContent
+      || rsp2Show("Alert: PouchDB is not loaded. Database is inaccessible.");
     }
-    let ss = sortsel.value.split("."),
-      chksRstr = () => {
-        bulkctrl.classList.add("is-hidden");
-        filtctrl.classList.remove("is-hidden");
-        filtinp.value = moveinp.value = null;
-        document.querySelectorAll(strslrs[2]).forEach(a => a.innerHTML = "&#x25b6;");
-        document.querySelectorAll(strslrs[3]).forEach(inp => {
-          inp.checked = false;
-          inp.className = "is-hidden";
-        });
-        document.querySelectorAll('main tbody>tr[id]>td:first-of-type>input')
-        .forEach(inp => inp.addEventListener('change', chksTog));
-        document.querySelectorAll('main tbody>tr:not([id])>td:first-of-type>input')
-        .forEach(inp => inp.addEventListener('change', fileActv));
-      };
-    !evt || evt.target.id !== "descswi" || ( txd1.OPTS = {
-      //startkey:   descswi.checked ? "~~~" : "",
-      //endkey:     descswi.checked ? "" : "~~~",
-      descending: descswi.checked
-    });
-    vidx !== 3 || new PouchDB(txd1.DBNAME)
+    [ss0, ss1] = sortsel.value.split(".");
+    vidx < 3 || PouchDB(txd1.DBNAME)
     .changes(txd1.OPTS)
-    .then(rslt => {
-      let dels = rslt.results.filter(r => r.deleted);
-      rtotal.textContent = dels.length;
-      [cmtheads[0], cmtfoots[0]].forEach(e => e.classList.add("is-hidden"));
-      [cmtheads[1], cmtfoots[1]].forEach(e => e.classList.remove("is-hidden"));
-      cmtbody.innerHTML = qd3Fmt( ss[0] === "seq" ? dels
-        : orderFlip(dels.map(r => [r.id, r])).map(sr => sr[1]) );
+    .then(re => {
+      let dels = re.results.filter(r => r.deleted);
+      ftotal.innerText = dels.length;
+      [cmthds[0], cmtfts[0]].forEach(e => e.classList.add("is-hidden"));
+      [cmthds[1], cmtfts[1]].forEach(e => e.classList.remove("is-hidden"));
+      cmtbod.innerHTML = qd5Fmt( ss0 === "seq" ? ordFlip(dels)
+        : ordFlip(dels.map(r => [r.id, r])).map(sr => sr[1]) );
       chksRstr();
-      sortsel.innerHTML = \`
-          <option value="seq">Chg Seq</option>
-          <option value="id">DB File ID</option>
-\`;
-      sortsel.value = /^(?:id|seq)$/.test(ss[0]) ? ss[0] : "id";
-    }).catch(respShow);
-    vidx === 3 || new PouchDB(txd1.DBNAME)
+      colsTog(null, /^(?:id|seq)$/.test(ss0) ? ss0 : "id");
+    }).catch(rsp2Show);
+    vidx > 2 || PouchDB(txd1.DBNAME)
     .query(txd1.FILEID.replace(/^_design\\//, "") + "/" + txd1.VIEW, txd1.OPTS)
-    .catch( () => new PouchDB(txd1.DBNAME).allDocs({
-      startkey: descswi.checked != (vidx === 2) ? "~a" : undefined,
-      endkey: descswi.checked != (vidx === 2) ? undefined : "~a",
-      descending: descswi.checked,
-      include_docs: true })
-    ).then(rslt => {
+    .catch( () => PouchDB(txd1.DBNAME).allDocs({
+      startkey:     descswi.checked != (vidx === 2) ? "~a" : undefined,
+      endkey:       descswi.checked != (vidx === 2) ? undefined : "~a",
+      descending:   descswi.checked,
+      include_docs: true }) )
+    .then(re => {
       let calcSum = arr => !arr.length ? 0 : arr.reduce((s, v) => s + v);
       j = 0;
-      rtotal.textContent = vidx ? rslt.total_rows
-        : rslt.rows.filter(r => (r.doc || r.value).file_updated).length
-          + calcSum( rslt.rows.filter(r => (r.doc || r.value)._attachments)
-            .map(r => Object.keys((r.doc || r.value)._attachments).length) );
-      [cmtheads[1], cmtfoots[1]].forEach(e => e.classList.add("is-hidden"));
-      [cmtheads[0], cmtfoots[0]].forEach(e => e.classList.remove("is-hidden"));
-      cmtbody.innerHTML = vidx
-      ? qd1Fmt( !ss[0] || vidx !== 2 && ss[0] === "id" || vidx === 2 && ss[1] === "timestamp"
-        ? rslt.rows
-        : orderFlip( !ss[1] ? rslt.rows.map(r => [(r.doc || r.value)[ss[0]], r.id, r])
-          : ss[1] !== "timestamp"
-          ? rslt.rows.map(r => [((r.doc || r.value)[ss[0]] || "")[ss[1]], r.id, r])
-          : rslt.rows.map( r => [ (rval = r.doc || r.value)[ss[0]]
-            ? rval[ss[0]][ss[1]]
-            : rval[ss[0].replace(/^file/, "ts")], r.id, r ]) )
-        .map(sr => sr[2]) )
-      : qd0Fmt( orderFlip( rslt.rows.filter(r => /^[.-]/.test(r.id) || (r.doc || r.value).file_updated)
-        .map( r => /^[.-]/.test(r.id) ? [r.id.replace(/^\\.(.+)$/, "$1_"), null, r.id, r]
-          : [ (rval = r.doc || r.value).file_updated.subdir || ".",
-            !ss[1] ? rval[ss[0] || "id"] : (rval[ss[0]] || "")[ss[1]], r.id, r ]) )
-        .map(sr => sr[3]) );
-      colsTog(null, sortsel.value || "file_created.timestamp");
-      document.querySelectorAll(strslrs[1])
+      ftotal.innerText = vidx ? re.rows.length //re.total_rows
+        : re.rows.filter( r => (rval = r.doc || r.value).hasOwnProperty("loc_subdir")
+            || rval.file_updated || rval.file_created ).length
+          + calcSum( re.rows.map( r => !(rval = r.doc || r.value)._attachments ? 0
+              : Object.keys(rval._attachments).length ));
+      [cmthds[1], cmtfts[1]].forEach(e => e.classList.add("is-hidden"));
+      [cmthds[0], cmtfts[0]].forEach(e => e.classList.remove("is-hidden"));
+      cmtbod.innerHTML = vidx
+      ? qd3Fmt( !ss0 || vidx !== 2 && ss0 === "id" || vidx === 2 && ss1 === "timestamp" ? re.rows
+        : ordFlip(re.rows.map(r => [ptyX(r.doc || r.value), r.id, r])).map(sr => sr[2]) )
+      : qd2Fmt( ordFlip( re.rows.filter( r => /^[.-]./.test(r.id)
+          || (rval = r.doc || r.value).hasOwnProperty("loc_subdir")
+          || rval.file_updated || rval.file_created )
+        .map( r => /^[.-]./.test(r.id) ? [r.id.replace(/^\\.(.+)$/, "$1_"), null, r.id, r]
+          : [ (rval = r.doc || r.value).loc_subdir
+              || (rval.file_updated || rval.file_created || "").subdir || ".",
+            ptyX(r.doc || r.value), r.id, r ] ) ).map(sr => sr[3]) );
+      colsTog(null, (!ss1 ? ss0 : [ss0, ss1].join(".")));
+      document.querySelectorAll(qslrs[1])
       .forEach(spn => spn.className = vidx ? "" : "is-hidden");
-      document.querySelectorAll(strslrs[2])
+      document.querySelectorAll(qslrs[2])
       .forEach(a => a.className = !vidx ? "" : "is-hidden");
       document.querySelectorAll('main tbody>tr[id]>td:first-of-type>a')
-      .forEach(a => a.addEventListener('click', sdirXpd));
+      .forEach(anc => anc.onclick = sdirXpd);
       chksRstr();
-    }).catch(respShow);
+      //document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:nth-of-type(3)').forEach(ancAdd1);
+      //vwFnlz(evt);
+    }).catch(rsp2Show);
   },
   viewTog = evt => {
-    recon.textContent = "";
-    vidx = evt.currentTarget.value; //evt.target.parentElement.dataset.vidx
+    r2con.textContent = "";
+    vidx = !evt ? vidx : evt.currentTarget.value; //evt.target.parentElement.dataset.vidx
     cmtabs.forEach(li => li.classList.remove("is-active"));
     cmtabs[vidx].classList.add("is-active");
-    txd1.VIEW = vidx === 2 ? "files-static" : "files-idxlist";
-    colssel.innerHTML = sellists[vidx === 3 ? 1 : 0];
-    vidx !== 1 || (colssel.options[18].selected = colssel.options[0].selected = true);
-    if (vidx === 2) {
-      Array.from(colssel.options).forEach(o => o.selected = false);
-      [1, 2, 7, 8, 14, 15, 16, 17].forEach(i => colssel.options[i].selected = true);
-      sortsel.value = "";
-    }
-    document.querySelectorAll(strslrs[0])
-    .forEach(td => td.textContent = vidx ? "DB File ID" : "Filename");
-    //colsTog();
+    //txd1.VIEW = vidx === 2 ? "files-static" : "files-idxlist";
+    colssel.innerHTML = copts[vidx > 2 ? 1 : 0];
+    ( [[1,2,3,4,5], [0,1,2,3,4,5,24], [1,2,7,8,16,17,18,19], [0,1,2]][vidx] || [] )
+    .forEach(n => colssel.options[n].selected = true);
     tblGen();
   };
-cmtabs.forEach(li => li.addEventListener('click', viewTog));
-colssel.addEventListener('change', colsTog);
-sortsel.addEventListener('change', tblGen);
-descswi.addEventListener('change', tblGen);
-filtbtn.addEventListener('click', filtExe);
-bulktrg.addEventListener('click', bulkTog);
-document.querySelectorAll(strslrs[2])
-.forEach(a => a.addEventListener('click', sdirXpd));
+cmtabs.forEach(li => li.onclick = viewTog);
+colssel.onchange = colsTog;
+sortsel.onchange = tblGen;
+descswi.onchange = tblGen;
+filtbtn.onclick = filtExe;
+blktrig.onclick = bulkTog;
+document.querySelectorAll(qslrs[2])
+.forEach(a => a.onclick = sdirXpd);
 document.querySelectorAll('main td:first-of-type>input')
-.forEach(inp => inp.addEventListener('change', chksTog));
+.forEach(inp => inp.onchange = chksTog);
 document.querySelectorAll('main #movebtn, main #delbtn')
-.forEach(btn => btn.addEventListener('click', filesChg));
-colssel.innerHTML = sellists[0];
-colsTog();
-tblGen();
+.forEach(btn => btn.onclick = filesChg);
+viewTog();
 })();
 </script>`,
 // * * * * * 3: dviz-posts * * * * *
@@ -1445,7 +1467,7 @@ main figure { margin: 0 2em; }
 main a:hover, main a.has-text-link:hover, main label.has-text-link:hover {
   color: CornFlowerBlue !important;
 }
-main>#recon {
+main>#r3con {
   color: Orange;
   font-size: medium;
   margin: 0;
@@ -1482,7 +1504,7 @@ main>#postbd .media-content .prewrap {
   <h1 class="title is-2">Post Board</h1>
   <h4 class="subtitle is-4 is-italic">Team-project communications</h4>
   <hr />
-  <pre id="recon"></pre>
+  <pre id="r3con"></pre>
   <div id="cfilt" class="field">
     <div class="field is-inline-block">
       <span class="has-text-weight-bold">Total: </span><span id="ctotal">0</span>
@@ -1538,11 +1560,11 @@ let elsmed, fpl, fxa, pcntcs, rval, uimg, unm,
     }
   },
   tmcntcs = window.EC2 && EC2.objQA("team", 1) || {},
-  recon = document.querySelector('main>#recon'),
+  r3con = document.querySelector('main>#r3con'),
   ctotal = document.querySelector('main #ctotal'),
   filts = document.querySelectorAll('main>#cfilt>.panel>.panel-block input'),
   postbd = document.querySelector('main>#postbd'),
-  respShow = resp => recon.textContent
+  rsp3Show = resp => r3con.textContent
     += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
       ? resp : JSON.stringify(resp, null, 2) ) + "\\n\\n",
   fileLoad = evt => {
@@ -1622,7 +1644,7 @@ let elsmed, fpl, fxa, pcntcs, rval, uimg, unm,
         </div>
       </div>
     </article>\` ).join("\\n") + "\\n  ";
-if (!window.PouchDB) { return respShow("Alert: PouchDB is not loaded. Database is inaccessible."); }
+if (!window.PouchDB) { return rsp3Show("Alert: PouchDB is not loaded. Database is inaccessible."); }
 document.querySelector('main>#cfilt>#plinks').innerHTML = "\\n      "
 + (window.EC2 && EC2.objQA("pf3stor.dbpubl", 1) || [])
   .filter(e => e && !/-s\\d\\d+$|\\.(?!json$)\\w{2,4}$/.test(e[1]))
@@ -1633,9 +1655,9 @@ document.querySelector('main>#cfilt>#pcntcs').innerHTML = "\\n      "
   .map(e => \`<option value="\${ e }"></option>\`)
   .concat(\`<option value="\${ pcntcs.join() }">(all names)</option>\`)
   .join("\\n      ") + "\\n    ";
-!txd1.DBNAME || new PouchDB(txd1.DBNAME) //"ecosorter/files-static"
+!txd1.DBNAME || PouchDB(txd1.DBNAME) //"ecosorter/files-static"
 .query(txd1.FILEID.replace(/^_design\\//, "") + "/" + txd1.VIEW, txd1.OPTS)
-.catch(() => new PouchDB(txd1.DBNAME).allDocs({ startkey: "~a", include_docs: true }))
+.catch(() => PouchDB(txd1.DBNAME).allDocs({ startkey: "~a", include_docs: true }))
 .then( rslt0 => rslt1.rows = (rslt0.rows || [])
   .sort( (a, b) => !(rval = a.doc || a.value) || !rval.file_created ? 0
     : (rval.file_created.timestamp - (b.doc || b.value).file_created.timestamp) )
@@ -1651,7 +1673,7 @@ document.querySelector('main>#cfilt>#pcntcs').innerHTML = "\\n      "
   .addEventListener('click', rsltFilt);
   filts[4].value = window.EC2 && EC2.objQA("epsets.uname", 1) || "";
 }).then(rsltFilt)
-.catch(respShow);
+.catch(rsp3Show);
 })();
 </script>`,
 // * * * * * 4: dviz-contacts * * * * *

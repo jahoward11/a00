@@ -2673,8 +2673,8 @@ function blobHandl(ablob, destindr, txdata = {}, cbfnc) {
   if (!(ablob instanceof Blob)) {
     attinp.value || EC1.attSel();
     dataDispl(ablob, destindr, cbfnc);
-  } else if (reximg.test(txdata.ATTKEY || "") || txdata.url && /^image/.test(ablob.type)) {
-  //|| txdata.hdrs && /image/.test(txdata.hdrs["Content-Type"] || "") ) {
+  } else if (reximg.test(txdata.ATTKEY) || txdata.url && /^image/.test(ablob.type)) {
+  //|| txdata.hdrs && /image/.test(txdata.hdrs["Content-Type"]) ) {
     dataDispl( imgWrap( !txdata.ATTKEY ? txdata.url
       : !asseturls[txdata.ATTKEY] && txdata.DBNAME ? a00path.replace(/a00$/, "")
         + txdata.DBNAME + "/" + txdata.FILEID + "/" + txdata.ATTKEY
@@ -2738,8 +2738,8 @@ function txCrdtlz(txdata = {}) {
     dbteam = ( Array.from(pchlist.options).find( o => epsets.teamid
       ? o.value === "a00_" + epsets.teamid : /^a00_\w/.test(o.value) ) || {} ).value || "",
     tm0txd = caccts.find(e => e.DBNAME === (dbteam || "a00_" + epsets.teamid)) || {};
-  return !/^https:\/\/[\w-]+\.cloudant[\w.]+$/.test(txdata.DBORIG || "")
-  || txdata.USRNAM && !/^$|password/i.test(txdata.PSSWRD || "")
+  return !/^https:\/\/[\w-]+\.cloudant[\w.]+$/.test(txdata.DBORIG)
+  || txdata.USRNAM && !/^$|password/i.test(txdata.PSSWRD)
   ? txdata : Object.assign(txdata, {
       USRNAM: tm0txd.USRNAM,
       PSSWRD: tm0txd.PSSWRD
@@ -2847,7 +2847,7 @@ function couchSync(txdata, loadobj, valcon) {
       (txdata.RMTFR ? rm2btn : rmtbtn).disabled = true;
     });
   } else { // display couchdb query data pattern for next attempt
-    if (!/^\b\S+$/.test(valcon || "")) { // check that qconSyncD-cacct-lookup wasn't the trigger
+    if (!/^\b\S+$/.test(valcon)) { // check that qconSyncD-cacct-lookup wasn't the trigger
       pdbListGen();
       pfsListGen();
     }
@@ -4292,8 +4292,7 @@ ibmConnect() {
 wdGen(pdata) { return webdocGen(1, pdata); },
 u2Blob(url) { // also triggered by dviz-memos, dviz-contacts, prjDiscGen, jdeDftGen
   return asseturls[(url || "").replace(/^\S*\//, "")] || asseturls[url]
-  || ( (url || "").replace(/^(?!https?:\/\/)\S*\//i, "") && !/^\.\.\/\.\.\/a00\//.test(url)
-    && url.replace(/^\.\.\/\.\./, hostibm || a00orig) ) || url;
+  || (url || "").replace(/^\.\.\/\.\.(?!\/a00\/)(?=\S+[^\s\/]$)/, hostibm || a00orig) || url;
 },
 objQA(key = "", fbx) { // also triggered by dviz-memos, rsrcsXGet, qconRetrvD
   let pty,
@@ -4519,8 +4518,8 @@ qconSyncD() {
     // pchlist.value/pchSel-couchSync-fnc dependency is bypassed by reqipch
     pchlist.value = txdata.DBNAME;
     EC2.pchSel();
-  } else if ( /^https:\/\/[\w-]+\.cloudant[\w.]+$/.test(txdata.DBORIG || "")
-  && ecoat && (!txdata.USRNAM || /^$|password/i.test(txdata.PSSWRD || ""))
+  } else if ( /^https:\/\/[\w-]+\.cloudant[\w.]+$/.test(txdata.DBORIG)
+  && ecoat && (!txdata.USRNAM || /^$|password/i.test(txdata.PSSWRD))
   && txdata.DBNAME && (!reqipch || txdata.DESTROY) && !txdata.FILEID ) {
     rdataFetch( Object.assign( Object.assign({}, ECOXREQD), {
       prms: {
@@ -4572,14 +4571,14 @@ qconRetrvD(cbfnc, errfnc) { // also triggered by guideLoad, dviz-idxlist, dviz-m
       if (!rslt) { return Promise.reject("Alert: Static file located but data retrieval failed."); }
       msgHandl("Data fetched from static file: " + txdata.url.replace(/^.+\//, ""));
       return /^image/.test(rslt.type) ? dataDispl(imgWrap(txdata.url), 6, cbfnc)
-      : /^(?:json|text)$/.test(txdata.bmet || "") ? dataDispl(rslt, 0, cbfnc)
+      : /^(?:json|text)$/.test(txdata.bmet) ? dataDispl(rslt, 0, cbfnc)
       : (txdata.bmet = 'text') && rdataFetch(txdata).then(rslt => dataDispl(rslt, 0, cbfnc))
     }).catch(msgHandl);
   } else if (txdata.COSEND) {
     ibmcosTxD(txdata).then(rdataFetch)
     .then(rslt => blobHandl(rslt, 0, txdata, cbfnc)).catch(msgHandl);
-  } else if ( /^https:\/\/[\w-]+\.cloudant[\w.]+$/.test(txdata.DBORIG || "")
-  && ecoat && (!txdata.USRNAM || /^$|password/i.test(txdata.PSSWRD || ""))
+  } else if ( /^https:\/\/[\w-]+\.cloudant[\w.]+$/.test(txdata.DBORIG)
+  && ecoat && (!txdata.USRNAM || /^$|password/i.test(txdata.PSSWRD))
   && txdata.DBNAME ) { // todo: when is it better than couchQry?
     rdataFetch( Object.assign( Object.assign({}, ECOXREQD), {
         prms: {
@@ -4621,8 +4620,8 @@ qconSubmD(ccommit) {
     dropboxTx(txdata);
   } else if (txdata.COSEND) {
     ibmcosTxD(txdata, typpmgr, 1).then(rdataFetch).then(msgHandl).catch(msgHandl);
-  } else if ( /^https:\/\/[\w-]+\.cloudant[\w.]+$/.test(txdata.DBORIG || "")
-  && ecoat && (!txdata.USRNAM || /^$|password/i.test(txdata.PSSWRD || ""))
+  } else if ( /^https:\/\/[\w-]+\.cloudant[\w.]+$/.test(txdata.DBORIG)
+  && ecoat && (!txdata.USRNAM || /^$|password/i.test(txdata.PSSWRD))
   && txdata.DBNAME && txdata.FILEID ) {
     rdataFetch( Object.assign( Object.assign({}, ECOXREQD), {
         prms: {
@@ -5057,12 +5056,12 @@ logOut() {
   localStorage["_couchaccts"] || !localStorage["_couchdbaccts"]
   || (localStorage["_couchaccts"] = localStorage["_couchdbaccts"])
   && localStorage.removeItem("_couchdbaccts"); // temp cleanup
-  !/^\[.*{".+}\]$/.test(localStorage["_couchaccts"] || "")
-  || (caccts = (jsonParse(localStorage["_couchaccts"]) || []).filter(e => e && typeof e === 'object'));
-  !/^{".+}$/.test(localStorage["_ecopresets"])
-  || (epsets = jsonParse(localStorage["_ecopresets"]));
-  epsets && ["dbdflt", "prvmode", "hlstyle", "discload", "discdays", "tabsdflt", "swapchks", "appchks"]
-    .every(pty => epsets.hasOwnProperty(pty))
+  caccts = ( /^\[.*{".+}\]$/.test(localStorage["_couchaccts"])
+    && jsonParse(localStorage["_couchaccts"]) || caccts ).filter(e => e && typeof e === 'object');
+  epsets = /^{".+}$/.test(localStorage["_ecopresets"])
+    && jsonParse(localStorage["_ecopresets"]) || epsets;
+  "" + Object.keys(epsets) == ["uemail", "uname", "ungvn", "unfam", "teamid", "loglast",
+    "dbdflt", "prvmode", "hlstyle", "discload", "discdays", "tabsdflt", "swapchks", "appchks"]
   || ( localStorage["_ecopresets"] = JSON.stringify( epsets = Object.assign(
     { uemail: "", uname: "", ungvn: "", unfam: "", teamid: "", loglast: "",
       dbdflt: "", prvmode: 0, hlstyle: "", discload: [1, 0], discdays: 0,
