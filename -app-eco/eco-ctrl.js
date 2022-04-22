@@ -5065,7 +5065,7 @@ logOut() {
   || ( localStorage["_ecopresets"] = JSON.stringify( epsets = Object.assign(
     { uemail: "", uname: "", ungvn: "", unfam: "", teamid: "", loglast: "",
       dbdflt: "", prvmode: 0, hlstyle: "", discload: [1, 0], discdays: 0,
-      tabsdflt: [], swapchks: [], appchks: [] }, epsets || {} )));
+      tabsdflt: [], swapchks: [], appchks: [] }, epsets )));
   !epsets.hasOwnProperty("dfltdb") || delete epsets.dfltdb; // temp cleanup
   !epsets.hasOwnProperty("qconctrl") || delete epsets.qconctrl; // temp cleanup
   !epsets.hasOwnProperty("qconopen") || delete epsets.qconopen; // temp cleanup
@@ -5073,8 +5073,8 @@ logOut() {
   !epsets.hasOwnProperty("appctrls") || delete epsets.appctrls; // temp cleanup
   epsets.appchks.length === 32 || (epsets.appchks = Array.from(achks).map(e => e.checked));
   !/^{.*}$/.test(localStorage["_ecopchupds"])
-  ? localStorage["_ecopchupds"] = JSON.stringify(updpch)
-  : updpch = jsonParse(localStorage["_ecopchupds"]);
+    ? localStorage["_ecopchupds"] = JSON.stringify(updpch)
+    : updpch = jsonParse(localStorage["_ecopchupds"]) || updpch;
   if (!window.Handlebars) {
     return document.querySelector('#econav0 #qcontxta').value
     += "**Alert: handlebars.js is not preloaded.\n\n";
