@@ -1227,7 +1227,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     <tr id="${ r.id.replace(/^[.-]/, "_") }">
       <td colspan=20><a>&#x25b6;</a> <input type=checkbox class=dnone /> ${
         r.id.replace( /^[.-].+$/, m => m + " ("
-          + (/^eco-assets$/.test(rval.file_type || "") ? "eco-" : "app ") + "assets)" ) }</td>
+          + (/^eco-assets$/.test(rval.file_type) ? "eco-" : "app ") + "assets)" ) }</td>
     </tr>\n` + ordFlip(Object.keys(rval._attachments || "")).map( (k, i2) => `
     <tr hidden>
       <td>${ 1 + i2 } <input type=checkbox class=dnone /></td>
@@ -1597,7 +1597,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       ftotal.innerText = dels.length;
       [nmthds[0], nmtfts[0]].forEach(e => e.classList.add("dnone"));
       [nmthds[1], nmtfts[1]].forEach(e => e.classList.remove("dnone"));
-      nmtbod.innerHTML = qd5Fmt( ss0 === "seq" ? dels
+      nmtbod.innerHTML = qd5Fmt( ss0 === "seq" ? ordFlip(dels)
         : ordFlip(dels.map(r => [r.id, r])).map(sr => sr[1]) );
       chksRstr();
       evt && evt.target.id === "pdbssel" || colsTog(null, /^(?:id|seq)$/.test(ss0) ? ss0 : "id");
@@ -1611,15 +1611,14 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       descending:   descswi.checked,
       include_docs: true }) )
     .then(re => {
-      let r2s,
-        rdc = re.rows.length === 1 && !re.rows[0].key && "" + re.rows[0].value,
+      let rdc = re.rows.length === 1 && !re.rows[0].key && "" + re.rows[0].value,
         calcSum = arr => !arr.length ? 0 : arr.reduce((s, v) => s + v);
       j = 0;
       ftotal.innerText = rdc ? rdc : vbas !== 2 ? re.rows.length //re.total_rows
-        : ( r2s = re.rows.filter( r => (rval = r.doc || r.value).hasOwnProperty("loc_subdir")
-            || rval.file_updated || rval.file_created )).length
-          + calcSum( r2s.filter(r => (r.doc || r.value)._attachments)
-            .map(r => Object.keys((r.doc || r.value)._attachments).length) );
+        : re.rows.filter( r => (rval = r.doc || r.value).hasOwnProperty("loc_subdir")
+            || rval.file_updated || rval.file_created ).length
+          + calcSum( re.rows.map( r => !(rval = r.doc || r.value)._attachments ? 0
+              : Object.keys(rval._attachments).length ));
       [nmthds[1], nmtfts[1]].forEach(e => e.classList.add("dnone"));
       [nmthds[0], nmtfts[0]].forEach(e => e.classList.remove("dnone"));
       nmtbod.innerHTML = rdc ? "" : vbas !== 2
@@ -1863,7 +1862,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     ( txd1.OPTS = { // used only if design doc is specified //!evt || evt.target.id !== "descswi" ||
       //startkey:   descswi.checked ? "~~~" : "",
       //endkey:     descswi.checked ? "" : "~~~",
-      descending: descswi.checked
+      descending: !txd1.FILEID ? undefined : descswi.checked
     });
     if (!window.PouchDB || !txd1.DBNAME) {
       ftotal.innerText = "_";
@@ -2187,9 +2186,9 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         email:     (d.emails || [""])[0],
         image_src: (d.image_src || "").replace(/^(?!https?:).*\//, "")
       });
-    !/^{['"].+}$/.test(localStorage._nm0sets || "")
-    || (nm0sets = fncTry(JSON.parse, localStorage._nm0sets) || {});
-    nm0sets && [ "uemail", "uname", "dbcntc", "dbdflt", "vwdflt", "bedit", "usecfg", "useset",
+    nm0sets = /^{['"].+}$/.test(localStorage._nm0sets)
+      && fncTry(JSON.parse, localStorage._nm0sets) || nm0sets;
+    [ "uemail", "uname", "dbcntc", "dbdflt", "vwdflt", "bedit", "usecfg", "useset",
       "hlsty", "p2typs", "p2vws" ].every(pty => nm0sets.hasOwnProperty(pty))
     || ( localStorage._nm0sets = JSON.stringify( nm0sets = Object.assign(
       { uemail: "", uname: "", dbcntc: "", dbdflt: "", vwdflt: "V2:organized",
@@ -2198,17 +2197,18 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           t1: { _id: "", _rev: "", key2: "", key3: "" } }},
         p2vws: { myview2: { v0: ["V1-myview2", "<em>[myview2 description &hellip;]</em>"],
           base: 1, ddoc: "", cols: [], sort: "", desc: 0, filt: "", cbxs: 0, hdrs: 1, bods: 0 }} },
-      nm0sets || {} )));
+      nm0sets )));
     !nm0sets.hasOwnProperty("contcs") || delete nm0sets.contcs; //temp cleanup
     !nm0sets.u2typs || delete nm0sets.u2typs; //temp cleanup
     !nm0sets.u2vws || delete nm0sets.u2vws; //temp cleanup
     !nm0sets.hasOwnProperty("ddoc") || delete nm0sets.ddoc; //temp cleanup
-    !/^{['"].+}$/.test(localStorage._nm0cfgs || "")
-    || (nm0cfgs = fncTry(JSON.parse, localStorage._nm0cfgs) || {});
-    nm0cfgs && !dbs.forEach(e => nm0cfgs[e] || (nm0cfgs[e] = {}))
-    && !Object.values(nm0cfgs).forEach(v => delete v.ddoc0) //temp cleanup
-    && ["type0", "view0", "tsset", "tsupd", "tsdel", "user0", "descr", "remot"]
-      .every(pty => Object.values(nm0cfgs).every(val => val.hasOwnProperty(pty)))
+    nm0cfgs = /^{['"].+}$/.test(localStorage._nm0cfgs)
+      && fncTry(JSON.parse, localStorage._nm0cfgs) || nm0cfgs;
+    dbs.forEach(e => nm0cfgs[e] || (nm0cfgs[e] = {}))
+    || Object.values(nm0cfgs).forEach(v => delete v.ddoc0) //temp cleanup
+    || Object.values(nm0cfgs)
+      .every( val => ["type0", "view0", "tsset", "tsupd", "tsdel", "user0", "descr", "remot"]
+        .every(pty => val.hasOwnProperty(pty)) )
     || ( localStorage._nm0cfgs = JSON.stringify( nm0cfgs = Object.fromEntries(
       Object.entries(nm0cfgs).map( oe =>
         [ oe[0], Object.assign(
