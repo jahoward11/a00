@@ -1117,13 +1117,12 @@ t1src = { _id: "", _rev: "", file_type: "srcdoc", file_created: { username: "", 
 t2evt = { _id: "idGen(\\"~E\\", ts0, 0)", _rev: "", file_type: "event", file_created: { username: "", timestamp: 0, dborigin: "", dbname: "", subdir: "" }, file_updated: { username: "", timestamp: 0, dborigin: "", dbname: "", subdir: "" }, headline: "", time: "", place: "", map_refs: [""], people: [""], description: "" };
 t3mem = { _id: "idGen(\\"~m\\", ts0, 0)", _rev: "", file_type: "memo", file_created: { username: "", timestamp: 0, dborigin: "", dbname: "", subdir: "" }, linkref: "", from: "", to: [""], subject: "", body: "" };
 t4cnt = { _id: "!groupID-cUsername", _rev: "", file_type: "contact", ts_created: 0, ts_updated: 0, loc_subdir: "", name_full: "", name_user: "", birthdate: "", roles: [""], emails: [""], phones: [""], locations: [""], social_profiles: [""], project_urls: [""], team_groups: [""], image_src: "", bio_short: "", miscellany: "" };
-dtmpl = t4cnt;
 hlps = window.dbwrap && dbwrap.querySelectorAll('.chelp');
 hsRes = () => _.hlps.forEach(e => e.classList.add("dnone"));
 d0Upd = () => { let ts = new Date().getTime(); !_.fwg.hasOwnProperty("ts_created") || ((_.fwg.ts_created ? {} : _.fwg).ts_created = _.fwg.ts_updated = ts); !_.fwg.file_created || [[_.fwg.file_created, _.fwg.file_updated]].forEach(([p0, p1]) => { !p0.timestamp || (p0 = {}); p1 = p1 || {}; p1.username = p0.username = fwg._id.replace(/.+?-/, ""); p1.timestamp = p0.timestamp = ts; p1.dborigin = p0.dborigin = /127\\.0\\.0|192\\.168\\.0|cloudant|localhost/.test(location.origin) ? location.origin : [navigator.userAgent || navigator.userAgentData, location.origin]; p1.dbname = p0.dbname = dbobj.name; }); !_.fwg.hasOwnProperty("from") || _.fwg.from || (_.fwg.from = _.fwg._id.replace(/.+?-/, "")); };
 formGen = () => dform.innerHTML = Object.entries(Object.assign({ _id: "", _rev: null }, _.fwg)).map(([k, v]) => _.rex0s.test(k) ? "" : "\\n<div class=\\"field is-horizontal\\">\\n<div class=\\"field-label\\"><span class=label>" + k + "</span></div>\\n<div class=\\"field-body\\">\\n<textarea id=p0" + k + " class=textarea rows=" + (/_attach|configs|content|body|file[f_]/.test(k) ? 8 : 2) + ">" + _.htmTxt(_.valStr(v)) + "\\n</textarea>\\n</div>\\n</div>").join("") + "\\n";
 //
-!window.resbtn || ( resbtn.onclick = () => _.hsRes() || !(_.fwg = JSON.parse(JSON.stringify(_.dtmpl))) || _.formGen() )();
+!window.resbtn || ( resbtn.onclick = () => _.hsRes() || !(_.fwg = JSON.parse(JSON.stringify(t4cnt))) || _.formGen() )();
 !window.savbtn || ( savbtn.onclick = () => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))) || !_.fwg._id || _.d0Upd() || dbobj.put(Object.assign({ _id: "", _rev: null }, _.fwg)).then(r => _.hlps[0].classList.remove("dnone") || respShow(r)).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)) );
 
 /*
@@ -1294,7 +1293,7 @@ d4ui += "<select id=sortsel class=anone>" + ["", "first name", "last name", "use
 d4ui += "<button id=nsbtn class=\\"hgainl isucc\\">&orarr;</button></span> <span class=ccntr>Show all:&ensp;";
 d4ui += "<label><input type=checkbox id=hdrsswi /> <a>headers</a></label>&ensp;";
 d4ui += "<label><input type=checkbox id=bodsswi /> <a>bodies</a></label></span>\\n</div>\\n<div id=ndata></div>";
-d5ui += 'd => \`\\\\n<article class=media>\\\\n<div class="media-left">\\\\n<figure class="image rspv128"><img src="\${ aurls[d.image_src] || "" }" data-fileid="\${ d._id }" />\\\\n<figcaption>\${ d.name_user || "" }</figcaption></figure>\\\\n</div>'; //
+d5ui += 'd => \`\\\\n<article class=media>\\\\n<div class="media-left">\\\\n<figure class="image rspv128"><img src="\${ aurls[d.image_src] || "#" }" data-fileid="\${ d._id }" />\\\\n<figcaption>\${ d.name_user || "" }</figcaption></figure>\\\\n</div>'; //
 d5ui += '\\\\n<div class="media-content">\\\\n<details class=cfield><summary><strong>\${ _.nmsX(d) }</strong> <em class="diblk fsz0c75">\${ !/anno|memo|post/i.test(d.file_type) ? "" : new Date( d.ts_updated || d.ts_created || (d.file_updated || d.file_created || "").timestamp || null ).toLocaleString() }</em></summary>\\\\n<div class="pwrap fsz0c75">\`'; //
 d5ui += ' + (!(d.roles || "")[0] ? "" : "<em class=\\\\"fsz1c00 lnhtnml\\\\">" + d.roles.join(", ") + "</em>\\\\n") + (!d.bio_short ? "" : "SHORT BIO: " + d.bio_short.substring(0, 255) + (d.bio_short.length < 257 ? "\\\\n" : "&hellip;\\\\n")) + (!d.linkref ? "" : "LINK REF: " + d.linkref + "\\\\n") + (!d.from ? "" : "FROM: " + d.from + "\\\\n") + (!(d.to || "")[0] ? "" : "TO: " + d.to.join(", ") + "\\\\n") + (/anno|contact|memo|phone|post/i.test(d.file_type) ? "" : "NOTE TYPE: " + d.file_type + "\\\\nCREATED: " + new Date(d.ts_created || (d.file_created || "").timestamp).toLocaleString() + "\\\\nUPDATED: " + new Date(d.ts_updated || (d.file_updated || "").timestamp).toLocaleString() + "\\\\n")'; //
 d5ui += ' + \`</div>\\\\n</details>\\\\n<details>\${ !/anno|event|memo|post|srcdoc/i.test(d.file_type) ? "" : "<summary>" + (d.subject || d.headline || "&hellip;") + "</summary>" }\\\\n<div class=pwrap>\${ _.htmTxt(_.ak = d.body || d.content || (d.filefrags || [""])[0].contenttxt || "").substring(0, 255) + (_.ak.length < 257 ? "" : "&hellip;") + (!d.hasOwnProperty("time") ? "" : "<strong>Time:</strong> " + _.ts2Fmt(d.time) + "\\\\n") + (!d.hasOwnProperty("place") ? "" : "<strong>Place:</strong> " + d.place + "\\\\n")'; //
@@ -1313,9 +1312,10 @@ nmsX = (d, x = sortsel.selectedIndex) => ( x === 3 ? d.name_user : x < 2 ? d.nam
 ptyX = (d, x = sortsel.selectedIndex) => x > 4 ? d[sortsel.value] || " " : x > 3 ? (d.file_updated || d.file_created || "").timestamp || d.ts_updated || d.ts_created || " " : _.nmsX(d).replace(_.rexts, "");
 hdsX = evt => document.querySelectorAll(_.qss[0]).forEach(e => e.open = evt.target.checked);
 bdsX = evt => document.querySelectorAll(_.qss[1]).forEach(e => e.open = evt.target.checked);
-fRes = () => { let ts0 = new Date().getTime(); _.fwg = JSON.parse(JSON.stringify(_.dtmpl)); !/^idGen\\(.*\\)$/.test(_.fwg._id.trim()) || (_.fwg._id = eval("_." + _.fwg._id)); };
+fRes = () => { let ts0 = new Date().getTime(); _.fwg = JSON.parse(JSON.stringify(dtmpl[dtmpl.key])); !/^idGen\\(.*\\)$/.test(_.fwg._id.trim()) || (_.fwg._id = eval("_." + _.fwg._id)); };
 dLoad = evt => dbobj.get(evt.target.textContent || evt.target.dataset.fileid).then(d => !(_.fwg = d) || (dform.className = ndata.innerHTML = "") || _.formGen()).catch(respShow);
 window.n1Gen = eval(d5ui);
+window.dtmpl = { key: "t4cnt", t1src: t1src, t2evt: t2evt, t3mem: t3mem, t4cnt: t4cnt };
 window.aurls = window.aurls || {};
 !window.a1inp || ( a1inp.onchange = () => a3inp.innerHTML = (a1inp.files[0] || "").name || "<span>Locate image&hellip;</span>" );
 !window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) || dbobj.get("-res-img").then(d => dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(r => _.hlps[0].classList.remove("dnone") || respShow(r) || _.isRtrv()).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)) );
@@ -1331,9 +1331,9 @@ window.aurls = window.aurls || {};
     such as for compiling journal entries, for saving recipes, for
     recording workout results in a fitness log, etc.
     + First, in the following code, feel free to change the values of
-      \`dtmpl\` and \`dbase\` for your new DB. For quick-startup, four
-      different DB names with corresponding template options are
-      provided -- out of which \`t1src\` and "recipes-home" are
+      \`dtmpl.key\` and \`dbase\` for your new DB. For quick-startup,
+      four different DB names with corresponding template options are
+      provided -- out of which "t1src" and "recipes-home" are
       currently selected (assigned).
     + Also, in the above UI code for displaying summary info (step 7),
       change the "Contacts Directory" heading to something appropriate
@@ -1344,7 +1344,7 @@ window.aurls = window.aurls || {};
 */
 
 /*
-dtmpl = t1src; // t2evt; t3mem; t4cnt;
+dtmpl.key = "t1src"; // "t2evt"; "t3mem"; "t4cnt";
 dbase = "recipes-home"; // "log-workouts"; "journal2022"; "contacts-work";
 !window.PouchDB || !/^[a-z][0-9_a-z-]*$/.test(dbase) || (window.dbobj = new PouchDB(dbase))
 */
