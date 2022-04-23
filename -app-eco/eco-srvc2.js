@@ -864,7 +864,9 @@ main td[colspan="20"] {
   background: WhiteSmoke;
   text-align: left;
 }
+main .dflow { display: flow-root; overflow-x: auto; }
 main>#r2con {
+  background-color: unset;
   color: Orange;
   font-size: medium;
   margin: 0;
@@ -937,6 +939,7 @@ main>#r2con {
     </div>
   </div>
 </nav>
+<div class="dflow">
 <table class="table">
   <thead>
     <tr>
@@ -1022,6 +1025,7 @@ main>#r2con {
     </tr>
   </tfoot>
 </table>
+</div>
 </main>
 </section>
 <script type="text/javascript">
@@ -1243,10 +1247,10 @@ let rva2, rval, ss0, ss1,
       || (qcontxta.value = JSON.stringify(txd2, null, 2)); //|| !window.EC2 ...&& EC2.qconRetrvD();
   },
   filtExe = () => {
-    let anti = /^-/.test(filtinp.value),
-      sepa = /^\\/.+\\/[gim]*$/.test(filtinp.value) ? eval(filtinp.value)
-        : new RegExp(filtinp.value.replace(/^-/, "") || "^$", "g");
-    document.querySelectorAll(qslrs[4]).forEach(inp => inp.checked = false);
+    let negs = /^-/.test(filtinp.value),
+      rexf = /^\\/.+\\/[gim]*$/.test(filtinp.value.trim()) ? eval(filtinp.value)
+        : new RegExp(filtinp.value.replace(/^-/, "") || "^$", "gi");
+    document.querySelectorAll(qslrs[4]).forEach(inp => inp.checked = 0);
     document.querySelectorAll('main tbody>tr:not([id])').forEach(tr => {
       tr.classList.remove("is-hidden", "match");
       Array.from(tr.children)
@@ -1256,12 +1260,12 @@ let rva2, rval, ss0, ss1,
       document.querySelectorAll('main tbody>tr:not([id]):not([hidden])')
       .forEach( tr => Array.from(tr.children).forEach( (td, i) => {
         if (i && !td.classList.contains("is-hidden")) {
-          sepa.lastIndex = 0;
-          !anti ? tr.classList.contains("match")
-            || (tr.className = sepa.test(td.textContent) ? "match" : "is-hidden")
+          rexf.lastIndex = 0;
+          !negs ? tr.classList.contains("match")
+            || (tr.className = rexf.test(td.textContent) ? "match" : "is-hidden")
           : tr.classList.contains("is-hidden")
-            || (tr.className = !sepa.test(td.textContent) ? "match" : "is-hidden");
-          anti || (td.innerHTML = td.textContent.replace(sepa, "<mark>$&</mark>"));
+            || (tr.className = !rexf.test(td.textContent) ? "match" : "is-hidden");
+          negs || (td.innerHTML = td.textContent.replace(rexf, "<mark>$&</mark>"));
         }
       }));
     }
@@ -1284,11 +1288,8 @@ let rva2, rval, ss0, ss1,
     }
   },
   ancAdd1 = td2 => {
-    let nanc = document.createElement('a');
-    nanc.innerHTML = td2.innerHTML = td2.textContent;
-    //nanc.appendChild(td2.firstChild);
-    nanc.addEventListener('click', fileLoad);
-    td2.firstChild.replaceWith(nanc);
+    td2.innerHTML = td2.textContent.replace(/.+?(?= \\(\\d+k\\)$|$)/, "<a>$&</a>");
+    td2.firstChild.onclick = fileLoad;
   },
   fileActv = evt => {
     let td2 = evt.target.parentElement.parentElement.children[2];
@@ -1421,8 +1422,6 @@ let rva2, rval, ss0, ss1,
       document.querySelectorAll('main tbody>tr[id]>td:first-of-type>a')
       .forEach(anc => anc.onclick = sdirXpd);
       chksRstr();
-      //document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:nth-of-type(3)').forEach(ancAdd1);
-      //vwFnlz(evt);
     }).catch(rsp2Show);
   },
   viewTog = evt => {
