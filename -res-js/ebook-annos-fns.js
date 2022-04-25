@@ -10,11 +10,11 @@ window.annos = window.annos || { configs: {} };
 window.annos.fns = window.annos.fns || function x(cfgs) {
 'use strict';
 var acs = cfgs && !cfgs.eventPhase && cfgs || window.annos && window.annos.configs || {},
-  annoblocks = [], //refNbrAssn, annosXlink
+  annoblocks = [], //refnbrAssn, annosXlink
   dstyle0, htmlperiphs, masthd,
   pei = 0,
   stynew, texthl,
-  tocbuild = ""; //refNbrAssn, annosfns
+  tocbuild = ""; //refnbrAssn, annosfns
 const h1node = window.editorApp || window.EC1 ? null : document.head,
   d1wrap = window.editorApp ? "#esrender_42qz0xfp" : window.EC1 ? "#ecorender" : "body",
   d1node = document.querySelector(d1wrap),
@@ -26,7 +26,7 @@ const h1node = window.editorApp || window.EC1 ? null : document.head,
   sepahlmc = /((?:(?:\n*\/.+\/[gim]*|\n*{[ *+:=_~]*\\?[#.]?\w*}|\n*.+?{ *\+\+ *\\?[#.]?\w*})(?:\n|(?=$))|\n)+|^)([^]*?)(?=(?:\n+\/.+\/[gim]*|\n*{[ *+:=_~]*\\?[#.]?\w*}|\n+.+?{ *\+\+ *\\?[#.]?\w*})(?:\n|$)|\n\n|$)/g,
   sepaperiph = /<!--[^]*?-->|<(script|style)\b.*?>[^]*?<\/\1>/gi;
 
-function chNbr(chnbru) { //refNbrAssn, annosXlink
+function chNbr(chnbru) { //refnbrAssn, annosXlink
   return acs.ptchbg[1] > 1 ? chnbru - (100 * acs.ptchbg[0]) : chnbru;
 }
 
@@ -50,7 +50,7 @@ function hljsSetup() {
   });
 }
 
-function refNbrAssn() {
+function refnbrAssn() {
 let hnbgn = acs.ptchbg[acs.ptchbg[0]],
   numalt = acs.numalt,
   ptchbg = acs.ptchbg,
@@ -389,11 +389,11 @@ d1node.normalize();
 !acs.codehl || hljsSetup();
 htmlperiphs = d1node.innerHTML.match(sepaperiph) || []; // preserve periph
 d1node.innerHTML = d1node.innerHTML.replace(sepaperiph, "<!--phold-periph-->"); // placehold periph
-//if (typeof acs.tocfmt !== 'number' || acs.tocfmt >= 0) { refNbrAssn(); }
+//if (typeof acs.tocfmt !== 'number' || acs.tocfmt >= 0) { refnbrAssn(); }
 if (!d1node.querySelector('.refnbr')) {
   !(window.editorApp || window.EC1)
   || window.console.log("App detected. Applying ebook-annos-fns to render.");
-  refNbrAssn();
+  refnbrAssn();
   annosXlink();
 }
 d1node.innerHTML = annosHilit(d1node.innerHTML);
@@ -429,10 +429,8 @@ if (!Array.from(dstyles).some(s => /#TOC\b/.test(s.innerHTML) && /\.refnbr\b/.te
 };
 
 const rstate = document.readyState,
-  elsscr = window.editorApp
-    ? document.querySelector('#esrender_42qz0xfp').querySelectorAll('script')
-    : window.EC1
-    ? document.querySelector('#ecorender').querySelectorAll('script')
+  elsscr = window.editorApp ? document.querySelectorAll('#esrender_42qz0xfp script')
+    : window.EC1 ? document.querySelectorAll('#ecorender script')
     : document.body.querySelectorAll('script'),
   afnccalled = window.NodeList.prototype.isPrototypeOf(elsscr)
     && Array.from(elsscr).some(e => /\bannos\.fns\b/.test(e.innerHTML));

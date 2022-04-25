@@ -3,7 +3,7 @@ HTML/Javascript CSI e-book annotations module
 Copyright (c) 2021 J.A. Howard | github.com/jahoward11
 */
 
-const chnavGen = function (muldoc) {
+const navchGen = function (muldoc) {
 // phase 3: chapter-navigation generation
 let chsepa = new RegExp("(?:\\n\\n+|^\\n?)" + "#".repeat(hxchlvl) + " +\\S.*\\n+", "g"),
   ptsepa = new RegExp("\\n\\n+#" + "#?".repeat(hxchlvl >= 2 ? hxchlvl - 2 : 0) + " +(\\S.*)(?:(?=\\n\\n+#+ \\S)|\\n\\n+)", "g"),
@@ -60,7 +60,7 @@ const annosHilit = function (docmdfd) {
   .replace(/(<(?=!--|<[eims]|\/?[a-z])[^\n<>]*)<(em|ins|mark|s|span|strong)\b[^\n<>]*>(.*?)<\/\2>(?=[^\n<>]*>)/g, "$1$3");
 };
 
-const tocNavLtGen = function (muldoc, tocnbresc, puncsppar) {
+const navtocGen = function (muldoc, tocnbresc, puncsppar) {
 let hnbgn, HNWRAP = hnwrap,
   numalt = [], NUMALT = numalt,
   ptchbgn = [1, 1],
@@ -215,5 +215,5 @@ return (!tf05[2] || !tf05[3]) ? ""
 };
 
 export {
-  annosHilit, chnavGen, tocNavLtGen
+  annosHilit, navchGen, navtocGen
 };
