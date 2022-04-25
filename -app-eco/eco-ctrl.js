@@ -1539,7 +1539,7 @@ function prjDiscGen() {
     rsltFmt = rsltqry => {
       context.disbl = !context.unmdspl || !attlist.value && !pfslist.value;
       context.discitems = rsltqry.rows
-      && rsltqry.rows.filter( r => /^~[a-z]{3}[AP]\d{8,}T\d{6}$/.test(r.id)
+      && rsltqry.rows.filter( r => /^~[amp]\d{8}|^~[a-z]{3}[AP]\d{8,}T\d{6}$/.test(r.id)
         && (rval = r.doc || r.value).linkref
         && (attlist.value || pfslist.value && pfslist.selectedOptions[0].textContent)
         .indexOf( ( !(sdir = rval.file_created.subdir)
@@ -1561,7 +1561,7 @@ function prjDiscGen() {
         subj: rval.subject,
         body: rval.body,
         pnew: rval.file_created.timestamp > updts0,
-        afid: /^~[a-z]{3}A/.test(r.id) && r.id,
+        afid: /^~a\d{8}|^~[a-z]{3}A/.test(r.id) && r.id,
         atgs: rval.tags,
         atoc: rval.tocfmt,
         ahld: (rval.texthl || []).join("\n"),
@@ -1633,13 +1633,13 @@ function jdeDftGen() {
     + (pfslist.value && pfslist.selectedOptions[0].textContent || pfsinp.value || "");
   } else if (/^!/.test(jfw._id)) {
     context.file_ref = optg + (jfw.name_user || jfw.name_full || jfw._id.replace(/^!/, ""));
-  } else if (/^[.-]/.test(jfw._id)) {
+  } else if (/^[.-]./.test(jfw._id)) {
     context.file_ref = jfw._id.replace(/^\.?/, optg) + "/";
-  } else if (/^~[a-z]{3}A/.test(jfw._id) && jfw.file_created) {
+  } else if (/^~a\d{8}|^~[a-z]{3}A/.test(jfw._id) && jfw.file_created) {
     context.file_ref = jfw.file_created.username + ", Anno "
       + new Date(jfw.file_created.timestamp).toISOString()
         .replace(/\.\w+$/g, "").replace(/T/, " ");
-  } else if (/^~[a-z]{3}P/.test(jfw._id) && jfw.file_created) {
+  } else if (/^~[mp]\d{8}|^~[a-z]{3}P/.test(jfw._id) && jfw.file_created) {
     context.file_ref = (jfw.from || jfw.file_created.username) + ", Memo "
       + new Date(jfw.file_created.timestamp).toISOString()
         .replace(/\.\w+$/g, "").replace(/T/, " ");
@@ -2385,8 +2385,8 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       : filewkg.file_type === "eco-scrap" ? 3
       : filewkg.file_type === "eco-event" || /^~E\d{8}/.test(filewkg._id) ? 4
       : filewkg.file_type === "eco-prjid" || /^~DBID_/.test(filewkg._id) ? 5
-      : filewkg.file_type === "eco-anno" || /^~[a-z]{3}A|^~a\d{8}/.test(filewkg._id) ? 6
-      : /^eco-(?:memo|post)$/.test(filewkg.file_type) || /^~[a-z]{3}P|^~[mp]\d{8}/.test(filewkg._id) ? 7
+      : filewkg.file_type === "eco-anno" || /^~a\d{8}|^~[a-z]{3}A/.test(filewkg._id) ? 6
+      : /^eco-(?:memo|post)$/.test(filewkg.file_type) || /^~[mp]\d{8}|^~[a-z]{3}P/.test(filewkg._id) ? 7
       : filewkg.file_type === "eco-assets" || /^[.-]./.test(filewkg._id) ? 8
       : filewkg.file_type === "eco-contact" || /^!./.test(filewkg._id) ? 9 : 0 ]
       .classList.remove("is-hidden");
@@ -2516,7 +2516,7 @@ function annosGet(fileref = "") {
       startkey: "~a",
       //endkey: undefined,
       include_docs: true }) )
-    .then( rslt => ahls = rslt.rows && rslt.rows.filter( r => /^~[a-z]{3}A/.test(r.id)
+    .then( rslt => ahls = rslt.rows && rslt.rows.filter( r => /^~a\d{8}|^~[a-z]{3}A/.test(r.id)
         && (lnkr = (r.doc || r.value).linkref)
         && typeof lnkr === 'string' && fileref.indexOf(lnkr) > -1 )
       .map(r => {
@@ -3192,9 +3192,9 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
     ptys0Add("file_created");
     fileref = fileref.replace(/^~DBID_/, "");
   } else if ( (/^eco-(?:anno|memo|post)$/.test(jfw.file_type)
-  || /^~[a-z]{3}[AP]|^~[amp]\d{8}/.test(jfw._id))
-  && ucallsgn && ( pchutrg || lfnew || !/^~[a-z]{3}[AP]\d{8}|^~[amp]\d{8}/.test(jfw._id)
-  || /^(?:Anno|Memo|Post)\d{8}/.test(fileref) && jfw._id.replace(/^~[a-z]{3}[AP]|^~[amp]/, "")
+  || /^~[amp]\d{8}|^~[a-z]{3}[AP]/.test(jfw._id))
+  && ucallsgn && ( pchutrg || lfnew || !/^~[amp]\d{8}|^~[a-z]{3}[AP]\d{8}/.test(jfw._id)
+  || /^(?:Anno|Memo|Post)\d{8}/.test(fileref) && jfw._id.replace(/^~[amp](?=\d{8})|^~[a-z]{3}[AP]/, "")
   !== fileref.replace(/^(?:Anno|Memo|Post)/, "") )) {
     /^eco-(?:anno|memo|post)$/.test(jfw.file_type)
     || (jfw.file_type = "eco-" + (/^~(?:a|...A)\d{8}/.test(jfw._id) ? "anno" : "memo"));
@@ -3209,7 +3209,7 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
       .join("") ).replace(/\/[^\/]+$/, "") );
     !jfw.hasOwnProperty("from") || jfw.from || (jfw.from = epsets.uname);
     !/^my(?:anno|memo|post)\d\d$/.test(fileref)
-    || ( fileref = jfw._id.replace(/^~[a-z]{3}(A)|^~(a)\d{8}/,
+    || ( fileref = jfw._id.replace(/^~(a)\d{8}|^~[a-z]{3}(A)/,
       (m, c1, c2) => c1 || c2 ? "Anno" : "Memo") );
   } else if ( (jfw.file_type === "eco-contact" || /^![0-9a-z]+-[0-9a-z]+$/i.test(fileref))
   && ( !/^![0-9a-z]+-[0-9a-z]+$/i.test(jfw._id)
@@ -3229,7 +3229,7 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
     jfw._rev = "";
     jfw.ts_created = tstamp1;
   } else if ( jfw.file_created && jfw._id !== fileref
-  && !/^~DVIZ_|^~DBID_|^~TMP[\dL]_|^~[a-z]{3}[AP]/.test(jfw._id) ) {
+  && !/^~DVIZ_|^~DBID_|^~TMP[\dL]_|^~[amp]\d{8}|^~[a-z]{3}[AP]/.test(jfw._id) ) {
     jfw._id = fileref;
     jfw._rev = "";
     ptys0Add("file_created");
@@ -3247,12 +3247,12 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
     }
   }
   if ( dirref && jfw.file_created
-  && !/^~DVIZ_|^~DBID_|^~TMP[\dL]_|~[a-z]{3}[AP]/.test(jfw._id) ) {
+  && !/^~DVIZ_|^~DBID_|^~TMP[\dL]_|^~[amp]\d{8}|~[a-z]{3}[AP]/.test(jfw._id) ) {
     jfw.file_created.subdir || (jfw.file_created.subdir = dirref);
-    if (pchutrg && ( !pf3stor.dbsdir
+    if ( pchutrg && ( !pf3stor.dbsdir
     || !pf3stor.dbsdir.some(e => e[1] && e[1].replace(/^\./, "") === dirref) )) {
       vassets = JSON.stringify(ECOTMPLS.assets)
-      .replace(/("_id":")7-assets",/, "$1" + dirdot + dirref + "\",\"_rev\":\"\",")
+      .replace(/("_id":")8-assets",/, "$1" + dirdot + dirref + "\",\"_rev\":\"\",")
       .replace(/("ts_created":)0(,"ts_updated":)0/, "$1" + tstamp1 + "$2" + tstamp1);
       couchPut({ DBNAME: dbpch.name, vassets: vassets });
     }
@@ -4807,14 +4807,16 @@ pchUpd() {
     pfsinp = document.querySelector('#econav0 #pfsinp'),
     fileref = pfsinp.value.replace(/^\u2514 /, "").trim(),
     pfslist = document.querySelector('#econav0 #pfslist'),
-    optg = pfslist.value && pfslist.selectedOptions[0].parentElement.label;
+    optg = pfslist.value && pfslist.selectedOptions[0].parentElement.label,
+    delswi = document.querySelector('#ecoesp0 #delswi');
   dirref = fileref.replace(/^(?:\.\.\/|)\.?(-?\w.*)\/.+|.+/, "$1");
   fileref = fileref.replace(/\/$|^(?:\.\.\/|)(?:.*\/(?=.)|)/g, "");
   fileref || !filewkg || (fileref = filewkg._id);
-  if ( !dbpch || !filewkg || !tm0urole || (optg && optg !== "LOCAL temporary files")
+  if ( !dbpch || !filewkg || !tm0urole
+  || optg && optg !== "LOCAL temporary files" && !delswi.checked
   || !/^$|^[.-]?\w[\w!.*+~-]*$/.test(dirref)
-  || ( /^[!~][a-z]{3}/.test(filewkg._id) ? false
-  : !/^$|^[!.~-]?\w[\w!.*+~-]*$/.test(fileref) || /^_|[*~]\(?[0-9]*\)?$/.test(fileref) )) {
+  || ( /^[!~][a-z]/.test(filewkg._id) ? false
+  : !/^$|^[!.~-]?\w[\w!.*+~-]*$/.test(fileref) || /^_|[*~]\(?[0-9]*\)?$/.test(fileref) ) ) {
     document.querySelectorAll('#ecoesp0 #publcmt>div:nth-of-type(1) .help')[1]
     .classList.remove("is-hidden");
     updDisbl();
