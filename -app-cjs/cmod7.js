@@ -55,7 +55,7 @@ with color coding to show word- and line-level changes.
   (in both text fields).
 */
 
-xdui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
+xdui = "\\n<style type=\\"text/css\\">\\n*, *::before, *::after { box-sizing: inherit; }";
 xdui += "\\nhtml { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }";
 xdui += "\\nbutton, input, select { margin: 0; }\\nhr { margin: 1.5rem 0; }\\n[list]::-webkit-calendar-picker-indicator { display: none !important; }";
 xdui += "\\n#xdwrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";

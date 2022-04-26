@@ -653,7 +653,7 @@ str.replace(/(deaf)\\w+ (\\w+)\\./i, (m, c1, c2) => \`\${c1}? Or \${c2.replace(/
       search-and-replace UI.
 */
 
-srui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
+srui = "\\n<style type=\\"text/css\\">\\n*, *::before, *::after { box-sizing: inherit; }";
 srui += "\\nhtml { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }";
 srui += "\\nbutton, input, select { margin: 0; }\\nhr { margin: 1.5rem 0; }\\n[list]::-webkit-calendar-picker-indicator { display: none !important; }";
 srui += "\\n.textarea { background-color: white; border-color: #dbdbdb; border-radius: 4px; display: block; max-width: 100%; min-width: 100%; padding: calc(0.75em - 1px); resize: vertical; }";
@@ -1050,7 +1050,7 @@ dbase = "cntcs-demo";
 */
 
 d1ui = d2ui = d3ui = d4ui = d5ui = ""
-d1ui += "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
+d1ui += "\\n<style type=\\"text/css\\">\\n*, *::before, *::after { box-sizing: inherit; }";
 d1ui += "\\nhtml { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }";
 d1ui += "\\nbutton, input, select { margin: 0; }\\nhr { margin: 1.5rem 0; }";
 d1ui += "\\nfigure { margin: 1em 0; padding: 0 1em; }";
