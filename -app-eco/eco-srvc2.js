@@ -519,7 +519,7 @@ let q2Bcopy, q2Bhtml,
           '$1$2$3</pre><pre id="quad2B" contenteditable=true></pre>\\n  <ul id="symlist" class="is-hidden"></ul>' )
         .replace(/^<div id="xctrls".*?>[^]+?\\n(?=let q2Bcopy,)/im, "</main>\\n<script type=\\"text/javascript\\">\\n(function () {\\n'use strict';\\n")
         .replace(/^( *cheadg\\.textContent === ").+/m, "$1" + cheadg.textContent + "\\"")
-        .replace(/^xsetinp\\.addEventListener\\([^]+?(?=\\n<\\/script>)/im, "})();")
+        .replace(/^xsetinp\\.onblur[^]+?(?=\\n<\\/script>)/im, "})();")
       + "\\n</body>\\n</html>\\n";
     nanc.setAttribute('download', "calcjs-draft02.html");
     nanc.setAttribute('href', "data:text/html;charset=utf-8," + window.encodeURIComponent(chtml));
@@ -712,10 +712,10 @@ symlist.innerHTML = "\\n    " + Object.getOwnPropertyNames(Math)
     "- - -", "&brvbar;", "&uml;", "&macr;", "&deg;", "&pm;", "&sup2;", "&sup3;", "&acute;", "&micro;", "&sup1;", "&frac14;", "&frac12;", "&frac34;", "&times;", "&divide;", "&fnof;", "&tilde;", "(low tilde &#x2f7;)", "(combining circumflex &#x302;)", "(combining tilde &#x303;)", "(combining macron &#x304;)", "(combining overline &#x305;)", "(combining low line &#x332;)", "&horbar;", "&Vert;", "&bull;", "(triangular bullet &#x2023;)", "&hellip;", "&permil;", "&pertenk;", "&prime;", "&Prime;", "&tprime;", "&backprime;", "&oline;", "&frasl;", "&qprime;", "(superscript 0 &#x2070;)", "(superscript 4 &#x2074;)", "(superscript 5 &#x2075;)", "(superscript 6 &#x2076;)", "(superscript 7 &#x2077;)", "(superscript 8 &#x2078;)", "(superscript 9 &#x2079;)", "(superscript '+' &#x207a;)", "(superscript '-' &#x207b;)", "(superscript '=' &#x207c;)", "(superscript '(' &#x207d;)", "(superscript ')' &#x207e;)", "(subscript 0 &#x2080;)", "(subscript 1 &#x2081;)", "(subscript 2 &#x2082;)", "(subscript 3 &#x2083;)", "(subscript 4 &#x2084;)", "(subscript 5 &#x2085;)", "(subscript 6 &#x2086;)", "(subscript 7 &#x2087;)", "(subscript 8 &#x2088;)", "(subscript 9 &#x2089;)", "(subscript '+' &#x208a;)", "(subscript '-' &#x208b;)", "(subscript '=' &#x208c;)", "(subscript '(' &#x208d;)", "(subscript ')' &#x208e;)", "&Copf; (complexes)", "(Euler constant &#x2107;)", "&Hopf; (quaternions)", "&Nopf; (naturals)", "&numero;", "&Popf; (primes)", "&Qopf; (rationals)", "&Ropf; (reals)", "&Zopf; (integers)", "&escr;", "&ee;", "&ii;", "(frac 1-7th &#x2150;)", "(frac 1-9th &#x2151;)", "(frac 1-10th &#x2152;)", "&frac13;", "&frac23;", "&frac15;", "&frac25;", "&frac35;", "&frac45;", "&frac16;", "&frac56;", "&frac18;", "&frac38;", "&frac58;", "&frac78;", "(numerator 1 &#x215f;)", "&larr;", "&uarr;", "&rarr;", "&darr;", "&harr;", "&lArr;", "&uArr;", "&rArr;", "&dArr;", "&hArr;",
     "&forall;", "&part;", "&exist;", "&nexist;", "&empty;", "&nabla;", "&in;", "&notin;", "&ni;", "&notni;", "&prod;", "&sum;", "&minus;", "(division slash &#x2215;)", "&setmn;", "&lowast;", "&radic;", "&prop;", "&infin;", "&angrt;", "&ang;", "&mid;", "&nmid;", "&par;", "&npar;", "&and;", "&or;", "&cap;", "&cup;", "&int;", "&there4;", "&becaus;", "&ratio;", "&Colon;", "&sim;", "&nsim;", "&cong;", "&ap;", "&nap;", "&ne;", "&equiv;", "&nequiv;", "&le;", "&ge;", "&ll;", "&gg;", "&sub;", "&sup;", "&nsub;", "&nsup;", "&sube;", "&supe;", "&nsube;", "&nsupe;", "&subne;", "&supne;", "&oplus;", "&ominus;", "&otimes;", "&osol;", "&odot;", "&ocir;", "&oast;", "&odash;", "&plusb;", "&minusb;", "&timesb;", "&sdotb;", "&vdash;", "&dashv;", "&top;", "&bot;", "&sdot;", "&check;", "(multiplication X &#x2715;)", "&cross;", "(math diagonal &#x27cb;)", "(long division &#x27cc;)", "&lang;", "&rang;", "&Lang;", "&Rang;", "&xoplus;", "&xotime;" ]
   .map(e => \`<li>\${e.replace(/(.*)&(#?\\w+;)/, "&$2 $1&amp;$2")}</li>\`).join("\\n    ") + "\\n  ";
-['#scrnmask', '#cmain'].forEach(e => document.querySelector(e).addEventListener('click', dentGen));
-cheadg.addEventListener('blur', titSave);
-menulist.addEventListener('change', menuSel);
-quad2B.addEventListener('paste', txtPste);
+['#scrnmask', '#cmain'].forEach(e => document.querySelector(e).onclick = dentGen);
+cheadg.onblur = titSave;
+menulist.onchange = menuSel;
+quad2B.onpaste = txtPste;
 })();
 </script>`,
 // * * * * * 1: srcdiff * * * * *
@@ -743,7 +743,7 @@ body {
 main>h3 { margin: 0 0 0.25rem; }
 main>pre {
   height: 240px;
-  margin: 0 0 1rem;
+  margin: 0 0 16px;
   overflow: auto;
 }
 main>pre.ht0 { height: 0; }
@@ -786,12 +786,12 @@ print and (min-width: 738px) and (max-width: 785px) {
 <section class="section">
 <main class="container">
   <label class="has-text-link is-pulled-right">
-    <input type="checkbox" id="s1chkbx" />Collapse
+    <input type="checkbox" id="s1swi" />hide
   </label>
   <h3>SOURCE1 (edited)</h3>
   <pre id="s1rslt"></pre>
   <label class="has-text-link is-pulled-right">
-    <input type="checkbox" id="s2chkbx" />Collapse
+    <input type="checkbox" id="s2swi" />hide
   </label>
   <h3>SOURCE2 (original)</h3>
   <pre id="s2rslt"></pre>
@@ -803,39 +803,37 @@ print and (min-width: 738px) and (max-width: 785px) {
 'use strict';
 const s1txta = document.querySelector('#diff-s1txta'),
   s2txta = document.querySelector('#diff-s2txta'),
-  s1chkbx = document.querySelector('main #s1chkbx'),
-  s2chkbx = document.querySelector('main #s2chkbx'),
+  s1swi = document.querySelector('main #s1swi'),
+  s2swi = document.querySelector('main #s2swi'),
   s1rslt = document.querySelector('main>#s1rslt'),
   s2rslt = document.querySelector('main>#s2rslt'),
   diffExe = () => {
     if (!window.SourceDiff || !s1txta || !s2txta) { return; }
-    let diff = new SourceDiff.Diff(true), // true = ignore leading whitespace
-      formatter = new SourceDiff.DiffFormatter(diff),
-      results = formatter.formattedDiff(s2txta.value, s1txta.value);
-    s1rslt.innerHTML = results[1];
-    s2rslt.innerHTML = results[0];
+    let dif = new SourceDiff.Diff(true), // true = ignore leading whitespace
+      fmt = new SourceDiff.DiffFormatter(dif);
+    [s2rslt.innerHTML, s1rslt.innerHTML] = fmt.formattedDiff(s2txta.value, s1txta.value);
   };
-[s1chkbx, s2chkbx].forEach( e => e.addEventListener( 'change', () => {
+[s1swi, s2swi].forEach( e => e.onchange = () => {
   [s1rslt, s2rslt].forEach(e => e.classList.remove("ht0", "ht2x"));
-  if (s1chkbx.checked && s2chkbx.checked) {
+  if (s1swi.checked && s2swi.checked) {
     s1rslt.classList.add("ht0");
     s2rslt.classList.add("ht0");
-  } else if (s1chkbx.checked) {
+  } else if (s1swi.checked) {
     s1rslt.classList.add("ht0");
     s2rslt.classList.add("ht2x")
-  } else if (s2chkbx.checked) {
+  } else if (s2swi.checked) {
     s1rslt.classList.add("ht2x");
     s2rslt.classList.add("ht0");
   }
-}));
-s1rslt.addEventListener('scroll', () => {
+} );
+s1rslt.onscroll = () => {
   s2rslt.scrollLeft = s1rslt.scrollLeft;
   s2rslt.scrollTop = s1rslt.scrollTop;
-});
-s2rslt.addEventListener('scroll', () => {
+};
+s2rslt.onscroll = () => {
   s1rslt.scrollLeft = s2rslt.scrollLeft;
   s1rslt.scrollTop = s2rslt.scrollTop;
-});
+};
 window.setTimeout(diffExe, 500);
 })();
 </script>`,
@@ -1572,12 +1570,6 @@ let elsmed, fpl, fxa, pcntcs, rval, uimg, unm,
     fwinflux || !window.EC2 || !qcontxta || (qcontxta.value = evt.target.textContent)
     && EC2.qconRetrvD();
   },
-  hdrsXpd = () =>
-    document.querySelectorAll('main>#postbd .media-content>.field:first-child>details')
-    .forEach(e => e.open = filts[7].checked),
-  bodsXpd = () =>
-    document.querySelectorAll('main>#postbd .media-content>.field:last-child>details')
-    .forEach(e => e.open = filts[8].checked),
   rowEval = (fxs, rpv) => !fxs.trim()
     || !(fxa = fxs.trim().split(/[ ,]+/)).some(e => e === "-") && !rpv || rpv
     && (!(fpl = fxa.filter(e => !/^-/.test(e))).length || fpl.some(e => rpv.indexOf(e) > -1))
@@ -1665,11 +1657,14 @@ document.querySelector('main>#cfilt>#pcntcs').innerHTML = "\\n      "
 .then(() => {
   elsmed = document.querySelectorAll('main>#postbd>.media');
   document.querySelectorAll('main>#postbd .media-content>.field:first-child a')
-  .forEach(e => e.addEventListener('click', fileLoad));
-  filts[7].addEventListener('change', hdrsXpd);
-  filts[8].addEventListener('change', bodsXpd);
-  document.querySelector('main>#cfilt>.panel>.panel-heading>.is-pulled-right')
-  .addEventListener('click', rsltFilt);
+  .forEach(e => e.onclick = fileLoad);
+  filts[7].onchange = () =>
+    document.querySelectorAll('main>#postbd .media-content>.field:first-child>details')
+    .forEach(e => e.open = filts[7].checked);
+  filts[8].onchange = () =>
+    document.querySelectorAll('main>#postbd .media-content>.field:last-child>details')
+    .forEach(e => e.open = filts[8].checked);
+  document.querySelector('main>#cfilt>.panel>.panel-heading>.is-pulled-right').onclick = rsltFilt;
   filts[4].value = window.EC2 && EC2.objQA("epsets.uname", 1) || "";
 }).then(rsltFilt)
 .catch(rsp3Show);
@@ -1846,9 +1841,8 @@ cmain.innerHTML += cntcs.map( o => !o ||
     </div>
   </article>\`
 ).join("\\n") + "\\n";
-document.querySelector('main input[type=checkbox]')
-.addEventListener( 'change', evt => document.querySelectorAll('main details')
-  .forEach(e => e.open = evt.target.checked) );
+document.querySelector('main input[type=checkbox]').onchange
+= evt => document.querySelectorAll('main details').forEach(e => e.open = evt.target.checked);
 })();
 </script>`
 ];
