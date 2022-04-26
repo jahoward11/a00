@@ -5,7 +5,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 <div id="xdwrap">
-<style>
+<style type="text/css">
 *, *::before, *::after { box-sizing: inherit; }
 html { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }
 button, input, select { margin: 0; }
@@ -34,10 +34,10 @@ hr { margin: 1.5rem 0; }
 print and (min-width: 738px) and (max-width: 785px) { #xdwrap pre { height: 384px; } #xdwrap pre.ht2x { height: 768px; } }
 </style>
 <datalist id="pfile2"></datalist>
-<span class="cfield fltrt"><label class="ccntr"><input type="text" id="s1finp" list="pfile2" placeholder="filename/key/CMD…"></label><label class="ccntr isucc"><input type="checkbox" id="s1chkb"> hide</label></span>
+<span class="cfield fltrt"><label class="ccntr"><input type="text" id="s1inp" list="pfile2" placeholder="filename/key/CMD…"></label><label class="ccntr isucc"><input type="checkbox" id="s1swi"> hide</label></span>
 <h4>SOURCE1 (edited)</h4>
 <pre id="s1rslt"></pre>
-<span class="cfield fltrt"><label class="ccntr"><input type="text" id="s2finp" list="pfile2" placeholder="filename/key/CMD…"></label><label class="ccntr isucc"><input type="checkbox" id="s2chkb"> hide</label></span>
+<span class="cfield fltrt"><label class="ccntr"><input type="text" id="s2inp" list="pfile2" placeholder="filename/key/CMD…"></label><label class="ccntr isucc"><input type="checkbox" id="s2swi"> hide</label></span>
 <h4>SOURCE2 (original)</h4>
 <pre id="s2rslt"></pre>
 </div>
@@ -47,11 +47,11 @@ print and (min-width: 738px) and (max-width: 785px) { #xdwrap pre { height: 384p
 <script type=module>
 let fncTry = (fnc, a, e) => { try { return fnc(a) } catch (err) { return e > 1 ? a : e ? err : undefined }},
   diffGen = ([s1txt, s2txt]) => { if (!window.SourceDiff || !s1txt || !s2txt) { return s1rslt.innerHTML = s2rslt.innerHTML = ""; } let dif = new SourceDiff.Diff(true), fmt = new SourceDiff.DiffFormatter(dif); [s2rslt.innerHTML, s1rslt.innerHTML] = fmt.formattedDiff(s2txt, s1txt); },
-  datPrep = () => Promise.all( [s1finp.value, s2finp.value].map( k => Promise.resolve(fncTry(window.eval, k)).then(v => v != null ? v : localStorage.getItem(k) || window.localforage && localforage.getItem(k)).then(v => v == null ? "" : typeof v === 'object' ? JSON.stringify(v, null, 2) : typeof v !== 'string' ? "" + v : !/^{\s*['"][^]+}$|^\[[^]+\]$/.test(v.trim()) ? v : JSON.stringify(fncTry(JSON.parse, v), null, 2) || v) )).then(diffGen).catch(console.warn);
-[s1chkb, s2chkb].forEach( e => e.onchange = () => { [s1rslt, s2rslt].forEach(e => e.classList.remove("ht0", "ht2x")); if (s1chkb.checked && s2chkb.checked) { s1rslt.classList.add("ht0"); s2rslt.classList.add("ht0"); } else if (s1chkb.checked) { s1rslt.classList.add("ht0"); s2rslt.classList.add("ht2x") } else if (s2chkb.checked) { s1rslt.classList.add("ht2x"); s2rslt.classList.add("ht0"); } });
+  datPrep = () => Promise.all( [s1inp.value, s2inp.value].map( k => Promise.resolve(fncTry(window.eval, k)).then(v => v != null ? v : localStorage.getItem(k) || window.localforage && localforage.getItem(k)).then(v => v == null ? "" : typeof v === 'object' ? JSON.stringify(v, null, 2) : typeof v !== 'string' ? "" + v : !/^{\s*['"][^]+}$|^\[[^]+\]$/.test(v.trim()) ? v : JSON.stringify(fncTry(JSON.parse, v), null, 2) || v) )).then(diffGen).catch(console.warn);
+[s1swi, s2swi].forEach( e => e.onchange = () => { [s1rslt, s2rslt].forEach(e => e.classList.remove("ht0", "ht2x")); if (s1swi.checked && s2swi.checked) { s1rslt.classList.add("ht0"); s2rslt.classList.add("ht0"); } else if (s1swi.checked) { s1rslt.classList.add("ht0"); s2rslt.classList.add("ht2x") } else if (s2swi.checked) { s1rslt.classList.add("ht2x"); s2rslt.classList.add("ht0"); } });
 s1rslt.onscroll = () => { s2rslt.scrollLeft = s1rslt.scrollLeft; s2rslt.scrollTop = s1rslt.scrollTop; };
 s2rslt.onscroll = () => { s1rslt.scrollLeft = s2rslt.scrollLeft; s1rslt.scrollTop = s2rslt.scrollTop; };
-[s1finp, s2finp].forEach(e => e.onblur = datPrep);
-!window.xdwrap || !window.localforage || localforage.keys().then( ks => pfile2.innerHTML = ["trgtxta.value", "srctxta.value", "dentry.value", "recon.textContent", "recon.innerHTML"].concat(ks).map(k => "\n<option>" + k + "</option>").join("") + "\n" ).catch(console.warn);
+[s1inp, s2inp].forEach(e => e.onblur = datPrep);
+!window.xdwrap || !window.localforage || localforage.keys().then( ks => pfile2.innerHTML = ["trgtxta.value", "srctxta.value", "dentr.value", "recon.textContent", "recon.innerHTML"].concat(ks).map(k => "\n<option>" + k + "</option>").join("") + "\n" ).catch(console.warn);
 </script>
 </html>
