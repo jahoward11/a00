@@ -217,7 +217,7 @@ const ECOINSTR = [
 + '  }\n'
 + '  For one-direction SYNC, include in transaction JSON `RMTFR`/`RMTTO` property with value `true`, e.g.:\n'
 + '  { ..., "RMTFR": true } // for import only\n'
-+ '  { ..., "RMTTO": true }   // for export only\n',
++ '  { ..., "RMTTO": true } // for export only\n',
   '### COUCHDB QUERY INSTRUCTIONS ###\n'
 + '__Target:__ Query result gets sent to either *Preview* screen (for image) or one of *File Edit* & *JSON/Text Edit* screens (for text). Text result is loaded into *CONTENT* pane of *File Edit* screen only if field is both available & visible during import -- otherwise, into *JSON/Text Edit* screen.\n\n'
 + '__Alert:__ Working-file data is overwritten. No warning is given.\n\n'
@@ -973,6 +973,11 @@ function rdataFetch(txdata = {}, idx = 0) {
     : /\.json$/.test(txdata.url) ? 'json' : 'text' ) ]() );
 }
 
+function anumlIncr(anum) {
+  return !/^[a-z]{3}$/i.test(anum) ? "zza"
+  : window.ecoqjs.toAlpha(1 + window.ecoqjs.fromAlpha(anum)).toLowerCase();
+}
+
 function imgWrap(url) {
   return '<link href="' + a00path
   + '/-res-css/bulma0.9-minireset.css" type="text/css" rel="stylesheet" />'
@@ -1356,7 +1361,7 @@ function pfsListGen(fileref, publupd, filelf) {
       filesapp: hides[21] ? null : Object.entries(ECOTMPLS).map(oe => [oe[1]._id, oe[0]])
     },
     cntcLite = (d, id) => ({
-      _id:       id,
+      _id:       id.replace(/^!([a-z]{3})-(myteam)$/, "!$2-$1"), // temp cleanup
       name_full: d.name_full,
       //name_user: d.name_user,
       roles:     [d.roles].flat(),
@@ -1539,7 +1544,7 @@ function prjDiscGen() {
     rsltFmt = rsltqry => {
       context.disbl = !context.unmdspl || !attlist.value && !pfslist.value;
       context.discitems = rsltqry.rows
-      && rsltqry.rows.filter( r => /^~[amp]\d{8}|^~[a-z]{3}[AP]\d{8,}T\d{6}$/.test(r.id)
+      && rsltqry.rows.filter( r => /^~[amp]\d{8}|^~[a-z]{3}[AP]\d{8}/.test(r.id) //\d{8,}T\d{6}$
         && (rval = r.doc || r.value).linkref
         && (attlist.value || pfslist.value && pfslist.selectedOptions[0].textContent)
         .indexOf( ( !(sdir = rval.file_created.subdir)
@@ -2127,6 +2132,10 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       let etmpl = ECOTMPLS[ /^phone$/.test(ufile.file_type) ? "contact"
         : /^post$/.test(ufile.file_type) ? "memo" : /\w+$/.exec(ufile.file_type) ] || {};
       ufile.file_type !== "eco-phone" || (ufile.file_type = "eco-contact"); // temp cleanup
+      ufile.file_type !== "eco-contact" // temp cleanup
+      || !(ufile._id = ufile._id.replace(/^!([a-z]{3})-(myteam)$/, "!$2-$1")) || !epsets.teamid
+      || !(ufile.team_groups = ufile.team_groups || [""]) || ufile.team_groups.includes(epsets.teamid)
+      || (ufile.team_groups = ufile.team_groups.filter(e => e).concat(epsets.teamid));
       ufile.file_type !== "eco-post" || (ufile.file_type = "eco-memo"); // temp cleanup
       ["file_created", "file_updated"].forEach((p, i) => { // temp cleanup
         if (etmpl[p] && ufile[p] && ufile[p].hasOwnProperty("notes")) {
@@ -3137,9 +3146,7 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
     misctxta = document.querySelector('#ecoesp0 #misctxta'),
     cdirpath = jfw.loadconfigs && jfw.loadconfigs.commondirpath,
     fragsrcxs = jfw.loadconfigs && jfw.loadconfigs.fragsrcxs || [],
-    anumlIncr = anum => !/^[a-z]{3}$/i.test(anum) ? "zza"
-      : window.ecoqjs.toAlpha(1 + window.ecoqjs.fromAlpha(anum)).toLowerCase(),
-    ucallsgn = (/^!([a-z]{3})/.exec((tm0cntcs[jfw.from || epsets.uname] || "")._id) || [])[1],
+    ucallsgn = (/^(?:![0-9a-z]+-|)([a-z]{3})$/.exec((tm0cntcs[jfw.from || epsets.uname] || "")._id) || [])[1],
     dirdot = !dirref || /^-/.test(dirref = dirref.replace(/^\./, "")) ? "" : ".",
     rmttxd = dbpch && caccts.find(e => e.DBNAME === dbpch.name) || {},
     tstamp1 = Date.now(),
@@ -3191,11 +3198,11 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
     jfw.file_type || (jfw.file_type = "eco-prjid");
     ptys0Add("file_created");
     fileref = fileref.replace(/^~DBID_/, "");
-  } else if ( (/^eco-(?:anno|memo|post)$/.test(jfw.file_type)
-  || /^~[amp]\d{8}|^~[a-z]{3}[AP]/.test(jfw._id))
+  } else if ( ( /^eco-(?:anno|memo|post)$/.test(jfw.file_type)
+  || /^~[amp]\d{8}|^~[a-z]{3}[AP]\d{8}/.test(jfw._id) )
   && ucallsgn && ( pchutrg || lfnew || !/^~[amp]\d{8}|^~[a-z]{3}[AP]\d{8}/.test(jfw._id)
   || /^(?:Anno|Memo|Post)\d{8}/.test(fileref) && jfw._id.replace(/^~[amp](?=\d{8})|^~[a-z]{3}[AP]/, "")
-  !== fileref.replace(/^(?:Anno|Memo|Post)/, "") )) {
+  !== fileref.replace(/^(?:Anno|Memo|Post)/, "") ) ) {
     /^eco-(?:anno|memo|post)$/.test(jfw.file_type)
     || (jfw.file_type = "eco-" + (/^~(?:a|...A)\d{8}/.test(jfw._id) ? "anno" : "memo"));
     jfw._id = "~"
@@ -3216,8 +3223,8 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
   || ![jfw._id, jfw._id.replace(/^!/, ""), jfw.name_user, jfw.name_full]
   .some(p => p === fileref) ) ) {
     jfw._id = /^![0-9a-z]+-[0-9a-z]+$/i.test(fileref) ? fileref
-    : "!" + (dbpch && dbpch.name || "").replace(/^a00_/, "") + "-"
-      + anumlIncr((pf3stor.dbcntc.pop() || "__")[1].replace(/^(?:![0-9a-z]+-|)([a-z]{3})$/i, "$1"));
+    : "!" + (!dbpch ? epsets.teamid || "myteam" : dbpch.name.replace(/^a00_/, "")) + "-"
+      + anumlIncr((pf3stor.dbcntc.pop() || "__")[1].replace(/^![0-9a-z]+-/i, ""));
     jfw._rev = "";
     jfw.ts_created = tstamp1;
     !jfw.name_user ? ( jfw.name_user = /^\w/.test(fileref) ? fileref.replace(/[^\w.@-]+/g, "-")
@@ -3229,7 +3236,7 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
     jfw._rev = "";
     jfw.ts_created = tstamp1;
   } else if ( jfw.file_created && jfw._id !== fileref
-  && !/^~DVIZ_|^~DBID_|^~TMP[\dL]_|^~[amp]\d{8}|^~[a-z]{3}[AP]/.test(jfw._id) ) {
+  && !/^~DVIZ_|^~DBID_|^~TMP[\dL]_|^~[amp]\d{8}|^~[a-z]{3}[AP]\d{8}/.test(jfw._id) ) {
     jfw._id = fileref;
     jfw._rev = "";
     ptys0Add("file_created");
@@ -3247,7 +3254,7 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
     }
   }
   if ( dirref && jfw.file_created
-  && !/^~DVIZ_|^~DBID_|^~TMP[\dL]_|^~[amp]\d{8}|~[a-z]{3}[AP]/.test(jfw._id) ) {
+  && !/^~DVIZ_|^~DBID_|^~TMP[\dL]_|^~[amp]\d{8}|~[a-z]{3}[AP]\d{8}/.test(jfw._id) ) {
     jfw.file_created.subdir || (jfw.file_created.subdir = dirref);
     if ( pchutrg && ( !pf3stor.dbsdir
     || !pf3stor.dbsdir.some(e => e[1] && e[1].replace(/^\./, "") === dirref) )) {
@@ -4068,8 +4075,6 @@ ibmConnect() {
     tmidpre = valinp[2] === dbteam.replace(/^a00_/, "")
       || !tmidnew ? "a00_" : "a" + (+tmidnew < 9 ? "0" : "") + ++tmidnew + "_",
     tstamp1 = Date.now(),
-    anumlIncr = anum => !/^[a-z]{3}$/i.test(anum) ? "zza"
-      : window.ecoqjs.toAlpha(1 + window.ecoqjs.fromAlpha(anum)).toLowerCase(),
     dbOpen = (rmtdn = {}) => {
       rdataFetch( Object.assign( Object.assign({}, ECOXREQD), {
         prms: {
@@ -4152,10 +4157,10 @@ ibmConnect() {
     },
     cntcGen = u1st => Object.assign( jsonParse(JSON.stringify(ECOTMPLS.contact)),
       tm0cntcs[epsets.uname] = {
-        _id: u1st ? "!aaa-" + valinp[2]
-          : "!" + anumlIncr(
-            (Object.values(tm0cntcs).map(o => o._id).sort().pop() || "")
-            .replace(/^!([a-z]{3}|).*$/i, "$1") ) + "-" + epsets.teamid,
+        _id: u1st ? "!" + (valinp[2] || "myteam") + "-aaa"
+          : "!" + (epsets.teamid || "myteam") + "-"
+            + anumlIncr( (Object.values(tm0cntcs).map(o => o._id).sort().pop() || "")
+              .replace(/^![0-9a-z]+-/i, "") ),
         ts_created: tstamp1,
         ts_updated: tstamp1,
         name_full:  idtoks.idTokenPayload.name,
@@ -4325,7 +4330,7 @@ objQA(key = "", fbx) { // also triggered by dviz-memos, rsrcsXGet, qconRetrvD
   : /^6|^(?:ECO|)TMPLS?/i.test(key) ? ECOTMPLS[ptyTest()] || rsltFbk(ECOTMPLS)
   : /^5|^(?:ECO|)INSTR?/i.test(key) ? ECOINSTR[ptyTest(1)] || rsltFbk(ECOINSTR)
   : /^4|^assets?|^a?urls?|^blobs?/i.test(key) ? asseturls[ptyTest()] || rsltFbk(asseturls)
-  : /^3|^team|^(?:tm0|)cntcs?|^contacts?/i.test(key) ? tm0cntcs[ptyTest()] || rsltFbk(tm0cntcs)
+  : /^3|^team|^tm0$|^(?:tm0|)cntcs?|^contacts?/i.test(key) ? tm0cntcs[ptyTest()] || rsltFbk(tm0cntcs)
   : /^2|^couch|^c?accts?|^c?accounts?/i.test(key) ? caccts[ptyTest(1)] || rsltFbk(caccts)
   : /^1|^(?:eco|)idtoks?/i.test(key) ? idtoks && idtoks[ptyTest()] || rsltFbk(idtoks)
   : /^0|epsets?|(?:eco|)presets?/i.test(key) ? epsets && epsets[ptyTest()] || rsltFbk(epsets)
@@ -4438,8 +4443,8 @@ dvizGen(idx) {
           ? dbpch && dbpch.name : epsets.teamid && "a00_" + epsets.teamid ),
         csg = Object.entries(tm0cntcs).map(oe => [oe[1]._id, oe[0]])
         .filter( e => cdb && ( +dvizrads.value === 1
-          ? !epsets.teamid || e[0].replace(/^![a-z]{3}-?/i, "") !== epsets.teamid
-          : e[0].replace(/^![a-z]{3}-?/i, "") === epsets.teamid )).sort(),
+          ? !epsets.teamid || e[0].replace(/^!([0-9a-z]+)-.*/i, "$1") !== epsets.teamid
+          : e[0].replace(/^!([0-9a-z]+)-.*/i, "$1") === epsets.teamid )).sort(),
         cct = csg.length,
         dviztmpl = jsonParse(JSON.stringify(ECOTMPLS.publmgr));
       pfsResets();
@@ -4725,7 +4730,7 @@ discTog(evt) {
   prjDiscGen();
 },
 discAdd(discsync) {
-  let ucallsgn = (/^!([a-z]{3})/.exec((tm0cntcs[epsets.uname] || "")._id) || [])[1],
+  let ucallsgn = (/^(?:![0-9a-z]+-|)([a-z]{3})$/.exec((tm0cntcs[epsets.uname] || "")._id) || [])[1],
     attlist = document.querySelector('#econav0 #attlist'),
     pfslist = document.querySelector('#econav0 #pfslist'),
     memoinp = document.querySelector('#ecoesp0 #memoinp'),
@@ -5065,7 +5070,7 @@ logOut() {
   "" + Object.keys(epsets) == ["uemail", "uname", "ungvn", "unfam", "teamid", "loglast",
     "dbdflt", "prvmode", "hlstyle", "discload", "discdays", "tabsdflt", "swapchks", "appchks"]
   || ( localStorage["_ecopresets"] = JSON.stringify( epsets = Object.assign(
-    { uemail: "", uname: "", ungvn: "", unfam: "", teamid: "", loglast: "",
+    { uemail: "", uname: "", ungvn: "", unfam: "", teamid: "myteam", loglast: "",
       dbdflt: "", prvmode: 0, hlstyle: "", discload: [1, 0], discdays: 0,
       tabsdflt: [], swapchks: [], appchks: [] }, epsets )));
   !epsets.hasOwnProperty("dfltdb") || delete epsets.dfltdb; // temp cleanup
