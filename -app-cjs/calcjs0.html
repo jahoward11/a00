@@ -419,7 +419,7 @@ let q2Bcopy, q2Bhtml,
         .replace(/^<div id="xctrls".*?>[^]+?\n(?=let q2Bcopy,)/im, "</main>\n<script type=\"text/javascript\">\n(function () {\n'use strict';\n")
         .replace(/^( *cheadg\.textContent === ").+/m, "$1" + cheadg.textContent + "\"")
         .replace(/^xsetinp\.onblur[^]+?(?=\n<\/script>)/im, "})();")
-      + "\n</body>\n</html>\n";
+      + "\n</" + "body>\n</" + "html>\n";
     nanc.setAttribute('download', "calcjs-draft02.html");
     nanc.setAttribute('href', "data:text/html;charset=utf-8," + window.encodeURIComponent(chtml));
     nanc.click();
