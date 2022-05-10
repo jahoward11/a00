@@ -484,12 +484,12 @@ let q2Bcopy, q2Bhtml,
     quad2B.click();
     (xsetinp || {}).value = quad2A.innerHTML = quad1B.innerHTML = quad1A.innerHTML = "";
     quad2B.innerHTML = "// __To preserve view settings to URL:__"
-    + "\\n// 1. Edit &amp; un-comment settings, below --"
+    + "\\n// 1. Edit &amp; un-comment settings below --"
     + "\\n   // combining desired parts into a one-line expression."
     + "\\n// 2. De-focus *ENTRY* field."
     + "\\n   // (*Alert:* This action writes current/edited settings"
     + "\\n   // into URL string &amp; reloads page.)"
-    + "\\n// 3. Bookmark reloaded page -- or, add to home screen."
+    + "\\n// 3. Bookmark reloaded page (or, add to home screen)."
     + "\\n// 4. Optionally, copy new link and paste in text message to share."
     + "\\n\\n  // !zlock | unlock screen zoom"
     + "\\n  // !displ | hide calculator UI display"
@@ -520,7 +520,7 @@ let q2Bcopy, q2Bhtml,
         .replace(/^<div id="xctrls".*?>[^]+?\\n(?=let q2Bcopy,)/im, "</main>\\n<script type=\\"text/javascript\\">\\n(function () {\\n'use strict';\\n")
         .replace(/^( *cheadg\\.textContent === ").+/m, "$1" + cheadg.textContent + "\\"")
         .replace(/^xsetinp\\.onblur[^]+?(?=\\n<\\/script>)/im, "})();")
-      + "\\n</body>\\n</html>\\n";
+      + "\\n</" + "body>\\n</" + "html>\\n";
     nanc.setAttribute('download', "calcjs-draft02.html");
     nanc.setAttribute('href', "data:text/html;charset=utf-8," + window.encodeURIComponent(chtml));
     nanc.click();
@@ -679,7 +679,7 @@ let q2Bcopy, q2Bhtml,
       .then(xprsEval).catch(respShow);
 window.xstor = {};
 window.dentr = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
-  || { value: datxmp.textContent };
+  || { value: datxmp.textContent.replace(/\\n+$|^\\n+/g, "") };
 window.location.search.replace(/^\\?/, "").split("&").forEach( qi =>
   /^jsrcs=./.test(qi) ? (jsrcs = window.decodeURIComponent(qi.replace(/^jsrcs=/, "")).split(/[ ,]+/))
   : /^cmods=./.test(qi) ? (cmods = window.decodeURIComponent(qi.replace(/^cmods=/, "")).split(/[ ,]+/))
