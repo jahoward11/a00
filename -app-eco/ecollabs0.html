@@ -5416,7 +5416,7 @@ const hostibm = /\.cloudant[\w.]+$/.test(window.location.host),
     .then( () => !dbpch || dbpch.name !== DB_NAMES[0] || protfile && !platipd2
       ? MDIT_REFS.forEach( (e, i) => //scrInjPr(INI_ASSETS[4]).catch(respShow)
         scrInjPr(a00path + "/" + FILE_IDS[4] + "/" + (i < 2 ? e : "markdown-it-" + e + ".min.js"))
-        .catch(respShow) )
+        .catch(() => {}) )
       : MDIT_REFS.forEach( (e, i) =>
         dbpch.getAttachment(FILE_IDS[4], i < 2 ? e : "markdown-it-" + e + ".min.js")
         .then(scrInjPr).catch(() => {}) ) )
