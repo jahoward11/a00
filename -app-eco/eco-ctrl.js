@@ -332,7 +332,7 @@ const ECOTMPLS = {
       dbname: "",
       subdir: "",
       misc: "",
-      version: "0.1.1"
+      version: "0.1.0"
     },
     file_updated: {
       username: "",
@@ -2182,8 +2182,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         delete ufile.parseconfigs.regexpincl;
         !ufile.parseconfigs.regexpsconstr || delete ufile.parseconfigs.regexpsconstr;
         !lcu.hasOwnProperty("directtorender")
-        || ( ufile.parseconfigs.linksconstr = objAssn1( pcfge.linksconstr,
-          {
+        || ( ufile.parseconfigs.linksconstr = objAssn1( pcfge.linksconstr, {
             linksinclrender: lcu.directtorender,
             insertposition:  lcu.rsltinsposition || "1",
             wrapperincl:     lcu.wrapperincl,
@@ -2355,7 +2354,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         ppty.dbname = dbpch ? dbpch.name : !rmttxd.DBNAME ? "" : rmttxd.DBNAME;
         ppty.subdir = "";
         !ppty.hasOwnProperty("misc") || (ppty.misc = "");
-        !ppty.hasOwnProperty("version") || (ppty.version = "0.1." + (!i ? "1" : "0"));
+        !ppty.hasOwnProperty("version") || (ppty.version = "0.1.0");
       }});
       !filewkg.hasOwnProperty("from") || (filewkg.from = epsets.uname);
     }
