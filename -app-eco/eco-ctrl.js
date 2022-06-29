@@ -28,6 +28,9 @@ const hostibm = /\.cloudant[\w.]+$/.test(window.location.host) && window.locatio
     || "https://46a849c5-a061-44b5-92ee-6279f6974d5f-bluemix.cloudantnosqldb.appdomain.cloud",
   a00path = ( protfile || hostlh || hostibm || /\.github\.io$/.test(window.location.host)
     ? "../.." : a00orig ) + "/a00",
+  ecocid = localStorage["_ecoclientid"] || "47902519-fc5c-42a0-9d9c-80aa28548d43",
+  ecodep = localStorage["_ecodvrendpt"]
+    || "https://us-south.appid.cloud.ibm.com/oauth/v4/a2b64ee2-ae1f-4bd7-8752-293a686c70b4/.well-known/openid-configuration",
   asseturls = {
     "eco-srvc1.js":           a00path + "/-app-eco/eco-srvc1.js",
     "eco-srvc2.js":           a00path + "/-app-eco/eco-srvc2.js",
@@ -5089,9 +5092,8 @@ logOut() {
     appid = new AppID();
     try {
       await appid.init({
-        clientId: localStorage["_ecoclientid"] || "c570c7f9-e551-4ecf-8003-690f379d40fb",
-        discoveryEndpoint: localStorage["_ecodvrendpt"]
-          || "https://us-south.appid.cloud.ibm.com/oauth/v4/e66d3795-51bb-48ad-9b9c-ae7ebe0ece27/.well-known/openid-configuration"
+        clientId: ecocid,
+        discoveryEndpoint: ecodep
       });
     } catch (err) {
       prjsenet = {};

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Ecollabs 0.13</title>
+<title>Ecollabs 0.14</title>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="mobile-web-app-capable" content="yes" />
@@ -5348,6 +5348,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 <div id="iniscripts" class="is-hidden"></div>
 <div id="ecoscripts" class="is-hidden"></div>
 
+<script src="https://cdn.appid.cloud.ibm.com/appid-0.3.0.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 (function () {
 'use strict';
@@ -5365,9 +5366,9 @@ const hostibm = /\.cloudant[\w.]+$/.test(window.location.host),
   qcontxta = document.querySelector('#econav0 #qcontxta'),
   DB_NAMES = ["a00"], //DB_VERSIONS = [5],
   DB_STORES = ["document-store", "by-sequence", "attach-store"],
-  FILE_IDS = ["-res-js", "-res-js", "-res-js", "", "-res-mdit", "-res-js",
+  FILE_IDS = ["-res-js", "-res-js", "", "", "-res-mdit", "-res-js", //-res-js
     "-res-js", "-res-js", "-res-js", "-app-eco"],
-  ATT_KEYS = ["pouchdb.min.js", "pouchdb.all-dbs.min.js", "appid.min.js",
+  ATT_KEYS = ["pouchdb.min.js", "pouchdb.all-dbs.min.js", "", //appid.min.js
     "", "markdown-it.min.js", "handlebars.min.js",
     "localforage.min.js", "highlight.pack.js", "dropbox-oauth2.js", "eco-ctrl.js"],
   MDIT_REFS = ["markdown-it.min.js", "markdown-it-attrs.browser.js", "abbr", "container",
@@ -5411,8 +5412,8 @@ const hostibm = /\.cloudant[\w.]+$/.test(window.location.host),
     .then(() => dbpch && dbpch.info()).catch(respShow)
     .then(() => dbpch && dbpch.getAttachment(FILE_IDS[1], ATT_KEYS[1])).then(scrInjPr)
     .catch(() => scrInjPr(INI_ASSETS[1]).catch(respShow))
-    .then(() => rmtready && dbpch && dbpch.getAttachment(FILE_IDS[2], ATT_KEYS[2])).then(scrInjPr)
-    .catch(() => rmtready && scrInjPr(INI_ASSETS[2]).catch(respShow))
+    //.then(() => rmtready && dbpch && dbpch.getAttachment(FILE_IDS[2], ATT_KEYS[2])).then(scrInjPr)
+    //.catch(() => rmtready && scrInjPr(INI_ASSETS[2]).catch(respShow))
     .then( () => !dbpch || dbpch.name !== DB_NAMES[0] || protfile && !platipd2
       ? MDIT_REFS.forEach( (e, i) => //scrInjPr(INI_ASSETS[4]).catch(respShow)
         scrInjPr(a00path + "/" + FILE_IDS[4] + "/" + (i < 2 ? e : "markdown-it-" + e + ".min.js"))

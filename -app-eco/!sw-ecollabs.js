@@ -1,6 +1,6 @@
 // Service Worker
 
-const cacheName = "ecollabs-v00.13",
+const cacheName = "ecollabs0.14",
   cacheKeeplist = [cacheName],
   appShellFiles = [
     "../-app-eco/!eco.webmanifest",
