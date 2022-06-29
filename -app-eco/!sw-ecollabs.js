@@ -28,7 +28,7 @@ const cacheName = "ecollabs0.14",
   rcvd1 = {},
   tstamp = Date.now(),
   rexupds = /\/a00\/(?:(?:-app-eco\/|-dev.*?\/)[\w.-]+\??|-res-css\/(?:reset|style)[\w.-]+|-res-js\/ebook-annos-fns\.js)$|\.cloudant[\w.]+\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|-res-\w+\/u\d\d[\w.-]+$/,
-  rexkprs = /\/a00\/[\w/.-]+\??$|\.cloudant[\w.]+\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|-res-\w+\/u\d\d[\w.-]+$|\/oauth\/v4\/.+\/(?:openid-configuration|publickeys)$|\/eco\/projects$|\/\/fonts\.gstatic\.com\/|\.gravatar\.com\/avatar\//;
+  rexkprs = /\/a00\/[\w/.-]+\??$|\.cloudant[\w.]+\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|-res-\w+\/u\d\d[\w.-]+$|\/appid-0\.3\.0\.min\.js$|\/oauth\/v4\/.+\/(?:openid-configuration|publickeys)$|\/eco\/projects$|\/\/fonts\.gstatic\.com\/|\.gravatar\.com\/avatar\//;
 
 self.addEventListener('install', e => {
   console.log("[Service Worker] Installing new cache: " + cacheName);
@@ -47,7 +47,7 @@ self.addEventListener('activate', e => {
     + ((Date.now() - tstamp) / (60 * 1000)) + " min)" );
   e.waitUntil(
     caches.keys().then( keyList => Promise.all( keyList.map( key =>
-      !key.startsWith(cacheName.replace(/-.+/, "")) || cacheKeeplist.indexOf(key) > -1
+      !key.startsWith(cacheName.replace(/[\d-].+/, "")) || cacheKeeplist.indexOf(key) > -1
       || caches.delete(key) ))) );
 });
 
