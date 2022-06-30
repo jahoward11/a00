@@ -1163,12 +1163,13 @@ let rva2, rval, ss0, ss1,
       <td colspan="18">\${ !rval._attachments[k] ? k
         : k + " (" + Math.ceil(+rval._attachments[k].length / 1000) + "k)" }</td>
     </tr>\` ).join("\\n")
-    : !i || !(rva2 = rows[i - 1].doc || rows[i - 1].value).file_updated
-      || rval.file_updated.subdir !== rva2.file_updated.subdir
+    : !i || /^[.-]/.test(rows[i - 1].id) || !(rva2 = rows[i - 1].doc || rows[i - 1].value)
+      || ((rval.file_updated || "").subdir || rval.loc_subdir || "")
+        !== ((rva2.file_updated || "").subdir || rva2.loc_subdir || "")
     ? (!i || (j = i)) &&
-\`    <tr id="\${ rval.file_updated.subdir || "_" }">
+\`    <tr id="\${ rval.loc_subdir || (rval.file_updated || "").subdir || "_" }">
       <td colspan="20"><a>&#x25b6;</a> <input type="checkbox" class="is-hidden" /> \${
-        rval.file_updated.subdir || "/" }</td>
+        rval.loc_subdir || (rval.file_updated || "").subdir || "/" }</td>
     </tr>\\n\` + tr0Gen(r, i)
     : tr0Gen(r, i) ).join("\\n") + "\\n  ",
   qd3Fmt = rows => "\\n" + rows.map(tr0Gen).join("\\n") + "\\n  ",
@@ -1396,18 +1397,16 @@ let rva2, rval, ss0, ss1,
       let calcSum = arr => !arr.length ? 0 : arr.reduce((s, v) => s + v);
       j = 0;
       ftotal.innerText = vidx ? re.rows.length //re.total_rows
-        : re.rows.filter( r => (rval = r.doc || r.value).hasOwnProperty("loc_subdir")
-            || rval.file_updated || rval.file_created ).length
-          + calcSum( re.rows.map( r => !(rval = r.doc || r.value)._attachments ? 0
-              : Object.keys(rval._attachments).length ));
+        : re.rows.filter(r => /^eco-./.test((r.doc || r.value).file_type)).length
+          + calcSum( re.rows.map( r => !(rval = r.doc || r.value)._attachments
+            ? 0 : Object.keys(rval._attachments).length ));
       [cmthds[1], cmtfts[1]].forEach(e => e.classList.add("is-hidden"));
       [cmthds[0], cmtfts[0]].forEach(e => e.classList.remove("is-hidden"));
       cmtbod.innerHTML = vidx
       ? qd3Fmt( !ss0 || vidx !== 2 && ss0 === "id" || vidx === 2 && ss1 === "timestamp" ? re.rows
         : ordFlip(re.rows.map(r => [ptyX(r.doc || r.value), r.id, r])).map(sr => sr[2]) )
-      : qd2Fmt( ordFlip( re.rows.filter( r => /^[.-]./.test(r.id)
-          || (rval = r.doc || r.value).hasOwnProperty("loc_subdir")
-          || rval.file_updated || rval.file_created )
+      : qd2Fmt( ordFlip( re.rows
+        .filter(r => /^[.-]./.test(r.id) || /^eco-./.test((r.doc || r.value).file_type))
         .map( r => /^[.-]./.test(r.id) ? [r.id.replace(/^\\.(.+)$/, "$1_"), null, r.id, r]
           : [ (rval = r.doc || r.value).loc_subdir
               || (rval.file_updated || rval.file_created || "").subdir || ".",
@@ -1815,7 +1814,7 @@ main .image>figcaption { text-align: center; }
 (function() {
 'use strict';
 const cntcs = \`
-  \`.trim().split(/\\n+(?=\\{)/).map(JSON.parse),
+  \`.trim().split(/\\n+(?={)/).filter(e => /^{\\s*"[^]+}$/.test(e)).map(JSON.parse),
   cmain = document.querySelector('main'),
   aurlGen = (isrc = "avatar000.png") => !window.EC2
     ? (!isrc || /\\//.test(isrc) ? "" : "../../a00_myteam/-res-img/") + (isrc || "")
