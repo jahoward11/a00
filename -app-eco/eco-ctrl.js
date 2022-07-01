@@ -171,7 +171,7 @@ const ECOINSTR = [
 + ' $STYS         | HighlightJS CSS-file lists\n'
 + ' $(global-var) | system/user-created global variable (primitive/JS-obj/method)\n\n'
 + '__Notes__\n'
-+ '- Append `.`+idx/key to access specific element (by index) or property (by key) within object.\n'
++ '- Append `.`-idx/key to access specific element (by index) or property (by key) within object.\n'
 + '- Append `.keys` to list all property keys of object.\n'
 + '- Objects may also be accessed from within script using app JS method `EC2.objQA()`.  \n'
 + '  Provide quick-access notation as first argument -- surrounded by quotes, but without leading `$`.\n'
@@ -193,7 +193,7 @@ const ECOINSTR = [
 + '  { "$_": null }\n'
 + '    // unset CouchDB-account data\n'
 + '  Getter notation, e.g.: `_couchaccts`, `_` (shorthand), `1` (acct-index), `mydb2` (acct-DBNAME), `_ecoidtoks`, `_ecopresets`\n\n'
-+ '- Display open local-DB info: `(blank)`\n\n'
++ '- Display open local-DB info: ` ` (blank)\n\n'
 + '- Display list of local DBs: `/_all_dbs`\n\n'
 + '- Create/Open/Close local DB: `/` or `/`-DBNAME\n\n'
 + '- Create/Open/DESTROY/COMPACT/CLEANUP local/remote DB.  \n'
@@ -225,7 +225,7 @@ const ECOINSTR = [
 + '__Target:__ Query result gets sent to either *Preview* screen (for image) or one of *File Edit* & *JSON/Text Edit* screens (for text). Text result is loaded into *CONTENT* pane of *File Edit* screen only if field is both available & visible during import -- otherwise, into *JSON/Text Edit* screen.\n\n'
 + '__Alert:__ Working-file data is overwritten. No warning is given.\n\n'
 + 'In *HTTP console*, enter transaction data & tap *RetrvD*:\n\n'
-+ '- `(blank)` -- to reset *Preview* screen, *Discuss* screen & *Edit Space* (i.e., unload working file & clear all text-edit fields).\n\n'
++ '- ` ` (blank) -- to reset *Preview* screen, *Discuss* screen & *Edit Space* (i.e., unload working file & clear all text-edit fields).\n\n'
 + '- `$`-obj.idx/key -- to access active, JS-object data within app, e.g.:  \n'
 + '  `$` (list available JS objects),  \n'
 + '  `$team` (list abbr\'d, team-member data),  \n'
@@ -4993,6 +4993,7 @@ logOut() {
     tabsdflt: [], swapchks: [], appchks: [] };
   idtoks = null;
   localStorage.removeItem("_ecoidtoks");
+  document.querySelector('#ecorender').innerHTML = '<p id="msgwelcome">Welcome team member!</p>';
   msgHandl( "Alert: User credentials (used for remote-DB syncing) have been discarded."
     + ( stoempswi.checked ? "\nAlso, all user-generated, local-storage data has been deleted."
       : "\nHowever, local-storage data remains intact and available on device." )
