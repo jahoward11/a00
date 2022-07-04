@@ -22,13 +22,13 @@ const cacheName = "ecollabs0.14",
     "../-res-js/srcdiff.js"
   ],
   appContent = [
-    //"../guide-httpcon",
-    //"https://d889bfcc.us-south.apigw.appdomain.cloud/eco/projects"
+    "https://46a849c5-a061-44b5-92ee-6279f6974d5f-bluemix.cloudantnosqldb.appdomain.cloud/a00/guide-httpcon",
+    "https://us-south.functions.appdomain.cloud/api/v1/web/f9c5f19e-072b-41a9-805e-d55d5e5d121c/eco/project-list.json"
   ],
   rcvd1 = {},
   tstamp = Date.now(),
-  rexupds = /\/a00\/(?:(?:-app-eco\/|-dev.*?\/)[\w.-]+\??|-res-css\/(?:reset|style)[\w.-]+|-res-js\/ebook-annos-fns\.js)$|\.cloudant[\w.]+\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|-res-\w+\/u\d\d[\w.-]+$/,
-  rexkprs = /\/a00\/[\w/.-]+\??$|\.cloudant[\w.]+\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|-res-\w+\/u\d\d[\w.-]+$|\/oauth\/v4\/.+\/(?:openid-configuration|publickeys)$|\/eco\/projects$|\/\/fonts\.gstatic\.com\/|\.gravatar\.com\/avatar\//;
+  rexupds = /\/a00\/(?:(?:-app-eco\/|-dev.*?\/)[\w.-]+\??|-res-css\/(?:reset|style)[\w.-]+|-res-js\/ebook-annos-fns\.js)$|\.cloudant[\w.]+\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|-res-\w+\/u\d\d[\w.-]+$|\/eco\/project-list.json$/,
+  rexkprs = /\/a00\/[\w/.-]+\??$|\.cloudant[\w.]+\/(?!a00\/)[\w.-]+\/-res-\w+\/[\w.-]+$|-res-\w+\/u\d\d[\w.-]+$|\/oauth\/v4\/.+\/(?:openid-configuration|publickeys)$|\/\/fonts\.gstatic\.com\/|\.gravatar\.com\/avatar\//;
 
 self.addEventListener('install', e => {
   console.log("[Service Worker] Installing new cache: " + cacheName);

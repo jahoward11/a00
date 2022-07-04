@@ -28,9 +28,6 @@ const hostibm = /\.cloudant[\w.]+$/.test(window.location.host) && window.locatio
     || "https://46a849c5-a061-44b5-92ee-6279f6974d5f-bluemix.cloudantnosqldb.appdomain.cloud",
   a00path = ( protfile || hostlh || hostibm || /\.github\.io$/.test(window.location.host)
     ? "../.." : a00orig ) + "/a00",
-  ecocid = localStorage["_ecoclientid"] || "47902519-fc5c-42a0-9d9c-80aa28548d43",
-  ecodep = localStorage["_ecodvrendpt"]
-    || "https://us-south.appid.cloud.ibm.com/oauth/v4/a2b64ee2-ae1f-4bd7-8752-293a686c70b4/.well-known/openid-configuration",
   asseturls = {
     "eco-srvc1.js":           a00path + "/-app-eco/eco-srvc1.js",
     "eco-srvc2.js":           a00path + "/-app-eco/eco-srvc2.js",
@@ -72,7 +69,7 @@ const COUCHTXD = [
   {
     USRNAM: "username",
     PSSWRD: "password",
-    DBORIG: "https://username.cloudant.com",
+    DBORIG: "https://subdomain.cloudant.com",
     DBPUBL: false,
     DBNAME: "myPrjHomeDB01",
     FILEID: "",
@@ -119,7 +116,7 @@ const COUCHTXD = [
   {
     USRNAM: "username",
     PSSWRD: "password",
-    DBORIG: "https://username.cloudant.com",
+    DBORIG: "https://subdomain.cloudant.com",
     DBNAME: "myPrjHomeDB08",
     RMTFR:  true,
     RMTTO:  false,
@@ -135,8 +132,8 @@ const ECOXREQD = {
   xmet: 'GET',
   xmts: ['GET', 'GET', 'POST', 'POST'],
   url:  localStorage["_ecoxserver"]
-    || "https://d889bfcc.us-south.apigw.appdomain.cloud/eco",
-  epts: ["", "/projects", "/query", "/keys"],
+    || "https://us-south.functions.appdomain.cloud/api/v1/web/f9c5f19e-072b-41a9-805e-d55d5e5d121c",
+  epts: ["", "/eco/project-list.json", "/eco/db-query.json", "/eco/key-request.json"],
   prms: {},
   hdrs: {},
   bmet: 'json',
@@ -215,7 +212,7 @@ const ECOINSTR = [
 + '  {\n'
 + '    "USRNAM": "username",\n'
 + '    "PSSWRD": "password",\n'
-+ '    "DBORIG": "https://username.cloudant.com",\n'
++ '    "DBORIG": "https://subdomain.cloudant.com",\n'
 + '    "DBNAME": "myPrjHomeDB01"\n'
 + '  }\n'
 + '  For one-direction SYNC, include in transaction JSON `RMTFR`/`RMTTO` property with value `true`, e.g.:\n'
@@ -237,8 +234,8 @@ const ECOINSTR = [
 + '  `//`-FILEID (retrieve non-DB, LOCAL temporary file)\n\n'
 + '- Remote-DB URL, e.g.:  \n'
 + '  `../../db/file/attach`,  \n'
-+ '  `https://username.cloudant.com​/db/file/attach`,  \n'
-+ '  `https://username:password​@username.cloudant.com​/db/file/attach`\n\n'
++ '  `https://subdomain.cloudant.com​/db/file/attach`,  \n'
++ '  `https://username:password​@subdomain.cloudant.com​/db/file/attach`\n\n'
 + '- Transaction JSON, e.g.:  \n'
 + JSON.stringify(COUCHTXD[0], null, 2)
   .replace(/"FILEID": "/, "$&myfile").replace(/^/gm, "  ")
@@ -251,7 +248,7 @@ const ECOINSTR = [
 + '- Add/update local/remote DB file.  \n'
 + '  Provide transaction data either as local-filepath/remote-URL or as JSON, e.g.:  \n'
 + '  `/myPrjHomeDB01/myfile`,  \n'
-+ '  `https://username:password​@username.cloudant.com​/db/file`,  \n'
++ '  `https://username:password​@subdomain.cloudant.com​/db/file`,  \n'
 + JSON.stringify(COUCHTXD[0], null, 2)
   .replace(/"FILEID": "/, "$&myfile").replace(/^/gm, "  ")
 + '\n\n- Delete local/remote DB file.  \n'
@@ -275,7 +272,7 @@ const ECOINSTR = [
 + 'In *HTTP console*, enter transaction data & tap *SubmD*. Provide transaction data as:\n\n'
 + '- local-filepath/remote-URL, e.g.:  \n'
 + '  `/myPrjHomeDB07/-res-css​/mystylesheet.css`,  \n'
-+ '  `https://username:password​@username.cloudant.com​/db/file/attach`\n\n'
++ '  `https://username:password​@subdomain.cloudant.com​/db/file/attach`\n\n'
 + '- JSON text, e.g.:  \n'
 + '  {\n'
 + '    "DBNAME": "myPrjHomeDB07",\n'
@@ -5057,15 +5054,6 @@ logOut() {
 
 (async function () { // hbarsCompile
   let achks = document.querySelectorAll('#ecoesp0 #toolapp input[type=checkbox]');
-  localStorage["_ecoidtoks"] || !localStorage["_ecoiamtoks"]
-  || (localStorage["_ecoidtoks"] = localStorage["_ecoiamtoks"])
-  && localStorage.removeItem("_ecoiamtoks"); // temp cleanup
-  localStorage["_couchaccts"] || !localStorage["_couchdbload"]
-  || (localStorage["_couchaccts"] = localStorage["_couchdbload"])
-  && localStorage.removeItem("_couchdbload"); // temp cleanup
-  localStorage["_couchaccts"] || !localStorage["_couchdbaccts"]
-  || (localStorage["_couchaccts"] = localStorage["_couchdbaccts"])
-  && localStorage.removeItem("_couchdbaccts"); // temp cleanup
   caccts = ( /^\[.*{".+}\]$/.test(localStorage["_couchaccts"])
     && jsonParse(localStorage["_couchaccts"]) || caccts ).filter(e => e && typeof e === 'object');
   epsets = /^{".+}$/.test(localStorage["_ecopresets"])
@@ -5076,11 +5064,6 @@ logOut() {
     { uemail: "", uname: "", ungvn: "", unfam: "", teamid: "myteam", loglast: "",
       dbdflt: "", prvmode: 0, hlstyle: "", discload: [1, 0], discdays: 0,
       tabsdflt: [], swapchks: [], appchks: [] }, epsets )));
-  !epsets.hasOwnProperty("dfltdb") || delete epsets.dfltdb; // temp cleanup
-  !epsets.hasOwnProperty("qconctrl") || delete epsets.qconctrl; // temp cleanup
-  !epsets.hasOwnProperty("qconopen") || delete epsets.qconopen; // temp cleanup
-  !epsets.hasOwnProperty("swapctrls") || delete epsets.swapctrls; // temp cleanup
-  !epsets.hasOwnProperty("appctrls") || delete epsets.appctrls; // temp cleanup
   epsets.appchks.length === 32 || (epsets.appchks = Array.from(achks).map(e => e.checked));
   !/^{.*}$/.test(localStorage["_ecopchupds"])
     ? localStorage["_ecopchupds"] = JSON.stringify(updpch)
@@ -5092,8 +5075,9 @@ logOut() {
     appid = new AppID();
     try {
       await appid.init({
-        clientId: ecocid,
-        discoveryEndpoint: ecodep
+        clientId: localStorage["_ecoclientid"] || "47902519-fc5c-42a0-9d9c-80aa28548d43",
+        discoveryEndpoint: localStorage["_ecodvrendpt"]
+          || "https://us-south.appid.cloud.ibm.com/oauth/v4/a2b64ee2-ae1f-4bd7-8752-293a686c70b4/.well-known/openid-configuration"
       });
     } catch (err) {
       prjsenet = {};
