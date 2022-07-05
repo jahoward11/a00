@@ -4131,8 +4131,8 @@ ibmConnect() {
         + '/-res-css/bulma0.9-minireset.css" type="text/css" rel="stylesheet" />\n'
         + document.querySelector('#ecorender').innerHTML.trim(), 5 );
       emodeSet();
-      EC1.tabs5Tog(asels[3].selectedIndex = epsets.tabsdflt[0]);
-      EC1.tabs6Tog(asels[4].selectedIndex = epsets.tabsdflt[1]);
+      EC1.tabs5Tog(asels[3].selectedIndex = epsets.tabsdflt[0] || 0);
+      EC1.tabs6Tog(asels[4].selectedIndex = epsets.tabsdflt[1] || 0);
       document.querySelector('#ecoesp0 #swpltogswi').checked = epsets.swapchks[0];
       document.querySelector('#ecoesp0 #wraptogswi').checked = epsets.swapchks[1];
       EC1.wrapTog();
