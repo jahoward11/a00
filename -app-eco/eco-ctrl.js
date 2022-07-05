@@ -3877,9 +3877,11 @@ jdeRawUpd(noflux) { // also triggered by swapExe, dviz-dboxupd
 tabs5Tog(idx) { // also triggered by ibmConnect
   let publtabs = document.querySelectorAll('#ecoesp0 #publtabs>ul>li'),
     publas = document.querySelectorAll('#ecoesp0 #publtabs>ul>li>a'),
+    ptabactv = document.querySelector('#ecoesp0 #publtabs>ul>li.is-active'),
+    ptabaanc = document.querySelector('#ecoesp0 #publtabs>ul>li.is-active>a'),
     publpnls = ["#publpre", "#publmet", "#publcmt"];
-  document.querySelector('#ecoesp0 #publtabs>ul>li.is-active>a').classList.add("has-text-grey-light");
-  document.querySelector('#ecoesp0 #publtabs>ul>li.is-active').classList.remove("is-active");
+  !ptabaanc || ptabaanc.classList.add("has-text-grey-light");
+  !ptabactv || ptabactv.classList.remove("is-active");
   !publtabs[idx] || publtabs[idx].classList.add("is-active");
   !publas[idx] || publas[idx].classList.remove("has-text-grey-light");
   publpnls.forEach(e => document.querySelector('#ecoesp0 ' + e).classList.add("is-hidden"));
@@ -3904,9 +3906,11 @@ metaChg(evt, pty) {
 tabs6Tog(idx) { // also triggered by ibmConnect
   let tooltabs = document.querySelectorAll('#ecoesp0 #tooltabs>ul>li'),
     toolas = document.querySelectorAll('#ecoesp0 #tooltabs>ul>li>a'),
+    ttabactv = document.querySelector('#ecoesp0 #tooltabs>ul>li.is-active'),
+    ttabaanc = document.querySelector('#ecoesp0 #tooltabs>ul>li.is-active>a'),
     toolpnls = ["#tooltypes", "#toolswap", "#tooljscon", "#toolapp"];
-  document.querySelector('#ecoesp0 #tooltabs>ul>li.is-active>a').classList.add("has-text-grey-light");
-  document.querySelector('#ecoesp0 #tooltabs>ul>li.is-active').classList.remove("is-active");
+  !ttabaanc || ttabaanc.classList.add("has-text-grey-light");
+  !ttabactv || ttabactv.classList.remove("is-active");
   !tooltabs[idx] || tooltabs[idx].classList.add("is-active");
   !toolas[idx] || toolas[idx].classList.remove("has-text-grey-light");
   toolpnls.forEach(e => document.querySelector('#ecoesp0 ' + e).classList.add("is-hidden"));
