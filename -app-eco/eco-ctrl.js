@@ -4137,6 +4137,7 @@ ibmConnect() {
       document.querySelector('#ecoesp0 #wraptogswi').checked = epsets.swapchks[1];
       EC1.wrapTog();
       EC1.swplTog();
+      hlslist.value = epsets.hlstyle;
       !epsets.appchks.length || achks.forEach((e, i) => e.checked = epsets.appchks[i]);
       !epsets.appchks.slice(22, 29).some(e => e) || xsrcTog();
     },
