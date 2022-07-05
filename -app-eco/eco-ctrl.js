@@ -4121,18 +4121,18 @@ ibmConnect() {
     ecoInit = () => {
       localStorage["_ecopresets"] = JSON.stringify(epsets);
       !msgwelcome || !epsets.ungvn || (msgwelcome.textContent = "Hello " + epsets.ungvn + "!");
-      !epsets.appchks[1] || EC1.qconTog(1);
-      !epsets.prvmode || (asels[1].selectedIndex = epsets.prvmode)
-      && dataDispl( '<link href="' + a00path
+      EC1.qconTog(epsets.appchks[1]);
+      !(asels[1].selectedIndex = epsets.prvmode)
+      || dataDispl( '<link href="' + a00path
         + '/-res-css/bulma0.9-minireset.css" type="text/css" rel="stylesheet" />\n'
         + document.querySelector('#ecorender').innerHTML.trim(), 5 );
       emodeSet();
-      !epsets.tabsdflt[0] || EC1.tabs5Tog(asels[3].selectedIndex = epsets.tabsdflt[0]);
-      !epsets.tabsdflt[1] || EC1.tabs6Tog(asels[4].selectedIndex = epsets.tabsdflt[1]);
+      EC1.tabs5Tog(asels[3].selectedIndex = epsets.tabsdflt[0]);
+      EC1.tabs6Tog(asels[4].selectedIndex = epsets.tabsdflt[1]);
       document.querySelector('#ecoesp0 #swpltogswi').checked = epsets.swapchks[0];
       document.querySelector('#ecoesp0 #wraptogswi').checked = epsets.swapchks[1];
-      !epsets.swapchks[1] || EC1.wrapTog();
-      !epsets.swapchks[0] || EC1.swplTog();
+      EC1.wrapTog();
+      EC1.swplTog();
       !epsets.appchks.length || achks.forEach((e, i) => e.checked = epsets.appchks[i]);
       !epsets.appchks.slice(22, 29).some(e => e) || xsrcTog();
     },
