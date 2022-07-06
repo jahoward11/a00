@@ -4129,7 +4129,7 @@ ibmConnect() {
       dbname && !rsltk.dbs ? dbOpen(rmtdn)
       : rmtListGen() || !window.PouchDB || caccts.forEach( e => !e || !e.DBNAME
         || /^a\d\d/.test(e.DBNAME) || !rsltk.dbs.some(f => f === e.DBNAME) // filters out public dbs
-        || pchpdbs.indexOf(e.DBNAME) > -1 || new PouchDB(e.DBNAME) );
+        || pchpdbs.indexOf(e.DBNAME) > -1 || new PouchDB(e.DBNAME) ) || pdbListGen();
     },
     ecoInit = () => {
       localStorage["_ecopresets"] = JSON.stringify(epsets);
@@ -4528,7 +4528,7 @@ qconSyncD() {
         : /^_couchaccts$/.test(stokey) ? "CouchDB access data is preset."
         : "Local-storage item is stored." ) + "\nKey: " + stokey );
     }
-    !/^_couchaccts$/.test(stokey) || rmtListGen();
+    !/^_couchaccts$/.test(stokey) || rmtListGen() || pdbListGen();
   } else if (window.PouchDB && txdata.DBNAME === "_all_dbs") {
     // dbs is an array of strings, e.g. ['mydb1', 'mydb2']
     !PouchDB.allDbs || PouchDB.allDbs()
@@ -5009,17 +5009,17 @@ logOut() {
       updseq = {};
     };
   epsets = { uemail: "", uname: "", ungvn: "", unfam: "", teamid: "", loglast: "",
-    dbdflt: "", prvmode: 0, hlstyle: "", discload: [1, 0], discdays: 0,
-    tabsdflt: [], swapchks: [], appchks: [] };
+    dbdflt: "", prvmode: 0, hlstyle: "", discload: [1,0], discdays: 0, tabsdflt: [], swapchks: [],
+    appchks: [1,0,1,1,0,1,1,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,0,0] };
   idtoks = null;
   localStorage.removeItem("_ecoidtoks");
-  document.querySelector('#ecorender').innerHTML
-  = '<p id="msgwelcome"><b>Error:</b> Please restart web app.</p>';
   msgHandl( "Alert: User credentials (used for remote-DB syncing) have been discarded."
     + ( stoempswi.checked ? "\nAlso, all user-generated, local-storage data has been deleted."
       : "\nHowever, local-storage data remains intact and available on device." )
     + ( dbpurg1 ? "\nAlso, all imported, database data has been deleted."
-      : "\nHowever, previously imported, database data remains intact and available on device." ));
+      : "\nHowever, previously imported, database data remains intact and available on device." ) );
+  document.querySelector('#ecorender').innerHTML
+  = '<p id="msgwelcome"><b>System Error:</b> Please restart web app.</p>';
   sethlps[0].classList.remove("is-hidden");
   logtbtn.disabled = true;
   appiamd.forEach(e => e.innerHTML = null);
@@ -5086,7 +5086,7 @@ logOut() {
     "dbdflt", "prvmode", "hlstyle", "discload", "discdays", "tabsdflt", "swapchks", "appchks"]
   || ( localStorage["_ecopresets"] = JSON.stringify( epsets = Object.assign(
     { uemail: "", uname: "", ungvn: "", unfam: "", teamid: "myteam", loglast: "",
-      dbdflt: "", prvmode: 0, hlstyle: "", discload: [1, 0], discdays: 0,
+      dbdflt: "", prvmode: 0, hlstyle: "", discload: [1,0], discdays: 0,
       tabsdflt: [], swapchks: [], appchks: [] }, epsets )));
   epsets.appchks.length === 32 || (epsets.appchks = Array.from(achks).map(e => e.checked));
   !/^{.*}$/.test(localStorage["_ecopchupds"])
