@@ -187,7 +187,6 @@ const ECOINSTR = [
 + '    ]\n'
 + '  } // set array of (remote) CouchDB accounts\n'
 + '  { "$_couchaccts": null }\n'
-+ '  { "$_": null }\n'
 + '    // unset CouchDB-account data\n'
 + '  Getter notation, e.g.: `_couchaccts`, `_` (shorthand), `1` (acct-index), `mydb2` (acct-DBNAME), `_ecoidtoks`, `_ecopresets`\n\n'
 + '- Display open local-DB info: ` ` (blank)\n\n'
@@ -975,7 +974,7 @@ function rdataFetch(txdata = {}, idx = 0) {
 
 function anumlIncr(anum) {
   return !/^[a-z]{3}$/i.test(anum) ? "zza"
-  : window.ecoqjs.toAlpha(1 + window.ecoqjs.fromAlpha(anum)).toLowerCase();
+  : window.ecoqjs.toAlpha(1 + window.ecoqjs.frAlpha(anum)).toLowerCase();
 }
 
 function imgWrap(url) {
@@ -1274,7 +1273,7 @@ function pdbListGen() { // also "dboListGen", "pchListGen"
       if (!window.PouchDB || !dbs1.length) {
         pr0sGet();
       } else if ( !( dbteam = dbs1
-      .find(e => epsets.teamid ? e === "a00_" + epsets.teamid : /^a00_\w/.test(e)) )) {
+      .find(e => epsets.teamid ? e === "a00_" + epsets.teamid : /^a\d\d_\w/.test(e)) )) {
         Promise.all( dbs1.map( dbi => dbi && (dbpc2 = new PouchDB(dbi))
           .allDocs({ startkey: "~DBID_", endkey: "~DBID_~", include_docs: true })
           .then( rsltqry => rsltqry.rows
@@ -1285,7 +1284,7 @@ function pdbListGen() { // also "dboListGen", "pchListGen"
           = dbs1.map(e => dbids.find(d => (d || "")._id === e) || dbidFbk(e)) })
         .then(pr0sGet).catch(pr0sGet);
       } else {
-        epsets.teamid || !(epsets.teamid = dbteam.replace(/^a00_/, ""))
+        epsets.teamid || !(epsets.teamid = dbteam.replace(/^a\d\d_/, ""))
         || (localStorage["_ecopresets"] = JSON.stringify(epsets));
         dbpc2 = new PouchDB(dbteam);
         dbpc2.get("-res-img").then( adoc => !adoc._attachments
@@ -1454,7 +1453,7 @@ function pfsListGen(fileref, publupd, filelf) {
     },
     tlistsGen = (dbs1 = []) => {
       if ( !window.PouchDB || !( dbteam = dbs1
-      .find(e => epsets.teamid ? e === "a00_" + epsets.teamid : /^a00_\w/.test(e)) )
+      .find(e => epsets.teamid ? e === "a00_" + epsets.teamid : /^a\d\d_\w/.test(e)) )
       || dbpch && dbteam === dbpch.name ) {
         dbteam || !epsets.uname || ( tm0cntcs[epsets.uname] = {
           _id:       "!aaa",
@@ -1869,7 +1868,9 @@ function jdePtyGen(rowslr, plai, plbgi) {
       !jfw.file_updated.hasOwnProperty("misc") || (misctxta.disabled = 0)
       || (misctxta.value = jfw.file_updated.misc);
     }
-    if (jfw.file_type === "eco-publmgr") {
+    if (jfw.file_type === "eco-contact" && !jfw._rev) {
+      pfidinp.classList.add("is-success");
+    } else if (jfw.file_type === "eco-publmgr") {
       peoptxta.disabled = versinp.disabled = 0;
       versinp.value = jfw.file_updated.version.replace(/\d+$/, m => ++m);
       versinp.classList.add("is-success");
@@ -2354,6 +2355,10 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         !ppty.hasOwnProperty("version") || (ppty.version = "0.1.0");
       }});
       !filewkg.hasOwnProperty("from") || (filewkg.from = epsets.uname);
+      !dbpch || !filewkg.team_groups || !(filewkg.team_groups[0] = dbpch.name.replace(/^a\d\d_/, ""))
+      || ( filewkg._id = "!" + filewkg.team_groups[0]
+        + "-" + anumlIncr( (pf3stor.dbcntc.map(e => e[1]).sort().reverse()[0] || "")
+          .replace(/^![0-9a-z]+-/i, "") ) );
     }
     ( epsets.appchks[22] || !filewkg.loadconfigs ? Promise.resolve([])
     : Promise.all( ["pcfgstemplate", "fragstemplate"].map(pty => {
@@ -2744,7 +2749,7 @@ function txdPrep(filepath) {
 function txCrdtlz(txdata = {}) {
   let pchlist = document.querySelector('#ecoesp0 #pchlist'),
     dbteam = ( Array.from(pchlist.options).find( o => epsets.teamid
-      ? o.value === "a00_" + epsets.teamid : /^a00_\w/.test(o.value) ) || {} ).value || "",
+      ? o.value === "a00_" + epsets.teamid : /^a\d\d_\w/.test(o.value) ) || {} ).value || "",
     tm0txd = caccts.find(e => e.DBNAME === (dbteam || "a00_" + epsets.teamid)) || {};
   return !/^https:\/\/[\w-]+\.cloudant[\w.]+$/.test(txdata.DBORIG)
   || txdata.USRNAM && !/^$|password/i.test(txdata.PSSWRD)
@@ -3222,8 +3227,10 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
   || ![jfw._id, jfw._id.replace(/^!/, ""), jfw.name_user, jfw.name_full]
   .some(p => p === fileref) ) ) {
     jfw._id = /^![0-9a-z]+-[0-9a-z]+$/i.test(fileref) ? fileref
-    : "!" + (!dbpch ? epsets.teamid || "myteam" : dbpch.name.replace(/^a00_/, "")) + "-"
-      + anumlIncr((pf3stor.dbcntc.pop() || "__")[1].replace(/^![0-9a-z]+-/i, ""));
+    : "!" + ( jfw.team_groups[0]
+        || (!dbpch ? epsets.teamid || "myteam" : dbpch.name.replace(/^a\d\d_/, "")) )
+      + "-" + anumlIncr( (pf3stor.dbcntc.map(e => e[1]).sort().reverse()[0] || "")
+        .replace(/^![0-9a-z]+-/i, "") );
     jfw._rev = "";
     jfw.ts_created = tstamp1;
     !jfw.name_user ? ( jfw.name_user = /^\w/.test(fileref) ? fileref.replace(/[^\w.@-]+/g, "-")
@@ -3541,7 +3548,8 @@ pfsInp(noflux, btnsdis) { // also triggered by jdePtyGen, dataDispl, metaChg, sw
     dirref = fileref.replace(/^(?:\.\.\/|)\.?(-?\w.*)\/.+|.+/, "$1");
     sdirinp.disabled || indrChg( sdirinp,
       (!filewkg.file_updated ? filewkg.loc_subdir : filewkg.file_updated.subdir) || "", dirref );
-    pfidinp.value = fileref.replace(/\/$|^(?:\.\.\/|)(?:.*\/(?=.)|)/g, "");
+    pfidinp.value = /^mycontact/.test(fileref) ? filewkg._id
+      : fileref.replace(/\/$|^(?:\.\.\/|)(?:.*\/(?=.)|)/g, "");
     filewkg.file_type !== "eco-assets" || (pfidinp.value = pfidinp.value.replace(/^(?=\w)/, "."));
     indrChg(pfidinp, filewkg._id, pfidinp.value);
   }
@@ -4061,7 +4069,7 @@ ibmConnect() {
     appuinfo = document.querySelector('#ecoesp0 #appuinfo'),
     pchlist = document.querySelector('#ecoesp0 #pchlist'),
     dbteam = ( Array.from(pchlist.options).find( o => epsets.teamid
-      ? o.value === "a00_" + epsets.teamid : /^a00_\w/.test(o.value) ) || {} ).value || "",
+      ? o.value === "a00_" + epsets.teamid : /^a\d\d_\w/.test(o.value) ) || {} ).value || "",
     tm0txd = caccts.find(e => e.DBNAME === (dbteam || "a00_" + epsets.teamid)) || {},
     pchpdbs = Array.from(pchlist.options).map(o => o.value).filter(e => !/^a\d\d/.test(e)),
     fbktxd = caccts[epsets.dbdflt] || caccts.find(o => o.DBNAME === epsets.dbdflt)
@@ -4075,7 +4083,7 @@ ibmConnect() {
       //&& caccts.some(e => e.DBNAME === "a00_" + valinp[2] && e.DBORIG && e.USRNAM),
     tmidnew = ( Array.from(pchlist.options).map(o => o.value).filter(e => /^a\d\d_\w/.test(e))
       .sort().pop() || "" ).replace(/^a(\d\d)_.+$/, "$1"),
-    tmidpre = valinp[2] === dbteam.replace(/^a00_/, "")
+    tmidpre = valinp[2] === dbteam.replace(/^a\d\d_/, "")
       || !tmidnew ? "a00_" : "a" + (+tmidnew < 9 ? "0" : "") + ++tmidnew + "_",
     tstamp1 = Date.now(),
     dbOpen = (rmtdn = {}) => {
@@ -4096,7 +4104,7 @@ ibmConnect() {
       }).catch(msgHandl);
     },
     rmtDSet = (dbname, rsltk = {}) => {
-      rmtdn = { // assumes app is served/hosted by same CouchDB repository that stores file data
+      rmtdn = { // assumes app is served/hosted by same CouchDB repository that stores file data?
         USRNAM: !rsltk.key ? undefined : rsltk.key,
         PSSWRD: !rsltk.pwd ? undefined : rsltk.pwd,
         DBORIG: hostibm || a00orig,
@@ -4107,7 +4115,7 @@ ibmConnect() {
         OPTS:   {}
       };
       !dbname || ( (ridx = caccts.findIndex(e => e.DBNAME === dbname)) < 0
-      ? caccts.push(Object.assign({}, rmtdn)) : caccts[ridx] = Object.assign({}, rmtdn) );
+        ? caccts.push(Object.assign({}, rmtdn)) : caccts[ridx] = Object.assign({}, rmtdn) );
       delete rmtdn.USRNAM;
       delete rmtdn.PSSWRD;
       (rsltk.dbs || []).forEach( e =>
@@ -4116,9 +4124,10 @@ ibmConnect() {
         || caccts.push( Object.assign(Object.assign({}, rmtdn),
           { DBPUBL: !/^.*\//.test(e) ? undefined : ["_reader"], DBNAME: e.replace(/^.*\//, "") }) ) );
           // todo: set small-phi-pipe (\u03c6|) or dagger-pipe, public-db flag in ibmfns
-      !(dbname || rsltk.dbs) || (localStorage["_couchaccts"] = JSON.stringify(caccts));
+      !(dbname || rsltk.dbs) || !(caccts = caccts.sort((a, b) => a.DBNAME > b.DBNAME ? 1 : -1))
+      || !(localStorage["_couchaccts"] = JSON.stringify(caccts));
       dbname && !rsltk.dbs ? dbOpen(rmtdn)
-      : !window.PouchDB || caccts.forEach( e => !e || !e.DBNAME
+      : rmtListGen() || !window.PouchDB || caccts.forEach( e => !e || !e.DBNAME
         || /^a\d\d/.test(e.DBNAME) || !rsltk.dbs.some(f => f === e.DBNAME) // filters out public dbs
         || pchpdbs.indexOf(e.DBNAME) > -1 || new PouchDB(e.DBNAME) );
     },
@@ -4137,7 +4146,7 @@ ibmConnect() {
       document.querySelector('#ecoesp0 #wraptogswi').checked = epsets.swapchks[1];
       EC1.wrapTog();
       EC1.swplTog();
-      hlslist.value = epsets.hlstyle;
+      document.querySelector('#ecoesp0 #hlslist').value = epsets.hlstyle;
       !epsets.appchks.length || achks.forEach((e, i) => e.checked = epsets.appchks[i]);
       !epsets.appchks.slice(22, 29).some(e => e) || xsrcTog();
     },
@@ -4163,7 +4172,7 @@ ibmConnect() {
       tm0cntcs[epsets.uname] = {
         _id: u1st ? "!" + (valinp[2] || "myteam") + "-aaa"
           : "!" + (epsets.teamid || "myteam") + "-"
-            + anumlIncr( (Object.values(tm0cntcs).map(o => o._id).sort().pop() || "")
+            + anumlIncr( (Object.values(tm0cntcs).map(o => o._id).sort().reverse()[0] || "")
               .replace(/^![0-9a-z]+-/i, "") ),
         ts_created: tstamp1,
         ts_updated: tstamp1,
@@ -4209,8 +4218,8 @@ ibmConnect() {
         if (rsltk.dbs) {
           // retrieve a pre-gen'd team db -- only if pre-authorized by team admin
           !rsltk.unm0 || rsltk.unm0 === epsets.uname || (epsets.uname = rsltk.unm0);
-          dbteam || (dbteam = rsltk.dbs.find(e => /^(?:.*\/|)a00_\w/.test(e)) || "");
-          epsets.teamid = epsets.teamid || dbteam.replace(/^(?:.*\/|)a00_/, "") || valinp[2];
+          dbteam || (dbteam = rsltk.dbs.find(e => /^(?:.*\/|)a\d\d_\w/.test(e)) || "");
+          epsets.teamid = epsets.teamid || dbteam.replace(/^(?:.*\/|)a\d\d_/, "") || valinp[2];
           !rsltk.dbs.some(e => e === (!valinp[2] ? dbteam : tmidpre + valinp[2]))
           || (dbpc1 = window.PouchDB && new PouchDB(!valinp[2] ? dbteam : tmidpre + valinp[2]));
           rmtDSet(dbpc1 && dbpc1.name, rsltk);
@@ -4481,36 +4490,42 @@ qconSyncD() {
 // 2 display COUCHACCTS-txdata : when valcon has _-undefined-key (or, is unblank & caccts is empty)
 //   or, display caccts-txdata : when valcon has _-key, _-key.idx, acct-idx, acct-DBNAME or is unblank
 // 3 set/unset caccts-txdata to localStorage : when valcon provides caccts-setter-json,
-//   e.g. { "$_couchaccts": [{ "DBNAME": "dbname" }] }, { "$_": null }
+//   e.g. { "$_couchaccts": [{ "DBNAME": "dbname" }] }, { "$0": null }
 // 4 display list of local dbs : when valcon is `/_all_dbs` (or, txdata.DBNAME === "_all_dbs")
 // 5 create/open/switch local-db : when valcon has `/`-DBNAME (or, close db for standalone `/`)
 // 6 create/open/switch/destroy/compact/cleanup local/remote-db : when valcon provides specified txdata-json
 // 7 create/destroy multiple local dbs : when valcon provides specified txdata-array
 // 8 perform sync : when valcon provides remote-db txdata-json while a matching local-db is open
-  let prekey,
+  let prekey, stokey, ridx,
     [txdata, loadobj, valcon] = txdPrep(),
     pchlist = document.querySelector('#ecoesp0 #pchlist'),
     reqipch = txdata.DBNAME && Array.from(pchlist.options).some(o => o.value === txdata.DBNAME),
     ecoat = (txdata.idtoks || idtoks || "").accessToken;
   if (!valcon || txdata.DBNAME === false) {
     dbpch ? dbpch.info().then(msgHandl).catch(msgHandl) : msgHandl("Alert: No local DB is open.");
-  } else if (prekey = Object.keys(txdata).find(e => /^\$$|^\$_[\w!.*+~-]*/.test(e))) {
+  } else if (prekey = Object.keys(txdata).find(e => /^\$[02]$|^\$_[\w!.*+~-]+$/.test(e))) {
+    stokey = ({ $0: "_ecopresets", $2: "_couchaccts" })[prekey] || prekey.replace(/^\$/, "");
     if (txdata[prekey] === null) {
-      prekey !== "$_ecopresets" || (epsets = {});
-      (prekey[2] && prekey !== "$_couchaccts") || (caccts = []);
-      localStorage.removeItem("_" + [prekey.replace(/^\$_?/, "") || "couchaccts"]);
-      msgHandl("Local-storage item is removed.\nKey: _" + (prekey.replace(/^\$_?/, "") || "couchaccts"));
+      !/^_ecopresets$/.test(stokey) || (epsets = {});
+      !/^_couchaccts$/.test(stokey) || (caccts = []);
+      localStorage.removeItem(stokey);
+      msgHandl("Local-storage item is removed.\nKey: " + stokey);
     } else {
-      prekey !== "$_ecopresets" || typeof txdata[prekey] !== 'object'
-      || Array.isArray(txdata[prekey]) || (epsets = txdata[prekey]);
-      (prekey[2] && prekey !== "$_couchaccts")
-      || (caccts = !Array.isArray(txdata[prekey]) ? [] : txdata[prekey]);
-      localStorage["_" + (prekey.replace(/^\$_?/, "") || "couchaccts")]
+      !/^_ecopresets$/.test(stokey) || typeof txdata[prekey] !== 'object'
+      || Object.entries(txdata[prekey])
+        .forEach(oe => !epsets.hasOwnProperty(oe[0]) || (epsets[oe[0]] = oe[1]));
+      !/^_couchaccts$/.test(stokey) || !Array.isArray(txdata[prekey])
+      || txdata[prekey].forEach( o2 => !(o2 || "").DBNAME
+        || ( (ridx = caccts.findIndex(o1 => o1.DBNAME === o2.DBNAME)) < 0
+          ? caccts.push(o2) : caccts[ridx] = o2 ) )
+      || (caccts = caccts.sort((a, b) => a.DBNAME > b.DBNAME ? 1 : -1));
+      localStorage[stokey]
       = typeof txdata[prekey] !== 'object' ? txdata[prekey] : JSON.stringify(txdata[prekey]);
-      msgHandl( (prekey[2] ? "Local-storage item is stored." : "CouchDB access data is preset.")
-        + "\nKey: _" + (prekey.replace(/^\$_?/, "") || "couchaccts") );
+      msgHandl( ( /^_ecopresets$/.test(stokey) ? "Ecollabs user data is preset."
+        : /^_couchaccts$/.test(stokey) ? "CouchDB access data is preset."
+        : "Local-storage item is stored." ) + "\nKey: " + stokey );
     }
-    !/\$_?|\$_couchaccts/.test(prekey) || rmtListGen();
+    !/^_couchaccts$/.test(stokey) || rmtListGen();
   } else if (window.PouchDB && txdata.DBNAME === "_all_dbs") {
     // dbs is an array of strings, e.g. ['mydb1', 'mydb2']
     !PouchDB.allDbs || PouchDB.allDbs()
