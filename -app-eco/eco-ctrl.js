@@ -1858,7 +1858,7 @@ function jdePtyGen(rowslr, plai, plbgi) {
     .forEach( e => e.disabled || ["is-warning", "is-success"].forEach(f => e.classList.remove(f))
       || (e.value = "") || (e.disabled = 1) );
     delswi.checked = delswi.disabled = pfidinp.disabled = 0;
-    pfidinp.value = jfw._id;
+    pfidinp.value = jfw._id || "";
     !(jfw.file_updated || jfw.hasOwnProperty("loc_subdir")) || (sdirinp.disabled = 0)
     || (sdirinp.value = !jfw.file_updated ? jfw.loc_subdir : jfw.file_updated.subdir);
     if (jfw.file_updated) {
@@ -3548,10 +3548,10 @@ pfsInp(noflux, btnsdis) { // also triggered by jdePtyGen, dataDispl, metaChg, sw
     dirref = fileref.replace(/^(?:\.\.\/|)\.?(-?\w.*)\/.+|.+/, "$1");
     sdirinp.disabled || indrChg( sdirinp,
       (!filewkg.file_updated ? filewkg.loc_subdir : filewkg.file_updated.subdir) || "", dirref );
-    pfidinp.value = /^mycontact/.test(fileref) ? filewkg._id
+    pfidinp.value = /^mycontact/.test(fileref) ? filewkg._id || ""
       : fileref.replace(/\/$|^(?:\.\.\/|)(?:.*\/(?=.)|)/g, "");
     filewkg.file_type !== "eco-assets" || (pfidinp.value = pfidinp.value.replace(/^(?=\w)/, "."));
-    indrChg(pfidinp, filewkg._id, pfidinp.value);
+    indrChg(pfidinp, filewkg._id || "", pfidinp.value);
   }
   if (noflux) {
     influxSet(2);
