@@ -5013,7 +5013,8 @@ logOut() {
     tabsdflt: [], swapchks: [], appchks: [] };
   idtoks = null;
   localStorage.removeItem("_ecoidtoks");
-  document.querySelector('#ecorender').innerHTML = '<p id="msgwelcome">Welcome team member!</p>';
+  document.querySelector('#ecorender').innerHTML
+  = '<p id="msgwelcome"><b>Error:</b> Please restart web app.</p>';
   msgHandl( "Alert: User credentials (used for remote-DB syncing) have been discarded."
     + ( stoempswi.checked ? "\nAlso, all user-generated, local-storage data has been deleted."
       : "\nHowever, local-storage data remains intact and available on device." )
