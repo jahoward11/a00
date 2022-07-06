@@ -4490,7 +4490,7 @@ qconSyncD() {
 // 2 display COUCHACCTS-txdata : when valcon has _-undefined-key (or, is unblank & caccts is empty)
 //   or, display caccts-txdata : when valcon has _-key, _-key.idx, acct-idx, acct-DBNAME or is unblank
 // 3 set/unset caccts-txdata to localStorage : when valcon provides caccts-setter-json,
-//   e.g. { "$_couchaccts": [{ "DBNAME": "dbname" }] }, { "$0": null }
+//   e.g. { "$_couchaccts": [{ "DBNAME": "dbname" }] }, { "$2": null }
 // 4 display list of local dbs : when valcon is `/_all_dbs` (or, txdata.DBNAME === "_all_dbs")
 // 5 create/open/switch local-db : when valcon has `/`-DBNAME (or, close db for standalone `/`)
 // 6 create/open/switch/destroy/compact/cleanup local/remote-db : when valcon provides specified txdata-json
@@ -4499,7 +4499,8 @@ qconSyncD() {
   let prekey, stokey, ridx,
     [txdata, loadobj, valcon] = txdPrep(),
     pchlist = document.querySelector('#ecoesp0 #pchlist'),
-    reqipch = txdata.DBNAME && Array.from(pchlist.options).some(o => o.value === txdata.DBNAME),
+    dbs = Array.from(pchlist.options).map(o => o.value),
+    reqipch = txdata.DBNAME && dbs.some(e => e === txdata.DBNAME),
     ecoat = (txdata.idtoks || idtoks || "").accessToken;
   if (!valcon || txdata.DBNAME === false) {
     dbpch ? dbpch.info().then(msgHandl).catch(msgHandl) : msgHandl("Alert: No local DB is open.");
@@ -4516,9 +4517,10 @@ qconSyncD() {
         .forEach(oe => !epsets.hasOwnProperty(oe[0]) || (epsets[oe[0]] = oe[1]));
       !/^_couchaccts$/.test(stokey) || !Array.isArray(txdata[prekey])
       || txdata[prekey].forEach( o2 => !(o2 || "").DBNAME
-        || ( (ridx = caccts.findIndex(o1 => o1.DBNAME === o2.DBNAME)) < 0
-          ? caccts.push(o2) : caccts[ridx] = o2 ) )
-      || (caccts = caccts.sort((a, b) => a.DBNAME > b.DBNAME ? 1 : -1));
+        || ( (ridx = caccts.findIndex(o1 => o1.DBNAME === o2.DBNAME)) > -1
+          ? caccts[ridx] = o2 : ( caccts.push(o2),
+            dbs.indexOf(o2.DBNAME) > -1 || !window.PouchDB || new PouchDB(o2.DBNAME) ) ) )
+        || (caccts = caccts.sort((a, b) => a.DBNAME > b.DBNAME ? 1 : -1));
       localStorage[stokey]
       = typeof txdata[prekey] !== 'object' ? txdata[prekey] : JSON.stringify(txdata[prekey]);
       msgHandl( ( /^_ecopresets$/.test(stokey) ? "Ecollabs user data is preset."
