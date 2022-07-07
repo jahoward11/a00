@@ -4519,18 +4519,17 @@ qconSyncD() {
       !/^_ecopresets$/.test(stokey) || typeof txdata[prekey] !== 'object'
       || Object.entries(txdata[prekey])
         .forEach(oe => !epsets.hasOwnProperty(oe[0]) || (epsets[oe[0]] = oe[1]));
-      /^_couchaccts$/.test(stokey) ? !Array.isArray(txdata[prekey])
+      !/^_couchaccts$/.test(stokey) ? valStor() : !Array.isArray(txdata[prekey])
       || Promise.all( txdata[prekey].map( o2 => !(o2 || "").DBNAME
         || ( (ridx = caccts.findIndex(o1 => o1.DBNAME === o2.DBNAME)) > -1
           ? caccts[ridx] = o2 : ( caccts.push(o2),
             dbs.indexOf(o2.DBNAME) > -1 || !window.PouchDB || new PouchDB(o2.DBNAME) ) ) ))
-        .catch(msgHandl)
-        .then(() => {
+        .catch(msgHandl).then(() => {
           caccts = caccts.sort((a, b) => a.DBNAME > b.DBNAME ? 1 : -1);
           valStor();
           rmtListGen();
           pdbListGen();
-        }) : valStor();
+        });
       msgHandl( ( /^_ecopresets$/.test(stokey) ? "Ecollabs user data is preset."
         : /^_couchaccts$/.test(stokey) ? "CouchDB access data is preset."
         : "Local-storage item is stored." ) + "\nKey: " + stokey );
