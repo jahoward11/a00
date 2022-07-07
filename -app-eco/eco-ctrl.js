@@ -4501,7 +4501,11 @@ qconSyncD() {
     pchlist = document.querySelector('#ecoesp0 #pchlist'),
     dbs = Array.from(pchlist.options).map(o => o.value),
     reqipch = txdata.DBNAME && dbs.some(e => e === txdata.DBNAME),
-    ecoat = (txdata.idtoks || idtoks || "").accessToken;
+    ecoat = (txdata.idtoks || idtoks || "").accessToken,
+    valStor = () => localStorage[stokey]
+      = typeof txdata[prekey] !== 'object' ? txdata[prekey]
+      : JSON.stringify( /^_ecopresets$/.test(stokey) ? epsets
+        : /^_couchaccts$/.test(stokey) ? caccts : txdata[prekey] );
   if (!valcon || txdata.DBNAME === false) {
     dbpch ? dbpch.info().then(msgHandl).catch(msgHandl) : msgHandl("Alert: No local DB is open.");
   } else if (prekey = Object.keys(txdata).find(e => /^\$[02]$|^\$_[\w!.*+~-]+$/.test(e))) {
@@ -4515,20 +4519,22 @@ qconSyncD() {
       !/^_ecopresets$/.test(stokey) || typeof txdata[prekey] !== 'object'
       || Object.entries(txdata[prekey])
         .forEach(oe => !epsets.hasOwnProperty(oe[0]) || (epsets[oe[0]] = oe[1]));
-      !/^_couchaccts$/.test(stokey) || !Array.isArray(txdata[prekey])
-      || txdata[prekey].forEach( o2 => !(o2 || "").DBNAME
+      /^_couchaccts$/.test(stokey) ? !Array.isArray(txdata[prekey])
+      || Promise.all( txdata[prekey].map( o2 => !(o2 || "").DBNAME
         || ( (ridx = caccts.findIndex(o1 => o1.DBNAME === o2.DBNAME)) > -1
           ? caccts[ridx] = o2 : ( caccts.push(o2),
-            dbs.indexOf(o2.DBNAME) > -1 || !window.PouchDB || new PouchDB(o2.DBNAME) ) ) )
-        || (caccts = caccts.sort((a, b) => a.DBNAME > b.DBNAME ? 1 : -1));
-      localStorage[stokey] = typeof txdata[prekey] !== 'object' ? txdata[prekey]
-        : JSON.stringify( /^_ecopresets$/.test(stokey) ? epsets
-          : /^_couchaccts$/.test(stokey) ? caccts : txdata[prekey] );
+            dbs.indexOf(o2.DBNAME) > -1 || !window.PouchDB || new PouchDB(o2.DBNAME) ) ) ))
+        .catch(msgHandl)
+        .then(() => {
+          caccts = caccts.sort((a, b) => a.DBNAME > b.DBNAME ? 1 : -1);
+          valStor();
+          rmtListGen();
+          pdbListGen();
+        }) : valStor();
       msgHandl( ( /^_ecopresets$/.test(stokey) ? "Ecollabs user data is preset."
         : /^_couchaccts$/.test(stokey) ? "CouchDB access data is preset."
         : "Local-storage item is stored." ) + "\nKey: " + stokey );
     }
-    !/^_couchaccts$/.test(stokey) || rmtListGen() || pdbListGen();
   } else if (window.PouchDB && txdata.DBNAME === "_all_dbs") {
     // dbs is an array of strings, e.g. ['mydb1', 'mydb2']
     !PouchDB.allDbs || PouchDB.allDbs()
