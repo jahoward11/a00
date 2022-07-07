@@ -835,7 +835,7 @@ window.onload = function () {
           linkify: fts2[3].switchon,
           typographer: fts2[4].switchon,
           highlight: !fts2[5].switchon ? null : cblock => {
-            let lang = (feats.find(o => o.keytxt === "highlight") || "").valtxt;
+            let lang = (feats.find(ob => ob.keytxt === "highlight") || "").valtxt;
             if (lang && window.hljs && window.hljs.getLanguage(lang)) {
               try { return window.hljs.highlight(lang, cblock).value;
               } catch (err) { msgHandl("hljs lang error: " + err); }
@@ -847,9 +847,9 @@ window.onload = function () {
         });
       if (!mdit) { return str;
       } else {
-        fts2.forEach( (o, i) =>
-          i < 6 || [7, 11, 16, 19].includes(i) || !o.switchon || !window[o.keytxt]
-          || (mdit = mdit.use(window[o.keytxt])) );
+        fts2.forEach( (ob, i) =>
+          i < 6 || [7, 11, 16, 19].includes(i) || !ob.switchon || !window[ob.keytxt]
+          || (mdit = mdit.use(window[ob.keytxt])) );
         !fts2[7].switchon || !window.markdownitContainer || (fts2[7].valtxt || "").split(/ *[ ,;] */)
           .forEach(e => mdit = mdit.use(window.markdownitContainer, e));
         !fts2[11].switchon || !window.markdownitForInline
@@ -1323,7 +1323,7 @@ function attListGen(attonly, publupd) { // also "dirListGen"
     listsRfrsh = msgerr => {
       !msgerr || msgHandl(msgerr);
       !pf3stor.dbpubl || ( picksdirs.innerHTML = pf3stor.dbpubl.concat(pf3stor.dbsdir)
-        .map(e => e[0].replace(/\/$/, "")).sort().filter(e => !ct[e] && (ct[e] = 1))
+        .map(ar => ar[0].replace(/\/$/, "")).sort().filter(e => !ct[e] && (ct[e] = 1))
         .map(e => "\n          <option>" + e + "</option>").join("") + "\n        " );
       if (!attonly) {
         dirlist.innerHTML = tmpldirlist && tmpldirlist(context);
@@ -1339,11 +1339,11 @@ function attListGen(attonly, publupd) { // also "dirListGen"
       && rsltqry.rows.filter(r => /^[.-]/.test(r.id))
       .map( r => [ r.id.replace(/^\./, "") + "/", r.id,
         Object.keys((r.doc || r.value)._attachments || {}).sort() ]) || [];
-      context.attitems = context.diritems.filter(e => rexcats.test(e[1]));
+      context.attitems = context.diritems.filter(ar => rexcats.test(ar[1]));
       listsRfrsh();
     };
   const opts = { endkey: "0", include_docs: true };
-  document.querySelectorAll('#ecoesp0 #toolapp .rsetbtn').forEach(b => b.disabled = true);
+  document.querySelectorAll('#ecoesp0 #toolapp .rsetbtn').forEach(btn => btn.disabled = true);
   !dbpch ? listsRfrsh()
   : dbpch.query("ecosorter/files-attlist")
     .catch(() => dbpch.allDocs(opts)).then(rsltFmt).catch(listsRfrsh);
@@ -1392,7 +1392,7 @@ function pfsListGen(fileref, publupd, filelf) {
       }
       pfslist.selectedIndex = 0; // todo: when would idx not already be 0?
       EC1.pfsSel(1);
-      pfslist.selectedIndex = Array.from(pfslist.options).findIndex(o => o.value === fileref);
+      pfslist.selectedIndex = Array.from(pfslist.options).findIndex(op => op.value === fileref);
       pfslist.selectedIndex < 1 ? pfslist.selectedIndex = 0 : EC1.pfsSel(1);
       optg = pfslist.value && pfslist.selectedOptions[0].parentElement.label;
       influxSet(optg !== "LOCAL temporary files" ? 2 : false);
@@ -1401,7 +1401,7 @@ function pfsListGen(fileref, publupd, filelf) {
       !msgerr || msgHandl(msgerr);
       tm0urole = dbpch && ( tm0cntcs[epsets.uname]
         && tm0cntcs[epsets.uname].roles.find(e => /^Admin$|^Lead$|^Contributor$/i.test(e))
-        || (caccts.find(e => e.DBNAME === dbpch.name) || "").USRNAM );
+        || (caccts.find(ob => ob.DBNAME === dbpch.name) || "").USRNAM );
       !/^Contributor$/i.test(tm0urole) || dbpch.name !== dbteam || (tm0urole = false);
       pfslist.innerHTML = pf2list.innerHTML = tmplpfslist && tmplpfslist(context);
       !fileref || !tmplpfslist || optg && optg !== "LOCAL temporary files" && fwinflux || fileResel();
@@ -1443,7 +1443,7 @@ function pfsListGen(fileref, publupd, filelf) {
       !rsltqry.rows || rsltqry.rows.filter(r => /^!/.test(r.id)).forEach( r =>
         tm0cntcs[(rval = r.doc || r.value).name_user || rval.name_full || r.id.replace(/^!/, "")]
         = cntcLite(rval, r.id) );
-      pf3stor.dbsdir.map(e => e[1]).forEach(docPrc2);
+      pf3stor.dbsdir.map(ar => ar[1]).forEach(docPrc2);
       listsRfrsh();
     },
     pf1sGet = () => {
@@ -1509,7 +1509,7 @@ function pfsListGen(fileref, publupd, filelf) {
       .then(dbsallGet)
       .catch(listsRfrsh);
     };
-  document.querySelectorAll('#ecoesp0 #toolapp .rsetbtn').forEach(b => b.disabled = true);
+  document.querySelectorAll('#ecoesp0 #toolapp .rsetbtn').forEach(btn => btn.disabled = true);
   tm0cntcs = {};
   fileref || !pfslist.value || optg !== "LOCAL temporary files" || (filelf = fileref = pfslist.value);
   !window.localforage ? dbsallGet()
@@ -1610,8 +1610,8 @@ function jdeDftGen() {
       fimg:   jfw.file_type === "eco-prjid" && !jfw.image_src ? null
         : /\b(?:contact|prjid)$/.test(jfw.file_type) && EC2.u2Blob(jfw.image_src),
       plinks: /\b(?:anno|memo|post)$/.test(jfw.file_type) && (pf3stor.dbpubl || [])
-        .filter(e => e && !/-s\d\d+$|\.(?!json$)\w{2,4}$/.test(e[1]))
-        .map(e => e[1].replace(/(?:-[dv]?[.\d]+|)\.\w{2,4}$/, "")).sort(),
+        .filter(ar => ar && !/-s\d\d+$|\.(?!json$)\w{2,4}$/.test(ar[1]))
+        .map(ar => ar[1].replace(/(?:-[dv]?[.\d]+|)\.\w{2,4}$/, "")).sort(),
       pcntcs: /\b(?:event|memo|post)$/.test(jfw.file_type) && ( pcntcs = Object.keys(tm0cntcs)
         .map(e => e.replace(/[^\w.@-]+/g, "-")) ).concat(pcntcs.join()),
       adhl:   (jfw.texthl || []).join("\n"),
@@ -1675,7 +1675,7 @@ function swapListGen() {
         : filewkg.file_type === "eco-contact"
           ? [["Contact file: SHORT BIO", "bio_short"], ["Contact file: MISCELLANY", "miscellany"]]
         : !filewkg.filefrags ? []
-        : filewkg.filefrags.map(o => ["Publish mgr: " + o.labeltxt, null]) )
+        : filewkg.filefrags.map(ob => ["Publish mgr: " + ob.labeltxt, null]) )
   };
   document.querySelector('#ecoesp0 #swaplist').innerHTML = tmplswaplist && tmplswaplist(context);
 }
@@ -1694,12 +1694,12 @@ function jdePtyGen(rowslr, plai, plbgi) {
       || /^(?:assets|contact|event|memo|phone|post|scrap|srcdoc)$/i.test(jfw.file_type),
     jdentries = Object.entries(jfw),
     j2entries = Object.entries(file2nd || {}),
-    modT = o => o && Object.keys(o).toString() === Object.keys(ECOMODJS["html2md"]).toString(),
+    modT = ob => ob && Object.keys(ob).toString() === Object.keys(ECOMODJS["html2md"]).toString(),
     fsDiff = pty => file2nd && file2nd[pty] ? [jdentries, j2entries] : [jdentries],
     subo2Str = so => Object.fromEntries( Object.entries(so)
       .map(oe => [oe[0], typeof oe[1] !== 'object' ? oe[1] : JSON.stringify(oe[1], null, 2) ]) ),
     obj2Str = (pty, swi) => fsDiff(pty).forEach( d =>
-      (pi = d.findIndex(e => e[0] === pty)) < 0
+      (pi = d.findIndex(ar => ar[0] === pty)) < 0
       || ( typeof d[pi][1] === 'function' ? (d[pi][1] = d[pi][1].toString())
         : !d[pi][1] || typeof d[pi][1] !== 'object'
         || ( swi ? (d[pi][1] = JSON.stringify(d[pi][1], null, 2))
@@ -1714,10 +1714,10 @@ function jdePtyGen(rowslr, plai, plbgi) {
   !jfw.rows || obj2Str("rows");
   !jfw.results || obj2Str("results");
   !(jfw.views || jfw.indexes) || fsDiff("views").forEach(d => {
-    (pi = d.findIndex(e => e[0] === "indexes")) < 0 || typeof d[pi][1] !== 'object'
+    (pi = d.findIndex(ar => ar[0] === "indexes")) < 0 || typeof d[pi][1] !== 'object'
     || !Object.keys(d[pi][1]).length || d.splice( pi, 1, ...Object.entries(d[pi][1])
       .map(oe => [ "indexes\u200b." + oe[0] + "\u200b.index", oe[1].index ]) );
-    (pi = d.findIndex(e => e[0] === "views")) < 0 || typeof d[pi][1] !== 'object'
+    (pi = d.findIndex(ar => ar[0] === "views")) < 0 || typeof d[pi][1] !== 'object'
     || !Object.keys(d[pi][1]).length || d.splice( pi, 1, ...Object.entries(d[pi][1])
       .map( oe => [[ "views\u200b." + oe[0] + "\u200b.map",
           typeof oe[1].map !== 'object' ? oe[1].map : JSON.stringify(oe[1].map, null, 2) ],
@@ -1725,11 +1725,11 @@ function jdePtyGen(rowslr, plai, plbgi) {
         .concat( oe[1].options ? [[ "views\u200b." + oe[0] + "\u200b.options",
           typeof oe[1].options !== 'object' ? oe[1].options
             : JSON.stringify(oe[1].options, null, 2) ]] : [] ))
-      .reduce((f, g) => f.concat(g), []) );
+      .reduce((a, b) => a.concat(b), []) );
   });
   !jfw.rewrites || fsDiff("rewrites").forEach(d => {
-    pi = d.findIndex(e => e[0] === "rewrites");
-    d[pi][1] = Object.assign({}, d[pi][1].map(e => JSON.stringify(e, null, 2)));
+    pi = d.findIndex(ar => ar[0] === "rewrites");
+    d[pi][1] = Object.assign({}, d[pi][1].map(ob => JSON.stringify(ob, null, 2)));
   });
   !jfw._attachments || obj2Str("_attachments");
   !modT(jfw) || obj2Str("features", 1);
@@ -1737,53 +1737,53 @@ function jdePtyGen(rowslr, plai, plbgi) {
     typeof jdentries[i][1] === 'string' || /^(?:_revisions|indexes|rewrites|views)$/.test(k)
     || ( typeof jfw[k] === 'function' ? obj2Str(k)
       : typeof jfw[k] !== 'object' || Array.isArray(jfw[k])
-        && !jfw[k].some(e => e && typeof e === 'object') || obj2Str(k, !modT(jfw[k])) ));
+        && !jfw[k].some(ob => ob && typeof ob === 'object') || obj2Str(k, !modT(jfw[k])) ));
   !(typeco && jfw.texthl) || obj2Str("texthl", 1);
   !(typeco && jfw.locations) || fsDiff("locations").forEach(d => {
-    pi = d.findIndex(e => e[0] === "locations");
+    pi = d.findIndex(ar => ar[0] === "locations");
     d[pi][1] = Object.fromEntries( Array.from(d[pi][1] || [])
-      .map((e, i) => [ i + ": " + e.label, JSON.stringify(e, null, 2) ])
+      .map((ob, i) => [ i + ": " + ob.label, JSON.stringify(ob, null, 2) ])
       .concat([[ "+ 1 more", "" ]]) );
   });
   !(typeco && jfw.filefrags) || fsDiff("filefrags").forEach(d => {
-    pi = d.findIndex(e => e[0] === "filefrags");
+    pi = d.findIndex(ar => ar[0] === "filefrags");
     d.splice( pi, 1, [ "filefrags",
       Object.fromEntries( Array.from(d[pi][1] || [])
-        .map((e, i) => [ i + ": " + e.idtxt,
-          JSON.stringify(e, null, 2) ]).concat([[ "+ 1 more", "" ]]) ),
+        .map((ob, i) => [ i + ": " + ob.idtxt,
+          JSON.stringify(ob, null, 2) ]).concat([[ "+ 1 more", "" ]]) ),
       {
         "_blank_":    null,
-        "titletxt":   Object.assign({}, Array.from(d[pi][1] || []).map(e => e.titletxt)),
-        "contenttxt": Object.assign({}, Array.from(d[pi][1] || []).map(e => e.contenttxt))
+        "titletxt":   Object.assign({}, Array.from(d[pi][1] || []).map(ob => ob.titletxt)),
+        "contenttxt": Object.assign({}, Array.from(d[pi][1] || []).map(ob => ob.contenttxt))
       }
     ]);
   });
   !(typeco && jfw.parseconfigs) || fsDiff("parseconfigs").forEach(d => {
-    pi = d.findIndex(e => e[0] === "parseconfigs");
+    pi = d.findIndex(ar => ar[0] === "parseconfigs");
     d.splice( pi, 1, ...Object.entries(d[pi][1])
       .map(oe => [ "parseconfigs\u200b." + oe[0], oe[1] ]) );
-    pi = d.findIndex(e => e[0] === "parseconfigs\u200b.scriptsconstr");
+    pi = d.findIndex(ar => ar[0] === "parseconfigs\u200b.scriptsconstr");
     d.splice( 3 + pi, 1, [ "parseconfigs\u200b.linksincl",
       Object.assign( { "": JSON.stringify(d[3 + pi][1], null, 2) },
         Object.fromEntries( Array.from(d[3 + pi][1] || [])
-          .map( (e, i) => [ i + ": " + (e.filepath || "").replace(/^.*\//, ""),
-            JSON.stringify(e, null, 2) ] ).concat([[ "+ 1 more", "" ]]) ) ) ]);
+          .map( (ob, i) => [ i + ": " + (ob.filepath || "").replace(/^.*\//, ""),
+            JSON.stringify(ob, null, 2) ] ).concat([[ "+ 1 more", "" ]]) ) ) ]);
     d.splice( 2 + pi, 1, [ "parseconfigs\u200b.linksconstr",
       Object.assign({ "": JSON.stringify(d[2 + pi][1], null, 2) }, d[2 + pi][1]) ]);
     d.splice( 1 + pi, 1, [ "parseconfigs\u200b.scriptsincl",
       Object.assign( { "": JSON.stringify(d[1 + pi][1], null, 2) },
         Object.fromEntries( Array.from(d[1 + pi][1] || [])
-          .map((e, i) => [ i + ": " + e.fncname, JSON.stringify(e, null, 2) ])
+          .map((ob, i) => [ i + ": " + ob.fncname, JSON.stringify(ob, null, 2) ])
           .concat([[ "+ 1 more", "" ]]) ) ) ]);
     d.splice( pi, 1, [ "parseconfigs\u200b.scriptsconstr",
       Object.fromEntries( Array.from(d[pi][1] || [])
-        .map( (e, i) => [ i + ": " + e.fncname,
-          JSON.stringify(e, null, 2) ] ).concat([[ "+ 1 more", "" ]]) ),
+        .map( (ob, i) => [ i + ": " + ob.fncname,
+          JSON.stringify(ob, null, 2) ] ).concat([[ "+ 1 more", "" ]]) ),
       { "_blank_":        null,
-        "usedescription": Object.assign({}, Array.from(d[pi][1] || []).map(e => e.usedescription)),
-        "htmlscriptload": Object.assign({}, Array.from(d[pi][1] || []).map(e => e.htmlscriptload)),
-        "features":       Object.assign({}, Array.from(d[pi][1] || []).map(e => JSON.stringify(e.features, null, 2))),
-        "deftxt":         Object.assign({}, Array.from(d[pi][1] || []).map(e => e.deftxt))
+        "usedescription": Object.assign({}, Array.from(d[pi][1] || []).map(ob => ob.usedescription)),
+        "htmlscriptload": Object.assign({}, Array.from(d[pi][1] || []).map(ob => ob.htmlscriptload)),
+        "features":       Object.assign({}, Array.from(d[pi][1] || []).map(ob => JSON.stringify(ob.features, null, 2))),
+        "deftxt":         Object.assign({}, Array.from(d[pi][1] || []).map(ob => ob.deftxt))
       } ]);
   });
   !(typeco && jfw.loadconfigs) || obj2Str("loadconfigs");
@@ -1806,7 +1806,7 @@ function jdePtyGen(rowslr, plai, plbgi) {
       }
       jdstr = typeof jfw[j1e[0]] === 'string' && /\n/.test(jfw[j1e[0]])
         || typeof jfw[j1e[0]] === 'object' && jfw[j1e[0]] !== null
-          && (!Array.isArray(jfw[j1e[0]]) || jfw[j1e[0]].some(e => e && typeof e === 'object'))
+          && (!Array.isArray(jfw[j1e[0]]) || jfw[j1e[0]].some(ob => ob && typeof ob === 'object'))
         || typeco && /^bio_short$|^body$|^content$|^descr\w+$|^miscellany$|^texthl$/.test(j1e[0])
         || /^_attachments|^_revs_info$|^cursor$|^entries\u200b\.\d+$|^fnc$|^indexes.+$|^(?:last|update)_seq$|^results\u200b\.\d+$|^rewrites$|^rows\u200b\.\d+$|^validate_doc_update$|^views.+\.map$|^views.+\.options$/.test(j1e[0]);
       jdinp = (Array.isArray(j1e[1]) && !/^results$|^rows$/.test(j1e[0]))
@@ -1900,8 +1900,8 @@ function rmtListGen() {
     rmtbtn = document.querySelector('#ecoesp0 #rmtbtn'),
     rm2btn = document.querySelector('#ecoesp0 #rm2btn');
   const context = {
-    rmtitems: caccts.map( e => Object.assign(
-      { seltxt: (e.DBNAME || "").replace(/^a\d\d_(?=\w)/, "@") + (!e.DBPUBL ? "" : " †") }, e ))
+    rmtitems: caccts.map( ob => Object.assign(
+      { seltxt: (ob.DBNAME || "").replace(/^a\d\d_(?=\w)/, "@") + (!ob.DBPUBL ? "" : " †") }, ob ))
   };
   rm3list.innerHTML = rmtlist.innerHTML = rm2list.innerHTML = tmplrmtlist && tmplrmtlist(context);
   !dbpch || (rmtlist.value = rm2list.value = dbpch.name);
@@ -1942,7 +1942,7 @@ function rsrcsXGet(txdata = {}) {
         || (rexcdir.exec(cdirpath) || [])[1] || txdata.DBNAME
         || /^~DVIZ_/.test(filewkg._id) && epsets.teamid && "a00_" + epsets.teamid;
         !txdata.DBNAME ? txdata.DBNAME = dbpch && dbpch.name
-        : Array.from(pchlist.options).some(o => o.value === txdata.DBNAME) || (txdata.DBNAME = null);
+        : Array.from(pchlist.options).some(op => op.value === txdata.DBNAME) || (txdata.DBNAME = null);
         txdata.FILEID = !i && txdata.FILEID
         || (rexlobj.exec(ffi.titletxt) || [])[0] || (rexsdoc.exec(ffi.titletxt) || [])[1]
         || (rexlobj.exec(fragsrcxs[i]) || [])[0] || (rexsdoc.exec(fragsrcxs[i]) || [])[1]
@@ -2010,7 +2010,7 @@ function modjsLoad() {
       spnm = rexatt.exec(fpi);
     return spnm
     && ( asseturls[spnm[3]] || (spnm[1] || dbpch)
-      && (!spnm[1] || Array.from(pchlist.options).some(o => o.value === spnm[1]))
+      && (!spnm[1] || Array.from(pchlist.options).some(op => op.value === spnm[1]))
       && window.PouchDB && new PouchDB(spnm[1] || dbpch.name)
         .getAttachment((/^[.-]/.test(spnm[2]) ? "" : ".") + spnm[2], spnm[3])
         .then(ablob => asseturls[spnm[3]] = URL.createObjectURL(ablob))
@@ -2070,7 +2070,7 @@ function linksExpand() {
           new RegExp( "/" + spn2.filter((e, i) => i && e).join("/")
             .replace(/(?=[.*+])/g, "\\") + "$", "i" ).test(ssi.href)
           || asseturls[spn2[3]] === ssi.href ))
-        && (() => { try { return Array.from(sshm.cssRules).map(r => r.cssText).join("\n");
+        && (() => { try { return Array.from(sshm.cssRules).map(ob => ob.cssText).join("\n");
           } catch { return "/* ??? " + lnki + " */"; } })() || lnki );
     } else {
       msgHandl("CSS @import expansion data is now generated with attempted DB queries or HTTP requests. Render webpage to apply expansions.");
@@ -2079,7 +2079,7 @@ function linksExpand() {
           j = i,
           lnkj = lnki;
         !/^@import .+\.css\W*$/i.test(lnkj) || !(spnm = rexatt.exec(lnkj)) || (spnm[1] || dbpch)
-        && (!spnm[1] || Array.from(pchlist.options).some(o => o.value === spnm[1]))
+        && (!spnm[1] || Array.from(pchlist.options).some(op => op.value === spnm[1]))
         && window.PouchDB && new PouchDB(spnm[1] || dbpch.name)
           .getAttachment((/^[.-]/.test(spnm[2]) ? "" : ".") + spnm[2], spnm[3])
           .then( ablob => ablob instanceof Blob
@@ -2120,7 +2120,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
     disciscurr = 0,
     tstamp1 = Date.now(),
     rexurl = /( src=| href=|@import +(?:url\(|)|\S+: *url\()('|"|)(\S+?)(?=['"](?: |\/?>)|\2?\)?; *$)/gim,
-    ridx = !dbpch ? -1 : caccts.findIndex(e => e.DBNAME === dbpch.name),
+    ridx = !dbpch ? -1 : caccts.findIndex(ob => ob.DBNAME === dbpch.name),
     rmttxd = ridx < 0 ? {} : caccts[ridx],
     // keep separate, in case ridx/rmttxd become elsass dependencies also
     typanno = cfgs && ( cfgs.ahls.flat().length
@@ -2138,11 +2138,11 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       || !(ufile.team_groups = ufile.team_groups || [""]) || ufile.team_groups.includes(epsets.teamid)
       || (ufile.team_groups = ufile.team_groups.filter(e => e).concat(epsets.teamid));
       ufile.file_type !== "eco-post" || (ufile.file_type = "eco-memo"); // temp cleanup
-      ["file_created", "file_updated"].forEach((p, i) => { // temp cleanup
-        if (etmpl[p] && ufile[p] && ufile[p].hasOwnProperty("notes")) {
-          ufile[p].misc = ufile[p].notes;
-          delete ufile[p].notes;
-          ufile[p] = objAssn1(etmpl[p], ufile[p]);
+      ["file_created", "file_updated"].forEach((pty, i) => { // temp cleanup
+        if (etmpl[pty] && ufile[pty] && ufile[pty].hasOwnProperty("notes")) {
+          ufile[pty].misc = ufile[pty].notes;
+          delete ufile[pty].notes;
+          ufile[pty] = objAssn1(etmpl[pty], ufile[pty]);
         }
       });
       if ( /^eco-(?:assets|contact)$/.test(ufile.file_type) && !ufile.hasOwnProperty("loc_subdir")
@@ -2155,13 +2155,15 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       }
       !ufile.file_created || (ufile.file_created = objAssn1(etmpl.file_created, ufile.file_created));
       !ufile.file_updated || (ufile.file_updated = objAssn1(etmpl.file_updated, ufile.file_updated));
-      !ufile.locations || ufile.locations.forEach(o => o = objAssn1((etmpl.locations || [])[0], o));
+      !ufile.locations || ufile.locations.forEach(ob => ob = objAssn1((etmpl.locations || [])[0], ob));
       return objAssn1(etmpl, ufile);
     },
     pmgrPrefmt = (ufile = {}) => {
       if ( destindr && !cbfnc || !Array.isArray(ufile.filefrags) || !ufile.filefrags[0]
       || !(ufile.parseconfigs || "").linksconstr || ["scriptsconstr", "scriptsincl", "linksincl"]
-      .some(e => !Array.isArray(ufile.parseconfigs[e]) || !ufile.parseconfigs[e][0]) ) { return ufile; }
+      .some(e => !Array.isArray(ufile.parseconfigs[e]) || !ufile.parseconfigs[e][0]) ) {
+        return ufile;
+      }
       let pcfgu = ufile.parseconfigs,
         scu = pcfgu.scriptsconstr,
         siu = pcfgu.scriptsincl,
@@ -2187,10 +2189,10 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
             htmllinkinserts: lcu.htmllinkinserts
           } ));
         ["scriptsconstr", "scriptsincl", "linksincl"].forEach( e =>
-          ufile.parseconfigs[e].forEach(o => delete o["$$hashKey"]) );
-        ufile.filefrags.forEach(o => delete o["$$hashKey"]);
+          ufile.parseconfigs[e].forEach(ob => delete ob["$$hashKey"]) );
+        ufile.filefrags.forEach(ob => delete ob["$$hashKey"]);
       }
-      scu.forEach( (o, i) => pcfgu.scriptsconstr[i].features = o.features.map( o2 =>
+      scu.forEach( (ob, i) => pcfgu.scriptsconstr[i].features = ob.features.map( o2 =>
         o2.hasOwnProperty("keytxt") && !o2.hasOwnProperty("label") && !o2.hasOwnProperty("inptxt")
         && !o2.hasOwnProperty("inputbox") && !o2.txtabox ? o2 : {
           switchon: o2.switchon || false,
@@ -2198,7 +2200,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
           valtxt:   o2.inputbox || o2.inptxt || "",
           txtabox:  o2.txtabox
         } )); // temp cleanup
-      scu[0].deftxt || scu.forEach( (o, i) => !(scu[i].features || [{}])[0].txtabox // temp cleanup
+      scu[0].deftxt || scu.forEach( (ob, i) => !(scu[i].features || [{}])[0].txtabox // temp cleanup
         || !(pcfgu.scriptsconstr[i].deftxt = scu[i].features[0].txtabox)
         || (pcfgu.scriptsconstr[i].features[0].valtxt = pcfgu.scriptsconstr[i].features[0].keytxt = "")
         || delete pcfgu.scriptsconstr[i].features[0].txtabox );
@@ -2211,28 +2213,28 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       !(tmp1ff || "").filefrags
       || ufile.filefrags.forEach((ffi, i) => !ffi.contenttxt || (tmp1ff.filefrags[i] = ""));
       pcfgu.scriptsconstr = (pcfgt.scriptsconstr || []).length > 1 ? pcfgt.scriptsconstr
-        : scu.map( o => objAssn1( sce0, ( Array.isArray(o.features) && o.features[0]
-          || (o.features = jsonParse(JSON.stringify(sce0.features))) ) && o || {} ));
+        : scu.map( ob => objAssn1( sce0, ( Array.isArray(ob.features) && ob.features[0]
+          || (ob.features = jsonParse(JSON.stringify(sce0.features))) ) && ob || {} ));
       pcfgu.scriptsincl = (pcfgt.scriptsincl || []).length > 1 ? pcfgt.scriptsincl
-        : siu.map(o => objAssn1(pcfge.scriptsincl[0], o || {}));
+        : siu.map(ob => objAssn1(pcfge.scriptsincl[0], ob || {}));
       pcfgu.linksconstr = pcfgt.linksconstr || objAssn1(pcfge.linksconstr, lcu);
       !lcu.hasOwnProperty("directtorender") || ["directtorender", "rsltinsposition"]
         .forEach(e => delete ufile.parseconfigs.linksconstr[e]); // temp cleanup
       pcfgu.linksincl = (pcfgt.linksincl || []).length > 1 ? pcfgt.linksincl
-        : liu.map(o => objAssn1(pcfge.linksincl[0], o || {}));
+        : liu.map(ob => objAssn1(pcfge.linksincl[0], ob || {}));
       !scu[scu.length - 1].fncname || pcfgu.scriptsconstr.push(jsonParse(JSON.stringify(sce0)));
       !siu[siu.length - 1].fncname || pcfgu.scriptsincl
         .push({ fncname: "", applytofrag: Array.from(siu[0].applytofrag).map(e => true) });
       !liu[liu.length - 1].filepath
         || pcfgu.linksincl.push(jsonParse(JSON.stringify(pcfge.linksincl[0])));
-      ufile.filefrags.forEach( o => !o.hasOwnProperty("panecontent")
-        || ((o.contenttxt = o.panecontent), delete o.panecontent) ); // temp cleanup
+      ufile.filefrags.forEach( ob => !ob.hasOwnProperty("panecontent")
+        || ((ob.contenttxt = ob.panecontent), delete ob.panecontent) ); // temp cleanup
       ufile.loadconfigs = objAssn1(ECOTMPLS.publmgr.loadconfigs, ufile.loadconfigs || {});
       ufile.parseconfigs = objAssn1(pcfge, pcfgu);
       ufile.filefrags = !(tmp1ff || "").filefrags
-      ? ufile.filefrags.map(o => objAssn1(ECOTMPLS.publmgr.filefrags[0], o))
-      : tmp1ff.filefrags.map( (o, i) =>
-          objAssn1(o, !(ufile.filefrags[i] || "").contenttxt ? {} : ufile.filefrags[i]) );
+      ? ufile.filefrags.map(ob => objAssn1(ECOTMPLS.publmgr.filefrags[0], ob))
+      : tmp1ff.filefrags.map( (ob, i) =>
+          objAssn1(ob, !(ufile.filefrags[i] || "").contenttxt ? {} : ufile.filefrags[i]) );
       return ufile;
     },
     assGet = (a1i, i) => {
@@ -2244,7 +2246,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       return /^blob:/.test(apath1[3]) ? null
       : /^blob:/.test(ua1) ? a1i[a1i.href ? 'href' : 'src'] = ua1
       : apath1[3] && apath1[2] && (apath1[1] || dbpch)
-        && (!apath1[1] || Array.from(pchlist.options).some(o => o.value === apath1[1]))
+        && (!apath1[1] || Array.from(pchlist.options).some(op => op.value === apath1[1]))
       ? new PouchDB(apath1[1] || dbpch.name)
         .getAttachment(apath1[2], apath1[3])
         .then( ablob => elsass[j][elsass[j].href ? 'href' : 'src']
@@ -2265,7 +2267,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       apath2[3] || (apath2[3] = ua2.replace(/^(?!blob:).*\//, ""));
       return /^blob:/.test(ua2) ? styInj(ua2)
       : apath2[3] && apath2[2] && (apath2[1] || dbpch)
-        && (!apath2[1] || Array.from(pchlist.options).some(o => o.value === apath2[1]))
+        && (!apath2[1] || Array.from(pchlist.options).some(op => op.value === apath2[1]))
       ? new PouchDB(apath2[1] || dbpch.name)
         .getAttachment(apath2[2], apath2[3])
         .then(ablob => styInj(asseturls[apath2[3]] = URL.createObjectURL(ablob)))
@@ -2302,7 +2304,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       return typanno && /\bebook-annos-fns\.js$/.test(a3i.src) ? null
       : !epsets.appchks[27] && /^blob:/.test(ua3) ? scrInj({ src: ua3 })
       : !epsets.appchks[27] && apath3[3] && apath3[2] && (apath3[1] || dbpch)
-        && (!apath3[1] || Array.from(pchlist.options).some(o => o.value === apath3[1]))
+        && (!apath3[1] || Array.from(pchlist.options).some(op => op.value === apath3[1]))
       ? new PouchDB(apath3[1] || dbpch.name)
         .getAttachment(apath3[2], apath3[3])
         .then(ablob => scrInj({ src: asseturls[apath3[3]] = URL.createObjectURL(ablob) }))
@@ -2357,7 +2359,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       !filewkg.hasOwnProperty("from") || (filewkg.from = epsets.uname);
       !dbpch || !filewkg.team_groups || !(filewkg.team_groups[0] = dbpch.name.replace(/^a\d\d_/, ""))
       || ( filewkg._id = "!" + filewkg.team_groups[0]
-        + "-" + anumlIncr( (pf3stor.dbcntc.map(e => e[1]).sort().reverse()[0] || "")
+        + "-" + anumlIncr( (pf3stor.dbcntc.map(ar => ar[1]).sort().reverse()[0] || "")
           .replace(/^![0-9a-z]+-/i, "") ) );
     }
     ( epsets.appchks[22] || !filewkg.loadconfigs ? Promise.resolve([])
@@ -2365,7 +2367,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         let fpth = /^(?:(?:\.\.\/\.\.|\.\.|)\/(.+?)\/|)(.*)/.exec(filewkg.loadconfigs[pty] || ""),
           dbtm0 = /^~TMP1_.|^~TMP[0L]_1\D/.test(fpth[2]) && epsets.teamid.replace(/^(?=.)/, "a00_");
         return window.PouchDB && fpth[2] && ( fpth[1]
-        && Array.from(pchlist.options).some(o => o.value === fpth[1]) || dbtm0 || dbpch )
+        && Array.from(pchlist.options).some(op => op.value === fpth[1]) || dbtm0 || dbpch )
         && new PouchDB(fpth[1] || dbtm0 || dbpch.name).get(fpth[2]).catch(msgHandl);
       }) ) )
     .then(tmpls => {
@@ -2386,7 +2388,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       if ( filewkg.file_type === "eco-publmgr"
       && (pla11 = document.querySelector('#ecoesp0 #ptylista11'))
       && ( sidx = Array.from(pla11.options)
-      .findIndex(o => o.value.replace(/^\d+: /, "") === filewkg.loadconfigs.tabselected) )
+      .findIndex(op => op.value.replace(/^\d+: /, "") === filewkg.loadconfigs.tabselected) )
       && sidx > 0 ) {
         pla11.selectedIndex = sidx;
         EC1.ptySel(11);
@@ -2581,8 +2583,8 @@ function webdocGen(redirect, pdata = filewkg || Object.assign({}, ECOTMPLS.publm
   = document.querySelector('#ecorender').innerHTML
   = document.querySelector('#ecosrcview').innerHTML
   = document.querySelector('#ecoscripts').innerHTML = null;
-  fragstxt = pdata.filefrags.map( o => typeof o.contenttxt !== 'string'
-    || !o.contenttxt ? o.contenttxt : o.contenttxt.trim() + "\n\n" );
+  fragstxt = pdata.filefrags.map( ob => typeof ob.contenttxt !== 'string'
+    || !ob.contenttxt ? ob.contenttxt : ob.contenttxt.trim() + "\n\n" );
   scriptsincl.forEach( (sii, i) => sifragsbound == null &&
     (sii.applytofrag.every(e => e) || i + 1 === sil) && (sifragsbound = i) );
   scriptsincl.forEach((sii, i1) => {
@@ -2727,9 +2729,9 @@ function txdPrep(filepath) {
       || /^\[.*{".+}\]$/.test(txsjson)
       && ( /^(?:_.*\.|)\d+$|^(?!_)[\w!.*+~-]+$/.test(valcon)
         && ( (jsonParse(txsjson) || "")[valcon.replace(/^(?:_.*\.|)(\d+)$/, "$1")]
-        || (jsonParse(txsjson) || []).find(e => e.DBNAME === valcon) ) || jsonParse(txsjson) )
+        || (jsonParse(txsjson) || []).find(ob => ob.DBNAME === valcon) ) || jsonParse(txsjson) )
       || txsjson,
-    rmturl = (caccts.find(e => /^a\d\d/.test(e.DBNAME) && e.DBORIG) || "").DBORIG
+    rmturl = (caccts.find(ob => /^a\d\d/.test(ob.DBNAME) && ob.DBORIG) || "").DBORIG
       || hostibm || a00orig,
     fpathpts = /^(?:(?:(https?:\/\/)(?:([\w-]+):|)(?:([\w-]+)@|)([\w!.*+~-]+)(?:(?=$)|\/)|(\.\.\/\.\.\/)|\/)(?:([_a-z][0-9_a-z$,+-]*)(?:(?=$)|\/)|(?=$))|(\.\.\/)(?!$)|)(?:((?:_design\/|(?!\.\.?\/))[^ \/]+)(?:\/([^ \/]*)|)|)$/.exec(filepath || valcon);
   /^blob:\S+$/.test(valcon) && (txdata.url = valcon)
@@ -2748,9 +2750,9 @@ function txdPrep(filepath) {
 
 function txCrdtlz(txdata = {}) {
   let pchlist = document.querySelector('#ecoesp0 #pchlist'),
-    dbteam = ( Array.from(pchlist.options).find( o => epsets.teamid
-      ? o.value === "a00_" + epsets.teamid : /^a\d\d_\w/.test(o.value) ) || {} ).value || "",
-    tm0txd = caccts.find(e => e.DBNAME === (dbteam || "a00_" + epsets.teamid)) || {};
+    dbteam = ( Array.from(pchlist.options).find( op => epsets.teamid
+      ? op.value === "a00_" + epsets.teamid : /^a\d\d_\w/.test(op.value) ) || {} ).value || "",
+    tm0txd = caccts.find(ob => ob.DBNAME === (dbteam || "a00_" + epsets.teamid)) || {};
   return !/^https:\/\/[\w-]+\.cloudant[\w.]+$/.test(txdata.DBORIG)
   || txdata.USRNAM && !/^$|password/i.test(txdata.PSSWRD)
   ? txdata : Object.assign(txdata, {
@@ -2923,7 +2925,7 @@ function couchQry(filepath, destindr, cbfnc) { // todo: arg1 should be txdata-ob
     !PouchDB.allDbs || PouchDB.allDbs()
     .then(rslt => dataDispl(rslt, destindr, cbfnc)).catch(msgHandl);
   } else if ( window.PouchDB && txdata.DBNAME
-  && Array.from(pchlist.options).some(o => o.value === txdata.DBNAME) ) {
+  && Array.from(pchlist.options).some(op => op.value === txdata.DBNAME) ) {
     dbpc2 = new PouchDB(txdata.DBNAME);
     dbQryCalls(); // retrieve locally-stored, non-loaded-pouchdb file
   } else {
@@ -2959,7 +2961,7 @@ function couchPut(txdata = txdPrep()[0]) {
   } else if (txdata.docs) {
     dbpc2.bulkDocs(txdata.docs, txdata.OPTS || {}).then(resp => {
       msgHandl(`${dburl ? "Remote" : "Local"} CouchDB docs updated.\n` + msgPrefmt(resp));
-      return !dburl && dbpch.info().then(r => updseq[dbpc2.name] = r.update_seq)
+      return !dburl && dbpch.info().then(ob => updseq[dbpc2.name] = ob.update_seq)
       .then(() => pfsListGen(fileref));
     }).catch(err => {
       msgHandl(err);
@@ -2981,7 +2983,7 @@ function couchPut(txdata = txdPrep()[0]) {
           + (txdata.DELETE ? "deleted" : "updated") + ".\n" + msgPrefmt(resp) );
         if (!dburl) {
           if ( !optg || optg !== "LOCAL temporary files"
-          || !Array.from(fileslf.children).some(o => o.value === fileref) ) {
+          || !Array.from(fileslf.children).some(op => op.value === fileref) ) {
             !txdata.DELETE || filewkg !== cobj || (fileref = "");
             !txdata.vassets ? pfsListGen(fileref, subdir || 1) : attListGen(0, subdir || 1);
           } else if (!txdata.vassets) {
@@ -3032,7 +3034,7 @@ function couchAtt(dirtxd) {
     ablob = txdata.CBLOB
     || new Blob([typpmgr ? webdocGen(1) : rawtxta.value], { type: adata.CTYPE });
   if ( window.PouchDB && txdata.DBNAME && ( dburl
-  || Array.from(pchlist.options).some(o => o.value === txdata.DBNAME) )) {
+  || Array.from(pchlist.options).some(op => op.value === txdata.DBNAME) )) {
     dbpc2 = new PouchDB(dburl || txdata.DBNAME, { skip_setup: !dburl ? undefined : true });
   }
   if (!dbpc2) {
@@ -3096,7 +3098,7 @@ function couchAtt(dirtxd) {
 function ibmcosTxD(txdata, typpmgr, send) {
   let rawtxta = document.querySelector('#ecoesp0 #rawtxta'),
     pchlist = document.querySelector('#ecoesp0 #pchlist'),
-    reqipch = txdata.DBNAME && Array.from(pchlist.options).some(o => o.value === txdata.DBNAME),
+    reqipch = txdata.DBNAME && Array.from(pchlist.options).some(op => op.value === txdata.DBNAME),
     ecoat = (txdata.idtoks || idtoks || "").accessToken,
     reximg = /\.giff?$|\.jpe?g$|\.png$/i;
   return ( !send || !window.PouchDB || !reqipch || !txdata.FILEID || !txdata.ATTKEY
@@ -3152,7 +3154,7 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
     fragsrcxs = jfw.loadconfigs && jfw.loadconfigs.fragsrcxs || [],
     ucallsgn = (/^(?:![0-9a-z]+-|)([a-z]{3})$/.exec((tm0cntcs[jfw.from || epsets.uname] || "")._id) || [])[1],
     dirdot = !dirref || /^-/.test(dirref = dirref.replace(/^\./, "")) ? "" : ".",
-    rmttxd = dbpch && caccts.find(e => e.DBNAME === dbpch.name) || {},
+    rmttxd = dbpch && caccts.find(ob => ob.DBNAME === dbpch.name) || {},
     tstamp1 = Date.now(),
     ptys0Add = ppty => {
       jfw[ppty].username = epsets.uname;
@@ -3216,7 +3218,7 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
     ptys0Add("file_created");
     !jfw.linkref || jfw.file_created.subdir
     || ( jfw.file_created.subdir = (( (pf3stor.dbpubl || [])
-        .find(e => e && e.join("").indexOf(jfw.linkref) > -1) || [] )
+        .find(ar => ar && ar.join("").indexOf(jfw.linkref) > -1) || [] )
       .join("") ).replace(/\/[^\/]+$/, "") );
     !jfw.hasOwnProperty("from") || jfw.from || (jfw.from = epsets.uname);
     !/^my(?:anno|memo|post)\d\d$/.test(fileref)
@@ -3225,11 +3227,11 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
   } else if ( (jfw.file_type === "eco-contact" || /^![0-9a-z]+-[0-9a-z]+$/i.test(fileref))
   && ( !/^![0-9a-z]+-[0-9a-z]+$/i.test(jfw._id)
   || ![jfw._id, jfw._id.replace(/^!/, ""), jfw.name_user, jfw.name_full]
-  .some(p => p === fileref) ) ) {
+  .some(val => val === fileref) ) ) {
     jfw._id = /^![0-9a-z]+-[0-9a-z]+$/i.test(fileref) ? fileref
     : "!" + ( jfw.team_groups[0]
         || (!dbpch ? epsets.teamid || "myteam" : dbpch.name.replace(/^a\d\d_/, "")) )
-      + "-" + anumlIncr( (pf3stor.dbcntc.map(e => e[1]).sort().reverse()[0] || "")
+      + "-" + anumlIncr( (pf3stor.dbcntc.map(ar => ar[1]).sort().reverse()[0] || "")
         .replace(/^![0-9a-z]+-/i, "") );
     jfw._rev = "";
     jfw.ts_created = tstamp1;
@@ -3263,7 +3265,7 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
   && !/^~DVIZ_|^~DBID_|^~TMP[\dL]_|^~[amp]\d{8}|~[a-z]{3}[AP]\d{8}/.test(jfw._id) ) {
     jfw.file_created.subdir || (jfw.file_created.subdir = dirref);
     if ( pchutrg && ( !pf3stor.dbsdir
-    || !pf3stor.dbsdir.some(e => e[1] && e[1].replace(/^\./, "") === dirref) )) {
+    || !pf3stor.dbsdir.some(ar => ar[1] && ar[1].replace(/^\./, "") === dirref) )) {
       vassets = JSON.stringify(ECOTMPLS.assets)
       .replace(/("_id":")8-assets",/, "$1" + dirdot + dirref + "\",\"_rev\":\"\",")
       .replace(/("ts_created":)0(,"ts_updated":)0/, "$1" + tstamp1 + "$2" + tstamp1);
@@ -3470,9 +3472,9 @@ pfsSel(resel, cbfnc) { // also triggered by pfsResets, pfsListGen, couchAtt, tmp
     optg = pfslist.value && pfslist.selectedOptions[0].parentElement.label,
     fileref = pfslist.value && pfslist.selectedOptions[0].textContent || "",
     flgapp, flgdir, flgsrc, myx, myct = 2,
-    myIncr = myfile => Array.from(pfslist.options).forEach(o => {
-      if (myfile.test(o.textContent.replace(/^(?:\.\.\/|)(?:.*\/(?=.)|)/, ""))) {
-        myx = +/\d+(?=\.\w{2,4}$| *[*~][^a-z]*$|\/?$)/i.exec(o.textContent);
+    myIncr = myfile => Array.from(pfslist.options).forEach(op => {
+      if (myfile.test(op.textContent.replace(/^(?:\.\.\/|)(?:.*\/(?=.)|)/, ""))) {
+        myx = +/\d+(?=\.\w{2,4}$| *[*~][^a-z]*$|\/?$)/i.exec(op.textContent);
         myct = myct > myx ? myct : myx + 1;
       }
     });
@@ -3666,7 +3668,7 @@ srcSel(idxa, add1) { // also triggered by dataDispl, ptySel, jdePtyUpd, swapExe
       titletxt:   "SOURCE pane #" + (1 + idx) + ".",
       contenttxt: ""
     });
-    filewkg.parseconfigs.scriptsincl.forEach(e => e.applytofrag.push(e.applytofrag[idx - 1]));
+    filewkg.parseconfigs.scriptsincl.forEach(ob => ob.applytofrag.push(ob.applytofrag[idx - 1]));
     influxSet(true);
     document.querySelector('#ecoesp0 #rawtxta').value = JSON.stringify(filewkg, null, 2);
     jdePtyGen();
@@ -3772,7 +3774,7 @@ jdePtyUpd(rowslr, ptyk, plak, plai, plbgi) {
     papath = (ptyk + ( !plak ? "" : ("." + plak).replace(/:.*/, "") ))
       .split(/\u200b?\.(?!(?:giff?|html?|jpe?g|m?js|json|png|s?css|te?xt)$)/),
     pachild = papath.pop(),
-    paparent = papath.reduce((o, k) => o[k], filewkg),
+    paparent = papath.reduce((ob, k) => ob[k], filewkg),
     rawtxta = document.querySelector('#ecoesp0 #rawtxta');
   fldfoc = !epsets.swapchks[0] ? null : fldmfd;
   !epsets.swapchks[0] || (document.querySelector('#ecoesp0 #prsebtn').disabled = !fldfoc);
@@ -3817,7 +3819,7 @@ jdePtyUpd(rowslr, ptyk, plak, plai, plbgi) {
   if (plbgi) {
     pbpath = (pachild + "." + pksb[plbgi - 1]).split(/\./);
     pbchild = pbpath.pop();
-    pbparent = pbpath.reduce((o, k) => o[k], paparent);
+    pbparent = pbpath.reduce((ob, k) => ob[k], paparent);
   }
   if (plbgi && fldmfd && pbparent && fldmfd.value !== pbparent[pbchild]) {
     pbparent[pbchild] = fldmfd.value;
@@ -4030,7 +4032,7 @@ wrapTog() { // also triggered by ibmConnect
 epsUpd(swi) {
   let asels = document.querySelectorAll('#ecoesp0 #toolapp select'),
     achks = document.querySelectorAll('#ecoesp0 #toolapp input[type=checkbox]');
-  swi || document.querySelectorAll('#ecoesp0 #toolapp .rsetbtn').forEach(b => b.disabled = false);
+  swi || document.querySelectorAll('#ecoesp0 #toolapp .rsetbtn').forEach(btn => btn.disabled = false);
   swi !== 1 || (epsets.dbdflt = asels[0].selectedOptions[0].value);
   swi !== 2 || (epsets.prvmode = asels[1].selectedOptions[0].index);
   swi !== 2 || emodeSet();
@@ -4068,20 +4070,20 @@ ibmConnect() {
     appidtoks = document.querySelector('#ecoesp0 #appidtoks'),
     appuinfo = document.querySelector('#ecoesp0 #appuinfo'),
     pchlist = document.querySelector('#ecoesp0 #pchlist'),
-    dbteam = ( Array.from(pchlist.options).find( o => epsets.teamid
-      ? o.value === "a00_" + epsets.teamid : /^a\d\d_\w/.test(o.value) ) || {} ).value || "",
-    tm0txd = caccts.find(e => e.DBNAME === (dbteam || "a00_" + epsets.teamid)) || {},
-    pchpdbs = Array.from(pchlist.options).map(o => o.value).filter(e => !/^a\d\d/.test(e)),
-    fbktxd = caccts[epsets.dbdflt] || caccts.find(o => o.DBNAME === epsets.dbdflt)
-      || caccts.find(e => pchpdbs.some(f => f === e.DBNAME)) || {},
-    reqipch = valinp[1] && Array.from(pchlist.options).some(o => o.value === valinp[1])
+    dbteam = ( Array.from(pchlist.options).find( op => epsets.teamid
+      ? op.value === "a00_" + epsets.teamid : /^a\d\d_\w/.test(op.value) ) || {} ).value || "",
+    tm0txd = caccts.find(ob => ob.DBNAME === (dbteam || "a00_" + epsets.teamid)) || {},
+    pchpdbs = Array.from(pchlist.options).map(op => op.value).filter(e => !/^a\d\d/.test(e)),
+    fbktxd = caccts[epsets.dbdflt] || caccts.find(ob => ob.DBNAME === epsets.dbdflt)
+      || caccts.find(ob => pchpdbs.some(e => e === ob.DBNAME)) || {},
+    reqipch = valinp[1] && Array.from(pchlist.options).some(op => op.value === valinp[1])
       || !valinp[1] && valinp[2]
-      && Array.from(pchlist.options).some(o => o.value.replace(/^a\d\d_/, "") === valinp[2]),
-    reqtxd = reqipch && caccts.find(e => e.DBNAME === (valinp[1] || "a00_" + valinp[2])) || {},
+      && Array.from(pchlist.options).some(op => op.value.replace(/^a\d\d_/, "") === valinp[2]),
+    reqtxd = reqipch && caccts.find(ob => ob.DBNAME === (valinp[1] || "a00_" + valinp[2])) || {},
     //tm0ipch = valinp[2] // todo: possibly identify 2ndary team dbs
-      //&& Array.from(pchlist.options).some(o => o.value === "a00_" + valinp[2])
-      //&& caccts.some(e => e.DBNAME === "a00_" + valinp[2] && e.DBORIG && e.USRNAM),
-    tmidnew = ( Array.from(pchlist.options).map(o => o.value).filter(e => /^a\d\d_\w/.test(e))
+      //&& Array.from(pchlist.options).some(op => op.value === "a00_" + valinp[2])
+      //&& caccts.some(ob => ob.DBNAME === "a00_" + valinp[2] && ob.DBORIG && ob.USRNAM),
+    tmidnew = ( Array.from(pchlist.options).map(op => op.value).filter(e => /^a\d\d_\w/.test(e))
       .sort().pop() || "" ).replace(/^a(\d\d)_.+$/, "$1"),
     tmidpre = valinp[2] === dbteam.replace(/^a\d\d_/, "")
       || !tmidnew ? "a00_" : "a" + (+tmidnew < 9 ? "0" : "") + ++tmidnew + "_",
@@ -4114,22 +4116,23 @@ ibmConnect() {
         ATTKEY: "",
         OPTS:   {}
       };
-      !dbname || ( (ridx = caccts.findIndex(e => e.DBNAME === dbname)) < 0
-        ? caccts.push(Object.assign({}, rmtdn)) : caccts[ridx] = Object.assign({}, rmtdn) );
+      !dbname || ( (ridx = caccts.findIndex(ob => ob.DBNAME === dbname)) > -1
+        ? caccts[ridx] = Object.assign({}, rmtdn) : caccts.push(Object.assign({}, rmtdn)) );
       delete rmtdn.USRNAM;
       delete rmtdn.PSSWRD;
       (rsltk.dbs || []).forEach( e =>
         e === dbname || /^(?:.*\/|)a00$/.test(e)
-        || caccts.findIndex(f => f.DBNAME === e.replace(/^.*\//, "")) > -1
+        || caccts.findIndex(ob => ob.DBNAME === e.replace(/^.*\//, "")) > -1
         || caccts.push( Object.assign(Object.assign({}, rmtdn),
           { DBPUBL: !/^.*\//.test(e) ? undefined : ["_reader"], DBNAME: e.replace(/^.*\//, "") }) ) );
           // todo: set small-phi-pipe (\u03c6|) or dagger-pipe, public-db flag in ibmfns
       !(dbname || rsltk.dbs) || !(caccts = caccts.sort((a, b) => a.DBNAME > b.DBNAME ? 1 : -1))
       || !(localStorage["_couchaccts"] = JSON.stringify(caccts));
       dbname && !rsltk.dbs ? dbOpen(rmtdn)
-      : rmtListGen() || !window.PouchDB || caccts.forEach( e => !e || !e.DBNAME
-        || /^a\d\d/.test(e.DBNAME) || !rsltk.dbs.some(f => f === e.DBNAME) // filters out public dbs
-        || pchpdbs.indexOf(e.DBNAME) > -1 || new PouchDB(e.DBNAME) ) || pdbListGen();
+      : Promise.all( caccts.map( ob => !ob || !ob.DBNAME
+          || /^a\d\d/.test(ob.DBNAME) || !rsltk.dbs.some(e => e === ob.DBNAME) // filters out public dbs
+          || pchpdbs.indexOf(ob.DBNAME) > -1 || !window.PouchDB || new PouchDB(ob.DBNAME) ))
+        .catch(msgHandl).then(() => rmtListGen(), pdbListGen());
     },
     ecoInit = () => {
       localStorage["_ecopresets"] = JSON.stringify(epsets);
@@ -4172,14 +4175,14 @@ ibmConnect() {
       tm0cntcs[epsets.uname] = {
         _id: u1st ? "!" + (valinp[2] || "myteam") + "-aaa"
           : "!" + (epsets.teamid || "myteam") + "-"
-            + anumlIncr( (Object.values(tm0cntcs).map(o => o._id).sort().reverse()[0] || "")
+            + anumlIncr( (Object.values(tm0cntcs).map(ob => ob._id).sort().reverse()[0] || "")
               .replace(/^![0-9a-z]+-/i, "") ),
         ts_created: tstamp1,
         ts_updated: tstamp1,
         name_full:  idtoks.idTokenPayload.name,
         name_user:  epsets.uname,
         roles:      ["Solo"],
-        emails:     !pcloud ? [epsets.uemail] : pcloud.idpUserInfo.emails.map(e => e.value),
+        emails:     !pcloud ? [epsets.uemail] : pcloud.idpUserInfo.emails.map(ob => ob.value),
         image_src:  userinfo && userinfo.picture || "avatar000.png"
     }),
     dbidGen = () => Object.assign( jsonParse(JSON.stringify(ECOTMPLS.prjid)), {
@@ -4223,7 +4226,7 @@ ibmConnect() {
           !rsltk.dbs.some(e => e === (!valinp[2] ? dbteam : tmidpre + valinp[2]))
           || (dbpc1 = window.PouchDB && new PouchDB(!valinp[2] ? dbteam : tmidpre + valinp[2]));
           rmtDSet(dbpc1 && dbpc1.name, rsltk);
-          return !dbpc1 || !(tm2txd = caccts.find(e => e.DBNAME === dbpc1.name)) || !tm2txd.USRNAM
+          return !dbpc1 || !(tm2txd = caccts.find(ob => ob.DBNAME === dbpc1.name)) || !tm2txd.USRNAM
           ? espEnter()
           : dbpc1.info().then(resp => {
             dbpc2 = new PouchDB(txurlGen(tm2txd), { skip_setup: true });  // slow sync team db
@@ -4235,7 +4238,7 @@ ibmConnect() {
                 tm0cntcs[r.key] = { _id: r.id, roles: r.value.roles } ))
               .then( () => tm0urole = tm0cntcs[epsets.uname]
                 && tm0cntcs[epsets.uname].roles.find(e => /^Admin$|^Lead$|^Contributor$/i.test(e))
-                || (caccts.find(e => e.DBNAME === valinp[1] || fbktxd.DBNAME) || "").USRNAM )
+                || (caccts.find(ob => ob.DBNAME === valinp[1] || fbktxd.DBNAME) || "").USRNAM )
               .then( () => !/^Contributor$/i.test(tm0urole) || !valinp[2] || valinp[1]
                 || (tm0urole = false) )
               .then(() => espEnter());
@@ -4276,7 +4279,7 @@ ibmConnect() {
           || (epsets.uemail || "").replace(/@.*$/, "") );
         epsets.ungvn || (epsets.ungvn = idtoks.idTokenPayload.given_name);
         epsets.unfam || (epsets.unfam = idtoks.idTokenPayload.family_name);
-        pcloud = userinfo.identities.find(o => o.provider === "cloud_directory");
+        pcloud = userinfo.identities.find(ob => ob.provider === "cloud_directory");
         epsets.loglast = pcloud && pcloud.idpUserInfo.meta.lastLogin || new Date().toISOString();
         epsets.dbdflt || localStorage["_ecoidtoks"] && !valinp[1]
         || (epsets.dbdflt = valinp[1] || fbktxd.DBNAME || "");
@@ -4353,7 +4356,7 @@ tmplLoad() {
   let tmplrads = document.querySelector('#ecoguides #tmplrad').elements["tmplrad"],
     pfslist = document.querySelector('#econav0 #pfslist');
   if ( !fwinflux && ( pfslist.selectedIndex = Array.from(pfslist.options)
-  .findIndex(o => o.parentElement.label === "APP templates" && o.value === tmplrads.value) )) {
+  .findIndex(op => op.parentElement.label === "APP templates" && op.value === tmplrads.value) )) {
     EC1.tabs0Tog(2);
     EC1.pfsSel();
   }
@@ -4362,8 +4365,8 @@ guideLoad() {
   let guiderads = document.querySelector('#ecoguides #guiderad').elements["guiderad"],
     qcontxta = document.querySelector('#econav0 #qcontxta'),
     pchlist = document.querySelector('#ecoesp0 #pchlist'),
-    reqipch = Array.from(pchlist.options).some(o => o.value === "a00"),
-    rmturl = (caccts.find(e => /^a\d\d/.test(e.DBNAME) && e.DBORIG) || "").DBORIG
+    reqipch = Array.from(pchlist.options).some(op => op.value === "a00"),
+    rmturl = (caccts.find(ob => /^a\d\d/.test(ob.DBNAME) && ob.DBORIG) || "").DBORIG
       || hostibm || a00orig,
     txdata = !reqipch ? {
       url:  rmturl + "/a00/" + guiderads.value,
@@ -4455,16 +4458,16 @@ dvizGen(idx) {
       let cdb = +dvizrads.value && ( +dvizrads.value === 1
           ? dbpch && dbpch.name : epsets.teamid && "a00_" + epsets.teamid ),
         csg = Object.entries(tm0cntcs).map(oe => [oe[1]._id, oe[0]])
-        .filter( e => cdb && ( +dvizrads.value === 1
-          ? !epsets.teamid || e[0].replace(/^!([0-9a-z]+)-.*/i, "$1") !== epsets.teamid
-          : e[0].replace(/^!([0-9a-z]+)-.*/i, "$1") === epsets.teamid )).sort(),
+        .filter( ar => cdb && ( +dvizrads.value === 1
+          ? !epsets.teamid || ar[0].replace(/^!([0-9a-z]+)-.*/i, "$1") !== epsets.teamid
+          : ar[0].replace(/^!([0-9a-z]+)-.*/i, "$1") === epsets.teamid )).sort(),
         cct = csg.length,
         dviztmpl = jsonParse(JSON.stringify(ECOTMPLS.publmgr));
       pfsResets();
       dviztmpl._id = "";
-      dviztmpl.contributors = csg.map(e => e[1].replace(/[^\w.@-]+/g, "-"));
+      dviztmpl.contributors = csg.map(ar => ar[1].replace(/[^\w.@-]+/g, "-"));
       !cdb || (dviztmpl.loadconfigs.commondirpath = `../../${cdb}/contacts/`);
-      dviztmpl.loadconfigs.fragsrcxs = [false, ...csg.map(e => "./" + e[0]), false];
+      dviztmpl.loadconfigs.fragsrcxs = [false, ...csg.map(ar => "./" + ar[0]), false];
       dviztmpl.filefrags = [
         { idtxt: "SOURCE1", labeltxt: "SOURCE1", titletxt: "SOURCE pane #1.",
           contenttxt: (ECOSDOCS[4] || "").replace(/\n *`\.trim\(\)[^]+$/, "") },
@@ -4499,7 +4502,7 @@ qconSyncD() {
   let prekey, stokey, ridx,
     [txdata, loadobj, valcon] = txdPrep(),
     pchlist = document.querySelector('#ecoesp0 #pchlist'),
-    dbs = Array.from(pchlist.options).map(o => o.value),
+    dbs = Array.from(pchlist.options).map(op => op.value),
     reqipch = txdata.DBNAME && dbs.some(e => e === txdata.DBNAME),
     ecoat = (txdata.idtoks || idtoks || "").accessToken,
     valStor = () => localStorage[stokey]
@@ -4521,9 +4524,9 @@ qconSyncD() {
         .forEach(oe => !epsets.hasOwnProperty(oe[0]) || (epsets[oe[0]] = oe[1]));
       !/^_couchaccts$/.test(stokey) ? valStor() : !Array.isArray(txdata[prekey])
       || Promise.all( txdata[prekey].map( o2 => !(o2 || "").DBNAME
-        || ( (ridx = caccts.findIndex(o1 => o1.DBNAME === o2.DBNAME)) > -1
-          ? caccts[ridx] = o2 : ( caccts.push(o2),
-            dbs.indexOf(o2.DBNAME) > -1 || !window.PouchDB || new PouchDB(o2.DBNAME) ) ) ))
+          || ( (ridx = caccts.findIndex(o1 => o1.DBNAME === o2.DBNAME)) > -1
+            ? caccts[ridx] = o2 : ( caccts.push(o2),
+              dbs.indexOf(o2.DBNAME) > -1 || !window.PouchDB || new PouchDB(o2.DBNAME) ) ) ))
         .catch(msgHandl).then(() => {
           caccts = caccts.sort((a, b) => a.DBNAME > b.DBNAME ? 1 : -1);
           valStor();
@@ -4540,8 +4543,8 @@ qconSyncD() {
     .then(dbs => msgHandl(dbs.join("\n"))).catch(msgHandl);
   } else if (window.PouchDB && Array.isArray(txdata)) {
     !PouchDB.allDbs || PouchDB.allDbs()
-    .then( dbs => txdata.forEach( o =>
-      !o || !o.DBNAME || dbs.indexOf(o.DBNAME) > -1 && !o.DESTROY || couchSync(o, loadobj) ))
+    .then( dbs => txdata.forEach( ob =>
+      !(ob || "").DBNAME || dbs.indexOf(ob.DBNAME) > -1 && !ob.DESTROY || couchSync(ob, loadobj) ))
     .catch(msgHandl);
   } else if (valcon === "/" || txdata.DBNAME === "") {
     pchlist.value = ""; // reset db only; works even w/o hbars-fnc
@@ -4635,7 +4638,7 @@ qconSubmD(ccommit) {
     || tm0cntcs[epsets.uname]._id === (filewkg || "")._id
     && tm0cntcs[epsets.uname].roles.find(e => /^Contributor$|^Reviewer$/i.test(e))
     ? document.querySelector('#econav0 #qcontxta').value = JSON.stringify( Object.assign(
-        Object.assign({}, caccts.find(e => e.DBNAME === "a00_" + epsets.teamid)),
+        Object.assign({}, caccts.find(ob => ob.DBNAME === "a00_" + epsets.teamid)),
         { USRNAM: undefined, PSSWRD: undefined, FILEID: filewkg._id } ), null, 2 ) + "\n"
     : document.querySelector('#ecoesp0 #cntcbtn').disabled = true );
   let [txdata] = txdPrep(),
@@ -4762,7 +4765,7 @@ discAdd(discsync) {
     pfslist = document.querySelector('#econav0 #pfslist'),
     memoinp = document.querySelector('#ecoesp0 #memoinp'),
     memotxta = document.querySelector('#ecoesp0 #memotxta'),
-    rmttxd = dbpch && txCrdtlz(caccts.find(e => e.DBNAME === dbpch.name)) || {},
+    rmttxd = dbpch && txCrdtlz(caccts.find(ob => ob.DBNAME === dbpch.name)) || {},
     tstamp1 = Date.now(),
     cobj = {
       _id:  "~" + "m" + new Date(tstamp1).toISOString().replace(/\.\w+$|[:-]/g, "") + ucallsgn,
@@ -4924,7 +4927,7 @@ dbsSync(txdata = {}) { // also triggered by (ibmConnect>)couchSync
     txdata = txCrdtlz( !caccts.length ? txdata
       : Object.assign( Object.assign( {}, ( !txdata.DBNAME
         ? caccts[rmtlist.selectedIndex - 1]
-        : caccts.find(e => e.DBNAME === txdata.DBNAME) ) || {} ), txdata ) );
+        : caccts.find(ob => ob.DBNAME === txdata.DBNAME) ) || {} ), txdata ) );
     if (txdata.RMTFR || txdata.USRNAM) { // todo: why !tm0urole?
       document.querySelector('#econav0 #qcontxta').value = JSON.stringify(txdata, null, 2) + "\n";
       couchSync();
@@ -4951,7 +4954,7 @@ srvrUpl() {
     uplfpath = document.querySelector('#ecoesp0 #uplfpath'),
     typpmgr = filewkg && (filewkg.file_type === "eco-publmgr" || filewkg.filefrags && true),
     attExe = rslt => couchAtt( Object.assign(
-      txCrdtlz(Object.assign({}, caccts.find(e => e.DBNAME === rm3list.value))), {
+      txCrdtlz(Object.assign({}, caccts.find(ob => ob.DBNAME === rm3list.value))), {
         FILEID: uplfpath.value.replace(/^[./]*([^/]+)\/.*|.*/, "$1")
           || ( /\.html?$/.test(attinp.value) || typpmgr
             ? (attinp.value || filewkg._id).replace(/\.\w+$/, "")
@@ -5006,7 +5009,7 @@ logOut() {
     sethlps = document.querySelectorAll('#ecoesp0 #toolapp .help'),
     appiamd = document.querySelectorAll('#ecoesp0 #appidtoks, #ecoesp0 #appuinfo'),
     pchlist = document.querySelector('#ecoesp0 #pchlist'),
-    dbs = Array.from(pchlist.options).map(o => o.value),
+    dbs = Array.from(pchlist.options).map(op => op.value),
     ajsosRset = () => {
       lnkstor = [];
       tm0cntcs = {};
@@ -5029,9 +5032,9 @@ logOut() {
   logtbtn.disabled = true;
   appiamd.forEach(e => e.innerHTML = null);
   if (!stoempswi.checked) {
-    caccts.forEach(e => {
-      delete e.USRNAM;
-      delete e.PSSWRD;
+    caccts.forEach(ob => {
+      delete ob.USRNAM;
+      delete ob.PSSWRD;
     });
     localStorage["_couchaccts"] = JSON.stringify(caccts);
     localStorage["_ecopresets"] = JSON.stringify(epsets);
@@ -5084,7 +5087,7 @@ logOut() {
 (async function () { // hbarsCompile
   let achks = document.querySelectorAll('#ecoesp0 #toolapp input[type=checkbox]');
   caccts = ( /^\[.*{".+}\]$/.test(localStorage["_couchaccts"])
-    && jsonParse(localStorage["_couchaccts"]) || caccts ).filter(e => e && typeof e === 'object');
+    && jsonParse(localStorage["_couchaccts"]) || caccts ).filter(ob => ob && typeof ob === 'object');
   epsets = /^{".+}$/.test(localStorage["_ecopresets"])
     && jsonParse(localStorage["_ecopresets"]) || epsets;
   "" + Object.keys(epsets) == ["uemail", "uname", "ungvn", "unfam", "teamid", "loglast",
