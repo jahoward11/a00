@@ -4037,6 +4037,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
           <option>document.querySelector('#iniscripts&gt;script:last-child').outerHTML</option>
           <option>document.querySelector('#ecoscripts').innerHTML</option>
           <option>document.querySelector('body&gt;script:last-child').outerHTML</option>
+          <option>Array.from(document.querySelectorAll('[id]')).map(e => e.id)</option>
           <option>Array.from(document.querySelectorAll('script')).map(e => e.src)</option>
           <option>sc2Inj = u =&gt; { let n = document.createElement('script'); !(n.src = u) || document.querySelector('#iniscripts').appendChild(n); }</option>
           <option>getComputedStyle(document.documentElement).width</option>
@@ -4059,7 +4060,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
           <option>
             { let k, keys = [];
 &#x2028; for (k in document.documentElement) keys.push(k);
-&#x2028; keys.sort().filter(k =&gt; !/^on|^aria/.test(k)); }
+&#x2028; keys.filter(k =&gt; !/^on|^aria/.test(k)).sort(); }
           </option>
           <option>
             fetch("../-app-eco/eco-ctrl.js").then(r =&gt; r.text()).then( s =&gt; s
