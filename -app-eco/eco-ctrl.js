@@ -969,7 +969,7 @@ function rdataFetch(txdata = {}, idx = 0) {
     } ) // body method: arrayBuffer, blob, json, text, formData
   .then( resp => resp[ txdata.bmts && txdata.bmts[idx] || txdata.bmet
     || ( /^blob:|\.giff?$|\.jpe?g$|\.png$/.test(txdata.url) ? 'blob'
-    : /\.json$/.test(txdata.url) ? 'json' : 'text' ) ]() );
+      : /\.json$/.test(txdata.url) ? 'json' : 'text' ) ]());
 }
 
 function anumlIncr(anum) {
@@ -2683,8 +2683,8 @@ function dropboxTx(txdata, xrslv, xrjct = _=>_) {
 function blobHandl(ablob, destindr, txdata = {}, cbfnc) {
   let blobread,
     attinp = document.querySelector('#econav0 #attinp'),
-    reximg = /\.giff?$|\.jpe?g$|\.png$/i,
-    rextxt = /\.m?js$|\.json$|\.md$|\.s?css$|\.te?xt$|\.\w{5,}$/i;
+    reximg = /\.(?:giff?|jpe?g|png)$/i,
+    rextxt = /\.(?:json|md|m?js|s?css|te?xt|\w{5,})$/i;
   if (!(ablob instanceof Blob)) {
     attinp.value || EC1.attSel();
     dataDispl(ablob, destindr, cbfnc);
@@ -2716,15 +2716,15 @@ function blobHandl(ablob, destindr, txdata = {}, cbfnc) {
 }
 
 function txdPrep(filepath) {
-// returns (3/4 possible combinations, excluding 1-empty-obj 2-spec'd-acct):
+// returns 3/4 possible combinations (excluding 1-empty-obj 2-spec'd-acct):
 // 1 txdata-obj, gen'd from valcon-json/filepath -- otherwise, empty-obj
 // 2 loadobj-obj/str, gen'd from caccts/ls-custdata -- caccts opt'ly narrowed down by valcon-idx/DBNAME
 //   - acct-arr is always returned (unless _-key/idx/DBNAME is provided)
 //   - & is used only by couchSync as fallback -- only when txdata is unempty but misfmt'd for sync-ops
   let valcon = document.querySelector('#econav0 #qcontxta').value.trim(),
     txdata = /^{\s*"[^]+}$|^\[[^]*{\s*"[^]+}\s*\]$/.test(valcon) && jsonParse(valcon) || {},
-    txsjson = localStorage[ /^_(?!\.\d+$)[\w!.*+~-]+$/.test(valcon)
-      ? valcon.replace(/\.\d+$/, "") : "_couchaccts" ],
+    txsjson = localStorage[ !/^_(?!\.\d+$)[\w!.*+~-]+$/.test(valcon)
+      ? "_couchaccts" : valcon.replace(/\.\d+$/, "") ],
     loadobj = /^{".+}$/.test(txsjson) && jsonParse(txsjson)
       || /^\[.*{".+}\]$/.test(txsjson)
       && ( /^(?:_.*\.|)\d+$|^(?!_)[\w!.*+~-]+$/.test(valcon)
@@ -2733,18 +2733,22 @@ function txdPrep(filepath) {
       || txsjson,
     rmturl = (caccts.find(ob => /^a\d\d/.test(ob.DBNAME) && ob.DBORIG) || "").DBORIG
       || hostibm || a00orig,
-    fpathpts = /^(?:(?:(https?:\/\/)(?:([\w-]+):|)(?:([\w-]+)@|)([\w!.*+~-]+)(?:(?=$)|\/)|(\.\.\/\.\.\/)|\/)(?:([_a-z][0-9_a-z$,+-]*)(?:(?=$)|\/)|(?=$))|(\.\.\/)(?!$)|)(?:((?:_design\/|(?!\.\.?\/))[^ \/]+)(?:\/([^ \/]*)|)|)$/.exec(filepath || valcon);
-  /^blob:\S+$/.test(valcon) && (txdata.url = valcon)
-  || !fpathpts || !fpathpts[0] || ( txdata = {
-    USRNAM: fpathpts[2],
-    PSSWRD: fpathpts[3],
-    DBORIG: fpathpts[1] + fpathpts[4] || (fpathpts[5] || fpathpts[7]) && rmturl || undefined,
-    DBNAME: fpathpts[7] && ( rmturl &&
-      window.location.pathname.replace(/^.*\/([^ \/]+)\/[^ \/]+\/[^ \/]+$/, "$1") || "a00" )
-      || fpathpts[6] || (filepath == 0 && !fpathpts[1] || filepath) && dbpch && dbpch.name,
-    FILEID: fpathpts[8],
-    ATTKEY: fpathpts[9],
-  } );
+    fpathes = /^(?:(?:(https?:\/\/)(?:([\w-]+):|)(?:([\w-]+)@|)([\w!.*+~-]+)(?:(?=$)|\/)|(\.\.\/\.\.\/)|\/)(?:([_a-z][0-9_a-z$,+-]*)(?:(?=$)|\/)|(?=$))|(\.\.\/)(?!$)|)(?:((?:_design\/|(?!\.\.?\/))[^ \/]+)(?:\/([^ \/]*)|)|)$/.exec(filepath || valcon);
+  !fpathes || fpathes[6] === "a00" || fpathes[0] === fpathes[8]
+  && (!/^$|^[!.~-]?\w[\w!.*+~-]*$/.test(fpathes[0]) || /^_|[*~]\(?[0-9]*\)?$/.test(fpathes[0]))
+  ? ![rexloc, rexrmt].some(e => e.test(filepath || valcon)) || ( txdata = {
+      url:  filepath || valcon,
+      bmet: /\.(?:html?|md|m?js|s?css|te?xt|\w{5,})$/i.test(filepath || valcon)
+        ? 'text' : /\.json$/i.test(filepath || valcon) ? 'json' : undefined
+    })
+  : txdata = {
+      USRNAM: fpathes[2],
+      PSSWRD: fpathes[3],
+      DBORIG: fpathes[1] + fpathes[4] || (fpathes[5] || fpathes[7]) && rmturl || undefined,
+      DBNAME: fpathes[6] || (filepath == 0 && !fpathes[1] || filepath) && dbpch && dbpch.name,
+      FILEID: fpathes[8],
+      ATTKEY: fpathes[9],
+    };
   return [txdata, loadobj, valcon];
 }
 
@@ -2871,10 +2875,9 @@ function couchSync(txdata, loadobj, valcon) {
   } // msgHandl("Alert: Data sync / DB maintenance not attempted.");
 }
 
-function couchQry(filepath, destindr, cbfnc) { // todo: arg1 should be txdata-obj, not filepath-str
+function couchQry(txdata, destindr, cbfnc) {
 // data sources: 1 valcon-filepath/json->txdata, 2 sellist/attinp-filepath->txdata
   let dbpc2,
-    [txdata] = txdPrep(filepath),
     dburl = txurlGen(txdata),
     optsdds = Object.assign({ startkey: "_design", endkey: "_design0" }, txdata.OPTS),
     attinp = document.querySelector('#econav0 #attinp'),
@@ -3349,7 +3352,7 @@ attSel(renswap) { // also triggered by dviz-idxlist, attListGen, blobHandl, couc
   reniscurr = false;
   EC2.srvrSel();
   if (idx > 0) {
-    couchQry(attlist.value, 3);
+    couchQry(txdPrep(attlist.value)[0], 3);
   } else if (!document.querySelector('#ecorender #msgwelcome')) {
     // alert: when called by pfsSel, prjdisc is modified before filewkg gets modified
     !platiphn || document.querySelector('head>meta[name=viewport]')
@@ -3370,7 +3373,8 @@ attInp() {
     valatt = document.querySelector('#econav0 #attinp').value.trim(),
     attlist = document.querySelector('#econav0 #attlist'),
     idx = attlist.selectedIndex,
-    attkey = idx > -1 && attlist.options[idx].textContent;
+    attkey = idx > -1 && attlist.options[idx].textContent,
+    [txdata] = txdPrep(valatt);
   valatt === attkey || (attlist.value = valatt)
   && (idx = attlist.selectedIndex) > 0 || (idx = attlist.selectedIndex = 0);
   EC1.attSel(0);
@@ -3380,15 +3384,16 @@ attInp() {
     : localforage.getItem(lfkey, (err, val) => err ? msgHandl(err) : dataDispl(val, 3));
   } else if (/^\$ *\w*(?:\b[.(].+|)$/.test(valatt)) {
     Promise.resolve(EC2.objQA(valatt.replace(/^\$ */, ""))).then(rslt => dataDispl(rslt, 3));
-  } else if (/^blob:\S+$/.test(valatt)) {
-    rdataFetch(valatt).then( rslt =>
+  } else if (txdata.url) {
+    rdataFetch(txdata).then( rslt =>
       /^image/.test(rslt.type) ? dataDispl(imgWrap(valatt), 6)
-      : rdataFetch({ url: valatt, bmet: 'text' }).then(rslt => dataDispl(rslt, 7)) )
+      : /^(?:json|text)$/.test(txdata.bmet) ? dataDispl(rslt, 7)
+      : rdataFetch({ url: txdata.url, bmet: 'text' }).then(rslt => dataDispl(rslt, 7)) )
     .catch(msgHandl);
-  } else if (/^(?:\/[a-z][0-9_a-z$,+-]*\/|)[\w!.*+~-]+\.html?$/.test(valatt) && !idx) {
-    couchQry(valatt.replace(/\.html?$/, ""), 4);
+  } else if (!idx && /^(?:\/[a-z][0-9_a-z$,+-]*\/|)[\w!.*+~-]+\.html?$/.test(valatt)) {
+    couchQry(txdPrep(valatt.replace(/\.html?$/, ""))[0], 4);
   } else if (valatt) {
-    couchQry(valatt, 3);
+    couchQry(txdata, 3);
   }
 },
 tabs0Tog(idx, exit) { // also triggered by dataDispl, dropboxTx, blobHandl, prvTog, tmplLoad, calcGen, diffGen, dvizGen, qconRetrvD, dviz-dboxupd
@@ -3514,14 +3519,15 @@ pfsSel(resel, cbfnc) { // also triggered by pfsResets, pfsListGen, couchAtt, tmp
       myIncr(new RegExp("^" + flgdir + flgapp + fileref.replace(/\.\w{2,4}$|$/, flgsrc), "i"));
       pfsinp.value = flgapp + fileref.replace( /(?=\.\w{2,4}$|$)/,
         flgsrc + (myct < 10 ? "0" + myct : myct) );
-      flgapp ? dataDispl(JSON.stringify(ECOTMPLS[pfslist.value]), 1) : couchQry(pfslist.value, 1);
+      flgapp ? dataDispl(JSON.stringify(ECOTMPLS[pfslist.value]), 1)
+      : couchQry(txdPrep(pfslist.value)[0], 1);
       window.setTimeout(() => {
         pfslist.blur();
         influxSet(1);
       }, 1);
     } else {
       pfsinp.value = !/\/./.test(fileref) ? fileref : "└ " + pfslist.value;
-      couchQry(pfslist.value, resel ? false : null, cbfnc);
+      couchQry(txdPrep(pfslist.value)[0], resel ? false : null, cbfnc);
       influxSet(2);
     }
   }
@@ -3592,10 +3598,10 @@ pf2Sel(espr) { // also triggered by pfsResets
       dataDispl(JSON.stringify(ECOTMPLS[pf2list.value]), 2);
     } else if (/^(?:DB|TEAM) templates$/.test(optg)) {
       pf2inp.value = fileref;
-      couchQry(pf2list.value, 2);
+      couchQry(txdPrep(pf2list.value)[0], 2);
     } else {
       pf2inp.value = !/\/./.test(fileref) ? fileref : "└ " + pf2list.value;
-      couchQry(pf2list.value, 2);
+      couchQry(txdPrep(pf2list.value)[0], 2);
     }
   } else {
     pf2inp.value = file2nd = null;
@@ -3772,7 +3778,7 @@ jdePtyUpd(rowslr, ptyk, plak, plai, plbgi) {
     typpmgr = filewkg.file_type === "eco-publmgr",
     boolrpr = e => e === "null" ? null : e === "false" ? false : e === "true" ? true : e,
     papath = (ptyk + ( !plak ? "" : ("." + plak).replace(/:.*/, "") ))
-      .split(/\u200b?\.(?!(?:giff?|html?|jpe?g|m?js|json|png|s?css|te?xt)$)/),
+      .split(/\u200b?\.(?!(?:giff?|html?|jpe?g|json|md|m?js|png|s?css|te?xt)$)/),
     pachild = papath.pop(),
     paparent = papath.reduce((ob, k) => ob[k], filewkg),
     rawtxta = document.querySelector('#ecoesp0 #rawtxta');
@@ -4601,13 +4607,12 @@ qconRetrvD(cbfnc, errfnc) { // also triggered by guideLoad, dviz-idxlist, dviz-m
   } else if (txdata.hasOwnProperty("dbox") || txdata.hasOwnProperty("path")) {
     dropboxTx(txdata, cbfnc, errfnc);
   } else if (txdata.url) { // non-db filepath/url
-    rdataFetch(txdata)
-    .then(rslt => {
+    rdataFetch(txdata).then(rslt => {
       if (!rslt) { return Promise.reject("Alert: Static file located but data retrieval failed."); }
       msgHandl("Data fetched from static file: " + txdata.url.replace(/^.+\//, ""));
       return /^image/.test(rslt.type) ? dataDispl(imgWrap(txdata.url), 6, cbfnc)
       : /^(?:json|text)$/.test(txdata.bmet) ? dataDispl(rslt, 0, cbfnc)
-      : (txdata.bmet = 'text') && rdataFetch(txdata).then(rslt => dataDispl(rslt, 0, cbfnc))
+      : rdataFetch({ url: txdata.url, bmet: 'text' }).then(rslt => dataDispl(rslt, 0, cbfnc));
     }).catch(msgHandl);
   } else if (txdata.COSEND) {
     ibmcosTxD(txdata).then(rdataFetch)
@@ -4629,7 +4634,7 @@ qconRetrvD(cbfnc, errfnc) { // also triggered by guideLoad, dviz-idxlist, dviz-m
     .then(rslt => !txdata.ATTKEY ? dataDispl(rslt, 0) : blobHandl(rslt.body, 0, txdata))
     .catch(msgHandl);
   } else {
-    couchQry(0, 0, cbfnc);
+    couchQry(txdPrep(0)[0], 0, cbfnc);
   }
 },
 qconSubmD(ccommit) {
