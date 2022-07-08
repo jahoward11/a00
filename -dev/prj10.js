@@ -122,7 +122,7 @@ Array.from(Array(5).keys())
 const bcaches = `//
 caches.keys().then(respShow)
 // caches.keys().then(keys => caches.open(keys[0])).then(cache => cache.keys()).then(keys => keys.map(k => ({ url: k.url, mode: k.mode, dest: k.destination }))).then(respShow)
-// caches.open("calcjs-v00.12").then(cache => cache.delete("https://jahoward11.github.io/a00/-res-js/jstat-tdist.js")).then(respShow)
+// caches.open("calcjs0.14").then(cache => cache.delete("https:/" + "/jahoward11.github.io/a00/-res-js/jstat-tdist.js")).then(respShow)
 // caches.match("https:/" + "/jahoward11.github.io/a00/-res-css/reset-hjas-min0.css").then(r => r.text()).then(respShow)
 
 // indexedDB.databases().then(respShow)
