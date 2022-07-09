@@ -44,7 +44,7 @@ const hostibm = /\.cloudant[\w.]+$/.test(window.location.host) && window.locatio
   },
   pf3stor = {},
   rexatt = /(?:@import +(?:url\(|)['"]?|\S+: *url\(['"]?|^)(?:\.\/|\.\.\/(?:\.\.\/(.*)\/|)(.*)\/|)([^\n\/]+\.(?:giff?|jpe?g|m?js|png|s?css))['"]?\)?;?$/i,
-  rexloc = /^(?:(?:\.\.\/\.\.|\.\.|)\/(?=$|\w)|\.\/(?=[^ \/])|\/\/|\$|blob:(?!.* ))[ \w/!.*+~-]*$/,
+  rexloc = /^(?:(?:\.\.\/\.\.|\.\.|)\/(?=$|\w)|\.\/(?=[^ \/])|\/\/|\$|blob:(?:https?:|)(?!.* ))[ \w/!.*+~-]*$/,
   rexrmt = /^https?:\/\/[ \w/#%!?=&@:.,+~-]+$/;
 
 window.ecoqjs = window.ecoqjs || {};
