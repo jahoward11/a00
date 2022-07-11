@@ -2762,7 +2762,7 @@ function txCrdtlz(txdata = {}) {
     dbteam = ( Array.from(pchlist.options).find( op => epsets.teamid
       ? op.value === "a00_" + epsets.teamid : /^a\d\d_\w/.test(op.value) ) || {} ).value || "",
     tm0txd = caccts.find(ob => ob.DBNAME === (dbteam || "a00_" + epsets.teamid)) || {};
-  return !/^https:\/\/[\w-]+\.cloudant[\w.]+$/.test(txdata.DBORIG)
+  return txdata.DBPUBL || !/^https:\/\/[\w-]+\.cloudant[\w.]+$/.test(txdata.DBORIG)
   || txdata.USRNAM && !/^$|password/i.test(txdata.PSSWRD)
   ? txdata : Object.assign(txdata, {
       USRNAM: tm0txd.USRNAM,
@@ -4573,9 +4573,10 @@ qconSyncD() {
       }
     }), 2 ).then(msgHandl).catch(msgHandl);
   } else if (/^\b\S+$/.test(valcon) || txdata.DBNAME) { //|| Object.keys(txdata).length
-    couchSync(txdata, loadobj, valcon);
+    couchSync(txCrdtlz(txdata), txCrdtlz(loadobj), valcon);
   } else {
     msgHandl(ECOINSTR[1]);
+    msgHandl(txdata);
   }
 },
 qconRetrvD(cbfnc, errfnc) { // also triggered by guideLoad, dviz-idxlist, dviz-memos, dviz-dboxupd
