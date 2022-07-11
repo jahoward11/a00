@@ -1096,9 +1096,9 @@ let rva2, rval, ss0, ss1,
   cmthds = document.querySelectorAll('main thead'),
   cmtbod = document.querySelector('main tbody'),
   cmtfts = document.querySelectorAll('main tfoot'),
-  rsp2Show = r => { r2con.textContent
-    += ( !r || typeof r !== 'object' || r instanceof Error && r.constructor && !r.reason
-      ? r : JSON.stringify(r, null, 2) ) + "\\n\\n" },
+  rsp2Show = r2 => { r2con.textContent
+    += ( !r2 || typeof r2 !== 'object' || r2 instanceof Error && r2.constructor && !r2.reason
+      ? r2 : JSON.stringify(r2, null, 2) ) + "\\n\\n" },
   ts1Fmt = nbr => !nbr ? "" : new Date(nbr).toISOString().replace(/T.+$/, ""),
   nbrX = v => v && (Array.isArray(v) ? v : ("" + v).split("."))
     .map(n => !n ? "" : ("" + n).length > 4 ? n : ("000" + n).substr(-4, 4)).join("."),

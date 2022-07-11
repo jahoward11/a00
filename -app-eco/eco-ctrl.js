@@ -44,6 +44,7 @@ const hostibm = /\.cloudant[\w.]+$/.test(window.location.host) && window.locatio
   },
   pf3stor = {},
   rexatt = /(?:@import +(?:url\(|)['"]?|\S+: *url\(['"]?|^)(?:\.\/|\.\.\/(?:\.\.\/(.*)\/|)(.*)\/|)([^\n\/]+\.(?:giff?|jpe?g|m?js|png|s?css))['"]?\)?;?$/i,
+  reximg = /\.(?:giff?|jpe?g|png)$/i,
   rexloc = /^(?:(?:\.\.\/\.\.|\.\.|)\/(?=$|\w)|\.\/(?=[^ \/])|\/\/|\$|blob:(?:https?:|)(?!.* ))[ \w/!.*+~-]*$/,
   rexrmt = /^https?:\/\/[ \w/#%!?=&@:.,+~-]+$/;
 
@@ -968,7 +969,7 @@ function rdataFetch(txdata = {}, idx = 0) {
       body:       txdata.body || null // body data type must match "Content-Type" header
     } ) // body method: arrayBuffer, blob, json, text, formData
   .then( resp => resp[ txdata.bmts && txdata.bmts[idx] || txdata.bmet
-    || ( /^blob:|\.giff?$|\.jpe?g$|\.png$/.test(txdata.url) ? 'blob'
+    || ( /^blob:|\.(?:giff?|jpe?g|png)$/.test(txdata.url) ? 'blob'
       : /\.json$/.test(txdata.url) ? 'json' : 'text' ) ]());
 }
 
@@ -2646,7 +2647,7 @@ function dropboxTx(txdata, xrslv, xrjct = _=>_) {
     dbat = localStorage["__dbat"],
     dbox = txdata.dbox || "metadata",
     rawtxta = document.querySelector('#ecoesp0 #rawtxta'),
-    errShow = e => msgHandl("Alert: Dropbox transaction attempted & failed.\n" + msgPrefmt(e));
+    errShow = err => msgHandl("Alert: Dropbox transaction attempted & failed.\n" + msgPrefmt(err));
   if ( !/^\/|^$/.test(txdata.path)
   || /upload|delete/.test(txdata.dbox) && txdata.mode !== "overwrite" ) {
     return xrjct(msgHandl(ECOINSTR[5]));
@@ -2683,7 +2684,6 @@ function dropboxTx(txdata, xrslv, xrjct = _=>_) {
 function blobHandl(ablob, destindr, txdata = {}, cbfnc) {
   let blobread,
     attinp = document.querySelector('#econav0 #attinp'),
-    reximg = /\.(?:giff?|jpe?g|png)$/i,
     rextxt = /\.(?:json|md|m?js|s?css|te?xt|\w{5,})$/i;
   if (!(ablob instanceof Blob)) {
     attinp.value || EC1.attSel();
@@ -2849,9 +2849,9 @@ function couchSync(txdata, loadobj, valcon) {
         : '\n<div class="title is-4 has-text-grey">Updated Files</div>'
           + '\n<div class="subtitle is-6 has-text-grey-light">'
           + (resp.pull || resp).end_time + '</div>\n<ul>\n<li>'
-          + rslt.results.map(r =>
+          + rslt.results.map( r =>
             r.seq + ': <span class="has-text-grey">' + r.id + '</span> ('
-            + r.changes[0].rev.replace(/\D.+/, "") + ')')
+            + r.changes[0].rev.replace(/\D.+/, "") + ')' )
           .join('</li>\n<li>') + '</li>\n</ul>\n';
         localStorage["_ecopchupds"] = JSON.stringify(updpch);
         protfile || !txdata.RMTFR || txdata.DBNAME !== "a00" || !rslt.results.length
@@ -3102,8 +3102,7 @@ function ibmcosTxD(txdata, typpmgr, send) {
   let rawtxta = document.querySelector('#ecoesp0 #rawtxta'),
     pchlist = document.querySelector('#ecoesp0 #pchlist'),
     reqipch = txdata.DBNAME && Array.from(pchlist.options).some(op => op.value === txdata.DBNAME),
-    ecoat = (txdata.idtoks || idtoks || "").accessToken,
-    reximg = /\.giff?$|\.jpe?g$|\.png$/i;
+    ecoat = (txdata.idtoks || idtoks || "").accessToken;
   return ( !send || !window.PouchDB || !reqipch || !txdata.FILEID || !txdata.ATTKEY
     ? Promise.resolve() : new PouchDB(txdata.DBNAME)
       .getAttachment(txdata.FILEID, txdata.ATTKEY, txdata.OPTS || {}) )
@@ -3196,7 +3195,7 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
     fileref = fileref.replace(/^~DVIZ_/, "");
   } else if (/^~TMP[\dL]_\w/.test(jfw._id) && jfw._id.replace(/^~TMP[\dL]_/, "") !== fileref) {
     idx = [/-pub/, /-src/, /-scr/, /-prj/, /-pos/, /-ann/, /-ass/, /-con/]
-      .findIndex(re => re.test(jfw.file_type));
+      .findIndex(rex => rex.test(jfw.file_type));
     jfw._id = (/^~TMP[\dL]_/.test(fileref) ? "" : "~TMP" + (1 + idx) + "_") + fileref;
     jfw._rev = "";
     fileref = fileref.replace(/^~TMP[\dL]_/, "");
@@ -4571,7 +4570,7 @@ qconSyncD() {
         "Authorization": "Bearer " + ecoat
       }
     }), 2 ).then(msgHandl).catch(msgHandl);
-  } else if (Object.keys(txdata).length) {
+  } else if (/^\b\S+$/.test(valcon) || txdata.DBNAME) { //|| Object.keys(txdata).length
     couchSync(txdata, loadobj, valcon);
   } else {
     msgHandl(ECOINSTR[1]);
@@ -4964,7 +4963,7 @@ srvrUpl() {
           || ( /\.html?$/.test(attinp.value) || typpmgr
             ? (attinp.value || filewkg._id).replace(/\.\w+$/, "")
             : /\.s?css$/i.test(attinp.value) ? "-res-css"
-            : /\.giff?$|\.jpe?g$|\.png$/i.test(attinp.value) ? "-res-img"
+            : reximg.test(attinp.value) ? "-res-img"
             : /\.m?js$/i.test(attinp.value) ? "-res-js" : "-res-x" ),
         ATTKEY: uplfpath.value.replace(/.*?([^/]+)$|.*/, "$1")
           || (/\.html?$/.test(attinp.value) || typpmgr ? "index.html" : attinp.value),

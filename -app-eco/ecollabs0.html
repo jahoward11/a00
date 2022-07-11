@@ -4043,7 +4043,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
           <option>getComputedStyle(document.documentElement).width</option>
           <option>getComputedStyle(document.documentElement).font</option>
           <option>Array.from(document.styleSheets).map(ss =&gt; ss.href)</option>
-          <option>Array.from(document.styleSheets[0].rules).map(r =&gt; r.cssText)</option>
+          <option>Array.from(document.styleSheets[0].rules).map(ru =&gt; ru.cssText)</option>
           <option>indexedDB.databases()</option>
           <option>caches.keys()</option>
           <option>
@@ -4063,7 +4063,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 &#x2028; keys.filter(k =&gt; !/^on|^aria/.test(k)).sort(); }
           </option>
           <option>
-            fetch("../-app-eco/eco-ctrl.js").then(r =&gt; r.text()).then( s =&gt; s
+            fetch("../-app-eco/eco-ctrl.js").then(re =&gt; re.text()).then( s =&gt; s
 &#x2028; .replace( /^(?:const|let|var| ) ?\b[ ,\w]+(?: *= .+|);?(?: *\/\/ *|)\n|^(window\.\w+(?= *=)[ =])[^]+?(?:;?\s*\n[\]}];?\n|;\n(?=\n|[^\s\]}]))|^function +(\w+.)[^]+?\n[\]}];?\n(?=[\n\S])|(.*\n|.+)/gim,
 &#x2028; (m, c1, c2, c3) =&gt; c3 ? "" : c1 || c2 || m.replace(/(?:[^=a-z]|= *(?=\d+[,;]|""|''|\[\]|\{\})|[a-z](?!\w* *[.,;=]))*(?:\n|=.+|(\w+.))/gi, "$1") )
 &#x2028; .trim().split(/[^.\w]/) )
