@@ -4308,7 +4308,7 @@ ibmConnect() {
     tstamp0 = tstamp1;
     updseq = {};
   }
-  if ( hostlh || !appid || !appid.initialized
+  if ( hostlh || !appid || !appid.initialized || reqipch && !reqtxd.DBNAME
   || (!valinp[1] || !valinp[2]) && reqtxd.DBORIG && reqtxd.USRNAM
   || (reqipch && !valinp[2] || epsets.dbdflt && !valinp[0])
   && epsets.uname && epsets.loglast && (!dbteam || tm0txd.DBORIG && tm0txd.USRNAM) ) {
