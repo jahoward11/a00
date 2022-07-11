@@ -115,15 +115,15 @@ Array.from(Array(5).keys())
 // respShow( Object.fromEntries( Object.entries(SourceDiff).map(oe => [oe[0], oe[1].toString()]) ))
 // respShow(Array.from(document.querySelectorAll('[id]')).map(e => e.id))
 // respShow( document.querySelectorAll('script')[2].textContent.replace( /^(?:const|let|var| ) ?\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)\\n|^(window\\.\\w+(?= *=)[ =])[^]+?(?:;?\\s*\\n[\\]}];?\\n|;\\n(?=\\n|[^\\s\\]}]))|^function +(\\w+.)[^]+?\\n[\\]}];?\\n(?=[\\n\\S])|(.*\\n|.+)/gim, (m, c1, c2, c3) => c3 ? "" : c1 || c2 || m.replace(/(?:[^=a-z]|= *(?=\\d+[,;]|""|''|\\[\\]|\\{\\})|[a-z](?!\\w* *[.,;=]))*(?:\\n|=.+|(\\w+.))/gi, "$1") ).trim().split(/[^.\\w]/) ) //
-// fetch("../-app-eco/eco-ctrl.js").then(r => r.text()).then( s => s.replace( /^(?:const|let|var| ) ?\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)\\n|^(window\\.\\w+(?= *=)[ =])[^]+?(?:;?\\s*\\n[\\]}];?\\n|;\\n(?=\\n|[^\\s\\]}]))|^function +(\\w+.)[^]+?\\n[\\]}];?\\n(?=[\\n\\S])|(.*\\n|.+)/gim, (m, c1, c2, c3) => c3 ? "" : c1 || c2 || m.replace(/(?:[^=a-z]|= *(?=\\d+[,;]|""|''|\\[\\]|\\{\\})|[a-z](?!\\w* *[.,;=]))*(?:\\n|=.+|(\\w+.))/gi, "$1") ).trim().split(/[^.\\w]/) ).then(respShow).catch(respShow) //
-// fetch("../-app-eco/eco-ctrl.js").then(r => r.text()).then(s => s.replace(/[^]+\\n(function srcvPrep.+(?:\\n.+)+?(?:;?\\s*};?|;)\\n)[\\n\\S][^]*/, "$1")).then(respShow).catch(respShow) //
+// fetch("../-app-eco/eco-ctrl.js").then(re => re.text()).then( s => s.replace( /^(?:const|let|var| ) ?\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)\\n|^(window\\.\\w+(?= *=)[ =])[^]+?(?:;?\\s*\\n[\\]}];?\\n|;\\n(?=\\n|[^\\s\\]}]))|^function +(\\w+.)[^]+?\\n[\\]}];?\\n(?=[\\n\\S])|(.*\\n|.+)/gim, (m, c1, c2, c3) => c3 ? "" : c1 || c2 || m.replace(/(?:[^=a-z]|= *(?=\\d+[,;]|""|''|\\[\\]|\\{\\})|[a-z](?!\\w* *[.,;=]))*(?:\\n|=.+|(\\w+.))/gi, "$1") ).trim().split(/[^.\\w]/) ).then(respShow).catch(respShow) //
+// fetch("../-app-eco/eco-ctrl.js").then(re => re.text()).then(s => s.replace(/[^]+\\n(function srcvPrep.+(?:\\n.+)+?(?:;?\\s*};?|;)\\n)[\\n\\S][^]*/, "$1")).then(respShow).catch(respShow) //
 //`;
 
 const bcaches = `//
 caches.keys().then(respShow)
 // caches.keys().then(keys => caches.open(keys[0])).then(cache => cache.keys()).then(keys => keys.map(k => ({ url: k.url, mode: k.mode, dest: k.destination }))).then(respShow)
 // caches.open("calcjs0.14").then(cache => cache.delete("https:/" + "/jahoward11.github.io/a00/-res-js/jstat-tdist.js")).then(respShow)
-// caches.match("https:/" + "/jahoward11.github.io/a00/-res-css/reset-hjas-min0.css").then(r => r.text()).then(respShow)
+// caches.match("https:/" + "/jahoward11.github.io/a00/-res-css/reset-hjas-min0.css").then(re => re.text()).then(respShow)
 
 // indexedDB.databases().then(respShow)
 
@@ -144,7 +144,7 @@ respShow(Array.from(document.querySelectorAll('script')).map(e => e.src))
 // respShow(document.querySelector('script:last-of-type').outerHTML)
 
 // respShow(Array.from(document.styleSheets).map(ss => ss.href))
-// respShow(Array.from(document.styleSheets[0].rules).map(r => r.cssText))
+// respShow(Array.from(document.styleSheets[0].rules).map(ru => ru.cssText))
 //`;
 
 const scrload = `//
@@ -154,10 +154,10 @@ const scrload = `//
 // !!(window.hljs && window.js_beautify) || Promise.all(["../-res-js/highlight.pack.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then(respShow).catch(respShow)
 // !!window.PouchDB || scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js")).catch(respShow)
 
-// import("../-dev/prj10.js").then(r => (xstor[r._module] = r) && xlstGen()).catch(respShow)
-// import("../-dev/prj10.js").then(r => respShow(r.jscmds)).catch(respShow)
-// import("../-res-js/ebook-annos.mjs").then(r => window["tocNavLtGen"] = r.tocNavLtGen).catch(respShow)
-// fetch("../-res-js/ebook-annos-fns.js").then(r => r.text()).then(respShow).catch(respShow)
+// import("../-dev/prj10.js").then(re => (xstor[re._module] = re) && xlstGen()).catch(respShow)
+// import("../-dev/prj10.js").then(re => respShow(re.jscmds)).catch(respShow)
+// import("../-res-js/ebook-annos.mjs").then(re => window["tocNavLtGen"] = re.tocNavLtGen).catch(respShow)
+// fetch("../-res-js/ebook-annos-fns.js").then(re => re.text()).then(respShow).catch(respShow)
 // localforage.getItem("tutor2js").then(respShow).catch(respShow)
 // PouchDB("mydb1").get("myfile").then(doc => doc.content).then(respShow).catch(respShow)
 // PouchDB.allDbs().then(respShow)
@@ -180,10 +180,10 @@ PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
 */
 
 // txd2 = { DBNAME: "db", FILEID: "id", ATTKEY: "key", OPTS: {} };
-// PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => fetch(URL.createObjectURL(abl)).then(r => r.text()).then(respShow).catch(respShow)
+// PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => fetch(URL.createObjectURL(abl)).then(re => re.text()).then(respShow).catch(respShow)
 
 // sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.body.appendChild(n); };
-// !!window.PouchDB || fetch("../-res-js/pouchdb.min.js").then(r => r.blob()).then(URL.createObjectURL).then(_.sc2Inj).catch(respShow)
+// !!window.PouchDB || fetch("../-res-js/pouchdb.min.js").then(re => re.blob()).then(URL.createObjectURL).then(_.sc2Inj).catch(respShow)
 //`;
 
 const jstatqs = `//
@@ -237,7 +237,7 @@ uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; 
 
 // /spark/.test(window.location.search) || (window.location.search = "cmods=spark.js,../-dev/prj10.js&dload=t3srepl");
 // srctxta.value = xstor.sparknotes.mythology.replace(/\\n\\*\\/$|^\\/\\*\\n/g, ""); //
-// srctxta.value || import("./spark.js").then(r => srctxta.value = r.mythology.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(respShow); //
+// srctxta.value || import("./spark.js").then(re => srctxta.value = re.mythology.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(respShow); //
 // sepainp.value = "/^.*?(\\\\bmyth).*\\\\n*|^.*\\\\n*/gim"; //
 // rtrminp.value = "(m, c1, i) => { i || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" <strong>\\" + ++it1 + \\".</strong> <em>[line \\" + it0 + \\"]</em>\\\\n\\" + m.replace(/\\\\bmyth/gi, \\"<mark>$&</mark>\\"); }";
 
