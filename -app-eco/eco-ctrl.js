@@ -2723,21 +2723,9 @@ function blobHandl(ablob, destindr, txdata = {}, cbfnc) {
 }
 
 function txdPrep(filepath) {
-// returns 3/4 possible combinations (excluding 1-empty-obj 2-spec'd-acct):
-// 1 txdata-obj, gen'd from valcon-json/filepath -- otherwise, empty-obj
-// 2 loadobj-obj/str, gen'd from caccts/ls-custdata -- caccts opt'ly narrowed down by valcon-idx/DBNAME
-//   - acct-arr is always returned (unless _-key/idx/DBNAME is provided)
-//   - & is used only by couchSync as fallback -- only when txdata is unempty but misfmt'd for sync-ops
+// returns: txdata-obj, gen'd from filepath-str/valcon-str/valcon-json -- otherwise, empty-obj
   let valcon = document.querySelector('#econav0 #qcontxta').value.trim(),
     txdata = /^{\s*"[^]+}$|^\[[^]*{\s*"[^]+}\s*\]$/.test(valcon) && jsonParse(valcon) || {},
-    txsjson = localStorage[ !/^_(?!\.\d+$)[\w!.*+~-]+$/.test(valcon)
-      ? "_couchaccts" : valcon.replace(/\.\d+$/, "") ],
-    loadobj = /^{".+}$/.test(txsjson) && jsonParse(txsjson)
-      || /^\[.*{".+}\]$/.test(txsjson)
-      && ( /^(?:_.*\.|)\d+$|^(?!_)[\w!.*+~-]+$/.test(valcon)
-        && ( (jsonParse(txsjson) || "")[valcon.replace(/^(?:_.*\.|)(\d+)$/, "$1")]
-        || (jsonParse(txsjson) || []).find(ob => ob.DBNAME === valcon) ) || jsonParse(txsjson) )
-      || txsjson,
     fpathes = /^(?:(?:(https?:\/\/)(?:([\w-]+):|)(?:([\w-]+)@|)([\w!.*+~-]+)(?:(?=$)|\/)|(\.\.\/\.\.\/)|\/)(?:([_a-z][0-9_a-z$,+-]*)(?:(?=$)|\/)|(?=$))|(\.\.\/)(?!$)|)(?:((?:_design\/|(?!\.\.?\/))[^ \/]+)(?:\/([^ \/]*)|)|)$/.exec(filepath || valcon);
   !fpathes || fpathes[6] === "a00" || fpathes[0] === fpathes[8]
   && (!/^$|^[!.~-]?\w[\w!.*+~-]*$/.test(fpathes[0]) || /^_|[*~]\(?[0-9]*\)?$/.test(fpathes[0]))
@@ -2754,7 +2742,7 @@ function txdPrep(filepath) {
       FILEID: fpathes[8],
       ATTKEY: fpathes[9],
     };
-  return [txdata, loadobj, valcon];
+  return [txdata, valcon];
 }
 
 function txCrdtlz(txdata = {}) {
@@ -2779,10 +2767,10 @@ function txurlGen(txdata) {
   }
 }
 
-function couchSync(txdata, loadobj, valcon) {
+function couchSync(txdata, valcon = "") {
 // data sources: 1 valcon-filepath/json->txdata, 2 pchSel/ibmConnect-obj->txdata
-  txdata || ([txdata, loadobj] = txdPrep());
-  let dbpc2, err2,
+  txdata || ([txdata, valcon] = txdPrep());
+  let dbpc2, err2, txsjson, loadobj,
     dburl = txurlGen(txdata),
     fileref = document.querySelector('#econav0 #pfsinp').value.replace(/\/ *$|^\u2514 /g, "").trim(),
     dirlist = document.querySelector('#ecoesp0 #dirlist'),
@@ -2871,12 +2859,24 @@ function couchSync(txdata, loadobj, valcon) {
       (txdata.RMTFR ? rm2btn : rmtbtn).disabled = true;
     });
   } else { // display couchdb query data pattern for next attempt
+  // returns: loadobj-str/obj, gen'd from caccts/ls-custdata
+  // -- caccts opt'ly narrowed down by valcon-idx/DBNAME
+  // - acct-arr is returned unless _-key/idx/DBNAME is provided
+  // - triggered only when txdata is unempty but misfmt'd for sync-ops
     if (!/^\b\S+$/.test(valcon)) { // check that qconSyncD-cacct-lookup wasn't the trigger
       pdbListGen();
       pfsListGen();
     }
+    txsjson = localStorage[ !/^_(?!\.\d+$)[\w!.*+~-]+$/.test(valcon)
+      ? "_couchaccts" : valcon.replace(/\.\d+$/, "") ];
+    loadobj = /^{".+}$/.test(txsjson) && jsonParse(txsjson)
+      || /^\[.*{".+}\]$/.test(txsjson)
+      && ( /^(?:_.*\.|)\d+$|^(?!_)[\w!.*+~-]+$/.test(valcon)
+        && ( (jsonParse(txsjson) || "")[valcon.replace(/^(?:_.*\.|)(\d+)$/, "$1")]
+        || (jsonParse(txsjson) || []).find(ob => ob.DBNAME === valcon) ) || jsonParse(txsjson) )
+      || txsjson;
     document.querySelector('#econav0 #qcontxta').value = loadobj
-    ? msgPrefmt(loadobj) + "\n" : JSON.stringify(COUCHTXD, null, 2) + "\n";
+    ? msgPrefmt(txCrdtlz(loadobj)) + "\n" : JSON.stringify(COUCHTXD, null, 2) + "\n";
   } // msgHandl("Alert: Data sync / DB maintenance not attempted.");
 }
 
@@ -4112,7 +4112,7 @@ ibmConnect() {
           DBNAME: rmtdn.DBNAME,
           OPTS:   { batches_limit: 1, batch_size: 1 },
           RMTFR:  true
-        }, caccts);
+        });
       }).catch(msgHandl);
     },
     rmtDSet = (dbname, rsltk = {}) => {
@@ -4507,7 +4507,7 @@ qconSyncD() {
 // 7 create/destroy multiple local dbs : when valcon provides specified txdata-array
 // 8 perform sync : when valcon provides remote-db txdata-json while a matching local-db is open
   let prekey, stokey, ridx,
-    [txdata, loadobj, valcon] = txdPrep(),
+    [txdata, valcon] = txdPrep(),
     pchlist = document.querySelector('#ecoesp0 #pchlist'),
     dbs = Array.from(pchlist.options).map(op => op.value),
     reqipch = txdata.DBNAME && dbs.some(e => e === txdata.DBNAME),
@@ -4551,7 +4551,7 @@ qconSyncD() {
   } else if (window.PouchDB && Array.isArray(txdata)) {
     !PouchDB.allDbs || PouchDB.allDbs()
     .then( dbs => txdata.forEach( ob =>
-      !(ob || "").DBNAME || dbs.indexOf(ob.DBNAME) > -1 && !ob.DESTROY || couchSync(ob, loadobj) ))
+      !(ob || "").DBNAME || dbs.indexOf(ob.DBNAME) > -1 && !ob.DESTROY || couchSync(ob) ))
     .catch(msgHandl);
   } else if (valcon === "/" || txdata.DBNAME === "") {
     pchlist.value = ""; // reset db only; works even w/o hbars-fnc
@@ -4572,8 +4572,8 @@ qconSyncD() {
         "Authorization": "Bearer " + ecoat
       }
     }), 2 ).then(msgHandl).catch(msgHandl);
-  } else if (/^\b\S+$/.test(valcon) || txdata.DBNAME) { //|| Object.keys(txdata).length
-    couchSync(txCrdtlz(txdata), txCrdtlz(loadobj), valcon);
+  } else if (/^\b\S+$/.test(valcon) || txdata.DBNAME) {
+    couchSync(txCrdtlz(txdata), valcon);
   } else {
     msgHandl(ECOINSTR[1]);
     msgHandl(txdata);
@@ -4593,7 +4593,7 @@ qconRetrvD(cbfnc, errfnc) { // also triggered by guideLoad, dviz-idxlist, dviz-m
 //   or `/`-DBNAME + `/` + FILEID + `/`-ATTKEY: query db
 // 8 `//`-filename: get localForage file
   let lfkey,
-    [txdata, loadobj, valcon] = txdPrep(),
+    [txdata, valcon] = txdPrep(),
     ecoat = (txdata.idtoks || idtoks || "").accessToken;
   !valcon || !filewkg || !/^eco-(?:publmgr|scrap|srcdoc)$/.test(filewkg.file_type)
   || document.querySelector('#ecoesp0 .escreen:nth-of-type(2):not(.is-hidden)') || EC1.tabs0Tog(4);
