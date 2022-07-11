@@ -1,7 +1,8 @@
 // Web Application
 (function() {
 'use strict';
-var appid, dbpch, eb1dflt, file2nd, filewkg, fldfoc, idtoks, prjsenet, tm0disc, tmp1ff, tmp1pc,
+var appid, dbpch, eb1dflt, file2nd, filewkg, fldfoc, idtoks,
+  prjsenet, tm0disc, tmp1ff, tmp1pc,
   tmplpdblist, tmplpdbblurbs,
   tmplattlist, tmplprjdisc, tmplpfslist,
   tmpljdedft, tmpljdepty,
@@ -24,9 +25,8 @@ const hostibm = /\.cloudant[\w.]+$/.test(window.location.host) && window.locatio
     && window.screen.height === 1024 && window.screen.width === 768,
   platiphn = (window.navigator.userAgentData || window.navigator).platform === 'iPhone',
   protfile = window.location.protocol === 'file:',
-  a00orig = localStorage["_ecoa00orig"]
-    || "https://46a849c5-a061-44b5-92ee-6279f6974d5f-bluemix.cloudantnosqldb.appdomain.cloud",
-  a00path = ( protfile || hostlh || hostibm || /\.github\.io$/.test(window.location.host)
+  a00orig = hostibm || localStorage["_ecoa00orig"],
+  a00path = ( protfile || hostlh || hostibm || /\.github\.io$/.test(window.location.host) || !a00orig
     ? "../.." : a00orig ) + "/a00",
   asseturls = {
     "eco-srvc1.js":           a00path + "/-app-eco/eco-srvc1.js",
@@ -978,6 +978,13 @@ function anumlIncr(anum) {
   : window.ecoqjs.toAlpha(1 + window.ecoqjs.frAlpha(anum)).toLowerCase();
 }
 
+function a00Set() {
+  caccts = caccts.sort((a, b) => a.DBNAME > b.DBNAME ? 1 : -1);
+  localStorage["_ecoa00orig"] = a00orig = hostibm
+  || (caccts.find(ob => /^a\d\d/.test(ob.DBNAME) && ob.DBORIG) || "").DBORIG
+  || (caccts.find(ob => ob.DBORIG) || "").DBORIG;
+}
+
 function imgWrap(url) {
   return '<link href="' + a00path
   + '/-res-css/bulma0.9-minireset.css" type="text/css" rel="stylesheet" />'
@@ -1222,7 +1229,7 @@ function pdbListGen() { // also "dboListGen", "pchListGen"
       _id:         e,
       seltxt:      e.replace( /^a(\d\d)_(.+)$/,
           (m, c1, c2) => "@" + c2 + (c1 === "00" ? "" : ` (${c1})`) )
-        + (!(caccts.find(a => a.DBNAME === e) || "").DBPUBL ? "" : " †"),
+        + (!(caccts.find(ob => ob.DBNAME === e) || "").DBPUBL ? "" : " †"),
       prj_name:    e.replace(/-/g, " ").replace( /^a(\d\d)_(.+)$/,
         (m, c1, c2) => c2 + (c1 === "00" ? "" : ` (${c1})`) ),
       descr_short: /^a\d\d_\w/.test(e)
@@ -1238,7 +1245,7 @@ function pdbListGen() { // also "dboListGen", "pchListGen"
       _id:         d._id.replace(/^~DBID_/, ""),
       seltxt:      (idr = d._id.replace(/^~DBID_/, ""))
         .replace(/^a(\d\d)_(.+)$/, (m, c1, c2) => "@" + c2 + (c1 === "00" ? "" : ` (${c1})`))
-        + (!(caccts.find(a => a.DBNAME === idr) || "").DBPUBL ? "" : " †"),
+        + (!(caccts.find(ob => ob.DBNAME === idr) || "").DBPUBL ? "" : " †"),
       prj_name:    d.prj_name || d._id.replace(/-/g, " "),
       image_src:   (d.image_src || "").replace(/^\.\.\/\.\./, d.file_updated.dborigin || "$&"),
       descr_short: d.descr_short,
@@ -2691,8 +2698,8 @@ function blobHandl(ablob, destindr, txdata = {}, cbfnc) {
   } else if (reximg.test(txdata.ATTKEY) || txdata.url && /^image/.test(ablob.type)) {
   //|| txdata.hdrs && /image/.test(txdata.hdrs["Content-Type"]) ) {
     dataDispl( imgWrap( !txdata.ATTKEY ? txdata.url
-      : !asseturls[txdata.ATTKEY] && txdata.DBNAME ? a00path.replace(/a00$/, "")
-        + txdata.DBNAME + "/" + txdata.FILEID + "/" + txdata.ATTKEY
+      : !asseturls[txdata.ATTKEY] && txdata.DBNAME
+      ? a00path.replace(/a00$/, "") + txdata.DBNAME + "/" + txdata.FILEID + "/" + txdata.ATTKEY
       : /^blob:/.test(asseturls[txdata.ATTKEY]) && asseturls[txdata.ATTKEY]
         || (asseturls[txdata.ATTKEY] = URL.createObjectURL(ablob)) ), 6 );
   } else {
@@ -2731,8 +2738,6 @@ function txdPrep(filepath) {
         && ( (jsonParse(txsjson) || "")[valcon.replace(/^(?:_.*\.|)(\d+)$/, "$1")]
         || (jsonParse(txsjson) || []).find(ob => ob.DBNAME === valcon) ) || jsonParse(txsjson) )
       || txsjson,
-    rmturl = (caccts.find(ob => /^a\d\d/.test(ob.DBNAME) && ob.DBORIG) || "").DBORIG
-      || hostibm || a00orig,
     fpathes = /^(?:(?:(https?:\/\/)(?:([\w-]+):|)(?:([\w-]+)@|)([\w!.*+~-]+)(?:(?=$)|\/)|(\.\.\/\.\.\/)|\/)(?:([_a-z][0-9_a-z$,+-]*)(?:(?=$)|\/)|(?=$))|(\.\.\/)(?!$)|)(?:((?:_design\/|(?!\.\.?\/))[^ \/]+)(?:\/([^ \/]*)|)|)$/.exec(filepath || valcon);
   !fpathes || fpathes[6] === "a00" || fpathes[0] === fpathes[8]
   && (!/^$|^[!.~-]?\w[\w!.*+~-]*$/.test(fpathes[0]) || /^_|[*~]\(?[0-9]*\)?$/.test(fpathes[0]))
@@ -2744,7 +2749,7 @@ function txdPrep(filepath) {
   : txdata = {
       USRNAM: fpathes[2],
       PSSWRD: fpathes[3],
-      DBORIG: fpathes[1] + fpathes[4] || (fpathes[5] || fpathes[7]) && rmturl || undefined,
+      DBORIG: fpathes[1] + fpathes[4] || (fpathes[5] || fpathes[7]) && a00orig || undefined,
       DBNAME: fpathes[6] || (filepath == 0 && !fpathes[1] || filepath) && dbpch && dbpch.name,
       FILEID: fpathes[8],
       ATTKEY: fpathes[9],
@@ -4114,7 +4119,7 @@ ibmConnect() {
       rmtdn = { // assumes app is served/hosted by same CouchDB repository that stores file data?
         USRNAM: !rsltk.key ? undefined : rsltk.key,
         PSSWRD: !rsltk.pwd ? undefined : rsltk.pwd,
-        DBORIG: hostibm || a00orig,
+        DBORIG: a00orig,
         DBPUBL: !/^.*\//.test(dbname) ? undefined : ["_reader"],
         DBNAME: dbname,
         FILEID: "",
@@ -4131,8 +4136,7 @@ ibmConnect() {
         || caccts.push( Object.assign(Object.assign({}, rmtdn),
           { DBPUBL: !/^.*\//.test(e) ? undefined : ["_reader"], DBNAME: e.replace(/^.*\//, "") }) ) );
           // todo: set small-phi-pipe (\u03c6|) or dagger-pipe, public-db flag in ibmfns
-      !(dbname || rsltk.dbs) || !(caccts = caccts.sort((a, b) => a.DBNAME > b.DBNAME ? 1 : -1))
-      || !(localStorage["_couchaccts"] = JSON.stringify(caccts));
+      !(dbname || rsltk.dbs) || !a00Set() || (localStorage["_couchaccts"] = JSON.stringify(caccts));
       dbname && !rsltk.dbs ? dbOpen(rmtdn)
       : Promise.all( caccts.map( ob => !ob || !ob.DBNAME
           || /^a\d\d/.test(ob.DBNAME) || !rsltk.dbs.some(e => e === ob.DBNAME) // filters out public dbs
@@ -4195,14 +4199,14 @@ ibmConnect() {
       file_created: {
         username:  epsets.uname,
         timestamp: tstamp1,
-        dborigin:  hostibm || a00orig,
+        dborigin:  a00orig,
         dbname:    tmidpre + valinp[2],
         subdir:    ""
       },
       file_updated: {
         username:  epsets.uname,
         timestamp: tstamp1,
-        dborigin:  hostibm || a00orig,
+        dborigin:  a00orig,
         dbname:    tmidpre + valinp[2],
         subdir:    ""
       },
@@ -4318,7 +4322,7 @@ ibmConnect() {
 wdGen(pdata) { return webdocGen(1, pdata); },
 u2Blob(url) { // also triggered by dviz-memos, dviz-contacts, prjDiscGen, jdeDftGen
   return asseturls[(url || "").replace(/^\S*\//, "")] || asseturls[url]
-  || (url || "").replace(/^\.\.\/\.\.(?!\/a00\/)(?=\S+[^\s\/]$)/, hostibm || a00orig) || url;
+  || (url || "").replace(/^\.\.\/\.\.(?!\/a00\/)(?=\S+[^\s\/]$)/, a00orig) || url;
 },
 objQA(key = "", fbx) { // also triggered by dviz-memos, rsrcsXGet, qconRetrvD
   let pty,
@@ -4371,10 +4375,8 @@ guideLoad() {
     qcontxta = document.querySelector('#econav0 #qcontxta'),
     pchlist = document.querySelector('#ecoesp0 #pchlist'),
     reqipch = Array.from(pchlist.options).some(op => op.value === "a00"),
-    rmturl = (caccts.find(ob => /^a\d\d/.test(ob.DBNAME) && ob.DBORIG) || "").DBORIG
-      || hostibm || a00orig,
     txdata = !reqipch ? {
-      url:  rmturl + "/a00/" + guiderads.value,
+      url:  a00orig + "/a00/" + guiderads.value,
       bmet: 'json'
     } : {
       DBNAME: "a00",
@@ -4520,7 +4522,7 @@ qconSyncD() {
     stokey = ({ $0: "_ecopresets", $2: "_couchaccts" })[prekey] || prekey.replace(/^\$/, "");
     if (txdata[prekey] === null) {
       !/^_ecopresets$/.test(stokey) || (epsets = {});
-      !/^_couchaccts$/.test(stokey) || (caccts = []);
+      !/^_couchaccts$/.test(stokey) || !(caccts = []) || localStorage.removeItem("_ecoa00orig");
       localStorage.removeItem(stokey);
       msgHandl("Local-storage item is removed.\nKey: " + stokey);
     } else {
@@ -4533,7 +4535,7 @@ qconSyncD() {
             ? caccts[ridx] = o2 : ( caccts.push(o2),
               dbs.indexOf(o2.DBNAME) > -1 || !window.PouchDB || new PouchDB(o2.DBNAME) ) ) ))
         .catch(msgHandl).then(() => {
-          caccts = caccts.sort((a, b) => a.DBNAME > b.DBNAME ? 1 : -1);
+          a00Set();
           valStor();
           rmtListGen();
           pdbListGen();
@@ -5051,7 +5053,7 @@ logOut() {
     localStorage.removeItem("_ecoa00orig");
     localStorage.removeItem("_ecoxserver");
     localStorage.removeItem("_ecoclientid");
-    localStorage.removeItem("_ecodvrendpt");
+    localStorage.removeItem("_ecodscendpt");
     localStorage.removeItem("__dbat");
     !window.localforage
     || localforage.keys( (err, keys) => err ? msgHandl(err)
@@ -5112,7 +5114,7 @@ logOut() {
     try {
       await appid.init({
         clientId: localStorage["_ecoclientid"] || "47902519-fc5c-42a0-9d9c-80aa28548d43",
-        discoveryEndpoint: localStorage["_ecodvrendpt"]
+        discoveryEndpoint: localStorage["_ecodscendpt"]
           || "https://us-south.appid.cloud.ibm.com/oauth/v4/a2b64ee2-ae1f-4bd7-8752-293a686c70b4/.well-known/openid-configuration"
       });
     } catch (err) {

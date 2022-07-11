@@ -5354,15 +5354,16 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 (function () {
 'use strict';
 var dbpch, idbrslt, idbReq;
-const hostibm = /\.cloudant[\w.]+$/.test(window.location.host),
+const hostibm = /\.cloudant[\w.]+$/.test(window.location.host) && window.location.origin,
   hostlh = /^localhost:\d+$|^(?:127\.0|192\.168)\.0\.\d+:\d+$/.test(window.location.host),
   platipd2 = (window.navigator.userAgentData || window.navigator).platform === 'MacIntel'
     && window.screen.height === 1024 && window.screen.width === 768,
   platiphn = (window.navigator.userAgentData || window.navigator).platform === 'iPhone',
   protfile = window.location.protocol === 'file:',
   rmtready = /^http/.test(window.location.protocol) && window.navigator.onLine,
-  a00orig = "https://46a849c5-a061-44b5-92ee-6279f6974d5f-bluemix.cloudantnosqldb.appdomain.cloud",
-  a00path = ( protfile || hostlh || hostibm || /\.github\.io$/.test(window.location.host)
+  a00orig = hostibm || localStorage["_ecoa00orig"] || ( localStorage["_ecoa00orig"]
+    = "https://46a849c5-a061-44b5-92ee-6279f6974d5f-bluemix.cloudantnosqldb.appdomain.cloud" ),
+  a00path = ( protfile || hostlh || hostibm || /\.github\.io$/.test(window.location.host) || !a00path
     ? "../.." : a00orig ) + "/a00",
   qcontxta = document.querySelector('#econav0 #qcontxta'),
   DB_NAMES = ["a00"], //DB_VERSIONS = [5],
