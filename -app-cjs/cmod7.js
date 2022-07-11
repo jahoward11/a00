@@ -9,13 +9,13 @@ Note-Manager UI -- one that extends the functionality of the
 demo code written in the \`JScode\` module's data files.
 */
 
-window.nmwrap || import("./nmgr.js").then(r => { let ndiv = document.createElement('div'); ndiv.id = "nmwrap"; ndiv.innerHTML = "\\n<hr />\\n" + r.nmwrap + "\\n"; cmain.appendChild(ndiv); return scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js")).then(() => scrInj(null, 'module', "\\n" + r.nmscr + "\\n")); }).catch(respShow)
+window.nmwrap || import("./nmgr.js").then(re => { let ndiv = document.createElement('div'); ndiv.id = "nmwrap"; ndiv.innerHTML = "\\n<hr />\\n" + re.nmwrap + "\\n"; cmain.appendChild(ndiv); return scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js")).then(() => scrInj(null, 'module', "\\n" + re.nmscr + "\\n")); }).catch(respShow)
 
  // Un-comment the following line of code to generate the
 // full source code (e.g., for building a standalone web app).
 // *Alert:* This app's code is lengthy (about 2300 lines).
 
-// import("./nmgr.js").then(r => respShow(r.dwraps[0] + r.nmwrap + r.dwraps[1] + r.nmscr + r.dwraps[2])).catch(respShow)
+// import("./nmgr.js").then(re => respShow(re.dwraps[0] + re.nmwrap + re.dwraps[1] + re.nmscr + re.dwraps[2])).catch(respShow)
 //`;
 
 const search = `/*

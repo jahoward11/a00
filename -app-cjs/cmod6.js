@@ -164,7 +164,7 @@ ucs = { f12: n => n / 12, f13: n => n / 36, f14: n => n / 12 / 5280, f15: n => n
 Object.assign(ucs, { f67: n => n * 3600 / 5280, f68: n => n * 12 * 0.0254, f69: n => n * 3600 * 12 * 0.0000254, f76: n => n * 5280 / 3600, f78: n => n * 5280 * 12 * 0.0254 / 3600, f79: n => n * 5280 * 12 * 0.0000254, f86: n => n / 0.0254 / 12, f87: n => n * 3600 / 0.0254 / 12 / 5280, f89: n => n * 3600 / 1000, f96: n => n / 0.0000254 / 12 / 3600, f97: n => n / 0.0000254 / 12 / 5280, f98: n => n * 1000 / 3600 })
 Object.assign(ucs, { f1011: n => (n - 32) * 5 / 9, f1012: n => (n - 32) * 5 / 9 + 273.15, f1110: n => n * 9 / 5 + 32, f1112: n => +n + 273.15, f1210: n => (n - 273.15) * 9 / 5 + 32, f1211: n => n - 273.15 })
 
-uConv = (n, u0, u1) => { let [x0, x1] = [_.uxs.findIndex(r => r.test(u0)), _.uxs.findIndex(r => r.test(u1))]; return !n ? "" : typeof n !== 'number' ? (!/^[cdilmvx]+$/i.test(n) || x0 > 0 ? "error" : _.ufrRom(n)) : x0 < 1 && x1 < 1 ? _.utoRom(n) : x1 < 1 ? "" : x0 === x1 ? n : (_.ucs["f" + x0 + x1] || (() => "error"))(n); };
+uConv = (n, u0, u1) => { let [x0, x1] = [_.uxs.findIndex(e => e.test(u0)), _.uxs.findIndex(e => e.test(u1))]; return !n ? "" : typeof n !== 'number' ? (!/^[cdilmvx]+$/i.test(n) || x0 > 0 ? "error" : _.ufrRom(n)) : x0 < 1 && x1 < 1 ? _.utoRom(n) : x1 < 1 ? "" : x0 === x1 ? n : (_.ucs["f" + x0 + x1] || (() => "error"))(n); };
 
 uConv(100, "yd", "m")
 uConv(101, "mph", "km/h")
@@ -968,7 +968,7 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
 */
 
 // sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.body.appendChild(n); };
-// !!window.PouchDB || fetch("../-res-js/pouchdb.min.js").then(r => r.blob()).then(URL.createObjectURL).then(_.sc2Inj).catch(respShow)
+// !!window.PouchDB || fetch("../-res-js/pouchdb.min.js").then(re => re.blob()).then(URL.createObjectURL).then(_.sc2Inj).catch(respShow)
 
 // try { !!PouchDB } catch { scrInj("../-res-js/pouchdb.min.js").then(respShow).catch(respShow) }
 
@@ -1123,7 +1123,7 @@ d0Upd = () => { let ts = new Date().getTime(); !_.fwg.hasOwnProperty("ts_created
 formGen = () => dform.innerHTML = Object.entries(Object.assign({ _id: "", _rev: null }, _.fwg)).map(([k, v]) => _.rex0s.test(k) ? "" : "\\n<div class=\\"field is-horizontal\\">\\n<div class=\\"field-label\\"><span class=label>" + k + "</span></div>\\n<div class=\\"field-body\\">\\n<textarea id=p0" + k + " class=textarea rows=" + (/_attach|configs|content|body|file[f_]/.test(k) ? 8 : 2) + ">" + _.htmTxt(_.valStr(v)) + "\\n</textarea>\\n</div>\\n</div>").join("") + "\\n";
 //
 !window.resbtn || ( resbtn.onclick = () => _.hsRes() || !(_.fwg = JSON.parse(JSON.stringify(_.t4cnt))) || _.formGen() )();
-!window.savbtn || ( savbtn.onclick = () => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))) || !_.fwg._id || _.d0Upd() || dbobj.put(Object.assign({ _id: "", _rev: null }, _.fwg)).then(r => _.hlps[0].classList.remove("dnone") || respShow(r)).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)) );
+!window.savbtn || ( savbtn.onclick = () => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))) || !_.fwg._id || _.d0Upd() || dbobj.put(Object.assign({ _id: "", _rev: null }, _.fwg)).then(re => _.hlps[0].classList.remove("dnone") || respShow(re)).catch(er => _.hlps[1].classList.remove("dnone") || respShow(er)) );
 
 /*
  4. __Populate your database__ either with your own contacts or with a
@@ -1240,14 +1240,14 @@ isRtrv = () => !dbobj || dbobj.get("-res-img").then( d => Promise.all( Object.ke
 //
 window.aurls = window.aurls || {};
 !window.a1inp || ( a1inp.onchange = () => a3inp.innerHTML = (a1inp.files[0] || "").name || "<span>Locate image&hellip;</span>" );
-!window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) || dbobj.get("-res-img").then(d => dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(r => _.hlps[0].classList.remove("dnone") || respShow(r) || _.isRtrv()).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)) );
-!window.a5btn || ( a5btn.onclick = () => _.hsRes() || !(_.ak = n5inp.value) || dbobj.get("-res-img").then(d => !d._attachments[_.ak] ? Promise.reject("Invalid key.") : dbobj.removeAttachment("-res-img", _.ak, d._rev)).then(r => _.hlps[2].classList.remove("dnone") || respShow(r) || !(delete aurls[_.ak]) || _.imgsVw()).catch(e => _.hlps[3].classList.remove("dnone") || respShow(e)) );
+!window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) || dbobj.get("-res-img").then(d => dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(re => _.hlps[0].classList.remove("dnone") || respShow(re) || _.isRtrv()).catch(er => _.hlps[1].classList.remove("dnone") || respShow(er)) );
+!window.a5btn || ( a5btn.onclick = () => _.hsRes() || !(_.ak = n5inp.value) || dbobj.get("-res-img").then(d => !d._attachments[_.ak] ? Promise.reject("Invalid key.") : dbobj.removeAttachment("-res-img", _.ak, d._rev)).then(re => _.hlps[2].classList.remove("dnone") || respShow(re) || !(delete aurls[_.ak]) || _.imgsVw()).catch(er => _.hlps[3].classList.remove("dnone") || respShow(er)) );
 !window.imgdtl || isRtrv();
 */
 
 /*
 simgs = Array.from(Array(10)).map((e, i) => "stockimg" + i + ".jpg");
-!dbobj || dbobj.get("-res-img").then(d => { d._attachments || (d._attachments = {}); return Promise.all(_.simgs.map(e => fetch("../-res-img2/" + e).then(r => r.blob()))).then( bs => _.simgs.forEach( (e, i) => !(aurls[e] = URL.createObjectURL(bs[i])) || (d._attachments[e] = { content_type: bs[i].type, data: bs[i] }) ) || dbobj.put(d) ); }).then(respShow).then(_.imgsVw).catch(respShow)
+!dbobj || dbobj.get("-res-img").then(d => { d._attachments || (d._attachments = {}); return Promise.all(_.simgs.map(e => fetch("../-res-img2/" + e).then(re => re.blob()))).then( bs => _.simgs.forEach( (e, i) => !(aurls[e] = URL.createObjectURL(bs[i])) || (d._attachments[e] = { content_type: bs[i].type, data: bs[i] }) ) || dbobj.put(d) ); }).then(respShow).then(_.imgsVw).catch(respShow)
 */
 
 /*
@@ -1318,10 +1318,10 @@ window.n1Gen = eval(d5ui);
 window.dtmpl = { key: "t4cnt", t1src: t1src, t2evt: t2evt, t3mem: t3mem, t4cnt: t4cnt };
 window.aurls = window.aurls || {};
 !window.a1inp || ( a1inp.onchange = () => a3inp.innerHTML = (a1inp.files[0] || "").name || "<span>Locate image&hellip;</span>" );
-!window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) ? isRtrv() : dbobj.get("-res-img").then(d => dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(r => _.hlps[0].classList.remove("dnone") || respShow(r) || _.isRtrv()).catch(e => _.hlps[1].classList.remove("dnone") || respShow(e)) );
-!window.a5btn || ( a5btn.onclick = () => _.hsRes() || !(_.ak = n5inp.value) || dbobj.get("-res-img").then(d => !d._attachments[_.ak] ? Promise.reject("Invalid key.") : dbobj.removeAttachment("-res-img", _.ak, d._rev)).then(r => _.hlps[2].classList.remove("dnone") || respShow(r) || !(delete aurls[_.ak]) || _.imgsVw()).catch(e => _.hlps[3].classList.remove("dnone") || respShow(e)) );
+!window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) ? isRtrv() : dbobj.get("-res-img").then(d => dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(re => _.hlps[0].classList.remove("dnone") || respShow(re) || _.isRtrv()).catch(er => _.hlps[1].classList.remove("dnone") || respShow(er)) );
+!window.a5btn || ( a5btn.onclick = () => _.hsRes() || !(_.ak = n5inp.value) || dbobj.get("-res-img").then(d => !d._attachments[_.ak] ? Promise.reject("Invalid key.") : dbobj.removeAttachment("-res-img", _.ak, d._rev)).then(re => _.hlps[2].classList.remove("dnone") || respShow(re) || !(delete aurls[_.ak]) || _.imgsVw()).catch(er => _.hlps[3].classList.remove("dnone") || respShow(er)) );
 !window.resbtn || ( resbtn.onclick = () => _.hsRes() || _.fRes() || (dform.className = ndata.innerHTML = "") || _.formGen() )();
-!window.savbtn || ( savbtn.onclick = () => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))) || !_.fwg._id || _.d0Upd() || dbobj.put(Object.assign({ _id: "", _rev: null }, _.fwg)).then(r => _.hlps[4].classList.remove("dnone") || respShow(r)).catch(e => _.hlps[5].classList.remove("dnone") || respShow(e)) );
+!window.savbtn || ( savbtn.onclick = () => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))) || !_.fwg._id || _.d0Upd() || dbobj.put(Object.assign({ _id: "", _rev: null }, _.fwg)).then(re => _.hlps[4].classList.remove("dnone") || respShow(re)).catch(er => _.hlps[5].classList.remove("dnone") || respShow(er)) );
 !window.imgdtl || (imgdtl.open = false) || isRtrv();
 !window.nsbtn || ( nsbtn.onclick = () => !(dform.className = "dnone") || (p0_id.value = "") || !dbobj || dbobj.allDocs({ include_docs: true }).then(re => { let rrs = re.rows.filter(r => r && r.doc.file_type).sort((a, b) => !sortsel.selectedIndex ? 0 : _.ptyX(a.doc) > _.ptyX(b.doc) ? 1 : -1); ndata.innerHTML = !rrs.length ? "\\n<p class=igreyd>&emsp;<em>[No data files found &hellip;]</em></p>\\n" : rrs.map(r => n1Gen(r.doc)).join("") + "\\n"; bodsswi.checked = hdrsswi.checked = 0; hdrsswi.onchange = _.hdsX; bodsswi.onchange = _.bdsX; document.querySelectorAll(_.qss[2]).forEach(e => e.onclick = _.dLoad); }).catch(respShow) )();
 */
