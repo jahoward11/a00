@@ -2727,8 +2727,9 @@ function txdPrep(filepath) {
   let valcon = document.querySelector('#econav0 #qcontxta').value.trim(),
     txdata = /^{\s*"[^]+}$|^\[[^]*{\s*"[^]+}\s*\]$/.test(valcon) && jsonParse(valcon) || {},
     fpathes = /^(?:(?:(https?:\/\/)(?:([\w-]+):|)(?:([\w-]+)@|)([\w!.*+~-]+)(?:(?=$)|\/)|(\.\.\/\.\.\/)|\/)(?:([_a-z][0-9_a-z$,+-]*)(?:(?=$)|\/)|(?=$))|(\.\.\/)(?!$)|)(?:((?:_design\/|(?!\.\.?\/))[^ \/]+)(?:\/([^ \/]*)|)|)$/.exec(filepath || valcon);
-  !fpathes || fpathes[6] === "a00" || fpathes[0] === fpathes[8]
-  && (!/^$|^[!.~-]?\w[\w!.*+~-]*$/.test(fpathes[0]) || /^_|[*~]\(?[0-9]*\)?$/.test(fpathes[0]))
+  !fpathes || fpathes[5] && fpathes[6] === "a00"
+  || (!/^$|^[!.~-]?\w[\w!.*+~-]*$/.test(fpathes[0]) || /^_|[*~]\(?[0-9]*\)?$/.test(fpathes[0]))
+  && (fpathes[0] === fpathes[8] || (fpathes[1] || fpathes[5]) && !fpathes[6] && !filepath)
   ? ![rexloc, rexrmt].some(e => e.test(filepath || valcon)) || ( txdata = {
       url:  filepath || valcon,
       bmet: /\.(?:html?|md|m?js|s?css|te?xt|\w{5,})$/i.test(filepath || valcon)
@@ -2760,10 +2761,10 @@ function txCrdtlz(txdata = {}) {
 
 function txurlGen(txdata) {
   let dborgn = /^(https?:\/\/)(.+?)\/?$/.exec(txdata.DBORIG || "") || [];
-  if (dborgn[1] && dborgn[2]) {
+  if (window.PouchDB && dborgn[1] && dborgn[2] && txdata.DBNAME) {
     return dborgn[1]
-    + (txdata.USRNAM && txdata.PSSWRD ? txdata.USRNAM + ":" + txdata.PSSWRD + "@" : "")
-    + dborgn[2] + (!txdata.DBNAME ? "" : "/" + txdata.DBNAME);
+    + (!txdata.USRNAM || !txdata.PSSWRD ? "" : txdata.USRNAM + ":" + txdata.PSSWRD + "@")
+    + dborgn[2] + "/" + txdata.DBNAME;
   }
 }
 
@@ -2807,12 +2808,12 @@ function couchSync(txdata, valcon = "") {
         pfsListGen();
       }
     }).catch(msgHandl);
-  } else if (txdata.COMPACT && (dbpch && dbpch.name === txdata.DBNAME || txdata.DBNAME && dburl)) {
+  } else if (txdata.COMPACT && (dburl || dbpch && dbpch.name === txdata.DBNAME)) {
     (!dburl ? dbpch : new PouchDB(dburl, { skip_setup: true }))
     .compact().then( resp => msgHandl( "DB compaction is successful: " + txdata.DBNAME
       + "\n" + msgPrefmt(resp) ))
     .catch(err => msgHandl("Alert: DB compaction attempted & failed.\n" + msgPrefmt(err)));
-  } else if (txdata.CLEANUP && (dbpch && dbpch.name === txdata.DBNAME || txdata.DBNAME && dburl)) {
+  } else if (txdata.CLEANUP && (dburl || dbpch && dbpch.name === txdata.DBNAME)) {
     (!dburl ? dbpch : new PouchDB(dburl, { skip_setup: true }))
     .viewCleanup().then( resp => msgHandl( "DB views are cleaned up: " + txdata.DBNAME
       + "\n" + msgPrefmt(resp) ))
@@ -2925,7 +2926,7 @@ function couchQry(txdata, destindr, cbfnc) {
         msgHandl(instrqcon);
       }
     };
-  if (window.PouchDB && dburl) {
+  if (dburl) {
     dbpc2 = new PouchDB(dburl, { skip_setup: true });
     dbQryCalls(); // retrieve remote-couchdb file
   } else if (window.PouchDB && txdata.DBNAME === "_all_dbs") {
@@ -2957,7 +2958,7 @@ function couchPut(txdata = txdPrep()[0]) {
     cobj = txdata.DELETE ? { _deleted: true }
       : txdata.vassets ? jsonParse(txdata.vassets)
       : txdata.doc || filewkg || jsonParse(rawtxta.value);
-  if (window.PouchDB && txdata.DBNAME && dburl) {
+  if (dburl) {
     dbpc2 = new PouchDB(dburl, { skip_setup: true });
   } else if (dbpch && dbpch.name === txdata.DBNAME) {
     dbpc2 = dbpch;
@@ -3041,8 +3042,8 @@ function couchAtt(dirtxd) {
     },
     ablob = txdata.CBLOB
     || new Blob([typpmgr ? webdocGen(1) : rawtxta.value], { type: adata.CTYPE });
-  if ( window.PouchDB && txdata.DBNAME && ( dburl
-  || Array.from(pchlist.options).some(op => op.value === txdata.DBNAME) )) {
+  if (( dburl || window.PouchDB && txdata.DBNAME
+  && Array.from(pchlist.options).some(op => op.value === txdata.DBNAME) )) {
     dbpc2 = new PouchDB(dburl || txdata.DBNAME, { skip_setup: !dburl ? undefined : true });
   }
   if (!dbpc2) {

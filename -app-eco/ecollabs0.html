@@ -2429,7 +2429,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         </div>
         <a class="navbar-item" onclick="EC1.tabs0Tog(2)">
           <span class="icon">&#x25cf;</span>
-          <span>File Edit (QE UI)</span>
+          <span>DB-File Edit (QE UI)</span>
         </a>
         <a class="navbar-item" onclick="EC1.tabs0Tog(3)">
           <span class="icon">&#x25a0;</span>
@@ -2489,10 +2489,10 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
     <br /><span class="has-text-weight-normal is-italic">Tap the button below to load the specified template.</span>
   </div>
   <div class="field">
-    Get started by first loading and using a database-file template&mdash;for sensibly preserving memos, publication content, styling info, etc. Tapping the button below will both load a template and switch the display directly to the <span class="has-text-weight-bold is-italic">File Edit</span> screen.
+    Get started by first loading and using a database-file template&mdash;for sensibly preserving memos, publication content, styling info, etc. Tapping the button below will both load a template and switch the display directly to the <span class="has-text-weight-bold is-italic">DB-File Edit</span> screen.
   </div>
   <div class="field">
-    Alternatively, load a new template at any time by selecting one under <span class="is-italic">App templates</span> in the <span class="is-italic">File-load</span> select list of the <span class="has-text-weight-bold is-italic">Craft</span> control panel. A file can then be edited from within any one of the three editing (<span class="has-text-weight-bold is-italic">File Edit</span>, <span class="has-text-weight-bold is-italic">JSO-Pty Edit</span> and <span class="has-text-weight-bold is-italic">JSON/Text Edit</span>) screens, all found within the <span class="has-text-weight-bold is-italic">Craft</span> control panel of the <span class="is-italic">Navbar</span>.
+    Alternatively, load a new template at any time by selecting one under <span class="is-italic">App templates</span> in the <span class="is-italic">File-load</span> select list of the <span class="has-text-weight-bold is-italic">Craft</span> control panel. A file can then be edited from within any one of the three editing (<span class="has-text-weight-bold is-italic">DB-File Edit</span>, <span class="has-text-weight-bold is-italic">JSO-Pty Edit</span> and <span class="has-text-weight-bold is-italic">JSON/Text Edit</span>) screens, all found within the <span class="has-text-weight-bold is-italic">Craft</span> control panel of the <span class="is-italic">Navbar</span>.
   </div>
   <div class="field">
     Learn more about database-file templates&mdash;and about each of the nine, <span class="has-text-weight-bold is-italic">E</span>collabs file types&mdash;by navigating directly (i.e., without loading a template yet) to <span class="has-text-weight-bold is-italic">Custom Tools > Types</span>.
@@ -3133,7 +3133,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
           A loaded <span class="is-italic">publmgr</span> (publish-manager) file will always freshly render something new when the <span class="has-text-weight-bold is-italic">Preview</span> screen is selected. What gets rendered&mdash;the publication (web doc)&mdash;depends upon the inerplay of content and code provided to it.
         </div>
         <div class="field">
-          While a <span class="is-italic">publmgr</span> file is loaded, the text of an intended publication (including HTML text) may be entered and edited within one or more SOURCE panes of the <span class="has-text-weight-bold is-italic">File Edit</span> screen. When a webpage is rendered, its source code is the auto-combined content of all SOURCE panes in use.
+          While a <span class="is-italic">publmgr</span> file is loaded, the text of an intended publication (including HTML text) may be entered and edited within one or more SOURCE panes of the <span class="has-text-weight-bold is-italic">DB-File Edit</span> screen. When a webpage is rendered, its source code is the auto-combined content of all SOURCE panes in use.
         </div>
         <div class="field">
           <span class="has-text-weight-bold"><span class="is-italic">loadconfigs</span> property:</span>
@@ -3453,7 +3453,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
             Create/load the <span class="is-italic">prjid</span> file.
             <br />Note: The <span class="is-italic">prjid</span> file ID prefix must be "<span class="is-family-code">~DBID_</span>". Also, the file&#x2011;ID root and the name of the corresponding database must be the same.
           </li>
-          <li>Navigate to <span class="has-text-weight-bold is-italic">Craft > File Edit</span>.</li>
+          <li>Navigate to <span class="has-text-weight-bold is-italic">Craft > DB-File Edit</span>.</li>
           <li>In the <span class="is-italic">IMAGE</span> field, enter the attachment name (from step 4).
             <br />Note: If the <span class="is-italic">assets</span> file containing the image is in a different database, a relative path to that file must be included&mdash;e.g., "<span class="is-family-code">../../myresourcedb/-res-img/prjcoverphoto.jpg</span>".
             <br />Note: The <span class="is-italic">IMAGE</span> field can also accept an absolute URL of any public image on the Web.
@@ -3824,7 +3824,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         </div>
         <ol>
           <li>Load a team-member's <span class="is-italic">contact</span> file.</li>
-          <li>Navigate to <span class="has-text-weight-bold is-italic">Craft > File Edit</span>.</li>
+          <li>Navigate to <span class="has-text-weight-bold is-italic">Craft > DB-File Edit</span>.</li>
           <li>
             Make a change to the <span class="is-italic">ROLES</span> field (as well as to any other field, if desired).
             <br />Alert: In the <span class="is-italic">ROLES</span> field, one of the five primary roles must be included. However, if the contact is no longer an active team member, then the <span class="is-italic">ROLES</span> field may be left blank&mdash;which will disable all future, remote access by that contact.
@@ -3843,7 +3843,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         </div>
         <ol>
           <li>Load your own <span class="is-italic">contact</span> file.</li>
-          <li>Navigate to <span class="has-text-weight-bold is-italic">Craft > File Edit</span>.</li>
+          <li>Navigate to <span class="has-text-weight-bold is-italic">Craft > DB-File Edit</span>.</li>
           <li>
             Make a change to any field except the <span class="is-italic">ROLES</span> and <span class="is-italic">E&#x2011;MAILS</span> fields.
             <br />Alert: Do not leave the <span class="is-italic">USERNAME</span> field blank.
@@ -3877,7 +3877,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
             <br />Note: If a <span class="is-italic">Contributor/Reviewer</span> wants their photo attached to a team-organization <span class="is-italic">assets</span>-file, steps 1&ndash;4 must be executed by a(n) <span class="is-italic">Admin/Lead</span> for them.
           </li>
           <li>Create/load the team-member's <span class="is-italic">contact</span> file.</li>
-          <li>Navigate to <span class="has-text-weight-bold is-italic">Craft > File Edit</span>.</li>
+          <li>Navigate to <span class="has-text-weight-bold is-italic">Craft > DB-File Edit</span>.</li>
           <li>In the <span class="is-italic">IMAGE</span> field, enter the attachment name (from step 4).
             <br />Note: If the <span class="is-italic">assets</span> file containing the image is in a different database, a relative path to that file must be included&mdash;e.g., "<span class="is-family-code">../../a00_myteam/-res-img/myphoto.jpg</span>".
             <br />Note: The <span class="is-italic">IMAGE</span> field can also accept an absolute URL of any public image on the Web.
@@ -3900,7 +3900,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
       </div>
       <ol>
         <li>by unchecking the <span class="is-italic">SOURCE</span> checkbox, then finding the desired source in the <span class="is-italic">SOURCE</span> select list and tapping the <span class="is-italic">SWAP</span> button; or,</li>
-        <li>by checking the <span class="is-italic">SOURCE</span> checkbox, then navigating to, focusing (activating), and tapping the adjacent swap (<span class="is-family-code has-text-link has-text-weight-bold">&#x21cc;</span>) symbol of, the desired text field within any of the <span class="has-text-weight-bold is-italic">File Edit</span>, <span class="has-text-weight-bold is-italic">JSO-Pty Edit</span> and <span class="has-text-weight-bold is-italic">JSON/Text Edit</span> screens.</li>
+        <li>by checking the <span class="is-italic">SOURCE</span> checkbox, then navigating to, focusing (activating), and tapping the adjacent swap (<span class="is-family-code has-text-link has-text-weight-bold">&#x21cc;</span>) symbol of, the desired text field within any of the <span class="has-text-weight-bold is-italic">DB-File Edit</span>, <span class="has-text-weight-bold is-italic">JSO-Pty Edit</span> and <span class="has-text-weight-bold is-italic">JSON/Text Edit</span> screens.</li>
       </ol>
       <div class="field">
         <span class="has-text-weight-bold">Optional parsing:</span>
