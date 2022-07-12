@@ -3306,7 +3306,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
                   </tr>
                 </table>
               </li>
-              <li>select the <span class="is-family-code">htmllinkinserts</span> option in the associated select list;</li>
+              <li>select the <span class="is-family-code">htmllinktxt</span> option in the associated select list;</li>
               <li>use the field now to compose the CSS styling that will be injected.</li>
             </ol>
             <span class="has-text-weight-bold is-italic">Web-resource-dependent option:</span>
@@ -3321,7 +3321,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
           </li>
           <li>
             <span class="has-text-weight-bold is-italic">Optional <span class="is-family-code">@import</span> expansion:</span>
-            When providing styling info in the <span class="is-family-code">htmllinkinserts</span> property of the <span class="is-family-code">parseconfigs.linksconstr</span> field (a-la the <span class="is-italic">no-web-resource</span> option of step 3), if one or more <span class="is-family-code">@import</span> at-rules are included, each <span class="is-family-code">@import</span> line can be expanded into (replaced with) the style content found at the <span class="is-family-code">@import</span>-URL resource, if available.
+            When providing styling info in the <span class="is-family-code">htmllinktxt</span> property of the <span class="is-family-code">parseconfigs.linksconstr</span> field (a-la the <span class="is-italic">no-web-resource</span> option of step 3), if one or more <span class="is-family-code">@import</span> at-rules are included, each <span class="is-family-code">@import</span> line can be expanded into (replaced with) the style content found at the <span class="is-family-code">@import</span>-URL resource, if available.
             <br />How? Enable this by assigning to the <span class="is-family-code">atimportexpand</span> property of the <span class="is-family-code">loadconfigs</span> field the boolean value <span class="is-family-code">true</span>.
             <br />DATA RETRIEVAL OPTIONS
             <br />Expansion occurs during style-data injection (prior to rendering). But, retrieval of the style data occurs either at the time when a <span class="is-italic">publmgr</span> file is loaded, or else during a style-preloading phase&mdash;depending on the retrieval method, which is configured as follows:

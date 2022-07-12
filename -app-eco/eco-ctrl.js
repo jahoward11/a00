@@ -310,7 +310,7 @@ const ECOINSTR = [
 // ###
   'Alert: Some @import-expansion conditions are not met.'
 + '\nTo generate CSS @import expansions, edit necessary file settings, then reload/render the publmgr file.'
-+ '\nCheck that the `insertposition` property has a standard insert value, the `wrapperincl` property is set to `true`, and the `htmllinkinserts` property has at least one, leading `@import URL;` line.'
++ '\nCheck that the `insertposition` property has a standard insert value, the `wrapperincl` property is set to `true`, and the `htmllinktxt` property has at least one, leading `@import URL;` line.'
 + '\nAlso, if preloading (option 2 below), check that the `linksinclrender` property is set to `true` and that the `parseconfigs.linksincl` field contains at least one CSS filepath.'
 + '\nDATA RETRIEVAL OPTIONS'
 + '\n1) If simply using DB queries or HTTP requests to generate the style data (at the time file is loaded), the publmgr file must be loaded with the `linksinclrender` property (of the `parseconfigs.linksconstr` field) set to `false`.'
@@ -378,9 +378,9 @@ const ECOTMPLS = {
         linksinclrender: true,
         insertposition: 0,
         wrapperincl: true,
-        wrappertagstart: "<style type=\"text/css\">",
-        wrappertagend: "</style>",
-        htmllinkinserts: ""
+        wraptagstart: "<style type=\"text/css\">",
+        wraptagend: "</style>",
+        htmllinktxt: ""
       },
       linksincl: [
         {
@@ -2065,10 +2065,10 @@ function linksExpand() {
         lnkstor[j] = "/* 404 " + lnkj + " */";
       });
   if ( atimportexpand && ( !linksconstr.linksinclrender && linksconstr.insertposition
-  && linksconstr.wrapperincl && /^ *@import /.test(linksconstr.htmllinkinserts)
+  && linksconstr.wrapperincl && /^ *@import /.test(linksconstr.htmllinktxt)
   || linksconstr.linksinclrender && filewkg.parseconfigs.linksincl[0].filepath && ssheets.length
   && (!protfile || ssheets.some(ssi => /^blob:/.test(ssi.href))) )) {
-    lnkstor = linksconstr.htmllinkinserts.trim()
+    lnkstor = linksconstr.htmllinktxt.trim()
       .replace(/\/\*[^]*?\*\/|^ *\n?| +$/gm, "").split("\n");
     if (ssheets.length) {
       msgHandl(`CSS @import expansion data is now generated from user-preloaded CSSOM styleSheets (${ssheets.length} detected). To apply expansions, render webpage again with \`linksinclrender\` de-activated.`);
@@ -2194,7 +2194,9 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
             linksinclrender: lcu.directtorender,
             insertposition:  lcu.rsltinsposition || "1",
             wrapperincl:     lcu.wrapperincl,
-            htmllinkinserts: lcu.htmllinkinserts
+            wraptagstart:    lcu.wrappertagstart,
+            wraptagend:      lcu.wrappertagend,
+            htmllinktxt:     lcu.htmllinkinserts
           } ));
         ["scriptsconstr", "scriptsincl", "linksincl"].forEach( e =>
           ufile.parseconfigs[e].forEach(ob => delete ob["$$hashKey"]) );
@@ -2228,6 +2230,12 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       pcfgu.linksconstr = pcfgt.linksconstr || objAssn1(pcfge.linksconstr, lcu);
       !lcu.hasOwnProperty("directtorender") || ["directtorender", "rsltinsposition"]
         .forEach(e => delete ufile.parseconfigs.linksconstr[e]); // temp cleanup
+      !lcu.hasOwnProperty("wrappertagstart") || ["start", "end"]
+        .forEach( e => ( (ufile.parseconfigs.linksconstr["wraptag" + e] = lcu["wrappertag" + e]),
+          delete ufile.parseconfigs.linksconstr["wrappertag" + e] )); // temp cleanup
+      !lcu.hasOwnProperty("htmllinkinserts")
+      || ( (ufile.parseconfigs.linksconstr.htmllinktxt = lcu.htmllinkinserts),
+        delete ufile.parseconfigs.linksconstr.htmllinkinserts ); // temp cleanup
       pcfgu.linksincl = (pcfgt.linksincl || []).length > 1 ? pcfgt.linksincl
         : liu.map(ob => objAssn1(pcfge.linksincl[0], ob || {}));
       !scu[scu.length - 1].fncname || pcfgu.scriptsconstr.push(jsonParse(JSON.stringify(sce0)));
@@ -2623,13 +2631,13 @@ function webdocGen(redirect, pdata = filewkg || Object.assign({}, ECOTMPLS.publm
         + '" type="text/css" rel="stylesheet" async />\n' );
     ecolinks.innerHTML = linkrenders;
   }
-  if ( linksconstr.insertposition && (linksconstr.htmllinkinserts || linksconstr.wrapperincl)
+  if ( linksconstr.insertposition && (linksconstr.htmllinktxt || linksconstr.wrapperincl)
   && !(pdata.loadconfigs.atimportexpand && linksconstr.linksinclrender) ) {
     linkinserts = linksconstr.wrapperincl
-      ? linksconstr.wrappertagstart.trim() + "\n"
-        + (lnkstor.length ? lnkstor.join("\n") : linksconstr.htmllinkinserts.trim()) + "\n"
-        + linksconstr.wrappertagend.trim()
-      : linksconstr.htmllinkinserts.trim();
+      ? linksconstr.wraptagstart.trim() + "\n"
+        + (lnkstor.length ? lnkstor.join("\n") : linksconstr.htmllinktxt.trim()) + "\n"
+        + linksconstr.wraptagend.trim()
+      : linksconstr.htmllinktxt.trim();
     rsltcontent = /^2$|^head$|^true$/.test(linksconstr.insertposition)
     && /<\/head>|<body\b.*?>/i.test(rsltcontent)
       ? rsltcontent.replace(/(?=<\/head>|<body\b.*?>)/i, linkinserts + "\n")
@@ -3042,8 +3050,8 @@ function couchAtt(dirtxd) {
     },
     ablob = txdata.CBLOB
     || new Blob([typpmgr ? webdocGen(1) : rawtxta.value], { type: adata.CTYPE });
-  if (( dburl || window.PouchDB && txdata.DBNAME
-  && Array.from(pchlist.options).some(op => op.value === txdata.DBNAME) )) {
+  if ( dburl || window.PouchDB && txdata.DBNAME
+  && Array.from(pchlist.options).some(op => op.value === txdata.DBNAME) ) {
     dbpc2 = new PouchDB(dburl || txdata.DBNAME, { skip_setup: !dburl ? undefined : true });
   }
   if (!dbpc2) {
