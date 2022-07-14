@@ -2485,8 +2485,8 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       mndiv.innerHTML
         = `\n<style>\nins.mnote { position: relative; margin-right: calc((100% - 100vw + ${
           (sbwid = window.innerWidth - document.documentElement.clientWidth)
-        }px) * 0.5 + 23px); overflow: hidden; z-index: 3; }`
-        + `\nins.mnote.minz { background: initial; width: 10px; height: 0; margin-right: calc((100% - 100vw + ${sbwid}px) * 0.5 + 20px); padding: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 5px solid WhiteSmoke; pointer-events: none; }`
+        }px) * 0.5 + 3px); overflow: hidden; z-index: 3; }`
+        + `\nins.mnote.minz { background: initial; width: 10px; height: 0; margin-right: calc((100% - 100vw + ${sbwid}px) * 0.5); padding: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 5px solid WhiteSmoke; pointer-events: none; }`
         + `\n@media screen { ins.mnote { box-shadow: unset; } }`
         + `\n@media print { ins.mnote, ins.mnote.minz { margin-right: 0; } }\n</style>\n`;
       ecorender.appendChild(mndiv);
