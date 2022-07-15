@@ -424,7 +424,7 @@ if (!Array.from(dstyles).some(s => /#TOC\b/.test(s.innerHTML) && /\.refnbr\b/.te
   || document.querySelector(d1wrap + dswrap + dmwrap + '>h2');
   dstyle0 || masthd ? (h1node || d1node).insertBefore(stynew, dstyle0 || masthd)
   : (h1node || d1node).appendChild(stynew);
-  !window.EC2 || EC2.mnTog();
+  !window.EC2 || window.setTimeout(EC2.mnTog, 3000);
 }
 };
 
