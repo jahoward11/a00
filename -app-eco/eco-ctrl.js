@@ -2112,7 +2112,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
   // 5 = udata is default/reset html
   // 6 = udata is html-wrapped img
   // 7 = udata is text-file or app-html attachment
-  let elsass, elsscr, elssty, mndiv, pla11, sbwid, sidx, tft, tpl, udobj,
+  let elsass, elsscr, elssty, mndiv, pla11, sidx, tft, tpl, udobj,
     valatt = document.querySelector('#econav0 #attinp').value.trim(),
     valatl = document.querySelector('#econav0 #attlist').value,
     ecolinks = document.querySelector('#ecolinks'),
@@ -2483,10 +2483,8 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       mndiv.id = "mnbar";
       mndiv.setAttribute('onclick', "EC2.mnTog()");
       mndiv.innerHTML
-        = `\n<style>\nins.mnote { position: relative; margin-right: calc(3px - ${
-          (sbwid = window.innerWidth - document.documentElement.clientWidth) * 0.5
-        }px - var(--margrt, 8px)); overflow: hidden; z-index: 3; }`
-        + `\nins.mnote.minz { background: initial; width: 10px; height: 0; margin-right: calc(-${ sbwid * 0.5 }px - var(--margrt, 8px)); padding: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 5px solid WhiteSmoke; pointer-events: none; }`
+        = `\n<style>\nins.mnote { position: relative; margin-right: calc(3px - var(--mnmgrt, 8px)); overflow: hidden; z-index: 3; }`
+        + `\nins.mnote.minz { background: initial; width: 10px; height: 0; margin-right: calc(0px - var(--mnmgrt, 8px)); padding: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 5px solid WhiteSmoke; pointer-events: none; }`
         + `\n@media screen { ins.mnote { box-shadow: unset; } }`
         + `\n@media print { ins.mnote, ins.mnote.minz { margin-right: 0; } }\n</style>\n`;
       ecorender.appendChild(mndiv);
@@ -4756,8 +4754,9 @@ mnTog() {
   let mnmask = document.querySelector('#ecorender #mnmask');
   !mnmask || document.querySelectorAll('#ecorender .mnote, #ecorender #mnbar')
     .forEach(e => !e || e.classList.toggle("minz"))
-  || document.querySelector('#ecorender').style.setProperty( "--margrt",
-    getComputedStyle(document.querySelector('main') || document.body).marginRight )
+  || document.querySelector('#ecorender').style.setProperty( "--mnmgrt",
+    +getComputedStyle(document.querySelector('main') || document.body).marginRight.replace(/px/, "")
+    + +getComputedStyle(document.body).paddingRight.replace(/px/, "") + "px" )
   || mnmask.classList.toggle("is-hidden");
 },
 discTog(evt) {
