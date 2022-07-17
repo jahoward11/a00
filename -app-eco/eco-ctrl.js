@@ -2484,8 +2484,8 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       mndiv.id = "mnbar";
       mndiv.setAttribute('onclick', "EC2.mnTog(1)");
       mndiv.innerHTML
-        = `\n<style>\nins.mnote { position: relative; margin-right: calc(3px - var(--mnmgrt, 8px)); overflow: hidden; z-index: 3; }`
-        + `\nins.mnote.minz { background: initial; width: 10px; height: 0; margin-right: calc(0px - var(--mnmgrt, 8px)); padding: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 5px solid WhiteSmoke; pointer-events: none; }`
+        = `\n<style>\nins.mnote { position: relative; margin-right: calc(3px - var(--mntblrt, 0px) - var(--mnbodrt, 8px)); overflow: hidden; z-index: 3; }`
+        + `\nins.mnote.minz { background: initial; width: 10px; height: 0; margin-right: calc(0px - var(--mntblrt, 0px) - var(--mnbodrt, 8px)); padding: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 5px solid WhiteSmoke; pointer-events: none; }`
         + `\n@media screen { ins.mnote { box-shadow: unset; } }`
         + `\n@media print { ins.mnote, ins.mnote.minz { margin-right: 0; } }\n</style>\n`;
       ecorender.appendChild(mndiv);
@@ -4753,14 +4753,21 @@ fileLFDel() {
 },
 mnTog(xpnd) {
   let nmain = document.querySelector('main'),
-    mnmask = document.querySelector('#ecorender #mnmask');
+    mnmask = document.querySelector('#ecorender #mnmask'),
+    bodwid = +getComputedStyle(document.body).width.replace(/px/, "");
   !mnmask || xpnd == !document.querySelector('#ecorender #mnbar.minz')
   || document.querySelectorAll('#ecorender .mnote, #ecorender #mnbar')
-    .forEach(e => !e || e.classList.toggle("minz"))
-  || document.querySelector('#ecorender').style.setProperty( "--mnmgrt",
+    .forEach(e => e.classList.toggle("minz"))
+  || document.querySelector('#ecorender').style.setProperty( "--mnbodrt",
     ( nmain && +getComputedStyle(nmain).marginRight.replace(/px/, "")
-      || +getComputedStyle(document.body).marginRight.replace(/px/, "") )
-    + +getComputedStyle(document.body).paddingRight.replace(/px/, "") + "px" )
+      || +getComputedStyle(document.body).paddingRight.replace(/px/, "")
+      + +getComputedStyle(document.body).borderRightWidth.replace(/px/, "")
+      + +getComputedStyle(document.body).marginRight.replace(/px/, "") ) + "px" )
+  || document.querySelectorAll('#ecorender th>.mnote, #ecorender td>.mnote')
+    .forEach( e => e.parentElement.style.setProperty( "--mntblrt",
+      bodwid - e.parentElement.offsetLeft
+      - +getComputedStyle(e.parentElement).paddingLeft.replace(/px/, "")
+      - +getComputedStyle(e.parentElement).width.replace(/px/, "") + "px" ))
   || mnmask.classList.toggle("is-hidden");
 },
 discTog(evt) {
