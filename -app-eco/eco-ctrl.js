@@ -2481,7 +2481,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       ecorender.appendChild(mndiv);
       mndiv = document.createElement('div');
       mndiv.id = "mnbar";
-      mndiv.setAttribute('onclick', "EC2.mnTog()");
+      mndiv.setAttribute('onclick', "EC2.mnTog(1)");
       mndiv.innerHTML
         = `\n<style>\nins.mnote { position: relative; margin-right: calc(3px - var(--mnmgrt, 8px)); overflow: hidden; z-index: 3; }`
         + `\nins.mnote.minz { background: initial; width: 10px; height: 0; margin-right: calc(0px - var(--mnmgrt, 8px)); padding: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 5px solid WhiteSmoke; pointer-events: none; }`
@@ -4750,12 +4750,15 @@ fileLFDel() {
     localforage.removeItem(vallist, pfsListGen);
   }
 },
-mnTog() {
-  let mnmask = document.querySelector('#ecorender #mnmask');
-  !mnmask || document.querySelectorAll('#ecorender .mnote, #ecorender #mnbar')
+mnTog(disabl) {
+  let blkm = document.querySelector('main'),
+    mnmask = document.querySelector('#ecorender #mnmask');
+  !mnmask || disabl && !document.querySelector('#ecorender #mnbar.minz')
+  || document.querySelectorAll('#ecorender .mnote, #ecorender #mnbar')
     .forEach(e => !e || e.classList.toggle("minz"))
   || document.querySelector('#ecorender').style.setProperty( "--mnmgrt",
-    +getComputedStyle(document.querySelector('main') || document.body).marginRight.replace(/px/, "")
+    ( blkm && +getComputedStyle(blkm).marginRight.replace(/px/, "")
+      || +getComputedStyle(document.body).marginRight.replace(/px/, "") )
     + +getComputedStyle(document.body).paddingRight.replace(/px/, "") + "px" )
   || mnmask.classList.toggle("is-hidden");
 },
