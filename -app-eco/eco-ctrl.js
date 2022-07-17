@@ -2317,7 +2317,8 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         apath3 = !a3i.src ? [] : a3i.attributes.src.value.match(rexatt) || [];
       apath3[2] = apath3[2] && (/^[.-]/.test(apath3[2]) ? "" : ".") + apath3[2];
       apath3[3] || !a3i.src || (apath3[3] = a3i.src.replace(/^(?!blob:).*\//, ""));
-      return typanno && /\bebook-annos-fns\.js$/.test(a3i.src) ? null
+      return typanno
+      && (/\bebook-annos-fns\.js$/.test(a3i.src) || ua3 === EC2.u2Blob("ebook-annos-fns.js")) ? null
       : !epsets.appchks[27] && /^blob:/.test(ua3) ? scrInj({ src: ua3 })
       : !epsets.appchks[27] && apath3[3] && apath3[2] && (apath3[1] || dbpch)
         && (!apath3[1] || Array.from(pchlist.options).some(op => op.value === apath3[1]))
@@ -4750,14 +4751,14 @@ fileLFDel() {
     localforage.removeItem(vallist, pfsListGen);
   }
 },
-mnTog(disabl) {
-  let blkm = document.querySelector('main'),
+mnTog(xpnd) {
+  let nmain = document.querySelector('main'),
     mnmask = document.querySelector('#ecorender #mnmask');
-  !mnmask || disabl && !document.querySelector('#ecorender #mnbar.minz')
+  !mnmask || xpnd == !document.querySelector('#ecorender #mnbar.minz')
   || document.querySelectorAll('#ecorender .mnote, #ecorender #mnbar')
     .forEach(e => !e || e.classList.toggle("minz"))
   || document.querySelector('#ecorender').style.setProperty( "--mnmgrt",
-    ( blkm && +getComputedStyle(blkm).marginRight.replace(/px/, "")
+    ( nmain && +getComputedStyle(nmain).marginRight.replace(/px/, "")
       || +getComputedStyle(document.body).marginRight.replace(/px/, "") )
     + +getComputedStyle(document.body).paddingRight.replace(/px/, "") + "px" )
   || mnmask.classList.toggle("is-hidden");
