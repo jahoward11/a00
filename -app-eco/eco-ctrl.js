@@ -1020,7 +1020,7 @@ function pfsResets() {
 }
 
 function indrChg(elm, val, ref) {
-  let eq = val === (ref || elm.value);
+  let eq = val === (ref != null ? ref : elm.value);
   /is-warning/.test(elm.className) && !ref || (elm.value = ref != null ? ref : val || "");
   !/\bis-[sw]/.test(elm.className) && eq
   || !(/is-warning/.test(elm.className) || ref != null || (eq = true))
@@ -1690,6 +1690,7 @@ function swapListGen() {
 
 function jdePtyGen(rowslr, plai, plbgi) {
   let pi, j2e, jdsela, j2sela, jdselb, jdstr, jdinp, jdval, j2esleft, plax, plbx,
+    dbmdinp = document.querySelector('#ecoesp0 #dbmdinp'),
     sdirinp = document.querySelector('#ecoesp0 #sdirinp'),
     pfidinp = document.querySelector('#ecoesp0 #pfidinp'),
     versinp = document.querySelector('#ecoesp0 #versinp'),
@@ -1857,15 +1858,20 @@ function jdePtyGen(rowslr, plai, plbgi) {
   }
   if (filewkg && rowslr !== false) {
     EC1.pfsInp();
+    indrChg( dbmdinp,
+      (jfw.file_updated || jfw.file_created || "").dbname || "", !dbpch ? "" : dbpch.name );
     versinp.disabled || indrChg(versinp, jfw.file_updated.version.replace(/\d+$/, m => ++m));
     ownrinp.disabled || indrChg(ownrinp, jfw.file_updated.username, ownrinp.value);
     peoptxta.disabled || indrChg(peoptxta, "" + jfw.contributors, peoptxta.value);
     misctxta.disabled || indrChg(misctxta, jfw.file_updated.misc);
   } else if (filewkg) {
-    [sdirinp, pfidinp, versinp, ownrinp, peoptxta, misctxta]
-    .forEach( e => e.disabled || ["is-warning", "is-success"].forEach(f => e.classList.remove(f))
-      || (e.value = "") || (e.disabled = 1) );
+    [dbmdinp, sdirinp, pfidinp, versinp, ownrinp, peoptxta, misctxta]
+    .forEach( (e, i) => i && e.disabled
+      || ["is-warning", "is-success"].forEach(f => e.classList.remove(f))
+      || !i || (e.value = "") || (e.disabled = 1) );
     delswi.checked = delswi.disabled = pfidinp.disabled = 0;
+    dbmdinp.value = (jfw.file_updated || jfw.file_created || "").dbname || "";
+    dbpch && dbmdinp.value === dbpch.name || indrChg(dbmdinp, dbmdinp.value, !dbpch ? "" : dbpch.name);
     pfidinp.value = jfw._id || "";
     !(jfw.file_updated || jfw.hasOwnProperty("loc_subdir")) || (sdirinp.disabled = 0)
     || (sdirinp.value = !jfw.file_updated ? jfw.loc_subdir : jfw.file_updated.subdir);
@@ -1918,7 +1924,7 @@ function rmtListGen() {
 
 function fwResets(invalid) {
   let eftypes = document.querySelectorAll('#ecoesp0 #tooltypes>.eftype'),
-    metas = document.querySelectorAll('#ecoesp0 #sdirinp, #ecoesp0 #pfidinp, #ecoesp0 #versinp, #ecoesp0 #ownrinp, #ecoesp0 #peoptxta, #ecoesp0 #misctxta, #ecoesp0 #delswi');
+    metas = document.querySelectorAll('#ecoesp0 #dbmdinp, #ecoesp0 #sdirinp, #ecoesp0 #pfidinp, #ecoesp0 #versinp, #ecoesp0 #ownrinp, #ecoesp0 #peoptxta, #ecoesp0 #misctxta, #ecoesp0 #delswi');
   lnkstor = [];
   filewkg = reniscurr = tmp1pc = tmp1ff
   = document.querySelector('#ecoesp0 #jdepty').innerHTML
@@ -1973,7 +1979,7 @@ function rsrcsXGet(txdata = {}) {
           let txd2 = Object.assign({}, txdata);
           txdata = {};
           dropboxTx(jsonParse(JSON.stringify(txd2)), rslv, rjct);
-        });
+        }).catch(msgHandl);
       } else if (/^\/\/.+$/.test(txdata.FILEID) && window.localforage) {
         // note: unexpected lf behavior because of promise-wrap
         return localforage.getItem(txdata.FILEID.replace(/^\/\//, ""))
@@ -3566,8 +3572,8 @@ pfsInp(noflux, btnsdis) { // also triggered by jdePtyGen, dataDispl, metaChg, sw
   }
   if (filewkg) {
     dirref = fileref.replace(/^(?:\.\.\/|)\.?(-?\w.*)\/.+|.+/, "$1");
-    sdirinp.disabled || indrChg( sdirinp,
-      (!filewkg.file_updated ? filewkg.loc_subdir : filewkg.file_updated.subdir) || "", dirref );
+    sdirinp.disabled || indrChg( sdirinp, ( !filewkg.file_updated ? filewkg.loc_subdir
+        : filewkg.file_updated.subdir ) || "", dirref || sdirinp.value );
     pfidinp.value = /^mycontact/.test(fileref) ? filewkg._id || ""
       : fileref.replace(/\/$|^(?:\.\.\/|)(?:.*\/(?=.)|)/g, "");
     filewkg.file_type !== "eco-assets" || (pfidinp.value = pfidinp.value.replace(/^(?=\w)/, "."));
@@ -4097,7 +4103,8 @@ ibmConnect() {
     reqipch = valinp[1] && Array.from(pchlist.options).some(op => op.value === valinp[1])
       || !valinp[1] && valinp[2]
       && Array.from(pchlist.options).some(op => op.value.replace(/^a\d\d_/, "") === valinp[2]),
-    reqtxd = reqipch && caccts.find(ob => ob.DBNAME === (valinp[1] || "a00_" + valinp[2])) || {},
+    reqtxd = reqipch
+      && txCrdtlz(caccts.find(ob => ob.DBNAME === (valinp[1] || "a00_" + valinp[2])) || {}),
     //tm0ipch = valinp[2] // todo: possibly identify 2ndary team dbs
       //&& Array.from(pchlist.options).some(op => op.value === "a00_" + valinp[2])
       //&& caccts.some(ob => ob.DBNAME === "a00_" + valinp[2] && ob.DBORIG && ob.USRNAM),
@@ -4317,7 +4324,7 @@ ibmConnect() {
     updseq = {};
   }
   if ( hostlh || !appid || !appid.initialized || reqipch && !reqtxd.DBNAME
-  || (!valinp[1] || !valinp[2]) && reqtxd.DBORIG && reqtxd.USRNAM
+  || (!valinp[1] || !valinp[2]) && reqtxd.DBORIG && (reqtxd.DBPUBL || reqtxd.USRNAM)
   || (reqipch && !valinp[2] || epsets.dbdflt && !valinp[0])
   && epsets.uname && epsets.loglast && (!dbteam || tm0txd.DBORIG && tm0txd.USRNAM) ) {
     espEnter(1);
@@ -4754,7 +4761,8 @@ fileLFDel() {
 mnTog(xpnd) {
   let nmain = document.querySelector('main'),
     mnmask = document.querySelector('#ecorender #mnmask'),
-    bodwid = +getComputedStyle(document.body).width.replace(/px/, "");
+    bodwid = nmain && +getComputedStyle(nmain).width.replace(/px/, "")
+      || +getComputedStyle(document.body).width.replace(/px/, "");
   !mnmask || xpnd == !document.querySelector('#ecorender #mnbar.minz')
   || document.querySelectorAll('#ecorender .mnote, #ecorender #mnbar')
     .forEach(e => e.classList.toggle("minz"))
@@ -4847,10 +4855,13 @@ pchSel(trgnbr) { // also triggered by ibmConnect, qconSyncD
     pchhlps = document.querySelectorAll('#ecoesp0 #publcmt>div:nth-of-type(1) .help'),
     pchlist = document.querySelector('#ecoesp0 #pchlist'),
     pc2list = document.querySelector('#ecoesp0 #pc2list'),
-    pchbtn = document.querySelector('#ecoesp0 #pchbtn');
+    pchbtn = document.querySelector('#ecoesp0 #pchbtn'),
+    dbmdinp = document.querySelector('#ecoesp0 #dbmdinp');
   pdblist.value = trgnbr !== 2 ? pc2list.value = pchlist.value : pchlist.value = pc2list.value;
   pdblist.selectedIndex > -1 || (pdblist.value = "");
   pchhlps.forEach(e => e.classList.add("is-hidden"));
+  !filewkg || !pchlist.value || indrChg( dbmdinp,
+      (filewkg.file_updated || filewkg.file_created || "").dbname || "", pchlist.value );
   if (pchlist.value) {
     pchbtn.disabled = !filewkg
     || !/^$|^[!.~-]?\w[\w!.*+~-]*$/.test(filewkg._id) || /^_|[*~]\(?[0-9]*\)?$/.test(filewkg._id)
