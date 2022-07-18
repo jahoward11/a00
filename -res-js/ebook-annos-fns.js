@@ -11,7 +11,7 @@ window.annos.fns = window.annos.fns || function x(cfgs) {
 'use strict';
 var acs = cfgs && !cfgs.eventPhase && cfgs || window.annos && window.annos.configs || {},
   annoblocks = [], //refnbrAssn, annosXlink
-  dstyle0, htmlperiphs, masthd,
+  bodwid, dstyle0, htmlperiphs, masthd, nmain,
   pei = 0,
   stynew, texthl,
   tocbuild = ""; //refnbrAssn, annosfns
@@ -408,7 +408,7 @@ if (!Array.from(dstyles).some(s => /#TOC\b/.test(s.innerHTML) && /\.refnbr\b/.te
   stynew.innerHTML //= "\n.hljs, pre.hljs { padding: 0; background-color: transparent; }" )
   = "\n.ssbr { clear: right; color: DarkGrey; margin: 1em 0; text-align: center; }"
   + "\n.navch, p.navch { margin: 0; padding: 0; }"
-  + "\n.refnbr { clear: right; float: right; color: DarkGrey; font-size: 0.625em; line-height: 0.9em; margin: 0 0 0 auto; padding: 0 0.25em; text-align: left; user-select: none; }"
+  + "\n.refnbr { clear: right; float: right; color: DarkGrey; font-size: 0.625em; line-height: 0.9em; margin: 0 calc(0px - var(--rnblqrt, 0px)) 0 auto; padding: 0 0.25em; text-align: left; user-select: none; }"
   //+ "\n.refnbr a:link, .refnbr a:visited { color: LightSteelBlue; text-decoration: none; }"
   + "\n.mnote, ins.mnote { box-sizing: border-box; clear: right; float: right; background-color: WhiteSmoke; color: SlateGrey; font: normal x-small Helvetica, Arial, sans-serif; width: 312px; margin: 0 8px 8px; padding: 0.1em 0.3em 0.2em; box-shadow: 0 1px 2px -1px DarkGrey; text-decoration: none; user-select: none; white-space: pre-wrap; }"
   + ( !dswrap ? "\n"
@@ -424,6 +424,15 @@ if (!Array.from(dstyles).some(s => /#TOC\b/.test(s.innerHTML) && /\.refnbr\b/.te
   || document.querySelector(d1wrap + dswrap + dmwrap + '>h2');
   dstyle0 || masthd ? (h1node || d1node).insertBefore(stynew, dstyle0 || masthd)
   : (h1node || d1node).appendChild(stynew);
+  nmain = document.querySelector('main');
+  bodwid = nmain && +getComputedStyle(nmain).width.replace(/px/, "")
+    || +getComputedStyle(document.body).width.replace(/px/, "");
+  window.setTimeout( () => document.querySelectorAll(d1wrap + dswrap + dmwrap + ' blockquote>.refnbr+p')
+    .forEach( e => e.parentElement.style.setProperty( "--rnblqrt", bodwid
+      - +getComputedStyle(e.parentElement).marginLeft.replace(/px/, "")
+      - +getComputedStyle(e.parentElement).borderLeftWidth.replace(/px/, "")
+      - +getComputedStyle(e.parentElement).paddingLeft.replace(/px/, "")
+      - e.offsetWidth + "px" )), 1000 );
   !window.EC2 || window.setTimeout(EC2.mnTog, 2500);
 }
 };
