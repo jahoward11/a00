@@ -4104,7 +4104,7 @@ ibmConnect() {
       || !valinp[1] && valinp[2]
       && Array.from(pchlist.options).some(op => op.value.replace(/^a\d\d_/, "") === valinp[2]),
     reqtxd = reqipch
-      && txCrdtlz(caccts.find(ob => ob.DBNAME === (valinp[1] || "a00_" + valinp[2])) || {}),
+      && txCrdtlz(caccts.find(ob => ob.DBNAME === (valinp[1] || "a00_" + valinp[2]))) || {},
     //tm0ipch = valinp[2] // todo: possibly identify 2ndary team dbs
       //&& Array.from(pchlist.options).some(op => op.value === "a00_" + valinp[2])
       //&& caccts.some(ob => ob.DBNAME === "a00_" + valinp[2] && ob.DBORIG && ob.USRNAM),
