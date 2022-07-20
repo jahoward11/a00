@@ -309,13 +309,13 @@ function annosXlink() {
 function annosHilit(dochtml) {
   let acolor, aptys, atag,
     colordflts = {span: "", mark: ".ye6", strong: "", em: "", s: "", ins: ""},
-    isregx, refnc, sepatt, tagdflt = "mark",
+    isregx, mnct = 0, refnc, sepatt, tagdflt = "mark",
     mdit = window.markdownit && window.markdownit();
   !(mdit && window.markdownitIns && window.markdownitSub && window.markdownitSup)
   || (mdit = mdit.use(window.markdownitIns).use(window.markdownitSub).use(window.markdownitSup));
   acs.texthl.forEach(txt => {
-    aptys = /{ *([*+=_~]*) *([#.]?\w*|\\#[0-9a-f]{3,6})}$/.exec(txt) || ["", "", ""];
-    aptys[3] = typeof txt !== 'string' ? "" : txt.replace(/ *{[ *+=_~]*\\?[#.]?\w*}$/, "");
+    aptys = /{ *([*+=_~]*) *([#.]?\w*|\\#[0-9a-f]{3,6}) *}$/.exec(txt) || ["", "", ""];
+    aptys[3] = typeof txt !== 'string' ? "" : txt.replace(/ *{[ *+=_~]*\\?[#.]?\w* *}$/, "");
     atag = (isregx = txt instanceof RegExp) ? tagdflt
       : !aptys[1] || /^==$/.test(aptys[1]) ? "mark"
       : /^\*\*$|^__$/.test(aptys[1]) ? "strong"
@@ -331,8 +331,9 @@ function annosHilit(dochtml) {
       ? eval(sepatt.toString().replace(/(?=(?:\(\?=.*?\)|)\/[gim]*$)/, "<\\/\\w+>"))
       : isregx ? txt : !aptys[3] ? /^$/ : !texthl ? aptys[3] : new RegExp(aptys[3]);
       //("\\b" + aptys[3] + "\\b", "gi")
-    refnc = atag === "ins" ? ( !aptys[3] ? "$&" : "$& <ins" + (acolor || " class=mnote") + ">"
-      + (!mdit ? aptys[3] : mdit.renderInline(aptys[3])).replace(/\\n/g, "\n") + "</ins>" )
+    refnc = atag === "ins" ? ( !aptys[3] ? "$&"
+        : "$& <ins id=mnot" + (++mnct) + (acolor || " class=mnote") + ">"
+          + (!mdit ? aptys[3] : mdit.renderInline(aptys[3])).replace(/\\n/g, "\n") + "</ins>" )
       : isregx || !texthl ? "<" + atag + acolor + ">$&</" + atag + ">"
       : (...args) => "<" + atag + acolor + ">" + ( args.slice(1, args.length - 2)
           .map((e, i) => e + (i%2 ? "<" + atag + acolor + ">" : "</" + atag + ">")).join("") || args[0] )
@@ -433,7 +434,7 @@ if (!Array.from(dstyles).some(s => /#TOC\b/.test(s.innerHTML) && /\.refnbr\b/.te
       - +getComputedStyle(e.parentElement).borderLeftWidth.replace(/px/, "")
       - +getComputedStyle(e.parentElement).paddingLeft.replace(/px/, "")
       - e.offsetWidth + "px" )), 1000 );
-  !window.EC2 || window.setTimeout(EC2.mnTog, 2500);
+  !window.EC2 || window.setTimeout(EC2.mnTog, 1000);
 }
 };
 
