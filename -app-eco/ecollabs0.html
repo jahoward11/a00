@@ -2078,6 +2078,15 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
   z-index: 2;
 }
 #ecorender>#mnbar.minz { width: 10px; }
+#ecorender>#mnnav {
+  position: fixed;
+  top: 45.5px;
+  right: 0;
+  display: flex;
+  width: 320px;
+  justify-content: center;
+  z-index: 4;
+}
 #ecoesp0 {
   min-height: 552px;
   margin-top: 45.5px;
@@ -2140,6 +2149,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 #ecoesp0 #jderaw #rawbtnc,
 #ecoesp0 #toolswap>.field>.txtaprf,
 #ecoesp0 #tooljscon>.txtaprf { margin: 3.5px 0 0 0; }
+#ecorender>#mnnav>.button,
 #econav0 .navbar-dropdown>.txtaprf>.button:not(:hover),
 #ecoesp0 #prjdisc>.media:last-child>.media-content>.txtaprf>.button:not(:hover),
 #ecoesp0 #jderaw #rawbtnc>.button:not(:hover),
@@ -2502,7 +2512,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
     Alternatively, load a new template at any time by selecting one under <span class="is-italic">App templates</span> in the <span class="is-italic">File-load</span> select list of the <span class="has-text-weight-bold is-italic">Craft</span> control panel. A file can then be edited from within any one of the three editing (<span class="has-text-weight-bold is-italic">DB-File Edit</span>, <span class="has-text-weight-bold is-italic">JSO-Pty Edit</span> and <span class="has-text-weight-bold is-italic">JSON/Text Edit</span>) screens, all found within the <span class="has-text-weight-bold is-italic">Craft</span> control panel of the <span class="is-italic">Navbar</span>.
   </div>
   <div class="field">
-    Learn more about database-file templates&mdash;and about each of the nine, <span class="has-text-weight-bold is-italic">E</span>collabs file types&mdash;by navigating directly (i.e., without loading a template yet) to <span class="has-text-weight-bold is-italic">Custom Tools > Types</span>.
+    Learn more about database-file templates&mdash;and about each of the nine, <span class="has-text-weight-bold is-italic">E</span>collabs file types&mdash;by navigating directly (i.e., without loading a template yet) to <span class="has-text-weight-bold is-italic">Craft > Custom Tools > Types</span>.
   </div>
   <form id="tmplrad" class="field control has-text-grey">
     <label class="radio">
@@ -2576,13 +2586,13 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
       <br />Optional: When naming the file, prepend the filename with a subdirectory name (and slash) to organize it together with other, related project files&mdash;e.g., "<span class="is-family-code has-text-grey">mysubdir/myfilename</span>".
     </li>
     <li>Tap the <span class="is-italic">Preview</span> tab to render and display the resulting web doc that is generated from the contents of the <span class="is-italic">publmgr</span> file&mdash;for final review and approval.</li>
-    <li>When ready to publish, navigate to <span class="has-text-weight-bold is-italic">Final Prep &amp; Publish > Prepress</span>.</li>
+    <li>When ready to publish, navigate to <span class="has-text-weight-bold is-italic">Craft > Final Prep &amp; Publish > Prepress</span>.</li>
     <li>
       Select a local and corresponding, remote database&mdash;then tap <span class="is-italic">Import Data</span>.
       <br />Tip: This step ensures that you have all the current file changes made by others before you submit your file changes.
       <br />Alert: If two or more people are editing the same file at the same time, the more recently committed version will overwrite the changes made in a previously committed version&mdash;thus, someone's changes will be lost.
     </li>
-    <li>Navigate to <span class="has-text-weight-bold is-italic">Final Prep &amp; Publish > Commit</span>.</li>
+    <li>Navigate to <span class="has-text-weight-bold is-italic">Craft > Final Prep &amp; Publish > Commit</span>.</li>
     <li>
       Follow each of the four numbered steps, in sequence&mdash;
       <br />(1) to formally insert a <span class="is-italic">publmgr</span> build file into the project database;
@@ -2658,7 +2668,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
     Customize the App or Log Out
   </div>
   <ol>
-    <li>While logged in, navigate to <span class="has-text-weight-bold is-italic">Custom Tools > App</span>.</li>
+    <li>While logged in, navigate to <span class="has-text-weight-bold is-italic">Craft > Custom Tools > App</span>.</li>
     <li>If staying logged in, change app settings as desired.</li>
     <li>
       If logging out, check <span class="is-italic">Wipe-user-data</span> checkboxes to indicate desired app-reset level&mdash;then tap <span class="is-italic">LOG OUT</span>.
@@ -2679,7 +2689,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
     <br />- For performing an administrative task, such as changing a team-member's role or creating a new project database.
   </div>
   <ol>
-    <li>Navigate to <span class="has-text-weight-bold is-italic">Custom Tools > App</span>.</li>
+    <li>Navigate to <span class="has-text-weight-bold is-italic">Craft > Custom Tools > App</span>.</li>
     <li>In the <span class="is-italic">Start-up-default-database</span> select list (first one), select the blank option (at top of list).</li>
     <li>
       Tap <span class="is-italic">All DBs</span> (top right corner of screen, or last item of the <span class="is-italic">Navbar</span> <span class="has-text-weight-bold">&equiv;</span> menu) to return to the web app entryway.
@@ -2696,7 +2706,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
     <br />How? Configure the app (as follows) to bypass the login screen when re-entering the app.
   </div>
   <ol>
-    <li>Navigate to <span class="has-text-weight-bold is-italic">Custom Tools > App</span>.</li>
+    <li>Navigate to <span class="has-text-weight-bold is-italic">Craft > Custom Tools > App</span>.</li>
     <li>In the <span class="is-italic">Start-up-default-database</span> select list (first one), select any but the blank option.</li>
     <li>
       Tap <span class="is-italic">All DBs</span> (top right corner of screen, or last item of the <span class="is-italic">Navbar</span> <span class="has-text-weight-bold">&equiv;</span> menu) to return to the web app entryway.
@@ -3173,7 +3183,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
           </li>
           <li>
             <span class="has-text-weight-bold">External content mgmt:</span>
-            If a <span class="is-italic">publmgr</span> file is set to import external content when loaded (as described in the <span class="has-text-weight-bold is-italic">import</span> procedures below), the app will perform the import automatically. Subsequently, when a user saves or commits a <span class="is-italic">publmgr</span> file, the app will remove the imported content automatically. However, both of these behaviors can be overridden using the <span class="has-text-weight-bold is-italic">Custom Tools > App</span> control panel.
+            If a <span class="is-italic">publmgr</span> file is set to import external content when loaded (as described in the <span class="has-text-weight-bold is-italic">import</span> procedures below), the app will perform the import automatically. Subsequently, when a user saves or commits a <span class="is-italic">publmgr</span> file, the app will remove the imported content automatically. However, both of these behaviors can be overridden using the <span class="has-text-weight-bold is-italic">Craft > Custom Tools > App</span> control panel.
           </li>
         </ul>
         <hr />
@@ -3341,7 +3351,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
             <ol>
               <li>
                 If simply using DB queries or HTTP requests to generate the style data (at the time file is loaded), the <span class="is-italic">publmgr</span> file must be loaded with the <span class="is-family-code">linksinclrender</span> property (of the <span class="is-family-code">parseconfigs.linksconstr</span> field) set to <span class="is-family-code">false</span>.
-                <br />Tip: This behavior can be overridden using the <span class="has-text-weight-bold is-italic">Custom Tools > App</span> control panel.
+                <br />Tip: This behavior can be overridden using the <span class="has-text-weight-bold is-italic">Craft > Custom Tools > App</span> control panel.
               </li>
               <li>Otherwise, if generating style data from preloaded CSSOM styleSheets, CSS-file resources must be specified using the <span class="is-family-code">parseconfigs.linksincl</span> field (a-la the <span class="is-italic">web-resource-dependent</span> option of step 3)&mdash;and they must be preloaded and their style data captured, then injected. This is accomplished in two passes: by first rendering the webpage in <span class="has-text-weight-bold is-italic">Preview</span> with <span class="is-family-code">linksinclrender</span> activated, then rendering the webpage in <span class="has-text-weight-bold is-italic">Preview</span> a second time with <span class="is-family-code">linksinclrender</span> de-activated.</li>
             </ol>
@@ -3456,7 +3466,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
             Create/load an <span class="is-italic">assets</span> file intended to hold all cover photos.
             <br />Note: The app will recognize a generic, image subdirectory that is given the file ID "<span class="is-family-code">-res-img</span>".
           </li>
-          <li>Navigate to <span class="has-text-weight-bold is-italic">Custom Tools > Types</span>.</li>
+          <li>Navigate to <span class="has-text-weight-bold is-italic">Craft > Custom Tools > Types</span>.</li>
           <li>
             Use the <span class="is-italic">assets</span>-file controls to attach a cover-photo image.
             <br />Tip: Ensure that the image is cropped square before attaching.
@@ -3471,7 +3481,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
             <br />Note: If the <span class="is-italic">assets</span> file containing the image is in a different database, a relative path to that file must be included&mdash;e.g., "<span class="is-family-code">../../myresourcedb/-res-img/prjcoverphoto.jpg</span>".
             <br />Note: The <span class="is-italic">IMAGE</span> field can also accept an absolute URL of any public image on the Web.
           </li>
-          <li>After all other fields have been updated, navigate to <span class="has-text-weight-bold is-italic">Final Prep &amp; Publish > Commit</span>.</li>
+          <li>After all other fields have been updated, navigate to <span class="has-text-weight-bold is-italic">Craft > Final Prep &amp; Publish > Commit</span>.</li>
           <li>In row 1, tap <span class="is-italic">Add File</span>.</li>
         </ol>
       </div>
@@ -3716,7 +3726,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         </div>
         <ol>
           <li>Load a <span class="is-italic">publmgr</span> file.</li>
-          <li>Navigate to <span class="has-text-weight-bold is-italic">Final Prep &amp; Publish > Commit</span>.</li>
+          <li>Navigate to <span class="has-text-weight-bold is-italic">Craft > Final Prep &amp; Publish > Commit</span>.</li>
           <li>In row 2, select the <span class="is-italic">assets</span>-file destination for the <span class="is-italic">webpage</span>.</li>
           <li>In row 2, tap <span class="is-italic">Add HTML</span>.</li>
         </ol>
@@ -3844,9 +3854,9 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
             <br />Alert: If editing the <span class="is-italic">E&#x2011;MAILS</span> field, do not change the first listed e&#x2011;mail address.
             <br />Alert: Do not leave the <span class="is-italic">USERNAME</span> field blank.
           </li>
-          <li>Navigate to <span class="has-text-weight-bold is-italic">Custom Tools > Types</span>.</li>
+          <li>Navigate to <span class="has-text-weight-bold is-italic">Craft > Custom Tools > Types</span>.</li>
           <li>While freshly logged in (i.e., within 60 minutes), use the <span class="is-italic">COMMIT</span> button (above) to update the remote&#x2011;DB version of the <span class="is-italic">contact</span> file.</li>
-          <li>Navigate to <span class="has-text-weight-bold is-italic">Final Prep &amp; Publish > Prepress</span>.</li>
+          <li>Navigate to <span class="has-text-weight-bold is-italic">Craft > Final Prep &amp; Publish > Prepress</span>.</li>
           <li>Select to open the team-organization DB (if not already opened).</li>
           <li>Tap <span class="is-italic">Import Data</span> to then update the local/device&#x2011;DB version of the <span class="is-italic">contact</span> file.</li>
         </ol>
@@ -3862,9 +3872,9 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
             <br />Alert: Do not leave the <span class="is-italic">USERNAME</span> field blank.
             <br />Also, be aware that changing the username would disassociate all past communications and records from any future communications and records of a project.
           </li>
-          <li>Navigate to <span class="has-text-weight-bold is-italic">Custom Tools > Types</span>.</li>
+          <li>Navigate to <span class="has-text-weight-bold is-italic">Craft > Custom Tools > Types</span>.</li>
           <li>While freshly logged in (i.e., within 60 minutes), use the <span class="is-italic">COMMIT</span> button (above) to update the remote&#x2011;DB version of the <span class="is-italic">contact</span> file.</li>
-          <li>Navigate to <span class="has-text-weight-bold is-italic">Final Prep &amp; Publish > Prepress</span>.</li>
+          <li>Navigate to <span class="has-text-weight-bold is-italic">Craft > Final Prep &amp; Publish > Prepress</span>.</li>
           <li>Select to open the team-organization DB (if not already opened).</li>
           <li>Tap <span class="is-italic">Import Data</span> to then update the local/device&#x2011;DB version of the <span class="is-italic">contact</span> file.</li>
         </ol>
@@ -3882,7 +3892,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
             Create/load an <span class="is-italic">assets</span> file intended to hold all contact photos.
             <br />Note: The app will recognize a generic, image subdirectory that is given the file ID "<span class="is-family-code">-res-img</span>".
           </li>
-          <li>Navigate to <span class="has-text-weight-bold is-italic">Custom Tools > Types</span>.</li>
+          <li>Navigate to <span class="has-text-weight-bold is-italic">Craft > Custom Tools > Types</span>.</li>
           <li>
             Use the <span class="is-italic">assets</span>-file controls to attach an avatar (photo) image.
             <br />Tip: Ensure that the image is cropped square before attaching.
@@ -3898,7 +3908,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
           <li>
             After all other fields have been updated&mdash;
             <br /><span class="is-italic">Admin/Lead</span>:
-            navigate to <span class="has-text-weight-bold is-italic">Final Prep &amp; Publish > Commit</span>; then, in row 1, tap <span class="is-italic">Add File</span>.
+            navigate to <span class="has-text-weight-bold is-italic">Craft > Final Prep &amp; Publish > Commit</span>; then, in row 1, tap <span class="is-italic">Add File</span>.
             <br /><span class="is-italic">Contributor/Reviewer</span>:
             follow steps 4&ndash;8 of "<span class="has-text-weight-bold is-italic">To update your own <span class="has-text-weight-normal is-italic">contact</span> file</span>", given above.
           </li>

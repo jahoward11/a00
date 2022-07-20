@@ -45,7 +45,7 @@ const hostibm = /\.cloudant[\w.]+$/.test(window.location.host) && window.locatio
   pf3stor = {},
   rexatt = /(?:@import +(?:url\(|)['"]?|\S+: *url\(['"]?|^)(?:\.\/|\.\.\/(?:\.\.\/(.*)\/|)(.*)\/|)([^\n\/]+\.(?:giff?|jpe?g|m?js|png|s?css))['"]?\)?;?$/i,
   reximg = /\.(?:giff?|jpe?g|png)$/i,
-  rexloc = /^(?:(?:\.\.\/\.\.|\.\.|)\/(?=$|\w)|\.\/(?=[^ \/])|\/\/|\$|blob:(?:https?:|)(?!.* ))[ \w/!.*+~-]*$/,
+  rexloc = /^(?:(?:\.\.\/\.\.|\.\.|)\/(?=$|\w)|\.\/(?=[^ \/])|\/\/|\$|blob:[\w/:-]*(?!.* ))[ \w/!.*+~-]*$/,
   rexrmt = /^https?:\/\/[ \w/#%!?=&@:.,+~-]+$/;
 
 window.ecoqjs = window.ecoqjs || {};
@@ -167,7 +167,7 @@ const ECOINSTR = [
 + ' $XREQD        | fetch-requests data template\n'
 + ' $CTXD         | CouchDB-transactions data templates\n'
 + ' $STYS         | HighlightJS CSS-file lists\n'
-+ ' $(global-var) | system/user-created global variable (primitive/JS-obj/method)\n\n'
++ ' $(global-var) | system/user-created global variable (primitive/JS-object/method)\n\n'
 + '__Notes__\n'
 + '- Append `.`-idx/key to access specific element (by index) or property (by key) within object.\n'
 + '- Append `.keys` to list all property keys of object.\n'
@@ -305,7 +305,7 @@ const ECOINSTR = [
 // ###
   'Alert: File-update process disrupted.\nNote that credentials are required for DB commit.'
 + '\nAlso, filename (DB file ID) must:\n- be unique\n- begin with alphanumeric'
-+ '\n- contain no spaces or punctuation,\n  except `! . * + ~ -`'
++ '\n- contain no spaces or punctuation,\n  except `_ ! . * + ~ -`'
 + '\n- not end with app flag characters,\n  like `~ ~00 * *(00)`',
 // ###
   'Alert: Some @import-expansion conditions are not met.'
@@ -2159,6 +2159,8 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
           ufile[pty] = objAssn1(etmpl[pty], ufile[pty]);
         }
       });
+      !ufile.file_updated || /\.cloud$/.test(ufile.file_updated.dborigin)
+      || (ufile.file_updated.dborigin = rmttxd.DBORIG || a00orig || ""); // temp cleanup
       if ( /^eco-(?:assets|contact)$/.test(ufile.file_type) && !ufile.hasOwnProperty("loc_subdir")
       || !/^eco-/.test(ufile.file_type) && Object.keys(etmpl).length ) {
       } else if (ufile.file_type === "eco-scrap" && ufile.hasOwnProperty("media_type")) {
@@ -2373,7 +2375,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       [filewkg.file_created, filewkg.file_updated].forEach((ppty, i) => { if (ppty) {
         ppty.username = epsets.uname;
         ppty.timestamp = tstamp1;
-        ppty.dborigin = !rmttxd.DBORIG ? "" : rmttxd.DBORIG;
+        ppty.dborigin = rmttxd.DBORIG || a00orig || "";
         ppty.dbname = dbpch ? dbpch.name : !rmttxd.DBNAME ? "" : rmttxd.DBNAME;
         ppty.subdir = "";
         !ppty.hasOwnProperty("misc") || (ppty.misc = "");
@@ -2484,17 +2486,23 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       if (!typanno) { return; }
       mndiv = document.createElement('div');
       mndiv.id = "mnmask";
-      mndiv.setAttribute('onclick', "EC2.mnTog()");
+      mndiv.setAttribute('onclick', "EC2.mnTog(0)");
       ecorender.appendChild(mndiv);
       mndiv = document.createElement('div');
       mndiv.id = "mnbar";
       mndiv.setAttribute('onclick', "EC2.mnTog(1)");
-      mndiv.innerHTML
-        = `\n<style>\nins.mnote { position: relative; margin-right: calc(3px - var(--mntblrt, 0px) - var(--mnbodrt, 8px)); overflow: hidden; z-index: 3; }`
-        + `\nins.mnote.minz { background: initial; width: 10px; height: 0; margin-right: calc(0px - var(--mntblrt, 0px) - var(--mnbodrt, 8px)); padding: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 5px solid WhiteSmoke; pointer-events: none; }`
-        + `\n@media screen { ins.mnote { box-shadow: unset; } }`
-        + `\n@media print { ins.mnote, ins.mnote.minz { margin-right: 0; } }\n</style>\n`;
       ecorender.appendChild(mndiv);
+      if (cfgs.ahls.length) {
+        mndiv = document.createElement('div');
+        mndiv.id = "mnnav";
+        mndiv.innerHTML
+          = `\n<button class="button is-white has-text-grey" onclick="EC2.mnNav(0, ${cfgs.ahls.length})">&#x25e4;</button><button id=mncount class="button is-white has-text-grey">1 of ${cfgs.ahls.length}</button><button class="button is-white has-text-grey" onclick="EC2.mnNav(1, ${cfgs.ahls.length})">&#x25e2;</button>`
+          + `\n<style>\nins.mnote { position: relative; margin-right: calc(3px - var(--mntblrt, 0px) - var(--mnbodrt, 8px)); overflow: hidden; z-index: 3; }`
+          + `\nins.mnote.minz { background: initial; width: 10px; height: 0; margin-right: calc(0px - var(--mntblrt, 0px) - var(--mnbodrt, 8px)); padding: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 5px solid WhiteSmoke; pointer-events: none; }`
+          + `\n@media screen { ins.mnote { box-shadow: unset; } }`
+          + `\n@media print { ins.mnote, ins.mnote.minz { margin-right: 0; } }\n</style>\n`;
+        ecorender.appendChild(mndiv);
+      }
       tstamp1 = tstamp1 - (epsets.discdays * 24 * 60 * 60 * 1000);
       cfgs.ahls = cfgs.ahls.map( (hli, i) => JSON.stringify(["{}"].concat(hli), null, 2)
         .replace(/(\\\\n)",\n *"/g, "$1")
@@ -2764,7 +2772,7 @@ function txCrdtlz(txdata = {}) {
     dbteam = ( Array.from(pchlist.options).find( op => epsets.teamid
       ? op.value === "a00_" + epsets.teamid : /^a\d\d_\w/.test(op.value) ) || {} ).value || "",
     tm0txd = caccts.find(ob => ob.DBNAME === (dbteam || "a00_" + epsets.teamid)) || {};
-  return txdata.DBPUBL || !/^https:\/\/[\w-]+\.cloudant[\w.]+$/.test(txdata.DBORIG)
+  return !/^https:\/\/[\w-]+\.cloudant[\w.]+$/.test(txdata.DBORIG) //txdata.DBPUBL ||
   || txdata.USRNAM && !/^$|password/i.test(txdata.PSSWRD)
   ? txdata : Object.assign(txdata, {
       USRNAM: tm0txd.USRNAM,
@@ -3182,7 +3190,7 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
       jfw[ppty].timestamp = tstamp1;
       if ( ppty === "file_created" || pchutrg || !jfw._rev
       && jfw["file_created"].timestamp === jfw["file_updated"].timestamp ) {
-        jfw[ppty].dborigin = !rmttxd.DBORIG ? "" : rmttxd.DBORIG;
+        jfw[ppty].dborigin = rmttxd.DBORIG || a00orig || "";
         jfw[ppty].dbname = dbpch ? dbpch.name : !rmttxd.DBNAME ? "" : rmttxd.DBNAME;
       }
       jfw[ppty].subdir = dirref || jfw[ppty].subdir || "";
@@ -3408,7 +3416,7 @@ attInp() {
       : /^(?:json|text)$/.test(txdata.bmet) ? dataDispl(rslt, 7)
       : rdataFetch({ url: txdata.url, bmet: 'text' }).then(rslt => dataDispl(rslt, 7)) )
     .catch(msgHandl);
-  } else if (!idx && /^(?:\/[a-z][0-9_a-z$,+-]*\/|)[\w!.*+~-]+\.html?$/.test(valatt)) {
+  } else if (!idx && /^(?:(?:\.\.\/\.\.|)\/[a-z][0-9_a-z$,+-]*\/|)[\w!.*+~-]+\.html?$/.test(valatt)) {
     couchQry(txdPrep(valatt.replace(/\.html?$/, ""))[0], 4);
   } else if (valatt) {
     couchQry(txdata, 3);
@@ -4214,14 +4222,14 @@ ibmConnect() {
       file_created: {
         username:  epsets.uname,
         timestamp: tstamp1,
-        dborigin:  a00orig,
+        dborigin:  a00orig || "",
         dbname:    tmidpre + valinp[2],
         subdir:    ""
       },
       file_updated: {
         username:  epsets.uname,
         timestamp: tstamp1,
-        dborigin:  a00orig,
+        dborigin:  a00orig || "",
         dbname:    tmidpre + valinp[2],
         subdir:    ""
       },
@@ -4760,7 +4768,8 @@ fileLFDel() {
 },
 mnTog(xpnd) {
   let nmain = document.querySelector('main'),
-    mnmask = document.querySelector('#ecorender #mnmask'),
+    mnmask = document.querySelector('#ecorender>#mnmask'),
+    mnnav = document.querySelector('#ecorender>#mnnav'),
     bodwid = nmain && +getComputedStyle(nmain).width.replace(/px/, "")
       || +getComputedStyle(document.body).width.replace(/px/, "");
   !mnmask || xpnd == !document.querySelector('#ecorender #mnbar.minz')
@@ -4776,7 +4785,13 @@ mnTog(xpnd) {
       bodwid - e.parentElement.offsetLeft
       - +getComputedStyle(e.parentElement).paddingLeft.replace(/px/, "")
       - +getComputedStyle(e.parentElement).width.replace(/px/, "") + "px" ))
-  || mnmask.classList.toggle("is-hidden");
+  || [mnmask, mnnav].forEach(e => e.classList.toggle("is-hidden"));
+},
+mnNav(nxt, len) {
+  let mncount = document.querySelector('#ecorender>#mnnav>#mncount'),
+    ct = mncount && +mncount.innerText.replace(/ .+/, "");
+  !mncount || ( mncount.innerText
+    = (!nxt ? (!(ct - 1) ? len : ct - 1) : (!(ct - len) ? 1 : ct + 1)) + " of " + len );
 },
 discTog(evt) {
   let dload = document.querySelectorAll('#ecoesp0 #prjdisc>.field .mlft2>input[type=checkbox]'),
@@ -4810,7 +4825,7 @@ discAdd(discsync) {
       file_created: {
         username:  epsets.uname,
         timestamp: tstamp1,
-        dborigin:  rmttxd.DBORIG || "",
+        dborigin:  rmttxd.DBORIG || a00orig || "",
         dbname:    rmttxd.DBNAME || "",
         subdir:    ""
       },
