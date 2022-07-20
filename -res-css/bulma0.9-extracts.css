@@ -1103,6 +1103,8 @@ table th { color: #363636; }
   flex-grow: 1;
   flex-shrink: 1;
 }
+.field.is-grouped.is-grouped-centered { justify-content: center; }
+.field.is-grouped.is-grouped-right { justify-content: flex-end; }
 .field-label .label { font-size: inherit; }
 .field-body .field .field { margin-bottom: 0; }
 @media screen and (max-width: 684px) {
