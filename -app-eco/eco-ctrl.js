@@ -2118,7 +2118,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
   // 5 = udata is default/reset html
   // 6 = udata is html-wrapped img
   // 7 = udata is text-file or app-html attachment
-  let elsass, elsscr, elssty, mndiv, pla11, sidx, tft, tpl, udobj,
+  let elsass, elsscr, elssty, mnlen, ndiv, pla11, sidx, tft, tpl, udobj,
     valatt = document.querySelector('#econav0 #attinp').value.trim(),
     valatl = document.querySelector('#econav0 #attlist').value,
     ecolinks = document.querySelector('#ecolinks'),
@@ -2484,24 +2484,27 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
     .then(() => Promise.all(Array.from(elsscr).map(scrGet)).catch(msgHandl))
     .then(() => {
       if (!typanno) { return; }
-      mndiv = document.createElement('div');
-      mndiv.id = "mnmask";
-      mndiv.setAttribute('onclick', "EC2.mnTog(0)");
-      ecorender.appendChild(mndiv);
-      mndiv = document.createElement('div');
-      mndiv.id = "mnbar";
-      mndiv.setAttribute('onclick', "EC2.mnTog(1)");
-      ecorender.appendChild(mndiv);
-      if (cfgs.ahls.length) {
-        mndiv = document.createElement('div');
-        mndiv.id = "mnnav";
-        mndiv.innerHTML
-          = `\n<button class="button is-white has-text-grey" onclick="EC2.mnNav(0, ${cfgs.ahls.length})">&#x25e4;</button><button id=mncount class="button is-white has-text-grey">1 of ${cfgs.ahls.length}</button><button class="button is-white has-text-grey" onclick="EC2.mnNav(1, ${cfgs.ahls.length})">&#x25e2;</button>`
-          + `\n<style>\nins.mnote { position: relative; margin-right: calc(3px - var(--mntblrt, 0px) - var(--mnbodrt, 8px)); overflow: hidden; z-index: 3; }`
-          + `\nins.mnote.minz { background: initial; width: 10px; height: 0; margin-right: calc(0px - var(--mntblrt, 0px) - var(--mnbodrt, 8px)); padding: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 5px solid WhiteSmoke; pointer-events: none; }`
-          + `\n@media screen { ins.mnote { box-shadow: unset; } }`
-          + `\n@media print { ins.mnote, ins.mnote.minz { margin-right: 0; } }\n</style>\n`;
-        ecorender.appendChild(mndiv);
+      ndiv = document.createElement('div');
+      ndiv.id = "mnmask";
+      ndiv.setAttribute('onclick', "EC2.mnTog(0)");
+      ecorender.appendChild(ndiv);
+      ndiv = document.createElement('div');
+      ndiv.id = "mnbar";
+      ndiv.setAttribute('onclick', "EC2.mnTog(1)");
+      !(mnlen = cfgs.ahls.flat().filter(e => /\{ *\+\+.*\}$/.test(e)).length)
+      || ( ndiv.innerHTML
+        = `\n<style>\nins.mnote { position: relative; margin-right: calc(3px - var(--mntblrt, 0px) - var(--mnbodrt, 8px)); overflow: hidden; z-index: 3; }`
+        + `\nins.mnote.minz { background: initial; width: 10px; height: 0; margin-right: calc(0px - var(--mntblrt, 0px) - var(--mnbodrt, 8px)); padding: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 5px solid WhiteSmoke; pointer-events: none; }`
+        + `\n@media screen { ins.mnote { box-shadow: unset; } }`
+        + `\n@media print { ins.mnote, ins.mnote.minz { margin-right: 0; } }\n</style>\n` );
+      ecorender.appendChild(ndiv);
+      if (mnlen) {
+        ndiv = document.createElement('div');
+        ndiv.id = "mnnav";
+        ndiv.className = "field is-grouped is-grouped-centered";
+        ndiv.innerHTML
+          = `\n<span class="control"><button class="button is-light has-text-grey" onclick="EC2.mnNav(${mnlen}, -1)">&#x25e4;</button></span><span class="control"><button id=mncount class="button is-light has-text-grey" onclick="EC2.mnNav(${mnlen}, 0)">1 of ${mnlen}</button></span><span class="control"><button class="button is-light has-text-grey" onclick="EC2.mnNav(${mnlen}, 1)">&#x25e2;</button></span>\n`;
+        ecorender.appendChild(ndiv);
       }
       tstamp1 = tstamp1 - (epsets.discdays * 24 * 60 * 60 * 1000);
       cfgs.ahls = cfgs.ahls.map( (hli, i) => JSON.stringify(["{}"].concat(hli), null, 2)
@@ -4787,11 +4790,19 @@ mnTog(xpnd) {
       - +getComputedStyle(e.parentElement).width.replace(/px/, "") + "px" ))
   || [mnmask, mnnav].forEach(e => e.classList.toggle("is-hidden"));
 },
-mnNav(nxt, len) {
-  let mncount = document.querySelector('#ecorender>#mnnav>#mncount'),
-    ct = mncount && +mncount.innerText.replace(/ .+/, "");
-  !mncount || ( mncount.innerText
-    = (!nxt ? (!(ct - 1) ? len : ct - 1) : (!(ct - len) ? 1 : ct + 1)) + " of " + len );
+mnNav(len, incr) {
+  let ofy,
+    mncount = document.querySelector('#ecorender>#mnnav #mncount'),
+    nbr = mncount && (+mncount.innerText.replace(/ .+/, "") + incr) || 0,
+    ptQ = e => document.elementFromPoint(document.documentElement.clientWidth - 5, window.innerHeight / 2 + e);
+  nbr = nbr > len ? 1 : !nbr ? len : nbr;
+  if (!incr) {
+    ofy = [0, 10, -10, 20, -20, 30, -30, 40, -40, 50, -50, 60, -60, 70, -70, 80, -80, 90]
+      .find(n => ptQ(n).classList.contains("mnote"));
+    nbr = +ptQ(ofy || -90).id.replace(/^mnot/, "") || nbr;
+  }
+  !mncount || !(mncount.innerText = nbr + " of " + len)
+  || document.querySelector("#mnot" + nbr).scrollIntoView({ behavior: "smooth", block: "center" });
 },
 discTog(evt) {
   let dload = document.querySelectorAll('#ecoesp0 #prjdisc>.field .mlft2>input[type=checkbox]'),

@@ -1042,6 +1042,8 @@
   flex-grow: 1;
   flex-shrink: 1;
 }
+.field.is-grouped.is-grouped-centered { justify-content: center; }
+.field.is-grouped.is-grouped-right { justify-content: flex-end; }
 .field-label .label { font-size: inherit; }
 .field-body .field .field { margin-bottom: 0; }
 @media screen and (max-width: 684px) {
@@ -2082,9 +2084,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
   position: fixed;
   top: 45.5px;
   right: 0;
-  display: flex;
-  width: 320px;
-  justify-content: center;
+  width: 318px;
   z-index: 4;
 }
 #ecoesp0 {
@@ -2149,7 +2149,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 #ecoesp0 #jderaw #rawbtnc,
 #ecoesp0 #toolswap>.field>.txtaprf,
 #ecoesp0 #tooljscon>.txtaprf { margin: 3.5px 0 0 0; }
-#ecorender>#mnnav>.button,
+#ecorender>#mnnav .button,
 #econav0 .navbar-dropdown>.txtaprf>.button:not(:hover),
 #ecoesp0 #prjdisc>.media:last-child>.media-content>.txtaprf>.button:not(:hover),
 #ecoesp0 #jderaw #rawbtnc>.button:not(:hover),
