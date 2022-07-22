@@ -2439,7 +2439,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
           </span>
           <span class="control">
             <label class="checkbox has-text-grey">
-              <input id="pf2togswi" type="checkbox" onchange="EC1.pf2Tog()" />
+              <input type="checkbox" id="pf2togswi" onchange="EC1.pf2Tog()" />
               Pty Diffs
             </label>
           </span>
@@ -2838,19 +2838,15 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         <span class="help is-success is-hidden">Data import is successful.</span>
         <span class="help is-danger is-hidden">Data import failed. (See <span class="is-italic">HTTP console</span> for error details.)</span>
         <div class="field">
-          <span class="control">
-            <span class="select">
-              <select id="pc2list" onfocus="EC1.formFoc()" onchange="EC2.pchSel(2)">
-              </select>
-            </span>
+          <span class="control select">
+            <select id="pc2list" onfocus="EC1.formFoc()" onchange="EC2.pchSel(2)">
+            </select>
           </span>
         </div>
         <div class="field is-grouped">
-          <span class="control">
-            <span class="select">
-              <select id="rm2list" onfocus="EC1.formFoc()" onchange="EC2.rmtSel(2)">
-              </select>
-            </span>
+          <span class="control select">
+            <select id="rm2list" onfocus="EC1.formFoc()" onchange="EC2.rmtSel(2)">
+            </select>
           </span>
           <span class="control">
             <button id="rm2btn" class="button is-warning is-outlined" onclick="EC2.dbsSync({RMTFR:1})" &#x21d3; disabled>
@@ -2921,11 +2917,9 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         <span class="help is-success is-hidden">Working file is now added to DB.</span>
         <span class="help is-danger is-hidden">DB file addendum failed. (See <span class="is-italic">HTTP console</span> for error details.)</span>
         <div class="field is-grouped">
-          <span class="control">
-            <span class="select">
-              <select id="pchlist" onfocus="EC1.formFoc()" onchange="EC2.pchSel(1)">
-              </select>
-            </span>
+          <span class="control select">
+            <select id="pchlist" onfocus="EC1.formFoc()" onchange="EC2.pchSel(1)">
+            </select>
           </span>
           <span class="control">
             <button id="pchbtn" class="button is-primary is-outlined" onclick="EC2.pchUpd()" disabled>
@@ -2941,11 +2935,9 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         <span class="help is-success is-hidden">New HTML file/component is now attached to DB assets file.</span>
         <span class="help is-danger is-hidden">Attachment failed. (See <span class="is-italic">HTTP console</span> for error details.)</span>
         <div class="field is-grouped">
-          <span class="control">
-            <span class="select">
-              <select id="dirlist" onfocus="EC1.formFoc()" onchange="EC2.dirSel()" disabled>
-              </select>
-            </span>
+          <span class="control select">
+            <select id="dirlist" onfocus="EC1.formFoc()" onchange="EC2.dirSel()" disabled>
+            </select>
           </span>
           <span class="control">
             <button id="dirbtn" class="button is-success is-outlined" onclick="EC2.dirUpd(1)" disabled>
@@ -2961,11 +2953,9 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         <span class="help is-success is-hidden">Data sync is successful.</span>
         <span class="help is-danger is-hidden">Data sync failed. (See <span class="is-italic">HTTP console</span> for error details.)</span>
         <div class="field is-grouped">
-          <span class="control">
-            <span class="select">
-              <select id="rmtlist" onfocus="EC1.formFoc()" onchange="EC2.rmtSel(1)">
-              </select>
-            </span>
+          <span class="control select">
+            <select id="rmtlist" onfocus="EC1.formFoc()" onchange="EC2.rmtSel(1)">
+            </select>
           </span>
           <span class="control">
             <button id="rmtbtn" class="button is-warning is-outlined" onclick="EC2.dbsSync()" disabled>
@@ -2980,8 +2970,8 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         </div>
         <span class="help is-success is-hidden">Web-asset export is successful.</span>
         <span class="help is-danger is-hidden">Web-asset export failed. (See <span class="is-italic">HTTP console</span> for error details.)</span>
-        <div class="field control">
-          <span class="select">
+        <div class="field">
+          <span class="control select">
             <select id="rm3list" onfocus="EC1.formFoc()" onchange="EC2.srvrSel()">
             </select>
           </span>
@@ -3118,7 +3108,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         </div>
         <div class="field control has-text-grey">
           <label class="checkbox">
-            <input id="calctogswi" type="checkbox" />
+            <input type="checkbox" id="calctogswi" />
             Include demo expressions and functions
           </label>
         </div>
@@ -3681,7 +3671,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         <div class="field">
           <div class="file has-name is-fullwidth">
             <label class="file-label" onfocus="EC1.formFoc()">
-              <input class="file-input" type="file" onchange="EC2.imgLct()" multiple />
+              <input type="file" class="file-input" onchange="EC2.imgLct()" multiple />
               <span class="file-cta">
                 <!-- span class="file-icon">&#x27b2;</span -->
                 <span class="file-label is-size-4 has-text-info">&#x2726;</span>
@@ -3933,17 +3923,15 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         <div class="label has-text-grey">Swap-text SOURCE&emsp;
           <span class="control">
             <label class="checkbox has-text-weight-normal has-text-grey">
-              <input id="swpltogswi" type="checkbox" onchange="EC1.swplTog()" />
+              <input type="checkbox" id="swpltogswi" onchange="EC1.swplTog()" />
               Is user-focused field
             </label>
           </span>
         </div>
         <div class="field is-grouped">
-          <span class="control">
-            <span class="select">
-              <select id="swaplist" onfocus="EC1.formFoc()" onchange="EC1.swplSel()">
-              </select>
-            </span>
+          <span class="control select">
+            <select id="swaplist" onfocus="EC1.formFoc()" onchange="EC1.swplSel()">
+            </select>
           </span>
           <span class="control">
             <button id="swapbtn" class="button is-info is-outlined" onclick="EC1.swapExe()" disabled>
@@ -3980,7 +3968,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         <div class="label has-text-grey">Swap-text TARGET&emsp;
           <span class="control">
             <label class="checkbox has-text-weight-normal has-text-grey">
-              <input id="wraptogswi" type="checkbox" onchange="EC1.wrapTog()" />
+              <input type="checkbox" id="wraptogswi" onchange="EC1.wrapTog()" />
               Wrap
             </label>
           </span>
@@ -4364,11 +4352,11 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
             Discard user credentials
           </label>
           <br /><label class="checkbox has-text-danger">
-            <input id="stoempswi" type="checkbox" onchange="EC1.logtTog()" />
+            <input type="checkbox" id="stoempswi" onchange="EC1.logtTog()" />
             Empty local storage
           </label>
           <br /><label class="checkbox has-text-danger">
-            <input id="dbpurgswi" type="checkbox" onchange="EC1.logtTog()" />
+            <input type="checkbox" id="dbpurgswi" onchange="EC1.logtTog()" />
             Purge all local, project databases
           </label>
         </span>
@@ -4384,6 +4372,21 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
       <pre id="appuinfo"></pre>
     </div>
   </div>
+
+  <datalist id="eco0tocfmts">
+    <option value=" ">(no TOC, no paragraph count)</option>
+    <option value="pre">(revert to preset TOC format)</option>
+    <option value="auto">(TOC auto formatted)</option>
+    <option value="h2 h3">(TOC fmt'd for pts &amp; chs)</option>
+    <option value="h3 r">(TOC fmt'd for chs, no par count)</option>
+    <option value="#h2">(part count)</option>
+    <option value="#h2.#h3">(pt.ch count)</option>
+    <option value="#h2-#h3.#h4">(pt-ch.sect count)</option>
+    <option value="#h2-#h3.#h4.#h5">(pt-ch.sect.sect count)</option>
+    <option value="#h3">(chapter count)</option>
+    <option value="#h3.#h4">(ch.sect count)</option>
+    <option value="#h3.#h4.#h5">(ch.sect.sect count)</option>
+  </datalist>
 
 </div>
 </div>
@@ -4676,11 +4679,24 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
         {{/if}}
       </span>
     </div>
-    <div class="field control">
-      <input id="memoinp" type="text" class="input" placeholder="Subject" onfocus="EC1.formFoc(0)" onblur="EC1.formBlr()" {{#if disbl}}disabled{{/if}} />
+    <div class="field has-addons control">
+      <span class="control is-expanded">
+        <input type="text" id="discinp1" class="input" placeholder="Subject" onfocus="EC1.formFoc(0)" onblur="EC1.formBlr()" {{#if disbl}}disabled{{/if}} />
+      </span>
+      <span class="control">
+        <span class="select">
+          <select id="discsel" onchange="EC2.discTyp()" {{#if disbl}}disabled{{/if}}>
+            <option>Memo</option>
+            <option>Anno</option>
+          </select>
+        </span>
+      </span>
+    </div>
+    <div id="discin2c" class="field control is-hidden">
+      <input type="text" id="discinp2" class="input" list="eco0tocfmts" placeholder="TOC format" onfocus="EC1.formFoc(0)" onblur="EC1.formBlr()" {{#if disbl}}disabled{{/if}} />
     </div>
     <div class="field control">
-      <textarea id="memotxta" class="textarea" placeholder="Message" onfocus="EC1.formFoc(0)" onblur="EC1.formBlr()" {{#if disbl}}disabled{{/if}}></textarea>
+      <textarea id="disctxta" class="textarea" placeholder="Message" onfocus="EC1.formFoc(0)" onblur="EC1.formBlr()" {{#if disbl}}disabled{{/if}}></textarea>
     </div>
     <span class="txtaprf is-pulled-right">
       <a class="button is-white has-text-weight-normal has-text-link" onclick="EC1.txtaSel('memotxta', 1)">
@@ -4949,20 +4965,6 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
   </span>
   <span class="control is-expanded">
     <input type="text" class="input is-fullwidth" onfocus="EC1.formFoc('#dftbtnc2')" onblur="EC1.jdeDftUpd('tocfmt', 4, 1)" list="eco0tocfmts" value="{{tocfmt}}" />
-    <datalist id="eco0tocfmts">
-      <option value=" ">(no TOC, no paragraph count)</option>
-      <option value="pre">(revert to preset TOC format)</option>
-      <option value="auto">(TOC auto formatted)</option>
-      <option value="h2 h3">(TOC fmt'd for pts &amp; chs)</option>
-      <option value="h3 r">(TOC fmt'd for chs, no par count)</option>
-      <option value="#h2">(part count)</option>
-      <option value="#h2.#h3">(pt.ch count)</option>
-      <option value="#h2-#h3.#h4">(pt-ch.sect count)</option>
-      <option value="#h2-#h3.#h4.#h5">(pt-ch.sect.sect count)</option>
-      <option value="#h3">(chapter count)</option>
-      <option value="#h3.#h4">(ch.sect count)</option>
-      <option value="#h3.#h4.#h5">(ch.sect.sect count)</option>
-    </datalist>
   </span>
   <span id="dftbtnc2" class="dftbtnc posl2 is-hidden">
     <a class="button is-white has-text-link" onclick="EC1.swapExe()">
@@ -5439,7 +5441,7 @@ const hostibm = /\.cloudant[\w.]+$/.test(window.location.host) && window.locatio
     .catch(() => scrInjPr(INI_ASSETS[1]).catch(respShow))
     .then(() => rmtready && dbpch && dbpch.getAttachment(FILE_IDS[2], ATT_KEYS[2])).then(scrInjPr)
     .catch(() => rmtready && scrInjPr(INI_ASSETS[2]).catch(respShow))
-    .then( () => !dbpch || dbpch.name !== DB_NAMES[0] || protfile && !platipd2
+    .then( () => !dbpch || dbpch.name !== DB_NAMES[0] //|| protfile && !platipd2
       ? MDIT_REFS.forEach( (e, i) => //scrInjPr(INI_ASSETS[4]).catch(respShow)
         scrInjPr(a00path + "/" + FILE_IDS[4] + "/" + (i < 2 ? e : "markdown-it-" + e + ".min.js"))
         .catch(() => {}) )
@@ -5469,7 +5471,7 @@ const hostibm = /\.cloudant[\w.]+$/.test(window.location.host) && window.locatio
     .then(() => idbReq = dbpch = null)
     .catch(respShow),
   iniStratgz = () => {
-    if (!window.indexedDB) {
+    if (!window.indexedDB || protfile && !platipd2) {
       asstsLoad(Promise.reject());
     } else {
       idbReq = indexedDB.open("_pouch_" + DB_NAMES[0]); //, DB_VERSION);

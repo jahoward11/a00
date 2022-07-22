@@ -2267,7 +2267,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         apath1 = a1i.attributes[a1i.href ? 'href' : 'src'].value.match(rexatt) || [];
       apath1[2] = apath1[2] && (/^[.-]/.test(apath1[2]) ? "" : ".") + apath1[2];
       apath1[3] || (apath1[3] = (a1i.href || a1i.src).replace(/^(?!blob:).*\//, ""));
-      return /^blob:/.test(apath1[3]) ? null
+      return /^blob:/.test(apath1[3]) || apath1[1] === "a00" && protfile && !platipd2 ? null
       : /^blob:/.test(ua1) ? a1i[a1i.href ? 'href' : 'src'] = ua1
       : apath1[3] && apath1[2] && (apath1[1] || dbpch)
         && (!apath1[1] || Array.from(pchlist.options).some(op => op.value === apath1[1]))
@@ -2291,6 +2291,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       apath2[3] || (apath2[3] = ua2.replace(/^(?!blob:).*\//, ""));
       return /^blob:/.test(ua2) ? styInj(ua2)
       : apath2[3] && apath2[2] && (apath2[1] || dbpch)
+        && !(apath2[1] === "a00" && protfile && !platipd2)
         && (!apath2[1] || Array.from(pchlist.options).some(op => op.value === apath2[1]))
       ? new PouchDB(apath2[1] || dbpch.name)
         .getAttachment(apath2[2], apath2[3])
@@ -2329,6 +2330,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       && (/\bebook-annos-fns\.js$/.test(a3i.src) || ua3 === EC2.u2Blob("ebook-annos-fns.js")) ? null
       : !epsets.appchks[27] && /^blob:/.test(ua3) ? scrInj({ src: ua3 })
       : !epsets.appchks[27] && apath3[3] && apath3[2] && (apath3[1] || dbpch)
+        && !(apath3[1] === "a00" && protfile && !platipd2)
         && (!apath3[1] || Array.from(pchlist.options).some(op => op.value === apath3[1]))
       ? new PouchDB(apath3[1] || dbpch.name)
         .getAttachment(apath3[2], apath3[3])
@@ -3184,7 +3186,8 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
     misctxta = document.querySelector('#ecoesp0 #misctxta'),
     cdirpath = jfw.loadconfigs && jfw.loadconfigs.commondirpath,
     fragsrcxs = jfw.loadconfigs && jfw.loadconfigs.fragsrcxs || [],
-    ucallsgn = (/^(?:![0-9a-z]+-|)([a-z]{3})$/.exec((tm0cntcs[jfw.from || epsets.uname] || "")._id) || [])[1],
+    ucallsgn = ((tm0cntcs[jfw.from || epsets.uname] || "")._id || "")
+      .replace(/^(?:!([0-9a-z]+)-|)([a-z]{3})$|.+/, "$1$2"),
     dirdot = !dirref || /^-/.test(dirref = dirref.replace(/^\./, "")) ? "" : ".",
     rmttxd = dbpch && caccts.find(ob => ob.DBNAME === dbpch.name) || {},
     tstamp1 = Date.now(),
@@ -3290,7 +3293,8 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
     !misctxta.classList.contains('is-warning') || (jfw.file_updated.misc = misctxta.value.trim());
     if (jfw.file_type === "eco-publmgr") {
       !pchutrg || (jfw.file_updated.version = versinp.value.trim());
-      !peoptxta.classList.contains('is-warning') || (jfw.contributors = peoptxta.value.split(/[ ,]+/));
+      !peoptxta.classList.contains('is-warning')
+      || (jfw.contributors = peoptxta.value.trim().split(/[ ,]+/));
     }
   }
   if ( dirref && jfw.file_created
@@ -4791,18 +4795,20 @@ mnTog(xpnd) {
   || [mnmask, mnnav].forEach(e => e.classList.toggle("is-hidden"));
 },
 mnNav(len, incr) {
-  let ofy,
+  let ofy, mn0,
     mncount = document.querySelector('#ecorender>#mnnav #mncount'),
     nbr = mncount && (+mncount.innerText.replace(/ .+/, "") + incr) || 0,
-    ptQ = e => document.elementFromPoint(document.documentElement.clientWidth - 5, window.innerHeight / 2 + e);
+    ptQ = e => document.elementFromPoint(
+      document.documentElement.clientWidth - 5, e + window.innerHeight / 2 );
   nbr = nbr > len ? 1 : !nbr ? len : nbr;
   if (!incr) {
     ofy = [0, 10, -10, 20, -20, 30, -30, 40, -40, 50, -50, 60, -60, 70, -70, 80, -80, 90]
-      .find(n => ptQ(n).classList.contains("mnote"));
-    nbr = +ptQ(ofy || -90).id.replace(/^mnot/, "") || nbr;
+      .find(n => ptQ(n).classList.contains("mnote")) || -90;
+    nbr = +ptQ(ofy).id.replace(/^mnot/, "") || nbr;
   }
   !mncount || !(mncount.innerText = nbr + " of " + len)
-  || document.querySelector("#mnot" + nbr).scrollIntoView({ behavior: "smooth", block: "center" });
+  || !(mn0 = document.querySelector("#ecorender #mnot" + nbr))
+  || mn0.scrollIntoView({ behavior: "smooth", block: "center" });
 },
 discTog(evt) {
   let dload = document.querySelectorAll('#ecoesp0 #prjdisc>.field .mlft2>input[type=checkbox]'),
@@ -4821,18 +4827,31 @@ discTog(evt) {
   reniscurr = false;
   prjDiscGen();
 },
+discTyp() {
+  let discinp1 = document.querySelector('#ecoesp0 #discinp1'),
+    discin2c = document.querySelector('#ecoesp0 #discin2c'),
+    disctxta = document.querySelector('#ecoesp0 #disctxta'),
+    an1 = document.querySelector('#ecoesp0 #discsel').selectedIndex;
+  !an1 ? discin2c.classList.add("is-hidden") : discin2c.classList.remove("is-hidden");
+  discinp1.placeholder = !an1 ? "Subject" : "Tags";
+  disctxta.placeholder = !an1 ? "Message" : "Annotations";
+},
 discAdd(discsync) {
-  let ucallsgn = (/^(?:![0-9a-z]+-|)([a-z]{3})$/.exec((tm0cntcs[epsets.uname] || "")._id) || [])[1],
+  let ucallsgn = ((tm0cntcs[epsets.uname] || "")._id || "")
+      .replace(/^(?:!([0-9a-z]+)-|)([a-z]{3})$|.+/, "$1$2"),
     attlist = document.querySelector('#econav0 #attlist'),
     pfslist = document.querySelector('#econav0 #pfslist'),
-    memoinp = document.querySelector('#ecoesp0 #memoinp'),
-    memotxta = document.querySelector('#ecoesp0 #memotxta'),
+    discinp1 = document.querySelector('#ecoesp0 #discinp1'),
+    discinp2 = document.querySelector('#ecoesp0 #discinp2'),
+    disctxta = document.querySelector('#ecoesp0 #disctxta'),
+    an1 = document.querySelector('#ecoesp0 #discsel').selectedIndex,
     rmttxd = dbpch && txCrdtlz(caccts.find(ob => ob.DBNAME === dbpch.name)) || {},
     tstamp1 = Date.now(),
     cobj = {
-      _id:  "~" + "m" + new Date(tstamp1).toISOString().replace(/\.\w+$|[:-]/g, "") + ucallsgn,
+      _id:  "~" + (!an1 ? "m" : "a")
+        + new Date(tstamp1).toISOString().replace(/\.\w+$|[:-]/g, "") + ucallsgn,
       _rev: "",
-      file_type: "eco-memo",
+      file_type: !an1 ? "eco-memo" : "eco-anno",
       file_created: {
         username:  epsets.uname,
         timestamp: tstamp1,
@@ -4842,12 +4861,15 @@ discAdd(discsync) {
       },
       linkref:(attlist.value || pfslist.value && pfslist.selectedOptions[0].textContent || "")
         .replace(/(?:-\w?[.\d]+|)\.\w+(?: *\*[^a-z]*|)$|^\./g, ""),
-      from:   epsets.uname,
-      to:     "",
-      subject:memoinp.value,
-      body:   memotxta.value
+      from:   !an1 ? epsets.uname : undefined,
+      to:     !an1 ? "" : undefined,
+      subject:!an1 ? discinp1.value : undefined,
+      body:   !an1 ? disctxta.value : undefined,
+      tags:   !an1 ? undefined : discinp1.value.trim().split(/[ ,]+/),
+      tocfmt: !an1 ? undefined : discinp2.value,
+      texthl: !an1 ? undefined : disctxta.value.trim().split(/\n/)
     };
-  if (!ucallsgn || !memotxta.value || !dbpch) {
+  if (!dbpch || !ucallsgn || !disctxta.value && (!an1 || !discinp1.value && !discinp2.value)) {
     return !discsync || !rmttxd.DBNAME || !rmttxd.DBORIG
     || couchSync(Object.assign({ RMTFR: !tm0urole }, rmttxd));
   } else if (tm0urole) {
