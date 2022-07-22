@@ -21,7 +21,7 @@ const h1node = window.editorApp || window.EC1 ? null : document.head,
   dswrap = document.querySelector(d1wrap + '>section:first-child') ? ">section"
     : document.querySelector(d1wrap + '>.section') ? ">.section" : "",
   dmwrap = !document.querySelector(d1wrap + dswrap + '>main') ? "" : ">main",
-  dstyles = (window.editorApp || window.EC1 ? d1node : document).querySelectorAll('style') || [],
+  dstyles = (window.editorApp || window.EC1 ? d1node : document).querySelectorAll('style'),
   sepahlwr = /<!-- *(?:annotations-hili|annoshl|texthl).*\n*([^]*?)\n*-->/i,
   sepahlmc = /((?:(?:\n*\/.+\/[gim]*|\n*{[ *+:=_~]*\\?[#.]?\w*}|\n*.+?{ *\+\+ *\\?[#.]?\w*})(?:\n|(?=$))|\n)+|^)([^]*?)(?=(?:\n+\/.+\/[gim]*|\n*{[ *+:=_~]*\\?[#.]?\w*}|\n+.+?{ *\+\+ *\\?[#.]?\w*})(?:\n|$)|\n\n|$)/g,
   sepaperiph = /<!--[^]*?-->|<(script|style)\b.*?>[^]*?<\/\1>/gi;
@@ -66,7 +66,7 @@ let chid = d1node.querySelector('#header') ? "header" : "top",
   hnwpre0, hnwrap0, hnwrap1, hnwrap3, hxchlvl,
   hsublvls = dcnode.querySelectorAll( ['>h1', '>h2', '>h3', '>h4', '>h5', '>h6']
     .map(e => ":not(" + d1wrap + dswrap + dmwrap + "):not(header)" + e).join() ),
-  htitle = (d1node.querySelectorAll('h1, h2') || [null])[0],
+  htitle = d1node.querySelectorAll('h1, h2')[0],
   hxct = [0, 0, 0, 0, 0, 0, 0],
   hxct_hhx = [0, 0, 0, 0, 0, 0, 0],
   hxi, hxilvl, hxilvlprv, hxlen, hxrlvl, hxsdiff, hxsl, hxtoplvl, i,
@@ -332,7 +332,7 @@ function annosHilit(dochtml) {
       : isregx ? txt : !aptys[3] ? /^$/ : !texthl ? aptys[3] : new RegExp(aptys[3]);
       //("\\b" + aptys[3] + "\\b", "gi")
     refnc = atag === "ins" ? ( !aptys[3] ? "$&"
-        : "$& <ins id=mnot" + (++mnct) + (acolor || " class=mnote") + ">"
+        : "$& <ins" + (acolor || " id=mnot" + ++mnct + " class=mnote") + ">"
           + (!mdit ? aptys[3] : mdit.renderInline(aptys[3])).replace(/\\n/g, "\n") + "</ins>" )
       : isregx || !texthl ? "<" + atag + acolor + ">$&</" + atag + ">"
       : (...args) => "<" + atag + acolor + ">" + ( args.slice(1, args.length - 2)
@@ -398,6 +398,8 @@ if (!d1node.querySelector('.refnbr')) {
   annosXlink();
 }
 d1node.innerHTML = annosHilit(d1node.innerHTML);
+d1node.querySelectorAll('td:not(first-of-type)>ins.mnote')
+.forEach(e => e.parentElement.parentElement.firstElementChild.appendChild(e));
 !tocbuild || d1node.querySelector('#TOC') // insert toc
 || ( d1node.innerHTML = d1node.innerHTML
   .replace( /(<header\b.*?>[^]*?<\/header>\n+|<\/h[1-6]>[^]*?\n(?= *<main\b.*?>))|^(?= *<(?:figure|hr)\b.*?>(?:[^<]|<(?!\/?header\b.*?>|figure\b.*?>|hr\b.*?>))*?(?:<(?:div|p)\b.*? class=['"]?navch\b.*?>|<h([1-6])\b.*?>.*?<\/h\2>)| *<(?:div|p)\b.*? class=['"]?navch\b.*?>)/im,
