@@ -44,6 +44,8 @@ const hostibm = /\.cloudant[\w.]+$/.test(window.location.host) && window.locatio
   },
   pf3stor = {},
   rexatt = /(?:@import +(?:url\(|)['"]?|\S+: *url\(['"]?|^)(?:\.\/|\.\.\/(?:\.\.\/(.*)\/|)(.*)\/|)([^\n\/]+\.(?:giff?|jpe?g|m?js|png|s?css))['"]?\)?;?$/i,
+  rexfid = /^$|^_design\/\w+$|^[!.~-]?\w[\w!.*+~-]*$/,
+  rexfix = /^_(?!design\/\w+$)|[*~]\(?[0-9]*\)?$/,
   reximg = /\.(?:giff?|jpe?g|png)$/i,
   rexloc = /^(?:(?:\.\.\/\.\.|\.\.|)\/(?=$|\w)|\.\/(?=[^ \/])|\/\/|\$|blob:[\w/:-]*(?!.* ))[ \w/!.*+~-]*$/,
   rexrmt = /^https?:\/\/[ \w/#%!?=&@:.,+~-]+$/;
@@ -1129,8 +1131,7 @@ function publResets() {
   } else {
     filewkg.file_type !== "eco-contact" || (cntcbtn.disabled = false);
     pchbtn.disabled = !pchlist.value
-    || !/^$|^[!.~-]?\w[\w!.*+~-]*$/.test(filewkg._id) || /^_|[*~]\(?[0-9]*\)?$/.test(filewkg._id)
-    ? true : false;
+    || !rexfid.test(filewkg._id) || rexfix.test(filewkg._id) ? true : false;
     dirlist.value = !filewkg.filefrags || !subdir ? "" : subdir.replace(/^(?=[^.-])/, ".");
     dirlist.disabled = !filewkg.filefrags;
     dirbtn.disabled = !dirlist.value;
@@ -2505,7 +2506,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         ndiv.id = "mnnav";
         ndiv.className = "field is-grouped is-grouped-centered";
         ndiv.innerHTML
-          = `\n<span class="control"><button class="button is-light has-text-grey" onclick="EC2.mnNav(${mnlen}, -1)">&#x25e4;</button></span><span class="control"><button id=mncount class="button is-light has-text-grey" onclick="EC2.mnNav(${mnlen}, 0)">1 of ${mnlen}</button></span><span class="control"><button class="button is-light has-text-grey" onclick="EC2.mnNav(${mnlen}, 1)">&#x25e2;</button></span>\n`;
+          = `\n<span class="control"><button class="button is-light has-text-grey" onclick="EC2.mnNav(-1)">&#x25e4;</button></span><span class="control"><button id=mncount class="button is-light has-text-grey" onclick="EC2.mnNav(0)">1 of ${mnlen}</button></span><span class="control"><button class="button is-light has-text-grey" onclick="EC2.mnNav(1)">&#x25e2;</button></span>\n`;
         ecorender.appendChild(ndiv);
       }
       tstamp1 = tstamp1 - (epsets.discdays * 24 * 60 * 60 * 1000);
@@ -2556,7 +2557,7 @@ function annosGet(fileref = "") {
         VIEW:   "files-static",
         OPTS:   {
           //startkey: undefined,
-          endkey: epsets.discload[1] ? ["B"] : null
+          endkey: epsets.discload[1] ? ["b"] : null
         }
       };
     !window.PouchDB || !txdata.DBNAME ? rslv() : new PouchDB(txdata.DBNAME)
@@ -2566,8 +2567,8 @@ function annosGet(fileref = "") {
       //endkey: undefined,
       include_docs: true }) )
     .then( rslt => ahls = rslt.rows && rslt.rows.filter( r => /^~a\d{8}|^~[a-z]{3}A/.test(r.id)
-        && (lnkr = (r.doc || r.value).linkref)
-        && typeof lnkr === 'string' && fileref.indexOf(lnkr) > -1 )
+        && (lnkr = (r.doc || r.value).linkref) && typeof lnkr === 'string'
+        && (fileref.indexOf(lnkr) > -1 || fileref.indexOf(lnkr.replace(/^.+\//, "")) > -1) )
       .map(r => {
         fcps.push({
           aid: r.id,
@@ -2582,8 +2583,9 @@ function annosGet(fileref = "") {
     .then( keys => Promise.all(
       keys.map( k => !/\*\(\d+\)$/.test(k) && localforage.getItem(k)
         .then(val => {
-          if ( /^{".+}$/.test(val) && (lnkr = (val = jsonParse(val) || "").linkref)
-          && typeof lnkr === 'string' && fileref.indexOf(lnkr) > -1 ) {
+          if ( /^{".+}$/.test(val)
+          && (lnkr = (val = jsonParse(val) || "").linkref) && typeof lnkr === 'string'
+          && (fileref.indexOf(lnkr) > -1 || fileref.indexOf(lnkr.replace(/^.+\//, "")) > -1) ) {
             fcps.push({
               unm: (val.file_created || "").username,
               ts2: (val.file_created || "").timestamp
@@ -2591,7 +2593,7 @@ function annosGet(fileref = "") {
             tocs.push(val.tocfmt);
             return val.texthl || [];
           }
-        }) )))
+        }) ) ))
     .then( ah2s => rslv({
       fcps: fcps,
       tocs: tocs,
@@ -2602,6 +2604,7 @@ function annosGet(fileref = "") {
 
 function webdocGen(redirect, pdata = filewkg || Object.assign({}, ECOTMPLS.publmgr)) {
   let ecolinks = document.querySelector('#ecolinks'),
+    sdir = pdata.file_updated.subdir,
     scriptsconstr = pdata.parseconfigs.scriptsconstr,
     scriptsincl = pdata.parseconfigs.scriptsincl,
     sil = scriptsincl.length,
@@ -2669,7 +2672,7 @@ function webdocGen(redirect, pdata = filewkg || Object.assign({}, ECOTMPLS.publm
   if (redirect) {
     return rsltcontent;
   } else {
-    annosGet(pdata._id).catch(msgHandl)
+    annosGet((!sdir ? "" : sdir + "/") + pdata._id).catch(msgHandl)
     .then(cfgs => dataDispl(rsltcontent, 3, null, cfgs));
   }
 }
@@ -2752,9 +2755,9 @@ function txdPrep(filepath) {
 // returns: txdata-obj, gen'd from filepath-str/valcon-str/valcon-json -- otherwise, empty-obj
   let valcon = document.querySelector('#econav0 #qcontxta').value.trim(),
     txdata = /^{\s*"[^]+}$|^\[[^]*{\s*"[^]+}\s*\]$/.test(valcon) && jsonParse(valcon) || {},
-    fpathes = /^(?:(?:(https?:\/\/)(?:([\w-]+):|)(?:([\w-]+)@|)([\w!.*+~-]+)(?:(?=$)|\/)|(\.\.\/\.\.\/)|\/)(?:([_a-z][0-9_a-z$,+-]*)(?:(?=$)|\/)|(?=$))|(\.\.\/)(?!$)|)(?:((?:_design\/|(?!\.\.?\/))[^ \/]+)(?:\/([^ \/]*)|)|)$/.exec(filepath || valcon);
+    fpathes = /^(?:(?:(https?:\/\/)(?:([\w-]+):|)(?:([\w-]+)@|)([\w!.*+~-]+)(?:(?=$)|\/)|(\.\.\/\.\.\/)|\/)(?:([_a-z][0-9_a-z$,+-]*)(?:(?=$)|\/)|(?=$))|(\.\.\/)(?!$)|)(?:((?:_design\/|(?!\.\.?\/))[^ \/]+)(?:\/(_view\/|)([^ \/]*)|)|)$/.exec(filepath || valcon);
   !fpathes || fpathes[5] && fpathes[6] === "a00"
-  || (!/^$|^[!.~-]?\w[\w!.*+~-]*$/.test(fpathes[0]) || /^_|[*~]\(?[0-9]*\)?$/.test(fpathes[0]))
+  || (!rexfid.test(fpathes[0]) || rexfix.test(fpathes[0]))
   && (fpathes[0] === fpathes[8] || (fpathes[1] || fpathes[5]) && !fpathes[6] && !filepath)
   ? ![rexloc, rexrmt].some(e => e.test(filepath || valcon)) || ( txdata = {
       url:  filepath || valcon,
@@ -2767,7 +2770,8 @@ function txdPrep(filepath) {
       DBORIG: fpathes[1] + fpathes[4] || (fpathes[5] || fpathes[7]) && a00orig || undefined,
       DBNAME: fpathes[6] || (filepath == 0 && !fpathes[1] || filepath) && dbpch && dbpch.name,
       FILEID: fpathes[8],
-      ATTKEY: fpathes[9],
+      ATTKEY: !fpathes[9] && fpathes[10] || undefined,
+      VIEW:   fpathes[9] && fpathes[10] || undefined
     };
   return [txdata, valcon];
 }
@@ -3789,7 +3793,7 @@ jdeDftUpd(ptyk, dnbr, inp) { // also triggered by swapExe
   !epsets.swapchks[0] || (document.querySelector('#ecoesp0 #prsebtn').disabled = !fldfoc);
   EC1.formBlr();
   if ( fldmfd && ptyvfw !== undefined && (ptyvfw || "").toString()
-  !== (ptyk !== "texthl" ? fldmfd.value : fldmfd.value.split("\n").toString()) ) {
+  !== (ptyk !== "texthl" ? fldmfd.value : fldmfd.value.trim().split("\n").toString()) ) {
     ptyk ? filewkg[ptyk] = ( !Array.isArray(ptyvfw) ? fldmfd.value.trim()
       : ptyk === "texthl" && /^eco-anno$/.test(filewkg.file_type) ? fldmfd.value.trim().split("\n")
       : fldmfd.value.trim().replace(/([^\s,;'"]+|(['"]).+?\2)[\s,;]*/g, "$1\n").trim().split("\n") )
@@ -4779,6 +4783,7 @@ mnTog(xpnd) {
     mnnav = document.querySelector('#ecorender>#mnnav'),
     bodwid = nmain && +getComputedStyle(nmain).width.replace(/px/, "")
       || +getComputedStyle(document.body).width.replace(/px/, "");
+  xpnd != null || EC2.mnNav();
   !mnmask || xpnd == !document.querySelector('#ecorender #mnbar.minz')
   || document.querySelectorAll('#ecorender .mnote, #ecorender #mnbar')
     .forEach(e => e.classList.toggle("minz"))
@@ -4794,20 +4799,21 @@ mnTog(xpnd) {
       - +getComputedStyle(e.parentElement).width.replace(/px/, "") + "px" ))
   || [mnmask, mnnav].forEach(e => e.classList.toggle("is-hidden"));
 },
-mnNav(len, incr) {
+mnNav(incr) {
   let ofy, mn0,
+    len = document.querySelectorAll('#ecorender .mnote').length,
     mncount = document.querySelector('#ecorender>#mnnav #mncount'),
-    nbr = mncount && (+mncount.innerText.replace(/ .+/, "") + incr) || 0,
+    nbr = incr == null && 1 || mncount && (+mncount.innerText.replace(/ .+/, "") + incr) || 0,
     ptQ = e => document.elementFromPoint(
       document.documentElement.clientWidth - 5, e + window.innerHeight / 2 );
-  nbr = nbr > len ? 1 : !nbr ? len : nbr;
-  if (!incr) {
+  nbr = !len ? 0 : nbr > len ? 1 : !nbr ? len : nbr;
+  if (incr == 0) {
     ofy = [0, 10, -10, 20, -20, 30, -30, 40, -40, 50, -50, 60, -60, 70, -70, 80, -80, 90]
       .find(n => ptQ(n).classList.contains("mnote")) || -90;
     nbr = +ptQ(ofy).id.replace(/^mnot/, "") || nbr;
   }
-  !mncount || !(mncount.innerText = nbr + " of " + len)
-  || !(mn0 = document.querySelector("#ecorender #mnot" + nbr))
+  !mncount || !(mncount.innerText = nbr + " of " + len) || incr == null
+  || !(mn0 = document.querySelector('#ecorender #mnot' + nbr))
   || mn0.scrollIntoView({ behavior: "smooth", block: "center" });
 },
 discTog(evt) {
@@ -4834,7 +4840,7 @@ discTyp() {
     an1 = document.querySelector('#ecoesp0 #discsel').selectedIndex;
   !an1 ? discin2c.classList.add("is-hidden") : discin2c.classList.remove("is-hidden");
   discinp1.placeholder = !an1 ? "Subject" : "Tags";
-  disctxta.placeholder = !an1 ? "Message" : "Annotations";
+  disctxta.placeholder = !an1 ? "Message" : "Strikes, inserts & highlights";
 },
 discAdd(discsync) {
   let ucallsgn = ((tm0cntcs[epsets.uname] || "")._id || "")
@@ -4857,17 +4863,18 @@ discAdd(discsync) {
         timestamp: tstamp1,
         dborigin:  rmttxd.DBORIG || a00orig || "",
         dbname:    rmttxd.DBNAME || "",
-        subdir:    ""
+        subdir:    (attlist.value || pfslist.selectedOptions[0].textContent || "")
+                   .replace(/^\.?([^\/]*)\/.+$|.+/, "$1")
       },
-      linkref:(attlist.value || pfslist.value && pfslist.selectedOptions[0].textContent || "")
-        .replace(/(?:-\w?[.\d]+|)\.\w+(?: *\*[^a-z]*|)$|^\./g, ""),
-      from:   !an1 ? epsets.uname : undefined,
-      to:     !an1 ? "" : undefined,
-      subject:!an1 ? discinp1.value : undefined,
-      body:   !an1 ? disctxta.value : undefined,
-      tags:   !an1 ? undefined : discinp1.value.trim().split(/[ ,]+/),
-      tocfmt: !an1 ? undefined : discinp2.value,
-      texthl: !an1 ? undefined : disctxta.value.trim().split(/\n/)
+      linkref: (attlist.selectedOptions[0].textContent || pfslist.value || "")
+               .replace(/(?:-\w?[.\d]+|)\.\w+(?: *\*[^a-z]*|)$|^\./g, ""),
+      from:    !an1 ? epsets.uname : undefined,
+      to:      !an1 ? "" : undefined,
+      subject: !an1 ? discinp1.value : undefined,
+      body:    !an1 ? disctxta.value : undefined,
+      tags:    !an1 ? undefined : discinp1.value.trim().split(/[ ,]+/),
+      tocfmt:  !an1 ? undefined : discinp2.value,
+      texthl:  !an1 ? undefined : disctxta.value.trim().split("\n")
     };
   if (!dbpch || !ucallsgn || !disctxta.value && (!an1 || !discinp1.value && !discinp2.value)) {
     return !discsync || !rmttxd.DBNAME || !rmttxd.DBORIG
@@ -4912,8 +4919,7 @@ pchSel(trgnbr) { // also triggered by ibmConnect, qconSyncD
       (filewkg.file_updated || filewkg.file_created || "").dbname || "", pchlist.value );
   if (pchlist.value) {
     pchbtn.disabled = !filewkg
-    || !/^$|^[!.~-]?\w[\w!.*+~-]*$/.test(filewkg._id) || /^_|[*~]\(?[0-9]*\)?$/.test(filewkg._id)
-    ? true : false;
+    || !rexfid.test(filewkg._id) || rexfix.test(filewkg._id) ? true : false;
     document.querySelector('#econav0 #qcontxta').value = "";
     couchSync({ DBNAME: pchlist.value, RMTFR: trgnbr === 0 });
   } else if (dbpch) {
@@ -4938,7 +4944,7 @@ pchUpd() {
   || optg && optg !== "LOCAL temporary files" && !delswi.checked
   || !/^$|^[.-]?\w[\w!.*+~-]*$/.test(dirref)
   || ( /^[!~][a-z]/.test(filewkg._id) ? false
-  : !/^$|^[!.~-]?\w[\w!.*+~-]*$/.test(fileref) || /^_|[*~]\(?[0-9]*\)?$/.test(fileref) ) ) {
+  : !rexfid.test(fileref) || rexfix.test(fileref) ) ) {
     document.querySelectorAll('#ecoesp0 #publcmt>div:nth-of-type(1) .help')[1]
     .classList.remove("is-hidden");
     updDisbl();
