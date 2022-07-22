@@ -379,7 +379,9 @@ texthl = ( !/\v/.test(texthl) ? texthl
   .replace( /\\\(\\\?[!:=].*?[^\n\\]\\\)/g, m => m.replace(/\\(.)/g, "$1")
     .replace(/\\\\\\n/g, "<br>").replace(/\\\\ /g, "(?:\\xa0|&nbsp;)") )
   .replace(/[ \u2008-\u200b]*(?:---?|\u2014)[ \u2008-\u200b]*/g, "[\\x20\\u2008-\\u200b\\u2014-]+")
-  .replace(/[\t ]+/g, "\\s+").replace(/["'‘’“”]/g, "[\"'‘’“”]")
+  .replace(/\xa0|&nbsp;/g, "(?:\\xa0|&nbsp;)")
+  .replace(/"/g, "(?:\"|&quot;)").replace(/&/g, "(?:&|&amp;)")
+  .replace(/[\t ]+/g, "\\s+").replace(/['‘’“”]/g, "[\"'‘’“”]")
   .replace(/\n/g, ")(.*?)(") + ")" ).replace(/\n\n+/g, "\n").trim();
 if (!Array.isArray(acs.texthl) || !acs.texthl.length) { //(/(?:[^\\]|^)(?:\\\\)*\\(?!\\)/g, "$&\\")
   acs.texthl = !texthl ? [] : texthl.split("\n").map(e => !/^\/.+\/[gim]*$/.test(e) ? e : eval(e) || e);
