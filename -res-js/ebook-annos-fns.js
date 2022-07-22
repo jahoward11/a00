@@ -400,12 +400,15 @@ if (!d1node.querySelector('.refnbr')) {
   annosXlink();
 }
 d1node.innerHTML = annosHilit(d1node.innerHTML);
-d1node.querySelectorAll('td:not(first-of-type)>ins.mnote')
-.forEach(e => e.parentElement.parentElement.firstElementChild.appendChild(e));
+!window.mnmask
+|| d1node.querySelectorAll('mark>ins.mnote').forEach(e => e.parentElement.after(" ", e))
+|| d1node.querySelectorAll('mark>ins.mnote').forEach(e => e.parentElement.after(" ", e))
+|| d1node.querySelectorAll('td:not(first-of-type)>ins.mnote')
+  .forEach(e => e.parentElement.parentElement.firstElementChild.append(" ", e));
 !tocbuild || d1node.querySelector('#TOC') // insert toc
 || ( d1node.innerHTML = d1node.innerHTML
   .replace( /(<header\b.*?>[^]*?<\/header>\n+|<\/h[1-6]>[^]*?\n(?= *<main\b.*?>))|^(?= *<(?:figure|hr)\b.*?>(?:[^<]|<(?!\/?header\b.*?>|figure\b.*?>|hr\b.*?>))*?(?:<(?:div|p)\b.*? class=['"]?navch\b.*?>|<h([1-6])\b.*?>.*?<\/h\2>)| *<(?:div|p)\b.*? class=['"]?navch\b.*?>)/im,
-    "$1" + tocbuild )); //<div style=\"display: none;\">\\newpage </div>\n\n" );
+    "$1" + tocbuild ) ); //<div style=\"display: none;\">\\newpage </div>\n\n" );
 d1node.innerHTML = d1node.innerHTML.replace(/<!--phold-periph-->/gi, () => htmlperiphs[pei++]); // restore periph
 if (!Array.from(dstyles).some(s => /#TOC\b/.test(s.innerHTML) && /\.refnbr\b/.test(s.innerHTML))) {
   stynew = document.createElement('style');
@@ -438,7 +441,7 @@ if (!Array.from(dstyles).some(s => /#TOC\b/.test(s.innerHTML) && /\.refnbr\b/.te
       - +getComputedStyle(e.parentElement).borderLeftWidth.replace(/px/, "")
       - +getComputedStyle(e.parentElement).paddingLeft.replace(/px/, "")
       - e.offsetWidth + "px" )), 1000 );
-  !window.EC2 || window.setTimeout(EC2.mnTog, 1000);
+  !window.mnmask || !window.EC2 || window.setTimeout(EC2.mnTog, 1000);
 }
 };
 
