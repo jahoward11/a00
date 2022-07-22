@@ -1586,8 +1586,8 @@ function prjDiscGen() {
     };
   const opts0 = { startkey: "~a", include_docs: true },
     opts1 = {
-      startkey: epsets.discload[0] && !epsets.discload[1] ? ["P"] : undefined,
-      endkey:   !epsets.discload[0] && epsets.discload[1] ? ["B"]
+      startkey: epsets.discload[0] && !epsets.discload[1] ? ["m"] : undefined,
+      endkey:   !epsets.discload[0] && epsets.discload[1] ? ["b"]
         : !epsets.discload[0] && !epsets.discload[1] ? null : undefined
     };
   if ( !attlist.value && (!filewkg || !/^eco-(?:publmgr|srcdoc)$/.test(filewkg.file_type))
