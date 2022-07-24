@@ -11,9 +11,9 @@ window.annos.fns = window.annos.fns || function x(cfgs) {
 'use strict';
 var acs = cfgs && !cfgs.eventPhase && cfgs || window.annos && window.annos.configs || {},
   annoblocks = [], //refnbrAssn, annosXlink
-  bodwid, dstyle0, htmlperiphs, masthd, nmain,
+  bodwid, dstyle0, htmlpers, masthd, nmain,
   pei = 0,
-  stynew, texthl,
+  nsty, texthl,
   tocbuild = ""; //refnbrAssn, annosfns
 const h1node = window.editorApp || window.EC1 ? null : document.head,
   d1wrap = window.editorApp ? "#esrender_42qz0xfp" : window.EC1 ? "#ecorender" : "body",
@@ -22,9 +22,9 @@ const h1node = window.editorApp || window.EC1 ? null : document.head,
     : document.querySelector(d1wrap + '>.section') ? ">.section" : "",
   dmwrap = !document.querySelector(d1wrap + dswrap + '>main') ? "" : ">main",
   dstyles = (window.editorApp || window.EC1 ? d1node : document).querySelectorAll('style'),
-  sepahlwr = /<!-- *(?:annotations-hili|annoshl|texthl).*\n*([^]*?)\n*-->/i,
-  sepahlmc = /((?:(?:\n*\/.+\/[gim]*|\n*{[ *+:=_~]*\\?[#.]?\w*}|\n*.+?{ *\+\+ *\\?[#.]?\w*})(?:\n|(?=$))|\n)+|^)([^]*?)(?=(?:\n+\/.+\/[gim]*|\n*{[ *+:=_~]*\\?[#.]?\w*}|\n+.+?{ *\+\+ *\\?[#.]?\w*})(?:\n|$)|\n\n|$)/g,
-  sepaperiph = /<!--[^]*?-->|<(script|style)\b.*?>[^]*?<\/\1>/gi;
+  rexhlwr = /<!-- *(?:annotations-hili|annoshl|texthl).*\n*([^]*?)\n*-->/i,
+  rexhlmc = /((?:(?:\n*\/.+\/[gim]*|\n*{[ *+:=_~]*\\?[#.]?\w*}|\n*.+?{ *\+\+ *\\?[#.]?\w*})(?:\n|(?=$))|\n)+|^)([^]*?)(?=(?:\n+\/.+\/[gim]*|\n*{[ *+:=_~]*\\?[#.]?\w*}|\n+.+?{ *\+\+ *\\?[#.]?\w*})(?:\n|$)|\n\n|$)/g,
+  rexperi = /<!--[^]*?-->|<(script|style)\b.*?>[^]*?<\/\1>/gi;
 
 function chNbr(chnbru) { //refnbrAssn, annosXlink
   return acs.ptchbg[1] > 1 ? chnbru - (100 * acs.ptchbg[0]) : chnbru;
@@ -308,40 +308,40 @@ function annosXlink() {
 
 function annosHilit(dochtml) {
   let acolor, aptys, atag,
-    colordflts = {span: "", mark: ".ye6", strong: "", em: "", s: "", ins: ""},
-    isregx, mnct = 0, refnc, sepatt, tagdflt = "mark",
+    cdflts = {span: "", mark: ".ye6", strong: "", em: "", s: "", ins: ""},
+    isrex, mnct = 0, rfnc, sepa, tdflt = "mark",
     mdit = window.markdownit && window.markdownit();
   !(mdit && window.markdownitIns && window.markdownitSub && window.markdownitSup)
   || (mdit = mdit.use(window.markdownitIns).use(window.markdownitSub).use(window.markdownitSup));
   acs.texthl.forEach(txt => {
     aptys = /{ *([*+=_~]*) *([#.]?\w*|\\#[0-9a-f]{3,6}) *}$/.exec(txt) || ["", "", ""];
     aptys[3] = typeof txt !== 'string' ? "" : txt.replace(/ *{[ *+=_~]*\\?[#.]?\w* *}$/, "");
-    atag = (isregx = txt instanceof RegExp) ? tagdflt
+    atag = (isrex = txt instanceof RegExp) ? tdflt
       : !aptys[1] || /^==$/.test(aptys[1]) ? "mark"
       : /^\*\*$|^__$/.test(aptys[1]) ? "strong"
       : /^[*_]$/.test(aptys[1]) ? "em"
       : /^~~$/.test(aptys[1]) ? "s"
       : /^\+\+$/.test(aptys[1]) ? "ins"
       : "span"; //e.g. /^=$/.test(aptys[1])
-    acolor = aptys[2] || colordflts[atag];
+    acolor = aptys[2] || cdflts[atag];
     acolor = /^#/i.test(acolor) ? " id=" + acolor.replace(/^#/, "") //(?![0-9a-f]{3,4}$|[0-9a-f]{6,6}$)
       : /^\./.test(acolor) ? " class=" + acolor.replace(/^\./, "")
       : acolor ? " style=\"background: " + acolor.replace(/^\\/, "") + ";\"" : "";
-    sepatt = atag === "ins" && aptys[3]
-      ? eval(sepatt.toString().replace(/(?=(?:\(\?=.*?\)|)\/[gim]*$)/, "<\\/\\w+>"))
-      : isregx ? txt : !aptys[3] ? /^$/ : !texthl ? aptys[3] : new RegExp(aptys[3]);
+    sepa = atag === "ins" && aptys[3]
+      ? eval(sepa.toString().replace(/(?=(?:\(\?=.*?\)|)\/[gim]*$)/, "<\\/\\w+>"))
+      : isrex ? txt : !aptys[3] ? /^$/ : !texthl ? aptys[3] : new RegExp(aptys[3]);
       //("\\b" + aptys[3] + "\\b", "gi")
-    refnc = atag === "ins" ? ( !aptys[3] ? "$&"
+    rfnc = atag === "ins" ? ( !aptys[3] ? "$&"
         : "$& <ins" + (acolor || " id=mnot" + ++mnct + " class=mnote") + ">"
           + (!mdit ? aptys[3] : mdit.renderInline(aptys[3])).replace(/\\n/g, "\n") + "</ins>" )
-      : isregx || !texthl ? "<" + atag + acolor + ">$&</" + atag + ">"
+      : isrex || !texthl ? "<" + atag + acolor + ">$&</" + atag + ">"
       : (...args) => "<" + atag + acolor + ">" + ( args.slice(1, args.length - 2)
           .map((e, i) => e + (i%2 ? "<" + atag + acolor + ">" : "</" + atag + ">")).join("") || args[0] )
         + "</" + atag + ">";
-    dochtml = dochtml.replace(sepatt, refnc);
+    dochtml = dochtml.replace(sepa, rfnc);
     if (/^{[ *+=_~]*\\?[#.]?\w*}$/.test(txt)) {
-      colordflts[atag] = aptys[2];
-      if (atag !== "ins") tagdflt = atag;
+      cdflts[atag] = aptys[2];
+      if (atag !== "ins") tdflt = atag;
     }
   });
   return dochtml
@@ -362,11 +362,11 @@ acs = {
   texthl: acs.texthl || []
 };
 texthl = ( !Array.isArray(acs.texthl) && acs.texthl ? acs.texthl
-  : (d1node.innerHTML.match(sepahlwr) || ["", ""])[1] )
+  : (d1node.innerHTML.match(rexhlwr) || ["", ""])[1] )
   .replace(/(?: +|^)\/\/.*| +$|^ +/gm, "").replace(/(\\n)\n(?=.)/g, "$1");
 texthl = ( !/\v/.test(texthl) ? texthl
   : texthl.replace(/[^\n\v](?=\n.)/gm, "$&\n").replace(/\v$/gm, "") )
-.replace( sepahlmc, (m, c1, c2) => !c2 ? m : c1 + "\n(" + c2.trim()
+.replace( rexhlmc, (m, c1, c2) => !c2 ? m : c1 + "\n(" + c2.trim()
   .replace(/(?=[$().?[\\{|])/g, "\\") // escape 9/12 md chars
   .replace(/(\*\*?|__?)(\*\*?|__?|)(.+?)\2\1/g, "(?:<(?:em|strong)>){1,2}$3(?:</(?:em|strong)>){1,2}")
   .replace(/( |^)==(.+?)==(?=[^\w=])/gm, "$1<mark>$2</mark>")
@@ -390,8 +390,8 @@ if (!Array.isArray(acs.texthl) || !acs.texthl.length) { //(/(?:[^\\]|^)(?:\\\\)*
 d1node.innerHTML = d1node.innerHTML.replace(/<!-- *(?:\/\/ *)?(?:anno|text)[^]*?-->\n?/gi, "");
 d1node.normalize();
 !acs.codehl || hljsSetup();
-htmlperiphs = d1node.innerHTML.match(sepaperiph) || []; // preserve periph
-d1node.innerHTML = d1node.innerHTML.replace(sepaperiph, "<!--phold-periph-->"); // placehold periph
+htmlpers = d1node.innerHTML.match(rexperi) || []; // preserve periph
+d1node.innerHTML = d1node.innerHTML.replace(rexperi, "<!--phold-periph-->"); // placehold periph
 //if (typeof acs.tocfmt !== 'number' || acs.tocfmt >= 0) { refnbrAssn(); }
 if (!d1node.querySelector('.refnbr')) {
   !(window.editorApp || window.EC1)
@@ -409,11 +409,11 @@ d1node.innerHTML = annosHilit(d1node.innerHTML);
 || ( d1node.innerHTML = d1node.innerHTML
   .replace( /(<header\b.*?>[^]*?<\/header>\n+|<\/h[1-6]>[^]*?\n(?= *<main\b.*?>))|^(?= *<(?:figure|hr)\b.*?>(?:[^<]|<(?!\/?header\b.*?>|figure\b.*?>|hr\b.*?>))*?(?:<(?:div|p)\b.*? class=['"]?navch\b.*?>|<h([1-6])\b.*?>.*?<\/h\2>)| *<(?:div|p)\b.*? class=['"]?navch\b.*?>)/im,
     "$1" + tocbuild ) ); //<div style=\"display: none;\">\\newpage </div>\n\n" );
-d1node.innerHTML = d1node.innerHTML.replace(/<!--phold-periph-->/gi, () => htmlperiphs[pei++]); // restore periph
+d1node.innerHTML = d1node.innerHTML.replace(/<!--phold-periph-->/gi, () => htmlpers[pei++]); // restore periph
 if (!Array.from(dstyles).some(s => /#TOC\b/.test(s.innerHTML) && /\.refnbr\b/.test(s.innerHTML))) {
-  stynew = document.createElement('style');
-  stynew.setAttribute('type', 'text/css');
-  stynew.innerHTML //= "\n.hljs, pre.hljs { padding: 0; background-color: transparent; }" )
+  nsty = document.createElement('style');
+  nsty.setAttribute('type', 'text/css');
+  nsty.innerHTML //= "\n.hljs, pre.hljs { padding: 0; background-color: transparent; }" )
   = "\n.ssbr { clear: right; color: DarkGrey; margin: 1em 0; text-align: center; }"
   + "\n.navch, p.navch { margin: 0; padding: 0; }"
   + "\n.refnbr { clear: right; float: right; color: DarkGrey; font-size: 0.625em; line-height: 0.9em; margin: 0 calc(0px - var(--rnblqrt, 0px)) 0 auto; padding: 0 0.25em; text-align: left; user-select: none; }"
@@ -430,8 +430,8 @@ if (!Array.from(dstyles).some(s => /#TOC\b/.test(s.innerHTML) && /\.refnbr\b/.te
   || d1node.querySelector('#title')
   || document.querySelector(d1wrap + dswrap + dmwrap + '>h1')
   || document.querySelector(d1wrap + dswrap + dmwrap + '>h2');
-  dstyle0 || masthd ? (h1node || d1node).insertBefore(stynew, dstyle0 || masthd)
-  : (h1node || d1node).appendChild(stynew);
+  dstyle0 || masthd ? (h1node || d1node).insertBefore(nsty, dstyle0 || masthd)
+  : (h1node || d1node).appendChild(nsty);
   nmain = document.querySelector('main');
   bodwid = nmain && +getComputedStyle(nmain).width.replace(/px/, "")
     || +getComputedStyle(document.body).width.replace(/px/, "");
