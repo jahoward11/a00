@@ -19,15 +19,16 @@ var appid, dbpch, eb1dflt, file2nd, filewkg, fldfoc, idtoks,
   updpch = {},
   updseq = {},
   updts0 = tstamp0;
-const hostibm = /\.cloudant[\w.]+$/.test(window.location.host) && window.location.origin,
+const hostgh = /\.github\.io$/.test(window.location.host),
+  hostibm = /\.cloudant[\w.]+$/.test(window.location.host),
   hostlh = /^localhost:\d+$|^(?:127\.0|192\.168)\.0\.\d+:\d+$/.test(window.location.host),
   platipd2 = (window.navigator.userAgentData || window.navigator).platform === 'MacIntel'
     && window.screen.height === 1024 && window.screen.width === 768,
   platiphn = (window.navigator.userAgentData || window.navigator).platform === 'iPhone',
   protfile = window.location.protocol === 'file:',
-  a00orig = hostibm || localStorage["_ecoa00orig"],
-  a00path = ( protfile || hostlh || hostibm || /\.github\.io$/.test(window.location.host) || !a00orig
-    ? "../.." : a00orig ) + "/a00",
+  a00orig = hostibm && window.location.origin || localStorage["_ecoa00orig"],
+  a00path = localStorage["_ecoa00path"]
+    || (hostgh || hostibm || hostlh || protfile || !a00orig ? "../.." : a00orig) + "/a00",
   asseturls = {
     "eco-srvc1.js":           a00path + "/-app-eco/eco-srvc1.js",
     "eco-srvc2.js":           a00path + "/-app-eco/eco-srvc2.js",
@@ -982,7 +983,7 @@ function anumlIncr(anum) {
 
 function a00Set() {
   caccts = caccts.sort((a, b) => a.DBNAME > b.DBNAME ? 1 : -1);
-  localStorage["_ecoa00orig"] = a00orig = hostibm
+  localStorage["_ecoa00orig"] = a00orig = hostibm && window.location.origin
   || (caccts.find(ob => /^a\d\d/.test(ob.DBNAME) && ob.DBORIG) || "").DBORIG
   || (caccts.find(ob => ob.DBORIG) || "").DBORIG;
 }
@@ -2801,6 +2802,7 @@ function txurlGen(txdata) {
 function couchSync(txdata, valcon = "") {
 // data sources: 1 valcon-filepath/json->txdata, 2 pchSel/ibmConnect-obj->txdata
   txdata || ([txdata, valcon] = txdPrep());
+  txdata = txCrdtlz(txdata);
   let dbpc2, err2, txsjson, loadobj,
     dburl = txurlGen(txdata),
     fileref = document.querySelector('#econav0 #pfsinp').value.replace(/\/ *$|^\u2514 /g, "").trim(),
@@ -2913,6 +2915,7 @@ function couchSync(txdata, valcon = "") {
 
 function couchQry(txdata, destindr, cbfnc) {
 // data sources: 1 valcon-filepath/json->txdata, 2 sellist/attinp-filepath->txdata
+  txdata = txCrdtlz(txdata);
   let dbpc2,
     dburl = txurlGen(txdata),
     optsdds = Object.assign({ startkey: "_design", endkey: "_design0" }, txdata.OPTS),
@@ -2976,6 +2979,7 @@ function couchQry(txdata, destindr, cbfnc) {
 function couchPut(txdata = txdPrep()[0]) {
 // data sources: 1 valcon-json+doc(s)->txdata, 2 valcon-json->txdata & jderaw-json/fw-obj,
 // 3 fwUpdPrep-obj+vassets-json->txdata, 4 pchUpd-obj(+doc)->txdata (& fw-obj)
+  txdata = txCrdtlz(txdata);
   let dbpc2, subdir,
     dburl = txurlGen(txdata),
     fileslf = document.querySelector('#econav0 #pfslist>optgroup[label="LOCAL temporary files"]') || {},
@@ -3046,6 +3050,7 @@ function couchAtt(dirtxd) {
 // 2 dirUpd1-obj->adata & fw-render-text
 // 3 dirUpd2-obj->adata & txdata.CBLOB
 // 4 srvrUpl-obj->adata & fw-render-text/txdata.CBLOB
+  txdata = txCrdtlz(txdata);
   let dbpc2,
     txdata = dirtxd || txdPrep()[0],
     dburl = txurlGen(txdata),
@@ -4614,7 +4619,7 @@ qconSyncD() {
       }
     }), 2 ).then(msgHandl).catch(msgHandl);
   } else if (/^\b\S+$/.test(valcon) || txdata.DBNAME) {
-    couchSync(txCrdtlz(txdata), valcon);
+    couchSync(txdata, valcon);
   } else {
     msgHandl(ECOINSTR[1]);
     msgHandl(txdata);
@@ -4808,18 +4813,20 @@ mnTog(xpnd) {
 },
 mnNav(incr) {
   let ofy, mn0,
-    len = document.querySelectorAll('#ecorender .mnote').length,
+    mnots = document.querySelectorAll('#ecorender .mnote'),
+    len = mnots.length,
+    las = len && +mnots[len - 1].id.replace(/mnot(\d+)/, "$1"),
     mncount = document.querySelector('#ecorender>#mnnav #mncount'),
     nbr = incr == null && 1 || mncount && (+mncount.innerText.replace(/ .+/, "") + incr) || 0,
     ptQ = e => document.elementFromPoint(
       document.documentElement.clientWidth - 5, e + window.innerHeight / 2 );
-  nbr = !len ? 0 : nbr > len ? 1 : !nbr ? len : nbr;
+  nbr = !len ? 0 : nbr > las ? 1 : !nbr ? las : nbr;
   if (incr == 0) {
     ofy = [0, 10, -10, 20, -20, 30, -30, 40, -40, 50, -50, 60, -60, 70, -70, 80, -80, 90]
       .find(n => ptQ(n).classList.contains("mnote")) || -90;
     nbr = +ptQ(ofy).id.replace(/^mnot/, "") || nbr;
   }
-  !mncount || !(mncount.innerText = nbr + " of " + len) || incr == null
+  !mncount || !(mncount.innerText = nbr + " of " + las) || incr == null
   || !(mn0 = document.querySelector('#ecorender #mnot' + nbr))
   || mn0.scrollIntoView({ behavior: "smooth", block: "center" });
 },
@@ -4862,7 +4869,7 @@ discAdd(discsync) {
     discinp2 = document.querySelector('#ecoesp0 #discinp2'),
     disctxta = document.querySelector('#ecoesp0 #disctxta'),
     an1 = document.querySelector('#ecoesp0 #discsel').selectedIndex,
-    rmttxd = dbpch && txCrdtlz(caccts.find(ob => ob.DBNAME === dbpch.name)) || {},
+    rmttxd = dbpch && caccts.find(ob => ob.DBNAME === dbpch.name) || {},
     tstamp1 = Date.now(),
     cobj = {
       _id:  "~" + (!an1 ? "m" : "a")
@@ -5032,7 +5039,7 @@ dbsSync(txdata = {}) { // also triggered by (ibmConnect>)couchSync
       : Object.assign( Object.assign( {}, ( !txdata.DBNAME
         ? caccts[rmtlist.selectedIndex - 1]
         : caccts.find(ob => ob.DBNAME === txdata.DBNAME) ) || {} ), txdata ) );
-    if (txdata.RMTFR || txdata.USRNAM) { // todo: why !tm0urole?
+    if (txdata.USRNAM) { // txdata.RMTFR || // todo: why !tm0urole?
       document.querySelector('#econav0 #qcontxta').value = JSON.stringify(txdata, null, 2) + "\n";
       couchSync();
     } else {
@@ -5058,7 +5065,7 @@ srvrUpl() {
     uplfpath = document.querySelector('#ecoesp0 #uplfpath'),
     typpmgr = filewkg && (filewkg.file_type === "eco-publmgr" || filewkg.filefrags && true),
     attExe = rslt => couchAtt( Object.assign(
-      txCrdtlz(Object.assign({}, caccts.find(ob => ob.DBNAME === rm3list.value))), {
+      Object.assign({}, caccts.find(ob => ob.DBNAME === rm3list.value)), {
         FILEID: uplfpath.value.replace(/^[./]*([^/]+)\/.*|.*/, "$1")
           || ( /\.html?$/.test(attinp.value) || typpmgr
             ? (attinp.value || filewkg._id).replace(/\.\w+$/, "")
@@ -5147,12 +5154,13 @@ logOut() {
     stoempswi.checked = false;
     caccts = [];
     localStorage.removeItem("_couchaccts");
-    localStorage.removeItem("_ecopresets");
-    localStorage.removeItem("_ecopchupds");
     localStorage.removeItem("_ecoa00orig");
-    localStorage.removeItem("_ecoxserver");
+    localStorage.removeItem("_ecoa00path");
     localStorage.removeItem("_ecoclientid");
     localStorage.removeItem("_ecodscendpt");
+    localStorage.removeItem("_ecopchupds");
+    localStorage.removeItem("_ecopresets");
+    localStorage.removeItem("_ecoxserver");
     localStorage.removeItem("__dbat");
     !window.localforage
     || localforage.keys( (err, keys) => err ? msgHandl(err)
