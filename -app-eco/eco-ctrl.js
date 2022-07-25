@@ -983,9 +983,12 @@ function anumlIncr(anum) {
 
 function a00Set() {
   caccts = caccts.sort((a, b) => a.DBNAME > b.DBNAME ? 1 : -1);
-  localStorage["_ecoa00orig"] = a00orig = hostibm && window.location.origin
+  let orig0 = hostibm && window.location.origin
   || (caccts.find(ob => /^a\d\d/.test(ob.DBNAME) && ob.DBORIG) || "").DBORIG
   || (caccts.find(ob => ob.DBORIG) || "").DBORIG;
+  localStorage["_ecoa00orig"] === orig0 || !(localStorage["_ecoa00orig"] = orig0)
+  || msgHandl( "Alert: A new default, DB origin has been set but not applied to all stored asset URLs."
+    + "\nPlease restart app." );
 }
 
 function imgWrap(url) {
