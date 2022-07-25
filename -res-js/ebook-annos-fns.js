@@ -376,12 +376,11 @@ texthl = ( !/\v/.test(texthl) ? texthl
   .replace(/~(\w+)~/g, "<sub>$1</sub>")
   .replace(/\^(\w+)\^/g, "<sup>$1</sup>")
   .replace(/(?=[*+^])/g, "\\") // escape 3/12 md chars
-  .replace(/&/g, "(?:&|&amp;)").replace(/"/g, "(?:\"|&quot;)")
-  .replace(/\xa0|&nbsp;/g, "(?:\\xa0|&nbsp;)")
+  .replace(/&(?!#?\w+;)/g, "(?:&|&amp;)").replace(/\xa0|&nbsp;/g, "(?:\\xa0|&nbsp;)")
   .replace( /\\\(\\\?[!:=].*?[^\n\\]\\\)/g, m => m.replace(/\\(.)/g, "$1")
     .replace(/\\\\\\n/g, "<br>").replace(/\\\\ /g, "(?:\\xa0|&nbsp;)") )
   .replace(/[ \u2008-\u200b]*(?:---?|\u2014)[ \u2008-\u200b]*/g, "[\\x20\\u2008-\\u200b\\u2014-]+")
-  .replace(/[\t ]+/g, "\\s+").replace(/['‘’“”]/g, "[\"'‘’“”]")
+  .replace(/[\t ]+/g, "\\s+").replace(/["'‘’“”]/g, "(?:[\"'‘’“”]|&quot;)")
   .replace(/\n/g, ")(.*?)(") + ")" ).replace(/\n\n+/g, "\n").trim();
 if (!Array.isArray(acs.texthl) || !acs.texthl.length) { //(/(?:[^\\]|^)(?:\\\\)*\\(?!\\)/g, "$&\\")
   acs.texthl = !texthl ? [] : texthl.split("\n").map(e => !/^\/.+\/[gim]*$/.test(e) ? e : eval(e) || e);
