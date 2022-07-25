@@ -988,7 +988,7 @@ function a00Set() {
   || (caccts.find(ob => ob.DBORIG) || "").DBORIG;
   localStorage["_ecoa00orig"] === orig0 || !(localStorage["_ecoa00orig"] = orig0)
   || msgHandl( "Alert: A new default, DB origin has been set but not applied to all stored asset URLs."
-    + "\nPlease restart app." );
+    + "\nSystem Error: Please restart web app." );
 }
 
 function imgWrap(url) {
@@ -3054,9 +3054,8 @@ function couchAtt(dirtxd) {
 // 2 dirUpd1-obj->adata & fw-render-text
 // 3 dirUpd2-obj->adata & txdata.CBLOB
 // 4 srvrUpl-obj->adata & fw-render-text/txdata.CBLOB
-  txdata = txCrdtlz(txdata);
   let dbpc2,
-    txdata = dirtxd || txdPrep()[0],
+    txdata = txCrdtlz(dirtxd || txdPrep()[0]),
     dburl = txurlGen(txdata),
     typpmgr = filewkg && (filewkg.file_type === "eco-publmgr" || filewkg.filefrags && true),
     cdirpath = filewkg && filewkg.loadconfigs && filewkg.loadconfigs.commondirpath,
