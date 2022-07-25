@@ -2781,12 +2781,13 @@ function txCrdtlz(txdata = {}) {
   let pchlist = document.querySelector('#ecoesp0 #pchlist'),
     dbteam = ( Array.from(pchlist.options).find( op => epsets.teamid
       ? op.value === "a00_" + epsets.teamid : /^a\d\d_\w/.test(op.value) ) || {} ).value || "",
-    tm0txd = caccts.find(ob => ob.DBNAME === (dbteam || "a00_" + epsets.teamid)) || {};
+    tm0txd = caccts.find(ob => ob.DBNAME === (dbteam || "a00_" + epsets.teamid)) || {},
+    db0txd = caccts.find(ob => ob.DBNAME === txdata.DBNAME) || {};
   return !/^https:\/\/[\w-]+\.cloudant[\w.]+$/.test(txdata.DBORIG) //txdata.DBPUBL ||
   || txdata.USRNAM && !/^$|password/i.test(txdata.PSSWRD)
   ? txdata : Object.assign(txdata, {
-      USRNAM: tm0txd.USRNAM,
-      PSSWRD: tm0txd.PSSWRD
+      USRNAM: db0txd.USRNAM || tm0txd.USRNAM,
+      PSSWRD: db0txd.PSSWRD || tm0txd.PSSWRD
     });
 }
 
