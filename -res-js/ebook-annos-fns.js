@@ -24,7 +24,11 @@ const h1node = window.editorApp || window.EC1 ? null : document.head,
   dstyles = (window.editorApp || window.EC1 ? d1node : document).querySelectorAll('style'),
   rexhlwr = /<!-- *(?:annotations-hili|annoshl|texthl).*\n*([^]*?)\n*-->/i,
   rexhlmc = /((?:(?:\n*\/.+\/[gim]*|\n*{[ *+:=_~]*\\?[#.]?\w*}|\n*.+?{ *\+\+ *\\?[#.]?\w*})(?:\n|(?=$))|\n)+|^)([^]*?)(?=(?:\n+\/.+\/[gim]*|\n*{[ *+:=_~]*\\?[#.]?\w*}|\n+.+?{ *\+\+ *\\?[#.]?\w*})(?:\n|$)|\n\n|$)/g,
-  rexperi = /<!--[^]*?-->|<(script|style)\b.*?>[^]*?<\/\1>/gi;
+  rexperi = /<!--[^]*?-->|<(script|style)\b.*?>[^]*?<\/\1>/gi,
+  blqLeft = n => !n || !/^(?:BLOCKQUOTE|DL|DD|LI|OL|UL)$/.test(n.nodeName) ? 0
+    : +getComputedStyle(n).marginLeft.replace(/px/, "")
+      + +getComputedStyle(n).borderLeftWidth.replace(/px/, "")
+      + +getComputedStyle(n).paddingLeft.replace(/px/, "") + blqLeft(n.parentElement);
 
 function chNbr(chnbru) { //refnbrAssn, annosXlink
   return acs.ptchbg[1] > 1 ? chnbru - (100 * acs.ptchbg[0]) : chnbru;
@@ -409,13 +413,14 @@ d1node.innerHTML = annosHilit(d1node.innerHTML);
   .replace( /(<header\b.*?>[^]*?<\/header>\n+|<\/h[1-6]>[^]*?\n(?= *<main\b.*?>))|^(?= *<(?:figure|hr)\b.*?>(?:[^<]|<(?!\/?header\b.*?>|figure\b.*?>|hr\b.*?>))*?(?:<(?:div|p)\b.*? class=['"]?navch\b.*?>|<h([1-6])\b.*?>.*?<\/h\2>)| *<(?:div|p)\b.*? class=['"]?navch\b.*?>)/im,
     "$1" + tocbuild ) ); //<div style=\"display: none;\">\\newpage </div>\n\n" );
 d1node.innerHTML = d1node.innerHTML.replace(/<!--phold-periph-->/gi, () => htmlpers[pei++]); // restore periph
-if (!Array.from(dstyles).some(s => /#TOC\b/.test(s.innerHTML) && /\.refnbr\b/.test(s.innerHTML))) {
+if ( !Array.from(dstyles).some( s => /#TOC\b/.test(s.innerHTML) && /\.refnbr\b/.test(s.innerHTML)
+|| /^@import ".*\/style-hjas-dflt0\.css"/m.test(s.innerHTML) )) {
   nsty = document.createElement('style');
   nsty.setAttribute('type', 'text/css');
   nsty.innerHTML //= "\n.hljs, pre.hljs { padding: 0; background-color: transparent; }" )
   = "\n.ssbr { clear: right; color: DarkGrey; margin: 1em 0; text-align: center; }"
   + "\n.navch, p.navch { margin: 0; padding: 0; }"
-  + "\n.refnbr { clear: right; float: right; color: DarkGrey; font-size: 0.625em; line-height: 0.9em; margin: 0 calc(0px - var(--rnblqrt, 0px)) 0 auto; padding: 0 0.25em; text-align: left; user-select: none; }"
+  + "\n.refnbr { clear: right; float: right; color: DarkGrey; font-size: 0.625em; line-height: 0.9; margin: 0 calc(0px - var(--rnblqrt, 0px)) 0 auto; padding: 0 0.25em; text-align: left; user-select: none; }"
   //+ "\n.refnbr a:link, .refnbr a:visited { color: LightSteelBlue; text-decoration: none; }"
   + "\n.mnote, ins.mnote { box-sizing: border-box; clear: right; float: right; background-color: WhiteSmoke; color: SlateGrey; font: normal x-small Helvetica, Arial, sans-serif; width: 312px; margin: 0 8px 8px; padding: 0.1em 0.3em 0.2em; box-shadow: 0 1px 2px -1px DarkGrey; text-decoration: none; user-select: none; white-space: pre-wrap; }"
   + ( !dswrap ? "\n"
@@ -423,7 +428,7 @@ if (!Array.from(dstyles).some(s => /#TOC\b/.test(s.innerHTML) && /\.refnbr\b/.te
     + "\n#TOC.is-relative { z-index: 11; }"
     + "\n@media print, (min-width: 685px) {"
     + " #TOC.is-pulled-right { width: 321px; margin: 0 0 1rem 1rem; } }\n" );
-  dstyle0 = Array.from((h1node || d1node).childNodes).find(n => n.localName === 'style');
+  dstyle0 = Array.from((h1node || d1node).childNodes).find(n => n.nodeName === 'STYLE');
   masthd = d1node.querySelector('#header')
   || document.querySelector(d1wrap + dswrap + dmwrap + '>header')
   || d1node.querySelector('#title')
@@ -431,17 +436,17 @@ if (!Array.from(dstyles).some(s => /#TOC\b/.test(s.innerHTML) && /\.refnbr\b/.te
   || document.querySelector(d1wrap + dswrap + dmwrap + '>h2');
   dstyle0 || masthd ? (h1node || d1node).insertBefore(nsty, dstyle0 || masthd)
   : (h1node || d1node).appendChild(nsty);
+}
+window.setTimeout(() => {
   nmain = document.querySelector('main');
   bodwid = nmain && +getComputedStyle(nmain).width.replace(/px/, "")
-    || +getComputedStyle(document.body).width.replace(/px/, "");
-  window.setTimeout( () => document.querySelectorAll(d1wrap + dswrap + dmwrap + ' blockquote>.refnbr+p')
-    .forEach( e => e.parentElement.style.setProperty( "--rnblqrt", bodwid
-      - +getComputedStyle(e.parentElement).marginLeft.replace(/px/, "")
-      - +getComputedStyle(e.parentElement).borderLeftWidth.replace(/px/, "")
-      - +getComputedStyle(e.parentElement).paddingLeft.replace(/px/, "")
-      - e.offsetWidth + "px" )), 1000 );
-  !window.mnmask || !window.EC2 || window.setTimeout(EC2.mnTog, 1000);
-}
+  || +getComputedStyle(document.body).width.replace(/px/, "");
+  document.querySelectorAll( d1wrap + dswrap + dmwrap + ' blockquote>.refnbr+p',
+    d1wrap + dswrap + dmwrap + ' dd>.refnbr+p', d1wrap + dswrap + dmwrap + ' li>.refnbr+p' )
+  .forEach( e => e.parentElement.style.setProperty( "--rnblqrt",
+    bodwid - blqLeft(e.parentElement) - e.offsetWidth + "px" ));
+  !window.mnmask || !window.EC2 || EC2.mnTog();
+}, 1000);
 };
 
 const rstate = document.readyState,
