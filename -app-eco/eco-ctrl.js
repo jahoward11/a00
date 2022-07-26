@@ -1862,8 +1862,8 @@ function jdePtyGen(rowslr, plai, plbgi) {
   }
   if (filewkg && rowslr !== false) {
     EC1.pfsInp();
-    indrChg( dbmdinp,
-      (jfw.file_updated || jfw.file_created || "").dbname || "", !dbpch ? "" : dbpch.name );
+    !jfw.file_created || indrChg( dbmdinp,
+      (jfw.file_updated || jfw.file_created).dbname || "", !dbpch ? "" : dbpch.name );
     versinp.disabled || indrChg(versinp, jfw.file_updated.version.replace(/\d+$/, m => ++m));
     ownrinp.disabled || indrChg(ownrinp, jfw.file_updated.username, ownrinp.value);
     peoptxta.disabled || indrChg(peoptxta, "" + jfw.contributors, peoptxta.value);
@@ -1874,7 +1874,8 @@ function jdePtyGen(rowslr, plai, plbgi) {
       || ["is-warning", "is-success"].forEach(f => e.classList.remove(f))
       || !i || (e.value = "") || (e.disabled = 1) );
     delswi.checked = delswi.disabled = pfidinp.disabled = 0;
-    dbmdinp.value = (jfw.file_updated || jfw.file_created || "").dbname || "";
+    dbmdinp.value = ( !jfw.file_created ? dbpch && dbpch.name
+      : (jfw.file_updated || jfw.file_created).dbname ) || "";
     dbpch && dbmdinp.value === dbpch.name || indrChg(dbmdinp, dbmdinp.value, !dbpch ? "" : dbpch.name);
     pfidinp.value = jfw._id || "";
     !(jfw.file_updated || jfw.hasOwnProperty("loc_subdir")) || (sdirinp.disabled = 0)
@@ -2500,8 +2501,8 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       ndiv.setAttribute('onclick', "EC2.mnTog(1)");
       !(mnlen = cfgs.ahls.flat().filter(e => /\{ *\+\+.*\}$/.test(e)).length)
       || ( ndiv.innerHTML
-        = `\n<style>\nins.mnote { position: relative; margin-right: calc(3px - var(--mntblrt, 0px) - var(--mnbodrt, 8px)); overflow: hidden; z-index: 3; }`
-        + `\nins.mnote.minz { background: initial; width: 10px; height: 0; margin-right: calc(0px - var(--mntblrt, 0px) - var(--mnbodrt, 8px)); padding: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 5px solid WhiteSmoke; pointer-events: none; }`
+        = `\n<style>\nins.mnote { position: relative; margin-right: calc(3px - var(--mnblqrt, 0px) - var(--mntblrt, 0px) - var(--mnbodrt, 8px)); overflow: hidden; z-index: 3; }`
+        + `\nins.mnote.minz { background: initial; width: 10px; height: 0; margin-right: calc(0px - var(--mnblqrt, 0px) - var(--mntblrt, 0px) - var(--mnbodrt, 8px)); padding: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 5px solid WhiteSmoke; pointer-events: none; }`
         + `\n@media screen { ins.mnote { box-shadow: unset; } }`
         + `\n@media print { ins.mnote, ins.mnote.minz { margin-right: 0; } }\n</style>\n` );
       ecorender.appendChild(ndiv);
@@ -4797,7 +4798,11 @@ mnTog(xpnd) {
     mnmask = document.querySelector('#ecorender>#mnmask'),
     mnnav = document.querySelector('#ecorender>#mnnav'),
     bodwid = nmain && +getComputedStyle(nmain).width.replace(/px/, "")
-      || +getComputedStyle(document.body).width.replace(/px/, "");
+      || +getComputedStyle(document.body).width.replace(/px/, ""),
+    blqLeft = n => !n || !/^(?:BLOCKQUOTE|DL|DD|LI|OL|UL)$/.test(n.nodeName) ? 0
+      : +getComputedStyle(n).marginLeft.replace(/px/, "")
+        + +getComputedStyle(n).borderLeftWidth.replace(/px/, "")
+        + +getComputedStyle(n).paddingLeft.replace(/px/, "") + blqLeft(n.parentElement);
   xpnd != null || EC2.mnNav();
   !mnmask || xpnd == !document.querySelector('#ecorender #mnbar.minz')
   || document.querySelectorAll('#ecorender .mnote, #ecorender #mnbar')
@@ -4807,6 +4812,10 @@ mnTog(xpnd) {
       || +getComputedStyle(document.body).paddingRight.replace(/px/, "")
       + +getComputedStyle(document.body).borderRightWidth.replace(/px/, "")
       + +getComputedStyle(document.body).marginRight.replace(/px/, "") ) + "px" )
+  || document.querySelectorAll( '#ecorender blockquote>p>.mnote',
+      '#ecorender dd>p>.mnote', '#ecorender li>p>.mnote' )
+    .forEach( e => e.parentElement.parentElement.style.setProperty( "--mnblqrt",
+      bodwid - blqLeft(e.parentElement.parentElement) - e.parentElement.offsetWidth + "px" ))
   || document.querySelectorAll('#ecorender th>.mnote, #ecorender td>.mnote')
     .forEach( e => e.parentElement.style.setProperty( "--mntblrt",
       bodwid - e.parentElement.offsetLeft
@@ -4936,8 +4945,9 @@ pchSel(trgnbr) { // also triggered by ibmConnect, qconSyncD
   pdblist.value = trgnbr !== 2 ? pc2list.value = pchlist.value : pchlist.value = pc2list.value;
   pdblist.selectedIndex > -1 || (pdblist.value = "");
   pchhlps.forEach(e => e.classList.add("is-hidden"));
-  !filewkg || !pchlist.value || indrChg( dbmdinp,
-      (filewkg.file_updated || filewkg.file_created || "").dbname || "", pchlist.value );
+  !filewkg || !pchlist.value
+  || ( !filewkg.file_created ? (dbmdinp.value = pchlist.value)
+    : indrChg(dbmdinp, (filewkg.file_updated || filewkg.file_created).dbname || "", pchlist.value) );
   if (pchlist.value) {
     pchbtn.disabled = !filewkg
     || !rexfid.test(filewkg._id) || rexfix.test(filewkg._id) ? true : false;
