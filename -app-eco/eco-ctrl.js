@@ -3466,7 +3466,7 @@ attInp() {
     : localforage.getItem(lfkey, (err, val) => err ? msgHandl(err) : dataDispl(val, 3));
   } else if (/^\$ *\w*(?:\b[.(].+|)$/.test(valatt)) {
     Promise.resolve(EC2.objQA(valatt.replace(/^\$ */, ""))).then(rslt => dataDispl(rslt, 3));
-  } else if (txdata.url) {
+  } else if (valatt && txdata.url) {
     rdataFetch(txdata).then( rslt =>
       /^image/.test(rslt.type) ? dataDispl(imgWrap(valatt), 6)
       : /^(?:json|text)$/.test(txdata.bmet) ? dataDispl(rslt, 7)
