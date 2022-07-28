@@ -47,6 +47,7 @@ const hostgh = /\.github\.io$/.test(window.location.host),
   rexatt = /(?:@import +(?:url\(|)['"]?|\S+: *url\(['"]?|^)(?:\.\/|\.\.\/(?:\.\.\/(.*)\/|)(.*)\/|)([^\n\/]+\.(?:giff?|jpe?g|m?js|png|s?css))['"]?\)?;?$/i,
   rexfid = /^$|^_design\/\w+$|^[!.~-]?\w[\w!.*+~-]*$/,
   rexfix = /^_(?!design\/\w+$)|[*~]\(?[0-9]*\)?$/,
+  rexibm = /^https:\/\/[\w-]+\.cloudant[\w.]+\//,
   reximg = /\.(?:giff?|jpe?g|png)$/i,
   rexloc = /^(?:(?:\.\.\/\.\.|\.\.|)\/(?=$|\w)|\.\/(?=[^ \/])|\/\/|\$|blob:[\w/:-]*(?!.* ))[ \w/!.*+~-]*$/,
   rexrmt = /^https?:\/\/[ \w/#%!?=&@:.,+~-]+$/;
@@ -1943,6 +1944,54 @@ function fwResets(invalid) {
   swapListGen();
 }
 
+function txurlGen(txdata) {
+  let dborgn = /^(https?:\/\/)(.+?)\/?$/.exec(txdata.DBORIG || "") || [];
+  if (window.PouchDB && dborgn[1] && dborgn[2] && txdata.DBNAME) {
+    return dborgn[1]
+    + (!txdata.USRNAM || !txdata.PSSWRD ? "" : txdata.USRNAM + ":" + txdata.PSSWRD + "@")
+    + dborgn[2] + "/" + txdata.DBNAME;
+  }
+}
+
+function txCrdtlz(txdata = {}) {
+  let pchlist = document.querySelector('#ecoesp0 #pchlist'),
+    dbteam = ( Array.from(pchlist.options).find( op => epsets.teamid
+      ? op.value === "a00_" + epsets.teamid : /^a\d\d_\w/.test(op.value) ) || {} ).value || "",
+    tm0txd = caccts.find(ob => ob.DBNAME === (dbteam || "a00_" + epsets.teamid)) || {},
+    db0txd = caccts.find(ob => ob.DBNAME === txdata.DBNAME) || {};
+  return !/^https:\/\/[\w-]+\.cloudant[\w.]+$/.test(txdata.DBORIG) //txdata.DBPUBL ||
+  || txdata.USRNAM && !/^$|password/i.test(txdata.PSSWRD)
+  ? txdata : Object.assign(txdata, {
+      USRNAM: db0txd.USRNAM || tm0txd.USRNAM,
+      PSSWRD: db0txd.PSSWRD || tm0txd.PSSWRD
+    });
+}
+
+function txdPrep(filepath) {
+// returns: txdata-obj, gen'd from filepath-str/valcon-str/valcon-json -- otherwise, empty-obj
+  let valcon = document.querySelector('#econav0 #qcontxta').value.trim(),
+    txdata = /^{\s*"[^]+}$|^\[[^]*{\s*"[^]+}\s*\]$/.test(valcon) && jsonParse(valcon) || {},
+    fpathes = /^(?:(?:(https?:\/\/)(?:([\w-]+):|)(?:([\w-]+)@|)([\w!.*+~-]+)(?:(?=$)|\/)|(\.\.\/\.\.\/)|\/)(?:([_a-z][0-9_a-z$,+-]*)(?:(?=$)|\/)|(?=$))|(\.\.\/)(?!$)|)(?:((?:_design\/|(?!\.\.?\/))[^ \/]+)(?:\/(_view\/|)([^ \/]*)|)|)$/.exec(filepath || valcon);
+  !fpathes || fpathes[5] && fpathes[6] === "a00"
+  || (!rexfid.test(fpathes[0]) || rexfix.test(fpathes[0]))
+  && (fpathes[0] === fpathes[8] || (fpathes[1] || fpathes[5]) && !fpathes[6] && !filepath)
+  ? ![rexloc, rexrmt].some(e => e.test(filepath || valcon)) || ( txdata = {
+      url:  filepath || valcon,
+      bmet: /\.(?:html?|md|m?js|s?css|te?xt|\w{5,})$/i.test(filepath || valcon)
+        ? 'text' : /\.json$/i.test(filepath || valcon) ? 'json' : undefined
+    })
+  : txdata = {
+      USRNAM: fpathes[2],
+      PSSWRD: fpathes[3],
+      DBORIG: fpathes[1] + fpathes[4] || (fpathes[5] || fpathes[7]) && a00orig || undefined,
+      DBNAME: fpathes[6] || (filepath == 0 && !fpathes[1] || filepath) && dbpch && dbpch.name,
+      FILEID: fpathes[8],
+      ATTKEY: !fpathes[9] && fpathes[10] || undefined,
+      VIEW:   fpathes[9] && fpathes[10] || undefined
+    };
+  return [txdata, valcon];
+}
+
 function rsrcsXGet(txdata = {}) {
   let aobj,
     pchlist = document.querySelector('#ecoesp0 #pchlist'),
@@ -1994,6 +2043,11 @@ function rsrcsXGet(txdata = {}) {
         return aobj == null ? ""
         : typeof aobj !== 'object' ? aobj : aobj.content || msgPrefmt(aobj);
       } else if (txdata.url || !txdata.DBNAME && txdata.FILEID) {
+        !rexibm.test(txdata.url) || ( txdata = {
+            url:  txurlGen(txCrdtlz(txdPrep(txdata.url)[0])),
+            crds: txdata.crds || 'include',
+            bmet: txdata.bmet || 'blob'
+          });
         return rdataFetch(txdata.url && txdata || txdata.FILEID).catch(msgPrefmt);
       } else if (window.PouchDB && txdata.DBNAME && txdata.FILEID) {
         return new PouchDB(txdata.DBNAME).get(txdata.FILEID, txdata.OPTS || {})
@@ -2267,30 +2321,35 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       return ufile;
     },
     assGet = (a1i, i) => {
-      let j = i,
+      let txdata,
+        j = i,
         ua1 = !epsets.appchks[26] ? a1i.href || a1i.src : EC2.u2Blob(a1i.href || a1i.src),
-        apath1 = a1i.attributes[a1i.href ? 'href' : 'src'].value.match(rexatt) || [];
+        apath1 = a1i.attributes[a1i.href ? 'href' : 'src'].value.match(rexatt) || [],
+        ablSto = ablob => elsass[j][elsass[j].href ? 'href' : 'src']
+          = asseturls[apath1[3]] = URL.createObjectURL(ablob);
       apath1[2] = apath1[2] && (/^[.-]/.test(apath1[2]) ? "" : ".") + apath1[2];
       apath1[3] || (apath1[3] = (a1i.href || a1i.src).replace(/^(?!blob:).*\//, ""));
       return /^blob:/.test(apath1[3]) || apath1[1] === "a00" && protfile && !platipd2 ? null
       : /^blob:/.test(ua1) ? a1i[a1i.href ? 'href' : 'src'] = ua1
       : apath1[3] && apath1[2] && (apath1[1] || dbpch)
         && (!apath1[1] || Array.from(pchlist.options).some(op => op.value === apath1[1]))
-      ? new PouchDB(apath1[1] || dbpch.name)
-        .getAttachment(apath1[2], apath1[3])
-        .then( ablob => elsass[j][elsass[j].href ? 'href' : 'src']
-          = asseturls[apath1[3]] = URL.createObjectURL(ablob) )
-      : /^https:\/\/[\w-]+\.cloudant[\w.]+\//.test(ua1)
-      ? rdataFetch({ url: ua1, crds: 'include', bmet: 'blob' })
-        .then( ablob => elsass[j][elsass[j].href ? 'href' : 'src']
-          = asseturls[apath1[3]] = URL.createObjectURL(ablob) )
+      ? new PouchDB(apath1[1] || dbpch.name).getAttachment(apath1[2], apath1[3]).then(ablSto)
+      : (txdata = txdPrep(ua1)[0]).ATTKEY && (txdata.dburl = txurlGen(txCrdtlz(txdata)))
+      ? new Promise( (rslv, rjct) => setTimeout( () =>
+          new PouchDB(txdata.dburl, { skip_setup: true })
+          .getAttachment(txdata.FILEID, txdata.ATTKEY, txdata.OPTS || {})
+          .then(ablSto).then(rslv), 500 ))
+      : rexibm.test(ua1)
+      ? rdataFetch({ url: ua1, crds: 'include', bmet: 'blob' }).then(ablSto)
       : null;
     },
     styGet = (a2ilj = "") => {
-      let ua2 = a2ilj.replace(/^.*?(?:\burl\( *['"]?|['"])(?=\S+$)/, ""),
+      let txdata,
+        ua2 = a2ilj.replace(/^.*?(?:\burl\( *['"]?|['"])(?=\S+$)/, ""),
         apath2 = a2ilj.match(rexatt) || [],
         styInj = url => a2ilj.replace( /(?:(\burl\() *['"]?|['"])(\S+)$/i,
-          (m, c1, c2) => (c1 || '"') + (url || c2) + (c1 ? ')' : '"') );
+          (m, c1, c2) => (c1 || '"') + (url || c2) + (c1 ? ')' : '"') ),
+        ablSto = ablob => asseturls[apath2[3]] = URL.createObjectURL(ablob);
       !epsets.appchks[26] || (ua2 = EC2.u2Blob(ua2));
       apath2[2] = apath2[2] && (/^[.-]/.test(apath2[2]) ? "" : ".") + apath2[2];
       apath2[3] || (apath2[3] = ua2.replace(/^(?!blob:).*\//, ""));
@@ -2300,14 +2359,22 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         && (!apath2[1] || Array.from(pchlist.options).some(op => op.value === apath2[1]))
       ? new PouchDB(apath2[1] || dbpch.name)
         .getAttachment(apath2[2], apath2[3])
-        .then(ablob => styInj(asseturls[apath2[3]] = URL.createObjectURL(ablob)))
+        .then(ablob => styInj(ablSto(ablob)))
         .catch(err => {
           msgHandl(err);
           return styInj();
         })
-      : /^https:\/\/[\w-]+\.cloudant[\w.]+\//.test(ua2)
-      ? rdataFetch({ url: ua2, crds: 'include', bmet: 'blob' })
-        .then(ablob => styInj(asseturls[apath2[3]] = URL.createObjectURL(ablob)))
+      : (txdata = txdPrep(ua2)[0]).ATTKEY && (txdata.dburl = txurlGen(txCrdtlz(txdata)))
+      ? new Promise( (rslv, rjct) => setTimeout( () => new PouchDB(txdata.dburl, { skip_setup: true })
+          .getAttachment(txdata.FILEID, txdata.ATTKEY, txdata.OPTS || {})
+          .then(ablob => rslv(styInj(ablSto(ablob))))
+          .catch(err => {
+            msgHandl(err);
+            return rjct(styInj());
+          }), 500 ))
+      : rexibm.test(ua2)
+      ? rdataFetch({ url: txurlGen(txCrdtlz(txdPrep(ua2)[0])), crds: 'include', bmet: 'blob' })
+        .then(ablob => styInj(ablSto(ablob)))
         .catch(err => {
           msgHandl(err);
           return styInj();
@@ -2327,8 +2394,10 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       return ecoscripts.appendChild(nscr);
     },
     scrGet = a3i => {
-      let ua3 = !epsets.appchks[26] ? a3i.src : EC2.u2Blob(a3i.src),
-        apath3 = !a3i.src ? [] : a3i.attributes.src.value.match(rexatt) || [];
+      let txdata,
+        ua3 = !epsets.appchks[26] ? a3i.src : EC2.u2Blob(a3i.src),
+        apath3 = !a3i.src ? [] : a3i.attributes.src.value.match(rexatt) || [],
+        ablSto = ablob => asseturls[apath3[3]] = URL.createObjectURL(ablob);
       apath3[2] = apath3[2] && (/^[.-]/.test(apath3[2]) ? "" : ".") + apath3[2];
       apath3[3] || !a3i.src || (apath3[3] = a3i.src.replace(/^(?!blob:).*\//, ""));
       return typanno
@@ -2339,11 +2408,16 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         && (!apath3[1] || Array.from(pchlist.options).some(op => op.value === apath3[1]))
       ? new PouchDB(apath3[1] || dbpch.name)
         .getAttachment(apath3[2], apath3[3])
-        .then(ablob => scrInj({ src: asseturls[apath3[3]] = URL.createObjectURL(ablob) }))
+        .then(ablob => scrInj({ src: ablSto(ablob) }))
         .catch(() => scrInj(a3i))
-      : !epsets.appchks[27] && /^https:\/\/[\w-]+\.cloudant[\w.]+\//.test(ua3)
-      ? rdataFetch({ url: ua3, crds: 'include', bmet: 'blob' })
-        .then(ablob => scrInj({ src: asseturls[apath3[3]] = URL.createObjectURL(ablob) }))
+      : (txdata = txdPrep(ua3)[0]).ATTKEY && (txdata.dburl = txurlGen(txCrdtlz(txdata)))
+      ? new PouchDB(txdata.dburl, { skip_setup: true })
+        .getAttachment(txdata.FILEID, txdata.ATTKEY, txdata.OPTS || {})
+        .then(ablob => scrInj({ src: ablSto(ablob) }))
+        .catch(() => scrInj(a3i))
+      : !epsets.appchks[27] && rexibm.test(ua3)
+      ? rdataFetch({ url: txurlGen(txCrdtlz(txdPrep(ua3)[0])), crds: 'include', bmet: 'blob' })
+        .then(ablob => scrInj({ src: ablSto(ablob) }))
         .catch(() => scrInj(a3i))
       : scrInj(a3i);
     };
@@ -2481,7 +2555,8 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
     elssty = epsets.appchks[28] ? []
       : document.querySelectorAll('#ecorender style');
     elsscr = document.querySelectorAll('#ecorender script');
-    Promise.all(Array.from(elsass).map(assGet)).catch(msgHandl)
+    Array.from(elsass).map(assGet).reduce((a, b) => a.then(() => b), Promise.resolve())
+    .catch(msgHandl)
     .then( () => Promise.all( Array.from(elssty).map((a2i, i) => {
         let j = i;
         return /^ *@import |\burl\(/im.test(a2i.innerHTML)
@@ -2753,54 +2828,6 @@ function blobHandl(ablob, destindr, txdata = {}, cbfnc) {
       }
     };
     blobread.readAsText(ablob);
-  }
-}
-
-function txdPrep(filepath) {
-// returns: txdata-obj, gen'd from filepath-str/valcon-str/valcon-json -- otherwise, empty-obj
-  let valcon = document.querySelector('#econav0 #qcontxta').value.trim(),
-    txdata = /^{\s*"[^]+}$|^\[[^]*{\s*"[^]+}\s*\]$/.test(valcon) && jsonParse(valcon) || {},
-    fpathes = /^(?:(?:(https?:\/\/)(?:([\w-]+):|)(?:([\w-]+)@|)([\w!.*+~-]+)(?:(?=$)|\/)|(\.\.\/\.\.\/)|\/)(?:([_a-z][0-9_a-z$,+-]*)(?:(?=$)|\/)|(?=$))|(\.\.\/)(?!$)|)(?:((?:_design\/|(?!\.\.?\/))[^ \/]+)(?:\/(_view\/|)([^ \/]*)|)|)$/.exec(filepath || valcon);
-  !fpathes || fpathes[5] && fpathes[6] === "a00"
-  || (!rexfid.test(fpathes[0]) || rexfix.test(fpathes[0]))
-  && (fpathes[0] === fpathes[8] || (fpathes[1] || fpathes[5]) && !fpathes[6] && !filepath)
-  ? ![rexloc, rexrmt].some(e => e.test(filepath || valcon)) || ( txdata = {
-      url:  filepath || valcon,
-      bmet: /\.(?:html?|md|m?js|s?css|te?xt|\w{5,})$/i.test(filepath || valcon)
-        ? 'text' : /\.json$/i.test(filepath || valcon) ? 'json' : undefined
-    })
-  : txdata = {
-      USRNAM: fpathes[2],
-      PSSWRD: fpathes[3],
-      DBORIG: fpathes[1] + fpathes[4] || (fpathes[5] || fpathes[7]) && a00orig || undefined,
-      DBNAME: fpathes[6] || (filepath == 0 && !fpathes[1] || filepath) && dbpch && dbpch.name,
-      FILEID: fpathes[8],
-      ATTKEY: !fpathes[9] && fpathes[10] || undefined,
-      VIEW:   fpathes[9] && fpathes[10] || undefined
-    };
-  return [txdata, valcon];
-}
-
-function txCrdtlz(txdata = {}) {
-  let pchlist = document.querySelector('#ecoesp0 #pchlist'),
-    dbteam = ( Array.from(pchlist.options).find( op => epsets.teamid
-      ? op.value === "a00_" + epsets.teamid : /^a\d\d_\w/.test(op.value) ) || {} ).value || "",
-    tm0txd = caccts.find(ob => ob.DBNAME === (dbteam || "a00_" + epsets.teamid)) || {},
-    db0txd = caccts.find(ob => ob.DBNAME === txdata.DBNAME) || {};
-  return !/^https:\/\/[\w-]+\.cloudant[\w.]+$/.test(txdata.DBORIG) //txdata.DBPUBL ||
-  || txdata.USRNAM && !/^$|password/i.test(txdata.PSSWRD)
-  ? txdata : Object.assign(txdata, {
-      USRNAM: db0txd.USRNAM || tm0txd.USRNAM,
-      PSSWRD: db0txd.PSSWRD || tm0txd.PSSWRD
-    });
-}
-
-function txurlGen(txdata) {
-  let dborgn = /^(https?:\/\/)(.+?)\/?$/.exec(txdata.DBORIG || "") || [];
-  if (window.PouchDB && dborgn[1] && dborgn[2] && txdata.DBNAME) {
-    return dborgn[1]
-    + (!txdata.USRNAM || !txdata.PSSWRD ? "" : txdata.USRNAM + ":" + txdata.PSSWRD + "@")
-    + dborgn[2] + "/" + txdata.DBNAME;
   }
 }
 
