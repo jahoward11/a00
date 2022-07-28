@@ -2334,7 +2334,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       : apath1[3] && apath1[2] && (apath1[1] || dbpch)
         && (!apath1[1] || Array.from(pchlist.options).some(op => op.value === apath1[1]))
       ? new PouchDB(apath1[1] || dbpch.name).getAttachment(apath1[2], apath1[3]).then(ablSto)
-      : (txdata = txdPrep(ua1)[0]).ATTKEY && (txdata.dburl = txurlGen(txCrdtlz(txdata)))
+      : (txdata = txdPrep(apath1[0])[0]).ATTKEY && (txdata.dburl = txurlGen(txCrdtlz(txdata)))
       ? new Promise( (rslv, rjct) => setTimeout( () =>
           new PouchDB(txdata.dburl, { skip_setup: true })
           .getAttachment(txdata.FILEID, txdata.ATTKEY, txdata.OPTS || {})
@@ -2364,7 +2364,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
           msgHandl(err);
           return styInj();
         })
-      : (txdata = txdPrep(ua2)[0]).ATTKEY && (txdata.dburl = txurlGen(txCrdtlz(txdata)))
+      : (txdata = txdPrep(apath2[0])[0]).ATTKEY && (txdata.dburl = txurlGen(txCrdtlz(txdata)))
       ? new Promise( (rslv, rjct) => setTimeout( () => new PouchDB(txdata.dburl, { skip_setup: true })
           .getAttachment(txdata.FILEID, txdata.ATTKEY, txdata.OPTS || {})
           .then(ablob => rslv(styInj(ablSto(ablob))))
@@ -2410,7 +2410,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         .getAttachment(apath3[2], apath3[3])
         .then(ablob => scrInj({ src: ablSto(ablob) }))
         .catch(() => scrInj(a3i))
-      : (txdata = txdPrep(ua3)[0]).ATTKEY && (txdata.dburl = txurlGen(txCrdtlz(txdata)))
+      : (txdata = txdPrep(apath3[0])[0]).ATTKEY && (txdata.dburl = txurlGen(txCrdtlz(txdata)))
       ? new PouchDB(txdata.dburl, { skip_setup: true })
         .getAttachment(txdata.FILEID, txdata.ATTKEY, txdata.OPTS || {})
         .then(ablob => scrInj({ src: ablSto(ablob) }))
