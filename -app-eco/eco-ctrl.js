@@ -47,10 +47,12 @@ const hostgh = /\.github\.io$/.test(window.location.host),
   rexatt = /(?:@import +(?:url\(|)['"]?|\S+: *url\(['"]?|^)(?:\.\/|\.\.\/(?:\.\.\/(.*)\/|)(.*)\/|)([^\n\/]+\.(?:giff?|jpe?g|m?js|png|s?css))['"]?\)?;?$/i,
   rexfid = /^$|^_design\/\w+$|^[!.~-]?\w[\w!.*+~-]*$/,
   rexfix = /^_(?!design\/\w+$)|[*~]\(?[0-9]*\)?$/,
-  rexibm = /^https:\/\/[\w-]+\.cloudant[\w.]+\//,
+  rexibm = /^https:\/\/[\w-]+\.cloudant[\w.]+$/,
+  rexib2 = /^https:\/\/[\w-]+\.cloudant[\w.]+\//,
   reximg = /\.(?:giff?|jpe?g|png)$/i,
   rexloc = /^(?:(?:\.\.\/\.\.|\.\.|)\/(?=$|\w)|\.\/(?=[^ \/])|\/\/|\$|blob:[\w/:-]*(?!.* ))[ \w/!.*+~-]*$/,
-  rexrmt = /^https?:\/\/[ \w/#%!?=&@:.,+~-]+$/;
+  rexrmt = /^https?:\/\/[ \w/#%!?=&@:.,+~-]+$/,
+  rexwba = /\.(?:giff?|jpe?g|m?js|png|s?css)$/;
 
 window.ecoqjs = window.ecoqjs || {};
 window.ecomjs = window.ecomjs || {};
@@ -1392,9 +1394,7 @@ function pfsListGen(fileref, publupd, filelf) {
     docPrc2 = docid =>
       !dbpch || dbpch.name === "a00" || dbpch.get(docid).then( adoc =>
         !adoc._attachments || Object.keys(adoc._attachments).forEach( akey =>
-          !/\.(?:giff?|jpe?g|m?js|png|s?css)$/.test(akey)
-          || asseturls[akey] && /^blob:/.test(asseturls[akey])
-          || dbpch.getAttachment(docid, akey)
+          !rexwba.test(akey) || /^blob:/.test(asseturls[akey]) || dbpch.getAttachment(docid, akey)
             .then(ablob => asseturls[akey] = URL.createObjectURL(ablob)) ) )
       .catch(msgHandl),
     fileResel = () => {
@@ -1959,8 +1959,9 @@ function txCrdtlz(txdata = {}) {
       ? op.value === "a00_" + epsets.teamid : /^a\d\d_\w/.test(op.value) ) || {} ).value || "",
     tm0txd = caccts.find(ob => ob.DBNAME === (dbteam || "a00_" + epsets.teamid)) || {},
     db0txd = caccts.find(ob => ob.DBNAME === txdata.DBNAME) || {};
-  return !/^https:\/\/[\w-]+\.cloudant[\w.]+$/.test(txdata.DBORIG) //txdata.DBPUBL ||
-  || txdata.USRNAM && !/^$|password/i.test(txdata.PSSWRD)
+  Array.isArray(txdata) || !txdata.hasOwnProperty("DBNAME")
+  || (txdata.DBORIG = db0txd.DBORIG || txdata.DBORIG || tm0txd.DBORIG || a00orig);
+  return !rexibm.test(txdata.DBORIG) || txdata.USRNAM && !/^$|password/i.test(txdata.PSSWRD)
   ? txdata : Object.assign(txdata, {
       USRNAM: db0txd.USRNAM || tm0txd.USRNAM,
       PSSWRD: db0txd.PSSWRD || tm0txd.PSSWRD
@@ -2043,7 +2044,7 @@ function rsrcsXGet(txdata = {}) {
         return aobj == null ? ""
         : typeof aobj !== 'object' ? aobj : aobj.content || msgPrefmt(aobj);
       } else if (txdata.url || !txdata.DBNAME && txdata.FILEID) {
-        !rexibm.test(txdata.url) || ( txdata = {
+        !rexib2.test(txdata.url) || ( txdata = {
             url:  txurlGen(txCrdtlz(txdPrep(txdata.url)[0])),
             crds: txdata.crds || 'include',
             bmet: txdata.bmet || 'blob'
@@ -2340,7 +2341,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       : apath1[3] && apath1[2] && (apath1[1] || dbpch)
         && (!apath1[1] || Array.from(pchlist.options).some(op => op.value === apath1[1]))
       ? new PouchDB(apath1[1] || dbpch.name).getAttachment(apath1[2], apath1[3]).then(ablSto)
-      : rexibm.test(ua1)
+      : rexib2.test(ua1)
       ? rdataFetch({ url: ua1, crds: 'include', bmet: 'blob' }).then(ablSto)
       : null;
     },
@@ -2373,7 +2374,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
           msgHandl(err);
           return styInj();
         })
-      : rexibm.test(ua2)
+      : rexib2.test(ua2)
       ? rdataFetch({ url: txurlGen(txCrdtlz(txdPrep(ua2)[0])), crds: 'include', bmet: 'blob' })
         .then(ablob => styInj(ablSto(ablob)))
         .catch(err => {
@@ -2417,7 +2418,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         .getAttachment(apath3[2], apath3[3])
         .then(ablob => scrInj({ src: ablSto(ablob) }))
         .catch(() => scrInj(a3i))
-      : !epsets.appchks[27] && rexibm.test(ua3)
+      : !epsets.appchks[27] && rexib2.test(ua3)
       ? rdataFetch({ url: txurlGen(txCrdtlz(txdPrep(ua3)[0])), crds: 'include', bmet: 'blob' })
         .then(ablob => scrInj({ src: ablSto(ablob) }))
         .catch(() => scrInj(a3i))
@@ -2468,7 +2469,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       !dbpch || !filewkg.team_groups || !(filewkg.team_groups[0] = dbpch.name.replace(/^a\d\d_/, ""))
       || ( filewkg._id = "!" + filewkg.team_groups[0]
         + "-" + anumlIncr( (pf3stor.dbcntc.map(ar => ar[1]).sort().reverse()[0] || "")
-          .replace(/^![0-9a-z]+-/i, "") ) );
+          .replace(/^!(?:[0-9a-z]+-|)/i, "") ) );
     }
     ( epsets.appchks[22] || !filewkg.loadconfigs ? Promise.resolve([])
     : Promise.all( ["pcfgstemplate", "fragstemplate"].map(pty => {
@@ -2814,7 +2815,7 @@ function blobHandl(ablob, destindr, txdata = {}, cbfnc) {
       : /^blob:/.test(asseturls[txdata.ATTKEY]) && asseturls[txdata.ATTKEY]
         || (asseturls[txdata.ATTKEY] = URL.createObjectURL(ablob)) ), 6 );
   } else {
-    !txdata.ATTKEY || /^blob:/.test(asseturls[txdata.ATTKEY])
+    !rexwba.test(txdata.ATTKEY) || /^blob:/.test(asseturls[txdata.ATTKEY])
     || (asseturls[txdata.ATTKEY] = URL.createObjectURL(ablob));
     blobread = new FileReader();
     blobread.onerror = err => msgHandl("Alert: Attachment not read.\n" + blobread.error);
@@ -3456,7 +3457,7 @@ attInp() {
     attlist = document.querySelector('#econav0 #attlist'),
     idx = attlist.selectedIndex,
     attkey = idx > -1 && attlist.options[idx].textContent,
-    [txdata] = txdPrep(valatt);
+    txdata = txdPrep(valatt)[0];
   valatt === attkey || (attlist.value = valatt)
   && (idx = attlist.selectedIndex) > 0 || (idx = attlist.selectedIndex = 0);
   EC1.attSel(0);
@@ -4215,7 +4216,9 @@ ibmConnect() {
         || caccts.push( Object.assign(Object.assign({}, rmtdn),
           { DBPUBL: !/^.*\//.test(e) ? undefined : ["_reader"], DBNAME: e.replace(/^.*\//, "") }) ) );
           // todo: set small-phi-pipe (\u03c6|) or dagger-pipe, public-db flag in ibmfns
-      !(dbname || rsltk.dbs) || !a00Set() || (localStorage["_couchaccts"] = JSON.stringify(caccts));
+      a00Set();
+      localStorage["_couchaccts"] = JSON.stringify(caccts);
+      //!(dbname || rsltk.dbs) || !a00Set() || (localStorage["_couchaccts"] = JSON.stringify(caccts));
       dbname && !rsltk.dbs ? dbOpen(rmtdn)
       : Promise.all( caccts.map( ob => !ob || !ob.DBNAME
           || /^a\d\d/.test(ob.DBNAME) || !rsltk.dbs.some(e => e === ob.DBNAME) // filters out public dbs
@@ -4264,7 +4267,7 @@ ibmConnect() {
         _id: u1st ? "!" + (valinp[2] || "myteam") + "-aaa"
           : "!" + (epsets.teamid || "myteam") + "-"
             + anumlIncr( (Object.values(tm0cntcs).map(ob => ob._id).sort().reverse()[0] || "")
-              .replace(/^![0-9a-z]+-/i, "") ),
+              .replace(/^!(?:[0-9a-z]+-|)/i, "") ),
         ts_created: tstamp1,
         ts_updated: tstamp1,
         name_full:  idtoks.idTokenPayload.name,
@@ -4639,9 +4642,8 @@ qconSyncD() {
     // pchlist.value/pchSel-couchSync-fnc dependency is bypassed by reqipch
     pchlist.value = txdata.DBNAME;
     EC2.pchSel();
-  } else if ( /^https:\/\/[\w-]+\.cloudant[\w.]+$/.test(txdata.DBORIG)
-  && ecoat && (!txdata.USRNAM || /^$|password/i.test(txdata.PSSWRD))
-  && txdata.DBNAME && (!reqipch || txdata.DESTROY) && !txdata.FILEID ) {
+  } else if ( rexibm.test(txdata.DBORIG) && ecoat && txdata.DBNAME && !txdata.FILEID
+  && (!txdata.USRNAM || /^$|password/i.test(txdata.PSSWRD)) && (!reqipch || txdata.DESTROY) ) {
     rdataFetch( Object.assign( Object.assign({}, ECOXREQD), {
       prms: {
         dbname: txdata.DBNAME,
@@ -4698,9 +4700,9 @@ qconRetrvD(cbfnc, errfnc) { // also triggered by guideLoad, dviz-idxlist, dviz-m
   } else if (txdata.COSEND) {
     ibmcosTxD(txdata).then(rdataFetch)
     .then(rslt => blobHandl(rslt, 0, txdata, cbfnc)).catch(msgHandl);
-  } else if ( /^https:\/\/[\w-]+\.cloudant[\w.]+$/.test(txdata.DBORIG)
-  && ecoat && (!txdata.USRNAM || /^$|password/i.test(txdata.PSSWRD))
-  && txdata.DBNAME ) { // todo: when is it better than couchQry?
+  } else if ( rexibm.test(txdata.DBORIG) && ecoat && txdata.DBNAME
+  && (!txdata.USRNAM || /^$|password/i.test(txdata.PSSWRD)) ) {
+    // todo: when is it better than couchQry?
     rdataFetch( Object.assign( Object.assign({}, ECOXREQD), {
         prms: {
           dbname: txdata.DBNAME,
@@ -4727,7 +4729,7 @@ qconSubmD(ccommit) {
         Object.assign({}, caccts.find(ob => ob.DBNAME === "a00_" + epsets.teamid)),
         { USRNAM: undefined, PSSWRD: undefined, FILEID: filewkg._id } ), null, 2 ) + "\n"
     : document.querySelector('#ecoesp0 #cntcbtn').disabled = true );
-  let [txdata] = txdPrep(),
+  let txdata = txdPrep()[0],
     rawtxta = document.querySelector('#ecoesp0 #rawtxta'),
     cntchlps = document.querySelectorAll('#ecoesp0 #eftcntc .help'),
     typpmgr = filewkg && (filewkg.file_type === "eco-publmgr" || filewkg.filefrags && true),
@@ -4741,9 +4743,8 @@ qconSubmD(ccommit) {
     dropboxTx(txdata);
   } else if (txdata.COSEND) {
     ibmcosTxD(txdata, typpmgr, 1).then(rdataFetch).then(msgHandl).catch(msgHandl);
-  } else if ( /^https:\/\/[\w-]+\.cloudant[\w.]+$/.test(txdata.DBORIG)
-  && ecoat && (!txdata.USRNAM || /^$|password/i.test(txdata.PSSWRD))
-  && txdata.DBNAME && txdata.FILEID ) {
+  } else if ( rexibm.test(txdata.DBORIG) && ecoat && txdata.DBNAME && txdata.FILEID
+  && (!txdata.USRNAM || /^$|password/i.test(txdata.PSSWRD)) ) {
     rdataFetch( Object.assign( Object.assign({}, ECOXREQD), {
         prms: {
           dbname: txdata.DBNAME || "",
