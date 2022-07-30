@@ -1959,10 +1959,11 @@ function txCrdtlz(txdata = {}) {
       ? op.value === "a00_" + epsets.teamid : /^a\d\d_\w/.test(op.value) ) || {} ).value || "",
     tm0txd = caccts.find(ob => ob.DBNAME === (dbteam || "a00_" + epsets.teamid)) || {},
     db0txd = caccts.find(ob => ob.DBNAME === txdata.DBNAME) || {};
-  Array.isArray(txdata) || !txdata.hasOwnProperty("DBNAME")
-  || (txdata.DBORIG = db0txd.DBORIG || txdata.DBORIG || tm0txd.DBORIG || a00orig);
-  return !rexibm.test(txdata.DBORIG) || txdata.USRNAM && !/^$|password/i.test(txdata.PSSWRD)
+  return Array.isArray(txdata) || !rexibm.test(txdata.DBORIG)
+  || txdata.USRNAM && !/^$|password/i.test(txdata.PSSWRD)
   ? txdata : Object.assign(txdata, {
+      DBORIG: !/^[./]+$/.test(txdata.DBORIG || "")
+        ? txdata.DBORIG : db0txd.DBORIG || tm0txd.DBORIG || a00orig,
       USRNAM: db0txd.USRNAM || tm0txd.USRNAM,
       PSSWRD: db0txd.PSSWRD || tm0txd.PSSWRD
     });
@@ -1984,7 +1985,7 @@ function txdPrep(filepath) {
   : txdata = {
       USRNAM: fpathes[2],
       PSSWRD: fpathes[3],
-      DBORIG: fpathes[1] + fpathes[4] || (fpathes[5] || fpathes[7]) && a00orig || undefined,
+      DBORIG: fpathes[1] + fpathes[4] || fpathes[5] || fpathes[7] || undefined,
       DBNAME: fpathes[6] || (filepath == 0 && !fpathes[1] || filepath) && dbpch && dbpch.name,
       FILEID: fpathes[8],
       ATTKEY: !fpathes[9] && fpathes[10] || undefined,
