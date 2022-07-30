@@ -1959,11 +1959,10 @@ function txCrdtlz(txdata = {}) {
       ? op.value === "a00_" + epsets.teamid : /^a\d\d_\w/.test(op.value) ) || {} ).value || "",
     tm0txd = caccts.find(ob => ob.DBNAME === (dbteam || "a00_" + epsets.teamid)) || {},
     db0txd = caccts.find(ob => ob.DBNAME === txdata.DBNAME) || {};
+  !/^[./]+$/.test(txdata.DBORIG) || (txdata.DBORIG = db0txd.DBORIG || tm0txd.DBORIG || a00orig);
   return Array.isArray(txdata) || !rexibm.test(txdata.DBORIG)
   || txdata.USRNAM && !/^$|password/i.test(txdata.PSSWRD)
   ? txdata : Object.assign(txdata, {
-      DBORIG: !/^[./]+$/.test(txdata.DBORIG || "")
-        ? txdata.DBORIG : db0txd.DBORIG || tm0txd.DBORIG || a00orig,
       USRNAM: db0txd.USRNAM || tm0txd.USRNAM,
       PSSWRD: db0txd.PSSWRD || tm0txd.PSSWRD
     });
