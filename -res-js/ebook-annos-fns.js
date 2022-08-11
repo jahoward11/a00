@@ -73,7 +73,7 @@ let chid = d1node.querySelector('#header') ? "header" : "top",
   htitle = d1node.querySelectorAll('h1, h2')[0],
   hxct = [0, 0, 0, 0, 0, 0, 0],
   hxct_hhx = [0, 0, 0, 0, 0, 0, 0],
-  hxi, hxilvl, hxilvlprv, hxlen, hxrlvl, hxsdiff, hxsl, hxtoplvl, i,
+  hxi, hxilvl, hxilvlprv, hxlen, hxrlvl, hxsdiff, hxsl, hxtoplvl, j,
   mnotect = 0,
   navchlen = dcnode.querySelectorAll('.navch').length,
   navct = 0,
@@ -99,7 +99,8 @@ tf05 = Array.isArray(tocfmt) && tocfmt[0] !== null && tocfmt[1] !== null ? tocfm
     .concat([tocfmt[0], tocfmt[1], null, null].slice(tocfmt.length < 6 ? tocfmt.length - 2 : 4))
     .map(e => e === null ? null : !+e || !Number.isInteger(+e) || +e < 0 ? 0 : +e)
   : (typeof tocfmt !== 'string' || /^auto/i.test(tocfmt))
-    ? [tf0auto, tf1auto, hxtoplvl < 0 ? 0 : hxtoplvl, (tf1auto + tf0auto || hxtoplvl) - hxtoplvl, null, null]
+    ? [ tf0auto, tf1auto, hxtoplvl < 0 ? 0 : hxtoplvl, (tf1auto + tf0auto || hxtoplvl) - hxtoplvl,
+      null, null ]
   : tocfmt.trim().replace(/^[^e]+$/i, m => m.replace(/#/g, "e"))
     .replace( /^.*?e[cr]*h?([1-6]).*$|^[^eh]*?([1-6])[^eh]*[er]*$|.*/i, (m, c1, c2) =>
     ( c1 ? c1 + m.replace(/[er]+$|[^e]+/gi, "").length.toString()
@@ -128,14 +129,17 @@ if (tf05[0] && tf05[1] && tf05[2] && tf05[3] && (tf05[2] > tf05[0] || tf05[3] < 
   hnseps = [""].concat(".".repeat((tf05[1] || tf05[3] || 1) - 1).split(""))
     .concat(tf05[1] === 1 || !tf05[1] && tf05[3] === 1 ? ["."] : [""]);
 }
-h16nav = !hxrlvl ? new RegExp("^(?=<h(?![1-6] .*?class=.*?hsublvl|[12] id=['\"]?title)[1-6].*?>)", "im")
+h16nav = !hxrlvl
+  ? new RegExp("^(?=<h(?![1-6] .*?class=.*?hsublvl|[12] id=['\"]?title)[1-6].*?>)", "im")
   : !navchlen ? new RegExp("^(?=<h(?![1-6] .*?class=.*?hsublvl|[12] id=['\"]?title)[0-"
     + (hxrlvl >= tf05[2] + tf05[3] ? hxrlvl : (tf05[2] + tf05[3] || 1) - 1) + "].*?>)", "gim")
   : hxrlvl > hxchlvl ? new RegExp("^(?=<h(?![1-6] .*?class=.*?hsublvl|[12] id=['\"]?title)["
     + (hxchlvl + 1) + "-" + hxrlvl + "].*?>)", "gim") : /^$/;
 h16mask = new RegExp("^<p"
-  + (hxrlvl > 0 && (tf05[2] || tf05[0]) && tf0auto && (tf05[2] || tf05[0]) >= tf0auto ? "" : "(?! id=subhead1 )")
-  + "(.*?class=['\"]?navch\\b.*?>.*?<\\/)p(?=>\\s*<h[0-" + ( hxrlvl <= 0 ? 6 : hxrlvl < tf05[2] ? hxrlvl - 1
+  + ( hxrlvl > 0 && (tf05[2] || tf05[0]) && tf0auto && (tf05[2] || tf05[0]) >= tf0auto
+    ? "" : "(?! id=subhead1 )" )
+  + "(.*?class=['\"]?navch\\b.*?>.*?<\\/)p(?=>\\s*<h[0-"
+  + ( hxrlvl <= 0 ? 6 : hxrlvl < tf05[2] ? hxrlvl - 1
     : tf05[2] && tf05[3] && tf0auto && tf05[2] >= tf0auto ? tf05[2] - 1 : tf05[0] ? tf05[0] - 1 : 0 )
   + (hxrlvl > 0 && hxrlvl < 7 ? (hxrlvl + 1) + "-7" : "")
   + "].*?>|>\\s*<p.*?class=['\"]?navch\\b.*?>)", "gim");
@@ -176,40 +180,42 @@ hnpatt = !hnpatt2 ? null : () => hnpatt1() + ( tf05[1] < 2 ? "" // hdgnbr additi
   : [2, 3, 4, 5, 6].slice(tf05[0] - 1, tf05[0] + tf05[1] - 2)
     .map((n, i) => hnseps[1 + i] + (hxct[n] - hxct_hhx[n])).join("") ) + hnseps[hnseps.length - 1];
 divinnr = () => ( acs.hnwrap[0] < 0 ? "" : hnwpre0 + "<a href=#" + chid + "><strong>" //+ "&#8203;"
-  + (hxrlvl && hnpatt ? hnpatt() : "").replace(/(\\W*\\w+)(.*?)(\\d*)$|^$/, hnwrap0) + "</strong></a>" )
-  + (acs.pnwrap < 0 ? "" : (i - pari_navct).toString().replace(/.*/, eval(pnwrap)));
+    + (hxrlvl && hnpatt ? hnpatt() : "").replace(/(\\W*\\w+)(.*?)(\\d*)$|^$/, hnwrap0)
+    + "</strong></a>" )
+  + (acs.pnwrap < 0 ? "" : (j - pari_navct).toString().replace(/.*/, eval(pnwrap)));
 pars = hxrlvl < 0 || hxrlvl > 6 ? [] : dcnode.querySelectorAll('p');
-for (i = 0, parlen = pars.length; i < parlen; i++) { //for (let [i, pari] of pars.entries()) {
-  if ( i > 2 && ( /\bcolophon/i.test(pars[i].parentElement.id)
-  || /\bfootnote/i.test(pars[i].parentElement.className) )) { break; }
-  //if (pars[i].parentElement.id === "colophon") { break; }
-  if (pars[i].parentElement.nodeName !== 'PRE') {
-    pars[i].innerHTML = pars[i].innerHTML.replace(/[ \n]+/g, " ") + "\n";
+for (j = 0, parlen = pars.length; j < parlen; j++) { //for (let [j, pari] of pars.entries()) {
+  if ( j > 2 && ( /\bcolophon/i.test(pars[j].parentElement.id)
+  || /\bfootnote/i.test(pars[j].parentElement.className) )) { break; }
+  //if (pars[j].parentElement.id === "colophon") { break; }
+  if (pars[j].parentElement.nodeName !== 'PRE') {
+    pars[j].innerHTML = pars[j].innerHTML.replace(/[ \n]+/g, " ") + "\n";
   }
   if (!hxrlvl && pari_navct == null) {
     pari_navct = 0;
-  } else if ( hxrlvl && (hnpatt || hntoc) && pars[i].className === "navch" //|| !navchlen
-  && /^h\d/i.test(pnextnode = !pars[i].nextElementSibling ? "" : pars[i].nextElementSibling.nodeName) ) {
+  } else if ( hxrlvl && (hnpatt || hntoc) && pars[j].className === "navch" && /^h\d/i
+  .test(pnextnode = !pars[j].nextElementSibling ? "" : pars[j].nextElementSibling.nodeName) ) {
     navct++;
-    pari_navct = i; // reset par ct initial & incr nav ct
-    ///^subhead/.test(pars[i].id) && (pars[i].id = "heading" + (hnpatt ? hnpatt().replace(/\W+/g, "_") : ptchbg[0]));
-    chid = pars[i].id;
+    pari_navct = j; // reset par ct initial & incr nav ct
+    ///^subhead/.test(pars[j].id)
+    //&& (pars[j].id = "heading" + (hnpatt ? hnpatt().replace(/\W+/g, "_") : ptchbg[0]));
+    chid = pars[j].id;
     hxilvl = +/\d/.exec(pnextnode)[0];
     hxct[hxilvl]++;
     [1, 2, 3, 4, 5, 6].slice(hxilvl, tf05[0] + tf05[1] - 1).forEach(l => hxct_hhx[l] = hxct[l]);
     continue;
   }
-  if ( pars[i].previousElementSibling
-  && /\bmnote/i.test(pars[i].previousElementSibling.className) ) {
-    annoblocks["ch" + (chNbr(hnbgn) - 1 + navct) + "par" + (i - pari_navct)] = ++mnotect;
+  if ( pars[j].previousElementSibling
+  && /\bmnote/i.test(pars[j].previousElementSibling.className) ) {
+    annoblocks["ch" + (chNbr(hnbgn) - 1 + navct) + "par" + (j - pari_navct)] = ++mnotect;
   }
-  if ( pari_navct !== null && i - pari_navct && (i - pari_navct) % acs.pnfreq === 0
-  && ( pars[i].previousElementSibling === null
-  || !/\bmnote/i.test(pars[i].previousElementSibling.className) )) {
+  if ( pari_navct !== null && j - pari_navct && (j - pari_navct) % acs.pnfreq === 0
+  && ( pars[j].previousElementSibling === null
+  || !/\bmnote/i.test(pars[j].previousElementSibling.className) )) {
     divnew = document.createElement('div');
     divnew.id = "ch"
       + (hxrlvl && hnpatt ? hnpatt().replace(/\W+$|^\W+/g, "").replace(/\W+/g, ".") : ptchbg[0])
-      + "par" + (i - pari_navct);
+      + "par" + (j - pari_navct);
     divnew.className = "refnbr";
     divnew.setAttribute('align', 'right');
   //divnew.style.fontSize = "0.625em"; //x-small
@@ -222,8 +228,8 @@ for (i = 0, parlen = pars.length; i < parlen; i++) { //for (let [i, pari] of par
   //divnew.style.clear = "right";
     divnew.innerHTML = navct && chNbr(hnbgn) > 0 ? divinnr()
       : "<a href=#" + chid + "><strong>" + (!hxrlvl || hxct_hhx[3] ? "&loz;" : "Fwd") + "</strong></a>"
-      + (acs.pnwrap < 0 ? "" : (i - pari_navct).toString().replace(/.*/, eval(pnwrap)));
-    pcontainer = pars[i].parentElement.nodeName !== 'PRE' ? pars[i] : pars[i].parentElement;
+      + (acs.pnwrap < 0 ? "" : (j - pari_navct).toString().replace(/.*/, eval(pnwrap)));
+    pcontainer = pars[j].parentElement.nodeName !== 'PRE' ? pars[j] : pars[j].parentElement;
     pcontainer.parentElement.insertBefore(divnew, pcontainer);
   }
 }
@@ -233,9 +239,9 @@ if (!d1node.querySelector('.refnbr')) { //(hxrlvl < 0 || hxrlvl > 6) {
   divnew.style.display = "none";
   d1node.appendChild(divnew);
 }
-tochxs = ((tf05[2] && tf05[3]) || (tf05[0] && tf05[1])) && d1node.querySelectorAll(hdgtags.slice(
-  ...(tf05[2] && tf05[3] ? [tf05[2] - 1, tf05[2] + tf05[3] - 1] : [tf05[0] - 1, tf05[0] + tf05[1] - 1])
-).join()); //&& hxrlvl > 0 && hxrlvl < 7 ???
+!hxlen.some(e => e) || !((tf05[2] && tf05[3]) || (tf05[0] && tf05[1]))
+|| ( tochxs = d1node.querySelectorAll( hdgtags.slice( ...( tf05[2] && tf05[3]
+    ? [tf05[2] - 1, tf05[2] + tf05[3] - 1] : [tf05[0] - 1, tf05[0] + tf05[1] - 1] )).join() ));
 hxct = [0, 0, 0, 0, 0, 0, 0];
 hxct_hhx = [0, 0, 0, 0, 0, 0, 0];
 hnpatt2 = !tf05[0] || !tf05[1] || hxtoplvl < 0 ? null : !hxlen[tf05[0]] ? () => ptchbg[0]
@@ -249,7 +255,7 @@ hnwrap3 = !Array.isArray(acs.hnwrap) || acs.hnwrap.length <= 2
 || acs.hnwrap[3] === null || acs.hnwrap[3] === false || acs.hnwrap[3] === 0 ? ""
   : /=>/.test(acs.hnwrap[3]) ? eval(acs.hnwrap[3])
   : (acs.hnwrap[3] || "") + (/\$[&123]/.test(acs.hnwrap[3]) ? "" : "$& ");
-for (hxi = 0, hxsl = tochxs && tochxs.length || 0; hxi < hxsl; hxi++) {
+for (hxi = 0, hxsl = tochxs.length; hxi < hxsl; hxi++) {
   hxilvlprv = +hxi ? hxilvl : hxtoplvl;
   hxilvl = +/\d/.exec(tochxs[hxi].nodeName)[0];
   hxsdiff = hxilvlprv - hxilvl;
@@ -260,15 +266,19 @@ for (hxi = 0, hxsl = tochxs && tochxs.length || 0; hxi < hxsl; hxi++) {
       : +hxi && hxsdiff <= -2 ? "\n<ul>" + ("\n<li>\n<ul>").repeat(Math.abs(hxsdiff) - 1)
       : (+hxi ? "\n<ul>" : "\n<li>\n<ul>").repeat(Math.abs(hxsdiff)) )
     + "\n<li>"
-    + ( !dswrap ? "" : "<a href=\"#" + (tochxs[hxi].previousElementSibling.id || tochxs[hxi].id) + "\">" )
+    + ( !dswrap ? ""
+      : "<a href=\"#" + (tochxs[hxi].previousElementSibling.id || tochxs[hxi].id) + "\">" )
     + ( hntoc && hnpatt && hxilvl >= tf05[0] && hxilvl < tf05[0] + tf05[1]
       && (typeof acs.hnwrap[1] !== 'number' || acs.hnwrap[1] >= 0) ? (hnpatt() || "")
-        .replace(typeof hnwrap1 === 'function' || /\$[&123]/.test(acs.hnwrap[1]) ? /^$/ : /(?:\W+0)+$/, "")
+        .replace( typeof hnwrap1 === 'function' || /\$[&123]/.test(acs.hnwrap[1])
+          ? /^$/ : /(?:\W+0)+$/, "" )
         .replace(/(\W*\w+)(.*?)(\d*)$/, hnwrap1) : "" )
-    + ( dswrap ? "" : "<a href=\"#" + (tochxs[hxi].previousElementSibling.id || tochxs[hxi].id) + "\">" )
+    + ( dswrap ? ""
+      : "<a href=\"#" + (tochxs[hxi].previousElementSibling.id || tochxs[hxi].id) + "\">" )
     + tochxs[hxi].innerHTML.replace(/<\/?a\b.*?>/g, "") + "</a>";
   }
-  if (hnwrap3 && hnpatt && hxilvl >= tf05[0] && (typeof acs.hnwrap[3] !== 'number' || acs.hnwrap[3] >= 0)) {
+  if ( hnwrap3 && hnpatt && hxilvl >= tf05[0]
+  && (typeof acs.hnwrap[3] !== 'number' || acs.hnwrap[3] >= 0) ) {
     tochxs[hxi].innerHTML = (hnpatt() || "") //&& hxilvl < tf05[0] + tf05[1]
     .replace(typeof hnwrap3 === 'function' || /\$[&123]/.test(acs.hnwrap[3]) ? /^$/ : /(?:\W+0)+$/, "")
     .replace(/(\W*\w+)(.*?)(\d*)$/, hnwrap3) + tochxs[hxi].innerHTML;
@@ -340,8 +350,8 @@ function annosHilit(dochtml) {
           + (!mdit ? aptys[3] : mdit.renderInline(aptys[3])).replace(/\\n/g, "\n") + "</ins>" )
       : isrex || !texthl ? "<" + atag + acolor + ">$&</" + atag + ">"
       : (...args) => "<" + atag + acolor + ">" + ( args.slice(1, args.length - 2)
-          .map((e, i) => e + (i%2 ? "<" + atag + acolor + ">" : "</" + atag + ">")).join("") || args[0] )
-        + "</" + atag + ">";
+          .map((e, i) => e + (i%2 ? "<" + atag + acolor + ">" : "</" + atag + ">")).join("")
+          || args[0] ) + "</" + atag + ">";
     dochtml = dochtml.replace(sepa, rfnc);
     if (/^{[ *+=_~]*\\?[#.]?\w*}$/.test(txt)) {
       cdflts[atag] = aptys[2];
@@ -356,7 +366,8 @@ function annosHilit(dochtml) {
 acs = {
   ptfnam: acs.ptfnam || ["part", "1"],
   ptchbg: Array.isArray(acs.ptchbg) && acs.ptchbg || [1, 1],
-  tocfmt: acs.tocfmt || (acs.tocfmt === false || acs.tocfmt === "" ? "" : acs.tocfmt === 0 ? "0" : null),
+  tocfmt: acs.tocfmt
+    || (acs.tocfmt === false || acs.tocfmt === "" ? "" : acs.tocfmt === 0 ? "0" : null),
   toccla: acs.toccla || "",
   hnwrap: acs.hnwrap || "",
   pnwrap: acs.pnwrap || (acs.pnwrap === "" ? "" : "<br />"),
@@ -387,7 +398,8 @@ texthl = ( !/\v/.test(texthl) ? texthl
   .replace(/[\t ]+/g, "\\s+").replace(/["'‘’“”]/g, "(?:[\"'‘’“”]|&quot;)")
   .replace(/\n/g, ")(.*?)(") + ")" ).replace(/\n\n+/g, "\n").trim();
 if (!Array.isArray(acs.texthl) || !acs.texthl.length) { //(/(?:[^\\]|^)(?:\\\\)*\\(?!\\)/g, "$&\\")
-  acs.texthl = !texthl ? [] : texthl.split("\n").map(e => !/^\/.+\/[gim]*$/.test(e) ? e : eval(e) || e);
+  acs.texthl = !texthl ? []
+  : texthl.split("\n").map(e => !/^\/.+\/[gim]*$/.test(e) ? e : eval(e) || e);
 }
 
 d1node.innerHTML = d1node.innerHTML.replace(/<!-- *(?:\/\/ *)?(?:anno|text)[^]*?-->\n?/gi, "");
@@ -412,7 +424,8 @@ d1node.innerHTML = annosHilit(d1node.innerHTML);
 || ( d1node.innerHTML = d1node.innerHTML
   .replace( /(<header\b.*?>[^]*?<\/header>\n+|<\/h[1-6]>[^]*?\n(?= *<main\b.*?>))|^(?= *<(?:figure|hr)\b.*?>(?:[^<]|<(?!\/?header\b.*?>|figure\b.*?>|hr\b.*?>))*?(?:<(?:div|p)\b.*? class=['"]?navch\b.*?>|<h([1-6])\b.*?>.*?<\/h\2>)| *<(?:div|p)\b.*? class=['"]?navch\b.*?>)/im,
     "$1" + tocbuild ) ); //<div style=\"display: none;\">\\newpage </div>\n\n" );
-d1node.innerHTML = d1node.innerHTML.replace(/<!--phold-periph-->/gi, () => htmlpers[pei++]); // restore periph
+d1node.innerHTML = d1node.innerHTML.replace(/<!--phold-periph-->/gi, () => htmlpers[pei++]);
+// restore periph
 if ( !Array.from(dstyles).some( s => /#TOC\b/.test(s.innerHTML) && /\.refnbr\b/.test(s.innerHTML)
 || /^@import ".*\/style-hjas-dflt0\.css"/m.test(s.innerHTML) )) {
   nsty = document.createElement('style');
