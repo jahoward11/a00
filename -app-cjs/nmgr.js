@@ -6,7 +6,7 @@ const dwraps = [
   "\n</script>\n</html>"
 ];
 
-const nmwrap = `<style type="text/css">
+const nmpage = `<style type="text/css">
 *, *::before, *::after { box-sizing: inherit; }
 html {
   box-sizing: border-box;
@@ -2273,4 +2273,4 @@ jsctxta.onblur = jscEval;
 ( nm0.p2Gen = () => !window.PouchDB || !PouchDB.allDbs
   ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(rsp2Show) )();`;
 
-export { dwraps, nmwrap, nmscr };
+export { dwraps, nmpage, nmscr };
