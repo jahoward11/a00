@@ -3421,7 +3421,7 @@ prvTog() {
     prvs.forEach((e, i) => i === 1 || e.classList.toggle("is-hidden"));
   }
 },
-attSel(renswap) { // also triggered by dviz-idxlist, attListGen, blobHandl, couchQry, attInp, tabs0Tog, pfsSel, swapExe, fileLFDel
+attSel(renswap) { // also triggered by attListGen, blobHandl, couchQry, attInp, tabs0Tog, pfsSel, swapExe, fileLFDel, dviz-idxlist
   let attinp = document.querySelector('#econav0 #attinp'),
     attlist = document.querySelector('#econav0 #attlist'),
     idx = attlist.selectedIndex,
@@ -4402,11 +4402,11 @@ ibmConnect() {
   }
 },
 wdGen(pdata) { return webdocGen(1, pdata); },
-u2Blob(url) { // also triggered by dviz-memos, dviz-contacts, prjDiscGen, jdeDftGen
+u2Blob(url) { // also triggered by prjDiscGen, jdeDftGen, dviz-memos, dviz-contacts
   return asseturls[(url || "").replace(/^\S*\//, "")] || asseturls[url]
   || (url || "").replace(/^\.\.\/\.\.(?!\/a00\/)(?=\S+[^\s\/]$)/, a00orig) || url;
 },
-objQA(key = "", fbx) { // also triggered by dviz-memos, rsrcsXGet, qconRetrvD
+objQA(key = "", fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-memos
   let pty,
     rsltFbk = rslt => pty && fbx ? "" : /^keys$/i.test(pty) && Object.keys(rslt) || rslt,
     ptyTest = d => pty = key.replace(!d ? /^\w+\.(.+)$|.*/ : /^\w+\.(\d+)$|.*/, "$1"),
@@ -4441,7 +4441,8 @@ objQA(key = "", fbx) { // also triggered by dviz-memos, rsrcsXGet, qconRetrvD
   : /^2|^couch|^c?accts?|^c?accounts?/i.test(key) ? caccts[ptyTest(1)] || rsltFbk(caccts)
   : /^1|^(?:eco|)idtoks?/i.test(key) ? idtoks && idtoks[ptyTest()] || rsltFbk(idtoks)
   : /^0|epsets?|(?:eco|)presets?/i.test(key) ? epsets && epsets[ptyTest()] || rsltFbk(epsets)
-  : window[key.replace(/^new +|[.(].+/g, "")] ? gloObj() : rsltFbk(ECOINSTR[0]);
+  : /^import\(/.test(key) || window[key.replace(/^new +|[.(].+/g, "")]
+    ? gloObj() : rsltFbk(ECOINSTR[0]);
 },
 tmplLoad() {
   let tmplrads = document.querySelector('#ecoguides #tmplrad').elements["tmplrad"],
