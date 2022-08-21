@@ -51,6 +51,7 @@ const hostgh = /\.github\.io$/.test(window.location.host),
   rexib2 = /^https:\/\/[\w-]+\.cloudant[\w.]+\//,
   reximg = /\.(?:giff?|jpe?g|png)$/i,
   rexloc = /^(?:(?:\.\.\/\.\.|\.\.|)\/(?=$|\w)|\.\/(?=[^ \/])|\/\/|\$|blob:[\w/:-]*(?!.* ))[ \w/!.*+~-]*$/,
+  rexoqa = /^\$ *(?:new +|)\w*(?:\b[.(].+|)$/,
   rexrmt = /^https?:\/\/[ \w/#%!?=&@:.,+~-]+$/,
   rexwba = /\.(?:giff?|jpe?g|m?js|png|s?css)$/;
 
@@ -2039,7 +2040,7 @@ function rsrcsXGet(txdata = {}) {
         // note: unexpected lf behavior because of promise-wrap
         return localforage.getItem(txdata.FILEID.replace(/^\/\//, ""))
         .then(val => !/^{".+}$/.test(val) ? val : (jsonParse(val) || "").content).catch(msgPrefmt);
-      } else if (/^\$ *\w*(?:\b[.(].+|)$/.test(txdata.FILEID)) {
+      } else if (rexoqa.test(txdata.FILEID)) {
         aobj = EC2.objQA(txdata.FILEID.replace(/^\$ */, ""), 1);
         return aobj == null ? ""
         : typeof aobj !== 'object' ? aobj : aobj.content || msgPrefmt(aobj);
@@ -3465,7 +3466,7 @@ attInp() {
     !(lfkey = valatt.replace(/^\/\//, ""))
     ? localforage.keys((err, keys) => err ? msgHandl(err) : dataDispl(keys, 3))
     : localforage.getItem(lfkey, (err, val) => err ? msgHandl(err) : dataDispl(val, 3));
-  } else if (/^\$ *\w*(?:\b[.(].+|)$/.test(valatt)) {
+  } else if (rexoqa.test(valatt)) {
     Promise.resolve(EC2.objQA(valatt.replace(/^\$ */, ""))).then(rslt => dataDispl(rslt, 3));
   } else if (valatt && txdata.url) {
     rdataFetch(txdata).then( rslt =>
@@ -4686,7 +4687,7 @@ qconRetrvD(cbfnc, errfnc) { // also triggered by guideLoad, dviz-idxlist, dviz-m
     !(lfkey = valcon.replace(/^\/\//, ""))
     ? localforage.keys((err, keys) => err ? msgHandl(err) : dataDispl(keys, 0))
     : localforage.getItem(lfkey, (err, val) => err ? msgHandl(err) : dataDispl(val, 0));
-  } else if (/^\$(?: *(?:new +|)\w+(?:\..+|\(.*?\).*|)|)$/.test(valcon)) {
+  } else if (rexoqa.test(valcon)) {
     Promise.resolve(EC2.objQA(valcon.replace(/^\$ */, ""))).then(rslt => dataDispl(rslt, 0));
   } else if (txdata.hasOwnProperty("dbox") || txdata.hasOwnProperty("path")) {
     dropboxTx(txdata, cbfnc, errfnc);
