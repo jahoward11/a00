@@ -1,8 +1,8 @@
 /* JavaScript module: Note Manager */
 
 const dwraps = [
-  "<!DOCTYPE html>\n<html lang=en>\n<title>Note Manager</title>\n<meta charset=\"utf-8\">\n<meta name=viewport content=\"width=device-width, initial-scale=1\">\n\n",
-  "\n\n<script src=\"../../a00/-res-js/pouchdb.min.js\" type=\"text/javascript\"></script>\n<script src=\"../../a00/-res-js/pouchdb.all-dbs.min.js\" type=\"text/javascript\"></script>\n<script type=module>\n",
+  "<!DOCTYPE html>\n<html lang=en>\n<title>Note Manager</title>\n<meta charset=\"utf-8\">\n<meta name=viewport content=\"width=device-width, initial-scale=1\">\n\n<div id=nmwrap>\n",
+  "\n</div>\n\n<script src=\"../../a00/-res-js/pouchdb.min.js\" type=\"text/javascript\"></script>\n<script src=\"../../a00/-res-js/pouchdb.all-dbs.min.js\" type=\"text/javascript\"></script>\n<script type=module>\n",
   "\n</script>\n</html>"
 ];
 

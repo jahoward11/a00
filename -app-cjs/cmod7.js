@@ -15,7 +15,7 @@ window.nmwrap || import("./nmgr.js").then(re => { let ndiv = document.createElem
 // full source code (e.g., for building a standalone web app).
 // *Alert:* This app's code is lengthy (about 2300 lines).
 
-// import("./nmgr.js").then(re => respShow(re.dwraps[0] + re.nmpage + re.dwraps[1] + re.nmscr + re.dwraps[2])).catch(respShow)
+// import("./nmgr.js").then(re => re.dwraps[0] + re.nmpage + re.dwraps[1] + re.nmscr + re.dwraps[2]).then(respShow).catch(respShow)
 //`;
 
 const search = `/*
