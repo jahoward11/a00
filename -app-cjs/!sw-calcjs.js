@@ -18,8 +18,8 @@ const cacheName = "calcjs0.14",
   ],
   rcvd1 = {},
   tstamp = Date.now(),
-  rexupds = /\/a00\/(?:-app-cjs\/|-dev.*?\/|[\w!.*+~-]+\??$)/,
-  rexkprs = /\/a00\/(?:-app-cjs\/calcjs|[\w/!.*+~-]+\??$)/;
+  rexkprs = /\/a00\/(?:-app-cjs\/calcjs|[\w/!.*+~-]+\??$)/,
+  rexupds = /\/a00\/(?:-app-cjs\/|-dev.*?\/|[\w!.*+~-]+\??$)/;
 
 self.addEventListener('install', e => {
   console.log("[Service Worker] Installing new cache: " + cacheName);
@@ -44,7 +44,7 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   let reqPrc = (rsp1 = {}) => {
-    if (rsp1.ok && (!navigator.onLine || rcvd1[e.request.url] || !rexkprs.test(e.request.url))) {
+    if (rsp1.ok && (!navigator.onLine || !rexupds.test(e.request.url) || rcvd1[e.request.url])) {
       return rsp1;
     } else {
       //console.log("[Service Worker] Fetching resource: " + e.request.url);
