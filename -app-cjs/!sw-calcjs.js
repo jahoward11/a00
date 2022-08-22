@@ -1,6 +1,6 @@
 // Service Worker
 
-const cacheName = "calcjs-v00.13",
+const cacheName = "calcjs0.14",
   cacheKeeplist = [cacheName],
   appShellFiles = [
     "../-app-cjs/calcjs0.html",
@@ -18,8 +18,8 @@ const cacheName = "calcjs-v00.13",
   ],
   rcvd1 = {},
   tstamp = Date.now(),
-  rexupds = /\/a00\/(?:-app-cjs\/|-dev.*?\/|[\w.-]+\??$)/,
-  rexkprs = /\/a00\/(?:-app-cjs\/calcjs|[\w/.-]+\??$)/;
+  rexupds = /\/a00\/(?:-app-cjs\/|-dev.*?\/|[\w!.*+~-]+\??$)/,
+  rexkprs = /\/a00\/(?:-app-cjs\/calcjs|[\w/!.*+~-]+\??$)/;
 
 self.addEventListener('install', e => {
   console.log("[Service Worker] Installing new cache: " + cacheName);
@@ -38,13 +38,13 @@ self.addEventListener('activate', e => {
     + ((Date.now() - tstamp) / (60 * 1000)) + " min)" );
   e.waitUntil(
     caches.keys().then( keyList => Promise.all( keyList.map( key =>
-      !key.startsWith(cacheName.replace(/-.+/, "")) || (cacheKeeplist || []).indexOf(key) > -1
+      !key.startsWith(cacheName.replace(/[\d-].+/, "")) || (cacheKeeplist || []).indexOf(key) > -1
       || caches.delete(key) ))) );
 });
 
 self.addEventListener('fetch', e => {
   let reqPrc = (rsp1 = {}) => {
-    if (rsp1.ok && (!navigator.onLine || rcvd1[e.request.url] || !rexupds.test(e.request.url))) {
+    if (rsp1.ok && (!navigator.onLine || rcvd1[e.request.url] || !rexkprs.test(e.request.url))) {
       return rsp1;
     } else {
       //console.log("[Service Worker] Fetching resource: " + e.request.url);
