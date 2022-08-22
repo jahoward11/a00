@@ -262,12 +262,20 @@ uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; 
 //`;
 
 const t4cntcs = `//
+// __Contacts Directory__
 /*
 scrGen = src => src.match(/^(?:fwg|imgsVw|rexts) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n").replace(/respShow/g, "console.warn").replace(/;\\nwindow\\.(n1Gen = ).+/, (m, c1) => ",\\n  " + (c1 + n1Gen).replace(/\\b_\\.\\b/g, "") + ";\\nwindow.dbobj = window.PouchDB && new PouchDB(\\"" + dbobj.name + "\\");"); //
 dPreps = d => d.replace(/\\n<hr>/, "").replace(/(<details id="?imgdtl.*?>)[^]*?(?=<\\/details>)|(<form id="?dform.*?>)[^]*?(?=<\\/form>)|(<div id="?ndata.*?>)[^]*(?=<\\/div>\\s*<\\/div>)/g, "$1$2$3"); //
 dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Notes Database</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/pouchdb.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
 respShow(dwraps[0] + dPreps(dbwrap.outerHTML) + dwraps[1] + scrGen(xstor.JScode.tutorial4) + dwraps[2])
 */
+
+// __Note Manager__
+ // Un-comment the following line of code to generate the
+// full source code (e.g., for building a standalone web app).
+// *Alert:* This app's code is lengthy (about 2300 lines).
+
+// import("./nmgr.js").then(re => re.dwraps[0] + re.nmpage + re.dwraps[1] + re.nmscr + re.dwraps[2]).then(respShow).catch(respShow)
 //`;
 
 const srtools = `//
