@@ -235,7 +235,7 @@ uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; 
 // srctxta.textContent = (dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(t3x) + dwraps[2]);
 // srctxta.value = recon.innerHTML = srctxta.innerHTML;
 
-// /spark/.test(window.location.search) || (window.location.search = "cmods=spark.js,../-dev/prj10.js&dload=t3srepl");
+// /spark/.test(window.location.search) || (window.location.search = "cmods=spark.js,../-dev/prj10.js&dload=t3search");
 // srctxta.value = xstor.sparknotes.mythology.replace(/\\n\\*\\/$|^\\/\\*\\n/g, ""); //
 // srctxta.value || import("./spark.js").then(re => srctxta.value = re.mythology.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(respShow); //
 // sepainp.value = "/^.*?(\\\\bmyth).*\\\\n*|^.*\\\\n*/gim"; //
