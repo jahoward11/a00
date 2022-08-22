@@ -27,8 +27,8 @@ const cacheName = "ecollabs0.14",
   ],
   rcvd1 = {},
   tstamp = Date.now(),
-  rexupds = /\/a00\/(?:(?:-app-eco\/|-dev.*?\/)[\w!.*+~-]+\??|-res-css\/(?:reset|style)[\w!.*+~-]+|-res-js\/ebook-annos-fns\.js)$|\.cloudant[\w.]+\/(?!a00\/)[\w!.*+~-]+\/-res-\w+\/[\w!.*+~-]+$|-res-\w+\/u\d\d[\w!.*+~-]+$|\/eco\/project-list.json$/,
-  rexkprs = /\/a00\/[\w/!.*+~-]+\??$|\.cloudant[\w.]+\/(?!a00\/)[\w!.*+~-]+\/-res-\w+\/[\w!.*+~-]+$|-res-\w+\/u\d\d[\w!.*+~-]+$|\/oauth\/v4\/.+\/(?:openid-configuration|publickeys)$|\/\/fonts\.gstatic\.com\/|\.gravatar\.com\/avatar\//;
+  rexkprs = /\/a00\/[\w/!.*+~-]+\??$|\.cloudant[\w.]+\/(?!a00\/)[\w!.*+~-]+\/-res-\w+\/[\w!.*+~-]+$|-res-\w+\/u\d\d[\w!.*+~-]+$|\/eco\/project-list.json$|\/oauth\/v4\/.+\/(?:openid-configuration|publickeys)$|\/\/fonts\.gstatic\.com\/|\.gravatar\.com\/avatar\//,
+  rexupds = /\/a00\/(?:(?:-app-eco\/|-dev.*?\/)[\w!.*+~-]+\??|-res-css\/(?:reset|style)[\w!.*+~-]+|-res-js\/ebook-annos-fns\.js)$|\.cloudant[\w.]+\/(?!a00\/)[\w!.*+~-]+\/-res-\w+\/[\w!.*+~-]+$|-res-\w+\/u\d\d[\w!.*+~-]+$|\/eco\/project-list.json$/;
 
 self.addEventListener('install', e => {
   console.log("[Service Worker] Installing new cache: " + cacheName);
@@ -53,7 +53,7 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   let reqPrc = (rsp1 = {}) => {
-    if (rsp1.ok && (!navigator.onLine || rcvd1[e.request.url] || !rexkprs.test(e.request.url))) {
+    if (rsp1.ok && (!navigator.onLine || !rexupds.test(e.request.url) || rcvd1[e.request.url])) {
       return rsp1;
     } else {
       //console.log("[Service Worker] Fetching resource: " + e.request.url);
