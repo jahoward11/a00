@@ -29,7 +29,7 @@ const hostgh = /\.github\.io$/.test(window.location.host),
   a00orig = hostibm && window.location.origin || localStorage["_ecoa00orig"],
   a00path = localStorage["_ecoa00path"]
     || (hostgh || hostibm || hostlh || protfile || !a00orig ? "../.." : a00orig) + "/a00",
-  asseturls = {
+  aurls = {
     "eco-srvc1.js":           a00path + "/-app-eco/eco-srvc1.js",
     "eco-srvc2.js":           a00path + "/-app-eco/eco-srvc2.js",
     "eco-srvc3.js":           a00path + "/-app-eco/eco-srvc3.js",
@@ -53,7 +53,7 @@ const hostgh = /\.github\.io$/.test(window.location.host),
   rexloc = /^(?:(?:\.\.\/\.\.|\.\.|)\/(?=$|\w)|\.\/(?=[^ \/])|\/\/|\$|blob:[\w/:-]*(?!.* ))[ \w/!.*+~-]*$/,
   rexoqa = /^\$ *(?:new +|)\w*(?:\b[.(].+|)$/,
   rexrmt = /^https?:\/\/[ \w/#%!?=&@:.,+~-]+$/,
-  rexwba = /\.(?:giff?|jpe?g|m?js|png|s?css)$/;
+  rexwba = /\.(?:giff?|jpe?g|m?js|png|s?css)$/i;
 
 window.ecoqjs = window.ecoqjs || {};
 window.ecomjs = window.ecomjs || {};
@@ -1040,14 +1040,14 @@ function indrChg(elm, val, ref) {
 
 function updDisbl() {
   document.querySelectorAll('#econav0 #fupdbtnc>button, #ecoesp0 #pchbtn')
-  .forEach(e => e.disabled = true);
+  .forEach(el => el.disabled = true);
   msgHandl(ECOINSTR[6]);
 }
 
 function tswapHide() {
   fldfoc = null;
   document.querySelectorAll('#ecoesp0 .dftbtnc:not(.is-hidden), #ecoesp0 .ptybtnc:not(.is-hidden), #ecoesp0 #rawbtnc:not(.is-hidden)')
-  .forEach(e => e.classList.add("is-hidden"));
+  .forEach(el => el.classList.add("is-hidden"));
   document.querySelector('#ecoesp0 #prsebtn').disabled = true;
 }
 
@@ -1096,10 +1096,10 @@ function influxSet(yes) {
       && (pfslist.className = "has-background-warning");
     }
   }
-  fgenbtns.forEach(e => e.disabled = fwinflux);
+  fgenbtns.forEach(el => el.disabled = fwinflux);
   !filewkg || filewkg.file_type !== "eco-contact" || !/^![0-9a-z]+-[0-9a-z]+$/.test(filewkg._id)
   || (fgenbtns[6].disabled = false);
-  fgenhlps.forEach(e => fwinflux ? e.classList.remove("is-hidden") : e.classList.add("is-hidden"));
+  fgenhlps.forEach(el => fwinflux ? el.classList.remove("is-hidden") : el.classList.add("is-hidden"));
   !pf2togswi.checked
   || (fwinflux ? jdepty.classList.remove("ptydiffs") : jdepty.classList.add("ptydiffs"));
 }
@@ -1123,11 +1123,11 @@ function publResets() {
     ifname = document.querySelector('#ecoesp0 #eftass .file-name'),
     irename = document.querySelector('#ecoesp0 #irename'),
     imgabtn = document.querySelector('#ecoesp0 #imgabtn');
-  cntchlps.forEach(e => e.classList.add("is-hidden"));
+  cntchlps.forEach(el => el.classList.add("is-hidden"));
   irename.value = uplfpath.value = rm3list.value = null;
   imgabtn.disabled = uplbtn.disabled = true;
-  publhlps.forEach(e => e.classList.add("is-hidden"));
-  imgahlps.forEach(e => e.classList.add("is-hidden"));
+  publhlps.forEach(el => el.classList.add("is-hidden"));
+  imgahlps.forEach(el => el.classList.add("is-hidden"));
   ifname.classList.remove("has-text-dark");
   ifname.innerHTML = "Locate image&hellip;";
   EC2.rmtSel();
@@ -1152,15 +1152,15 @@ function assts2Blob() {
   let dbpc2, nscr,
     hlslist = document.querySelector('#ecoesp0 #hlslist'),
     iniscripts = document.querySelector('#iniscripts'),
-    attPrc1 = (docid, akey) => !(asseturls[akey] && /^blob:/.test(asseturls[akey]))
-      && dbpc2 && dbpc2.getAttachment(docid, akey)
-      .then(ablob => asseturls[akey] = URL.createObjectURL(ablob))
-      .catch(msgHandl),
+    attPrc1 = (docid, akey) =>
+      /^blob:/.test(aurls[akey]) || !dbpc2 || dbpc2.getAttachment(docid, akey)
+        .then(ablob => aurls[akey] = URL.createObjectURL(ablob))
+        .catch(msgHandl),
     modsInj = () => {
       ["eco-srvc1.js", "eco-srvc2.js"].concat(!protfile ? [] : "eco-srvc3.js")
       .forEach(jsi => {
         nscr = document.createElement('script');
-        nscr.src = asseturls[jsi];
+        nscr.src = aurls[jsi];
         nscr.type = 'text/javascript';
         protfile || hostibm || nscr.setAttribute('crossorigin', 'use-credentials');
         iniscripts.appendChild(nscr);
@@ -1169,8 +1169,8 @@ function assts2Blob() {
         nscr = document.createElement('script');
         nscr.type = 'module';
         nscr.innerHTML
-          = '\nimport * as srvc3 from "' + asseturls["eco-srvc3.mjs"]
-          //+ '";\nimport * as srvc4 from "' + asseturls["eco-srvc4.mjs"]
+          = '\nimport * as srvc3 from "' + aurls["eco-srvc3.mjs"]
+          //+ '";\nimport * as srvc4 from "' + aurls["eco-srvc4.mjs"]
           + '";\nlet f;\nfor (f in srvc3) window.ecomjs[f] = srvc3[f];\n'
           //+ '\nfor (f in srvc4) window.ecomjs[f] = srvc4[f];\n';
         iniscripts.appendChild(nscr);
@@ -1193,12 +1193,12 @@ function assts2Blob() {
           .map(akey => attPrc1("-app-eco", akey)) )
         .then(modsInj);
       } else {
-        !epsets.hlstyle || (asseturls[epsets.hlstyle] = a00path + "/-res-hljs/" + epsets.hlstyle);
-        protfile || /^blob:/.test(asseturls["bulma0.9-minireset.css"])
+        !epsets.hlstyle || (aurls[epsets.hlstyle] = a00path + "/-res-hljs/" + epsets.hlstyle);
+        protfile || /^blob:/.test(aurls["bulma0.9-minireset.css"])
         || ["bulma0.9-content.css", "bulma0.9-minireset.css", "ebook-annos-fns.js", "srcdiff.js"]
           .concat(epsets.hlstyle || []).forEach( ass =>
-            rdataFetch({ url: asseturls[ass], crds: 'include', bmet: 'blob' })
-            .then(ablob => asseturls[ass] = URL.createObjectURL(ablob)).catch(msgHandl) );
+            rdataFetch({ url: aurls[ass], crds: 'include', bmet: 'blob' })
+            .then(ablob => aurls[ass] = URL.createObjectURL(ablob)).catch(msgHandl) );
         hlslist.innerHTML = tmplhlslist
         && tmplhlslist({ hlstys: (!protfile || platipd2) ? HLJSSTYS[0] : HLJSSTYS[1] });
         hlslist.value = epsets.hlstyle;
@@ -1222,15 +1222,15 @@ function pdbListGen() { // also "dboListGen", "pchListGen"
     pimg2Blob = (d, dbpc3, filedir = "-res-img") => {
       let pimg = d.image_src || "",
         apath = pimg.match(rexatt) || [];
-      if (asseturls[apath[3]]) {
-        d.image_src = asseturls[apath[3]];
+      if (aurls[apath[3]]) {
+        d.image_src = aurls[apath[3]];
         return d;
       }
       apath[2] = !apath[2] ? filedir : (/^[.-]\b/.test(apath[2]) ? "" : ".") + apath[2];
       return !(dbpc3 || apath[1] && dbs2.some(e => e === apath[1]) || !apath[1] && dbpch) ? d
       : (dbpc3 || new PouchDB(apath[1] || dbpch.name))
       .getAttachment(apath[2], apath[3])
-      .then(ablob => d.image_src = asseturls[apath[3]] = URL.createObjectURL(ablob))
+      .then(ablob => d.image_src = aurls[apath[3]] = URL.createObjectURL(ablob))
       .catch(() => !apath[1] || /^a00$/.test(apath[1]) || (d.image_src = ""))
       .then(() => d);
     },
@@ -1306,9 +1306,8 @@ function pdbListGen() { // also "dboListGen", "pchListGen"
         dbpc2 = new PouchDB(dbteam);
         dbpc2.get("-res-img").then( adoc => !adoc._attachments
           || Object.keys(adoc._attachments).forEach( akey =>
-            asseturls[akey] && /^blob:/.test(asseturls[akey])
-            || dbpc2.getAttachment("-res-img", akey)
-              .then(ablob => asseturls[akey] = URL.createObjectURL(ablob)) ) )
+            /^blob:/.test(aurls[akey]) || dbpc2.getAttachment("-res-img", akey)
+              .then(ablob => aurls[akey] = URL.createObjectURL(ablob)) ) )
         .catch(msgHandl);
         dbpc2.query("ecosorter/files-support").then(rsltqry => {
           prjitems = !rsltqry.rows || rsltqry.rows
@@ -1382,21 +1381,21 @@ function pfsListGen(fileref, publupd, filelf) {
       //name_user: d.name_user,
       roles:     [d.roles].flat(),
       email:     (d.emails || [""])[0],
-      image_src: asseturls[ ( apath = d.image_src
+      image_src: aurls[ ( apath = d.image_src
           && d.image_src.match(rexatt) || [] )[3] || d.image_src ]
         || !window.PouchDB || !dbteam || apath[1] !== dbteam || !apath[2] || !apath[3]
         ? d.image_src
         : new PouchDB(dbteam)
           .getAttachment(apath[2], apath[3])
-          .then(ablob => asseturls[apath[3]] = URL.createObjectURL(ablob))
+          .then(ablob => aurls[apath[3]] = URL.createObjectURL(ablob))
           .then(() => d.image_src)
           .catch(msgHandl)
     }),
     docPrc2 = docid =>
       !dbpch || dbpch.name === "a00" || dbpch.get(docid).then( adoc =>
         !adoc._attachments || Object.keys(adoc._attachments).forEach( akey =>
-          !rexwba.test(akey) || /^blob:/.test(asseturls[akey]) || dbpch.getAttachment(docid, akey)
-            .then(ablob => asseturls[akey] = URL.createObjectURL(ablob)) ) )
+          !rexwba.test(akey) || /^blob:/.test(aurls[akey]) || dbpch.getAttachment(docid, akey)
+            .then(ablob => aurls[akey] = URL.createObjectURL(ablob)) ) )
       .catch(msgHandl),
     fileResel = () => {
       if (filewkg && /^eco-/.test(filewkg.file_type)) {
@@ -1543,7 +1542,7 @@ function prjDiscGen() {
         .concat(dcntcs.join()),
       tm0disc: Array.isArray(tm0disc) && !tm0disc.length ? "none" : tm0disc,
       adsbls:  Array.from(document.querySelectorAll('#ecoesp0 #prjdisc>.media'))
-        .map(e => !(e.querySelector('input[type=checkbox]') || { checked: true }).checked)
+        .map(el => !(el.querySelector('input[type=checkbox]') || { checked: true }).checked)
     },
     attlist = document.querySelector('#econav0 #attlist'),
     prjdisc = document.querySelector('#ecoesp0 #prjdisc'),
@@ -1872,9 +1871,9 @@ function jdePtyGen(rowslr, plai, plbgi) {
     misctxta.disabled || indrChg(misctxta, jfw.file_updated.misc);
   } else if (filewkg) {
     [dbmdinp, sdirinp, pfidinp, versinp, ownrinp, peoptxta, misctxta]
-    .forEach( (e, i) => i && e.disabled
-      || ["is-warning", "is-success"].forEach(f => e.classList.remove(f))
-      || !i || (e.value = "") || (e.disabled = 1) );
+    .forEach( (el, i) => i && el.disabled
+      || ["is-warning", "is-success"].forEach(f => el.classList.remove(f))
+      || !i || (el.value = "") || (el.disabled = 1) );
     delswi.checked = delswi.disabled = pfidinp.disabled = 0;
     dbmdinp.value = ( !jfw.file_created ? dbpch && dbpch.name
       : (jfw.file_updated || jfw.file_created).dbname ) || "";
@@ -1926,7 +1925,7 @@ function rmtListGen() {
   };
   rm3list.innerHTML = rmtlist.innerHTML = rm2list.innerHTML = tmplrmtlist && tmplrmtlist(context);
   !dbpch || (rmtlist.value = rm2list.value = dbpch.name);
-  rmtlist.selectedIndex < 1 || [rm2btn, rmtbtn].forEach(e => e.disabled = false);
+  rmtlist.selectedIndex < 1 || [rm2btn, rmtbtn].forEach(el => el.disabled = false);
 }
 
 function fwResets(invalid) {
@@ -1938,9 +1937,9 @@ function fwResets(invalid) {
   = document.querySelector('#ecoesp0 #jdedft').innerHTML = null;
   prjDiscGen();
   jdeRawAlert(invalid);
-  metas.forEach( e => ( e.checked ? e.checked = 0 : (e.value = "")
-    || ["is-warning", "is-success"].forEach(f => e.classList.remove(f)) ) || (e.disabled = 1) );
-  eftypes.forEach((e, i) => i && e.classList.add("is-hidden"));
+  metas.forEach( el => ( el.checked ? el.checked = 0 : (el.value = "")
+    || ["is-warning", "is-success"].forEach(f => el.classList.remove(f)) ) || (el.disabled = 1) );
+  eftypes.forEach((el, i) => i && el.classList.add("is-hidden"));
   eftypes[0].classList.remove("is-hidden");
   swapListGen();
 }
@@ -2084,11 +2083,11 @@ function modjsLoad() {
       fpj = fpi,
       spnm = rexatt.exec(fpi);
     return spnm
-    && ( asseturls[spnm[3]] || (spnm[1] || dbpch)
+    && ( aurls[spnm[3]] || (spnm[1] || dbpch)
       && (!spnm[1] || Array.from(pchlist.options).some(op => op.value === spnm[1]))
       && window.PouchDB && new PouchDB(spnm[1] || dbpch.name)
         .getAttachment((/^[.-]\b/.test(spnm[2]) ? "" : ".") + spnm[2], spnm[3])
-        .then(ablob => asseturls[spnm[3]] = URL.createObjectURL(ablob))
+        .then(ablob => aurls[spnm[3]] = URL.createObjectURL(ablob))
         .catch(() => null) )
     || null;
   }) ).catch(msgHandl)
@@ -2144,7 +2143,7 @@ function linksExpand() {
         && ( sshm = ssheets.find( ssi =>
           new RegExp( "/" + spn2.filter((e, i) => i && e).join("/")
             .replace(/(?=[.*+])/g, "\\") + "$", "i" ).test(ssi.href)
-          || asseturls[spn2[3]] === ssi.href ))
+          || aurls[spn2[3]] === ssi.href ))
         && (() => { try { return Array.from(sshm.cssRules).map(ob => ob.cssText).join("\n");
           } catch { return "/* ??? " + lnki + " */"; } })() || lnki );
     } else {
@@ -2328,7 +2327,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         ua1 = !epsets.appchks[26] ? a1i.href || a1i.src : EC2.u2Blob(a1i.href || a1i.src),
         apath1 = a1i.attributes[a1i.href ? 'href' : 'src'].value.match(rexatt) || [],
         ablSto = ablob => elsass[j][elsass[j].href ? 'href' : 'src']
-          = asseturls[apath1[3]] = URL.createObjectURL(ablob);
+          = aurls[apath1[3]] = URL.createObjectURL(ablob);
       apath1[2] = apath1[2] && (/^[.-]\b/.test(apath1[2]) ? "" : ".") + apath1[2];
       apath1[3] || (apath1[3] = (a1i.href || a1i.src).replace(/^(?!blob:).*\//, ""));
       return /^blob:/.test(apath1[3])
@@ -2352,7 +2351,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         apath2 = a2ilj.match(rexatt) || [],
         styInj = url => a2ilj.replace( /(?:(\burl\() *['"]?|['"])(\S+)$/i,
           (m, c1, c2) => (c1 || '"') + (url || c2) + (c1 ? ')' : '"') ),
-        ablSto = ablob => asseturls[apath2[3]] = URL.createObjectURL(ablob);
+        ablSto = ablob => aurls[apath2[3]] = URL.createObjectURL(ablob);
       !epsets.appchks[26] || (ua2 = EC2.u2Blob(ua2));
       apath2[2] = apath2[2] && (/^[.-]\b/.test(apath2[2]) ? "" : ".") + apath2[2];
       apath2[3] || (apath2[3] = ua2.replace(/^(?!blob:).*\//, ""));
@@ -2401,7 +2400,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         ua3 = !epsets.appchks[26] && !/\bebook-annos-fns\.js$|\bsrcdiff\.js$/.test(a3i.src)
           ? a3i.src : EC2.u2Blob(a3i.src),
         apath3 = !a3i.src ? [] : a3i.attributes.src.value.match(rexatt) || [],
-        ablSto = ablob => asseturls[apath3[3]] = URL.createObjectURL(ablob);
+        ablSto = ablob => aurls[apath3[3]] = URL.createObjectURL(ablob);
       apath3[2] = apath3[2] && (/^[.-]\b/.test(apath3[2]) ? "" : ".") + apath3[2];
       apath3[3] || !a3i.src || (apath3[3] = a3i.src.replace(/^(?!blob:).*\//, ""));
       return typanno
@@ -2504,7 +2503,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         EC1.ptySel(11);
         EC1.srcSel(sidx);
       }
-      eftypes.forEach(e => e.classList.add("is-hidden"));
+      eftypes.forEach(el => el.classList.add("is-hidden"));
       eftypes[ filewkg.file_type === "eco-publmgr" || filewkg.filefrags ? 1
         : filewkg.file_type === "eco-srcdoc" || filewkg.media_type && filewkg.file_created ? 2
         : filewkg.file_type === "eco-scrap" ? 3
@@ -2532,7 +2531,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
     ecorender.innerHTML || !prjdisc.innerHTML || disciscurr++;
     // because prjDiscGen is already triggered by discTog
     document.querySelector('#econav0 #ebrand').classList.remove("has-background-grey");
-    prv2s.forEach(e => e.classList.add("is-hidden"));
+    prv2s.forEach(el => el.classList.add("is-hidden"));
     destindr !== 4 || !udata || typeof udata !== 'object' || udata.file_type !== "eco-publmgr"
     || (udata = webdocGen(1, udata));
     ecorender.innerHTML = destindr !== 7 && (!udata || !/function|object/.test(typeof udata))
@@ -2545,7 +2544,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
     prv2s[0].innerHTML = !epsets.prvmode ? null : ( !epsets.hlstyle ? ""
         : '\n<style type="text/css">.hljs-tag { //color: inherit; }</style>'
           + '\n<link class="srcvlink" href="'
-          + (asseturls[epsets.hlstyle] || a00path + '/-res-hljs/' + epsets.hlstyle)
+          + (aurls[epsets.hlstyle] || a00path + '/-res-hljs/' + epsets.hlstyle)
           + (protfile || hostlh ? "" : '" crossorigin="use-credentials')
           + '" type="text/css" rel="stylesheet" disabled />' )
         + '\n<pre class="srcview is-absolute hljs">'
@@ -2606,19 +2605,19 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
   window.annos = window.annos || { configs: {} };
   let texthl = window.annos.configs.texthl;${
   ( tft = cfgs.tocs.filter( (e, i) => (e == null || typeof e === 'string' && !/^pre/i.test(e))
-    && !Array.from(adsbls).some(e => e.value === (cfgs.fcps[i] || "").aid)
+    && !Array.from(adsbls).some(el => el.value === (cfgs.fcps[i] || "").aid)
     && (!epsets.discdays || (cfgs.fcps[i] || "").ts2 > tstamp1)
     && rowFrom((cfgs.fcps[i] || "").unm) ).pop() ) === undefined
   ? "" : '\n  window.annos.configs.tocfmt = ' + (tft === null ? 'null;' : '"' + tft + '";') }
   typeof texthl !== 'string' || (texthl = texthl.split("\\n"));
   window.annos.configs.texthl = (texthl || [])${ cfgs.ahls
-    .map( (hli, i) => Array.from(adsbls).some(e => e.value === (cfgs.fcps[i] || "").aid)
+    .map( (hli, i) => Array.from(adsbls).some(el => el.value === (cfgs.fcps[i] || "").aid)
       || epsets.discdays && (cfgs.fcps[i] || "").ts2 < tstamp1
       || !rowFrom((cfgs.fcps[i] || "").unm)
       ? "" : ".concat(" + hli + ")" ).join("") }.join("\\n");
 })();
 `     });
-      scrInj({ src: asseturls["ebook-annos-fns.js"] });
+      scrInj({ src: aurls["ebook-annos-fns.js"] });
     }).then(() => {
       valatl || !filewkg || filewkg.file_type !== "eco-publmgr"
       || !filewkg.parseconfigs.linksconstr.linksinclrender || window.setTimeout(linksExpand, 1000);
@@ -2811,13 +2810,13 @@ function blobHandl(ablob, destindr, txdata = {}, cbfnc) {
   } else if (reximg.test(txdata.ATTKEY) || txdata.url && /^image/.test(ablob.type)) {
   //|| txdata.hdrs && /image/.test(txdata.hdrs["Content-Type"]) ) {
     dataDispl( imgWrap( !txdata.ATTKEY ? txdata.url
-      : !asseturls[txdata.ATTKEY] && txdata.DBNAME
+      : !aurls[txdata.ATTKEY] && txdata.DBNAME
       ? a00path.replace(/a00$/, "") + txdata.DBNAME + "/" + txdata.FILEID + "/" + txdata.ATTKEY
-      : /^blob:/.test(asseturls[txdata.ATTKEY]) && asseturls[txdata.ATTKEY]
-        || (asseturls[txdata.ATTKEY] = URL.createObjectURL(ablob)) ), 6 );
+      : /^blob:/.test(aurls[txdata.ATTKEY]) && aurls[txdata.ATTKEY]
+        || (aurls[txdata.ATTKEY] = URL.createObjectURL(ablob)) ), 6 );
   } else {
-    !rexwba.test(txdata.ATTKEY) || /^blob:/.test(asseturls[txdata.ATTKEY])
-    || (asseturls[txdata.ATTKEY] = URL.createObjectURL(ablob));
+    !rexwba.test(txdata.ATTKEY) || /^blob:/.test(aurls[txdata.ATTKEY])
+    || (aurls[txdata.ATTKEY] = URL.createObjectURL(ablob));
     blobread = new FileReader();
     blobread.onerror = err => msgHandl("Alert: Attachment not read.\n" + blobread.error);
     blobread.onload = () => {
@@ -2900,7 +2899,7 @@ function couchSync(txdata, valcon = "") {
       pfsListGen(fileref, dirlist.value || err2 && 2 || 1);
       EC2.rmtSel();
       (txdata.RMTFR ? rm2hlps[0] : rmthlps[0]).classList.remove("is-hidden");
-      [rm2btn, rmtbtn].forEach(e => e.disabled = true);
+      [rm2btn, rmtbtn].forEach(el => el.disabled = true);
       dbpch.changes({ since: updseq[dbpch.name] }).then(rslt => {
         updseq[dbpch.name] = rslt.last_seq;
         updts0 = new Date((resp.push || resp).end_time).getTime();
@@ -3366,7 +3365,7 @@ window.EC1 = {
 espExit() {
   EC1.tabs0Tog(0, 1);
   document.querySelectorAll('#econav0, #ecorender, #ecosrcview, #ecoguides')
-  .forEach(e => e.classList.add("is-hidden"));
+  .forEach(el => el.classList.add("is-hidden"));
   document.documentElement.classList.add("has-background-grey-lighter");
   document.querySelector('#ecoprj0').classList.remove("is-hidden");
 },
@@ -3375,7 +3374,8 @@ pdbSel() { // also triggered by (pchSel>...>)pdbListGen, pchSel-reset
     pdblist = document.querySelector('#ecoprj0 #pdblist'),
     idx = pdblist.selectedIndex;
   // existing pdblist.selectedIndex value is preset by pchSel
-  document.querySelectorAll('#ecoprj0 #pdbblurbs>article').forEach(e => e.classList.add("is-hidden"));
+  document.querySelectorAll('#ecoprj0 #pdbblurbs>article')
+  .forEach(el => el.classList.add("is-hidden"));
   pdbinp.value = "";
   if (idx > 0 && pdblist.options[idx]) {
     //publResets(); // necessary only if pfsListGen is not triggered
@@ -3392,13 +3392,14 @@ pdbInp() {
     lp = pdbtxt.length;
   if (valinp.slice(0, lp + 1) !== pdbtxt + (lp >= lv ? "" : "@")) {
     pdblist.selectedIndex = 0;
-    document.querySelectorAll('#ecoprj0 #pdbblurbs>article').forEach(e => e.classList.add("is-hidden"));
+    document.querySelectorAll('#ecoprj0 #pdbblurbs>article')
+    .forEach(el => el.classList.add("is-hidden"));
   }
 },
 navTog() { // also triggered by attSel, tabs0Tog, formFoc
   document.querySelector('#navscrmask').classList.toggle("is-hidden");
   document.querySelectorAll('#econav0 .navbar-burger, #econav0>#econavbar')
-  .forEach(e => e.classList.toggle("is-active"));
+  .forEach(el => el.classList.toggle("is-active"));
 },
 prvTog() {
   let prvs = document.querySelectorAll('#ecorender, #ecosrcview, #ecoguides'),
@@ -3412,14 +3413,14 @@ prvTog() {
       .replace(/(?:\/\/|)(?=color: inherit; }$)/, m => m ? "" : "//") );
     srcvpre.style.width = epsets.prvmode !== 2 || window.innerWidth <= window.outerWidth
     ? null : window.innerWidth + "px";
-    prvs.forEach((e, i) => i === 2 || e.classList.toggle("is-hidden"));
+    prvs.forEach((el, i) => i === 2 || el.classList.toggle("is-hidden"));
     lnksTog();
     window.navigator.userAgentData || prvs[1].classList.contains("is-hidden")
     || window.setTimeout(() => lnksTog() || lnksTog(), 1000);
   } else if (!epsets.prvmode) {
     EC1.tabs0Tog(0);
     document.querySelector('#econav0 #ebrand').classList.toggle("has-background-grey");
-    prvs.forEach((e, i) => i === 1 || e.classList.toggle("is-hidden"));
+    prvs.forEach((el, i) => i === 1 || el.classList.toggle("is-hidden"));
   }
 },
 attSel(renswap) { // also triggered by attListGen, blobHandl, couchQry, attInp, tabs0Tog, pfsSel, swapExe, fileLFDel, dviz-idxlist
@@ -3443,7 +3444,7 @@ attSel(renswap) { // also triggered by attListGen, blobHandl, couchQry, attInp, 
       .setAttribute('content', "width=device-width, maximum-scale=1");
     document.querySelector('#econav0 #ebrand').classList.remove("has-background-grey");
     prv2s[0].innerHTML = prjdisc.innerHTML = tm0disc = null;
-    prv2s.forEach(e => e.classList.add("is-hidden"));
+    prv2s.forEach(el => el.classList.add("is-hidden"));
     renswap || dataDispl( '<link href="' + a00path + '/-res-css/bulma0.9-minireset.css'
       + '" type="text/css" rel="stylesheet" />\n<section class="section">'
       + '\n<main class="container content">\n  <h4 class="has-text-grey-light is-italic">'
@@ -3496,7 +3497,7 @@ tabs0Tog(idx, exit) { // also triggered by dataDispl, dropboxTx, blobHandl, prvT
       document.querySelector('#econav0 #ebrand').classList.remove("has-background-grey");
       !srcvstyle || ( srcvstyle.textContent = srcvstyle.textContent
         .replace(/(?:\/\/|)(?=color: inherit; }$)/, "//") );
-      document.querySelectorAll('#ecosrcview>.srcvlink').forEach(e => e.disabled = true);
+      document.querySelectorAll('#ecosrcview>.srcvlink').forEach(el => el.disabled = true);
     };
   !exit || tswapHide();
   exit || idx > 0 || aidx < 1 || screens[0].innerHTML || EC1.attSel();
@@ -3508,9 +3509,9 @@ tabs0Tog(idx, exit) { // also triggered by dataDispl, dropboxTx, blobHandl, prvT
     !nbaropen || EC1.navTog();
   } else {
     srcvReset();
-    tabs.forEach(e => e.classList.remove("is-active"));
-    prv2s.forEach(e => e.classList.add("is-hidden"));
-    screens.forEach(e => e.classList.add("is-hidden"));
+    tabs.forEach(el => el.classList.remove("is-active"));
+    prv2s.forEach(el => el.classList.add("is-hidden"));
+    screens.forEach(el => el.classList.add("is-hidden"));
     idx < 2 ? tab2.classList.remove("is-active") : tab2.classList.add("is-active");
     !tabs[idx] || tabs[idx].classList.add("is-active");
     idx ? ecoesp0.classList.remove("is-hidden") : ecoesp0.classList.add("is-hidden");
@@ -3544,12 +3545,12 @@ qconTog(idx) { // also triggered by ibmConnect
     qcswi.classList.remove("open");
     qcswi1.classList.remove("is-hidden");
     qcswi2.classList.add("is-hidden");
-    qcctrls.forEach(e => e.classList.add("is-hidden"));
+    qcctrls.forEach(el => el.classList.add("is-hidden"));
   } else {
     qcswi.classList.add("open");
     qcswi1.classList.add("is-hidden");
     qcswi2.classList.remove("is-hidden");
-    qcctrls.forEach(e => e.classList.remove("is-hidden"));
+    qcctrls.forEach(el => el.classList.remove("is-hidden"));
   }
 },
 pfsSel(resel, cbfnc) { // also triggered by pfsResets, pfsListGen, couchAtt, tmplLoad
@@ -3701,11 +3702,11 @@ pf2Tog() { // also triggered by jdePtyGen
     pf2inp.disabled = false;
     jdepty.classList.add("pf2on");
     fwinflux ? jdepty.classList.remove("ptydiffs") : jdepty.classList.add("ptydiffs");
-    j2ptys.forEach(e => e.classList.remove("is-hidden"));
+    j2ptys.forEach(el => el.classList.remove("is-hidden"));
   } else {
     pf2inp.disabled = true;
     jdepty.classList.remove("pf2on", "ptydiffs");
-    j2ptys.forEach(e => e.classList.add("is-hidden"));
+    j2ptys.forEach(el => el.classList.add("is-hidden"));
   }
 },
 formFoc(fldid, nbar) { // fldid == null : select list
@@ -3770,7 +3771,7 @@ srcSel(idxa, add1) { // also triggered by dataDispl, ptySel, jdePtyUpd, swapExe
     }, 1);
   }
   srclist.selectedIndex = idx; // in case !add1
-  srcpanes.forEach(e => e.classList.add("is-hidden"));
+  srcpanes.forEach(el => el.classList.add("is-hidden"));
   srcpanes[idx] && srcpanes[idx].classList.remove("is-hidden");
 },
 ptySel(rowi) { // also triggered by jdePtyGen, dataDispl, srcSel, ptySel, jdeDftUpd, jdePtyUpd
@@ -3813,7 +3814,7 @@ ptySel(rowi) { // also triggered by jdePtyGen, dataDispl, srcSel, ptySel, jdeDft
     return EC1.ptySel(rowi);
   }
   document.querySelectorAll(`#ecoesp0 #ptyvals${rowi} span, #ecoesp0 #pt2vals${rowi} span, #ecoesp0 #ptyvals${rowi}>div, #ecoesp0 #pt2vals${rowi}>div`)
-    .forEach(e => e.classList.add("is-hidden"));
+  .forEach(el => el.classList.add("is-hidden"));
   if (!idxb) {
     document.querySelector(`#ecoesp0 #ptyvals${rowi}>span:nth-of-type(${1 + idxa})`)
       .classList.remove("is-hidden");
@@ -4063,9 +4064,9 @@ swapExe(parse) {
     idx = swaplist.selectedIndex,
     sliste = idx > 0 && idx < 3 && document.querySelector(swaplist.value),
     fldfc2 = fldfoc || sliste || fldstxta && fldstxta[idx - 3],
-    hlpPol = y => [swaptxta, replhelp].forEach(e => e.classList.add(!y ? "is-warning" : "is-success"));
+    hlpPol = y => [swaptxta, replhelp].forEach(el => el.classList.add(!y ? "is-warning" : "is-success"));
   if (!fldfc2) { return; }
-  [swaptxta, replhelp].forEach(e => e.classList.remove("is-warning", "is-success"));
+  [swaptxta, replhelp].forEach(el => el.classList.remove("is-warning", "is-success"));
   replhelp.innerHTML = "";
   ff2pty = fldfc2.id === "ecorender" ? "innerHTML" : "value";
   ff2val = fldfc2[ff2pty];
@@ -4073,8 +4074,8 @@ swapExe(parse) {
     try {
       !/^(?:\w+|\(.*?\)) *=> *\S|^".*"$|^\b[\w.]+$/.test(rtrminp.value.trim())
       || (rpl2 = window.eval(rtrminp.value));
-    } catch (e) {
-      replhelp.innerHTML = e;
+    } catch (err) {
+      replhelp.innerHTML = err;
       swaptxta.value = "";
       return hlpPol();
     }
@@ -4129,7 +4130,7 @@ epsUpd(swi) {
   swi !== 3 || (epsets.hlstyle = asels[2].selectedOptions[0].value);
   swi !== 4 || (epsets.tabsdflt[0] = asels[3].selectedOptions[0].index);
   swi !== 5 || (epsets.tabsdflt[1] = asels[4].selectedOptions[0].index);
-  swi > 0 || (epsets.appchks = Array.from(achks).map(e => e.checked));
+  swi > 0 || (epsets.appchks = Array.from(achks).map(el => el.checked));
   swi !== -1 || xsrcTog();
   localStorage["_ecopresets"] = JSON.stringify(epsets);
 },
@@ -4242,13 +4243,14 @@ ibmConnect() {
       EC1.wrapTog();
       EC1.swplTog();
       document.querySelector('#ecoesp0 #hlslist').value = epsets.hlstyle;
-      !epsets.appchks.length || achks.forEach((e, i) => e.checked = epsets.appchks[i]);
+      !epsets.appchks.length || achks.forEach((el, i) => el.checked = epsets.appchks[i]);
       !epsets.appchks.slice(22, 29).some(e => e) || xsrcTog();
     },
     espEnter = dsetskip => {
       typeof dsetskip === 'number' && !msgwelcome || ecoInit();
       document.documentElement.classList.remove("has-background-grey-lighter");
-      document.querySelectorAll('#econav0, #ecorender').forEach(e => e.classList.remove("is-hidden"));
+      document.querySelectorAll('#econav0, #ecorender')
+      .forEach(el => el.classList.remove("is-hidden"));
       if ( !dsetskip && idtoks
       && !reqipch && /^[a-z][0-9_a-z$,+-]*$/.test(valinp[1]) ) {
       // todo: why not test reqipch here -- to replace dsetskip?
@@ -4383,7 +4385,7 @@ ibmConnect() {
       }
     };
   ecoprj0.classList.add("is-hidden");
-  sethlps.forEach(e => e.classList.add("is-hidden"));
+  sethlps.forEach(el => el.classList.add("is-hidden"));
   idtoks || !epsets.loglast || (idtoks = jsonParse(localStorage["_ecoidtoks"]));
   !idtoks || appidtoks.innerHTML || (appidtoks.innerHTML = JSON.stringify(idtoks, null, 2))
   && (logtbtn.disabled = false);
@@ -4404,7 +4406,7 @@ ibmConnect() {
 },
 wdGen(pdata) { return webdocGen(1, pdata); },
 u2Blob(url) { // also triggered by prjDiscGen, jdeDftGen, dviz-memos, dviz-contacts
-  return asseturls[(url || "").replace(/^\S*\//, "")] || asseturls[url]
+  return aurls[(url || "").replace(/^\S*\//, "")] || aurls[url]
   || (url || "").replace(/^\.\.\/\.\.(?!\/a00\/)(?=\S+[^\s\/]$)/, a00orig) || url;
 },
 objQA(key = "", fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-memos
@@ -4437,7 +4439,7 @@ objQA(key = "", fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-
   : /^7|^(?:ECO|)MODJ?S?/i.test(key) ? ECOMODJS[ptyTest()] || rsltFbk(ECOMODJS)
   : /^6|^(?:ECO|)TMPLS?/i.test(key) ? ECOTMPLS[ptyTest()] || rsltFbk(ECOTMPLS)
   : /^5|^(?:ECO|)INSTR?/i.test(key) ? ECOINSTR[ptyTest(1)] || rsltFbk(ECOINSTR)
-  : /^4|^assets?|^a?urls?|^blobs?/i.test(key) ? asseturls[ptyTest()] || rsltFbk(asseturls)
+  : /^4|^assets?|^a?urls?|^blobs?/i.test(key) ? aurls[ptyTest()] || rsltFbk(aurls)
   : /^3|^team|^tm0$|^(?:tm0|)cntcs?|^contacts?/i.test(key) ? tm0cntcs[ptyTest()] || rsltFbk(tm0cntcs)
   : /^2|^couch|^c?accts?|^c?accounts?/i.test(key) ? caccts[ptyTest(1)] || rsltFbk(caccts)
   : /^1|^(?:eco|)idtoks?/i.test(key) ? idtoks && idtoks[ptyTest()] || rsltFbk(idtoks)
@@ -4838,7 +4840,7 @@ mnTog(xpnd) {
   xpnd != null || EC2.mnNav();
   !mnmask || xpnd == !document.querySelector('#ecorender #mnbar.minz')
   || document.querySelectorAll('#ecorender .mnote, #ecorender #mnbar')
-    .forEach(e => e.classList.toggle("minz"))
+    .forEach(el => el.classList.toggle("minz"))
   || document.querySelector('#ecorender').style.setProperty( "--mnbodrt",
     ( nmain && +getComputedStyle(nmain).marginRight.replace(/px/, "")
       || +getComputedStyle(document.body).paddingRight.replace(/px/, "")
@@ -4846,14 +4848,14 @@ mnTog(xpnd) {
       + +getComputedStyle(document.body).marginRight.replace(/px/, "") ) + "px" )
   || document.querySelectorAll( '#ecorender blockquote>p>.mnote',
       '#ecorender dd>p>.mnote', '#ecorender li>p>.mnote' )
-    .forEach( e => e.parentElement.parentElement.style.setProperty( "--mnblqrt",
-      bodwid - blqLeft(e.parentElement.parentElement) - e.parentElement.offsetWidth + "px" ))
+    .forEach( el => el.parentElement.parentElement.style.setProperty( "--mnblqrt",
+      bodwid - blqLeft(el.parentElement.parentElement) - el.parentElement.offsetWidth + "px" ))
   || document.querySelectorAll('#ecorender th>.mnote, #ecorender td>.mnote')
-    .forEach( e => e.parentElement.style.setProperty( "--mntblrt",
-      bodwid - e.parentElement.offsetLeft
-      - +getComputedStyle(e.parentElement).paddingLeft.replace(/px/, "")
-      - +getComputedStyle(e.parentElement).width.replace(/px/, "") + "px" ))
-  || [mnmask, mnnav].forEach(e => e.classList.toggle("is-hidden"));
+    .forEach( el => el.parentElement.style.setProperty( "--mntblrt",
+      bodwid - el.parentElement.offsetLeft
+      - +getComputedStyle(el.parentElement).paddingLeft.replace(/px/, "")
+      - +getComputedStyle(el.parentElement).width.replace(/px/, "") + "px" ))
+  || [mnmask, mnnav].forEach(el => el.classList.toggle("is-hidden"));
 },
 mnNav(incr) {
   let ofy, mn0,
@@ -4878,7 +4880,7 @@ discTog(evt) {
   let dload = document.querySelectorAll('#ecoesp0 #prjdisc>.field .mlft2>input[type=checkbox]'),
     discrad = document.querySelector('#ecoesp0 #discrad');
   if (evt && evt.target.type !== 'text') {
-    epsets.discload = Array.from(dload).map(e => e.checked);
+    epsets.discload = Array.from(dload).map(el => el.checked);
     epsets.discdays = +discrad.elements["discrad"].value;
     localStorage["_ecopresets"] = JSON.stringify(epsets);
   } else if (evt) {
@@ -4886,7 +4888,7 @@ discTog(evt) {
       : evt.target.value.trim().split(/[ ,]+/);
   }
   !evt || document.querySelectorAll('#ecoesp0 #prjdisc>.media .mtdn3>input[type=checkbox]')
-    .forEach(e => e.checked = true);
+    .forEach(el => el.checked = true);
   document.querySelector('#ecorender').innerHTML = null;
   reniscurr = false;
   prjDiscGen();
@@ -4976,7 +4978,7 @@ pchSel(trgnbr) { // also triggered by ibmConnect, qconSyncD
     dbmdinp = document.querySelector('#ecoesp0 #dbmdinp');
   pdblist.value = trgnbr !== 2 ? pc2list.value = pchlist.value : pchlist.value = pc2list.value;
   pdblist.selectedIndex > -1 || (pdblist.value = "");
-  pchhlps.forEach(e => e.classList.add("is-hidden"));
+  pchhlps.forEach(el => el.classList.add("is-hidden"));
   !filewkg || !pchlist.value
   || ( !filewkg.file_created ? (dbmdinp.value = pchlist.value)
     : indrChg(dbmdinp, (filewkg.file_updated || filewkg.file_created).dbname || "", pchlist.value) );
@@ -5024,7 +5026,7 @@ dirSel() {
     rm3list = document.querySelector('#ecoesp0 #rm3list'),
     uplbtn = document.querySelector('#ecoesp0 #uplbtn'),
     typpmgr = filewkg && (filewkg.file_type === "eco-publmgr" || filewkg.filefrags && true);
-  dirhlps.forEach(e => e.classList.add("is-hidden"));
+  dirhlps.forEach(el => el.classList.add("is-hidden"));
   dirbtn.disabled = !typpmgr || !dirlist.value;
   rm3list.value = dirlist.value.replace(/^\./, "");
   uplbtn.disabled = !rm3list.value;
@@ -5065,14 +5067,14 @@ rmtSel(trgnbr) { // also triggered by publResets, couchSync
     rm2chgs = document.querySelector('#ecoesp0 #rm2chgs');
   rm2chgs.innerHTML = dbpch && updpch[dbpch.name] || null;
   updts0 = new Date(/^\d[\w.:-]{23,}$|(?!\n|.)/m.exec(rm2chgs.textContent)[0]).getTime() || tstamp0;
-  rmthlps.forEach(e => e.classList.add("is-hidden"));
+  rmthlps.forEach(el => el.classList.add("is-hidden"));
   !trgnbr ? (rm2list.value = rmtlist.value = !dbpch ? "" : dbpch.name)
   : trgnbr === 1 ? rm2list.value = rmtlist.value : rmtlist.value = rm2list.value;
   rmtlist.selectedIndex > -1 || (rm2list.value = rmtlist.value = "");
   !window.navigator.onLine || !rmtlist.value || !dbpch || rmtlist.value !== dbpch.name
   || !/^\w/.test(rmtlist.selectedOptions[0].textContent)
-  ? [rmtbtn, rm2btn].forEach(e => e.disabled = true)
-  : [rmtbtn, rm2btn].forEach(e => e.disabled = false);
+  ? [rmtbtn, rm2btn].forEach(el => el.disabled = true)
+  : [rmtbtn, rm2btn].forEach(el => el.disabled = false);
 },
 dbsSync(txdata = {}) { // also triggered by (ibmConnect>)couchSync
   let pchlist = document.querySelector('#ecoesp0 #pchlist'),
@@ -5100,7 +5102,7 @@ srvrSel() { // also triggered by attSel, srvrUpl
     rm3list = document.querySelector('#ecoesp0 #rm3list'),
     uplbtn = document.querySelector('#ecoesp0 #uplbtn'),
     typpmgr = filewkg && (filewkg.file_type === "eco-publmgr" || filewkg.filefrags && true);
-  srvrhlps.forEach(e => e.classList.add("is-hidden"));
+  srvrhlps.forEach(el => el.classList.add("is-hidden"));
   uplbtn.disabled = !(attlist.value || typpmgr) || !rm3list.value;
 },
 srvrUpl() {
@@ -5187,7 +5189,7 @@ logOut() {
   = '<p id="msgwelcome"><b>System Error:</b> Please restart web app.</p>';
   sethlps[0].classList.remove("is-hidden");
   logtbtn.disabled = true;
-  appiamd.forEach(e => e.innerHTML = null);
+  appiamd.forEach(el => el.innerHTML = null);
   if (!stoempswi.checked) {
     caccts.forEach(ob => {
       delete ob.USRNAM;
@@ -5255,7 +5257,7 @@ logOut() {
     { uemail: "", uname: "", ungvn: "", unfam: "", teamid: "myteam", loglast: "",
       dbdflt: "", prvmode: 0, hlstyle: "", discload: [1,0], discdays: 0, disctype: 0,
       tabsdflt: [], swapchks: [], appchks: [] }, epsets )));
-  epsets.appchks.length === 32 || (epsets.appchks = Array.from(achks).map(e => e.checked));
+  epsets.appchks.length === 32 || (epsets.appchks = Array.from(achks).map(el => el.checked));
   !/^{.*}$/.test(localStorage["_ecopchupds"])
     ? localStorage["_ecopchupds"] = JSON.stringify(updpch)
     : updpch = jsonParse(localStorage["_ecopchupds"]) || updpch;
