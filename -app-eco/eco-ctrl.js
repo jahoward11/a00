@@ -1029,11 +1029,11 @@ function pfsResets() {
   EC1.pfsSel();
 }
 
-function indrChg(elm, val, ref) {
-  let eq = val === (ref != null ? ref : elm.value);
-  /is-warning/.test(elm.className) && !ref || (elm.value = ref != null ? ref : val || "");
-  !/\bis-[sw]/.test(elm.className) && eq
-  || !(/is-warning/.test(elm.className) || ref != null || (eq = true))
+function indrChg(elm, va1 = "", ref) {
+  let va0 = elm.value,
+    eq = ref == null || ref === va1;
+  elm.value = va1;
+  eq && va0 === va1 && !/\bis-[sw]/.test(elm.className)
   || elm.classList.remove(eq ? "is-warning" : "is-success")
   || elm.classList.add(!eq ? "is-warning" : "is-success");
 }
@@ -1863,11 +1863,10 @@ function jdePtyGen(rowslr, plai, plbgi) {
   }
   if (filewkg && rowslr !== false) {
     EC1.pfsInp();
-    !jfw.file_created || indrChg( dbmdinp,
-      (jfw.file_updated || jfw.file_created).dbname || "", !dbpch ? "" : dbpch.name );
+    indrChg(dbmdinp, (dbpch || "").name, (jfw.file_updated || jfw.file_created).dbname);
     versinp.disabled || indrChg(versinp, jfw.file_updated.version.replace(/\d+$/, m => ++m));
-    ownrinp.disabled || indrChg(ownrinp, jfw.file_updated.username, ownrinp.value);
-    peoptxta.disabled || indrChg(peoptxta, "" + jfw.contributors, peoptxta.value);
+    ownrinp.disabled || indrChg(ownrinp, (jfw.file_updated || jfw.file_created).username);
+    peoptxta.disabled || indrChg(peoptxta, "" + jfw.contributors);
     misctxta.disabled || indrChg(misctxta, jfw.file_updated.misc);
   } else if (filewkg) {
     [dbmdinp, sdirinp, pfidinp, versinp, ownrinp, peoptxta, misctxta]
@@ -1875,12 +1874,12 @@ function jdePtyGen(rowslr, plai, plbgi) {
       || ["is-warning", "is-success"].forEach(f => el.classList.remove(f))
       || !i || (el.value = "") || (el.disabled = 1) );
     delswi.checked = delswi.disabled = pfidinp.disabled = 0;
-    dbmdinp.value = ( !jfw.file_created ? dbpch && dbpch.name
-      : (jfw.file_updated || jfw.file_created).dbname ) || "";
-    dbpch && dbmdinp.value === dbpch.name || indrChg(dbmdinp, dbmdinp.value, !dbpch ? "" : dbpch.name);
+    indrChg( dbmdinp, dbmdinp.value = (dbpch || "").name || "",
+      (jfw.file_updated || jfw.file_created).dbname );
+    !(jfw.file_created || jfw.hasOwnProperty("loc_subdir")) || (sdirinp.disabled = 0)
+    || ( sdirinp.value = jfw.hasOwnProperty("loc_subdir")
+      ? jfw.loc_subdir : (jfw.file_updated || jfw.file_created).subdir );
     pfidinp.value = jfw._id || "";
-    !(jfw.file_updated || jfw.hasOwnProperty("loc_subdir")) || (sdirinp.disabled = 0)
-    || (sdirinp.value = !jfw.file_updated ? jfw.loc_subdir : jfw.file_updated.subdir);
     if (jfw.file_updated) {
       ownrinp.disabled = 0;
       ownrinp.value = epsets.uname || jfw.file_updated.username;
@@ -3626,12 +3625,13 @@ pfsInp(noflux, btnsdis) { // also triggered by jdePtyGen, dataDispl, metaChg, sw
     pfslist = document.querySelector('#econav0 #pfslist'),
     optg = pfslist.value && pfslist.selectedOptions[0].parentElement.label,
     pfsref = optg === "LOCAL temporary files" ? pfslist.value
-    : optg && pfslist.selectedOptions[0].textContent.replace(/^(?:\.\.\/|)(?:.*\/(?=.)|)/, ""),
+      : optg && pfslist.selectedOptions[0].textContent.replace(/^(?:\.\.\/|)(?:.*\/(?=.)|)/, ""),
     btnfupd = document.querySelector('#econav0 #fupdbtnc>button'),
     pchbtn = document.querySelector('#ecoesp0 #pchbtn'),
     sdirinp = document.querySelector('#ecoesp0 #sdirinp'),
     pfidinp = document.querySelector('#ecoesp0 #pfidinp');
-  if (fileref.replace(/^(?:\.\.\/|)(?:.*\/(?=.)|)/, "") !== pfsref) { // allow file creation/duplication
+  if (fileref.replace(/^(?:\.\.\/|)(?:.*\/(?=.)|)/, "") !== pfsref) {
+  // allow file creation/duplication
     pfsflg1.classList.add("is-hidden");
     pfsflg1.classList.remove("has-text-warning", "has-text-danger");
     pfsflg0.classList.remove("has-icons-left");
@@ -3639,12 +3639,13 @@ pfsInp(noflux, btnsdis) { // also triggered by jdePtyGen, dataDispl, metaChg, sw
   }
   if (filewkg) {
     dirref = fileref.replace(/^(?:\.\.\/|)\.?(-?\w.*)\/.+|.+/, "$1");
-    sdirinp.disabled || indrChg( sdirinp, ( !filewkg.file_updated ? filewkg.loc_subdir
-        : filewkg.file_updated.subdir ) || "", dirref || sdirinp.value );
+    sdirinp.disabled || indrChg( sdirinp, dirref || sdirinp.value,
+      ( filewkg.hasOwnProperty("loc_subdir") ? filewkg.loc_subdir
+        : (filewkg.file_updated || filewkg.file_created).subdir ) || "" );
     pfidinp.value = /^mycontact/.test(fileref) ? filewkg._id || ""
       : fileref.replace(/\/$|^(?:\.\.\/|)(?:.*\/(?=.)|)/g, "");
     filewkg.file_type !== "eco-assets" || (pfidinp.value = pfidinp.value.replace(/^(?=\w)/, "."));
-    indrChg(pfidinp, filewkg._id || "", pfidinp.value);
+    indrChg(pfidinp, pfidinp.value, filewkg._id || "");
   }
   if (noflux) {
     influxSet(2);
@@ -3999,8 +4000,8 @@ metaChg(evt, pty) {
     EC1.pfsInp();
   } else {
     ["is-warning", "is-success"].forEach(e => evt.target.classList.remove(e));
-    evt.target.classList.add( evt.target.value !== ( !pty
-      ? "" + filewkg.contributors : pty !== "v" ? filewkg.file_updated[pty]
+    evt.target.classList.add( evt.target.value !== ( !pty ? "" + filewkg.contributors
+      : pty !== "v" ? (filewkg.file_updated || filewkg.file_created)[pty]
       : filewkg.file_updated.version.replace(/\d+$/, m => ++m) ) ? "is-warning" : "is-success" );
   }
 },
@@ -4979,9 +4980,7 @@ pchSel(trgnbr) { // also triggered by ibmConnect, qconSyncD
   pdblist.value = trgnbr !== 2 ? pc2list.value = pchlist.value : pchlist.value = pc2list.value;
   pdblist.selectedIndex > -1 || (pdblist.value = "");
   pchhlps.forEach(el => el.classList.add("is-hidden"));
-  !filewkg || !pchlist.value
-  || ( !filewkg.file_created ? (dbmdinp.value = pchlist.value)
-    : indrChg(dbmdinp, (filewkg.file_updated || filewkg.file_created).dbname || "", pchlist.value) );
+  !filewkg || indrChg(dbmdinp, pchlist.value, (filewkg.file_updated || filewkg.file_created).dbname);
   if (pchlist.value) {
     pchbtn.disabled = !filewkg
     || !rexfid.test(filewkg._id) || rexfix.test(filewkg._id) ? true : false;
