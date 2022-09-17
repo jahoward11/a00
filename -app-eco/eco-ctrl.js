@@ -1863,8 +1863,8 @@ function jdePtyGen(rowslr, plai, plbgi) {
   }
   if (filewkg && rowslr !== false) {
     EC1.pfsInp();
-    indrChg(dbmdinp, (dbpch || "").name, (jfw.file_updated || jfw.file_created).dbname);
-    ownrinp.disabled || indrChg(ownrinp, (jfw.file_updated || jfw.file_created).username);
+    indrChg(dbmdinp, (dbpch || "").name, (jfw.file_updated || jfw.file_created || "").dbname);
+    ownrinp.disabled || indrChg(ownrinp, (jfw.file_updated || jfw.file_created || "").username);
     misctxta.disabled || indrChg(misctxta, jfw.file_updated.misc);
     versinp.disabled || indrChg(versinp, jfw.file_updated.version.replace(/\d+$/, m => ++m));
     peoptxta.disabled || indrChg(peoptxta, "" + jfw.contributors);
@@ -1875,7 +1875,7 @@ function jdePtyGen(rowslr, plai, plbgi) {
       || !i || (el.value = "") || (el.disabled = 1) );
     delswi.checked = delswi.disabled = pfidinp.disabled = 0;
     indrChg( dbmdinp, dbmdinp.value = (dbpch || "").name || "",
-      (jfw.file_updated || jfw.file_created).dbname );
+      (jfw.file_updated || jfw.file_created || "").dbname );
     !(jfw.file_created || jfw.hasOwnProperty("loc_subdir")) || (sdirinp.disabled = 0)
     || ( sdirinp.value = jfw.hasOwnProperty("loc_subdir")
       ? jfw.loc_subdir : (jfw.file_updated || jfw.file_created).subdir );
@@ -3641,7 +3641,7 @@ pfsInp(noflux, btnsdis) { // also triggered by jdePtyGen, dataDispl, metaChg, sw
   if (filewkg) {
     dirref = fileref.replace(/^(?:\.\.\/|)\.?(-?\w.*)\/.+|.+/, "$1");
     sdirfw = filewkg.hasOwnProperty("loc_subdir") ? filewkg.loc_subdir
-      : (filewkg.file_updated || filewkg.file_created).subdir;
+      : (filewkg.file_updated || filewkg.file_created || "").subdir;
     sdirinp.disabled || indrChg(sdirinp, dirref || sdirfw || sdirinp.value, sdirfw || "");
     pfidinp.value = /^mycontact/.test(fileref) ? filewkg._id || ""
       : fileref.replace(/\/$|^(?:\.\.\/|)(?:.*\/(?=.)|)/g, "") || filewkg._id || "";
@@ -4012,7 +4012,7 @@ metaChg(evt, pty) {
   } else {
     ["is-warning", "is-success"].forEach(e => evt.target.classList.remove(e));
     evt.target.classList.add( evt.target.value !== ( !pty ? "" + filewkg.contributors
-      : pty !== "v" ? (filewkg.file_updated || filewkg.file_created)[pty]
+      : pty !== "v" ? (filewkg.file_updated || filewkg.file_created || "")[pty]
       : filewkg.file_updated.version.replace(/\d+$/, m => ++m) ) ? "is-warning" : "is-success" );
   }
 },
@@ -4991,7 +4991,8 @@ pchSel(trgnbr) { // also triggered by ibmConnect, qconSyncD
   pdblist.value = trgnbr !== 2 ? pc2list.value = pchlist.value : pchlist.value = pc2list.value;
   pdblist.selectedIndex > -1 || (pdblist.value = "");
   pchhlps.forEach(el => el.classList.add("is-hidden"));
-  !filewkg || indrChg(dbmdinp, pchlist.value, (filewkg.file_updated || filewkg.file_created).dbname);
+  !filewkg
+  || indrChg(dbmdinp, pchlist.value, (filewkg.file_updated || filewkg.file_created || "").dbname);
   if (pchlist.value) {
     pchbtn.disabled = !filewkg
     || !rexfid.test(filewkg._id) || rexfix.test(filewkg._id) ? true : false;
