@@ -26,6 +26,7 @@ figure, .figure {
 }
 a {
   color: #485fc7;
+  cursor: pointer;
   text-decoration: none;
 }
 a:hover { color: CornFlowerBlue; }
@@ -51,11 +52,17 @@ table td, table th {
 }
 table td:not([align]), table th:not([align]) { text-align: left; }
 table td { vertical-align: top; }
+table th { vertical-align: bottom; }
+.dnone { display: none; }
+.ssbr {
+  color: DarkGrey;
+  text-align: center;
+}
 @media print {
   body { width: 648px; margin: 0 auto; padding: 0; }
   img:not([height]) { max-height: 324px; }
   .pageba { page-break-after: always; break-after: page; }
-  .pagebb { page-break-before: always; break-before: page; margin-top: 0; }
+  .pagebb { page-break-before: always; break-before: page; /* margin-top: 0; */ }
 }
 @media print and (min-width: 365px) and (max-width: 554px),
 print and (min-width: 558px) and (max-width: 734px),
