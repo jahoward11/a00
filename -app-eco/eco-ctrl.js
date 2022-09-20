@@ -4699,10 +4699,10 @@ qconRetrvD(cbfnc, errfnc) { // also triggered by guideLoad, dviz-idxlist, dviz-m
     msgHandl("Edit Space is reset.");
   } else if (/^\/\/.*$/.test(valcon) && window.localforage) {
     !(lfkey = valcon.replace(/^\/\//, ""))
-    ? localforage.keys((err, keys) => err ? msgHandl(err) : dataDispl(keys, 0))
-    : localforage.getItem(lfkey, (err, val) => err ? msgHandl(err) : dataDispl(val, 0));
+    ? localforage.keys((err, keys) => err ? msgHandl(err) : dataDispl(keys, 0, cbfnc))
+    : localforage.getItem(lfkey, (err, val) => err ? msgHandl(err) : dataDispl(val, 0, cbfnc));
   } else if (rexoqa.test(valcon)) {
-    Promise.resolve(EC2.objQA(valcon.replace(/^\$ */, ""))).then(rslt => dataDispl(rslt, 0));
+    Promise.resolve(EC2.objQA(valcon.replace(/^\$ */, ""))).then(rslt => dataDispl(rslt, 0, cbfnc));
   } else if (txdata.hasOwnProperty("dbox") || txdata.hasOwnProperty("path")) {
     dropboxTx(txdata, cbfnc, errfnc);
   } else if (txdata.url) { // non-db filepath/url
@@ -4730,7 +4730,7 @@ qconRetrvD(cbfnc, errfnc) { // also triggered by guideLoad, dviz-idxlist, dviz-m
           "Authorization": "Bearer " + ecoat
         }
       } ), 2 )
-    .then(rslt => !txdata.ATTKEY ? dataDispl(rslt, 0) : blobHandl(rslt.body, 0, txdata))
+    .then(rslt => !txdata.ATTKEY ? dataDispl(rslt, 0, cbfnc) : blobHandl(rslt.body, 0, txdata, cbfnc))
     .catch(msgHandl);
   } else {
     couchQry(txdPrep(0)[0], 0, cbfnc);
