@@ -3026,7 +3026,7 @@ function couchPut(txdata = txdPrep()[0]) {
     imgahlps = document.querySelectorAll('#ecoesp0 #eftass .help'),
     cobj = txdata.DELETE ? { _deleted: true }
       : txdata.vassets ? jsonParse(txdata.vassets)
-      : txdata.doc || filewkg || jsonParse(rawtxta.value);
+      : txdata.doc || txdata.docs || filewkg || jsonParse(rawtxta.value);
   if (dburl) {
     dbpc2 = new PouchDB(dburl, { skip_setup: true });
   } else if (dbpch && dbpch.name === txdata.DBNAME) {
@@ -3036,8 +3036,8 @@ function couchPut(txdata = txdPrep()[0]) {
     msgHandl( "Alert: No export attempted. Insufficient data.\n" + JSON.stringify(txdata, null, 2)
       + "\n\n" + ECOINSTR[3] + "\n" + ECOINSTR[4] + "\n" + ECOINSTR[5] );
     (!txdata.doc ? pchhlps[1] : imgahlps[1]).classList.remove("is-hidden");
-  } else if (txdata.docs) {
-    dbpc2.bulkDocs(txdata.docs, txdata.OPTS || {}).then(resp => {
+  } else if (Array.isArray(cobj) && cobj[0] && cobj.every(ob => (ob || "")._id)) {
+    dbpc2.bulkDocs(txdata.docs || cobj, txdata.OPTS || {}).then(resp => {
       msgHandl(`${dburl ? "Remote" : "Local"} CouchDB docs updated.\n` + msgPrefmt(resp));
       return !dburl && dbpch.info().then(ob => updseq[dbpc2.name] = ob.update_seq)
       .then(() => pfsListGen(fileref));
@@ -3045,9 +3045,9 @@ function couchPut(txdata = txdPrep()[0]) {
       msgHandl(err);
       pchhlps[1].classList.remove("is-hidden");
     });
-  } else if (cobj) {
-    subdir = cobj.file_created && cobj.file_created.subdir;
-    dbpc2.get(cobj._id || (cobj._id = txdata.FILEID)).catch(err => {
+  } else if ((cobj || "").hasOwnProperty("_id")) {
+    subdir = (cobj.file_created || "").subdir;
+    dbpc2.get(cobj._id = cobj._id || txdata.FILEID).catch(err => {
       if (err.name === 'not_found') {
         !txdata.DELETE || msgHandl("Alert: Delete operation failed.\n" + msgPrefmt(err));
       } else { msgHandl(err); }
