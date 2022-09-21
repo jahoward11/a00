@@ -2685,7 +2685,7 @@ function annosGet(fileref = "") {
   });
 }
 
-function webdocGen(redirect, pdata = filewkg || Object.assign({}, ECOTMPLS.publmgr)) {
+function webdocGen(redirect, pdata = filewkg || jsonParse(JSON.stringify(ECOTMPLS.publmgr))) {
   let ecolinks = document.querySelector('#ecolinks'),
     sdir = pdata.file_updated.subdir,
     scriptsconstr = pdata.parseconfigs.scriptsconstr,
