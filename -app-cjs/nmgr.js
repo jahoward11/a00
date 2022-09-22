@@ -272,9 +272,8 @@ figure {
   height: 1rem;
   padding: 0.25rem;
 }
-#nmwrap input::placeholder, #nmwrap input:disabled, #nmwrap select:disabled,
-#nmwrap textarea::placeholder, #nmwrap textarea:disabled {
-  color: unset;
+#nmwrap input::placeholder, #nmwrap textarea::placeholder {
+  color: Grey;
   opacity: 0.5;
 }
 /* #nmwrap input:disabled:not([type=checkbox]):not([type=radio]) { color: #333; } */

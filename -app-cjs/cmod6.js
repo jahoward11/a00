@@ -1074,7 +1074,7 @@ d1ui += "\\n#dbwrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width:
 d1ui += "\\n#dbwrap a { color: #485fc7; cursor: pointer; text-decoration: none; }";
 d1ui += "\\n#dbwrap a:hover, #dbwrap .ilink:hover:not(:disabled) { color: CornFlowerBlue; }";
 d1ui += "\\n#dbwrap button, #dbwrap .btn1, #dbwrap input:not([type=checkbox]):not([type=radio]), #dbwrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
-d1ui += "\\n#dbwrap input::placeholder, #dbwrap input:disabled, #dbwrap select:disabled, #dbwrap textarea::placeholder, #dbwrap textarea:disabled { color: unset; opacity: 0.5; }";
+d1ui += "\\n#dbwrap input::placeholder, #dbwrap textarea::placeholder { color: Grey; opacity: 0.5; }";
 d1ui += "\\n#dbwrap select[multiple], #dbwrap .btn1, #dbwrap .ccntr button, #dbwrap .ccntr input[type=button], #dbwrap .ccntr input[type=text], #dbwrap .ccntr select { vertical-align: top; }";
 d1ui += "\\n#dbwrap select:not(.anone) { padding: 0 0.25rem; }";
 d1ui += "\\n#dbwrap select.anone { -webkit-appearance: none; -moz-appearance: none; appearance: none; }\\n#dbwrap select.anone::-ms-expand { display: none; }";
@@ -1094,7 +1094,7 @@ d1ui += "\\n#dbwrap .diblk, #dbwrap .btn1 { display: inline-block; }\\n#dbwrap .
 d1ui += "\\n#dbwrap #a1inp { width: 0; padding: 0; }";
 d1ui += "\\n#dbwrap #a2inp { width: 1.5rem; padding: 0; text-align: center; }";
 d1ui += "\\n#dbwrap #a3inp { width: calc(216px - 1.5rem); text-align: left; }";
-d1ui += "\\n#dbwrap #a3inp>span { color: revert; opacity: 0.5; }";
+d1ui += "\\n#dbwrap #a3inp>span { color: Grey; opacity: 0.5; }";
 d1ui += "\\n#dbwrap #cpanl { position: relative; top: -2.5rem; }\\n#dbwrap #imgdtl img { width: 48px; }";
 d1ui += "\\n@media screen and (max-width: 575px) { #dbwrap .media-left>.image.rspv128 { width: 48px; margin: 0; } #dbwrap .media-left>.image.rspv128>img { min-height: 48px; } #dbwrap .media-left>.image>figcaption { float: right; font-size: x-small; } }";
 d1ui += "\\n@media screen and (max-width: 719px) { #dbwrap .media-left>.image { margin: 0; } }\\n</style>";
@@ -1215,7 +1215,7 @@ formGen = () => dform.innerHTML = Object.entries(Object.assign({ _id: "", _rev: 
 
 /*
 d3ui += "\\n<hr />\\n<h4>Images Manager</h4>\\n<div class=cfield>";
-d3ui += "\\n<span class=\\"ccntr cleft\\"><em>A:</em> step 1</span><span class=ccntr><label>";
+d3ui += "\\n<span class=\\"ccntr cleft\\"><em>Att:</em> step 1</span><span class=ccntr><label>";
 d3ui += "<input id=a1inp type=file /><span id=a2inp class=\\"btn1 hgainl ilink\\">&#x2726;</span>";
 d3ui += "<span id=a3inp class=btn1><span>Locate image&hellip;</span></span>\\n</label></span>\\n</div>";
 d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">step 2</span><span class=ccntr>";
@@ -1224,7 +1224,7 @@ d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">step 3</span><spa
 d3ui += "<button id=a4btn class=hgainl><span class=isucc>&oplus;</span> ATTACH</button></span>";
 d3ui += "\\n<div class=\\"chelp isucc dnone\\">Image is attached to \\"-res-img\\" file.</div>";
 d3ui += "\\n<div class=\\"chelp iwarn dnone\\">Image-attach attempt failed.</div>\\n</div>\\n<p></p>";
-d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\"><em>R:</em> step 1</span><span class=ccntr>";
+d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\"><em>Rmv:</em> step 1</span><span class=ccntr>";
 d3ui += "<input type=text id=n5inp placeholder=\\"Enter attachment name&hellip;\\" /></span>\\n</div>";
 d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">step 2</span><span class=ccntr>";
 d3ui += "<button id=a5btn class=hgainl><span class=iwarn>&otimes;</span> REMOVE</button></span>";
