@@ -67,7 +67,7 @@ figure { margin: 1em 0; padding: 0 1em; }
 #twrap button, #twrap .btn1, #twrap input[type=button], #twrap select { cursor: pointer; white-space: nowrap; }
 #twrap button.opq0, #twrap .btn1.opq0 { background: transparent; max-width: 359px; padding: 0; overflow: hidden; text-overflow: ellipsis; }
 #twrap button.bsml { line-height: 0.5rem; height: 1rem; padding: 0.25rem; }
-#twrap input::placeholder, #twrap input:disabled, #twrap select:disabled, #twrap textarea::placeholder, #twrap textarea:disabled { color: unset; opacity: 0.5; }
+#twrap input::placeholder, #twrap textarea::placeholder { color: Grey; opacity: 0.5; }
 /* #twrap input:disabled:not([type=checkbox]):not([type=radio]) { color: #333; } */
 #twrap select[multiple], #twrap .btn1, #twrap .ccntr button, #twrap .ccntr input[type=button], #twrap .ccntr input[type=text], #twrap .ccntr select { vertical-align: top; }
 #twrap select:not(.anone) { padding: 0 0.25rem; }
