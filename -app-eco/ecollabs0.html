@@ -1781,21 +1781,6 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
   padding: calc(0.75em - 1px);
   justify-content: flex-start;
 }
-#econav0 .input[type=text][disabled],
-#ecoesp0 .input[type=text][disabled],
-#ecoesp0 .select select[disabled],
-#ecoesp0 .textarea[disabled],
-#econav0 .input[type=text][disabled]::-webkit-input-placeholder,
-#econav0 .input[type=text][disabled]::placeholder,
-#ecoesp0 .input[type=text][disabled]::-webkit-input-placeholder,
-#ecoesp0 .input[type=text][disabled]::placeholder,
-#ecoesp0 .select select[disabled]::-webkit-input-placeholder,
-#ecoesp0 .select select[disabled]::placeholder,
-#ecoesp0 .textarea[disabled]::-webkit-input-placeholder,
-#ecoesp0 .textarea[disabled]::placeholder {
-  color: #7a7a7a;
-  opacity: 0.5;
-}
 #econav0 .control.has-icons-left .input,
 #econav0 .control.has-icons-left .select select { padding-left: 2.5em; }
 #econav0 .control.has-icons-left .icon.is-left { left: 0; }
@@ -1865,8 +1850,10 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 }
 #econav0 input[type=checkbox], #ecoguides input[type=checkbox], #ecoesp0 input[type=checkbox],
 #econav0 input[type=radio], #ecoguides input[type=radio], #ecoesp0 input[type=radio] {
+  position: relative;
+  top: -1px;
   margin: 0;
-  vertical-align: baseline;
+  vertical-align: middle;
 }
 #ecoprj0 img, #econav0 img, #ecoguides img, #ecoesp0 img {
   max-width: 100%;
@@ -2117,9 +2104,28 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
   background-color: White;
 }
 #ecoprj0 .input, #econav0 .input, #ecoguides .input,
-#ecoesp0 .input:not(.is-success):not(.is-warning):not(.is-danger) {
+#ecoesp0 .input:not(.is-success):not(.is-warning):not(.is-danger),
+#ecoesp0 .select select:not(.is-success):not(.is-warning):not(.is-danger),
+#ecoesp0 .textarea:not(.is-success):not(.is-warning):not(.is-danger) {
   border: 1px solid #dbdbdb;
 }
+#econav0 .input[type=text][disabled],
+#ecoesp0 .input[type=text][disabled],
+#ecoesp0 .select select[disabled],
+#ecoesp0 .textarea[disabled] {
+  background-color: whitesmoke;
+  color: #7a7a7a;
+//border-color: whitesmoke;
+  box-shadow: none;
+}
+#econav0 .input[type=text]::placeholder,
+#ecoesp0 .input[type=text]::placeholder,
+#ecoesp0 .select select::placeholder,
+#ecoesp0 .textarea::placeholder { color: rgba(54, 54, 54, 0.3); }
+#econav0 .input[type=text][disabled]::placeholder,
+#ecoesp0 .input[type=text][disabled]::placeholder,
+#ecoesp0 .select select[disabled]::placeholder,
+#ecoesp0 .textarea[disabled]::placeholder { color: rgba(122, 122, 122, 0.3); }
 #ecoguides .has-text-grey label:not(.has-text-grey-light):not(.has-text-link),
 #ecoesp0 .has-text-grey label:not(.has-text-grey-light):not(.has-text-link) {
   color: #7a7a7a;
@@ -2194,8 +2200,8 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 #ecoesp0 #prjdisc>.field:first-child>.panel>.panel-block .mlft2,
 #ecoesp0 #prjdisc #discrad>.radio,
 #ecoesp0 #prjdisc #dcinpc { margin-left: 0.5em; }
-#ecoesp0 #prjdisc>.field:first-child>.panel>.panel-block input[type=radio],
-#ecoesp0 #prjdisc>.field:first-child>.panel>.panel-block input[type=checkbox] {
+#ecoesp0 #prjdisc>.field:first-child>.panel>.panel-block input[type=checkbox],
+#ecoesp0 #prjdisc>.field:first-child>.panel>.panel-block input[type=radio] {
   margin: 0 0.25em 0 0;
 }
 #ecoesp0 #prjdisc>.media:not(:last-child)>.media-content>.prewrap {
@@ -2215,7 +2221,6 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
   border-bottom-left-radius: 0;
 }
 #ecoesp0 #jdedft .bdradtr4 { border-top-right-radius: 4px; }
-#ecoesp0 #jdedft .bdrwid0 { border-width: 0; }
 #ecoesp0 #jdedft .textarea { border-radius: 0 4px 4px 4px; }
 #ecoesp0 #jdedft .textarea[onfocus][disabled] { border-color: #dbdbdb; }
 #ecoesp0 #jdedft button, #ecoesp0 #jdepty .field-label,
@@ -5147,7 +5152,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 {{else}}
 <div class="field has-addons control is-marginless">
   <span class="control">
-    <button class="button is-static has-text-info is-size-7 tabontxta{{#unless filefrags}} bdradtr4{{/unless}}{{#unless ../typtxt}}{{#unless filefrags}} bdrwid0{{/unless}}{{/unless}}">
+    <button class="button is-static has-text-info is-size-7 tabontxta{{#unless filefrags}} bdradtr4{{/unless}}">
       CONTENT
     </button>
   </span>
