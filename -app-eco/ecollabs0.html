@@ -2114,10 +2114,12 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 #ecoesp0 .select select[disabled],
 #ecoesp0 .textarea[disabled] {
   background-color: whitesmoke;
-  color: #7a7a7a;
+  color: revert; /* #7a7a7a; only revert equalizes Chrome & Safari */
 //border-color: whitesmoke;
   box-shadow: none;
+  opacity: 0.7;
 }
+#ecoprj0 .input[type=text]::placeholder,
 #econav0 .input[type=text]::placeholder,
 #ecoesp0 .input[type=text]::placeholder,
 #ecoesp0 .select select::placeholder,
@@ -2125,10 +2127,10 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 #econav0 .input[type=text][disabled]::placeholder,
 #ecoesp0 .input[type=text][disabled]::placeholder,
 #ecoesp0 .select select[disabled]::placeholder,
-#ecoesp0 .textarea[disabled]::placeholder { color: rgba(122, 122, 122, 0.3); }
+#ecoesp0 .textarea[disabled]::placeholder { color: rgba(54, 54, 54, 0.3); }
 #ecoguides .has-text-grey label:not(.has-text-grey-light):not(.has-text-link),
 #ecoesp0 .has-text-grey label:not(.has-text-grey-light):not(.has-text-link) {
-  color: #7a7a7a;
+  color: inherit;
 }
 #econav0 .alnctr, #ecoesp0 .alnctr { align-items: center; }
 #ecoguides .lht0, #ecoesp0 .lht0 { line-height: 0; }
@@ -4797,7 +4799,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 </div>
 <div class="field has-addons">
   <span class="control">
-    <button class="button is-static has-text-info taboninp" {{#unless ../ulead}}disabled{{/unless}}>ROLES</button>
+    <button class="button is-static has-text-info taboninp">ROLES</button>
   </span>
   <span class="control is-expanded">
     <input type="text" class="input is-fullwidth" onfocus="EC1.formFoc('#dftbtnc3')" onblur="EC1.jdeDftUpd('roles', 5, 1)" value="{{roles}}" {{#unless ../ulead}}disabled{{/unless}} />
@@ -4810,7 +4812,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 </div>
 <div class="field has-addons">
   <span class="control">
-    <button class="button is-static has-text-info taboninp" {{#unless ../ulead}}disabled{{/unless}}>E&#x2011;MAILS</button>
+    <button class="button is-static has-text-info taboninp">E&#x2011;MAILS</button>
   </span>
   <span class="control is-expanded">
     <input type="text" class="input is-fullwidth" onfocus="EC1.formFoc('#dftbtnc4')" onblur="EC1.jdeDftUpd('emails', 6, 1)" value="{{emails}}" {{#unless ../ulead}}disabled{{/unless}} />
