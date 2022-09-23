@@ -1189,7 +1189,7 @@ let rva2, rval, ss0, ss1,
       chkaf2 = !fmove ? Array.from(chks)
           .filter(inp => !/^[.-]\\w/.test(inp.parentElement.parentElement.children[1].textContent))
         : Array.from(chks).filter( inp => inp.parentElement.parentElement.children[3]
-          && /^(?:anno|post|prjid|publmgr|srcdoc)$/
+          && /^(?:anno|assets|contact|event|memo|post|prjid|publmgr|scrap|srcdoc)$/
           .test(inp.parentElement.parentElement.children[3].textContent) ),
       txd2 = {
         DBNAME: txd1.DBNAME,
@@ -1199,21 +1199,26 @@ let rva2, rval, ss0, ss1,
           include_docs: fmove
         }
       },
-      rd2Qcon = rd2 => !qcontxta || (qcontxta.value = JSON.stringify(rd2, null, 2)),
+      rd2Qcon = d2s => {
+        window.dstor = d2s;
+        qcontxta.value = "$dstor";
+        EC2.qconRetrvD(() => {
+          qcontxta.value += "\\n/" + txd2.DBNAME;
+          EC1.tabs0Tog(3);
+        });
+      },
       row1Tfm = r1 => {
         !fmove || !r1 || !r1.doc
-        || ((r1.doc.file_updated || r1.doc.file_created || {}).subdir = moveinp.value || "");
-        return fmove ? Object.assign({ _id: "", _rev: null }, (r1 || "").doc)
+        || ( r1.doc.hasOwnProperty("loc_subdir") ? r1.doc.loc_subdir = moveinp.value || ""
+          : (r1.doc.file_updated || r1.doc.file_created || {}).subdir = moveinp.value || "" );
+        return fmove ? Object.assign({ _id: "", _rev: "" }, (r1 || "").doc)
         : {
-            _id:  r1.key || r1.id,
+            _id:  r1.id, // r1.key
             _rev: r1.value && r1.value.rev || r1.changes && r1.changes[0].rev,
             _deleted: true
           }
       },
-      rdataTfm = re => !re.rows && !re.results ? {} : {
-        DBNAME: txd2.DBNAME,
-        docs:   (re.rows || re.results).map(row1Tfm) //.filter(d => !d._deleted)
-      },
+      rdataTfm = re => (re.rows || re.results || []).map(row1Tfm), //.filter(d => !d._deleted)
       dbq = txd2.DBNAME && window.PouchDB && PouchDB(txd2.DBNAME);
     !fmove || Array.from(chks).forEach(inp => inp.parentElement.parentElement.className = null);
     chkaf2.forEach( inp => inp.parentElement.parentElement.className
@@ -1617,7 +1622,7 @@ let elsmed, fpl, fxa, pcntcs, rval, uimg, unm,
           \${ (!rval.linkref ? '' : '  PROJECT: ' + rval.linkref + '<br />\\n          ')
             + (!rval.from ? '' : '  FROM: ' + rval.from + '<br />\\n          ')
             + (!rval.to || !rval.to.length ? '' : '  TO: ' + rval.to.join(", ") + '<br />\\n          ')
-            + ( !r.id ? '' : (rval.file_type !== "eco-anno" ? '  POST' : '  ANNO')
+            + ( !r.id ? '' : (rval.file_type !== "eco-anno" ? '  MEMO' : '  ANNO')
               + ' ID: <a>' + r.id + '</a>\\n          ' )
           }</details>
         </div>
