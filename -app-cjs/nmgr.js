@@ -1343,14 +1343,15 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     !dbq || dbq.allDocs(txd2.OPTS).then(rdataTfm).then(blkDspl).catch(rsp2Show);
   },
   fileLoad = evt => {
-    let sdir = vbas > 1 && evt && evt.target.parentElement.previousElementSibling.textContent,
+    let tanc = evt && (evt.target.nodeName !== 'MARK' ? evt.target : evt.target.parentElement),
+      sdir = vbas > 1 && tanc && tanc.parentElement.previousElementSibling.textContent,
       txd2 = {
         DBNAME: txd1.DBNAME,
-        FILEID: !evt ? "" : sdir && rexsd.test(sdir)
-          ? sdir.replace(/\\/$/, "") : evt.target.textContent || evt.target.dataset.fileid,
-        ATTKEY: !evt || !sdir || !rexsd.test(sdir) ? "" : evt.target.textContent,
+        FILEID: !tanc ? "" : sdir && rexsd.test(sdir)
+          ? sdir.replace(/\\/$/, "") : tanc.textContent || tanc.dataset.fileid,
+        ATTKEY: !tanc || !sdir || !rexsd.test(sdir) ? "" : tanc.textContent,
         OPTS:   {
-          //rev: vbas < 5 ? null : evt.target.parentElement.parentElement.children[3].textContent
+          //rev: vbas < 5 ? null : tanc.parentElement.parentElement.children[3].textContent
           //revs_info: true
         }
       },
@@ -1526,12 +1527,12 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       trows = document.querySelectorAll('#nmtbl tbody>tr');
     r2con.textContent = "";
     if (!evt.target.parentElement.parentElement.id) {
-      evt.target.checked
+      evt.target.checked // unintuitive, trial feature
       || document.querySelectorAll('#nmtbl tbody>tr:not([id])').forEach(tr => tr.className = "");
       document.querySelectorAll(qslrs[4]).forEach(inp => inp.checked = evt.target.checked);
     } else {
       while (++r1idx < r2idx) {
-        evt.target.checked || (trows[r1idx].className = "");
+        evt.target.checked || (trows[r1idx].className = ""); // unintuitive, trial feature
         trows[r1idx].children[0].children[0].checked = evt.target.checked;
       }
     }
