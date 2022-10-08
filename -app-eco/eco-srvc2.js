@@ -1220,7 +1220,7 @@ let rva2, rval, ss0, ss1,
       },
       rdataTfm = re => (re.rows || re.results || []).map(row1Tfm), //.filter(d => !d._deleted)
       dbq = txd2.DBNAME && window.PouchDB && PouchDB(txd2.DBNAME);
-    !fmove || Array.from(chks).forEach(inp => inp.parentElement.parentElement.className = null);
+    !fmove || Array.from(chks).forEach(inp => inp.parentElement.parentElement.className = "");
     chkaf2.forEach( inp => inp.parentElement.parentElement.className
       = fmove ? "has-background-warning-light" : "has-background-danger-light" );
     !dbq || ( txd2.FILEID === "_all_docs"
@@ -1297,7 +1297,7 @@ let rva2, rval, ss0, ss1,
   },
   fileActv = evt => {
     let td2 = evt.target.parentElement.parentElement.children[2];
-    evt.target.checked || (evt.target.parentElement.parentElement.className = null);
+    evt.target.checked || (evt.target.parentElement.parentElement.className = "");
     evt.target.checked ? ancAdd1(td2) : td2.innerHTML = td2.textContent;
     blk2Tog();
   },
@@ -1309,14 +1309,14 @@ let rva2, rval, ss0, ss1,
         || ((document.querySelector('main tbody>tr:last-of-type') || "").rowIndex - 1),
       trows = document.querySelectorAll('main tbody>tr');
     if (!evt.target.parentElement.parentElement.id) {
-      evt.target.checked
-      || document.querySelectorAll('main tbody>tr:not([id])').forEach(tr => tr.className = null);
+      evt.target.checked // unintuitive, trial feature
+      || document.querySelectorAll('main tbody>tr:not([id])').forEach(tr => tr.className = "");
       document.querySelectorAll(qslrs[4]).forEach(inp => inp.checked = evt.target.checked);
       document.querySelectorAll('main tbody>tr:not([id])>td:nth-of-type(3)')
       .forEach(td2 => evt.target.checked ? ancAdd1(td2) : td2.innerHTML = td2.textContent);
     } else {
       while (++r1idx < r2idx) {
-        evt.target.checked || (trows[r1idx].className = null);
+        evt.target.checked || (trows[r1idx].className = ""); // unintuitive, trial feature
         trows[r1idx].children[0].children[0].checked = evt.target.checked;
         evt.target.checked
         ? ancAdd1(trows[r1idx].children[2])

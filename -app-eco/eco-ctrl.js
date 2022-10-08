@@ -3046,7 +3046,7 @@ function couchPut(txdata = txdPrep()[0]) {
       pchhlps[1].classList.remove("is-hidden");
     });
   } else if ((cobj || "").hasOwnProperty("_id")) {
-    subdir = (cobj.file_created || "").subdir;
+    subdir = !!filewkg.filefrags && (cobj.file_created || "").subdir || 1;
     dbpc2.get(cobj._id = cobj._id || txdata.FILEID).catch(err => {
       if (err.name === 'not_found') {
         !txdata.DELETE || msgHandl("Alert: Delete operation failed.\n" + msgPrefmt(err));
@@ -3063,9 +3063,9 @@ function couchPut(txdata = txdPrep()[0]) {
           if ( !optg || optg !== "LOCAL temporary files"
           || !Array.from(fileslf.children).some(op => op.value === fileref) ) {
             !txdata.DELETE || filewkg !== cobj || (fileref = "");
-            !txdata.vassets ? pfsListGen(fileref, subdir || 1) : attListGen(0, subdir || 1);
+            !txdata.vassets ? pfsListGen(fileref, subdir) : attListGen(0, subdir);
           } else if (!txdata.vassets) {
-            EC2.fileLFUpd(resp.rev, subdir || 1);
+            EC2.fileLFUpd(resp.rev, subdir);
           }
           (!txdata.doc ? pchhlps[0] : imgahlps[0]).classList.remove("is-hidden");
           document.querySelector('#ecoesp0 #pchbtn').disabled = true;
@@ -3088,7 +3088,7 @@ function couchAtt(dirtxd) {
   let dbpc2,
     txdata = txCrdtlz(dirtxd || txdPrep()[0]),
     dburl = txurlGen(txdata),
-    typpmgr = filewkg && (filewkg.file_type === "eco-publmgr" || filewkg.filefrags && true),
+    typpmgr = filewkg && (filewkg.file_type === "eco-publmgr" || !!filewkg.filefrags),
     cdirpath = filewkg && filewkg.loadconfigs && filewkg.loadconfigs.commondirpath,
     rawtxta = document.querySelector('#ecoesp0 #rawtxta'),
     pchlist = document.querySelector('#ecoesp0 #pchlist'),
@@ -4748,7 +4748,7 @@ qconSubmD(ccommit) {
   let txdata = txdPrep()[0],
     rawtxta = document.querySelector('#ecoesp0 #rawtxta'),
     cntchlps = document.querySelectorAll('#ecoesp0 #eftcntc .help'),
-    typpmgr = filewkg && (filewkg.file_type === "eco-publmgr" || filewkg.filefrags && true),
+    typpmgr = filewkg && (filewkg.file_type === "eco-publmgr" || !!filewkg.filefrags),
     ecoat = (txdata.idtoks || idtoks || "").accessToken,
     ctypes = { css: "text/css", htm: "text/html", html: "text/html",
       js: "text/javascript", mjs: "text/javascript" };
@@ -5036,7 +5036,7 @@ dirSel() {
     dirbtn = document.querySelector('#ecoesp0 #dirbtn'),
     rm3list = document.querySelector('#ecoesp0 #rm3list'),
     uplbtn = document.querySelector('#ecoesp0 #uplbtn'),
-    typpmgr = filewkg && (filewkg.file_type === "eco-publmgr" || filewkg.filefrags && true);
+    typpmgr = filewkg && (filewkg.file_type === "eco-publmgr" || !!filewkg.filefrags);
   dirhlps.forEach(el => el.classList.add("is-hidden"));
   dirbtn.disabled = !typpmgr || !dirlist.value;
   rm3list.value = dirlist.value.replace(/^\./, "");
@@ -5046,7 +5046,7 @@ dirUpd(trgnbr) {
   let dirlist = document.querySelector('#ecoesp0 #dirlist'),
     imgainp = document.querySelector('#ecoesp0 #eftass input[type=file]'),
     irename = document.querySelector('#ecoesp0 #irename'),
-    typpmgr = filewkg && (filewkg.file_type === "eco-publmgr" || filewkg.filefrags && true),
+    typpmgr = filewkg && (filewkg.file_type === "eco-publmgr" || !!filewkg.filefrags),
     pfslist = document.querySelector('#econav0 #pfslist'),
     optg = pfslist.value && pfslist.selectedOptions[0].parentElement.label;
   if (!dbpch || !tm0urole || trgnbr === 2 && (!optg || optg === "LOCAL temporary files")) {
@@ -5112,7 +5112,7 @@ srvrSel() { // also triggered by attSel, srvrUpl
     attlist = document.querySelector('#econav0 #attlist'),
     rm3list = document.querySelector('#ecoesp0 #rm3list'),
     uplbtn = document.querySelector('#ecoesp0 #uplbtn'),
-    typpmgr = filewkg && (filewkg.file_type === "eco-publmgr" || filewkg.filefrags && true);
+    typpmgr = filewkg && (filewkg.file_type === "eco-publmgr" || !!filewkg.filefrags);
   srvrhlps.forEach(el => el.classList.add("is-hidden"));
   uplbtn.disabled = !(attlist.value || typpmgr) || !rm3list.value;
 },
@@ -5121,7 +5121,7 @@ srvrUpl() {
     attlist = document.querySelector('#econav0 #attlist'),
     rm3list = document.querySelector('#ecoesp0 #rm3list'),
     uplfpath = document.querySelector('#ecoesp0 #uplfpath'),
-    typpmgr = filewkg && (filewkg.file_type === "eco-publmgr" || filewkg.filefrags && true),
+    typpmgr = filewkg && (filewkg.file_type === "eco-publmgr" || !!filewkg.filefrags),
     attExe = rslt => couchAtt( Object.assign(
       Object.assign({}, caccts.find(ob => ob.DBNAME === rm3list.value)), {
         FILEID: uplfpath.value.replace(/^[./]*([^/]+)\/.*|.*/, "$1")
