@@ -281,7 +281,15 @@ respShow(dwraps[0] + dPreps(dbwrap.outerHTML) + dwraps[1] + scrGen(xstor.JScode.
 //`;
 
 const srtools = `//
-// to find misapplied emphasis/superscript/code markers in cmods
+// add up list of costs
+// sepainp.value = "/[^]*- - -\\\\n([^]*)/"; //
+// rtrminp.value = "(m, c1) => c1.split(/\\\\n?\\\\/\\\\/.*|\\\\n(?:.*[:=]|) *\\\\$?(?=-?[\\\\d.]+$)|\\\\n.*$/m).filter(e => e).reduce((a,b) => +a + (+b || 0), 0)"; //
+
+// prep "themes" text-blocks from ldsconf notes for famgenconf
+// sepainp.value = "/^##### (S\\\\w\\\\w)\\\\w*?day( \\\\d):00 ([AP]M)(?:\\\\n.+)+/gm";
+// rtrminp.value = '(m, c1, c2, c3) => m.replace(/(\\\\(\\\\s+)(?=\\\\)$)/gm, "$1, " + c1 + c2 + c3 )';
+
+// find misapplied emphasis/superscript/code markers in cmods
 /*
  srctxta.textContent = JSON.stringify(xstor.util, null, 2);
  srctxta.value = srctxta.innerHTML;
