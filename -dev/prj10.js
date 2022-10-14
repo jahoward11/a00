@@ -282,20 +282,24 @@ respShow(dwraps[0] + dPreps(dbwrap.outerHTML) + dwraps[1] + scrGen(xstor.JScode.
 
 const srtools = `//
 // prepend bullets to unordered lists
- // sepainp.value = "/^(?: ?- | ?\\\\d+\\\\. |) *(.+)/gm";
- // rtrminp.value = "- $1";
+ // sepainp.value = "/^(?!#+ +\\\\S)(?: ?- | ?\\\\d+\\\\. |) *(?=\\\\S)/gm";
+ // rtrminp.value = '"- "';
 
 // renumber ordered lists
- // sepainp.value = "/^(.+\\\\n*)+/gm";
- // rtrminp.value = '(m, i) => { i || (window.it0 = 0); return m.replace(/^(?: ?- | ?\\\\d+\\\\. |) *(.+)/gm, (n, d1) => (++it0 > 9 ? "" : " ") + it0 + ". " + d1); }'; //
+ // sepainp.value = "/^(?!#+ +\\\\S)(?: ?- | ?\\\\d+\\\\. |) *(\\\\S.*)/gm"; //
+ // rtrminp.value = '(m, c1, i) => { i || (window.it0 = 0); return (++it0 > 9 ? "" : " ") + it0 + ". " + c1; }'; //
 
 // add up list of costs
  // sepainp.value = "/[^]*- - -\\\\n([^]*)/"; //
  // rtrminp.value = "(m, c1) => c1.split(/\\\\n?\\\\/\\\\/.*|\\\\n(?:.*[:=]|) *\\\\$?(?=-?[\\\\d.]+$)|\\\\n.*$/m).filter(e => e).reduce((a,b) => +a + (+b || 0), 0)"; //
 
 // prep "themes" text-blocks from ldsconf notes for famgenconf
- // sepainp.value = "/^##### (S\\\\w\\\\w)\\\\w*?day( \\\\d):00 ([AP]M)(?:\\\\n.+)+/gm";
- // rtrminp.value = '(m, c1, c2, c3) => m.replace(/(\\\\(\\\\s+)(?=\\\\)$)/gm, "$1, " + c1 + c2 + c3 )';
+ // sepainp.value = "/^#+ +(S\\\\w\\\\w)(?:\\\\w*?day|)( \\\\d)(?::00 |)([AP]M)(?:\\\\n.+)+/gm";
+ // rtrminp.value = '(m, c1, c2, c3) => m.replace(/(\\\\(\\\\S+)(?=\\\\)$)/gm, "$1, " + c1 + c2 + c3 )';
+
+// prep text for string literal
+ // sepainp.value = "/(?=\`|\\\\\\\\|\\\\$\\\\{.*?\\\\})/g";
+ // rtrminp.value = "\\\\\\\\";
 
 // find misapplied emphasis/superscript/code markers in cmods
 /*
