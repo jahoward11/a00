@@ -298,7 +298,7 @@ const srtools = `//
  // rtrminp.value = '(m, c1, c2, c3) => m.replace(/(\\\\(\\\\S+)(?=\\\\)$)/gm, "$1, " + c1 + c2 + c3 )';
 
 // prep text for string literal
- // sepainp.value = "/(?=\`|\\\\\\\\|\\\\$\\\\{.*?\\\\})/g";
+ // sepainp.value = "/(?=\`|\\\\\\\\|\\\\$\\\\{[^]*?\\\\})/g";
  // rtrminp.value = "\\\\\\\\";
 
 // find misapplied emphasis/superscript/code markers in cmods
