@@ -306,6 +306,7 @@ figure {
 }
 #nmwrap .media-left>.image>img {
   background-color: LightSteelBlue;
+  width: 100%;
   min-height: 128px;
   cursor: pointer;
 }
@@ -1346,8 +1347,9 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   },
   fileLoad = evt => {
     let tanc = evt && (evt.target.nodeName !== 'MARK' ? evt.target : evt.target.parentElement),
-      finp = tanc && ( vbas < 2 ? tanc.parentElement.parentElement.parentElement
-        : tanc.parentElement.parentElement ).querySelector('input:not(.dnone)') || "",
+      finp = tanc && ( vbas > 1 ? tanc.parentElement.parentElement.querySelector('input:not(.dnone)')
+          : tanc.parentElement.parentElement.parentElement.querySelector('span:not(.dnone)>input') )
+        || "",
       sdir = tanc && vbas > 1 && tanc.parentElement.previousElementSibling.textContent,
       ftyp = tanc && ( vbas < 2 ? tanc.dataset.filetyp
         : (tanc.parentElement.nextElementSibling || "").textContent ) || "",
