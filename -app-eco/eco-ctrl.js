@@ -178,6 +178,9 @@ const ECOINSTR = [
 + '__Notes__\n'
 + '- Append `.`-idx/key to access specific element (by index) or property (by key) within object.\n'
 + '- Append `.keys` to list all property keys of object.\n'
++ '- For `$filewkg` (or `$f1`) & `$file2nd` (or `$f2`):\n'
++ '  + if the loaded DB-file has content, append `.c` to show the content text only;'
++ '  + if a publmgr file is loaded, append `.s` to show the style text only.'
 + '- Objects may also be accessed from within script using app JS method `EC2.objQA()`.  \n'
 + '  Provide quick-access notation as first argument -- surrounded by quotes, but without leading `$`.\n'
 + '- Web-asset BLOb-URLs may be individually accessed from within script using app JS method `EC2.u2Blob()`.  \n'
@@ -2989,8 +2992,10 @@ function couchQry(txdata, destindr, cbfnc) {
       } else if (txdata.FILEID) {
         dbpc2.get(txdata.FILEID, txdata.OPTS || {})
         .then( doc => dataDispl( destindr < 8 ? doc
-          : /^eco-(?:scrap|srcdoc)$/.test(doc.file_type) ? doc.content : Array.isArray(doc.filefrags)
-          ? doc.filefrags.map(ob => ob.contenttxt).filter(e => e).join("\n\n") : doc, destindr, cbfnc ))
+          : /^eco-(?:scrap|srcdoc)$/.test(doc.file_type) ? doc.content
+          : Array.isArray(doc.filefrags) ? ( destindr === 9 ? (doc.linksconstr || "").htmllinktxt
+            : doc.filefrags.map(ob => ob.contenttxt).filter(e => e).join("\n\n") )
+          : doc, destindr, cbfnc ))
         .catch(errShow);
       } else {
         msgHandl(instrqcon);
@@ -3481,6 +3486,9 @@ attInp() {
     couchQry(txdPrep(valatt.replace(/\.html?$/, ""))[0], 4);
   } else if (!idx && /^(?:\/[a-z][0-9_a-z$,+-]*\/|)[\w!.*+~-]+\.(?:[ct]\d*|te?xt\d+)$/.test(valatt)) {
     couchQry(txdPrep(valatt.replace(/\.(?:[ct]\d*|te?xt\d+)$/, ""))[0], 8);
+  } else if (!idx
+  && /^(?:\/[a-z][0-9_a-z$,+-]*\/|)[\w!.*+~-]+\.(?:[ls]|li?nk|styl?e?)\d*$/.test(valatt)) {
+    couchQry(txdPrep(valatt.replace(/\.(?:[ls]|li?nk|styl?e?)\d*$/, ""))[0], 9);
   } else if (valatt) {
     couchQry(txdata, 3);
   }
