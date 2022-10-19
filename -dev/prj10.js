@@ -153,6 +153,8 @@ const scrload = `//
 // window.jStat || scrInj("../-res-js/jstat-tdist.js").then(xprsEval).catch(respShow)
 // window.SourceDiff || scrInj("../-res-js/srcdiff.js").then(respShow).catch(respShow)
 // !!window.markdownit || Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).then(respShow).catch(respShow)
+// !!window.hljs || scrInj("../-res-js/highlight.pack.js").then(respShow).catch(respShow)
+// !!window.js_beautify || scrInj("../-res-js/jsbeautify1.14.0.js").then(respShow).catch(respShow)
 // !!(window.hljs && window.js_beautify) || Promise.all(["../-res-js/highlight.pack.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then(respShow).catch(respShow)
 // !!window.PouchDB || scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js")).catch(respShow)
 
