@@ -1397,7 +1397,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       .then(attVw).catch(rsp2Show)
     : !finp.checked ? tabActv() || PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS)
         .then( doc => nmdata.innerHTML = jp1( !finp &&
-          ( /^(?:scrap|srcdoc)$/.test(ftyp) ? doc.content : /^publmgr$/.test(ftyp)
+          ( /^(?:scrap|srcdoc)$/.test(ftyp) ? doc.content : Array.isArray(doc.filefrags)
             ? doc.filefrags.map(ob => ob.contenttxt).filter(e => e).join("\\n\\n") : 0 )
           || valStr(Object.assign({ _id: "", _rev: "" }, doc), 2), 1 ))
         .catch(rsp2Show)
