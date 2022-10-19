@@ -443,7 +443,7 @@ let q2Bcopy, q2Bhtml,
   helpClr = () => !xcshelp || (xcshelp.innerHTML = "") || xcshelp.classList.remove("iwarn", "isucc"),
   respShow = resp => { recon.textContent
     += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
-      ? resp : JSON.stringify(resp, null, 2) ) + "\\n\\n" },
+      ? resp : JSON.stringify(resp, 0, 2) ) + "\\n\\n" },
   zoomTog = zoff => metavp.setAttribute( 'content', "width=device-width, "
     + (zoff || /maximum-/.test(metavp.content) ? "initial-scale=1" : "maximum-scale=1") ),
   titSave = (evt, tnew) => {
@@ -467,7 +467,7 @@ let q2Bcopy, q2Bhtml,
     nscr.type = typeof typ === 'string' && typ || (/\\.mjs$/.test(url) ? 'module' : 'text/javascript');
     !url || !/^https:\\/\\/[^ \\/]+cloud/.test(url) || !/^http/.test(window.location.protocol)
     || !window.navigator.onLine || nscr.setAttribute('crossorigin', 'use-credentials');
-    nscr.innerHTML = !url && cnt ? cnt : null;
+    nscr.innerHTML = !url && cnt ? cnt : "";
     nscr.onerror = err => rjct("**Alert: Script resource GET/load error occured.");
     nscr.onload = rslv;
     !(url || cnt) || document.body.appendChild(nscr);
@@ -1098,7 +1098,7 @@ let rva2, rval, ss0, ss1,
   cmtfts = document.querySelectorAll('main tfoot'),
   rsp2Show = r2 => { r2con.textContent
     += ( !r2 || typeof r2 !== 'object' || r2 instanceof Error && r2.constructor && !r2.reason
-      ? r2 : JSON.stringify(r2, null, 2) ) + "\\n\\n" },
+      ? r2 : JSON.stringify(r2, 0, 2) ) + "\\n\\n" },
   ts1Fmt = nbr => !nbr ? "" : new Date(nbr).toISOString().replace(/T.+$/, ""),
   nbrX = v => v && (Array.isArray(v) ? v : ("" + v).split("."))
     .map(n => !n ? "" : ("" + n).length > 4 ? n : ("000" + n).substr(-4, 4)).join("."),
@@ -1208,9 +1208,9 @@ let rva2, rval, ss0, ss1,
         });
       },
       row1Tfm = r1 => {
-        !fmove || !r1 || !r1.doc
-        || ( r1.doc.hasOwnProperty("loc_subdir") ? r1.doc.loc_subdir = moveinp.value || ""
-          : (r1.doc.file_updated || r1.doc.file_created || {}).subdir = moveinp.value || "" );
+        !fmove || !r1 || !r1.doc || /^\\$&?$|^=$/.test(moveinp.value)
+        || ( r1.doc.hasOwnProperty("loc_subdir") ? r1.doc.loc_subdir = moveinp.value
+          : (r1.doc.file_updated || r1.doc.file_created || {}).subdir = moveinp.value );
         return fmove ? Object.assign({ _id: "", _rev: "" }, (r1 || "").doc)
         : {
             _id:  r1.id, // r1.key
@@ -1248,7 +1248,7 @@ let rva2, rval, ss0, ss1,
       || (attlist.value = td1txt + evt.target.textContent.replace(/ \\(\\d+k\\)$/, ""))
       && EC1.attSel()
     : fwinflux || !qcontxta
-      || (qcontxta.value = JSON.stringify(txd2, null, 2)); //|| !window.EC2 ...&& EC2.qconRetrvD();
+      || (qcontxta.value = JSON.stringify(txd2, 0, 2)); //|| !window.EC2 ...&& EC2.qconRetrvD();
   },
   filtExe = () => {
     let negs = /^-/.test(filtinp.value),
@@ -1567,7 +1567,7 @@ let elsmed, fpl, fxa, pcntcs, rval, uimg, unm,
   postbd = document.querySelector('main>#postbd'),
   rsp3Show = resp => r3con.textContent
     += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
-      ? resp : JSON.stringify(resp, null, 2) ) + "\\n\\n",
+      ? resp : JSON.stringify(resp, 0, 2) ) + "\\n\\n",
   fileLoad = evt => {
     let fwinflux = document.querySelector('#ecoguides .button[disabled]'),
       qcontxta = document.querySelector('#econav0 #qcontxta');

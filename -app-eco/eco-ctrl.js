@@ -2177,7 +2177,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
   // 4 = udata is publmgr data to generate webdoc
   // 5 = udata is default/reset html
   // 6 = udata is html-wrapped img
-  // 7 = udata is text-file or app-html attachment
+  // 7+ = udata is text-file or app-html attachment
   let elsass, elsscr, elssty, mnlen, ndiv, pla11, sidx, tft, tpl, udobj,
     valatt = document.querySelector('#econav0 #attinp').value.trim(),
     valatl = document.querySelector('#econav0 #attlist').value,
@@ -2534,7 +2534,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
     prv2s.forEach(el => el.classList.add("is-hidden"));
     destindr !== 4 || !udata || typeof udata !== 'object' || udata.file_type !== "eco-publmgr"
     || (udata = webdocGen(1, udata));
-    ecorender.innerHTML = destindr !== 7 && (!udata || !/function|object/.test(typeof udata))
+    ecorender.innerHTML = destindr < 7 && (!udata || !/function|object/.test(typeof udata))
       ? ( epsets.appchks[26] || typeof udata !== 'string' || destindr === 3
         && (!cfgs || valatt && !/^(?:\/[a-z][0-9_a-z$,+-]*\/|)[.-]\b.+\.html?$/.test(valatl || valatt))
         ? udata : udata.replace(rexurl, (m, c1, c2, c3) => c1 + c2 + EC2.u2Blob(c3)) )
@@ -2978,17 +2978,19 @@ function couchQry(txdata, destindr, cbfnc) {
         .catch(errShow);
       } else if (txdata.FILEID && txdata.VIEW) {
         dbpc2.query(txdata.FILEID.replace(/^_design\//, "") + "/" + txdata.VIEW, txdata.OPTS || {})
-        .then(rsltview => dataDispl(rsltview, destindr, cbfnc))
+        .then(rslt => dataDispl(rslt, destindr, cbfnc))
         .catch(errShow);
       } else if (txdata.FILEID && txdata.ATTKEY) {
         dbpc2.getAttachment(txdata.FILEID, txdata.ATTKEY, txdata.OPTS || {})
-        .then(rslt => blobHandl(rslt, destindr, txdata)).catch(err => {
+        .then(ablob => blobHandl(ablob, destindr, txdata)).catch(err => {
           destindr !== 3 || attinp.value || EC1.attSel();
           msgHandl("Alert: Attachment not found.\n" + msgPrefmt(err));
         });
       } else if (txdata.FILEID) {
         dbpc2.get(txdata.FILEID, txdata.OPTS || {})
-        .then(rslt => dataDispl(rslt, destindr, cbfnc))
+        .then( doc => dataDispl( destindr < 8 ? doc
+          : /^eco-(?:scrap|srcdoc)$/.test(doc.file_type) ? doc.content : Array.isArray(doc.filefrags)
+          ? doc.filefrags.map(ob => ob.contenttxt).filter(e => e).join("\n\n") : doc, destindr, cbfnc ))
         .catch(errShow);
       } else {
         msgHandl(instrqcon);
@@ -3477,6 +3479,8 @@ attInp() {
     .catch(msgHandl);
   } else if (!idx && /^(?:(?:\.\.\/\.\.|)\/[a-z][0-9_a-z$,+-]*\/|)[\w!.*+~-]+\.html?$/.test(valatt)) {
     couchQry(txdPrep(valatt.replace(/\.html?$/, ""))[0], 4);
+  } else if (!idx && /^(?:\/[a-z][0-9_a-z$,+-]*\/|)[\w!.*+~-]+\.(?:[ct]\d*|te?xt\d+)$/.test(valatt)) {
+    couchQry(txdPrep(valatt.replace(/\.(?:[ct]\d*|te?xt\d+)$/, ""))[0], 8);
   } else if (valatt) {
     couchQry(txdata, 3);
   }
@@ -4444,8 +4448,8 @@ objQA(key = "", fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-
   : /^pf3stor/.test(key) ? pf3stor[ptyTest()] || rsltFbk(pf3stor)
   : /^tmp1pc/.test(key) ? tmp1pc && tmp1pc[ptyTest()] || rsltFbk(tmp1pc)
   : /^tmp1ff/.test(key) ? tmp1ff && tmp1ff[ptyTest()] || rsltFbk(tmp1ff)
-  : /^file2nd/.test(key) ? file2nd && file2nd[ptyTest()] || rsltFbk(file2nd)
-  : /^filewkg/.test(key) ? filewkg && filewkg[ptyTest()] || rsltFbk(filewkg)
+  : /^f2\b|^file2nd/.test(key) ? file2nd && file2nd[ptyTest()] || rsltFbk(file2nd)
+  : /^f1?\b|^filewkg/.test(key) ? filewkg && filewkg[ptyTest()] || rsltFbk(filewkg)
   : /^9|^webdoc(?:Gen|)|^wdG/i.test(key) && filewkg && filewkg.file_type === "eco-publmgr" ? webdocGen(1)
   : /^8|^(?:ECO|)SDOCS?/i.test(key) ? ECOSDOCS[ptyTest(1)] || rsltFbk(ECOSDOCS)
   : /^7|^(?:ECO|)MODJ?S?/i.test(key) ? ECOMODJS[ptyTest()] || rsltFbk(ECOMODJS)
