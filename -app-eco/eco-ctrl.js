@@ -2993,7 +2993,8 @@ function couchQry(txdata, destindr, cbfnc) {
         dbpc2.get(txdata.FILEID, txdata.OPTS || {})
         .then( doc => dataDispl( destindr < 8 ? doc
           : /^eco-(?:scrap|srcdoc)$/.test(doc.file_type) ? doc.content
-          : Array.isArray(doc.filefrags) ? ( destindr === 9 ? (doc.linksconstr || "").htmllinktxt
+          : Array.isArray(doc.filefrags) ? ( destindr === 9 && doc.parseconfigs
+            ? (doc.parseconfigs.linksconstr || "").htmllinktxt
             : doc.filefrags.map(ob => ob.contenttxt).filter(e => e).join("\n\n") )
           : doc, destindr, cbfnc ))
         .catch(errShow);
