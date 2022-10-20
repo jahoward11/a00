@@ -1103,8 +1103,8 @@ let rva2, rval, ss0, ss1,
   nbrX = v => v && (Array.isArray(v) ? v : ("" + v).split("."))
     .map(n => !n ? "" : ("" + n).length > 4 ? n : ("000" + n).substr(-4, 4)).join("."),
   ptyX = d => ss0 === "subdir" ? d.loc_subdir || (d.file_updated || d.file_created || "").subdir
-    || ( !["loc_subdir", "file_updated", "file_created"].some(p => d.hasOwnProperty(p))
-      ? " " : "." )
+    || ( !(/^eco-./.test(d.file_type) || ["loc_subdir", "file_created"].some(p => d.hasOwnProperty(p)))
+      ? " " : "!" )
     : !ss1 ? ( !d[ss0] && /^[.-]./.test(d._id) && ss0 === "file_type" ? "(app assets)"
       : /name_full/.test(ss0) ? d.name_full.replace(/^m[rs]\\.? +|^mrs\\.? +|[.,;:/]/gi, "")
         || d.name_user || d._id
@@ -1121,11 +1121,11 @@ let rva2, rval, ss0, ss1,
     <tr\${ vidx ? "" : " hidden"}>
       <td>\${ 1 + i - j } <input type=checkbox class="is-hidden" /></td>
       <td>\${ (rval = r.doc || r.value).hasOwnProperty("loc_subdir")
-        ? (rval.loc_subdir || ".") + "/" : rval.file_updated || rval.file_created
-        ? ((rval.file_updated || rval.file_created).subdir || ".") + "/" : "" }</td>
-      <td>\${ rval._id || r.id }</td>
+        ? (rval.loc_subdir || ".") + "/" : /^eco-./.test(rval.file_type) || rval.file_created
+        ? ((rval.file_updated || rval.file_created || "").subdir || ".") + "/" : "" }</td>
+      <td>\${ r.id }</td>
       <td>\${ (rval.file_type || "").replace(/^eco-/, "")
-        || (!/^[.-]./.test(rval._id || r.id) ? "" : "(app assets)") }</td>
+        || (!/^[.-]./.test(r.id) ? "" : "(app assets)") }</td>
       <td>\${ ts1Fmt(rval.ts_updated || (rval.file_updated || "").timestamp) }</td>
       <td>\${ (rval.file_updated || "").username || "" }</td>
       <td>\${ (rval.file_updated || "").version || "" }</td>
@@ -1149,37 +1149,37 @@ let rva2, rval, ss0, ss1,
       <td>\${ [rval.people || rval.contributors].flat().join(", ") || "" }</td>
       <td>\${ Object.keys(rval._attachments || "").length || "" }</td>
     </tr>\`,
-  qd2Fmt = rows => "\\n" + rows.map( (r, i) =>
+  qd2Fmt = rows => rows.map( (r, i) =>
     !(rval = r.doc || r.value)._attachments && /^\\./.test(r.id) ? ""
-    : /^[.-]/.test(r.id) ? (!i || (j = i)) &&
-\`    <tr id="\${ r.id.replace(/^[.-]/, "_") }">
+    : /^[.-]/.test(r.id) ? (!i || (j = i)) && \`
+    <tr id="\${ r.id.replace(/^[.-]/, "_") }">
       <td colspan="20"><a>&#x25b6;</a> <input type="checkbox" class="is-hidden" /> \${
         r.id.replace( /^[.-].+$/, m => m + " ("
           + (/^eco-assets$/.test(rval.file_type) ? "eco-" : "app ") + "assets)" ) }</td>
-    </tr>\\n\` + ordFlip(Object.keys(rval._attachments || "")).map( (k, i2) =>
-\`    <tr hidden>
+    </tr>\\n\` + ordFlip(Object.keys(rval._attachments || "")).map( (k, i2) => \`
+    <tr hidden>
       <td>\${ 1 + i2 } <input type="checkbox" class="is-hidden" /></td>
       <td>\${ r.id + "/" }</td>
       <td colspan="18">\${ !rval._attachments[k] ? k
         : k + " (" + Math.ceil(+rval._attachments[k].length / 1000) + "k)" }</td>
-    </tr>\` ).join("\\n")
+    </tr>\` ).join("")
     : !i || /^[.-]/.test(rows[i - 1].id) || !(rva2 = rows[i - 1].doc || rows[i - 1].value)
-      || ((rval.file_updated || "").subdir || rval.loc_subdir || "")
-        !== ((rva2.file_updated || "").subdir || rva2.loc_subdir || "")
-    ? (!i || (j = i)) &&
-\`    <tr id="\${ rval.loc_subdir || (rval.file_updated || "").subdir || "_" }">
+      || (rval.loc_subdir || (rval.file_updated || "").subdir || "")
+        !== (rva2.loc_subdir || (rva2.file_updated || "").subdir || "")
+    ? (!i || (j = i)) && \`
+    <tr id="\${ rval.loc_subdir || (rval.file_updated || "").subdir || "_" }">
       <td colspan="20"><a>&#x25b6;</a> <input type="checkbox" class="is-hidden" /> \${
-        rval.loc_subdir || (rval.file_updated || "").subdir || "/" }</td>
-    </tr>\\n\` + tr0Gen(r, i)
-    : tr0Gen(r, i) ).join("\\n") + "\\n  ",
-  qd3Fmt = rows => "\\n" + rows.map(tr0Gen).join("\\n") + "\\n  ",
-  qd5Fmt = dels => "\\n" + dels.map( (d, i) =>
-\`    <tr>
+        rval.loc_subdir || (rval.file_updated || "").subdir || "./" }</td>
+    </tr>\` + tr0Gen(r, i)
+    : tr0Gen(r, i) ).join("") + "\\n  ",
+  qd3Fmt = rows => rows.map(tr0Gen).join("") + "\\n  ",
+  qd5Fmt = dels => dels.map( (d, i) => \`
+    <tr>
       <td>\${ 1 + i } <input type="checkbox" class="is-hidden" /></td>
       <td>\${ d.seq }</td>
       <td>\${ d.id }</td>
       <td>\${ d.changes[0].rev }</td>
-    </tr>\` ).join("\\n") + "\\n  ",
+    </tr>\` ).join("") + "\\n  ",
   filesChg = evt => {
     if (vidx > 2) { return; }
     let fmove = evt.target.id === "movebtn",
@@ -1402,7 +1402,7 @@ let rva2, rval, ss0, ss1,
       let calcSum = arr => !arr.length ? 0 : arr.reduce((s, v) => s + v);
       j = 0;
       ftotal.innerText = vidx ? re.rows.length //re.total_rows
-        : re.rows.filter(r => /^eco-./.test((r.doc || r.value).file_type)).length
+        : re.rows.filter(r => /^eco-(?!assets$)./.test((r.doc || r.value).file_type)).length
           + calcSum( re.rows.map( r => !(rval = r.doc || r.value)._attachments
             ? 0 : Object.keys(rval._attachments).length ));
       [cmthds[1], cmtfts[1]].forEach(e => e.classList.add("is-hidden"));
@@ -1414,7 +1414,7 @@ let rva2, rval, ss0, ss1,
         .filter(r => /^[.-]./.test(r.id) || /^eco-./.test((r.doc || r.value).file_type))
         .map( r => /^[.-]./.test(r.id) ? [r.id.replace(/^\\.(.+)$/, "$1_"), null, r.id, r]
           : [ (rval = r.doc || r.value).loc_subdir
-              || (rval.file_updated || rval.file_created || "").subdir || ".",
+              || (rval.file_updated || rval.file_created || "").subdir || "!",
             ptyX(r.doc || r.value), r.id, r ] ) ).map(sr => sr[3]) );
       colsTog(null, (!ss1 ? ss0 : [ss0, ss1].join(".")));
       document.querySelectorAll(qslrs[1])

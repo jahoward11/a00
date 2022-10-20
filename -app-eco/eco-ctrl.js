@@ -849,7 +849,7 @@ window.onload = function () {
           highlight: !fts2[5].switchon ? null : cblock => {
             let lang = (feats.find(ob => ob.keytxt === "highlight") || "").valtxt;
             if (lang && window.hljs && window.hljs.getLanguage(lang)) {
-              try { return window.hljs.highlight(lang, cblock).value;
+              try { return window.hljs.highlight(cblock, {language: lang}).value;
               } catch (err) { msgHandl("hljs lang error: " + err); }
             }
             try { return window.hljs && window.hljs.highlightAuto(cblock).value;
@@ -1010,7 +1010,7 @@ function srcvPrep(str = "", lang) {
   let ntxta = document.createElement('textarea');
   ntxta.textContent = str = "" + str;
   return !window.hljs || lang === "nohighlight" ? ntxta.innerHTML
-  : !lang ? hljs.highlightAuto(str).value : hljs.highlight(lang, str, true).value;
+  : (!lang ? hljs.highlightAuto(str) : hljs.highlight(str, {language: lang})).value;
 }
 
 function emodeSet() {
