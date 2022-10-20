@@ -1173,8 +1173,8 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     ? (nf || "").trim().replace(rexns, "$2")
     : !/name_full2/.test(ss0) ? nf || "" : (nf || "").trim().replace(rexns, "$2, $1$3"),
   ptyX = d => ss0 === "subdir" ? d.loc_subdir || (d.file_updated || d.file_created || "").subdir
-    || ( !["loc_subdir", "file_updated", "file_created"].some(p => d.hasOwnProperty(p))
-      ? " " : "." )
+    || ( !(/^eco-./.test(d.file_type) || ["loc_subdir", "file_created"].some(p => d.hasOwnProperty(p)))
+      ? " " : "!" )
     : !ss1 ? ( !d[ss0] && /^[.-]./.test(d._id) && ss0 === "file_type" ? "(app assets)"
       : /name_full/.test(ss0) ? nmsX(d.name_full).replace(rexts, "") || d.name_user || d._id
       : ss0 === "_attachments" ? nbrX(Object.keys(d[ss0] || "").length)
@@ -1190,11 +1190,11 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     <tr\${ vbas !== 2 ? "" : " hidden"}>
       <td>\${ 1 + i - j } <input type=checkbox class=dnone /></td>
       <td>\${ (rval = r.doc || r.value).hasOwnProperty("loc_subdir")
-        ? (rval.loc_subdir || ".") + "/" : rval.file_updated || rval.file_created
-        ? ((rval.file_updated || rval.file_created).subdir || ".") + "/" : "" }</td>
-      <td>\${ rval._id || r.id }</td>
+        ? (rval.loc_subdir || ".") + "/" : /^eco-./.test(rval.file_type) || rval.file_created
+        ? ((rval.file_updated || rval.file_created || "").subdir || ".") + "/" : "" }</td>
+      <td>\${ r.id }</td>
       <td>\${ (rval.file_type || "").replace(/^eco-/, "")
-        || (!/^[.-]./.test(rval._id || r.id) ? "" : "(app assets)") }</td>
+        || (!/^[.-]./.test(r.id) ? "" : "(app assets)") }</td>
       <td>\${ ts1Fmt(rval.ts_updated || (rval.file_updated || "").timestamp) }</td>
       <td>\${ (rval.file_updated || "").username || "" }</td>
       <td>\${ (rval.file_updated || "").version || "" }</td>
@@ -1234,13 +1234,13 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       <td colspan=18>\${ !rval._attachments[k] ? k
         : k + " (" + Math.ceil(+rval._attachments[k].length / 1000) + "k)" }</td>
     </tr>\` ).join("")
-    : (( rval = rval.hasOwnProperty("loc_subdir") ? rval.loc_subdir
-        : (rval.file_updated || rval.file_created || "").subdir ) || 1 ) && !i
-      || ( (rva2 = (rows[i - 1].doc || rows[i - 1].value)).hasOwnProperty("loc_subdir")
-        ? rva2.loc_subdir : (rva2.file_updated || rva2.file_created || "").subdir ) !== rval
+    : !i || /^[.-]/.test(rows[i - 1].id) || !(rva2 = rows[i - 1].doc || rows[i - 1].value)
+      || (rval.loc_subdir || (rval.file_updated || "").subdir || "")
+        !== (rva2.loc_subdir || (rva2.file_updated || "").subdir || "")
     ? (!i || (j = i)) && \`
-    <tr id="\${ rval || "_" }">
-      <td colspan=20><a>&#x25b6;</a> <input type=checkbox class=dnone /> \${ rval || "" }</td>
+    <tr id="\${ rval.loc_subdir || (rval.file_updated || "").subdir || "_" }">
+      <td colspan=20><a>&#x25b6;</a> <input type=checkbox class=dnone /> \${
+        rval.loc_subdir || (rval.file_updated || "").subdir || "./" }</td>
     </tr>\` + tr0Gen(r, i)
     : tr0Gen(r, i) ).join("") + "\\n  ",
   qd3Fmt = rows => rows.map(tr0Gen).join("") + "\\n  ",
@@ -1272,8 +1272,8 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         }
       },
       row1Tfm = r1 => {
-        !fmove || !r1 || !r1.doc || ( r1.doc.hasOwnProperty("loc_subdir")
-          ? (r1.doc.loc_subdir = moveinp.value)
+        !fmove || !r1 || !r1.doc || /^\\$&?$|^=$/.test(moveinp.value)
+        || ( r1.doc.hasOwnProperty("loc_subdir") ? r1.doc.loc_subdir = moveinp.value
           : (r1.doc.file_updated || r1.doc.file_created || {}).subdir = moveinp.value );
         return fedit ? Object.assign({ _id: "", _rev: "" }, (r1 || "").doc)
         : {
@@ -1346,7 +1346,8 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     !dbq || dbq.allDocs(txd2.OPTS).then(rdataTfm).then(blkDspl).catch(rsp2Show);
   },
   fileLoad = evt => {
-    let tanc = evt && (evt.target.nodeName !== 'MARK' ? evt.target : evt.target.parentElement),
+    let lang,
+      tanc = evt && (evt.target.nodeName !== 'MARK' ? evt.target : evt.target.parentElement),
       finp = tanc && ( vbas > 1 ? tanc.parentElement.parentElement.querySelector('input:not(.dnone)')
           : tanc.parentElement.parentElement.parentElement.querySelector('span:not(.dnone)>input') )
         || "",
@@ -1365,13 +1366,20 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       },
       reximg = /\\.giff?$|\\.jpe?g$|\\.png$/i,
       rextxt = /\\.html?$|\\.m?js$|\\.json$|\\.md$|\\.s?css$|\\.te?xt$|\\.\\w{5,}$/i,
+      mp1 = str => !/^(?:#+|[*~-]| ?\\d+\\.) +\\S[^]*?\\n(?:#+|[*~-]| ?\\d+\\.) +\\S/m.test(str)
+        ? str : (lang = "md") && str.replace( /([^]*?)((?:\\s|\\W|^)(\\*\\*?|__?)(\\*\\*?|__?|)[^\\s*_][^]*?[^\\s*_]\\4\\3(?=\\s|\\W|$)|$)/g,
+          (c, m1, m2) => m1.replace(/\\*/g, "0x2a;").replace(/_/g, "0x5f;") + m2 ),
       jb1 = str => !window.js_beautify || !/\\.m?js$/i.test(txd2.ATTKEY)
-        ? valStr(str, 2) : js_beautify( str,
+        ? mp1(valStr(str, 2)) : js_beautify( str,
           { "indent_size": 2, "space_after_anon_function": 1,
             "break-chained-methods": 1, "keep-array-indentation": 1 } ),
-      jp1 = (str, p) => "\\n<pre class=\\"" + (p ? "pwrap" : "dflow") + " hljs\\">"
-      //#nmwrap pre>pre.hljs { margin: 0; white-space: inherit; }
-        + (!window.hljs ? htmTxt(jb1(str)) : hljs.highlightAuto(jb1(str)).value) + "</pre>\\n"
+      jp1 = (str, p) => (str = jb1(str))
+        && "\\n<pre class=\\"" + (p ? "pwrap" : "dflow") + " hljs\\">"
+        //#nmwrap pre>pre.hljs { margin: 0; white-space: inherit; }
+        + ( !window.hljs ? htmTxt(str)
+          : (!lang ? hljs.highlightAuto(str) : hljs.highlight(str, {language: lang})).value )
+          .replace(lang !== "md" ? /^\\*$/ : /0x2a;/g, "*")
+          .replace(lang !== "md" ? /^_$/ : /0x5f;/g, "_") + "</pre>\\n"
         + (!window.hljs ? "" : "<style>@import \\"" + (aurls[nm0sets.hlsty] || "") + "\\";</style>\\n"),
       attVw = abl => reximg.test(txd2.ATTKEY) || abl && /^image/.test(abl.type)
         ? nmdata.innerHTML = "\\n<figure class=image><img src=\\""
@@ -1399,7 +1407,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         .then( doc => nmdata.innerHTML = jp1( !finp &&
           ( /^(?:scrap|srcdoc)$/.test(ftyp) ? doc.content : Array.isArray(doc.filefrags)
             ? doc.filefrags.map(ob => ob.contenttxt).filter(e => e).join("\\n\\n") : 0 )
-          || valStr(Object.assign({ _id: "", _rev: "" }, doc), 2), 1 ))
+          || (lang = "json") && valStr(Object.assign({ _id: "", _rev: "" }, doc), 2), 1 ))
         .catch(rsp2Show)
     : PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS).then(doc => {
         let lnl, str,
@@ -1629,8 +1637,8 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         calcSum = arr => !arr.length ? 0 : arr.reduce((s, v) => s + v);
       j = 0;
       ftotal.innerText = rdc ? rdc : vbas !== 2 ? re.rows.length //re.total_rows
-        : re.rows.filter( r => (rval = r.doc || r.value).hasOwnProperty("loc_subdir")
-            || rval.file_updated || rval.file_created ).length
+        : re.rows.filter( r => /^eco-(?!assets$)./.test((rval = r.doc || r.value).file_type)
+          || rval.hasOwnProperty("loc_subdir") && !/^[.-]./.test(r.id) || rval.file_created ).length
           + calcSum( re.rows.map( r => !(rval = r.doc || r.value)._attachments ? 0
               : Object.keys(rval._attachments).length ));
       [nmthds[1], nmtfts[1]].forEach(e => e.classList.add("dnone"));
@@ -1639,11 +1647,11 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       ? qd3Fmt( !ss0 || vbas !== 4 && ss0 === "id" || vbas === 4 && ss1 === "timestamp" ? re.rows
         : ordFlip(re.rows.map(r => [ptyX(r.doc || r.value), r.id, r])).map(sr => sr[2]) )
       : qd2Fmt( ordFlip( re.rows.filter( r => /^[.-]./.test(r.id)
-          || (rval = r.doc || r.value).hasOwnProperty("loc_subdir")
-          || rval.file_updated || rval.file_created )
+          || /^eco-./.test((rval = r.doc || r.value).file_type)
+          || rval.hasOwnProperty("loc_subdir") || rval.file_created )
         .map( r => /^[.-]./.test(r.id) ? [r.id.replace(/^\\.(.+)$/, "$1_"), null, r.id, r]
           : [ (rval = r.doc || r.value).loc_subdir
-              || (rval.file_updated || rval.file_created || "").subdir || ".",
+              || (rval.file_updated || rval.file_created || "").subdir || "!",
             ptyX(r.doc || r.value), r.id, r ] ) ).map(sr => sr[3]) );
       evt && evt.target.id === "pdbssel"
       || colsTog(null, (!ss1 ? ss0 : [ss0, ss1].join("."))); //|| "file_created.timestamp"
@@ -1675,7 +1683,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       let ra, rb,
         rdc = re.rows.length === 1 && !re.rows[0].key && "" + re.rows[0].value,
         rrs = !rdc && re.rows.filter( r => r
-            && ( (ra = r.doc || r.value).file_type && /^[!0-9a-z]/i.test(ra._id)
+            && ( (ra = r.doc || r.value).file_type && /^[!0-9a-z]/i.test(r.id)
               || /anno|event|memo|post/i.test(ra.file_type) || !ra.file_type
               && ["name_full", "name_user"].some(p => ra.hasOwnProperty(p)) ) )
           .sort( (a, b) => !(ra = ptyX(a.doc || a.value)) || !(rb = ptyX(b.doc || b.value))
@@ -1701,8 +1709,8 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
             : /anno|event|memo|post/i.test(ra.file_type)
               && (rb = (ra.file_updated || ra.file_created || "").username)
             ? ((cntcs[rb] || "").name_full || rb).replace(/ .*$/, "")
-            : !cvs.some(e => /name_full/.test(e)) ? ra._id
-            : nmsX(ra.name_full) || ra.name_user || ra.name || ra._id }</strong>
+            : !cvs.some(e => /name_full/.test(e)) ? r.id
+            : nmsX(ra.name_full) || ra.name_user || ra.name || r.id }</strong>
           <em class="diblk fsz0c75">\${ !cvs.some(e => /timestamp/.test(e))
               || !/anno|memo|post/i.test(ra.file_type)
               || !ra.ts_created && !ra.file_created && !ra.ts_updated && !ra.file_updated
@@ -1720,7 +1728,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           + (!cvs.includes("file_type") || !ra.file_type ? "" : "NOTE TYPE: " + ra.file_type + "\\n")
           + ( !cvs.includes("id") ? "" : "NOTE ID: " + ( !cvs.includes("subdir") ? ""
               : (rb = ra.loc_subdir || (ra.file_updated || ra.file_created || "").subdir || "")
-                + (!rb ? "" : " / ") ) + "<a>" + ra._id + "</a>\\n" )
+                + (!rb ? "" : " / ") ) + "<a>" + r.id + "</a>\\n" )
           + ( !cvs.includes("file_created.timestamp") || /anno|memo|post/i.test(ra.file_type)
               || !ra.ts_created && !ra.file_created ? "" : "CREATED: "
             + new Date(ra.ts_created || (ra.file_created || "").timestamp || 0).toLocaleString()
@@ -2238,7 +2246,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       : [["-res-css", nm0sets.hlsty, "../../a00/-res-hljs/" + nm0sets.hlsty]] )
     .forEach( ([f, k, v]) => !dbs.includes("a00") || !window.PouchDB ? (aurls[k] = v)
       : PouchDB("a00").getAttachment(f, k)
-        .then(abl => aurls[k] = URL.createObjectURL(abl)).catch(rsp2Show) );
+        .then(abl => aurls[k] = URL.createObjectURL(abl)).catch(rsp2Show).then(() => aurls[k] = v) );
     !nm0sets.bedit || [moveinp, movebtn].forEach(elm => elm.classList.add("dnone"))
     || editbtn.classList.remove("dnone");
     [pdbssel, opensel, cntcsel].forEach( (e, i) => e.innerHTML
@@ -2254,7 +2262,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         startkey:     "!",
         endkey:       "!~",
         include_docs: true
-      }).then(re => re.rows.forEach(r => cntcs[r.doc.name_user || r.doc._id] = cntcLite(r.doc)))
+      }).then(re => re.rows.forEach(r => cntcs[r.doc.name_user || r.id] = cntcLite(r.doc)))
       .catch(rsp2Show);
     una2inp.value = nm0sets.uname || nm0sets.uemail || "";
     unaminp.value = nm0sets.uname || "";
