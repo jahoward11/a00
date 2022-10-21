@@ -1355,8 +1355,6 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           : tanc.parentElement.parentElement.parentElement.querySelector('span:not(.dnone)>input') )
         || "",
       sdir = tanc && vbas > 1 && tanc.parentElement.previousElementSibling.textContent,
-      ftyp = tanc && ( vbas < 2 ? tanc.dataset.filetyp
-        : (tanc.parentElement.nextElementSibling || "").textContent ) || "",
       txd2 = {
         DBNAME: txd1.DBNAME,
         FILEID: !tanc ? "" : sdir && rexsd.test(sdir)
@@ -1369,9 +1367,10 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       },
       reximg = /\.giff?$|\.jpe?g$|\.png$/i,
       rextxt = /\.html?$|\.m?js$|\.json$|\.md$|\.s?css$|\.te?xt$|\.\w{5,}$/i,
-      mp1 = str => !/^(?:#+|[*~-]| ?\d+\.) +\S[^]*?\n(?:#+|[*~-]| ?\d+\.) +\S/m.test(str)
-        ? str : (lang = "md") && str.replace( /([^]*?)((?:\s|\W|^)(\*\*?|__?)(\*\*?|__?|)[^\s*_][^]*?[^\s*_]\4\3(?=\s|\W|$)|$)/g,
-          (c, m1, m2) => m1.replace(/\*/g, "0x2a;").replace(/_/g, "0x5f;") + m2 ),
+      mp1 = str => !/^(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S[^]*?\n(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S/m.test(str)
+        ? str : !(lang = "md") || str
+        .replace( /([^]*?)((?:\s|\W|^)(\*\*?|__?)(\*\*?|__?|)[^\s*_][^]*?[^\s*_]\4\3(?=\s|\W|$)|$)/g,
+          (c, m1, m2) => m1.replace(/\*/g, "\\x2a;").replace(/_/g, "\\x5f;") + m2 ),
       jb1 = str => !window.js_beautify || !/\.m?js$/i.test(txd2.ATTKEY)
         ? mp1(valStr(str, 2)) : js_beautify( str,
           { "indent_size": 2, "space_after_anon_function": 1,
@@ -1381,8 +1380,8 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         //#nmwrap pre>pre.hljs { margin: 0; white-space: inherit; }
         + ( !window.hljs ? htmTxt(str)
           : (!lang ? hljs.highlightAuto(str) : hljs.highlight(str, {language: lang})).value )
-          .replace(lang !== "md" ? /^\*$/ : /0x2a;/g, "*")
-          .replace(lang !== "md" ? /^_$/ : /0x5f;/g, "_") + "</pre>\n"
+          .replace(lang !== "md" ? /^\*$/ : /\\x2a;/g, "*")
+          .replace(lang !== "md" ? /^_$/ : /\\x5f;/g, "_") + "</pre>\n"
         + (!window.hljs ? "" : "<style>@import \"" + (aurls[nm0sets.hlsty] || "") + "\";</style>\n"),
       attVw = abl => reximg.test(txd2.ATTKEY) || abl && /^image/.test(abl.type)
         ? nmdata.innerHTML = "\n<figure class=image><img src=\""
@@ -1408,8 +1407,8 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       .then(attVw).catch(rsp2Show)
     : !finp.checked ? tabActv() || PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS)
         .then( doc => nmdata.innerHTML = jp1( !finp &&
-          ( /^(?:scrap|srcdoc)$/.test(ftyp) ? doc.content : Array.isArray(doc.filefrags)
-            ? doc.filefrags.map(ob => ob.contenttxt).filter(e => e).join("\n\n") : 0 )
+          ( doc.hasOwnProperty("content") ? doc.content : !Array.isArray(doc.filefrags) ? 0
+            : doc.filefrags.map(ff => ff.contenttxt).filter(e => e).join("\n\n") )
           || (lang = "json") && valStr(Object.assign({ _id: "", _rev: "" }, doc), 2), 1 ))
         .catch(rsp2Show)
     : PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS).then(doc => {
@@ -1700,8 +1699,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   <article class=media>
     <div class="media-left">
       <figure class="image rspv128${ cvs.includes("image_src") ? "" : " dnone" }"><img src="${
-        imgLkup(ra = r.doc || r.value) }" data-fileid="${ r.id }" data-filetyp="${
-        (ra.file_type || "").replace(/^eco-/, "") }" />
+        imgLkup(ra = r.doc || r.value) }" data-fileid="${ r.id }" }" />
       <figcaption>${ !cvs.includes("name_user") ? "" : ra.name_user || "" }</figcaption></figure>
     </div>
     <div class="media-content">
