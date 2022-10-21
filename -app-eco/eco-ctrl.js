@@ -48,11 +48,11 @@ const hostgh = /\.github\.io$/.test(window.location.host),
       ? d : d.filefrags.map(ff => ff.contenttxt).filter(e => e).join("\n\n") ),
     sty: d => d && ( !((d.parseconfigs || "").linksconstr || "").hasOwnProperty("htmllinktxt")
       ? d : d.parseconfigs.linksconstr.htmllinktxt ),
-    htm: d => d && (!d.filefrags ? d : webdocGen(1, d))
+    htm: d => d && EC2.wdGen(d)
   },
   pf3stor = {},
   rexatt = /(?:@import +(?:url\(|)['"]?|\S+: *url\(['"]?|^)(?:\.\/|\.\.\/(?:\.\.\/(.*)\/|)(.*)\/|)([^\n\/]+\.(?:giff?|jpe?g|m?js|png|s?css))['"]?\)?;?$/i,
-  rexext = /\.(?:[chlst]|content|te?xt\d|li?nk|sty|style|html?)\d*$/,
+  rexept = /\.(?:[chlst]|content|te?xt\d|li?nk|sty|style|html?)\d*$/,
   rexfid = /^$|^_design\/\w+$|^[!.~-]?\w[\w!.*+~-]*$/,
   rexfix = /^_(?!all_docs$|changes$|design(?:_docs|\/\w+)$)|[*~]\(?[0-9]*\)?$/,
   rexibm = /^https:\/\/[\w-]+\.cloudant[\w.]+$/,
@@ -167,9 +167,9 @@ const ECOINSTR = [
 + ' $6 or $TMPLS  | app bundled, DB-file templates\n'
 + ' $7 or $MODJS  | app bundled, JS modules\n'
 + ' $8 or $SDOCS  | ready-made, publishable source documents\n'
-+ ' $9 or $wdGen  | generated result (web doc) of working, publmgr file\n'
-+ ' $filewkg      | working-file JSON\n'
-+ ' $file2nd      | loaded 2nd-file JSON\n'
++ ' $9 or $wdGen  | generated result (HTML web doc) of working, publmgr file\n'
++ ' $filewkg, $f1 | working-file JSON\n'
++ ' $file2nd, $f2 | loaded 2nd-file JSON\n'
 + ' $tmp1ff       | loaded publmgr template of working-file’s content\n'
 + ' $tmp1pc       | loaded publmgr template of working-file’s parse configs\n'
 + ' $pf3stor      | File-load select-list data storage\n'
@@ -187,9 +187,9 @@ const ECOINSTR = [
 + '- Append `.`-idx/key to access specific element (by index) or property (by key) within object.\n'
 + '- Append `.keys` to list all property keys of object.\n'
 + '- For `$filewkg` (or `$f1`) & `$file2nd` (or `$f2`):\n'
-+ '  + if loaded DB-file has content, append `.c` to return content text only;\n'
++ '  + if loaded DB file has content, append `.c` to return content text only;\n'
 + '  + if publmgr file is loaded, append `.s` to return style text only;\n'
-+ '  + if publmgr file is loaded, append `.h` to return generated result (web doc).\n'
++ '  + if publmgr file is loaded, append `.h` to return generated result (HTML web doc).\n'
 + '- Objects may also be accessed from within script using app JS method `EC2.objQA()`.  \n'
 + '  Provide quick-access notation as first argument -- surrounded by quotes, but without leading `$`.\n'
 + '- Web-asset BLOb-URLs may be individually accessed from within script using app JS method `EC2.u2Blob()`.  \n'
@@ -2188,7 +2188,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
   // 0 = imp'd text to JSON/Text Edit or SOURCEx;
   // 1 = template to filewkg; 2 = file to file2nd;
   // 3+/other truthy = attachment/blob/publmgr-webdoc to preview
-  // 4 = udata is publmgr data to generate webdoc
+  // 4 = udata is publmgr data to generate webdoc (deprecated)
   // 5 = udata is default/reset html
   // 6 = udata is html-wrapped img
   // 7 = udata is text-file or app-html attachment
@@ -2546,28 +2546,24 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
     // because prjDiscGen is already triggered by discTog
     document.querySelector('#econav0 #ebrand').classList.remove("has-background-grey");
     prv2s.forEach(el => el.classList.add("is-hidden"));
-    destindr !== 4 || !udata || typeof udata !== 'object' || udata.file_type !== "eco-publmgr"
-    || (udata = webdocGen(1, udata)); // temp cleanup
     typeof udata !== 'object' || (lang = "json");
-    ecorender.innerHTML = destindr !== 7 && (!udata || !/function|object/.test(typeof udata))
-      ? ( epsets.appchks[26] || typeof udata !== 'string' || destindr === 3
+    ecorender.innerHTML = destindr === 7 || udata && /function|object/.test(typeof udata)
+      ? EC2.htmTxt((udata = msgPrefmt(udata)))
+      : epsets.appchks[26] || typeof udata !== 'string' || destindr === 3
         && (!cfgs || valatt && !/^(?:\/[a-z][0-9_a-z$,+-]*\/|)[.-]\b.+\.html?$/.test(valatl || valatt))
-        ? udata : udata.replace(rexurl, (m, c1, c2, c3) => c1 + c2 + EC2.u2Blob(c3)) )
-      : (udata = msgPrefmt(udata))
-        .replace(/&(?=#?\w+;)/g, "&amp;").replace( /<([!\/]?\b.+?)(>|(?=<|$))|(--)>|<(!--)/gm,
-          (m, c1, c2, c3, c4) => (c3 ? "" : "&lt;") + (c4 || c3 || c1) + (c4 || !c2 ? "" : "&gt;") );
-    !/^(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S[^]*?\n(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S/m.test(udata)
+        ? udata : udata.replace(rexurl, (m, c1, c2, c3) => c1 + c2 + EC2.u2Blob(c3));
+    lang || !/^(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S[^]*?\n(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S/m.test(udata)
     || !(lang = "md") || ( udata = udata
       .replace( /([^]*?)((?:\s|\W|^)(\*\*?|__?)(\*\*?|__?|)[^\s*_][^]*?[^\s*_]\4\3(?=\s|\W|$)|$)/g,
-        (c, m1, m2) => m1.replace(/\*/g, "\\x2a;").replace(/_/g, "\\x5f;") + m2 ));
+        (c, m1, m2) => m1.replace(/\*/g, "\\x2a;").replace(/_/g, "\\x5f;") + m2 ) );
     prv2s[0].innerHTML = !epsets.prvmode ? null : ( !epsets.hlstyle ? ""
-        : '\n<style type="text/css">.hljs-tag { //color: inherit; }</style>'
-          + '\n<link class="srcvlink" href="'
-          + (aurls[epsets.hlstyle] || a00path + '/-res-hljs/' + epsets.hlstyle)
-          + (protfile || hostlh ? "" : '" crossorigin="use-credentials')
-          + '" type="text/css" rel="stylesheet" disabled />' )
-        + '\n<pre class="srcview is-absolute hljs">'
-        + srcvPrep(udata, !epsets.hlstyle && "nohighlight" || lang) + "</pre>";
+      : '\n<style type="text/css">.hljs-tag { //color: inherit; }</style>'
+        + '\n<link class="srcvlink" href="'
+        + (aurls[epsets.hlstyle] || a00path + '/-res-hljs/' + epsets.hlstyle)
+        + (protfile || hostlh ? "" : '" crossorigin="use-credentials')
+        + '" type="text/css" rel="stylesheet" disabled />' )
+      + '\n<pre class="srcview is-absolute hljs">'
+      + srcvPrep(udata, !epsets.hlstyle && "nohighlight" || lang) + "</pre>";
     !document.querySelector('#econav0 #prvtab.is-active') || ecorender.classList.remove("is-hidden");
     if (!window.PouchDB || destindr > 4) { return; }
     disciscurr || prjDiscGen();
@@ -3485,11 +3481,12 @@ attInp() {
   if (/^\/\/.*$/.test(valatt) && window.localforage) {
     !(lfkey = valatt.replace(/^\/\//, ""))
     ? localforage.keys((err, keys) => err ? msgHandl(err) : dataDispl(keys, 3))
-    : localforage.getItem( lfkey.replace(rexext, ""), (err, val) => err ? msgHandl(err)
+    : localforage.getItem( lfkey.replace(rexept, ""), (err, val) => err ? msgHandl(err)
       : dataDispl( !/^{".+}$/.test(val) || !jsonParse(val) ? val : !(val = jsonParse(val))
         || ( /\.(?:[ct]|content|te?xt\d)\d*$/.test(lfkey) ? dPrc.cnt(val)
         : /\.(?:[ls]|li?nk|sty|style)\d*$/.test(lfkey) ? dPrc.sty(val)
-        : /\.(?:h|html?)\d*$/.test(lfkey) ? dPrc.htm(val) : val ), 3 ) );
+        : /\.(?:h|html?)\d*$/.test(lfkey) ? dPrc.htm(val) : val ),
+      /\.(?:h|html?)\d*$/.test(lfkey) ? 3 : 7 ) );
   } else if (rexoqa.test(valatt)) {
     Promise.resolve(EC2.objQA(valatt.replace(/^\$ */, ""))).then(rslt => dataDispl(rslt, 3));
   } else if (valatt && txdata.url) {
@@ -3498,14 +3495,12 @@ attInp() {
       : /^(?:json|text)$/.test(txdata.bmet) ? dataDispl(rslt, 7)
       : rdataFetch({ url: txdata.url, bmet: 'text' }).then(rslt => dataDispl(rslt, 7)) )
     .catch(msgHandl);
-  } else if (!idx && rexext.test(txdata.FILEID)) {
-    txdata.FILEID = txdata.FILEID.replace(rexext, "");
+  } else if (!idx && rexept.test(txdata.FILEID)) {
+    txdata.FILEID = txdata.FILEID.replace(rexept, "");
     txdata.dPrc = /\.(?:[ct]|content|te?xt\d)\d*$/.test(valatt) ? dPrc.cnt
       : /\.(?:[ls]|li?nk|sty|style)\d*$/.test(valatt) ? dPrc.sty
       : /\.(?:h|html?)\d*$/.test(valatt) ? dPrc.htm : 0;
-    couchQry(txdata, 7);
-  //} else if (!idx && /\.(?:h|html?)\d*$/.test(txdata.FILEID)) {
-    //couchQry(txdPrep(valatt.replace(/\.(?:h|html?)\d*$/, ""))[0], 4); // temp cleanup
+    couchQry(txdata, /\.(?:h|html?)\d*$/.test(valatt) ? 3 : 7);
   } else if (valatt) {
     couchQry(txdata, 3);
   }
@@ -3530,8 +3525,7 @@ tabs0Tog(idx, exit) { // also triggered by dataDispl, dropboxTx, blobHandl, prvT
     };
   !exit || tswapHide();
   exit || idx > 0 || aidx < 1 || screens[0].innerHTML || EC1.attSel();
-  exit || idx > 0 || valatt || reniscurr || !filewkg
-  || !(filewkg.file_type === "eco-publmgr" || filewkg.filefrags) || webdocGen();
+  exit || idx > 0 || valatt || reniscurr || !(filewkg || "").filefrags || webdocGen();
   idx !== 1 || document.querySelector('#ecoesp0 #prjdisc').innerHTML || prjDiscGen();
   if (tabs[idx].classList.contains("is-active")) {
     // unintuitively prevents attInp from clearing previous content?
@@ -4446,7 +4440,13 @@ ibmConnect() {
     !valinp[2] ? espEnter(0) : teamDSet();
   }
 },
-wdGen(pdata) { return webdocGen(1, pdata); },
+fncTry(fnc, a, e) { try { return fnc(a) } catch (err) { return e > 1 ? a : e ? err : undefined } },
+htmTxt(str) {
+  return typeof str !== 'string' ? str : str
+  .replace(/&(?=#?\w+;)/g, "&amp;").replace( /<([!\/]?\b.+?)(>|(?=<|$))|(--)>|<(!--)/gm,
+  (m, c1, c2, c3, c4) => (c3 ? "" : "&lt;") + (c4 || c3 || c1) + (c4 || !c2 ? "" : "&gt;") )
+},
+wdGen(pdata) { return !(pdata || "").filefrags ? pdata : webdocGen(1, pdata); },
 u2Blob(url) { // also triggered by prjDiscGen, jdeDftGen, dviz-memos, dviz-contacts
   return aurls[(url || "").replace(/^\S*\//, "")] || aurls[url]
   || (url || "").replace(/^\.\.\/\.\.(?!\/a00\/)(?=\S+[^\s\/]$)/, a00orig) || url;
@@ -4482,7 +4482,7 @@ objQA(key = "", fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-
   : /^(?:f1?|filewkg)\.[ls]\d*$/.test(key) ? dPrc.sty(filewkg) || rsltFbk(filewkg)
   : /^(?:f1?|filewkg)\.h\d*$/.test(key) ? dPrc.htm(filewkg) || rsltFbk(filewkg)
   : /^f1?\b|^filewkg/.test(key) ? filewkg && filewkg[ptyTest()] || rsltFbk(filewkg)
-  : /^9|^webdoc(?:Gen|)|^wdG/i.test(key) && filewkg && filewkg.file_type === "eco-publmgr" ? webdocGen(1)
+  : /^9|^webdoc(?:Gen|)|^wdG/i.test(key) && (filewkg || "").filefrags ? webdocGen(1)
   : /^8|^(?:ECO|)SDOCS?/i.test(key) ? ECOSDOCS[ptyTest(1)] || rsltFbk(ECOSDOCS)
   : /^7|^(?:ECO|)MODJ?S?/i.test(key) ? ECOMODJS[ptyTest()] || rsltFbk(ECOMODJS)
   : /^6|^(?:ECO|)TMPLS?/i.test(key) ? ECOTMPLS[ptyTest()] || rsltFbk(ECOTMPLS)
@@ -4736,7 +4736,7 @@ qconRetrvD(cbfnc, errfnc) { // also triggered by guideLoad, dviz-idxlist, dviz-m
   } else if (/^\/\/.*$/.test(valcon) && window.localforage) {
     !(lfkey = valcon.replace(/^\/\//, ""))
     ? localforage.keys((err, keys) => err ? msgHandl(err) : dataDispl(keys, 0, cbfnc))
-    : localforage.getItem( lfkey.replace(rexext, ""), (err, val) => err ? msgHandl(err)
+    : localforage.getItem( lfkey.replace(rexept, ""), (err, val) => err ? msgHandl(err)
       : dataDispl( !/^{".+}$/.test(val) || !jsonParse(val) ? val : !(val = jsonParse(val))
         || ( /\.(?:[ct]|content|te?xt\d)\d*$/.test(lfkey) ? dPrc.cnt(val)
         : /\.(?:[ls]|li?nk|sty|style)\d*$/.test(lfkey) ? dPrc.sty(val)
@@ -4772,8 +4772,8 @@ qconRetrvD(cbfnc, errfnc) { // also triggered by guideLoad, dviz-idxlist, dviz-m
       } ), 2 )
     .then(rslt => !txdata.ATTKEY ? dataDispl(rslt, 0, cbfnc) : blobHandl(rslt.body, 0, txdata, cbfnc))
     .catch(msgHandl);
-  } else if (!txdata.ATTKEY && rexext.test(txdata.FILEID)) {
-    txdata = txdPrep(valcon.replace(rexext, ""))[0];
+  } else if (!txdata.ATTKEY && rexept.test(txdata.FILEID)) {
+    txdata = txdPrep(valcon.replace(rexept, ""))[0];
     txdata.dPrc = /\.(?:[ct]|content|te?xt\d)\d*$/.test(valcon) ? dPrc.cnt
       : /\.(?:[ls]|li?nk|sty|style)\d*$/.test(valcon) ? dPrc.sty
       : /\.(?:h|html?)\d*$/.test(valcon) ? dPrc.htm : 0;
