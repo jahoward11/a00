@@ -43,8 +43,16 @@ const hostgh = /\.github\.io$/.test(window.location.host),
     "ebook-annos-fns.js":     a00path + "/-res-js/ebook-annos-fns.js",
     "srcdiff.js":             a00path + "/-res-js/srcdiff.js"
   },
+  dPrc = {
+    cnt: d => d && ( d.hasOwnProperty("content") ? d.content : !Array.isArray(d.filefrags)
+      ? d : d.filefrags.map(ff => ff.contenttxt).filter(e => e).join("\n\n") ),
+    sty: d => d && ( !((d.parseconfigs || "").linksconstr || "").hasOwnProperty("htmllinktxt")
+      ? d : d.parseconfigs.linksconstr.htmllinktxt ),
+    htm: d => d && (!d.filefrags ? d : webdocGen(1, d))
+  },
   pf3stor = {},
   rexatt = /(?:@import +(?:url\(|)['"]?|\S+: *url\(['"]?|^)(?:\.\/|\.\.\/(?:\.\.\/(.*)\/|)(.*)\/|)([^\n\/]+\.(?:giff?|jpe?g|m?js|png|s?css))['"]?\)?;?$/i,
+  rexext = /\.(?:[chlst]|content|te?xt\d|li?nk|sty|style|html?)\d*$/,
   rexfid = /^$|^_design\/\w+$|^[!.~-]?\w[\w!.*+~-]*$/,
   rexfix = /^_(?!all_docs$|changes$|design(?:_docs|\/\w+)$)|[*~]\(?[0-9]*\)?$/,
   rexibm = /^https:\/\/[\w-]+\.cloudant[\w.]+$/,
@@ -1010,7 +1018,9 @@ function srcvPrep(str = "", lang) {
   let ntxta = document.createElement('textarea');
   ntxta.textContent = str = "" + str;
   return !window.hljs || lang === "nohighlight" ? ntxta.innerHTML
-  : (!lang ? hljs.highlightAuto(str) : hljs.highlight(str, {language: lang})).value;
+  : (!lang ? hljs.highlightAuto(str) : hljs.highlight(str, {language: lang})).value
+    .replace(lang !== "md" ? /^\*$/ : /\\x2a;/g, "*")
+    .replace(lang !== "md" ? /^_$/ : /\\x5f;/g, "_");
 }
 
 function emodeSet() {
@@ -2182,7 +2192,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
   // 5 = udata is default/reset html
   // 6 = udata is html-wrapped img
   // 7 = udata is text-file or app-html attachment
-  let elsass, elsscr, elssty, mnlen, ndiv, pla11, sidx, tft, tpl, udobj,
+  let elsass, elsscr, elssty, lang, mnlen, ndiv, pla11, sidx, tft, tpl, udobj,
     valatt = document.querySelector('#econav0 #attinp').value.trim(),
     valatl = document.querySelector('#econav0 #attlist').value,
     ecolinks = document.querySelector('#ecolinks'),
@@ -2538,6 +2548,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
     prv2s.forEach(el => el.classList.add("is-hidden"));
     destindr !== 4 || !udata || typeof udata !== 'object' || udata.file_type !== "eco-publmgr"
     || (udata = webdocGen(1, udata)); // temp cleanup
+    typeof udata !== 'object' || (lang = "json");
     ecorender.innerHTML = destindr !== 7 && (!udata || !/function|object/.test(typeof udata))
       ? ( epsets.appchks[26] || typeof udata !== 'string' || destindr === 3
         && (!cfgs || valatt && !/^(?:\/[a-z][0-9_a-z$,+-]*\/|)[.-]\b.+\.html?$/.test(valatl || valatt))
@@ -2545,6 +2556,10 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       : (udata = msgPrefmt(udata))
         .replace(/&(?=#?\w+;)/g, "&amp;").replace( /<([!\/]?\b.+?)(>|(?=<|$))|(--)>|<(!--)/gm,
           (m, c1, c2, c3, c4) => (c3 ? "" : "&lt;") + (c4 || c3 || c1) + (c4 || !c2 ? "" : "&gt;") );
+    !/^(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S[^]*?\n(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S/m.test(udata)
+    || !(lang = "md") || ( udata = udata
+      .replace( /([^]*?)((?:\s|\W|^)(\*\*?|__?)(\*\*?|__?|)[^\s*_][^]*?[^\s*_]\4\3(?=\s|\W|$)|$)/g,
+        (c, m1, m2) => m1.replace(/\*/g, "\\x2a;").replace(/_/g, "\\x5f;") + m2 ));
     prv2s[0].innerHTML = !epsets.prvmode ? null : ( !epsets.hlstyle ? ""
         : '\n<style type="text/css">.hljs-tag { //color: inherit; }</style>'
           + '\n<link class="srcvlink" href="'
@@ -2552,7 +2567,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
           + (protfile || hostlh ? "" : '" crossorigin="use-credentials')
           + '" type="text/css" rel="stylesheet" disabled />' )
         + '\n<pre class="srcview is-absolute hljs">'
-        + srcvPrep(udata, !epsets.hlstyle && "nohighlight") + "</pre>";
+        + srcvPrep(udata, !epsets.hlstyle && "nohighlight" || lang) + "</pre>";
     !document.querySelector('#econav0 #prvtab.is-active') || ecorender.classList.remove("is-hidden");
     if (!window.PouchDB || destindr > 4) { return; }
     disciscurr || prjDiscGen();
@@ -3470,7 +3485,11 @@ attInp() {
   if (/^\/\/.*$/.test(valatt) && window.localforage) {
     !(lfkey = valatt.replace(/^\/\//, ""))
     ? localforage.keys((err, keys) => err ? msgHandl(err) : dataDispl(keys, 3))
-    : localforage.getItem(lfkey, (err, val) => err ? msgHandl(err) : dataDispl(val, 3));
+    : localforage.getItem( lfkey.replace(rexext, ""), (err, val) => err ? msgHandl(err)
+      : dataDispl( !/^{".+}$/.test(val) || !jsonParse(val) ? val : !(val = jsonParse(val))
+        || ( /\.(?:[ct]|content|te?xt\d)\d*$/.test(lfkey) ? dPrc.cnt(val)
+        : /\.(?:[ls]|li?nk|sty|style)\d*$/.test(lfkey) ? dPrc.sty(val)
+        : /\.(?:h|html?)\d*$/.test(lfkey) ? dPrc.htm(val) : val ), 3 ) );
   } else if (rexoqa.test(valatt)) {
     Promise.resolve(EC2.objQA(valatt.replace(/^\$ */, ""))).then(rslt => dataDispl(rslt, 3));
   } else if (valatt && txdata.url) {
@@ -3479,21 +3498,14 @@ attInp() {
       : /^(?:json|text)$/.test(txdata.bmet) ? dataDispl(rslt, 7)
       : rdataFetch({ url: txdata.url, bmet: 'text' }).then(rslt => dataDispl(rslt, 7)) )
     .catch(msgHandl);
-  } else if (!idx && /\.(?:[ct]|content|te?xt\d)\d*$/.test(txdata.FILEID)) {
-    txdata.FILEID = txdata.FILEID.replace(/\.(?:[ct]|content|te?xt\d)\d*$/, "");
-    txdata.dPrc = d => d.hasOwnProperty("content") ? d.content : !Array.isArray(d.filefrags)
-      ? d : d.filefrags.map(ff => ff.contenttxt).filter(e => e).join("\n\n");
+  } else if (!idx && rexext.test(txdata.FILEID)) {
+    txdata.FILEID = txdata.FILEID.replace(rexext, "");
+    txdata.dPrc = /\.(?:[ct]|content|te?xt\d)\d*$/.test(valatt) ? dPrc.cnt
+      : /\.(?:[ls]|li?nk|sty|style)\d*$/.test(valatt) ? dPrc.sty
+      : /\.(?:h|html?)\d*$/.test(valatt) ? dPrc.htm : 0;
     couchQry(txdata, 7);
-  } else if (!idx && /\.(?:[ls]|li?nk|sty|style)\d*$/.test(txdata.FILEID)) {
-    txdata.FILEID = txdata.FILEID.replace(/\.(?:[ls]|li?nk|sty|style)\d*$/, "");
-    txdata.dPrc = d => !((d.parseconfigs || "").linksconstr || "").hasOwnProperty("htmllinktxt")
-      ? d : d.parseconfigs.linksconstr.htmllinktxt;
-    couchQry(txdata, 7);
-  } else if (!idx && /\.(?:h|html?)\d*$/.test(txdata.FILEID)) {
-    couchQry(txdPrep(valatt.replace(/\.(?:h|html?)\d*$/, ""))[0], 4); // temp cleanup
-    //txdata.FILEID = txdata.FILEID.replace(/\.(?:h|html?)\d*$/, "");
-    //txdata.dPrc = d => !d.filefrags ? d : webdocGen(1, d);
-    //couchQry(txdata, 7);
+  //} else if (!idx && /\.(?:h|html?)\d*$/.test(txdata.FILEID)) {
+    //couchQry(txdPrep(valatt.replace(/\.(?:h|html?)\d*$/, ""))[0], 4); // temp cleanup
   } else if (valatt) {
     couchQry(txdata, 3);
   }
@@ -4462,19 +4474,13 @@ objQA(key = "", fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-
   : /^pf3stor/.test(key) ? pf3stor[ptyTest()] || rsltFbk(pf3stor)
   : /^tmp1pc/.test(key) ? tmp1pc && tmp1pc[ptyTest()] || rsltFbk(tmp1pc)
   : /^tmp1ff/.test(key) ? tmp1ff && tmp1ff[ptyTest()] || rsltFbk(tmp1ff)
-  : /^(?:f2|file2nd)\.[ct]\d*$/.test(key) ? file2nd
-    && ( !Array.isArray(file2nd.filefrags) ? file2nd.content
-      : file2nd.filefrags.map(ob => ob.contenttxt).filter(e => e).join("\n\n") ) || rsltFbk(file2nd)
-  : /^(?:f2|file2nd)\.[ls]\d*$/.test(key) ? file2nd
-    && ((file2nd.parseconfigs || "").linksconstr || "").htmllinktxt || rsltFbk(file2nd)
-  : /^(?:f2|file2nd)\.h\d*$/.test(key) ? file2nd && webdocGen(1, file2nd) || rsltFbk(file2nd)
+  : /^(?:f2|file2nd)\.[ct]\d*$/.test(key) ? dPrc.cnt(file2nd) || rsltFbk(file2nd)
+  : /^(?:f2|file2nd)\.[ls]\d*$/.test(key) ? dPrc.sty(file2nd) || rsltFbk(file2nd)
+  : /^(?:f2|file2nd)\.h\d*$/.test(key) ? dPrc.htm(file2nd) || rsltFbk(file2nd)
   : /^f2\b|^file2nd/.test(key) ? file2nd && file2nd[ptyTest()] || rsltFbk(file2nd)
-  : /^(?:f1?|filewkg)\.[ct]\d*$/.test(key) ? filewkg
-    && ( !Array.isArray(filewkg.filefrags) ? filewkg.content
-      : filewkg.filefrags.map(ob => ob.contenttxt).filter(e => e).join("\n\n") ) || rsltFbk(filewkg)
-  : /^(?:f1?|filewkg)\.[ls]\d*$/.test(key) ? filewkg
-    && ((filewkg.parseconfigs || "").linksconstr || "").htmllinktxt || rsltFbk(filewkg)
-  : /^(?:f1?|filewkg)\.h\d*$/.test(key) ? filewkg && webdocGen(1) || rsltFbk(filewkg)
+  : /^(?:f1?|filewkg)\.[ct]\d*$/.test(key) ? dPrc.cnt(filewkg) || rsltFbk(filewkg)
+  : /^(?:f1?|filewkg)\.[ls]\d*$/.test(key) ? dPrc.sty(filewkg) || rsltFbk(filewkg)
+  : /^(?:f1?|filewkg)\.h\d*$/.test(key) ? dPrc.htm(filewkg) || rsltFbk(filewkg)
   : /^f1?\b|^filewkg/.test(key) ? filewkg && filewkg[ptyTest()] || rsltFbk(filewkg)
   : /^9|^webdoc(?:Gen|)|^wdG/i.test(key) && filewkg && filewkg.file_type === "eco-publmgr" ? webdocGen(1)
   : /^8|^(?:ECO|)SDOCS?/i.test(key) ? ECOSDOCS[ptyTest(1)] || rsltFbk(ECOSDOCS)
@@ -4730,7 +4736,11 @@ qconRetrvD(cbfnc, errfnc) { // also triggered by guideLoad, dviz-idxlist, dviz-m
   } else if (/^\/\/.*$/.test(valcon) && window.localforage) {
     !(lfkey = valcon.replace(/^\/\//, ""))
     ? localforage.keys((err, keys) => err ? msgHandl(err) : dataDispl(keys, 0, cbfnc))
-    : localforage.getItem(lfkey, (err, val) => err ? msgHandl(err) : dataDispl(val, 0, cbfnc));
+    : localforage.getItem( lfkey.replace(rexext, ""), (err, val) => err ? msgHandl(err)
+      : dataDispl( !/^{".+}$/.test(val) || !jsonParse(val) ? val : !(val = jsonParse(val))
+        || ( /\.(?:[ct]|content|te?xt\d)\d*$/.test(lfkey) ? dPrc.cnt(val)
+        : /\.(?:[ls]|li?nk|sty|style)\d*$/.test(lfkey) ? dPrc.sty(val)
+        : /\.(?:h|html?)\d*$/.test(lfkey) ? dPrc.htm(val) : val ), 0, cbfnc ) );
   } else if (rexoqa.test(valcon)) {
     Promise.resolve(EC2.objQA(valcon.replace(/^\$ */, ""))).then(rslt => dataDispl(rslt, 0, cbfnc));
   } else if (txdata.hasOwnProperty("dbox") || txdata.hasOwnProperty("path")) {
@@ -4762,19 +4772,11 @@ qconRetrvD(cbfnc, errfnc) { // also triggered by guideLoad, dviz-idxlist, dviz-m
       } ), 2 )
     .then(rslt => !txdata.ATTKEY ? dataDispl(rslt, 0, cbfnc) : blobHandl(rslt.body, 0, txdata, cbfnc))
     .catch(msgHandl);
-  } else if (!txdata.ATTKEY && /\.(?:[ct]|content|te?xt\d)\d*$/.test(txdata.FILEID)) {
-    txdata = txdPrep(valcon.replace(/\.(?:[ct]|content|te?xt\d)\d*$/, ""))[0];
-    txdata.dPrc = d => d.hasOwnProperty("content") ? d.content : !Array.isArray(d.filefrags)
-      ? d : d.filefrags.map(ff => ff.contenttxt).filter(e => e).join("\n\n");
-    couchQry(txdata, 0, cbfnc);
-  } else if (!txdata.ATTKEY && /\.(?:[ls]|li?nk|sty|style)\d*$/.test(txdata.FILEID)) {
-    txdata = txdPrep(valcon.replace(/\.(?:[ls]|li?nk|sty|style)\d*$/, ""))[0];
-    txdata.dPrc = d => !((d.parseconfigs || "").linksconstr || "").hasOwnProperty("htmllinktxt")
-      ? d : d.parseconfigs.linksconstr.htmllinktxt;
-    couchQry(txdata, 0, cbfnc);
-  } else if (!txdata.ATTKEY && /\.(?:h|html?)\d*$/.test(txdata.FILEID)) {
-    txdata = txdPrep(valcon.replace(/\.(?:h|html?)\d*$/, ""))[0];
-    txdata.dPrc = d => !d.filefrags ? d : webdocGen(1, d);
+  } else if (!txdata.ATTKEY && rexext.test(txdata.FILEID)) {
+    txdata = txdPrep(valcon.replace(rexext, ""))[0];
+    txdata.dPrc = /\.(?:[ct]|content|te?xt\d)\d*$/.test(valcon) ? dPrc.cnt
+      : /\.(?:[ls]|li?nk|sty|style)\d*$/.test(valcon) ? dPrc.sty
+      : /\.(?:h|html?)\d*$/.test(valcon) ? dPrc.htm : 0;
     couchQry(txdata, 0, cbfnc);
   } else {
     couchQry(txdPrep(0)[0], 0, cbfnc);
