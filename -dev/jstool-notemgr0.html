@@ -1103,7 +1103,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   rexsd = /^[.-][\w!.*+~-]+\/?$/,
   rexts = /^m[rs]\.? +|^mrs\.? +|[.,;:/]/gi,
   rexns = /^(?:m[rs]\b\.?|mrs\b\.?|) *(.*?) *((?:\bde +|\bvon +|)['‘’\w-]+)([ ,]*\b[js]r\.?|[ ,]*\b[ivx]+|)$/i,
-  rsp2Show = r => { r2con.textContent
+  r2Show = r => { r2con.textContent
     += ( !r || typeof r !== 'object' || r instanceof Error && r.constructor && !r.reason
       ? r : JSON.stringify(r, 0, 2) ) + "\n\n" },
   fncTry = (fnc, a, e) => { try { return fnc(a) }
@@ -1115,6 +1115,23 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     : typeof v !== 'string' ? "" + v
     : !/^{\s*['"][^]+}$|^\[[^]+\]$/.test(v.trim()) ? v
     : JSON.stringify(fncTry(JSON.parse, v), 0, sp) || v,
+  mp1 = (str, lang) => lang !== "md" && ( lang
+    || !/^(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S[^]*?\n(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S/m.test(str) )
+    ? [str, lang] : [ str
+      .replace( /([^]*?)((?:\s|\W|^)(\*\*?|__?)(\*\*?|__?|)[^\s*_][^]*?[^\s*_]\4\3(?=\s|\W|$)|$)/g,
+        (c, m1, m2) => m1.replace(/\*/g, "\\x2a;").replace(/_/g, "\\x5f;") + m2 ), "md" ],
+  jb1 = (str, lang) => typeof str === 'object' ? [valStr(str, 2), "json"]
+    : !window.js_beautify || lang !== "js" ? mp1(valStr(str), lang)
+    : [ js_beautify( str, { "indent_size": 2, "space_after_anon_function": 1,
+        "break-chained-methods": 1, "keep-array-indentation": 1 }), lang ],
+  jp1 = (str, lang, cl) => !([str, lang] = jb1(str, lang)) ? str
+    : "\n<pre class=\"" + (cl != null ? cl : "pwrap") + " hljs\">"
+      //#nmwrap pre>pre.hljs { margin: 0; white-space: inherit; }
+      + ( !window.hljs ? htmTxt(str)
+        : (!lang ? hljs.highlightAuto(str) : hljs.highlight(str, {language: lang})).value )
+        .replace(lang !== "md" ? /^\*$/ : /\\x2a;/g, "*")
+        .replace(lang !== "md" ? /^_$/ : /\\x5f;/g, "_") + "</pre>\n"
+      + (!window.hljs ? "" : "<style>@import \"" + (aurls[nm0sets.hlsty] || "") + "\";</style>\n"),
   jscEval = () => {
     let fncexp = jsctxta.value.trim().replace(/(?:[^]*\n|^)>\s*(?=(?:.|\n(?!>))*$)/, ""),
       rsltShow = r => jsctxta.value += "\n" + valStr(r, 2) + "\n> ";
@@ -1143,16 +1160,16 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     !slocswi.checked || (uemlinp.value = unaminp.value = una2inp.value = "")
     || !(nm0sets = {}) || !(nm0cfgs = {}) || hlps[0].classList.remove("dnone")
     || ["_nm0sets", "_nm0cfgs"].forEach(e => localStorage.removeItem(e))
-    || rsp2Show("ALERT: Close/remove app directly, or local storage might be re-engaged.");
+    || r2Show("ALERT: Close/remove app directly, or local storage might be re-engaged.");
     !spdbswi.checked || (txd1.DBNAME = "") || !window.PouchDB || Promise.all( dbs.map( dbi =>
       !dbi || PouchDB(dbi).destroy() //|| !PouchDB.allDbs
-      .then(trsp => rsp2Show("Local DB successfully destroyed: " + dbi))
+      .then(trsp => r2Show("Local DB successfully destroyed: " + dbi))
       .catch(err => {
-        rsp2Show("ALERT: DB destruction attempted & failed.\n" + valStr(err, 2));
+        r2Show("ALERT: DB destruction attempted & failed.\n" + valStr(err, 2));
         hlps[0].classList.add("dnone");
         hlps[1].classList.remove("dnone");
       }) ))
-    .catch(rsp2Show)
+    .catch(r2Show)
     .then( () => (cntcsel.innerHTML = opensel.innerHTML = pdbssel.innerHTML = "")
       || !hlps[1].classList.contains("dnone") || hlps[0].classList.remove("dnone") );
     //.then(PouchDB.allDbs);
@@ -1304,11 +1321,11 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         txd3.DBNAME && window.PouchDB && PouchDB(txd3.DBNAME)
         .bulkDocs(txd3.docs, txd3.OPTS).then(trsp => {
           hlps[0].classList.remove("dnone");
-          rsp2Show(trsp);
+          r2Show(trsp);
           !vidx || (viewsel.selectedIndex = vidx = 0) || viewChg();
         }).catch(err => {
           hlps[1].classList.remove("dnone");
-          rsp2Show(err);
+          r2Show(err);
         });
       },
       blkDspl = qrsp => {
@@ -1346,11 +1363,10 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       chkaf2.forEach( inp => [0,1,2,3,4].reduce((a, b) => a = a.parentElement, inp)
         .classList.add(fedit ? "hsuccl" : "hwarnl") );
     }
-    !dbq || dbq.allDocs(txd2.OPTS).then(rdataTfm).then(blkDspl).catch(rsp2Show);
+    !dbq || dbq.allDocs(txd2.OPTS).then(rdataTfm).then(blkDspl).catch(r2Show);
   },
   fileLoad = evt => {
-    let lang,
-      tanc = evt && (evt.target.nodeName !== 'MARK' ? evt.target : evt.target.parentElement),
+    let tanc = evt && (evt.target.nodeName !== 'MARK' ? evt.target : evt.target.parentElement),
       finp = tanc && ( vbas > 1 ? tanc.parentElement.parentElement.querySelector('input:not(.dnone)')
           : tanc.parentElement.parentElement.parentElement.querySelector('span:not(.dnone)>input') )
         || "",
@@ -1361,35 +1377,21 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           ? sdir.replace(/\/$/, "") : tanc.textContent || tanc.dataset.fileid,
         ATTKEY: !tanc || !sdir || !rexsd.test(sdir) ? "" : tanc.textContent,
         OPTS:   {
-          //rev: vbas < 5 ? null : tanc.parentElement.parentElement.children[3].textContent
-          //revs_info: true
+          rev: vbas < 5 ? null : tanc.parentElement.parentElement.children[3].textContent,
+          revs_info: vbas < 5 ? false : true
         }
       },
       reximg = /\.giff?$|\.jpe?g$|\.png$/i,
       rextxt = /\.html?$|\.m?js$|\.json$|\.md$|\.s?css$|\.te?xt$|\.\w{5,}$/i,
-      mp1 = str => !/^(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S[^]*?\n(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S/m.test(str)
-        ? str : !(lang = "md") || str
-        .replace( /([^]*?)((?:\s|\W|^)(\*\*?|__?)(\*\*?|__?|)[^\s*_][^]*?[^\s*_]\4\3(?=\s|\W|$)|$)/g,
-          (c, m1, m2) => m1.replace(/\*/g, "\\x2a;").replace(/_/g, "\\x5f;") + m2 ),
-      jb1 = str => !window.js_beautify || !/\.m?js$/i.test(txd2.ATTKEY)
-        ? mp1(valStr(str, 2)) : js_beautify( str,
-          { "indent_size": 2, "space_after_anon_function": 1,
-            "break-chained-methods": 1, "keep-array-indentation": 1 } ),
-      jp1 = (str, p) => (str = jb1(str))
-        && "\n<pre class=\"" + (p ? "pwrap" : "dflow") + " hljs\">"
-        //#nmwrap pre>pre.hljs { margin: 0; white-space: inherit; }
-        + ( !window.hljs ? htmTxt(str)
-          : (!lang ? hljs.highlightAuto(str) : hljs.highlight(str, {language: lang})).value )
-          .replace(lang !== "md" ? /^\*$/ : /\\x2a;/g, "*")
-          .replace(lang !== "md" ? /^_$/ : /\\x5f;/g, "_") + "</pre>\n"
-        + (!window.hljs ? "" : "<style>@import \"" + (aurls[nm0sets.hlsty] || "") + "\";</style>\n"),
       attVw = abl => reximg.test(txd2.ATTKEY) || abl && /^image/.test(abl.type)
         ? nmdata.innerHTML = "\n<figure class=image><img src=\""
           + (aurls[txd2.ATTKEY] || abl && (aurls[txd2.ATTKEY] = URL.createObjectURL(abl)))
           + "\" /></figure>\n"
         : fetch(aurls[txd2.ATTKEY] || abl && (aurls[txd2.ATTKEY] = URL.createObjectURL(abl)))
-          .then(r => r.text()).then(str => nmdata.innerHTML = jp1(str)).catch(rsp2Show);
-    //rsp2Show(txd2);
+          .then(r => r.text()).then( str => nmdata.innerHTML = jp1( str,
+            txd2.ATTKEY.replace(/\.(?:(css)|(html?)|(md)|m?(js))$|.*/i, "$1$2$3$4"), "dflow" ))
+          .catch(r2Show);
+    //r2Show(txd2);
     if (!window.PouchDB || !txd2.DBNAME || !txd2.FILEID
     || txd2.ATTKEY && !reximg.test(txd2.ATTKEY) && !rextxt.test(txd2.ATTKEY)) { return; }
     r2con.textContent = "";
@@ -1402,15 +1404,28 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       .forEach(elm => elm.classList.remove("hhodew", "hsuccl", "hwarnl"));
       !tanc || tanc.parentElement.parentElement.parentElement.classList.add("hhodew");
     }
-    aurls[txd2.ATTKEY] ? tabActv() || attVw() : txd2.ATTKEY
+    vbas === 5 ? tabActv() || !(window.txd2 = txd2)
+      || PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS).then( doc => nmdata.innerHTML
+        = jp1(Object.assign({ _id: "", _rev: "" }, doc))
+        + "\n<p><strong>To retrieve older revision:</strong>"
+        + " Use JavaScript console (in Settings) to re-assign desired <code>rev</code> value"
+        + " from list of available options (above) to <code>txd2.OPTS.rev</code>"
+        + " key and execute given <code>PouchDB</code> command chain (below).</p>\n"
+        + jp1( "// to view current query values\n txd2"
+          + "\n\n// to retrieve _revs_info\n PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS)"
+          + "\n\n// to re-assign revision value\n txd2.OPTS.rev = \"revision\""
+          + "\n\n// to send revision data to display panel\n PouchDB(txd2.DBNAME)"
+          + ".get(txd2.FILEID, txd2.OPTS).then(doc => nmdata.innerHTML = nm0.jp1(doc)); \"\"", "js" ) )
+      .catch(r2Show)
+    : aurls[txd2.ATTKEY] ? tabActv() || attVw() : txd2.ATTKEY
     ? tabActv() || PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
-      .then(attVw).catch(rsp2Show)
+      .then(attVw).catch(r2Show)
     : !finp.checked ? tabActv() || PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS)
-        .then( doc => nmdata.innerHTML = jp1( !finp &&
-          ( doc.hasOwnProperty("content") ? doc.content : !Array.isArray(doc.filefrags) ? 0
-            : doc.filefrags.map(ff => ff.contenttxt).filter(e => e).join("\n\n") )
-          || (lang = "json") && valStr(Object.assign({ _id: "", _rev: "" }, doc), 2), 1 ))
-        .catch(rsp2Show)
+        .then( doc => nmdata.innerHTML = !finp && ( doc.hasOwnProperty("content")
+            ? jp1(doc.content) : !Array.isArray(doc.filefrags) ? 0
+            : jp1(doc.filefrags.map(ff => ff.contenttxt).filter(e => e).join("\n\n")) )
+          || jp1(Object.assign({ _id: "", _rev: "" }, doc)) )
+        .catch(r2Show)
     : PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS).then(doc => {
         let lnl, str,
           taHt = k => ( lnl = ( ( str = valStr( fwg[k],
@@ -1472,13 +1487,13 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           .put(Object.assign({ _id: "", _rev: "" }, fwg), txd2.OPTS).then( trsp =>
             Object.keys(fwg).forEach( k => /^_id$|^_rev$/.test(k)
               || window["p0" + k].classList.remove("isucc", "iwarn") )
-            || hlps[0].classList.remove("dnone") || rsp2Show(trsp) )
-          .catch(err => hlps[1].classList.remove("dnone") || rsp2Show(err));
+            || hlps[0].classList.remove("dnone") || r2Show(trsp) )
+          .catch(err => hlps[1].classList.remove("dnone") || r2Show(err));
         }; //fwgUpd;
         nmdata.querySelectorAll('.field-label button').forEach(e => e.onclick = txtaSel);
         Object.keys(fwg).forEach(k => /^_id$|^_rev$/.test(k) || (window["p0" + k].onblur = dataVld));
         tidx !== 1 || tabActv();
-      }).catch(rsp2Show);
+      }).catch(r2Show);
   },
   filtExe = () => {
     let negs = /^-/.test(filtinp.value),
@@ -1584,7 +1599,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       r2idx = rsidx[rsidx.findIndex(n => n === r1idx) + 1]
         || ((document.querySelector('#nmtbl tbody>tr:last-of-type') || "").rowIndex - 1),
       trows = document.querySelectorAll('#nmtbl tbody>tr');
-    //rsp2Show([r1idx, r2idx, rowid].join(", "));
+    //r2Show([r1idx, r2idx, rowid].join(", "));
     if (rowid) {
       evt.target.innerHTML = !xpd ? "&#x25b6;" : "&#x25bc;";
       while (++r1idx < r2idx) { trows[r1idx].hidden = !xpd; }
@@ -1625,8 +1640,9 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         : ordFlip(dels.map(r => [r.id, r])).map(sr => sr[1]) );
       chksRstr();
       evt && evt.target.id === "pdbssel" || colsTog(null, /^(?:id|seq)$/.test(ss0) ? ss0 : "id");
+      document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:nth-of-type(3)').forEach(ancAdd1);
       vwFnlz(evt);
-    }).catch(rsp2Show);
+    }).catch(r2Show);
     vbas === 5 || PouchDB(txd1.DBNAME)
     .query(txd1.FILEID.replace(/^_design\//, "") + "/" + txd1.VIEW, txd1.OPTS)
     .catch( () => PouchDB(txd1.DBNAME).allDocs({
@@ -1666,7 +1682,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       chksRstr();
       document.querySelectorAll('#nmtbl tbody>tr:not([id])>td:nth-of-type(3)').forEach(ancAdd1);
       vwFnlz(evt);
-    }).catch(rsp2Show);
+    }).catch(r2Show);
   },
   clipsGen = evt => {
     let db1 = window.PouchDB && PouchDB(txd1.DBNAME);
@@ -1799,7 +1815,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       vidx > 8 && !(nm0sets.p2vws[vusr] || "").hdrs || hdrsswi.click();
       !(nm0sets.p2vws[vusr] || "").bods || bodsswi.click();
       vwFnlz(evt);
-    }) ).catch(rsp2Show);
+    }) ).catch(r2Show);
   },
   tabActv = evt => {
     tidx === 2 || pdbcfg.querySelectorAll('.chelp').forEach(e => e.classList.add("dnone"));
@@ -1872,8 +1888,8 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         .put(Object.assign({ _id: "", _rev: "" }, fwg), {}).then( trsp =>
           Object.keys(fwg).forEach( k => /^_id$|^_rev$/.test(k)
             || window["p0" + k].classList.remove("isucc", "iwarn") || (window["p0" + k].disabled = 1) )
-          || (fwg = null) || hlps[0].classList.remove("dnone") || rsp2Show(trsp) )
-        .catch(err => hlps[1].classList.remove("dnone") || rsp2Show(err));
+          || (fwg = null) || hlps[0].classList.remove("dnone") || r2Show(trsp) )
+        .catch(err => hlps[1].classList.remove("dnone") || r2Show(err));
       }; //fwgUpd;
       pfacnt.querySelectorAll('.field-label button').forEach(e => e.onclick = txtaSel);
       Object.keys(fwg).forEach(k => /^_id$|^_rev$/.test(k) || (window["p0" + k].onblur = dataVld));
@@ -1892,7 +1908,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     if (!window.PouchDB || !txd1.DBNAME) {
       ftotal.innerText = "_";
       window.PouchDB || !txd1.DBNAME || r2con.textContent
-      || rsp2Show("ALERT: PouchDB is not loaded. Database is inaccessible.");
+      || r2Show("ALERT: PouchDB is not loaded. Database is inaccessible.");
       pdbssel.selectedIndex === 1
       || [nmflow, nmclip].some(e => !e.classList.contains('dnone')) || tabActv();
     } else if (vbas < 2) {
@@ -1961,9 +1977,9 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     && txd1.DBNAME && ddelinp.value === txd1.DBNAME && window.PouchDB) {
       cfg.tsdel = ts0;
       evt.target.id !== "dbd0btn" || PouchDB(txd1.DBNAME).compact().then( trsp =>
-          hlps[2].classList.remove("dnone") || rsp2Show(trsp) )
+          hlps[2].classList.remove("dnone") || r2Show(trsp) )
           //|| !vidx || (viewsel.selectedIndex = vidx = 0) || viewChg() )
-        .catch(err => hlps[3].classList.remove("dnone") || rsp2Show(err));
+        .catch(err => hlps[3].classList.remove("dnone") || r2Show(err));
       evt.target.id !== "dbd1btn" || PouchDB(txd1.DBNAME).destroy().then(trsp => {
         let dbs = Array.from(opensel.options).map(o => o.value).filter(e => e && e !== txd1.DBNAME);
         [pdbssel, opensel, cntcsel].forEach( (e, i) => e.innerHTML
@@ -1973,8 +1989,8 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         cntcsel.value = nm0sets.dbcntc || "";
         //cfg.remot.pw = ""; localStorage._nm0cfgs = JSON.stringify(nm0cfgs);
         hlps[2].classList.remove("dnone")
-        || (pdbssel.selectedIndex = 0) || pdbOpen(0) || rsp2Show(trsp);
-      }).catch(err => hlps[3].classList.remove("dnone") || rsp2Show(err));
+        || (pdbssel.selectedIndex = 0) || pdbOpen(0) || r2Show(trsp);
+      }).catch(err => hlps[3].classList.remove("dnone") || r2Show(err));
     } else if (!txd1.DBNAME && una2inp.value && /^[a-z][0-9_a-z-]*$/.test(db0) && window.PouchDB) {
       new PouchDB(txd1.DBNAME = db0).info().then(trsp => {
         let dbs = Array.from(opensel.options).map(o => o.value).filter(e => e).concat(db0).sort();
@@ -1994,7 +2010,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         pdbOpen(1);
         hlps[0].classList.remove("dnone");
         nmdata.innerHTML = "\n<pre class=pwrap>" + valStr(trsp, 2) + "</pre>\n";
-      }).catch(err => hlps[1].classList.remove("dnone") || rsp2Show(err));
+      }).catch(err => hlps[1].classList.remove("dnone") || r2Show(err));
     }
   },
   t1sChg = evt => {
@@ -2148,10 +2164,10 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           pdbseq.innerHTML = "(last: " + pdbseq.innerText + ") &hellip;&quest;";
           pdbupd.innerText = new Date(cfg.tsupd = new Date().getTime()).toLocaleString();
           (trsp.push && trsp.push.errors.length) || (trsp.pull && trsp.pull.errors.length)
-          ? hlps[5].classList.remove("dnone") || rsp2Show(trsp)
+          ? hlps[5].classList.remove("dnone") || r2Show(trsp)
           : hlps[4].classList.remove("dnone")
             || (nmdata.innerHTML = "\n<pre class=pwrap>" + valStr(trsp, 2) + "</pre>\n");
-        }).catch(err => hlps[5].classList.remove("dnone") || rsp2Show(err));
+        }).catch(err => hlps[5].classList.remove("dnone") || r2Show(err));
     }
   },
   pdbOpen = evt => {
@@ -2170,7 +2186,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     pdbdsc.innerText = !txd1.DBNAME ? "" : cfg.descr;
     !window.PouchDB || !txd1.DBNAME ? (pdbseq.innerText = pdbtot.innerText = "")
     : PouchDB(txd1.DBNAME).info()
-      .then(r => [pdbtot.innerText, pdbseq.innerText] = [r.doc_count, r.update_seq]).catch(rsp2Show);
+      .then(r => [pdbtot.innerText, pdbseq.innerText] = [r.doc_count, r.update_seq]).catch(r2Show);
     pdbssel.selectedIndex < 2
     ? pfahlp.classList.remove("dnone") || pfacnt.classList.add("dnone")
       || !(openswi.disabled = 1) || (viewsel.selectedIndex = vidx = evt === 0 ? 2 : 0)
@@ -2247,7 +2263,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       : [["-res-css", nm0sets.hlsty, "../../a00/-res-hljs/" + nm0sets.hlsty]] )
     .forEach( ([f, k, v]) => !dbs.includes("a00") || !window.PouchDB ? (aurls[k] = v)
       : PouchDB("a00").getAttachment(f, k)
-        .then(abl => aurls[k] = URL.createObjectURL(abl)).catch(rsp2Show).then(() => aurls[k] = v) );
+        .then(abl => aurls[k] = URL.createObjectURL(abl)).catch(r2Show).then(() => aurls[k] = v) );
     !nm0sets.bedit || [moveinp, movebtn].forEach(elm => elm.classList.add("dnone"))
     || editbtn.classList.remove("dnone");
     [pdbssel, opensel, cntcsel].forEach( (e, i) => e.innerHTML
@@ -2258,13 +2274,13 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     || !(db1 = PouchDB(nm0sets.dbcntc)).get("-res-img").then( adoc =>
       !adoc._attachments || Object.keys(adoc._attachments).forEach( akey =>
         db1.getAttachment("-res-img", akey)
-        .then(abl => aurls[akey] = URL.createObjectURL(abl)) ) ).catch(rsp2Show)
+        .then(abl => aurls[akey] = URL.createObjectURL(abl)) ) ).catch(r2Show)
     || db1.allDocs({
         startkey:     "!",
         endkey:       "!~",
         include_docs: true
       }).then(re => re.rows.forEach(r => cntcs[r.doc.name_user || r.id] = cntcLite(r.doc)))
-      .catch(rsp2Show);
+      .catch(r2Show);
     una2inp.value = nm0sets.uname || nm0sets.uemail || "";
     unaminp.value = nm0sets.uname || "";
     uemlinp.value = nm0sets.uemail || "";
@@ -2275,7 +2291,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     opensel.value = pdbssel.value = nm0sets.dbdflt || "";
     !pdbssel.value || pdbOpen();
   };
-window.nm0 = { aurls, cntcs, txd1, rsp2Show, valStr };
+window.nm0 = { aurls, cntcs, txd1, r2Show, fncTry, htmTxt, valStr, mp1, jb1, jp1 };
 pdbssel.onchange = pdbOpen;
 viewsel.onchange = viewChg;
 colssel.onchange = colsTog;
@@ -2299,6 +2315,6 @@ wipebtn.onclick = storDel;
 jselbtn.onclick = txtaSel;
 jsctxta.onblur = jscEval;
 ( nm0.p2Gen = () => !window.PouchDB || !PouchDB.allDbs
-  ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(rsp2Show) )();
+  ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(r2Show) )();
 </script>
 </html>
