@@ -1116,7 +1116,7 @@ let rva2, rval, ss0, ss1,
   cmthds = document.querySelectorAll('main thead'),
   cmtbod = document.querySelector('main tbody'),
   cmtfts = document.querySelectorAll('main tfoot'),
-  rsp2Show = r2 => { r2con.textContent
+  r2Show = r2 => { r2con.textContent
     += ( !r2 || typeof r2 !== 'object' || r2 instanceof Error && r2.constructor && !r2.reason
       ? r2 : JSON.stringify(r2, 0, 2) ) + "\\n\\n" },
   ts1Fmt = nbr => !nbr ? "" : new Date(nbr).toISOString().replace(/T.+$/, ""),
@@ -1247,8 +1247,8 @@ let rva2, rval, ss0, ss1,
       ? dbq.allDocs(txd2.OPTS).then(rdataTfm).then(rd2Qcon)
       : txd2.FILEID === "_changes"
       ? dbq.changes(txd2.OPTS).then(rdataTfm).then(rd2Qcon)
-      : dbq.get(txd2.FILEID, txd2.OPTS).then(rsp2Show) )
-    .catch(rsp2Show);
+      : dbq.get(txd2.FILEID, txd2.OPTS).then(r2Show) )
+    .catch(r2Show);
   },
   fileLoad = evt => {
     let td1txt = evt.target.parentElement.parentElement.children[1].textContent,
@@ -1366,7 +1366,7 @@ let rva2, rval, ss0, ss1,
       r2idx = rsidx[rsidx.findIndex(n => n === r1idx) + 1]
         || ((document.querySelector('main tbody>tr:last-of-type') || "").rowIndex - 1),
       trows = document.querySelectorAll('main tbody>tr');
-    //rsp2Show([r1idx, r2idx, rowid].join(", "));
+    //r2Show([r1idx, r2idx, rowid].join(", "));
     if (rowid) {
       evt.target.innerHTML = !xpd ? "&#x25b6;" : "&#x25bc;";
       while (++r1idx < r2idx) { trows[r1idx].hidden = !xpd; }
@@ -1396,7 +1396,7 @@ let rva2, rval, ss0, ss1,
     if (!window.PouchDB || !txd1.DBNAME) {
       ftotal.innerText = "_";
       return window.PouchDB || !txd1.DBNAME || r2con.textContent
-      || rsp2Show("Alert: PouchDB is not loaded. Database is inaccessible.");
+      || r2Show("Alert: PouchDB is not loaded. Database is inaccessible.");
     }
     [ss0, ss1] = sortsel.value.split(".");
     vidx < 3 || PouchDB(txd1.DBNAME)
@@ -1410,7 +1410,7 @@ let rva2, rval, ss0, ss1,
         : ordFlip(dels.map(r => [r.id, r])).map(sr => sr[1]) );
       chksRstr();
       colsTog(null, /^(?:id|seq)$/.test(ss0) ? ss0 : "id");
-    }).catch(rsp2Show);
+    }).catch(r2Show);
     vidx > 2 || PouchDB(txd1.DBNAME)
     .query(txd1.FILEID.replace(/^_design\\//, "") + "/" + txd1.VIEW, txd1.OPTS)
     .catch( () => PouchDB(txd1.DBNAME).allDocs({
@@ -1444,7 +1444,7 @@ let rva2, rval, ss0, ss1,
       document.querySelectorAll('main tbody>tr[id]>td:first-of-type>a')
       .forEach(anc => anc.onclick = sdirXpd);
       chksRstr();
-    }).catch(rsp2Show);
+    }).catch(r2Show);
   },
   viewTog = evt => {
     r2con.textContent = "";
@@ -1585,9 +1585,9 @@ let elsmed, fpl, fxa, pcntcs, rval, uimg, unm,
   ctotal = document.querySelector('main #ctotal'),
   filts = document.querySelectorAll('main>#cfilt>.panel>.panel-block input'),
   postbd = document.querySelector('main>#postbd'),
-  rsp3Show = resp => r3con.textContent
-    += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
-      ? resp : JSON.stringify(resp, 0, 2) ) + "\\n\\n",
+  r3Show = r3 => { r3con.textContent
+    += ( !r3 || typeof r3 !== 'object' || r3 instanceof Error && r3.constructor && !r3.reason
+      ? r3 : JSON.stringify(r3, 0, 2) ) + "\\n\\n" },
   fileLoad = evt => {
     let fwinflux = document.querySelector('#ecoguides .button[disabled]'),
       qcontxta = document.querySelector('#econav0 #qcontxta');
@@ -1659,7 +1659,7 @@ let elsmed, fpl, fxa, pcntcs, rval, uimg, unm,
         </div>
       </div>
     </article>\` ).join("\\n") + "\\n  ";
-if (!window.PouchDB) { return rsp3Show("Alert: PouchDB is not loaded. Database is inaccessible."); }
+if (!window.PouchDB) { return r3Show("Alert: PouchDB is not loaded. Database is inaccessible."); }
 document.querySelector('main>#cfilt>#plinks').innerHTML = "\\n      "
 + (window.EC2 && EC2.objQA("pf3stor.dbpubl", 1) || [])
   .filter(e => e && !/-s\\d\\d+$|\\.(?!json$)\\w{2,4}$/.test(e[1]))
@@ -1691,7 +1691,7 @@ document.querySelector('main>#cfilt>#pcntcs').innerHTML = "\\n      "
   document.querySelector('main>#cfilt>.panel>.panel-heading>.is-pulled-right').onclick = rsltFilt;
   filts[4].value = window.EC2 && EC2.objQA("epsets.uname", 1) || "";
 }).then(rsltFilt)
-.catch(rsp3Show);
+.catch(r3Show);
 })();
 </script>`,
 // * * * * * 4: dviz-contacts * * * * *
