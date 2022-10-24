@@ -1131,8 +1131,8 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       + (!window.hljs ? "" : "<style>@import \\"" + (aurls[nm0sets.hlsty] || "") + "\\";</style>\\n"),
   jscEval = () => {
     let fncexp = jsctxta.value.trim().replace(/(?:[^]*\\n|^)>\\s*(?=(?:.|\\n(?!>))*$)/, ""),
-      rsltShow = r => jsctxta.value += "\\n" + valStr(r, 2) + "\\n> ";
-    !fncexp || Promise.resolve(fncTry(window.eval, fncexp, 1)).then(rsltShow).catch(rsltShow);
+      r1Show = r => jsctxta.value += "\\n" + valStr(r, 2) + "\\n> ";
+    !fncexp || Promise.resolve(fncTry(window.eval, fncexp, 1)).then(r1Show).catch(r1Show);
   },
   txtaSel = e => !(e.focus || (e = window.eval(e.target.dataset.seltrg)))
     || e.focus() || e.setSelectionRange(0, e.textLength),
@@ -1379,7 +1379,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         }
       },
       reximg = /\\.giff?$|\\.jpe?g$|\\.png$/i,
-      rextxt = /\\.html?$|\\.m?js$|\\.json$|\\.md$|\\.s?css$|\\.te?xt$|\\.\\w{5,}$/i,
+      rextxt = /\\.html?$|\\.json$|\\.md$|\\.m?js$|\\.s?css$|\\.te?xt$|\\.\\w{5,}$/i,
       attVw = abl => reximg.test(txd2.ATTKEY) || abl && /^image/.test(abl.type)
         ? nmdata.innerHTML = "\\n<figure class=image><img src=\\""
           + (aurls[txd2.ATTKEY] || abl && (aurls[txd2.ATTKEY] = URL.createObjectURL(abl)))
