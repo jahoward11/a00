@@ -1411,8 +1411,8 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         + " Use JavaScript console (in Settings) to re-assign desired <code>rev</code> value"
         + " from list of available options (above) to <code>txd2.OPTS.rev</code>"
         + " key and execute given <code>PouchDB</code> command chain (below).</p>\n"
-        + jp1( "// to view current query values\n txd2"
-          + "\n\n// to retrieve _revs_info\n PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS)"
+        + jp1( "// to view current query values\n txd2\n\n// to retrieve _revs_info"
+          + " within console\n PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS)"
           + "\n\n// to re-assign revision value\n txd2.OPTS.rev = \"revision\""
           + "\n\n// to send revision data to display panel\n PouchDB(txd2.DBNAME)"
           + ".get(txd2.FILEID, txd2.OPTS).then(doc => nmdata.innerHTML = nm0.jp1(doc)); \"\"", "js" ) )
