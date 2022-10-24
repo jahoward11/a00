@@ -15,6 +15,7 @@ body {
   font: normal medium Helvetica, Arial, sans-serif;
   margin: 0;
   padding: 64px 8px;
+  overflow-wrap: break-word;
 }
 .is-hidden { display: none; }
 #scrnmask {
@@ -425,8 +426,15 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
   box-sizing: border-box;
 }
 body {
+  width: unset;
+  max-width: unset;
+  min-width: unset;
   margin: 0;
   padding: 64px 8px;
+  overflow-wrap: break-word;
+}
+@media print {
+  body { width: unset; margin: 0; padding: 0; }
 }
 </style>
 <script type="text/javascript">
