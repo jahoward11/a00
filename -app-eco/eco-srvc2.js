@@ -25,7 +25,9 @@ body {
   height: 100vh;
 }
 #cmain {
+  font-family: Helvetica, Arial, sans-serif;
   font-size: 16px;
+  font-weight: normal;
   max-width: 720px;
   margin: 0 auto;
 }
@@ -417,6 +419,16 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
   <ul id="symlist" class="is-hidden"></ul>
 </div>
 </main>
+<style type="text/css">
+:root {
+  min-width: 375px;
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 64px 8px;
+}
+</style>
 <script type="text/javascript">
 (function () {
 'use strict';
@@ -512,12 +524,12 @@ let q2Bcopy, q2Bhtml,
       chtml = '<!DOCTYPE html>\\n<html lang="en">\\n<head>\\n'
       + (document.querySelector('#ecorender') || document.documentElement).innerHTML
         .replace(/\\n+$|^\\n+|^<head>\\n?|^#cmain \\.iwarn[^]+?\\n(?=@media print {\\n)|,\\n *xsetLoad = [^]+?(?=;\\nwindow\\.xstor =)|^ *!\\/\\^http.+xlstGen[^]+?;\\n|\\n*<script\\b.*><\\/script>(?=$|<\\/body>)|\\n?<\\/body>$/gim, "")
-        .replace(/^(<\\/style>)[^]*?(?=<div .+><\\/div>$)/im, "$1\\n</head>\\n<body>\\n")
+        .replace(/^(<\\/style>)[^]*?\\n(?=<div .+><\\/div>$)/im, "$1\\n</head>\\n<body>\\n")
         .replace(/^(<xmp id="datxmp".*?>)[^]*?(?=<\\/xmp>)/im, (m, c1) => c1 + "\\n" + dentr.value + "\\n")
         .replace(/^(<pre id="recon">)[^]*?(?=<\\/pre>)/im, "$1")
         .replace( /^(<div id="cgrid".*?>\\n *<pre id="quad1A".*?>)[^]*?(<\\/pre><pre id="quad1B".*?>)[^]*?(<\\/pre>\\n *<pre id="quad2A".*?>)[^]+?(?=\\n<\\/div>)/im,
           '$1$2$3</pre><pre id="quad2B" contenteditable=true></pre>\\n  <ul id="symlist" class="is-hidden"></ul>' )
-        .replace(/^<div id="xctrls".*?>[^]+?\\n(?=let q2Bcopy,)/im, "</main>\\n<script type=\\"text/javascript\\">\\n(function () {\\n'use strict';\\n")
+        .replace(/^<div id="xctrls".*?>[^]+?\\n(?=let q2Bcopy,)/im, "</style>\\n<script type=\\"text/javascript\\">\\n(function () {\\n'use strict';\\n")
         .replace(/^( *cheadg\\.textContent === ").+/m, "$1" + cheadg.textContent + "\\"")
         .replace(/^xsetinp\\.onblur[^]+?(?=\\n<\\/script>)/im, "})();")
       + "\\n</" + "body>\\n</" + "html>\\n";
