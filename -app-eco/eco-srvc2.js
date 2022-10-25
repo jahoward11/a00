@@ -613,7 +613,7 @@ let q2Bcopy, q2Bhtml,
     quad2A.innerHTML = reslts.join("\\n").replace(/\\n$/, "\\n&nbsp;")
       + '<span id="dinitl">Line-expression<br />RESULTS</span>';
     quad2B.innerHTML = xprsns.map( xpri => xpri
-      .replace(/&(?=[gl]t;|#x0*[ad];|NewLine;)/gi, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;")
+      .replace(/&(?=[gl]t;|#x0*[ad];|NewLine;)/gi, "&amp;").replace(/<(?=!--|[!/]?[a-z])/gi, "&lt;")
       .replace( /\\/\\/ *(.*?) *( \\/\\/|)$/, (m, c1, c2) =>
         "<span class=dnote>" + ( c2 ? c1 : c1
           .replace(/(\\W|\\d|^)_([0-9a-zÀ-Ͽ]+)_(?=$|\\W|\\d)/gi, "$1<strong><em>$2</em></strong>")
@@ -671,7 +671,7 @@ let q2Bcopy, q2Bhtml,
         document.querySelector('#scrnmask').className = symlist.className = "";
         q2Bcopy = quad2B.innerHTML;
         quad2B.innerHTML = (dentr.value || "").replace(/&(?=#?\\w+;)/g, "&amp;")
-          .replace(/<(?=[!/?a-z])/gi, "&lt;") + (!dentr.value ? "" : "\\n<br>");
+          .replace(/<(?=!--|[!/]?[a-z])/gi, "&lt;") + (!dentr.value ? "" : "\\n<br>");
         !(q2Bhtml = quad2B.innerHTML)
         || window.getSelection().setPosition( quad2B.firstChild, !rnge ? 0
           : quad2B.textContent.indexOf("\\n", quad2B.textContent.length * rnge - 1) + 1 );

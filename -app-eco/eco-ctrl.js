@@ -4443,7 +4443,7 @@ ibmConnect() {
 fncTry(fnc, a, e) { try { return fnc(a) } catch (err) { return e > 1 ? a : e ? err : undefined } },
 htmTxt(str) {
   return typeof str !== 'string' ? str : str
-  .replace(/&(?=#?\w+;)/g, "&amp;").replace( /<([!\/]?\b.+?)(>|(?=<|$))|(--)>|<(!--)/gm,
+  .replace(/&(?=#?\w+;)/g, "&amp;").replace( /<([!/]?[a-z].*?)(>|(?=<|$))|(--)>|<(!--)/gim,
   (m, c1, c2, c3, c4) => (c3 ? "" : "&lt;") + (c4 || c3 || c1) + (c4 || !c2 ? "" : "&gt;") )
 },
 wdGen(pdata) { return !(pdata || "").filefrags ? pdata : webdocGen(1, pdata); },
@@ -5324,6 +5324,7 @@ logOut() {
   } else if (window.AppID) {
     appid = new AppID();
     try {
+      prjsenet = {}; // temp bypass
       await appid.init({
         clientId: localStorage["_ecoclientid"] || "47902519-fc5c-42a0-9d9c-80aa28548d43",
         discoveryEndpoint: localStorage["_ecodscendpt"]
