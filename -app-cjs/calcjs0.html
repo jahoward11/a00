@@ -360,9 +360,9 @@ let q2Bcopy, q2Bhtml,
   xbtndel = document.querySelector('#xctrls #xbtndel'),
   xcshelp = document.querySelector('#xctrls #xcshelp'),
   helpClr = () => !xcshelp || (xcshelp.innerHTML = "") || xcshelp.classList.remove("iwarn", "isucc"),
-  respShow = resp => { recon.textContent
-    += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
-      ? resp : JSON.stringify(resp, null, 2) ) + "\n\n" },
+  reShow = re => { recon.textContent
+    += ( !re || typeof re !== 'object' || re instanceof Error && re.constructor && !re.reason
+      ? re : JSON.stringify(re, null, 2) ) + "\n\n" },
   zoomTog = zoff => metavp.setAttribute( 'content', "width=device-width, "
     + (zoff || /maximum-/.test(metavp.content) ? "initial-scale=1" : "maximum-scale=1") ),
   titSave = (evt, tnew) => {
@@ -498,7 +498,7 @@ let q2Bcopy, q2Bhtml,
             : "<div class=pagebb></div>" )
           + ( rslt == null ? "" : typeof rslt === 'string' ? rslt.replace(/\n/g, "\\n")
             : rslt.toString().replace(/\s+/g, " ") );
-        } catch (err) { respShow(err); return err; }
+        } catch (err) { reShow(err); return err; }
       }),
       $ks = Object.keys($);
     cgrid.style.setProperty("--row1ht", $ks.length < 4 ? "-56px" : -($ks.length * 16 + 4) + "px");
@@ -512,7 +512,7 @@ let q2Bcopy, q2Bhtml,
     quad2A.innerHTML = reslts.join("\n").replace(/\n$/, "\n&nbsp;")
       + '<span id="dinitl">Line-expression<br />RESULTS</span>';
     quad2B.innerHTML = xprsns.map( xpri => xpri
-      .replace(/&(?=[gl]t;|#x0*[ad];|NewLine;)/gi, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;")
+      .replace(/&(?=[gl]t;|#x0*[ad];|NewLine;)/gi, "&amp;").replace(/<(?=!--|[!/]?[a-z])/gi, "&lt;")
       .replace( /\/\/ *(.*?) *( \/\/|)$/, (m, c1, c2) =>
         "<span class=dnote>" + ( c2 ? c1 : c1
           .replace(/(\W|\d|^)_([0-9a-zÀ-Ͽ]+)_(?=$|\W|\d)/gi, "$1<strong><em>$2</em></strong>")
@@ -570,7 +570,7 @@ let q2Bcopy, q2Bhtml,
         document.querySelector('#scrnmask').className = symlist.className = "";
         q2Bcopy = quad2B.innerHTML;
         quad2B.innerHTML = (dentr.value || "").replace(/&(?=#?\w+;)/g, "&amp;")
-          .replace(/<(?=[!/?a-z])/gi, "&lt;") + (!dentr.value ? "" : "\n<br>");
+          .replace(/<(?=!--|[!/]?[a-z])/gi, "&lt;") + (!dentr.value ? "" : "\n<br>");
         !(q2Bhtml = quad2B.innerHTML)
         || window.getSelection().setPosition( quad2B.firstChild, !rnge ? 0
           : quad2B.textContent.indexOf("\n", quad2B.textContent.length * rnge - 1) + 1 );
@@ -591,11 +591,11 @@ let q2Bcopy, q2Bhtml,
   },
   initLoad = () => !/^https?:\/\/.+$/.test(dload) ? xprsEval()
     : window.fetch(dload, { credentials: 'omit' })
-      .then( resp => /\.json$|^https?:\/\/\w[\w.:-]*\/\w[\w-]*\/\w[\w!.*+~-]*$/.test(dload)
-        ? resp.json() : resp.text() )
+      .then( re => /\.json$|^https?:\/\/\w[\w.:-]*\/\w[\w-]*\/\w[\w!.*+~-]*$/.test(dload)
+        ? re.json() : re.text() )
       .then( val => dentr.value = val == null ? "" : val.content
         || (typeof val !== 'object' ? "" + val : "// " + JSON.stringify(val)) )
-      .then(xprsEval).catch(respShow),
+      .then(xprsEval).catch(reShow),
   xsetLoad = (evt = { target: "" }) => {
     let optg;
     helpClr();
@@ -623,7 +623,7 @@ let q2Bcopy, q2Bhtml,
       .then( val => dentr.value = val == null ? "" : val.content
         || (typeof val !== 'object' ? "" + val : "// " + JSON.stringify(val)) )
       .then(xprsEval)
-      .catch(respShow) );
+      .catch(reShow) );
   },
   xlstGen = seln => !window.localforage
   || localforage.keys().then(lfks => {
@@ -635,7 +635,7 @@ let q2Bcopy, q2Bhtml,
         + "\n      </optgroup>" ).join("") + "\n    ";
     (xsetlist.value = seln || "") && xsetlist.value
     && (v0set || !dload ? xprsEval() : xsetLoad());
-  }).catch(respShow),
+  }).catch(reShow),
   xsetSave = () => {
     helpClr();
     xsetinp.value = xsetinp.value.trim();
@@ -644,7 +644,7 @@ let q2Bcopy, q2Bhtml,
       .then( () => xlstGen(xsetinp.value)
         && (xcshelp.innerHTML = "Expression set is saved in local storage.")
         && xcshelp.classList.add("isucc") )
-      .catch(respShow);
+      .catch(reShow);
   },
   xsetDel = () => {
     let optg = xsetlist.value && xsetlist.selectedOptions[0].parentElement.label;
@@ -654,7 +654,7 @@ let q2Bcopy, q2Bhtml,
       .then( () => xlstGen()
         && (xcshelp.innerHTML = "Expression set is deleted from local storage.")
         && xcshelp.classList.add("iwarn") )
-      .catch(respShow);
+      .catch(reShow);
   };
 window.xstor = {};
 window.dentr = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
@@ -673,15 +673,15 @@ window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
   : /^!zlock$/.test(qi) ? zoomTog(1)
   : /^!row1$/.test(qi) ? gridAdj(4)
   : /^!col1$/.test(qi) ? gridAdj(5) : 0 );
-Promise.all(jsrcs.map(e => scrInj(e))).catch(respShow).then(() => {
+Promise.all(jsrcs.map(e => scrInj(e))).catch(reShow).then(() => {
   !/^http/.test(window.location.protocol) ? xlstGen(dload)
   : Promise.all( (cmods.some(e => /^\d+$/.test(e)) ? cmods : [1,2,3,4,5,6,7,8].concat(cmods))
       .map(e => !/^\d+$/.test(e) ? e : `cmod${e}.js`)
-      .map(fnm => fnm && import(/\//.test(fnm) ? fnm : "./" + fnm).catch(respShow)) )
+      .map(fnm => fnm && import(/\//.test(fnm) ? fnm : "./" + fnm).catch(reShow)) )
     .then( ms => ms.forEach( (m, i) => !m || typeof m !== 'object'
       || (xstor[m._module || "module" + (1 + i)] = m) ))
     .then(() => xlstGen(dload))
-    .catch(respShow);
+    .catch(reShow);
   xsetinp || initLoad();
 });
 symlist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)

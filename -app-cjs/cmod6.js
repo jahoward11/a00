@@ -267,7 +267,7 @@ try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap";
 */
 
 // dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
-// respShow(dwraps[0] + g1wrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + dwraps[2])
+// reShow(dwraps[0] + g1wrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + dwraps[2])
 
 /*
     + Select and copy the orange text that appears above, overtop
@@ -320,7 +320,7 @@ g1Reset();
 
 // recon.innerHTML = "" // clears any orange text (in case GUI text is still visible)
 // scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
-// localforage.getItem("tutor2js").then(val => respShow(_.scrGen(val))).catch(respShow)
+// localforage.getItem("tutor2js").then(val => reShow(_.scrGen(val))).catch(reShow)
 
 /*
     + Select and copy the orange text that appears above, overtop
@@ -730,7 +730,7 @@ window.dataMgr = ox => { let key = lfinp.value.trim(); if (ox === 2) return !key
 /*
 scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
 dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
-respShow(dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(xstor.JScode.tutorial3) + dwraps[2])
+reShow(dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(xstor.JScode.tutorial3) + dwraps[2])
 */
 
 /*
@@ -744,7 +744,7 @@ respShow(dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGe
 */
 
 /*
-srctxta.value || import("./spark.js").then(m => srctxta.value = m.dune.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(respShow); //
+srctxta.value || import("./spark.js").then(m => srctxta.value = m.dune.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(reShow); //
 sepainp.value = "/^.*?(\\\\bdune\\\\b).*\\\\n*|^.*\\\\n*/gim"; //
 rtrminp.value = "(m, c1, i) => { i || (window.it0 = 0); return !c1 ? \\"\\" : \\" \\" + ++it0 + \\". \\" + m; }";
 */
@@ -795,7 +795,7 @@ rtrminp.value = "(m, c1, i) => { i || (window.it0 = 0); return !c1 ? \\"\\" : \\
 */
 
 /*
-try { !!markdownit } catch { Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).catch(respShow) }
+try { !!markdownit } catch { Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).catch(reShow) }
 window.docMrkp = md => markdownit({ html: 1, typographer: 1 }).use(markdownitDeflist).render(md.replace(/[^-](?=--[^-])/g, "$&-")); //
 rndrsel.selectedIndex = 0;
 sepainp.value = "/[^]+/";
@@ -968,9 +968,9 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
 */
 
 // sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.body.appendChild(n); };
-// !!window.PouchDB || fetch("../-res-js/pouchdb.min.js").then(re => re.blob()).then(URL.createObjectURL).then(_.sc2Inj).catch(respShow)
+// !!window.PouchDB || fetch("../-res-js/pouchdb.min.js").then(re => re.blob()).then(URL.createObjectURL).then(_.sc2Inj).catch(reShow)
 
-// try { !!PouchDB } catch { scrInj("../-res-js/pouchdb.min.js").then(respShow).catch(respShow) }
+// try { !!PouchDB } catch { scrInj("../-res-js/pouchdb.min.js").then(reShow).catch(reShow) }
 
 /*
  2. Use *PouchDB* to __create a *contacts* database__ that will contain
@@ -1011,7 +1011,7 @@ dbase = "cntcs-demo";
       when the *ENTRY* field of the calculator app is clear.
 */
 
-// PouchDB("").destroy().then(respShow)
+// PouchDB("").destroy().then(reShow)
 
 /*
     + *Also good to know:* To confirm that a local DB has been
@@ -1020,7 +1020,7 @@ dbase = "cntcs-demo";
       present. (List appears above, overtop the calculator.)
 */
 
-// indexedDB.databases().then(respShow)
+// indexedDB.databases().then(reShow)
 
 /*
  3. __Build a data-entry UI__ for entering the details of one contact;
@@ -1110,7 +1110,7 @@ d2ui += "\\n<form id=dform></form>";
 
 fwg = ak = ""
 fncTry = (fnc, a, e) => { try { return fnc(a) } catch (err) { return e > 1 ? a : e ? err : undefined }};
-htmTxt = str => str.replace(/&(?=#?\\w+;)/g, "&amp;").replace(/<(?=[!/?a-z])/gi, "&lt;");
+htmTxt = str => str.replace(/&(?=#?\\w+;)/g, "&amp;").replace(/<(?=!--|[!/]?[a-z])/gi, "&lt;");
 valStr = (v, sp) => v == null ? "" : v instanceof Error && v.constructor && !v.reason ? v : typeof v === 'object' ? JSON.stringify(v, null, sp) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(_.fncTry(JSON.parse, v), null, sp) || v;
 rex0s = /^_rev|^file_|^loc_|^media_|^ts_/;
 t1src = { _id: "", _rev: "", file_type: "srcdoc", file_created: { username: "", timestamp: 0, dborigin: "", dbname: "", subdir: "", misc: "" }, file_updated: { username: "", timestamp: 0, dborigin: "", dbname: "", subdir: "", misc: "" }, media_type: "text/plain", content: "" };
@@ -1123,7 +1123,7 @@ d0Upd = () => { let ts = new Date().getTime(); !_.fwg.hasOwnProperty("ts_created
 formGen = () => dform.innerHTML = Object.entries(Object.assign({ _id: "", _rev: null }, _.fwg)).map(([k, v]) => _.rex0s.test(k) ? "" : "\\n<div class=\\"field is-horizontal\\">\\n<div class=\\"field-label\\"><span class=label>" + k + "</span></div>\\n<div class=\\"field-body\\">\\n<textarea id=p0" + k + " class=textarea rows=" + (/_attach|configs|content|body|file[f_]/.test(k) ? 8 : 2) + ">" + _.htmTxt(_.valStr(v)) + "\\n</textarea>\\n</div>\\n</div>").join("") + "\\n";
 //
 !window.resbtn || ( resbtn.onclick = () => _.hsRes() || !(_.fwg = JSON.parse(JSON.stringify(_.t4cnt))) || _.formGen() )();
-!window.savbtn || ( savbtn.onclick = () => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))) || !_.fwg._id || _.d0Upd() || dbobj.put(Object.assign({ _id: "", _rev: null }, _.fwg)).then(re => _.hlps[0].classList.remove("dnone") || respShow(re)).catch(er => _.hlps[1].classList.remove("dnone") || respShow(er)) );
+!window.savbtn || ( savbtn.onclick = () => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))) || !_.fwg._id || _.d0Upd() || dbobj.put(Object.assign({ _id: "", _rev: null }, _.fwg)).then(re => _.hlps[0].classList.remove("dnone") || reShow(re)).catch(er => _.hlps[1].classList.remove("dnone") || reShow(er)) );
 
 /*
  4. __Populate your database__ either with your own contacts or with a
@@ -1166,11 +1166,11 @@ formGen = () => dform.innerHTML = Object.entries(Object.assign({ _id: "", _rev: 
       Un-comment the fifth of the following five lines of code.
 */
 
-// import("./fakes.js").then(m => respShow(m.default)).catch(respShow)
-// import("./fakes.js").then(m => m.default.forEach(c => dbobj.put(c).then(respShow).catch(respShow)))
-// dbobj.get("").then(respShow)
-// dbobj.get("").then(d => dbobj.put({ _id: d._id, _rev: d._rev, _deleted: true })).then(respShow).catch(respShow)
-// dbobj.allDocs().then(respShow)
+// import("./fakes.js").then(m => reShow(m.default)).catch(reShow)
+// import("./fakes.js").then(m => m.default.forEach(c => dbobj.put(c).then(reShow).catch(reShow)))
+// dbobj.get("").then(reShow)
+// dbobj.get("").then(d => dbobj.put({ _id: d._id, _rev: d._rev, _deleted: true })).then(reShow).catch(reShow)
+// dbobj.allDocs().then(reShow)
 
 /*
  5. Use *PouchDB* to __add one more data file__ to your database that will
@@ -1189,7 +1189,7 @@ formGen = () => dform.innerHTML = Object.entries(Object.assign({ _id: "", _rev: 
       it has executed once already.
 */
 
-// dbobj.put({ _id: "-res-img" }).then(respShow).catch(respShow)
+// dbobj.put({ _id: "-res-img" }).then(reShow).catch(reShow)
 
 /*
  6. __Build a UI__ with applicable *PouchDB* functions __for attaching images__
@@ -1236,18 +1236,18 @@ d3ui += "\\n<details id=imgdtl open=true></details>";
 try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d3ui + "\\n"; cmain.appendChild(ndiv); hlps = dbwrap.querySelectorAll('.chelp'); }
 
 imgsVw = () => imgdtl.innerHTML = "<summary>Gallery</summary>" + Object.entries(aurls).map(([k, v]) => "\\n<p><img src=" + v + " /> " + k + "</p>").join("") + "\\n";
-isRtrv = () => !dbobj || dbobj.get("-res-img").then( d => Promise.all( Object.keys(d._attachments || "").map( k => aurls[k] || dbobj.getAttachment("-res-img", k).then(b => aurls[k] = URL.createObjectURL(b)) ) ).then(_.imgsVw) ).catch(respShow);
+isRtrv = () => !dbobj || dbobj.get("-res-img").then( d => Promise.all( Object.keys(d._attachments || "").map( k => aurls[k] || dbobj.getAttachment("-res-img", k).then(b => aurls[k] = URL.createObjectURL(b)) ) ).then(_.imgsVw) ).catch(reShow);
 //
 window.aurls = window.aurls || {};
 !window.a1inp || ( a1inp.onchange = () => a3inp.innerHTML = (a1inp.files[0] || "").name || "<span>Locate image&hellip;</span>" );
-!window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) || dbobj.get("-res-img").then(d => dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(re => _.hlps[0].classList.remove("dnone") || respShow(re) || _.isRtrv()).catch(er => _.hlps[1].classList.remove("dnone") || respShow(er)) );
-!window.a5btn || ( a5btn.onclick = () => _.hsRes() || !(_.ak = n5inp.value) || dbobj.get("-res-img").then(d => !d._attachments[_.ak] ? Promise.reject("Invalid key.") : dbobj.removeAttachment("-res-img", _.ak, d._rev)).then(re => _.hlps[2].classList.remove("dnone") || respShow(re) || !(delete aurls[_.ak]) || _.imgsVw()).catch(er => _.hlps[3].classList.remove("dnone") || respShow(er)) );
+!window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) || dbobj.get("-res-img").then(d => dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(re => _.hlps[0].classList.remove("dnone") || reShow(re) || _.isRtrv()).catch(er => _.hlps[1].classList.remove("dnone") || reShow(er)) );
+!window.a5btn || ( a5btn.onclick = () => _.hsRes() || !(_.ak = n5inp.value) || dbobj.get("-res-img").then(d => !d._attachments[_.ak] ? Promise.reject("Invalid key.") : dbobj.removeAttachment("-res-img", _.ak, d._rev)).then(re => _.hlps[2].classList.remove("dnone") || reShow(re) || !(delete aurls[_.ak]) || _.imgsVw()).catch(er => _.hlps[3].classList.remove("dnone") || reShow(er)) );
 !window.imgdtl || isRtrv();
 */
 
 /*
 simgs = Array.from(Array(10)).map((e, i) => "stockimg" + i + ".jpg");
-!dbobj || dbobj.get("-res-img").then(d => { d._attachments || (d._attachments = {}); return Promise.all(_.simgs.map(e => fetch("../-res-img2/" + e).then(re => re.blob()))).then( bs => _.simgs.forEach( (e, i) => !(aurls[e] = URL.createObjectURL(bs[i])) || (d._attachments[e] = { content_type: bs[i].type, data: bs[i] }) ) || dbobj.put(d) ); }).then(respShow).then(_.imgsVw).catch(respShow)
+!dbobj || dbobj.get("-res-img").then(d => { d._attachments || (d._attachments = {}); return Promise.all(_.simgs.map(e => fetch("../-res-img2/" + e).then(re => re.blob()))).then( bs => _.simgs.forEach( (e, i) => !(aurls[e] = URL.createObjectURL(bs[i])) || (d._attachments[e] = { content_type: bs[i].type, data: bs[i] }) ) || dbobj.put(d) ); }).then(reShow).then(_.imgsVw).catch(reShow)
 */
 
 /*
@@ -1313,17 +1313,17 @@ ptyX = (d, x = sortsel.selectedIndex) => x > 4 ? d[sortsel.value] || " " : x > 3
 hdsX = evt => document.querySelectorAll(_.qss[0]).forEach(e => e.open = evt.target.checked);
 bdsX = evt => document.querySelectorAll(_.qss[1]).forEach(e => e.open = evt.target.checked);
 fRes = () => { let ts0 = new Date().getTime(); _.fwg = JSON.parse(JSON.stringify(dtmpl[dtmpl.key])); !/^idGen\\(.*\\)$/.test(_.fwg._id.trim()) || (_.fwg._id = eval("_." + _.fwg._id)); };
-dLoad = evt => dbobj.get(evt.target.textContent || evt.target.dataset.fileid).then(d => !(_.fwg = d) || (dform.className = ndata.innerHTML = "") || _.formGen()).catch(respShow);
+dLoad = evt => dbobj.get(evt.target.textContent || evt.target.dataset.fileid).then(d => !(_.fwg = d) || (dform.className = ndata.innerHTML = "") || _.formGen()).catch(reShow);
 window.n1Gen = eval(d5ui);
 window.dtmpl = { key: "t4cnt", t1src: t1src, t2evt: t2evt, t3mem: t3mem, t4cnt: t4cnt };
 window.aurls = window.aurls || {};
 !window.a1inp || ( a1inp.onchange = () => a3inp.innerHTML = (a1inp.files[0] || "").name || "<span>Locate image&hellip;</span>" );
-!window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) ? isRtrv() : dbobj.get("-res-img").then(d => dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(re => _.hlps[0].classList.remove("dnone") || respShow(re) || _.isRtrv()).catch(er => _.hlps[1].classList.remove("dnone") || respShow(er)) );
-!window.a5btn || ( a5btn.onclick = () => _.hsRes() || !(_.ak = n5inp.value) || dbobj.get("-res-img").then(d => !d._attachments[_.ak] ? Promise.reject("Invalid key.") : dbobj.removeAttachment("-res-img", _.ak, d._rev)).then(re => _.hlps[2].classList.remove("dnone") || respShow(re) || !(delete aurls[_.ak]) || _.imgsVw()).catch(er => _.hlps[3].classList.remove("dnone") || respShow(er)) );
+!window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) ? isRtrv() : dbobj.get("-res-img").then(d => dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(re => _.hlps[0].classList.remove("dnone") || reShow(re) || _.isRtrv()).catch(er => _.hlps[1].classList.remove("dnone") || reShow(er)) );
+!window.a5btn || ( a5btn.onclick = () => _.hsRes() || !(_.ak = n5inp.value) || dbobj.get("-res-img").then(d => !d._attachments[_.ak] ? Promise.reject("Invalid key.") : dbobj.removeAttachment("-res-img", _.ak, d._rev)).then(re => _.hlps[2].classList.remove("dnone") || reShow(re) || !(delete aurls[_.ak]) || _.imgsVw()).catch(er => _.hlps[3].classList.remove("dnone") || reShow(er)) );
 !window.resbtn || ( resbtn.onclick = () => _.hsRes() || _.fRes() || (dform.className = ndata.innerHTML = "") || _.formGen() )();
-!window.savbtn || ( savbtn.onclick = () => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))) || !_.fwg._id || _.d0Upd() || dbobj.put(Object.assign({ _id: "", _rev: null }, _.fwg)).then(re => _.hlps[4].classList.remove("dnone") || respShow(re)).catch(er => _.hlps[5].classList.remove("dnone") || respShow(er)) );
+!window.savbtn || ( savbtn.onclick = () => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))) || !_.fwg._id || _.d0Upd() || dbobj.put(Object.assign({ _id: "", _rev: null }, _.fwg)).then(re => _.hlps[4].classList.remove("dnone") || reShow(re)).catch(er => _.hlps[5].classList.remove("dnone") || reShow(er)) );
 !window.imgdtl || (imgdtl.open = false) || isRtrv();
-!window.nsbtn || ( nsbtn.onclick = () => !(dform.className = "dnone") || (p0_id.value = "") || !dbobj || dbobj.allDocs({ include_docs: true }).then(re => { let rrs = re.rows.filter(r => r && r.doc.file_type).sort((a, b) => !sortsel.selectedIndex ? 0 : _.ptyX(a.doc) > _.ptyX(b.doc) ? 1 : -1); ndata.innerHTML = !rrs.length ? "\\n<p class=igreyd>&emsp;<em>[No data files found &hellip;]</em></p>\\n" : rrs.map(r => n1Gen(r.doc)).join("") + "\\n"; bodsswi.checked = hdrsswi.checked = 0; hdrsswi.onchange = _.hdsX; bodsswi.onchange = _.bdsX; document.querySelectorAll(_.qss[2]).forEach(e => e.onclick = _.dLoad); }).catch(respShow) )();
+!window.nsbtn || ( nsbtn.onclick = () => !(dform.className = "dnone") || (p0_id.value = "") || !dbobj || dbobj.allDocs({ include_docs: true }).then(re => { let rrs = re.rows.filter(r => r && r.doc.file_type).sort((a, b) => !sortsel.selectedIndex ? 0 : _.ptyX(a.doc) > _.ptyX(b.doc) ? 1 : -1); ndata.innerHTML = !rrs.length ? "\\n<p class=igreyd>&emsp;<em>[No data files found &hellip;]</em></p>\\n" : rrs.map(r => n1Gen(r.doc)).join("") + "\\n"; bodsswi.checked = hdrsswi.checked = 0; hdrsswi.onchange = _.hdsX; bodsswi.onchange = _.bdsX; document.querySelectorAll(_.qss[2]).forEach(e => e.onclick = _.dLoad); }).catch(reShow) )();
 */
 
 /*
