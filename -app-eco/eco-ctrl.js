@@ -1978,9 +1978,8 @@ function txdPrep(filepath) {
     txdata = /^{\s*"[^]+}$|^\[[^]*{\s*"[^]+}\s*\]$/.test(valcon) && jsonParse(valcon) || {},
     fpathes = /^(?:(?:(https?:\/\/)(?:([\w-]+):|)(?:([\w-]+)@|)([\w!.*+~-]+)(?:(?=$)|\/)|(\.\.\/\.\.\/)|\/)(?:([_a-z][0-9_a-z$,+-]*)(?:(?=$)|\/)|(?=$))|(\.\.\/)(?!$)|)(?:((?:_design\/|(?!\.\.?\/))[^ \/]+)(?:\/(_view\/|)([^ \/]*)|)|)$/.exec(filepath || valcon);
   !fpathes || fpathes[5] && fpathes[6] === "a00" && a00path !== localStorage["_ecoa00path"]
-  || (!rexfid.test(fpathes[0]) || rexfix.test(fpathes[0]))
-  && ( fpathes[0] === fpathes[8] + (!fpathes[10] ? "" : "/" + fpathes[9] + fpathes[10])
-    || (fpathes[1] || fpathes[5]) && !fpathes[6] && !filepath )
+  || /^blob:/i.test(fpathes[0]) || (!rexfid.test(fpathes[0]) || rexfix.test(fpathes[0]))
+  && (fpathes[0] === fpathes[8] || (fpathes[1] || fpathes[5]) && !fpathes[6] && !filepath)
   ? ![rexloc, rexrmt].some(e => e.test(filepath || valcon)) || (txdata = {
       url:  filepath || valcon,
       bmet: /\.(?:html?|md|m?js|s?css|te?xt|\w{5,})$/i.test(filepath || valcon)
