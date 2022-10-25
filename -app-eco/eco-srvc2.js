@@ -461,9 +461,9 @@ let q2Bcopy, q2Bhtml,
   xbtndel = document.querySelector('#xctrls #xbtndel'),
   xcshelp = document.querySelector('#xctrls #xcshelp'),
   helpClr = () => !xcshelp || (xcshelp.innerHTML = "") || xcshelp.classList.remove("iwarn", "isucc"),
-  respShow = resp => { recon.textContent
-    += ( !resp || typeof resp !== 'object' || resp instanceof Error && resp.constructor && !resp.reason
-      ? resp : JSON.stringify(resp, 0, 2) ) + "\\n\\n" },
+  reShow = re => { recon.textContent
+    += ( !re || typeof re !== 'object' || re instanceof Error && re.constructor && !re.reason
+      ? re : JSON.stringify(re, 0, 2) ) + "\\n\\n" },
   zoomTog = zoff => metavp.setAttribute( 'content', "width=device-width, "
     + (zoff || /maximum-/.test(metavp.content) ? "initial-scale=1" : "maximum-scale=1") ),
   titSave = (evt, tnew) => {
@@ -599,7 +599,7 @@ let q2Bcopy, q2Bhtml,
             : "<div class=pagebb></div>" )
           + ( rslt == null ? "" : typeof rslt === 'string' ? rslt.replace(/\\n/g, "\\\\n")
             : rslt.toString().replace(/\\s+/g, " ") );
-        } catch (err) { respShow(err); return err; }
+        } catch (err) { reShow(err); return err; }
       }),
       $ks = Object.keys($);
     cgrid.style.setProperty("--row1ht", $ks.length < 4 ? "-56px" : -($ks.length * 16 + 4) + "px");
@@ -692,11 +692,11 @@ let q2Bcopy, q2Bhtml,
   },
   initLoad = () => !/^https?:\\/\\/.+$/.test(dload) ? xprsEval()
     : window.fetch(dload, { credentials: 'omit' })
-      .then( resp => /\\.json$|^https?:\\/\\/\\w[\\w.:-]*\\/\\w[\\w-]*\\/\\w[\\w!.*+~-]*$/.test(dload)
-        ? resp.json() : resp.text() )
+      .then( re => /\\.json$|^https?:\\/\\/\\w[\\w.:-]*\\/\\w[\\w-]*\\/\\w[\\w!.*+~-]*$/.test(dload)
+        ? re.json() : re.text() )
       .then( val => dentr.value = val == null ? "" : val.content
         || (typeof val !== 'object' ? "" + val : "// " + JSON.stringify(val)) )
-      .then(xprsEval).catch(respShow);
+      .then(xprsEval).catch(reShow);
 window.xstor = {};
 window.dentr = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
   || { value: datxmp.textContent.replace(/\\n+$|^\\n+/g, "") };
@@ -714,7 +714,7 @@ window.location.search.replace(/^\\?/, "").split("&").forEach( qi =>
   : /^!zlock$/.test(qi) ? zoomTog(1)
   : /^!row1$/.test(qi) ? gridAdj(4)
   : /^!col1$/.test(qi) ? gridAdj(5) : 0 );
-Promise.all(jsrcs.map(e => scrInj(e))).catch(respShow).then(() => {
+Promise.all(jsrcs.map(e => scrInj(e))).catch(reShow).then(() => {
   xsetinp || initLoad();
 });
 symlist.innerHTML = "\\n    " + Object.getOwnPropertyNames(Math)

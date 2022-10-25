@@ -1,4 +1,9 @@
-window.ecoqjs = { // 17
+window.ecoqjs = { // 20
+  fncTry: (fnc, a, e) => {
+    // silently handle function execution errors
+    try { return fnc(a) }
+    catch (err) { return e > 1 ? a : e ? err : undefined }
+  },
   frAlpha: str => {
     // convert Latin alpha numeral into Arabic integer
     let val = 0, i, z;
@@ -46,9 +51,9 @@ window.ecoqjs = { // 17
     }
     return str;
   },
-  lineUnwr: str =>
+  lineUnwr: str => // remove line breaks
     str.replace(/(\S) *\n(?!\n|#|>|[:*+~-]? |\d+\.\s|$)/g, "$1 "),
-  lineWrap: str => {
+  lineWrap: str => { // insert line breaks
     let cpl = 72, // width: 72 cpl
       brk = "\n", // break-string: \n
       cut = false,// cut words: no
@@ -60,30 +65,38 @@ window.ecoqjs = { // 17
     // re-sort a list of words alphabetically
     str.trim().split("\n").sort().join("\n"),
   lineCount: str => {
-    // sequentially number each line of the text
+    // sequentially number each line of text
     let ct = 0, sp = ["", " ", "  ", "   "];
     return str.trim()
     .replace( /^/gm, () =>
       (++ct > 999 ? sp[0] : ct > 99 ? sp[1] : ct > 9 ? sp[2] : sp[3])
       + ct + sp[1] );
   },
-  prettyCSS: str =>
-    // q+d css prettify
-    str
+  htmTxt: str => "" + str // prep HTML text for browser display as unrendered source code
+    .replace(/&(?=#?\w+;)/g, "&amp;")
+    .replace( /<(!--)|<([!/]?[a-z].*?)(>|(?=<|$))|(--)>/gim,
+      (m, c1, c2, c3, c4) => (c4 ? "" : "&lt;") + (c1 || c2 || c4) + (c1 || !c3 ? "" : "&gt;") ),
+  srcvPrep: (str = "", lang) => {
+    // apply HighlightJS syntax tags to HTML/CSS/JS/JSON text
+    let ntxta = document.createElement('textarea');
+    ntxta.textContent = str = "" + str;
+    return !window.hljs || lang === "nohighlight" ? ntxta.innerHTML
+    : (!lang ? hljs.highlightAuto(str) : hljs.highlight(str, {language: lang})).value
+      .replace(lang !== "md" ? /^\*$/ : /\\x2a;/g, "*")
+      .replace(lang !== "md" ? /^_$/ : /\\x5f;/g, "_");
+  },
+  prettyCSS: str => str // q+d CSS prettify
     .replace(/([;}])\s*/g, "$1\n")
     .replace( / *\{([^{}]+)}\s*/g, (m, c1) =>
       " {\n" + c1.trim().replace(/^/gm, "  ") + "\n}\n" ),
-  prettyJSON: str =>
-    // q+d json prettify
-    str
+  prettyJSON: str => str // q+d JSON prettify
     .replace(/(,|)\s*(?=["[{])/g, "$1\n")
     .replace( /^\s*\{([^]*?)}\s*/gm, (m, c1) =>
       "{\n" + c1.trim().replace(/^/gm, "  ") + "\n}\n" ),
-  mdDeflistPar: str =>
-    // enable paragraphs in definition list
+  mdeflistPar: str => // enable paragraphs in MD definition list
     str.replace(/^[:~] +.+\n\n(?!  |:|~|.+\n\n?[:~])/gm, "$&    <!-- -->\n\n"),
-  mdTheadsAfix: str =>
-    // prep headless, minimal md table by inserting md thead tags
+  mtheadsAfix: str =>
+    // prep headless, minimal MD table by inserting MD thead tags
     // note: thead column pattern matches last row
     str
     .replace(/\n.*?\|.*\n?$/, "$&\n\n")
@@ -93,8 +106,8 @@ window.ecoqjs = { // 17
       return "\n" + c1.replace(/(?:(?:\\\\)*\\\||[^\n|])+/g, "   ")
         + c1.replace(/(?:(?:\\\\)*\\\||[^\n|])+/g, " - ") + m;
     }),
-  mdMarkXtract: str => {
-    // extract & append a list of all marked phrases in a md doc
+  mmarkXtract: str => {
+    // extract & append list of all marked phrases in MD doc
     let annos = "\n<!-- texthl\n";
     return str
     .replace( /(\W|^)==([^]+?)==(?=\W|$)/g,
@@ -102,22 +115,21 @@ window.ecoqjs = { // 17
     + annos + "-->\n";
   },
   texhlXtract: str => {
-    // extract a list of all highlighted phrases in a tex doc
+    // extract list of all highlighted phrases in Tex doc
     let annos = ["<!-- texthl"];
     str.replace( /.+/g, m =>
       !(m = m.match(/hl\\\{.+?(?=\\\})/g)) || (annos = annos.concat(m, "")) );
     return annos.join("\n").replace(/^hl\\\{/gm, "") + "-->";
   },
-  jsCmntXtract: str =>
-    // extract a list of comments & function names within script file
+  jcmtXtract: str =>
+    // extract list of comments & function names within JavaScript file
     str
     .replace(/^ *\/\/\S.*?\n|^ ? ?( *\/\/ .+\n)|^ ?( *).+?( \/\/ .+\n)|^ *(.*?\bfunction\b.+? {\n)|^.*?\n(\n)*/gm, "$1$2$3$4$5")
     .trim(),
-  dboxDirlist: str =>
-    // extract folder/file names from Dropbox folder meta data
+  dboxDirlist: str => // extract folder/file names from Dropbox folder meta data
     str.replace(/^ *"path_display": "(.*?)",(\n)|.*\n/gm, "$1$2"),
   gmailCleanup: str =>
-    // standardize spaces, blank lines, blockquotes of google-email content
+    // standardize spaces, blank lines, blockquotes of Google-email content
     str
     .replace(/(\S  )[ \t]*$|\t+$|^[ \t]+$/gm, "$1")
     .replace(/^\n\n+/gm, "\n")

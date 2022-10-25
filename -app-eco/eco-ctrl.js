@@ -52,7 +52,7 @@ const hostgh = /\.github\.io$/.test(window.location.host),
   },
   pf3stor = {},
   rexatt = /(?:@import +(?:url\(|)['"]?|\S+: *url\(['"]?|^)(?:\.\/|\.\.\/(?:\.\.\/(.*)\/|)(.*)\/|)([^\n\/]+\.(?:giff?|jpe?g|m?js|png|s?css))['"]?\)?;?$/i,
-  rexept = /\.(?:[chlst]|content|te?xt\d|li?nk|sty|style|html?)\d*$/,
+  rexept = /\.(?:[chlst]|content|html?|li?nk|sty|style|te?xt\d)\d*$/,
   rexfid = /^$|^_design\/\w+$|^[!.~-]?\w[\w!.*+~-]*$/,
   rexfix = /^_(?!all_docs$|changes$|design(?:_docs|\/\w+)$)|[*~]\(?[0-9]*\)?$/,
   rexibm = /^https:\/\/[\w-]+\.cloudant[\w.]+$/,
@@ -993,8 +993,7 @@ function rdataFetch(txdata = {}, idx = 0) {
 }
 
 function anumlIncr(anum) {
-  return !/^[a-z]{3}$/i.test(anum) ? "zza"
-  : window.ecoqjs.toAlpha(1 + window.ecoqjs.frAlpha(anum)).toLowerCase();
+  return !/^[a-z]{3}$/i.test(anum) ? "zza" : ecoqjs.toAlpha(1 + ecoqjs.frAlpha(anum)).toLowerCase();
 }
 
 function a00Set() {
@@ -1012,15 +1011,6 @@ function imgWrap(url) {
   + '/-res-css/bulma0.9-minireset.css" type="text/css" rel="stylesheet" />'
   + '\n<section class="section">\n<main class="container content">\n  <figure><img src="'
   + url + '" /></figure>\n</main>\n</section>\n';
-}
-
-function srcvPrep(str = "", lang) {
-  let ntxta = document.createElement('textarea');
-  ntxta.textContent = str = "" + str;
-  return !window.hljs || lang === "nohighlight" ? ntxta.innerHTML
-  : (!lang ? hljs.highlightAuto(str) : hljs.highlight(str, {language: lang})).value
-    .replace(lang !== "md" ? /^\*$/ : /\\x2a;/g, "*")
-    .replace(lang !== "md" ? /^_$/ : /\\x5f;/g, "_");
 }
 
 function emodeSet() {
@@ -1185,8 +1175,8 @@ function assts2Blob() {
         nscr.innerHTML
           = '\nimport * as srvc3 from "' + aurls["eco-srvc3.mjs"]
           //+ '";\nimport * as srvc4 from "' + aurls["eco-srvc4.mjs"]
-          + '";\nlet f;\nfor (f in srvc3) window.ecomjs[f] = srvc3[f];\n'
-          //+ '\nfor (f in srvc4) window.ecomjs[f] = srvc4[f];\n';
+          + '";\nlet f;\nfor (f in srvc3) ecomjs[f] = srvc3[f];\n'
+          //+ '\nfor (f in srvc4) ecomjs[f] = srvc4[f];\n';
         iniscripts.appendChild(nscr);
       }
     },
@@ -1331,7 +1321,7 @@ function pdbListGen() { // also "dboListGen", "pchListGen"
             context.pchitems = dbs1.map(e => prjitems.find(d => d._id === e) || dbidFbk(e));
             context.pr1items = prjitems.filter(d => dbs1.findIndex(e => e === d._id) < 0);
           });
-        }).then(() => pr0sGet()).catch(pr0sGet);
+        }).catch(pr0sGet).then(pr0sGet);
       }
     };
   !window.PouchDB || !PouchDB.allDbs ? pdbsGen()
@@ -1989,8 +1979,9 @@ function txdPrep(filepath) {
     fpathes = /^(?:(?:(https?:\/\/)(?:([\w-]+):|)(?:([\w-]+)@|)([\w!.*+~-]+)(?:(?=$)|\/)|(\.\.\/\.\.\/)|\/)(?:([_a-z][0-9_a-z$,+-]*)(?:(?=$)|\/)|(?=$))|(\.\.\/)(?!$)|)(?:((?:_design\/|(?!\.\.?\/))[^ \/]+)(?:\/(_view\/|)([^ \/]*)|)|)$/.exec(filepath || valcon);
   !fpathes || fpathes[5] && fpathes[6] === "a00" && a00path !== localStorage["_ecoa00path"]
   || (!rexfid.test(fpathes[0]) || rexfix.test(fpathes[0]))
-  && (fpathes[0] === fpathes[8] || (fpathes[1] || fpathes[5]) && !fpathes[6] && !filepath)
-  ? ![rexloc, rexrmt].some(e => e.test(filepath || valcon)) || ( txdata = {
+  && ( fpathes[0] === fpathes[8] + (!fpathes[10] ? "" : "/" + fpathes[9] + fpathes[10])
+    || (fpathes[1] || fpathes[5]) && !fpathes[6] && !filepath )
+  ? ![rexloc, rexrmt].some(e => e.test(filepath || valcon)) || (txdata = {
       url:  filepath || valcon,
       bmet: /\.(?:html?|md|m?js|s?css|te?xt|\w{5,})$/i.test(filepath || valcon)
         ? 'text' : /\.json$/i.test(filepath || valcon) ? 'json' : undefined
@@ -2082,7 +2073,7 @@ function modjsLoad() {
     scriptmod = document.querySelector('#iniscripts>script[type=module]:last-child'),
     modxs = filewkg.parseconfigs.scriptsincl
       .map( sii => !/\*\d*$/.test(sii.fncname) && typeof window[sii.fncname] !== 'function'
-        && !window.ecoqjs[sii.fncname] && !window.ecomjs[sii.fncname]
+        && !ecoqjs[sii.fncname] && !ecomjs[sii.fncname]
         && ( filewkg.parseconfigs.scriptsconstr.find( sci => sci.fncname === sii.fncname && sci.filepath
             && (!sci.deftxt || sci.deftxt === ECOTMPLS.publmgr.parseconfigs.scriptsconstr[0].deftxt) )
           || !(ECOMODJS[sii.fncname] || "").fnc && ECOMODJS[sii.fncname] ) )
@@ -2121,7 +2112,7 @@ function modjsLoad() {
       nscr.innerHTML = "\n"
         + mfps.map((fpi, i) => `import * as mjs${i} from "${mblobs[i] || fpi}";`).join("\n")
         + "\nwindow.ecomjs = window.ecomjs || {};"
-        + "\n" + modxs.map( sci => `window.ecomjs["${sci.fncname}"]`
+        + "\n" + modxs.map( sci => `ecomjs["${sci.fncname}"]`
           + ` = mjs${idxfp = mfps.indexOf(sci.filepath)}["${sci.fncname}"]`
           + ` || mjs${idxfp}.default;` ).join("\n")
         + "\n";
@@ -2463,10 +2454,10 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       : !udata.hasOwnProperty("_id") || typeof udata._id !== 'string' ? {}
       : { _id: "", _rev: "" }, udata ));
     Object.keys(filewkg).toString() !== Object.keys(ECOMODJS["html2md"]).toString() || filewkg.fnc
-    || (filewkg.fnc = (window.ecomjs[filewkg.fncname] || "").toString() || null);
+    || (filewkg.fnc = (ecomjs[filewkg.fncname] || "").toString() || null);
     Object.keys(filewkg).toString() !== Object.keys(ECOMODJS).toString()
     || Object.keys(filewkg).forEach( k => (filewkg[k] = Object.assign({}, filewkg[k]))
-      && (filewkg[k].fnc = (filewkg[k].fnc || window.ecomjs[k] || "").toString() || null) );
+      && (filewkg[k].fnc = (filewkg[k].fnc || ecomjs[k] || "").toString() || null) );
     if (destindr) {
       Object.assign(filewkg, { _id: "", _rev: "" });
       !filewkg.hasOwnProperty("ts_created") || (filewkg.ts_updated = filewkg.ts_created = tstamp1);
@@ -2548,7 +2539,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
     prv2s.forEach(el => el.classList.add("is-hidden"));
     typeof udata !== 'object' || (lang = "json");
     ecorender.innerHTML = destindr === 7 || udata && /function|object/.test(typeof udata)
-      ? EC2.htmTxt((udata = msgPrefmt(udata)))
+      ? ecoqjs.htmTxt((udata = msgPrefmt(udata)))
       : epsets.appchks[26] || typeof udata !== 'string' || destindr === 3
         && (!cfgs || valatt && !/^(?:\/[a-z][0-9_a-z$,+-]*\/|)[.-]\b.+\.html?$/.test(valatl || valatt))
         ? udata : udata.replace(rexurl, (m, c1, c2, c3) => c1 + c2 + EC2.u2Blob(c3));
@@ -2563,7 +2554,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         + (protfile || hostlh ? "" : '" crossorigin="use-credentials')
         + '" type="text/css" rel="stylesheet" disabled />' )
       + '\n<pre class="srcview is-absolute hljs">'
-      + srcvPrep(udata, !epsets.hlstyle && "nohighlight" || lang) + "</pre>";
+      + ecoqjs.srcvPrep(udata, !epsets.hlstyle && "nohighlight" || lang) + "</pre>";
     !document.querySelector('#econav0 #prvtab.is-active') || ecorender.classList.remove("is-hidden");
     if (!window.PouchDB || destindr > 4) { return; }
     disciscurr || prjDiscGen();
@@ -2729,7 +2720,7 @@ function webdocGen(redirect, pdata = filewkg || jsonParse(JSON.stringify(ECOTMPL
       fnx = scx.deftxt && scx.deftxt !== ECOTMPLS.publmgr.parseconfigs.scriptsconstr[0].deftxt
           && ((str, idx) => (new Function("return (" + scx.deftxt + ")"))()(str, idx))
         || (ECOMODJS[sii.fncname.replace(/\*\d*$/, "")] || "").fnc
-        || window.ecomjs[sii.fncname] || window.ecoqjs[sii.fncname]
+        || ecomjs[sii.fncname] || ecoqjs[sii.fncname]
         || typeof window[sii.fncname] === 'function' && window[sii.fncname] || (str => str);
     if (i1 < sifragsbound && (i1 + 1 < sifragsbound || sii.applytofrag.some(e => !e))) {
       fragstxt = fragstxt.map( (fti, i2) =>
@@ -4439,12 +4430,6 @@ ibmConnect() {
   } else {
     !valinp[2] ? espEnter(0) : teamDSet();
   }
-},
-fncTry(fnc, a, e) { try { return fnc(a) } catch (err) { return e > 1 ? a : e ? err : undefined } },
-htmTxt(str) {
-  return typeof str !== 'string' ? str : str
-  .replace(/&(?=#?\w+;)/g, "&amp;").replace( /<([!/]?[a-z].*?)(>|(?=<|$))|(--)>|<(!--)/gim,
-  (m, c1, c2, c3, c4) => (c3 ? "" : "&lt;") + (c4 || c3 || c1) + (c4 || !c2 ? "" : "&gt;") )
 },
 wdGen(pdata) { return !(pdata || "").filefrags ? pdata : webdocGen(1, pdata); },
 u2Blob(url) { // also triggered by prjDiscGen, jdeDftGen, dviz-memos, dviz-contacts
