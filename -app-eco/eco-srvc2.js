@@ -740,8 +740,8 @@ quad2B.onpaste = txtPste;
 </script>`,
 // * * * * * 1: srcdiff * * * * *
 `<!--
-<textarea id="diff-s1txta" class="is-hidden"></textarea>
-<textarea id="diff-s2txta" class="is-hidden"></textarea>
+<xmp id="s1txt0" class="is-hidden"></xmp>
+<xmp id="s2txt0" class="is-hidden"></xmp>
 -->
 <style type="text/css">
 body {
@@ -821,17 +821,18 @@ print and (min-width: 738px) and (max-width: 785px) {
 <script type="text/javascript">
 (function() {
 'use strict';
-const s1txta = document.querySelector('#diff-s1txta'),
-  s2txta = document.querySelector('#diff-s2txta'),
+const s1txt0 = document.querySelector('xmp#s1txt0'),
+  s2txt0 = document.querySelector('xmp#s2txt0'),
   s1swi = document.querySelector('main #s1swi'),
   s2swi = document.querySelector('main #s2swi'),
   s1rslt = document.querySelector('main>#s1rslt'),
   s2rslt = document.querySelector('main>#s2rslt'),
   diffExe = () => {
-    if (!window.SourceDiff || !s1txta || !s2txta) { return; }
+    if (!window.SourceDiff || !s1txt0 || !s2txt0) { return; }
     let dif = new SourceDiff.Diff(true), // true = ignore leading whitespace
       fmt = new SourceDiff.DiffFormatter(dif);
-    [s2rslt.innerHTML, s1rslt.innerHTML] = fmt.formattedDiff(s2txta.value, s1txta.value);
+    [s2rslt.innerHTML, s1rslt.innerHTML]
+    = fmt.formattedDiff(s2txt0.textContent, s1txt0.textContent);
   };
 [s1swi, s2swi].forEach( e => e.onchange = () => {
   [s1rslt, s2rslt].forEach(e => e.classList.remove("ht0", "ht2x"));

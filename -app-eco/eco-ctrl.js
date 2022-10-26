@@ -4550,15 +4550,15 @@ diffGen(evt, txt1, txt2) { // also triggered by dviz-dboxupd
     _id: "",
     parseconfigs: Object.assign( difftmpl.parseconfigs, {
       scriptsconstr: [{
-        fncname:  "srctxtaWraps", filepath: "", usedescription: "", htmlscriptload: "",
+        fncname:  "srctxt0Wraps", filepath: "", usedescription: "", htmlscriptload: "",
         features: [{ switchon: false, keytxt: "", valtxt: "" }],
         deftxt:   `function (str, idx) {
-  return '<textarea id="diff-s' + (1 + idx) + 'txta" class="is-hidden">\\n'
-  + str.replace(/<(?=\\/textarea>)/g, "&lt;")
-  + '</textarea>\\n'
+  return '<xmp id="s' + (1 + idx) + 'txt0" class="is-hidden">\\n'
+  + str.replace(/<(?=\\/xmp>)/g, "&lt;")
+  + '</xmp>\\n'
   ;
 }`    }],
-      scriptsincl: [{ fncname: "srctxtaWraps", applytofrag: [true, true, false] }]
+      scriptsincl: [{ fncname: "srctxt0Wraps", applytofrag: [true, true, false] }]
     }),
     filefrags: [
       { idtxt: "SOURCE1", labeltxt: "SOURCE1", titletxt: "SOURCE pane #1.", contenttxt: txt1 },

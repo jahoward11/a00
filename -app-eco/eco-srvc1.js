@@ -77,7 +77,7 @@ window.ecoqjs = { // 20
     .replace( /<(!--)|<([!/]?[a-z].*?)(>|(?=<|$))|(--)>/gim,
       (m, c1, c2, c3, c4) => (c4 ? "" : "&lt;") + (c1 || c2 || c4) + (c1 || !c3 ? "" : "&gt;") ),
   srcvPrep: (str = "", lang) => {
-    // apply HighlightJS syntax tags to HTML/CSS/JS/JSON text
+    // apply HighlightJS syntax tags to HTML/CSS/JS/JSON/MD text
     let ntxta = document.createElement('textarea');
     ntxta.textContent = str = "" + str;
     return !window.hljs || lang === "nohighlight" ? ntxta.innerHTML
