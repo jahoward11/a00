@@ -363,6 +363,18 @@ let q2Bcopy, q2Bhtml,
   reShow = re => { recon.textContent
     += ( !re || typeof re !== 'object' || re instanceof Error && re.constructor && !re.reason
       ? re : JSON.stringify(re, null, 2) ) + "\n\n" },
+  scrInj = (url, typ, cnt) => new Promise((rslv, rjct) => {
+    url || cnt || rjct("**Alert: Script content or URL was not provided.");
+    let nscr = document.createElement('script');
+    !url || (nscr.src = url);
+    nscr.type = typeof typ === 'string' && typ || (/\.mjs$/.test(url) ? 'module' : 'text/javascript');
+    !url || !/^https:\/\/[^ \/]+cloud/.test(url) || !/^http/.test(window.location.protocol)
+    || !window.navigator.onLine || nscr.setAttribute('crossorigin', 'use-credentials');
+    nscr.innerHTML = !url && cnt ? cnt : null;
+    nscr.onerror = err => rjct("**Alert: Script resource GET/load error occured.");
+    nscr.onload = rslv;
+    !(url || cnt) || document.body.appendChild(nscr);
+  }),
   zoomTog = zoff => metavp.setAttribute( 'content', "width=device-width, "
     + (zoff || /maximum-/.test(metavp.content) ? "initial-scale=1" : "maximum-scale=1") ),
   titSave = (evt, tnew) => {
@@ -379,18 +391,6 @@ let q2Bcopy, q2Bhtml,
       cgrid.classList.toggle("xpndq2B");
     }
   },
-  scrInj = (url, typ, cnt) => new Promise((rslv, rjct) => {
-    url || cnt || rjct("**Alert: Script content or URL was not provided.");
-    let nscr = document.createElement('script');
-    !url || (nscr.src = url);
-    nscr.type = typeof typ === 'string' && typ || (/\.mjs$/.test(url) ? 'module' : 'text/javascript');
-    !url || !/^https:\/\/[^ \/]+cloud/.test(url) || !/^http/.test(window.location.protocol)
-    || !window.navigator.onLine || nscr.setAttribute('crossorigin', 'use-credentials');
-    nscr.innerHTML = !url && cnt ? cnt : null;
-    nscr.onerror = err => rjct("**Alert: Script resource GET/load error occured.");
-    nscr.onload = rslv;
-    !(url || cnt) || document.body.appendChild(nscr);
-  }),
   viewSet = () => {
     let qrys = [];
     /maximum-/.test(metavp.content) || qrys.push("!zlock");
