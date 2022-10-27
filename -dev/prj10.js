@@ -124,12 +124,13 @@ Array.from(Array(5).keys())
 // reShow( Object.fromEntries( Object.entries(ecoqjs).map(oe => [oe[0], oe[1].toString()]) ))
 // fetch("../-app-eco/eco-srvc1.js").then(re => re.text()).then(s => window.jtxt = s).then(reShow).catch(reShow)
 // reShow(ecoqjs.jcmtXtract(jtxt))
+// reShow(ecoqjs.jcmtXtract(document.querySelector('script:nth-of-type(3)').outerHTML))
 
 /*
 __For Ecollabs JS Console__
 After loading CalcJS ...
  > jtxt = ecoscripts.innerHTML; "" // ecoqjs.jcmtXtract(jtxt)
- > Promise.resolve("f.c").then(EC2.objQA).then(jcmtXtract)
+ > Promise.resolve("f.c").then(EC2.objQA).then(ecoqjs.jcmtXtract)
 */
 //`;
 
