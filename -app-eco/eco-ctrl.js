@@ -4438,9 +4438,11 @@ u2Blob(url) { // also triggered by prjDiscGen, jdeDftGen, dviz-memos, dviz-conta
   return aurls[(url || "").replace(/^\S*\//, "")] || aurls[url]
   || (url || "").replace(/^\.\.\/\.\.(?!\/a00\/)(?=\S+[^\s\/]$)/, a00orig) || url;
 },
-objQA(key = "", fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-memos
+objQA(key = key !== 0 ? "" : "0", fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-memos
+  key = "" + key;
   let pty,
-    rsltFbk = rslt => pty && fbx ? "" : /^(?:keys|ks?)$/i.test(pty) && Object.keys(rslt) || rslt,
+    rsltFbk = rslt => pty && fbx ? ""
+      : /^(?:keys|ks?)$/i.test(pty) && ecoqjs.fncTry(Object.keys, rslt) || rslt,
     ptyTest = d => pty = key.replace(!d ? /^\w+\.(.+)$|.*/ : /^\w+\.(\d+)$|.*/, "$1"),
     gloObj = () => (/^import\(/.test(key) || window[key.replace(/^new +|[.([].+/g, "")])
       && ( !(pty = /^(\w+)(\.keys|\.ks?|)$/.exec(key)) ? ecoqjs.fncTry(window.eval, key)
