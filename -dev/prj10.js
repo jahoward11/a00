@@ -129,8 +129,8 @@ Array.from(Array(5).keys())
 /*
 __For Ecollabs JS Console__
 After loading CalcJS ...
- > jtxt = ecoscripts.innerHTML; "" // ecoqjs.jcmtXtract(jtxt)
- > Q1 = (k = "f.c") => Promise.resolve(EC2.objQA(k)) // ecoqjs.jcmtXtract(Q1())
+ > jtxt = ecoscripts.innerHTML; "" // ecoqjs.jvarXtract(jtxt)
+ > Q1 = (k = "f.c") => Promise.resolve(EC2.objQA(k)) // Q1().then(ecoqjs.jcmtXtract)
 */
 //`;
 
