@@ -59,7 +59,7 @@ const hostgh = /\.github\.io$/.test(window.location.host),
   rexib2 = /^https:\/\/[\w-]+\.cloudant[\w.]+\//,
   reximg = /\.(?:giff?|jpe?g|png)$/i,
   rexloc = /^(?:(?:\.\.\/\.\.|\.\.|)\/(?=$|\w)|\.\/(?=[^ \/])|\/\/|\$|blob:[\w/:-]*(?!.* ))[ \w/!.*+~-]*$/,
-  rexoqa = /^\$ *(?:new +|)\w*(?:\b[.(].+|)$/,
+  rexoqa = /^\$ *(?:new +|)\w*(?:\b[.([].+|)$/,
   rexrmt = /^https?:\/\/[ \w/#%!?=&@:.,+~-]+$/,
   rexwba = /\.(?:giff?|jpe?g|m?js|png|s?css)$/i;
 
