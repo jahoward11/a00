@@ -134,7 +134,7 @@ window.ecoqjs = { // 20
   jcmtXtract: str =>
     // extract list of function names & comments within JavaScript text
     str
-    .replace(/^ ? ?( *(?:[\w.]+ *[:=] *(?:\(.*?\)|\w+) *=>|(?:[\w.]+ *[:=][ \w]*|)\bfunction\b.+{|(?!if|for|while)[\w.]+ *\(.*?\) *{).*\n)|^ *\/\/\S.*?\n|^ ? ?( *\/\/ .+\n)|^ ?( *).+?( \/\/ .+\n)|^.*?\n(\n)*/gm, "$1$2$3$4$5")
+    .replace(/^ ? ?( *(?:\w[\w.]* *[:=] *(?:\(.*?\)|\w+) *=>|(?:\w[\w.]* *[:=][ \w]*|)\bfunction\b.+{|(?!catch|if|for|try|while)\w[\w.]* *\(.*?\) *{).*\n)|^ *\/\/\S.*?\n|^ ? ?( *\/\/ .+\n)|^ ?( *).+?( \/\/ .+\n)|^.*?\n(\n)*/gm, "$1$2$3$4$5")
     .trim(),
   dboxDirlist: str =>
     // extract folder/file names from Dropbox folder meta data
