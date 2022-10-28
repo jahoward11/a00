@@ -964,8 +964,8 @@ function msgHandl(msg) {
 
 function jsonParse(jobj) {
   try { return (jobj = JSON.parse(jobj)) != null && typeof jobj === 'object' ? jobj
-    : msgHandl("Alert: #/bool/null was provided instead of JSON-object text.") && undefined;
-  } catch (err) { msgHandl("Alert: Invalid JSON-object text was provided.\n" + err); }
+    : msgHandl("Alert: #/bool/null was provided instead of JSON text.") && undefined;
+  } catch (err) { msgHandl("Alert: Invalid JSON text was provided.\n" + err); }
 }
 
 function rdataFetch(txdata = {}, idx = 0) {
@@ -4442,7 +4442,7 @@ objQA(key = "", fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-
   let pty,
     rsltFbk = rslt => pty && fbx ? "" : /^(?:keys|ks?)$/i.test(pty) && Object.keys(rslt) || rslt,
     ptyTest = d => pty = key.replace(!d ? /^\w+\.(.+)$|.*/ : /^\w+\.(\d+)$|.*/, "$1"),
-    gloObj = () => (/^import\(/.test(key) || window[key.replace(/^new +|[.(].+/g, "")])
+    gloObj = () => (/^import\(/.test(key) || window[key.replace(/^new +|[.([].+/g, "")])
       && ( !(pty = /^(\w+)(\.keys|\.ks?|)$/.exec(key)) ? ecoqjs.fncTry(window.eval, key)
       : pty[2] ? window[pty[1]]["keys"] || ecoqjs.fncTry(Object.keys, window.eval(pty[1]))
       : !/^Handlebars$/.test(key) ? window[key]
