@@ -4090,11 +4090,14 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 &#x2028; keys.filter(k =&gt; !/^on|^aria/.test(k)).sort(); }
           </option>
           <option>
-            fetch("../-app-eco/eco-ctrl.js").then(re =&gt; re.text()).then( s =&gt; s
-&#x2028; .replace( /^(?:const|let|var| ) ?\b[ ,\w]+(?: *= .+|);?(?: *\/\/ *|)\n|^(window\.\w+(?= *=)[ =])[^]+?(?:;?\s*\n[\]}];?\n|;\n(?=\n|[^\s\]}]))|^function +(\w+.)[^]+?\n[\]}];?\n(?=[\n\S])|(.*\n|.+)/gim,
-&#x2028; (m, c1, c2, c3) =&gt; c3 ? "" : c1 || c2 || m.replace(/(?:[^=a-z]|= *(?=\d+[,;]|""|''|\[\]|\{\})|[a-z](?!\w* *[.,;=]))*(?:\n|=.+|(\w+.))/gi, "$1") )
-&#x2028; .trim().split(/[^.\w]/) )
+            // JavaScript inspect, helper functions
+&#x2028; I1 = ecoqjs.jvarXtract; // generate array of JS variable names
+&#x2028; I2 = ecoqjs.jcmtXtract; // list JS function names & comments
+&#x2028; I3 = s =&gt; s.replace(/[^]+?\n(function rdataFetch.+(?:\n.+)+?(?:;?\s*};?|;)\n|(?=.*$))[\n\S][^]*/, "$1"); ""
           </option>
+          <option>jtxt = ecoscripts.innerHTML; "" // I1(jtxt)</option>
+          <option>Q1 = (k = "f.c") =&gt; Promise.resolve(EC2.objQA(k)); "" // Q1().then(I2)</option>
+          <option>fetch("../-app-eco/eco-ctrl.js").then(re =&gt; re.text()).then(I3)</option>
           <option>
             // Console table: ASCII (Latin, Basic) &amp; 8-bit-character (Latin-1 Supp) reference
 &#x2028; Array.from(Array(64).keys()).map(e =&gt; [0, 64, 128, 192].map(d =&gt; "0x" + (d + e).toString(16) + (!d &amp;&amp; e < 16 ? "  " : " " + String.fromCodePoint(d + e))).join("\t")).join("\n")

@@ -1,4 +1,4 @@
-window.ecoqjs = { // 20
+window.ecoqjs = { // 21
   fncTry: (fnc, a, e) => {
     // silently handle potential function execution error
     try { return fnc(a) }
@@ -131,13 +131,19 @@ window.ecoqjs = { // 20
       !(m = m.match(/hl\\\{.+?(?=\\\})/g)) || (annos = annos.concat(m, "")) );
     return annos.join("\n").replace(/^hl\\\{/gm, "") + "-->";
   },
+  jvarXtract: str =>
+    // generate array of variable names extracted from JavaScript text
+    str
+    .replace( /^(?:const|let|var| ) ?\b[ ,\w]+(?: *= .+|);?(?: *\/\/ *|)\n|^(window\.\w+(?= *=)[ =])[^]+?(?:;?\s*\n[\]}];?\n|;\n(?=\n|[^\s\]}]))|^function +(\w+.)[^]+?\n[\]}];?\n(?=[\n\S])|(.*\n|.+)/gim,
+      (m, c1, c2, c3) => c3 ? "" : c1 || c2 || m.replace(/(?:[^=a-z]|= *(?=\d+[,;]|""|''|\[\]|\{\})|[a-z](?!\w* *[.,;=]))*(?:\n|=.+|(\w+.))/gi, "$1") )
+    .trim().split(/[^.\w]/),
   jcmtXtract: str =>
-    // extract list of function names & comments within JavaScript text
+    // extract list of function names & comments in JavaScript text
     str
     .replace(/^ ? ?( *(?:\w[\w.]* *[:=] *(?:\(.*?\)|\w+) *=>|(?:\w[\w.]* *[:=][ \w]*|)\bfunction\b.+{|(?!catch|if|for|try|while)\w[\w.]* *\(.*?\) *{).*\n)|^ *\/\/\S.*?\n|^ ? ?( *\/\/ .+\n)|^ ?( *).+?( \/\/ .+\n)|^.*?\n(\n)*/gm, "$1$2$3$4$5")
     .trim(),
   dboxDirlist: str =>
-    // extract folder/file names from Dropbox folder meta data
+    // extract folder/file names in Dropbox folder meta data
     str.replace(/^ *"path_display": "(.*?)",(\n)|.*\n/gm, "$1$2"),
   gmailCleanup: str =>
     // standardize spaces, blank lines, blockquotes of Google-email content

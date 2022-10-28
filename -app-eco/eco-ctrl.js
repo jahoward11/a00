@@ -4438,8 +4438,7 @@ u2Blob(url) { // also triggered by prjDiscGen, jdeDftGen, dviz-memos, dviz-conta
   return aurls[(url || "").replace(/^\S*\//, "")] || aurls[url]
   || (url || "").replace(/^\.\.\/\.\.(?!\/a00\/)(?=\S+[^\s\/]$)/, a00orig) || url;
 },
-objQA(key = key !== 0 ? "" : "0", fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-memos
-  key = "" + key;
+objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-memos
   let pty,
     rsltFbk = rslt => pty && fbx ? ""
       : /^(?:keys|ks?)$/i.test(pty) && ecoqjs.fncTry(Object.keys, rslt) || rslt,
@@ -4449,6 +4448,7 @@ objQA(key = key !== 0 ? "" : "0", fbx) { // also triggered by rsrcsXGet, attInp,
       : pty[2] ? window[pty[1]]["keys"] || ecoqjs.fncTry(Object.keys, window.eval(pty[1]))
       : !/^Handlebars$/.test(key) ? window[key]
       : Object.assign(Object.assign({}, Handlebars), { Parser: {}, default: {} }) );
+  key = key == null ? "" : "" + key;
   return gloObj() || ( /^attlist/.test(key) ? attListGen()
   : /^pfslist/.test(key) ? pfsListGen()
   : /^(?:HLJS|)STYS?/i.test(key) ? HLJSSTYS[ptyTest(1)] || rsltFbk(HLJSSTYS)
