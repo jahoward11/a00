@@ -3017,8 +3017,11 @@ function couchQry(txdata, destindr, cbfnc) {
 }
 
 function couchPut(txdata = txdPrep()[0]) {
-// data sources: 1 valcon-json+doc(s)->txdata, 2 valcon-json->txdata & jderaw-json/fw-obj,
-// 3 fwUpdPrep-obj+vassets-json->txdata, 4 pchUpd-obj(+doc)->txdata (& fw-obj)
+// data sources:
+// 1 valcon-json+doc(s)->txdata
+// 2 valcon-json->txdata & jderaw-json/fw-obj
+// 3 fwUpdPrep-obj+vassets-json->txdata
+// 4 pchUpd-obj(+doc)->txdata (& fw-obj)
   txdata = txCrdtlz(txdata);
   let dbpc2, subdir,
     dburl = txurlGen(txdata),
@@ -4439,11 +4442,12 @@ objQA(key = "", fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-
   let pty,
     rsltFbk = rslt => pty && fbx ? "" : /^(?:keys|ks?)$/i.test(pty) && Object.keys(rslt) || rslt,
     ptyTest = d => pty = key.replace(!d ? /^\w+\.(.+)$|.*/ : /^\w+\.(\d+)$|.*/, "$1"),
-    gloObj = () => !(pty = /^(\w+)(\.keys|\.ks?|)$/.exec(key)) ? window.eval(key)
-      : pty[2] ? window[pty[1]]["keys"] || Object.keys(window.eval(pty[1]))
+    gloObj = () => (/^import\(/.test(key) || window[key.replace(/^new +|[.(].+/g, "")])
+      && ( !(pty = /^(\w+)(\.keys|\.ks?|)$/.exec(key)) ? ecoqjs.fncTry(window.eval, key)
+      : pty[2] ? window[pty[1]]["keys"] || ecoqjs.fncTry(Object.keys, window.eval(pty[1]))
       : !/^Handlebars$/.test(key) ? window[key]
-      : Object.assign(Object.assign({}, Handlebars), { Parser: {}, default: {} });
-  return /^attlist/.test(key) ? attListGen()
+      : Object.assign(Object.assign({}, Handlebars), { Parser: {}, default: {} }) );
+  return gloObj() || ( /^attlist/.test(key) ? attListGen()
   : /^pfslist/.test(key) ? pfsListGen()
   : /^(?:HLJS|)STYS?/i.test(key) ? HLJSSTYS[ptyTest(1)] || rsltFbk(HLJSSTYS)
   : /^(?:COUCH|C)TXD/i.test(key) ? COUCHTXD[ptyTest(1)] || rsltFbk(COUCHTXD)
@@ -4476,8 +4480,7 @@ objQA(key = "", fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-
   : /^2|^couch|^c?accts?|^c?accounts?/i.test(key) ? caccts[ptyTest(1)] || rsltFbk(caccts)
   : /^1|^(?:eco|)idtoks?/i.test(key) ? idtoks && idtoks[ptyTest()] || rsltFbk(idtoks)
   : /^0|epsets?|(?:eco|)presets?/i.test(key) ? epsets && epsets[ptyTest()] || rsltFbk(epsets)
-  : /^import\(/.test(key) || window[key.replace(/^new +|[.(].+/g, "")]
-    ? gloObj() : rsltFbk(ECOINSTR[0]);
+  : rsltFbk(ECOINSTR[0]) );
 },
 tmplLoad() {
   let tmplrads = document.querySelector('#ecoguides #tmplrad').elements["tmplrad"],
