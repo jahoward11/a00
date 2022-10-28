@@ -185,7 +185,7 @@ const ECOINSTR = [
 + ' $(global-var) | system/user-created global variable (primitive/JS-object/method)\n\n'
 + '__Notes__\n'
 + '- Append `.`-idx/key to access specific element (by index) or property (by key) within object.\n'
-+ '- Append `.keys` to list all property keys of object.\n'
++ '- Append `.keys` (or `.k`) to list all property keys of object.\n'
 + '- For `$filewkg` (or `$f1`) & `$file2nd` (or `$f2`):\n'
 + '  + if loaded DB file has content, append `.c` to return content text only;\n'
 + '  + if publmgr file is loaded, append `.s` to return style text only;\n'
@@ -1822,9 +1822,9 @@ function jdePtyGen(rowslr, plai, plbgi) {
         j1e[1] !== null || (j1e[1] = "null"); //j1e[0] === "_rev" &&
         j2e[1] !== null || (j2e[1] = "null"); //j2e[0] === "_rev" &&
       }
-      jdstr = typeof jfw[j1e[0]] === 'string' && /\n/.test(jfw[j1e[0]])
-        || typeof jfw[j1e[0]] === 'object' && jfw[j1e[0]] !== null
+      jdstr = typeof jfw[j1e[0]] === 'object' && jfw[j1e[0]] !== null
           && (!Array.isArray(jfw[j1e[0]]) || jfw[j1e[0]].some(ob => ob && typeof ob === 'object'))
+        || typeof j1e[1] === 'string' && (/\n/.test(j1e[1]) || j1e[1].length > 96)
         || typeco && /^bio_short$|^body$|^content$|^descr\w+$|^miscellany$|^texthl$/.test(j1e[0])
         || /^_attachments|^_revs_info$|^cursor$|^entries\u200b\.\d+$|^fnc$|^indexes.+$|^(?:last|update)_seq$|^results\u200b\.\d+$|^rewrites$|^rows\u200b\.\d+$|^validate_doc_update$|^views.+\.map$|^views.+\.options$/.test(j1e[0]);
       jdinp = (Array.isArray(j1e[1]) && !/^results$|^rows$/.test(j1e[0]))
@@ -4437,9 +4437,9 @@ u2Blob(url) { // also triggered by prjDiscGen, jdeDftGen, dviz-memos, dviz-conta
 },
 objQA(key = "", fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-memos
   let pty,
-    rsltFbk = rslt => pty && fbx ? "" : /^keys$/i.test(pty) && Object.keys(rslt) || rslt,
+    rsltFbk = rslt => pty && fbx ? "" : /^(?:keys|ks?)$/i.test(pty) && Object.keys(rslt) || rslt,
     ptyTest = d => pty = key.replace(!d ? /^\w+\.(.+)$|.*/ : /^\w+\.(\d+)$|.*/, "$1"),
-    gloObj = () => !(pty = /^(\w+)(\.keys|)$/.exec(key)) ? window.eval(key)
+    gloObj = () => !(pty = /^(\w+)(\.keys|\.ks?|)$/.exec(key)) ? window.eval(key)
       : pty[2] ? window[pty[1]]["keys"] || Object.keys(window.eval(pty[1]))
       : !/^Handlebars$/.test(key) ? window[key]
       : Object.assign(Object.assign({}, Handlebars), { Parser: {}, default: {} });
