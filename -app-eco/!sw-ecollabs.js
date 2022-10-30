@@ -1,11 +1,12 @@
 // Service Worker
 
-const cacheName = "ecollabs0.14",
+const cacheName = "ecollabs0.15",
   cacheKeeplist = [cacheName],
   appShellFiles = [
     "../-app-eco/!eco.webmanifest",
     "../-app-eco/ecollabs0.html",
-    "../-app-eco/eco-ctrl.js",
+    "../-app-eco/eco-ctrl0.js",
+    "../-app-eco/eco-srvc0.js",
     "../-app-eco/eco-srvc1.js",
     "../-app-eco/eco-srvc2.js",
     "../-app-eco/eco-srvc3.mjs",
@@ -47,8 +48,8 @@ self.addEventListener('activate', e => {
     + ((Date.now() - tstamp) / (60 * 1000)) + " min)" );
   e.waitUntil(
     caches.keys().then( keyList => Promise.all( keyList.map( key =>
-      !key.startsWith(cacheName.replace(/[\d-].+/, "")) || cacheKeeplist.indexOf(key) > -1
-      || caches.delete(key) ))) );
+      !key.startsWith(cacheName.replace(/[\d-].+/, ""))
+      || cacheKeeplist.indexOf(key) > -1 || caches.delete(key) ))) );
 });
 
 self.addEventListener('fetch', e => {

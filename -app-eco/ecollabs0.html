@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Ecollabs 0.14</title>
+<title>Ecollabs 0.15</title>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="mobile-web-app-capable" content="yes" />
@@ -4018,106 +4018,6 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
       <div class="label has-text-grey-light">Common Commands</div>
       <div class="field control select">
         <select id="jsclist" onfocus="EC1.formFoc()" onchange="EC2.jsconInj(event)">
-          <option></option>
-          <option>innerWidth</option>
-          <option>document.documentElement.clientWidth</option>
-          <option>screen.width</option>
-          <option>location.href</option>
-          <option>navigator.onLine</option>
-          <option>
-            Object.fromEntries(
-&#x2028; ["onLine", "appCodeName", "appName", "platform", "product", "vendor", "userAgent", "userAgentData"]
-&#x2028; .map(e => [e, navigator[e]]) )
-          </option>
-          <option>new Date().toUTCString()</option>
-          <option>new Date().toISOString()</option>
-          <option>new Date().toLocaleString()</option>
-          <option>encodeURI("abc !\"#$%&amp;'()*+,-./:;&lt;=&gt;?@[\\]^_`{|}~123")</option>
-          <option>decodeURI("%22%20%22%25%3C%3E%5B%5C%5D%5E%60%7B%7C%7D")</option>
-          <option>Array.from(Array(5).keys())</option>
-          <option>Object.keys(ecomjs)</option>
-          <option>Object.keys(ecoqjs)</option>
-          <option>
-            Object.fromEntries( Object.entries(ecoqjs)
-&#x2028; .map(oe =&gt; [oe[0], oe[1].toString()]) )
-          </option>
-          <option>Object.keys(localStorage).filter(e =&gt; !/mrview-/.test(e))</option>
-          <option>//localStorage["key"] = "value"</option>
-          <option>//localStorage.removeItem("key")</option>
-          <option>Object.getOwnPropertyNames(Math)</option>
-          <option>Object.getOwnPropertyNames(Number)</option>
-          <option>EC2.u2Blob("avatar000.png")</option>
-          <option>EC2.objQA("urls")</option>
-          <option>EC2.objQA("epsets")</option>
-          <option>EC2.objQA("filewkg")</option>
-          <option>EC2.objQA("lnkstor")</option>
-          <option>EC2.objQA("updpch")</option>
-          <option>EC2.objQA("MODJS.keys")</option>
-          <option>EC2.objQA("TMPLS.publmgr").parseconfigs.scriptsconstr[0].deftxt</option>
-          <option>qcontxta.value = JSON.stringify(EC2.objQA("idtoks.idTokenPayload"), null, 2); EC2.qconSyncD();</option>
-          <option>//PouchDB("mydb1").get("myfile").then(doc =&gt; doc.filefrags[0].contenttxt)</option>
-          <option>fetch(EC2.u2Blob("ebook-annos-fns.js")).then(resp => resp.text())</option>
-          <option>document.querySelector('head').innerHTML.replace(/&lt;style[^]+/, "")</option>
-          <option>document.querySelector('head&gt;style').innerHTML</option>
-          <option>document.querySelector('#ecolinks').innerHTML</option>
-          <option>document.querySelector('#iniscripts').innerHTML.replace(/(?=&lt;\w)/g, "\n")</option>
-          <option>document.querySelector('#iniscripts&gt;script:last-child').outerHTML</option>
-          <option>document.querySelector('#ecoscripts').innerHTML</option>
-          <option>document.querySelector('body&gt;script:last-child').outerHTML</option>
-          <option>Array.from(document.querySelectorAll('[id]')).map(e => e.id)</option>
-          <option>Array.from(document.querySelectorAll('script')).map(e => e.src)</option>
-          <option>sc2Inj = u =&gt; { let n = document.createElement('script'); !(n.src = u) || document.querySelector('#iniscripts').appendChild(n); }</option>
-          <option>getComputedStyle(document.documentElement).width</option>
-          <option>getComputedStyle(document.documentElement).font</option>
-          <option>Array.from(document.styleSheets).map(ss =&gt; ss.href)</option>
-          <option>Array.from(document.styleSheets[0].rules).map(ru =&gt; ru.cssText)</option>
-          <option>indexedDB.databases()</option>
-          <option>caches.keys()</option>
-          <option>
-            caches.keys().then( keys =&gt;
-&#x2028; caches.open(keys[0]).then( cache =&gt; cache.keys().then( keys =&gt;
-&#x2028; keys.map(k =&gt; ({ url: k.url, mode: k.mode, dest: k.destination })) )))
-          </option>
-          <option>
-            Object.keys(window).filter( pty =&gt;
-&#x2028; Object.entries(Object.getOwnPropertyDescriptor(window, pty) || "")
-&#x2028; .filter(e =&gt; ['value', 'writable', 'enumerable'].includes(e[0]) &amp;&amp; e[1])
-&#x2028; .length === 3 )
-          </option>
-          <option>
-            { let k, keys = [];
-&#x2028; for (k in document.documentElement) keys.push(k);
-&#x2028; keys.filter(k =&gt; !/^on|^aria/.test(k)).sort(); }
-          </option>
-          <option>
-            // JavaScript inspect, helper functions
-&#x2028; I1 = ecoqjs.jvarXtract; // generate array of JS variable names
-&#x2028; I2 = ecoqjs.jcmtXtract; // list JS function names & comments
-&#x2028; I3 = s =&gt; s.replace(/[^]+?\n(function rdataFetch.+(?:\n.+)+?(?:;?\s*};?|;)\n|(?=.*$))[\n\S][^]*/, "$1"); ""
-          </option>
-          <option>jtxt = ecoscripts.innerHTML; "" // I1(jtxt)</option>
-          <option>Q1 = (k = "f.c") =&gt; Promise.resolve(EC2.objQA(k)); "" // Q1().then(I2)</option>
-          <option>fetch("../-app-eco/eco-ctrl.js").then(re =&gt; re.text()).then(I3)</option>
-          <option>
-            // Console table: ASCII (Latin, Basic) &amp; 8-bit-character (Latin-1 Supp) reference
-&#x2028; Array.from(Array(64).keys()).map(e =&gt; [0, 64, 128, 192].map(d =&gt; "0x" + (d + e).toString(16) + (!d &amp;&amp; e < 16 ? "  " : " " + String.fromCodePoint(d + e))).join("\t")).join("\n")
-          </option>
-          <option>
-            // Preview table: ASCII (Latin, Basic) &amp; 8-bit-character (Latin-1 Supp) reference
-&#x2028; Array.from(Array(64).keys()).map(e =&gt; [0, 64, 128, 192].map(d =&gt; "0x" + (d + e).toString(16) + (!d &amp;&amp; e < 16 ? "  " : d + e == 124 ? " \\|" : " " + String.fromCodePoint(d + e))).join(" | ")).join("\n")
-          </option>
-          <option>
-            // Console table: Greek alphabet reference
-&#x2028; Array.from(Array(25).keys()).map(e =&gt; (913 + e) + "/" + (945 + e) + " " + [913, 945].map(d =&gt; String.fromCodePoint(d + e)).join(" ")).join("\n")
-          </option>
-          <option>
-            // Console table: space- &amp; odd-character reference
-&#x2028; ecomjs.spachars.map(e =&gt; e[1] + "\n  ]" + (/^(?:9|10|11|12|13|820[67]|823[23])$/.test(e[0]) ? "" : String.fromCodePoint(e[0])) + "[\t0x" + e[0].toString(16) + "\t" + (e[2] || "")).join("\n")
-          </option>
-          <option>
-            // Preview table: space- &amp; odd-character reference
-&#x2028; ecomjs.spachars.map(e =&gt; "| ]" + (/^(?:9|10|11|12|13|820[67]|823[23])$/.test(e[0]) ? "" : String.fromCodePoint(e[0])) + "[ | " + e[0] + " | 0x" + e[0].toString(16) + " | " + e[1] + " | " + (e[2] || "").replace(/&amp;/g, "&amp;amp;") + " |").join("\n")
-          </option>
         </select>
       </div>
     </div>
@@ -5367,6 +5267,13 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 {{/each}}
 </script>
 
+<script id="jsclist-tmpl" type="text/x-handlebars-template">
+<option></option>
+{{#each jscitems}}
+<option>{{this}}</option>
+{{/each}}
+</script>
+
 <script id="dbolist-tmpl" type="text/x-handlebars-template">
 <option></option>
 {{#each pchitems}}
@@ -5415,14 +5322,14 @@ const hostgh = /\.github\.io$/.test(window.location.host),
   DB_NAMES = ["a00"], //DB_VERSIONS = [5],
   DB_STORES = ["document-store", "by-sequence", "attach-store"],
   FILE_IDS = ["-res-js", "-res-js", "-res-js", "", "-res-mdit", "-res-js",
-    "-res-js", "-res-js", "-res-js", "-app-eco"],
+    "-res-js", "-res-js", "-res-js", "-app-eco", "-app-eco"],
   ATT_KEYS = ["pouchdb.min.js", "pouchdb.all-dbs.min.js", "appid.min.js",
-    "", "markdown-it.min.js", "handlebars.min.js",
-    "localforage.min.js", "highlight.min.js", "dropbox-oauth2.js", "eco-ctrl.js"],
+    "", "markdown-it.min.js", "handlebars.min.js", "localforage.min.js",
+    "highlight.min.js", "dropbox-oauth2.js", "eco-srvc0.js", "eco-ctrl0.js"],
   MDIT_REFS = ["markdown-it.min.js", "markdown-it-attrs.browser.js", "abbr", "container",
     "deflist", "emoji-light", "footnote", "for-inline", "ins", "mark", "sub", "sup",
     "anchor", "decorate", "implicit-figures"], //"emoji",
-  INI_ASSETS = FILE_IDS.map( (e, i) => !e ? "" : ( protfile && platipd2 && i !== 9
+  INI_ASSETS = FILE_IDS.map( (e, i) => !e ? "" : ( protfile && platipd2 && i < 9
     ? a00orig + "/a00" : a00path ) + "/" + e + "/" + ATT_KEYS[i] ),
   respShow = resp => qcontxta.value += !resp ? ""
     : ( resp.target && resp.target.error ? "**" + resp.target.error
@@ -5487,6 +5394,9 @@ const hostgh = /\.github\.io$/.test(window.location.host),
     .then( () => dbpch && dbpch.getAttachment( FILE_IDS[9],
       protfile || window.navigator.onLine ? null : ATT_KEYS[9] )).then(scrInjPr)
     .catch(() => scrInjPr(INI_ASSETS[9]).catch(respShow))
+    .then( () => dbpch && dbpch.getAttachment( FILE_IDS[10],
+      protfile || window.navigator.onLine ? null : ATT_KEYS[10] )).then(scrInjPr)
+    .catch(() => scrInjPr(INI_ASSETS[10]).catch(respShow))
     .then(() => /Style/.test(qcontxta.value) || !window.EC1 || espBndl())
     .then(() => idbrslt && idbrslt.close())
     .then(() => idbReq = dbpch = null)
