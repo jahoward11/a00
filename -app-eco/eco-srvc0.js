@@ -14,6 +14,98 @@ EC0.STYS = [[
   "tomorrow-night-blue.css", "tomorrow-night-bright.css", "tomorrow-night-eighties.css", "tomorrow-night.css", "tomorrow.css", "vs.css", "xcode.css", "xt256.css", "zenburn.css"
 ]];
 
+EC0.JSCON = [
+  `innerWidth`,
+  `document.documentElement.clientWidth`,
+  `screen.width`,
+  `location.href`,
+  `navigator.onLine`,
+  `Object.fromEntries(
+\\n ["onLine", "appCodeName", "appName", "platform", "product", "vendor", "userAgent", "userAgentData"]
+\\n .map(e => [e, navigator[e]]) )`,
+  `new Date().toUTCString()`,
+  `new Date().toISOString()`,
+  `new Date().toLocaleString()`,
+  `encodeURI("abc !\\"#$%&'()*+,-./:;<=>?@[\\\\]^_\`{|}~123")`,
+  `decodeURI("%22%20%22%25%3C%3E%5B%5C%5D%5E%60%7B%7C%7D")`,
+  `Array.from(Array(5).keys())`,
+  `Object.keys(ecomjs)`,
+  `Object.keys(ecoqjs)`,
+  `Object.fromEntries( Object.entries(ecoqjs)
+\\n .map(oe => [oe[0], oe[1].toString()]) )`,
+  `Object.keys(localStorage).filter(e => !/mrview-/.test(e))`,
+  `//localStorage["key"] = "value"`,
+  `//localStorage.removeItem("key")`,
+  `Object.getOwnPropertyNames(Math)`,
+  `Object.getOwnPropertyNames(Number)`,
+  `EC2.u2Blob("avatar000.png")`,
+  `EC2.objQA("urls")`,
+  `EC2.objQA("epsets")`,
+  `EC2.objQA("filewkg")`,
+  `EC2.objQA("lnkstor")`,
+  `EC2.objQA("updpch")`,
+  `EC2.objQA("MODJS.keys")`,
+  `EC2.objQA("TMPLS.publmgr").parseconfigs.scriptsconstr[0].deftxt`,
+  `qcontxta.value = JSON.stringify(EC2.objQA("idtoks.idTokenPayload"), null, 2); EC2.qconSyncD();`,
+  `//PouchDB("mydb1").get("myfile").then(doc => doc.filefrags[0].contenttxt)`,
+  `fetch(EC2.u2Blob("ebook-annos-fns.js")).then(resp => resp.text())`,
+  `document.head.innerHTML.replace(/<style[^]+/, "")`,
+  `document.querySelector('head>style').innerHTML`,
+  `document.querySelector('#ecolinks').innerHTML`,
+  `document.querySelector('#iniscripts').innerHTML.replace(/(?=<\\w)/g, "\\n")`,
+  `document.querySelector('#iniscripts>script:last-child').outerHTML`,
+  `document.querySelector('#ecoscripts').innerHTML`,
+  `document.querySelector('body>script:last-child').outerHTML`,
+  `Array.from(document.querySelectorAll('[id]')).map(e => e.id)`,
+  `Array.from(document.querySelectorAll('script')).map(e => e.src)`,
+  `sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.querySelector('#iniscripts').appendChild(n); }; ""`,
+  `getComputedStyle(document.documentElement).width`,
+  `getComputedStyle(document.documentElement).font`,
+  `Array.from(document.styleSheets).map(ss => ss.href)`,
+  `Array.from(document.styleSheets[0].rules).map(ru => ru.cssText)`,
+  `indexedDB.databases()`,
+  `caches.keys()`,
+  `caches.keys().then( keys =>
+\\n caches.open(keys[0]).then( cache => cache.keys().then( keys =>
+\\n keys.map(k => ({ url: k.url, mode: k.mode, dest: k.destination })) )))`,
+  `Object.keys(window).filter( pty =>
+\\n Object.entries(Object.getOwnPropertyDescriptor(window, pty) || "")
+\\n .filter(e => ['value', 'writable', 'enumerable'].includes(e[0]) && e[1])
+\\n .length === 3 )`,
+  `{ let k, keys = [];
+\\n for (k in document.documentElement) keys.push(k);
+\\n keys.filter(k => !/^on|^aria/.test(k)).sort(); }`,
+  `// JavaScript inspect, helper functions
+\\n I1 = ecoqjs.jvarXtract; "" // generate array of JS variable names
+\\n I2 = ecoqjs.jcmtXtract; "" // list JS function names & comments
+\\n I3 = s => s.replace(/[^]+?\\n(function rdataFetch.+(?:\\n.+)+?(?:;?\\s*};?|;)\\n|(?=.*$))[\\n\\S][^]*/, "$1"); ""`,
+  `jtxt = ecoscripts.innerHTML; ""; // I1(jtxt)`,
+  `Q1 = (k = "f.c") => Promise.resolve(EC2.objQA(k)); ""; // Q1().then(I2)`,
+  `fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then(I3)`,
+  `// Console table: ASCII (Latin, Basic) & 8-bit-character (Latin-1 Supp) reference
+\\n Array.from(Array(64).keys()).map(e => [0, 64, 128, 192].map(d => "0x" + (d + e).toString(16) + (!d && e < 16 ? "  " : " " + String.fromCodePoint(d + e))).join("\\t")).join("\\n")`,
+  `// Preview table: ASCII (Latin, Basic) & 8-bit-character (Latin-1 Supp) reference
+\\n Array.from(Array(64).keys()).map(e => [0, 64, 128, 192].map(d => "0x" + (d + e).toString(16) + (!d && e < 16 ? "  " : d + e == 124 ? " \\\\|" : " " + String.fromCodePoint(d + e))).join(" | ")).join("\\n")`,
+  `// Console table: Greek alphabet reference
+\\n Array.from(Array(25).keys()).map(e => (913 + e) + "/" + (945 + e) + " " + [913, 945].map(d => String.fromCodePoint(d + e)).join(" ")).join("\\n")`,
+  `// Console table: space- & odd-character reference
+\\n ecomjs.spachars.map(e => e[1] + "\\n  ]" + (/^(?:9|10|11|12|13|820[67]|823[23])$/.test(e[0]) ? "" : String.fromCodePoint(e[0])) + "[\\t0x" + e[0].toString(16) + "\\t" + (e[2] || "")).join("\\n")`,
+  `// Preview table: space- & odd-character reference
+\\n ecomjs.spachars.map(e => "| ]" + (/^(?:9|10|11|12|13|820[67]|823[23])$/.test(e[0]) ? "" : String.fromCodePoint(e[0])) + "[ | " + e[0] + " | 0x" + e[0].toString(16) + " | " + e[1] + " | " + (e[2] || "").replace(/&/g, "&amp;") + " |").join("\\n")`
+];
+
+EC0.XREQD = {
+  xmet: 'GET',
+  xmts: ['GET', 'GET', 'POST', 'POST'],
+  url:  localStorage["_ecoxserver"]
+    || "https://us-south.functions.appdomain.cloud/api/v1/web/f9c5f19e-072b-41a9-805e-d55d5e5d121c",
+  epts: ["", "/eco/project-list.json", "/eco/db-query.json", "/eco/key-request.json"],
+  prms: {},
+  hdrs: {},
+  bmet: 'json',
+  bmts: ['json']
+};
+
 EC0.CTXD = [
   {
     USRNAM: "username",
@@ -77,17 +169,186 @@ EC0.CTXD = [
   }
 ];
 
-EC0.XREQD = {
-  xmet: 'GET',
-  xmts: ['GET', 'GET', 'POST', 'POST'],
-  url:  localStorage["_ecoxserver"]
-    || "https://us-south.functions.appdomain.cloud/api/v1/web/f9c5f19e-072b-41a9-805e-d55d5e5d121c",
-  epts: ["", "/eco/project-list.json", "/eco/db-query.json", "/eco/key-request.json"],
-  prms: {},
-  hdrs: {},
-  bmet: 'json',
-  bmts: ['json']
-};
+EC0.INSTR = [
+  '### App JS Objects -- Quick-Access Notation\n\n'
++ ' $0 or $epsets | custom app settings\n'
++ ' $1 or $idtoks | IBM identity & access tokens\n'
++ ' $2 or $accts  | CouchDB user accounts\n'
++ ' $3 or $team   | team-member identities\n'
++ ' $4 or $urls   | preloaded, web-asset (BLOb-)URLs\n'
++ ' $5 or $MODJS  | app bundled, JS modules\n'
++ ' $6 or $TMPLS  | app bundled, DB-file templates\n'
++ ' $7 or $INSTR  | HTTP-console instructions\n'
++ ' $8 or $CTXD   | CouchDB-transactions data templates\n'
++ ' $9 or $XREQD  | fetch-requests data template\n'
++ ' $JSCON        | common-use JS-console commands\n'
++ ' $STYS         | HighlightJS CSS-file lists\n'
++ ' $SDOCS        | ready-made, publishable source documents\n'
++ ' $wdGen        | generated result (HTML web doc) of working, publmgr file\n'
++ ' $filewkg, $f1 | working-file JSON\n'
++ ' $file2nd, $f2 | loaded 2nd-file JSON\n'
++ ' $tmp1ff       | loaded publmgr template of working-file’s content\n'
++ ' $tmp1pc       | loaded publmgr template of working-file’s parse configs\n'
++ ' $pf3stor      | File-load select-list data storage\n'
++ ' $lnkstor      | current, CSS @import expansion data\n'
++ ' $updpch       | remote CouchDB, last-sync data\n'
++ ' $updseq       | remote CouchDB, last-sync sequence number\n'
++ ' $econet       | retrieved ECONET project previews\n'
++ ' $dbpch        | PouchDB object of currently open DB\n'
++ ' $urole        | user’s team role in currently open DB\n'
++ ' $(global-var) | system/user-created global variable (primitive/JS-object/method)\n\n'
++ '__Notes__\n'
++ '- Append `.`-idx/key to access specific element (by index) or property (by key) within object.\n'
++ '- Append `.keys` (or `.k`) to list all property keys of object.\n'
++ '- For `$filewkg` (or `$f1`) & `$file2nd` (or `$f2`):\n'
++ '  + if loaded DB file has content, append `.c` to return content text only;\n'
++ '  + if publmgr file is loaded, append `.s` to return style text only;\n'
++ '  + if publmgr file is loaded, append `.h` to return generated result (HTML web doc).\n'
++ '- Objects may also be accessed from within script using app JS method `EC2.objQA()`.  \n'
++ '  Provide quick-access notation as first argument -- surrounded by quotes, but without leading `$`.\n'
++ '- Web-asset BLOb-URLs may be individually accessed from within script using app JS method `EC2.u2Blob()`.  \n'
++ '  Provide web-asset name as first argument -- surrounded by quotes.\n'
++ '- Web doc may be generated from publmgr JSON within script using app JS method `EC2.wdGen()`.  \n'
++ '  Provide publmgr JSON (object literal or object reference, without quotes) as first argument.\n',
+  '### COUCHDB SYNC INSTRUCTIONS ###\n\n'
++ 'In *HTTP console*, enter transaction data & tap *SyncD*:\n\n'
++ '- Get/Set localStorage data (like, DB access data).  \n'
++ '  Setter JSON, e.g.:\n'
++ '  {\n'
++ '    "$_couchaccts": [\n'
++ '      { "DBNAME": "mydb1" },\n'
++ '      { "DBNAME": "mydb2" }\n'
++ '    ]\n'
++ '  } // set array of (remote) CouchDB accounts\n'
++ '  { "$_couchaccts": null }\n'
++ '    // unset CouchDB-account data\n'
++ '  Getter notation, e.g.: `_couchaccts`, `_` (shorthand), `1` (acct-index), `mydb2` (acct-DBNAME), `_ecoidtoks`, `_ecopresets`\n\n'
++ '- Display open local-DB info: ` ` (blank)\n\n'
++ '- Display list of local DBs: `/_all_dbs`\n\n'
++ '- Create/Open/Close local DB: `/` or `/`-DBNAME\n\n'
++ '- Create/Open/DESTROY/COMPACT/CLEANUP local/remote DB.  \n'
++ '  In transaction JSON, specify DB name; If relevant, include destructive-action property with value `true`, e.g.:\n'
++ '  {\n'
++ '    "DBNAME": "myPrjHomeDB01",\n'
++ '    "COMPACT":true\n'
++ '  }\n\n'
++ '- Create/DESTROY multiple, local DBs at once.  \n'
++ '  Provide multiple transaction objects within array, e.g.:\n'
++ '  [\n'
++ '    { "DBNAME": "mydb1", "DESTROY": true },\n'
++ '    { "DBNAME": "mydb2", "DESTROY": true },\n'
++ '    { "DBNAME": "mydb3" },\n'
++ '    { "DBNAME": "mydb4" }\n'
++ '  ]\n\n'
++ '- Perform SYNC operation.  \n'
++ '  Provide remote-DB transaction JSON (while matching, local DB is open), e.g.:\n'
++ '  {\n'
++ '    "USRNAM": "username",\n'
++ '    "PSSWRD": "password",\n'
++ '    "DBORIG": "https://subdomain.cloudant.com",\n'
++ '    "DBNAME": "myPrjHomeDB01"\n'
++ '  }\n'
++ '  For one-direction SYNC, include in transaction JSON `RMTFR`/`RMTTO` property with value `true`, e.g.:\n'
++ '  { ..., "RMTFR": true } // for import only\n'
++ '  { ..., "RMTTO": true } // for export only\n',
+  '### COUCHDB QUERY INSTRUCTIONS ###\n\n'
++ '__Target:__ Query result gets sent to either *Preview* screen (for image) or one of *File Edit* & *JSON/Text Edit* screens (for text). Text result is loaded into *CONTENT* pane of *File Edit* screen only if field is both available & visible during import -- otherwise, into *JSON/Text Edit* screen.\n\n'
++ '__Alert:__ Working-file data is overwritten. No warning is given.\n\n'
++ 'In *HTTP console*, enter transaction data & tap *RetrvD*:\n\n'
++ '- ` ` (blank) -- to reset *Preview* screen, *Discuss* screen & *Edit Space* (i.e., unload working file & clear all text-edit fields).\n\n'
++ '- `$`-obj.idx/key -- to access active, JS-object data within app, e.g.:  \n'
++ '  `$` (list available JS objects),  \n'
++ '  `$team` (list abbr\'d, team-member data),  \n'
++ '  `$team.username` (retrieve one user identity)\n\n'
++ '- Local-DB transaction endpoint/filepath, e.g.:  \n'
++ '  `/_all_dbs`,  \n'
++ '  `_all_docs`, `_design_docs`, `_changes`,  \n'
++ '  `/`-DBNAME + `/` + FILEID + `/`-ATTKEY,  \n'
++ '  `//`-FILEID (retrieve non-DB, LOCAL temporary file)\n\n'
++ '- Remote-DB URL, e.g.:  \n'
++ '  `../../db/file/attach`,  \n'
++ '  `https://subdomain.cloudant.com​/db/file/attach`,  \n'
++ '  `https://username:password​@subdomain.cloudant.com​/db/file/attach`\n\n'
++ '- Transaction JSON, e.g.:  \n'
++ JSON.stringify(EC0.CTXD[0], null, 2)
+  .replace(/"FILEID": "/, "$&myfile").replace(/^/gm, "  ")
++ '\n  { "url": "https://host/pathname" } // retrieve non-DB, remote text\n',
+  '### COUCHDB COMMIT INSTRUCTIONS ###\n\n'
++ '__DB file storage:__ Working file gets committed (added/updated) to local/remote database. Working-file format must be JSON (i.e., must comprise keys/values). File `_id` property (&/or, transaction-JSON `FILEID` property) must provide unique, valid filename. Transaction data must, at least, include name of existing DB (e.g., as value of `DBNAME` property).  \n'
++ '__DB file deletion:__ DB file named in `FILEID` property gets flagged as deleted if `DELETE` property with value `true` is included in transaction JSON. Alternatively, same result is achieved manually when working file is committed after it is given `_deleted` property with value `true`.  \n'
++ '__Multiple commits:__ Multiple DB files are added/updated/deleted at once if `docs` property is included in transaction JSON, & provides array of one or more DB-file objects. For each file to be updated/deleted, corresponding file object must include `_rev` property with same value as preexisting file\'s revision-number string.\n\n'
++ 'In *HTTP console*, enter transaction data & tap *SubmD*:\n\n'
++ '- Add/update local/remote DB file.  \n'
++ '  Provide transaction data either as local-filepath/remote-URL or as JSON, e.g.:  \n'
++ '  `/myPrjHomeDB01/myfile`,  \n'
++ '  `https://username:password​@subdomain.cloudant.com​/db/file`,  \n'
++ JSON.stringify(EC0.CTXD[0], null, 2)
+  .replace(/"FILEID": "/, "$&myfile").replace(/^/gm, "  ")
++ '\n\n- Delete local/remote DB file.  \n'
++ '  Include `DELETE` property with value `true`, e.g.:\n'
++ JSON.stringify(EC0.CTXD[5], null, 2).replace(/^/gm, "  ")
++ '\n\n- Add/update/delete multiple, local/remote DB files at once.  \n'
++ '  Provide `docs` property with multiple, DB-file objects, e.g.:\n'
++ '  {\n'
++ '    "DBNAME": "myPrjHomeDB01",\n'
++ '    "docs":   [\n'
++ '      { "_id": "myfile01", "_rev": "rev01", "_deleted": true },\n'
++ '      { "_id": "myfile02", "_rev": "rev02", "content": "edited-file-cnt02" },\n'
++ '      { "_id": "myfile03", "content": "new-file-cnt03" },\n'
++ '      { "_id": "myfile04", "content": "new-file-cnt04" },\n'
++ '    ]\n'
++ '  }\n',
+  '### COUCHDB ATTACH INSTRUCTIONS ###\n\n'
++ '__Asset storage:__ Any text provided in *File-Data* field of *JSON/Text Edit* screen is converted to BLOb & attached to DB file named in `FILEID` property of transaction JSON. Alternatively, BLOb data may be provided directly in `CBLOB` property of transaction JSON.  \n'
++ '__Asset removal:__ If `REMOVE` property with value `true` is included in transaction JSON, attachment named with `ATTKEY` property is removed from DB file named with `FILEID` property.  \n'
++ '__Webpage direct:__ If working file is type *publmgr*, *publmgr* file gets parsed first; resulting webpage is then converted to BLOb & attached to indicated DB file.\n\n'
++ 'In *HTTP console*, enter transaction data & tap *SubmD*. Provide transaction data as:\n\n'
++ '- local-filepath/remote-URL, e.g.:  \n'
++ '  `/myPrjHomeDB07/-res-css​/mystylesheet.css`,  \n'
++ '  `https://username:password​@subdomain.cloudant.com​/db/file/attach`\n\n'
++ '- JSON text, e.g.:  \n'
++ '  {\n'
++ '    "DBNAME": "myPrjHomeDB07",\n'
++ '    "FILEID": "-res-css",\n'
++ '    "ATTKEY": "mystylesheet.css",\n'
++ '    "CTYPE":  "text/css"\n'
++ '  } // provide file content in *JSON/Text Edit* screen\n'
++ '  {\n'
++ '    "DBNAME": "myPrjHomeDB07",\n'
++ '    "FILEID": "-res-css",\n'
++ '    "ATTKEY": "mystylesheet.css",\n'
++ '    "CTYPE":  "text/css",\n'
++ '    "CBLOB":  "blob:..."\n'
++ '  } // provide converted file content in `CBLOB` property\n'
++ '  {\n'
++ '    "DBNAME": "myPrjHomeDB07",\n'
++ '    "FILEID": "-res-css",\n'
++ '    "ATTKEY": "mystylesheet.css",\n'
++ '    "REMOVE": true\n'
++ '  }\n',
+  '### DROPBOX TRANSACTION INSTRUCTIONS ###\n\n'
++ 'In *HTTP console*, enter JSON transaction data & tap either *RetrvD* or *SubmD*:  \n'
++ '{\n'
++ '  "dbox": "list_folder | get_metadata | download | upload | delete",\n'
++ '  "path": "/path/folder | /path/file",\n'
++ '  "mode": "overwrite"\n'
++ '} // for upload, provide file content in *JSON/Text Edit* screen\n\n'
++ 'To set *Dropbox* access token, enter following in *HTTP console* & tap *SyncD*:  \n'
++ '{ "$__dbat": "accesstoken" }\n',
+// ###
+  'Alert: File-update process disrupted.\nNote that credentials are required for DB commit.'
++ '\nAlso, filename (DB file ID) must:\n- be unique\n- begin with alphanumeric'
++ '\n- contain no spaces or punctuation,\n  except `_ ! . * + ~ -`'
++ '\n- not end with app flag characters,\n  like `~ ~00 * *(00)`',
+// ###
+  'Alert: Some @import-expansion conditions are not met.'
++ '\nTo generate CSS @import expansions, edit necessary file settings, then reload/render the publmgr file.'
++ '\nCheck that the `insertposition` property has a standard insert value, the `wrapperincl` property is set to `true`, and the `htmllinktxt` property has at least one, leading `@import URL;` line.'
++ '\nAlso, if preloading (option 2 below), check that the `linksinclrender` property is set to `true` and that the `parseconfigs.linksincl` field contains at least one CSS filepath.'
++ '\nDATA RETRIEVAL OPTIONS'
++ '\n1) If simply using DB queries or HTTP requests to generate the style data (at the time file is loaded), the publmgr file must be loaded with the `linksinclrender` property (of the `parseconfigs.linksconstr` field) set to `false`.'
++ '\n2) Otherwise, if generating style data from preloaded CSSOM styleSheets, CSS-file resources must be specified using the `parseconfigs.linksincl` field -- and they must be preloaded and their style data captured, then injected. This is accomplished in two passes: by first rendering the webpage in Preview with `linksinclrender` activated, then rendering the webpage in Preview a second time with `linksinclrender` de-activated.'
+];
 
 EC0.TMPLS = {
   publmgr: {
@@ -323,267 +584,6 @@ EC0.TMPLS = {
     miscellany: ""
   }
 };
-
-EC0.JSCON = [
-  `innerWidth`,
-  `document.documentElement.clientWidth`,
-  `screen.width`,
-  `location.href`,
-  `navigator.onLine`,
-  `Object.fromEntries(
-\\n ["onLine", "appCodeName", "appName", "platform", "product", "vendor", "userAgent", "userAgentData"]
-\\n .map(e => [e, navigator[e]]) )`,
-  `new Date().toUTCString()`,
-  `new Date().toISOString()`,
-  `new Date().toLocaleString()`,
-  `encodeURI("abc !\\"#$%&'()*+,-./:;<=>?@[\\\\]^_\`{|}~123")`,
-  `decodeURI("%22%20%22%25%3C%3E%5B%5C%5D%5E%60%7B%7C%7D")`,
-  `Array.from(Array(5).keys())`,
-  `Object.keys(ecomjs)`,
-  `Object.keys(ecoqjs)`,
-  `Object.fromEntries( Object.entries(ecoqjs)
-\\n .map(oe => [oe[0], oe[1].toString()]) )`,
-  `Object.keys(localStorage).filter(e => !/mrview-/.test(e))`,
-  `//localStorage["key"] = "value"`,
-  `//localStorage.removeItem("key")`,
-  `Object.getOwnPropertyNames(Math)`,
-  `Object.getOwnPropertyNames(Number)`,
-  `EC2.u2Blob("avatar000.png")`,
-  `EC2.objQA("urls")`,
-  `EC2.objQA("epsets")`,
-  `EC2.objQA("filewkg")`,
-  `EC2.objQA("lnkstor")`,
-  `EC2.objQA("updpch")`,
-  `EC2.objQA("MODJS.keys")`,
-  `EC2.objQA("TMPLS.publmgr").parseconfigs.scriptsconstr[0].deftxt`,
-  `qcontxta.value = JSON.stringify(EC2.objQA("idtoks.idTokenPayload"), null, 2); EC2.qconSyncD();`,
-  `//PouchDB("mydb1").get("myfile").then(doc => doc.filefrags[0].contenttxt)`,
-  `fetch(EC2.u2Blob("ebook-annos-fns.js")).then(resp => resp.text())`,
-  `document.head.innerHTML.replace(/<style[^]+/, "")`,
-  `document.querySelector('head>style').innerHTML`,
-  `document.querySelector('#ecolinks').innerHTML`,
-  `document.querySelector('#iniscripts').innerHTML.replace(/(?=<\\w)/g, "\\n")`,
-  `document.querySelector('#iniscripts>script:last-child').outerHTML`,
-  `document.querySelector('#ecoscripts').innerHTML`,
-  `document.querySelector('body>script:last-child').outerHTML`,
-  `Array.from(document.querySelectorAll('[id]')).map(e => e.id)`,
-  `Array.from(document.querySelectorAll('script')).map(e => e.src)`,
-  `sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.querySelector('#iniscripts').appendChild(n); }; ""`,
-  `getComputedStyle(document.documentElement).width`,
-  `getComputedStyle(document.documentElement).font`,
-  `Array.from(document.styleSheets).map(ss => ss.href)`,
-  `Array.from(document.styleSheets[0].rules).map(ru => ru.cssText)`,
-  `indexedDB.databases()`,
-  `caches.keys()`,
-  `caches.keys().then( keys =>
-\\n caches.open(keys[0]).then( cache => cache.keys().then( keys =>
-\\n keys.map(k => ({ url: k.url, mode: k.mode, dest: k.destination })) )))`,
-  `Object.keys(window).filter( pty =>
-\\n Object.entries(Object.getOwnPropertyDescriptor(window, pty) || "")
-\\n .filter(e => ['value', 'writable', 'enumerable'].includes(e[0]) && e[1])
-\\n .length === 3 )`,
-  `{ let k, keys = [];
-\\n for (k in document.documentElement) keys.push(k);
-\\n keys.filter(k => !/^on|^aria/.test(k)).sort(); }`,
-  `// JavaScript inspect, helper functions
-\\n I1 = ecoqjs.jvarXtract; "" // generate array of JS variable names
-\\n I2 = ecoqjs.jcmtXtract; "" // list JS function names & comments
-\\n I3 = s => s.replace(/[^]+?\\n(function rdataFetch.+(?:\\n.+)+?(?:;?\\s*};?|;)\\n|(?=.*$))[\\n\\S][^]*/, "$1"); ""`,
-  `jtxt = ecoscripts.innerHTML; ""; // I1(jtxt)`,
-  `Q1 = (k = "f.c") => Promise.resolve(EC2.objQA(k)); ""; // Q1().then(I2)`,
-  `fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then(I3)`,
-  `// Console table: ASCII (Latin, Basic) & 8-bit-character (Latin-1 Supp) reference
-\\n Array.from(Array(64).keys()).map(e => [0, 64, 128, 192].map(d => "0x" + (d + e).toString(16) + (!d && e < 16 ? "  " : " " + String.fromCodePoint(d + e))).join("\\t")).join("\\n")`,
-  `// Preview table: ASCII (Latin, Basic) & 8-bit-character (Latin-1 Supp) reference
-\\n Array.from(Array(64).keys()).map(e => [0, 64, 128, 192].map(d => "0x" + (d + e).toString(16) + (!d && e < 16 ? "  " : d + e == 124 ? " \\\\|" : " " + String.fromCodePoint(d + e))).join(" | ")).join("\\n")`,
-  `// Console table: Greek alphabet reference
-\\n Array.from(Array(25).keys()).map(e => (913 + e) + "/" + (945 + e) + " " + [913, 945].map(d => String.fromCodePoint(d + e)).join(" ")).join("\\n")`,
-  `// Console table: space- & odd-character reference
-\\n ecomjs.spachars.map(e => e[1] + "\\n  ]" + (/^(?:9|10|11|12|13|820[67]|823[23])$/.test(e[0]) ? "" : String.fromCodePoint(e[0])) + "[\\t0x" + e[0].toString(16) + "\\t" + (e[2] || "")).join("\\n")`,
-  `// Preview table: space- & odd-character reference
-\\n ecomjs.spachars.map(e => "| ]" + (/^(?:9|10|11|12|13|820[67]|823[23])$/.test(e[0]) ? "" : String.fromCodePoint(e[0])) + "[ | " + e[0] + " | 0x" + e[0].toString(16) + " | " + e[1] + " | " + (e[2] || "").replace(/&/g, "&amp;") + " |").join("\\n")`
-];
-
-EC0.INSTR = [
-  '### App JS Objects -- Quick-Access Notation\n\n'
-+ ' $0 or $epsets | custom app settings\n'
-+ ' $1 or $idtoks | IBM identity & access tokens\n'
-+ ' $2 or $accts  | CouchDB user accounts\n'
-+ ' $3 or $team   | team-member identities\n'
-+ ' $4 or $urls   | preloaded, web-asset (BLOb-)URLs\n'
-+ ' $5 or $INSTR  | HTTP-console instructions\n'
-+ ' $6 or $TMPLS  | app bundled, DB-file templates\n'
-+ ' $7 or $MODJS  | app bundled, JS modules\n'
-+ ' $8 or $XREQD  | fetch-requests data template\n'
-+ ' $9 or $CTXD   | CouchDB-transactions data templates\n'
-+ ' $SDOCS        | ready-made, publishable source documents\n'
-+ ' $JSCON        | common-use JS-console commands\n'
-+ ' $STYS         | HighlightJS CSS-file lists\n'
-+ ' $wdGen        | generated result (HTML web doc) of working, publmgr file\n'
-+ ' $filewkg, $f1 | working-file JSON\n'
-+ ' $file2nd, $f2 | loaded 2nd-file JSON\n'
-+ ' $tmp1ff       | loaded publmgr template of working-file’s content\n'
-+ ' $tmp1pc       | loaded publmgr template of working-file’s parse configs\n'
-+ ' $pf3stor      | File-load select-list data storage\n'
-+ ' $lnkstor      | current, CSS @import expansion data\n'
-+ ' $updpch       | remote CouchDB, last-sync data\n'
-+ ' $updseq       | remote CouchDB, last-sync sequence number\n'
-+ ' $econet       | retrieved ECONET project previews\n'
-+ ' $dbpch        | PouchDB object of currently open DB\n'
-+ ' $urole        | user’s team role in currently open DB\n'
-+ ' $(global-var) | system/user-created global variable (primitive/JS-object/method)\n\n'
-+ '__Notes__\n'
-+ '- Append `.`-idx/key to access specific element (by index) or property (by key) within object.\n'
-+ '- Append `.keys` (or `.k`) to list all property keys of object.\n'
-+ '- For `$filewkg` (or `$f1`) & `$file2nd` (or `$f2`):\n'
-+ '  + if loaded DB file has content, append `.c` to return content text only;\n'
-+ '  + if publmgr file is loaded, append `.s` to return style text only;\n'
-+ '  + if publmgr file is loaded, append `.h` to return generated result (HTML web doc).\n'
-+ '- Objects may also be accessed from within script using app JS method `EC2.objQA()`.  \n'
-+ '  Provide quick-access notation as first argument -- surrounded by quotes, but without leading `$`.\n'
-+ '- Web-asset BLOb-URLs may be individually accessed from within script using app JS method `EC2.u2Blob()`.  \n'
-+ '  Provide web-asset name as first argument -- surrounded by quotes.\n'
-+ '- Web doc may be generated from publmgr JSON within script using app JS method `EC2.wdGen()`.  \n'
-+ '  Provide publmgr JSON (object literal or object reference, without quotes) as first argument.\n',
-  '### COUCHDB SYNC INSTRUCTIONS ###\n\n'
-+ 'In *HTTP console*, enter transaction data & tap *SyncD*:\n\n'
-+ '- Get/Set localStorage data (like, DB access data).  \n'
-+ '  Setter JSON, e.g.:\n'
-+ '  {\n'
-+ '    "$_couchaccts": [\n'
-+ '      { "DBNAME": "mydb1" },\n'
-+ '      { "DBNAME": "mydb2" }\n'
-+ '    ]\n'
-+ '  } // set array of (remote) CouchDB accounts\n'
-+ '  { "$_couchaccts": null }\n'
-+ '    // unset CouchDB-account data\n'
-+ '  Getter notation, e.g.: `_couchaccts`, `_` (shorthand), `1` (acct-index), `mydb2` (acct-DBNAME), `_ecoidtoks`, `_ecopresets`\n\n'
-+ '- Display open local-DB info: ` ` (blank)\n\n'
-+ '- Display list of local DBs: `/_all_dbs`\n\n'
-+ '- Create/Open/Close local DB: `/` or `/`-DBNAME\n\n'
-+ '- Create/Open/DESTROY/COMPACT/CLEANUP local/remote DB.  \n'
-+ '  In transaction JSON, specify DB name; If relevant, include destructive-action property with value `true`, e.g.:\n'
-+ '  {\n'
-+ '    "DBNAME": "myPrjHomeDB01",\n'
-+ '    "COMPACT":true\n'
-+ '  }\n\n'
-+ '- Create/DESTROY multiple, local DBs at once.  \n'
-+ '  Provide multiple transaction objects within array, e.g.:\n'
-+ '  [\n'
-+ '    { "DBNAME": "mydb1", "DESTROY": true },\n'
-+ '    { "DBNAME": "mydb2", "DESTROY": true },\n'
-+ '    { "DBNAME": "mydb3" },\n'
-+ '    { "DBNAME": "mydb4" }\n'
-+ '  ]\n\n'
-+ '- Perform SYNC operation.  \n'
-+ '  Provide remote-DB transaction JSON (while matching, local DB is open), e.g.:\n'
-+ '  {\n'
-+ '    "USRNAM": "username",\n'
-+ '    "PSSWRD": "password",\n'
-+ '    "DBORIG": "https://subdomain.cloudant.com",\n'
-+ '    "DBNAME": "myPrjHomeDB01"\n'
-+ '  }\n'
-+ '  For one-direction SYNC, include in transaction JSON `RMTFR`/`RMTTO` property with value `true`, e.g.:\n'
-+ '  { ..., "RMTFR": true } // for import only\n'
-+ '  { ..., "RMTTO": true } // for export only\n',
-  '### COUCHDB QUERY INSTRUCTIONS ###\n\n'
-+ '__Target:__ Query result gets sent to either *Preview* screen (for image) or one of *File Edit* & *JSON/Text Edit* screens (for text). Text result is loaded into *CONTENT* pane of *File Edit* screen only if field is both available & visible during import -- otherwise, into *JSON/Text Edit* screen.\n\n'
-+ '__Alert:__ Working-file data is overwritten. No warning is given.\n\n'
-+ 'In *HTTP console*, enter transaction data & tap *RetrvD*:\n\n'
-+ '- ` ` (blank) -- to reset *Preview* screen, *Discuss* screen & *Edit Space* (i.e., unload working file & clear all text-edit fields).\n\n'
-+ '- `$`-obj.idx/key -- to access active, JS-object data within app, e.g.:  \n'
-+ '  `$` (list available JS objects),  \n'
-+ '  `$team` (list abbr\'d, team-member data),  \n'
-+ '  `$team.username` (retrieve one user identity)\n\n'
-+ '- Local-DB transaction endpoint/filepath, e.g.:  \n'
-+ '  `/_all_dbs`,  \n'
-+ '  `_all_docs`, `_design_docs`, `_changes`,  \n'
-+ '  `/`-DBNAME + `/` + FILEID + `/`-ATTKEY,  \n'
-+ '  `//`-FILEID (retrieve non-DB, LOCAL temporary file)\n\n'
-+ '- Remote-DB URL, e.g.:  \n'
-+ '  `../../db/file/attach`,  \n'
-+ '  `https://subdomain.cloudant.com​/db/file/attach`,  \n'
-+ '  `https://username:password​@subdomain.cloudant.com​/db/file/attach`\n\n'
-+ '- Transaction JSON, e.g.:  \n'
-+ JSON.stringify(EC0.CTXD[0], null, 2)
-  .replace(/"FILEID": "/, "$&myfile").replace(/^/gm, "  ")
-+ '\n  { "url": "https://host/pathname" } // retrieve non-DB, remote text\n',
-  '### COUCHDB COMMIT INSTRUCTIONS ###\n\n'
-+ '__DB file storage:__ Working file gets committed (added/updated) to local/remote database. Working-file format must be JSON (i.e., must comprise keys/values). File `_id` property (&/or, transaction-JSON `FILEID` property) must provide unique, valid filename. Transaction data must, at least, include name of existing DB (e.g., as value of `DBNAME` property).  \n'
-+ '__DB file deletion:__ DB file named in `FILEID` property gets flagged as deleted if `DELETE` property with value `true` is included in transaction JSON. Alternatively, same result is achieved manually when working file is committed after it is given `_deleted` property with value `true`.  \n'
-+ '__Multiple commits:__ Multiple DB files are added/updated/deleted at once if `docs` property is included in transaction JSON, & provides array of one or more DB-file objects. For each file to be updated/deleted, corresponding file object must include `_rev` property with same value as preexisting file\'s revision-number string.\n\n'
-+ 'In *HTTP console*, enter transaction data & tap *SubmD*:\n\n'
-+ '- Add/update local/remote DB file.  \n'
-+ '  Provide transaction data either as local-filepath/remote-URL or as JSON, e.g.:  \n'
-+ '  `/myPrjHomeDB01/myfile`,  \n'
-+ '  `https://username:password​@subdomain.cloudant.com​/db/file`,  \n'
-+ JSON.stringify(EC0.CTXD[0], null, 2)
-  .replace(/"FILEID": "/, "$&myfile").replace(/^/gm, "  ")
-+ '\n\n- Delete local/remote DB file.  \n'
-+ '  Include `DELETE` property with value `true`, e.g.:\n'
-+ JSON.stringify(EC0.CTXD[5], null, 2).replace(/^/gm, "  ")
-+ '\n\n- Add/update/delete multiple, local/remote DB files at once.  \n'
-+ '  Provide `docs` property with multiple, DB-file objects, e.g.:\n'
-+ '  {\n'
-+ '    "DBNAME": "myPrjHomeDB01",\n'
-+ '    "docs":   [\n'
-+ '      { "_id": "myfile01", "_rev": "rev01", "_deleted": true },\n'
-+ '      { "_id": "myfile02", "_rev": "rev02", "content": "edited-file-cnt02" },\n'
-+ '      { "_id": "myfile03", "content": "new-file-cnt03" },\n'
-+ '      { "_id": "myfile04", "content": "new-file-cnt04" },\n'
-+ '    ]\n'
-+ '  }\n',
-  '### COUCHDB ATTACH INSTRUCTIONS ###\n\n'
-+ '__Asset storage:__ Any text provided in *File-Data* field of *JSON/Text Edit* screen is converted to BLOb & attached to DB file named in `FILEID` property of transaction JSON. Alternatively, BLOb data may be provided directly in `CBLOB` property of transaction JSON.  \n'
-+ '__Asset removal:__ If `REMOVE` property with value `true` is included in transaction JSON, attachment named with `ATTKEY` property is removed from DB file named with `FILEID` property.  \n'
-+ '__Webpage direct:__ If working file is type *publmgr*, *publmgr* file gets parsed first; resulting webpage is then converted to BLOb & attached to indicated DB file.\n\n'
-+ 'In *HTTP console*, enter transaction data & tap *SubmD*. Provide transaction data as:\n\n'
-+ '- local-filepath/remote-URL, e.g.:  \n'
-+ '  `/myPrjHomeDB07/-res-css​/mystylesheet.css`,  \n'
-+ '  `https://username:password​@subdomain.cloudant.com​/db/file/attach`\n\n'
-+ '- JSON text, e.g.:  \n'
-+ '  {\n'
-+ '    "DBNAME": "myPrjHomeDB07",\n'
-+ '    "FILEID": "-res-css",\n'
-+ '    "ATTKEY": "mystylesheet.css",\n'
-+ '    "CTYPE":  "text/css"\n'
-+ '  } // provide file content in *JSON/Text Edit* screen\n'
-+ '  {\n'
-+ '    "DBNAME": "myPrjHomeDB07",\n'
-+ '    "FILEID": "-res-css",\n'
-+ '    "ATTKEY": "mystylesheet.css",\n'
-+ '    "CTYPE":  "text/css",\n'
-+ '    "CBLOB":  "blob:..."\n'
-+ '  } // provide converted file content in `CBLOB` property\n'
-+ '  {\n'
-+ '    "DBNAME": "myPrjHomeDB07",\n'
-+ '    "FILEID": "-res-css",\n'
-+ '    "ATTKEY": "mystylesheet.css",\n'
-+ '    "REMOVE": true\n'
-+ '  }\n',
-  '### DROPBOX TRANSACTION INSTRUCTIONS ###\n\n'
-+ 'In *HTTP console*, enter JSON transaction data & tap either *RetrvD* or *SubmD*:  \n'
-+ '{\n'
-+ '  "dbox": "list_folder | get_metadata | download | upload | delete",\n'
-+ '  "path": "/path/folder | /path/file",\n'
-+ '  "mode": "overwrite"\n'
-+ '} // for upload, provide file content in *JSON/Text Edit* screen\n\n'
-+ 'To set *Dropbox* access token, enter following in *HTTP console* & tap *SyncD*:  \n'
-+ '{ "$__dbat": "accesstoken" }\n',
-// ###
-  'Alert: File-update process disrupted.\nNote that credentials are required for DB commit.'
-+ '\nAlso, filename (DB file ID) must:\n- be unique\n- begin with alphanumeric'
-+ '\n- contain no spaces or punctuation,\n  except `_ ! . * + ~ -`'
-+ '\n- not end with app flag characters,\n  like `~ ~00 * *(00)`',
-// ###
-  'Alert: Some @import-expansion conditions are not met.'
-+ '\nTo generate CSS @import expansions, edit necessary file settings, then reload/render the publmgr file.'
-+ '\nCheck that the `insertposition` property has a standard insert value, the `wrapperincl` property is set to `true`, and the `htmllinktxt` property has at least one, leading `@import URL;` line.'
-+ '\nAlso, if preloading (option 2 below), check that the `linksinclrender` property is set to `true` and that the `parseconfigs.linksincl` field contains at least one CSS filepath.'
-+ '\nDATA RETRIEVAL OPTIONS'
-+ '\n1) If simply using DB queries or HTTP requests to generate the style data (at the time file is loaded), the publmgr file must be loaded with the `linksinclrender` property (of the `parseconfigs.linksconstr` field) set to `false`.'
-+ '\n2) Otherwise, if generating style data from preloaded CSSOM styleSheets, CSS-file resources must be specified using the `parseconfigs.linksincl` field -- and they must be preloaded and their style data captured, then injected. This is accomplished in two passes: by first rendering the webpage in Preview with `linksinclrender` activated, then rendering the webpage in Preview a second time with `linksinclrender` de-activated.'
-];
 
 EC0.MODJS = { // 18
   xchar2htmlnc: {
