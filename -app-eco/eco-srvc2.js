@@ -1,7 +1,6 @@
 window.ECOSDOCS = [
 // * * * * * 0: calcjs * * * * *
-`<title>JavaScript Calculator</title>
-<style type="text/css">
+`<style type="text/css">
 *, *::before, *::after { box-sizing: inherit; }
 html {
   min-width: 375px;

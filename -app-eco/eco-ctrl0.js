@@ -65,9 +65,9 @@ const hostgh = /\.github\.io$/.test(window.location.host),
 
 window.ecomjs = window.ecomjs || {}; // delayed loadup
 window.ecoqjs = window.ecoqjs || {}; // delayed loadup
+window.ECOSDOCS = window.ECOSDOCS || []; // delayed loadup
 
 const ECOJSCON = window.ECOJSCON || [];
-const ECOSDOCS = window.ECOSDOCS || []; // delayed loadup
 const HLJSSTYS = window.HLJSSTYS || [];
 
 const COUCHTXD = jsonParse(JSON.stringify(window.COUCHTXD || []));
