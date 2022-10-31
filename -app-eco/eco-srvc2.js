@@ -1,4 +1,6 @@
-window.ECOSDOCS = [
+window.EC0 = window.EC0 || {};
+
+EC0.SDOCS = [
 // * * * * * 0: calcjs * * * * *
 `<style type="text/css">
 *, *::before, *::after { box-sizing: inherit; }

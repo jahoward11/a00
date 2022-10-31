@@ -1,4 +1,6 @@
-window.HLJSSTYS = [[
+window.EC0 = window.EC0 || {};
+
+EC0.STYS = [[
   "atom-one-dark.css", "atom-one-light.css", "github-gist.css", "github.css", "googlecode.css", "tomorrow.css", "vs.css", "xcode.css", "xt256.css"
 ], [
   "a11y-dark.css", "a11y-light.css", "agate.css", "an-old-hope.css", "androidstudio.css", "arduino-light.css", "arta.css", "ascetic.css",
@@ -12,7 +14,7 @@ window.HLJSSTYS = [[
   "tomorrow-night-blue.css", "tomorrow-night-bright.css", "tomorrow-night-eighties.css", "tomorrow-night.css", "tomorrow.css", "vs.css", "xcode.css", "xt256.css", "zenburn.css"
 ]];
 
-window.COUCHTXD = [
+EC0.CTXD = [
   {
     USRNAM: "username",
     PSSWRD: "password",
@@ -75,7 +77,7 @@ window.COUCHTXD = [
   }
 ];
 
-window.ECOXREQD = {
+EC0.XREQD = {
   xmet: 'GET',
   xmts: ['GET', 'GET', 'POST', 'POST'],
   url:  localStorage["_ecoxserver"]
@@ -87,7 +89,7 @@ window.ECOXREQD = {
   bmts: ['json']
 };
 
-window.ECOTMPLS = {
+EC0.TMPLS = {
   publmgr: {
     _id: "1-publmgr",
     _rev: "",
@@ -322,7 +324,7 @@ window.ECOTMPLS = {
   }
 };
 
-window.ECOJSCON = [
+EC0.JSCON = [
   `innerWidth`,
   `document.documentElement.clientWidth`,
   `screen.width`,
@@ -402,7 +404,7 @@ window.ECOJSCON = [
 \\n ecomjs.spachars.map(e => "| ]" + (/^(?:9|10|11|12|13|820[67]|823[23])$/.test(e[0]) ? "" : String.fromCodePoint(e[0])) + "[ | " + e[0] + " | 0x" + e[0].toString(16) + " | " + e[1] + " | " + (e[2] || "").replace(/&/g, "&amp;") + " |").join("\\n")`
 ];
 
-window.ECOINSTR = [
+EC0.INSTR = [
   '### App JS Objects -- Quick-Access Notation\n\n'
 + ' $0 or $epsets | custom app settings\n'
 + ' $1 or $idtoks | IBM identity & access tokens\n'
@@ -412,8 +414,12 @@ window.ECOINSTR = [
 + ' $5 or $INSTR  | HTTP-console instructions\n'
 + ' $6 or $TMPLS  | app bundled, DB-file templates\n'
 + ' $7 or $MODJS  | app bundled, JS modules\n'
-+ ' $8 or $SDOCS  | ready-made, publishable source documents\n'
-+ ' $9 or $wdGen  | generated result (HTML web doc) of working, publmgr file\n'
++ ' $8 or $XREQD  | fetch-requests data template\n'
++ ' $9 or $CTXD   | CouchDB-transactions data templates\n'
++ ' $SDOCS        | ready-made, publishable source documents\n'
++ ' $JSCON        | common-use JS-console commands\n'
++ ' $STYS         | HighlightJS CSS-file lists\n'
++ ' $wdGen        | generated result (HTML web doc) of working, publmgr file\n'
 + ' $filewkg, $f1 | working-file JSON\n'
 + ' $file2nd, $f2 | loaded 2nd-file JSON\n'
 + ' $tmp1ff       | loaded publmgr template of working-file’s content\n'
@@ -425,10 +431,6 @@ window.ECOINSTR = [
 + ' $econet       | retrieved ECONET project previews\n'
 + ' $dbpch        | PouchDB object of currently open DB\n'
 + ' $urole        | user’s team role in currently open DB\n'
-+ ' $JSCON        | common JS-console commands\n'
-+ ' $XREQD        | fetch-requests data template\n'
-+ ' $CTXD         | CouchDB-transactions data templates\n'
-+ ' $STYS         | HighlightJS CSS-file lists\n'
 + ' $(global-var) | system/user-created global variable (primitive/JS-object/method)\n\n'
 + '__Notes__\n'
 + '- Append `.`-idx/key to access specific element (by index) or property (by key) within object.\n'
@@ -503,7 +505,7 @@ window.ECOINSTR = [
 + '  `https://subdomain.cloudant.com​/db/file/attach`,  \n'
 + '  `https://username:password​@subdomain.cloudant.com​/db/file/attach`\n\n'
 + '- Transaction JSON, e.g.:  \n'
-+ JSON.stringify(COUCHTXD[0], null, 2)
++ JSON.stringify(EC0.CTXD[0], null, 2)
   .replace(/"FILEID": "/, "$&myfile").replace(/^/gm, "  ")
 + '\n  { "url": "https://host/pathname" } // retrieve non-DB, remote text\n',
   '### COUCHDB COMMIT INSTRUCTIONS ###\n\n'
@@ -515,11 +517,11 @@ window.ECOINSTR = [
 + '  Provide transaction data either as local-filepath/remote-URL or as JSON, e.g.:  \n'
 + '  `/myPrjHomeDB01/myfile`,  \n'
 + '  `https://username:password​@subdomain.cloudant.com​/db/file`,  \n'
-+ JSON.stringify(COUCHTXD[0], null, 2)
++ JSON.stringify(EC0.CTXD[0], null, 2)
   .replace(/"FILEID": "/, "$&myfile").replace(/^/gm, "  ")
 + '\n\n- Delete local/remote DB file.  \n'
 + '  Include `DELETE` property with value `true`, e.g.:\n'
-+ JSON.stringify(COUCHTXD[5], null, 2).replace(/^/gm, "  ")
++ JSON.stringify(EC0.CTXD[5], null, 2).replace(/^/gm, "  ")
 + '\n\n- Add/update/delete multiple, local/remote DB files at once.  \n'
 + '  Provide `docs` property with multiple, DB-file objects, e.g.:\n'
 + '  {\n'
@@ -583,7 +585,7 @@ window.ECOINSTR = [
 + '\n2) Otherwise, if generating style data from preloaded CSSOM styleSheets, CSS-file resources must be specified using the `parseconfigs.linksincl` field -- and they must be preloaded and their style data captured, then injected. This is accomplished in two passes: by first rendering the webpage in Preview with `linksinclrender` activated, then rendering the webpage in Preview a second time with `linksinclrender` de-activated.'
 ];
 
-window.ECOMODJS = { // 18
+EC0.MODJS = { // 18
   xchar2htmlnc: {
     fncname: "xchar2htmlnc",
     filepath: "../../a00/-app-eco/eco-srvc3.mjs",

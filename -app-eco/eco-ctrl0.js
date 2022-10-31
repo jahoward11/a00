@@ -65,18 +65,19 @@ const hostgh = /\.github\.io$/.test(window.location.host),
 
 window.ecomjs = window.ecomjs || {}; // delayed loadup
 window.ecoqjs = window.ecoqjs || {}; // delayed loadup
-window.ECOSDOCS = window.ECOSDOCS || []; // delayed loadup
 
-const ECOJSCON = window.ECOJSCON || [];
-const HLJSSTYS = window.HLJSSTYS || [];
+window.EC0 = window.EC0 || {};
+EC0.JSCON = EC0.JSCON || [];
+EC0.SDOCS = EC0.SDOCS || []; // delayed loadup
+EC0.STYS = EC0.STYS || [];
 
-const COUCHTXD = jsonParse(JSON.stringify(window.COUCHTXD || []));
-const ECOINSTR = jsonParse(JSON.stringify(window.ECOINSTR || []));
-const ECOTMPLS = jsonParse(JSON.stringify(window.ECOTMPLS || {}));
-const ECOXREQD = jsonParse(JSON.stringify(window.ECOXREQD || {}));
+const ECTXD = jsonParse(JSON.stringify(EC0.CTXD || []));
+const EINSTR = jsonParse(JSON.stringify(EC0.INSTR || []));
+const ETMPLS = jsonParse(JSON.stringify(EC0.TMPLS || {}));
+const EXREQD = jsonParse(JSON.stringify(EC0.XREQD || {}));
 
-const ECOMODJS = jsonParse(JSON.stringify(window.ECOMODJS || {}));
-Object.keys(ECOMODJS).forEach(m => ECOMODJS[m].fnc = window.ECOMODJS[m].fnc);
+const EMODJS = jsonParse(JSON.stringify(EC0.MODJS || {}));
+Object.keys(EMODJS).forEach(m => EMODJS[m].fnc = EC0.MODJS[m].fnc);
 
 function msgPrefmt(msg, con) {
   let robj, stk;
@@ -179,7 +180,7 @@ function indrChg(elm, va1 = "", ref) {
 function updDisbl() {
   document.querySelectorAll('#econav0 #fupdbtnc>button, #ecoesp0 #pchbtn')
   .forEach(el => el.disabled = true);
-  msgHandl(ECOINSTR[6]);
+  msgHandl(EINSTR[6]);
 }
 
 function tswapHide() {
@@ -314,7 +315,7 @@ function assts2Blob() {
           //+ '\nfor (f in srvc4) ecomjs[f] = srvc4[f];\n';
         iniscripts.appendChild(nscr);
       }
-      jsclist.innerHTML = tmpljsclist && tmpljsclist({ jscitems: ECOJSCON });
+      jsclist.innerHTML = tmpljsclist && tmpljsclist({ jscitems: EC0.JSCON });
     },
     a00Docs = (dbs = []) => {
       if (dbs.some(e => e === "a00") && a00path === localStorage["_ecoa00path"]) {
@@ -340,7 +341,7 @@ function assts2Blob() {
             rdataFetch({ url: aurls[ass], crds: 'include', bmet: 'blob' })
             .then(ablob => aurls[ass] = URL.createObjectURL(ablob)).catch(msgHandl) );
         hlslist.innerHTML = tmplhlslist
-        && tmplhlslist({ hlstys: (!protfile || platipd2) ? HLJSSTYS[0] : HLJSSTYS[1] });
+        && tmplhlslist({ hlstys: (!protfile || platipd2) ? EC0.STYS[0] : EC0.STYS[1] });
         hlslist.value = epsets.hlstyle;
         modsInj();
       }
@@ -423,7 +424,7 @@ function pdbListGen() { // also "dboListGen", "pchListGen"
     pr0sGet = msgerr => {
       !msgerr || msgHandl(msgerr);
       prjsenet ? pr0sGen(prjsenet)
-      : rdataFetch(ECOXREQD, 1).then(rq => pr0sGen(prjsenet = rq)).catch(listsRfrsh);
+      : rdataFetch(EXREQD, 1).then(rq => pr0sGen(prjsenet = rq)).catch(listsRfrsh);
     },
     pdbsGen = (dbs1 = []) => {
       dbs2 = dbs1.sort();
@@ -513,7 +514,7 @@ function pfsListGen(fileref, publupd, filelf) {
     optg = pfslist.value && pfslist.selectedOptions[0].parentElement.label,
     hides = epsets.appchks,
     context = {
-      filesapp: hides[21] ? null : Object.entries(ECOTMPLS).map(oe => [oe[1]._id, oe[0]])
+      filesapp: hides[21] ? null : Object.entries(ETMPLS).map(oe => [oe[1]._id, oe[0]])
     },
     cntcLite = (d, id) => ({
       _id:       id.replace(/^!([a-z]{3})-(myteam)$/, "!$2-$1"), // temp cleanup
@@ -848,7 +849,7 @@ function jdePtyGen(rowslr, plai, plbgi) {
       || /^(?:assets|contact|event|memo|phone|post|scrap|srcdoc)$/i.test(jfw.file_type),
     jdentries = Object.entries(jfw),
     j2entries = Object.entries(file2nd || {}),
-    modT = ob => ob && Object.keys(ob).toString() === Object.keys(ECOMODJS["html2md"]).toString(),
+    modT = ob => ob && Object.keys(ob).toString() === Object.keys(EMODJS["html2md"]).toString(),
     fsDiff = pty => file2nd && file2nd[pty] ? [jdentries, j2entries] : [jdentries],
     subo2Str = so => Object.fromEntries( Object.entries(so)
       .map(oe => [oe[0], typeof oe[1] !== 'object' ? oe[1] : JSON.stringify(oe[1], null, 2) ]) ),
@@ -1210,8 +1211,8 @@ function modjsLoad() {
       .map( sii => !/\*\d*$/.test(sii.fncname) && typeof window[sii.fncname] !== 'function'
         && !ecoqjs[sii.fncname] && !ecomjs[sii.fncname]
         && ( filewkg.parseconfigs.scriptsconstr.find( sci => sci.fncname === sii.fncname && sci.filepath
-            && (!sci.deftxt || sci.deftxt === ECOTMPLS.publmgr.parseconfigs.scriptsconstr[0].deftxt) )
-          || !(ECOMODJS[sii.fncname] || "").fnc && ECOMODJS[sii.fncname] ) )
+            && (!sci.deftxt || sci.deftxt === ETMPLS.publmgr.parseconfigs.scriptsconstr[0].deftxt) )
+          || !(EMODJS[sii.fncname] || "").fnc && EMODJS[sii.fncname] ) )
       .filter(sii => sii),
     mfps = modxs.filter(sci => !ct[sci.filepath] && (ct[sci.filepath] = 1))
       .map(sci => sci.filepath);
@@ -1304,7 +1305,7 @@ function linksExpand() {
     }
   } else {
     lnkstor = [];
-    !atimportexpand || msgHandl(ECOINSTR[7]);
+    !atimportexpand || msgHandl(EINSTR[7]);
   }
 }
 
@@ -1344,7 +1345,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       && (!(tpl = tm0disc.filter(e => !/^-/.test(e))).length || tpl.some(e => unm.indexOf(e) > -1))
       && !tm0disc.filter(e => /^-./.test(e)).some(e => unm.indexOf(e.replace(/^-/, "")) > -1),
     ecoPrefmt = (ufile = {}) => {
-      let etmpl = ECOTMPLS[ /^phone$/.test(ufile.file_type) ? "contact"
+      let etmpl = ETMPLS[ /^phone$/.test(ufile.file_type) ? "contact"
         : /^post$/.test(ufile.file_type) ? "memo" : /\w+$/.exec(ufile.file_type) ] || {};
       ufile.file_type !== "eco-phone" || (ufile.file_type = "eco-contact"); // temp cleanup
       ufile.file_type !== "eco-contact" // temp cleanup
@@ -1385,13 +1386,13 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         siu = pcfgu.scriptsincl,
         lcu = pcfgu.linksconstr,
         liu = pcfgu.linksincl,
-        pcfge = ECOTMPLS.publmgr.parseconfigs,
+        pcfge = ETMPLS.publmgr.parseconfigs,
         sce0 = pcfge.scriptsconstr[0],
         pcfgt = (tmp1pc || "").parseconfigs || {};
       if (ufile.file_type !== "eco-publmgr") { // temp cleanup
         !ufile.fileid || (ufile._id = ufile.fileid) && delete ufile.fileid;
         ufile.file_type = "eco-publmgr";
-        ufile.loadconfigs = objAssn1(ECOTMPLS.publmgr.loadconfigs, ufile.loadconfigs || {});
+        ufile.loadconfigs = objAssn1(ETMPLS.publmgr.loadconfigs, ufile.loadconfigs || {});
         !ufile.loadconfigs.fragsrcfnmxs
         || (ufile.loadconfigs.fragsrcxs = ufile.loadconfigs.fragsrcfnmxs)
         && delete ufile.loadconfigs.fragsrcfnmxs;
@@ -1453,10 +1454,10 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         || pcfgu.linksincl.push(jsonParse(JSON.stringify(pcfge.linksincl[0])));
       ufile.filefrags.forEach( ob => !ob.hasOwnProperty("panecontent")
         || ((ob.contenttxt = ob.panecontent), delete ob.panecontent) ); // temp cleanup
-      ufile.loadconfigs = objAssn1(ECOTMPLS.publmgr.loadconfigs, ufile.loadconfigs || {});
+      ufile.loadconfigs = objAssn1(ETMPLS.publmgr.loadconfigs, ufile.loadconfigs || {});
       ufile.parseconfigs = objAssn1(pcfge, pcfgu);
       ufile.filefrags = !(tmp1ff || "").filefrags
-      ? ufile.filefrags.map(ob => objAssn1(ECOTMPLS.publmgr.filefrags[0], ob))
+      ? ufile.filefrags.map(ob => objAssn1(ETMPLS.publmgr.filefrags[0], ob))
       : tmp1ff.filefrags.map( (ob, i) =>
           objAssn1(ob, !(ufile.filefrags[i] || "").contenttxt ? {} : ufile.filefrags[i]) );
       return ufile;
@@ -1588,9 +1589,9 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
     filewkg === udata || ( filewkg = Object.assign( Array.isArray(udata) ? []
       : !udata.hasOwnProperty("_id") || typeof udata._id !== 'string' ? {}
       : { _id: "", _rev: "" }, udata ));
-    Object.keys(filewkg).toString() !== Object.keys(ECOMODJS["html2md"]).toString() || filewkg.fnc
+    Object.keys(filewkg).toString() !== Object.keys(EMODJS["html2md"]).toString() || filewkg.fnc
     || (filewkg.fnc = (ecomjs[filewkg.fncname] || "").toString() || null);
-    Object.keys(filewkg).toString() !== Object.keys(ECOMODJS).toString()
+    Object.keys(filewkg).toString() !== Object.keys(EMODJS).toString()
     || Object.keys(filewkg).forEach( k => (filewkg[k] = Object.assign({}, filewkg[k]))
       && (filewkg[k].fnc = (filewkg[k].fnc || ecomjs[k] || "").toString() || null) );
     if (destindr) {
@@ -1826,7 +1827,7 @@ function annosGet(fileref = "") {
   });
 }
 
-function webdocGen(redirect, pdata = filewkg || jsonParse(JSON.stringify(ECOTMPLS.publmgr))) {
+function webdocGen(redirect, pdata = filewkg || jsonParse(JSON.stringify(ETMPLS.publmgr))) {
   let ecolinks = document.querySelector('#ecolinks'),
     sdir = pdata.file_updated.subdir,
     scriptsconstr = pdata.parseconfigs.scriptsconstr,
@@ -1851,10 +1852,10 @@ function webdocGen(redirect, pdata = filewkg || jsonParse(JSON.stringify(ECOTMPL
   scriptsincl.forEach((sii, i1) => {
     if (!sii.fncname) { return; }
     let scx = scriptsconstr.find(sci => sci.fncname === sii.fncname)
-        || ECOMODJS[sii.fncname.replace(/\*\d*$/, "")] || {},
-      fnx = scx.deftxt && scx.deftxt !== ECOTMPLS.publmgr.parseconfigs.scriptsconstr[0].deftxt
+        || EMODJS[sii.fncname.replace(/\*\d*$/, "")] || {},
+      fnx = scx.deftxt && scx.deftxt !== ETMPLS.publmgr.parseconfigs.scriptsconstr[0].deftxt
           && ((str, idx) => (new Function("return (" + scx.deftxt + ")"))()(str, idx))
-        || (ECOMODJS[sii.fncname.replace(/\*\d*$/, "")] || "").fnc
+        || (EMODJS[sii.fncname.replace(/\*\d*$/, "")] || "").fnc
         || ecomjs[sii.fncname] || ecoqjs[sii.fncname]
         || typeof window[sii.fncname] === 'function' && window[sii.fncname] || (str => str);
     if (i1 < sifragsbound && (i1 + 1 < sifragsbound || sii.applytofrag.some(e => !e))) {
@@ -1910,9 +1911,9 @@ function dropboxTx(txdata, xrslv, xrjct = _=>_) {
     errShow = err => msgHandl("Alert: Dropbox transaction attempted & failed.\n" + msgPrefmt(err));
   if ( !/^\/|^$/.test(txdata.path)
   || /upload|delete/.test(txdata.dbox) && txdata.mode !== "overwrite" ) {
-    return xrjct(msgHandl(ECOINSTR[5]));
+    return xrjct(msgHandl(EINSTR[5]));
   } else if (!window.dropbox || !dbat || dbat.length < 16) {
-    return xrjct(msgHandl("Error: Dropbox access token must be preset.\n\n" + ECOINSTR[5]));
+    return xrjct(msgHandl("Error: Dropbox access token must be preset.\n\n" + EINSTR[5]));
   } else {
     delete txdata.dbox;
   }
@@ -1937,7 +1938,7 @@ function dropboxTx(txdata, xrslv, xrjct = _=>_) {
       resp => msgHandl("Dropbox file removed.\n" + msgPrefmt(resp)) )
     .catch(errShow);
   } else {
-    msgHandl(ECOINSTR[5]);
+    msgHandl(EINSTR[5]);
   }
 }
 
@@ -2085,7 +2086,7 @@ function couchSync(txdata, valcon = "") {
         || (jsonParse(txsjson) || []).find(ob => ob.DBNAME === valcon) ) || jsonParse(txsjson) )
       || txsjson;
     document.querySelector('#econav0 #qcontxta').value = loadobj
-    ? msgPrefmt(txCrdtlz(loadobj)) + "\n" : JSON.stringify(COUCHTXD, null, 2) + "\n";
+    ? msgPrefmt(txCrdtlz(loadobj)) + "\n" : JSON.stringify(ECTXD, null, 2) + "\n";
   } // msgHandl("Alert: Data sync / DB maintenance not attempted.");
 }
 
@@ -2101,7 +2102,7 @@ function couchQry(txdata, destindr, cbfnc) {
       destindr !== 3 || attinp.value || EC1.attSel();
       msgHandl(err);
     },
-    instrqcon = "Alert: Data retrieval not attempted.\n\n" + ECOINSTR[2] + "\n" + ECOINSTR[5],
+    instrqcon = "Alert: Data retrieval not attempted.\n\n" + EINSTR[2] + "\n" + EINSTR[5],
     dbQryCalls = () => {
       if (!txdata.FILEID) {
         dbpc2.info().then(resp => dataDispl(resp, destindr, cbfnc)).catch(errShow);
@@ -2178,7 +2179,7 @@ function couchPut(txdata = txdPrep()[0]) {
   }
   if (!dbpc2) {
     msgHandl( "Alert: No export attempted. Insufficient data.\n" + JSON.stringify(txdata, null, 2)
-      + "\n\n" + ECOINSTR[3] + "\n" + ECOINSTR[4] + "\n" + ECOINSTR[5] );
+      + "\n\n" + EINSTR[3] + "\n" + EINSTR[4] + "\n" + EINSTR[5] );
     (!txdata.doc ? pchhlps[1] : imgahlps[1]).classList.remove("is-hidden");
   } else if (Array.isArray(cobj) && cobj[0] && cobj.every(ob => (ob || "")._id)) {
     dbpc2.bulkDocs(txdata.docs || cobj, txdata.OPTS || {}).then(resp => {
@@ -2260,10 +2261,10 @@ function couchAtt(dirtxd) {
     dbpc2 = new PouchDB(dburl || txdata.DBNAME, { skip_setup: !dburl ? undefined : true });
   }
   if (!dbpc2) {
-    msgHandl("Alert: Attachment not attempted. No DB is specified.\n\n" + ECOINSTR[4]);
+    msgHandl("Alert: Attachment not attempted. No DB is specified.\n\n" + EINSTR[4]);
   } else if (!adata.ATTKEY || !adata.FILEID || adata.FILEID === "myfile") {
     msgHandl( "Alert: Attachment not attempted. Insufficient data.\n"
-      + JSON.stringify(adata, null, 2) + "\n\n" + ECOINSTR[4] );
+      + JSON.stringify(adata, null, 2) + "\n\n" + EINSTR[4] );
     txdata.CBLOB ? imgahlps[1].classList.remove("is-hidden")
     : !dirtxd || (dirtxd.USRNAM ? uplhlps[1] : dirhlps[1]).classList.remove("is-hidden");
   } else {
@@ -2298,7 +2299,7 @@ function couchAtt(dirtxd) {
           }
         }).catch(err => {
           msgHandl( "Alert: Attachment attempted & failed.\n"
-          + JSON.stringify(adata, null, 2) + "\n" + msgPrefmt(err) + "\n" + ECOINSTR[4] );
+          + JSON.stringify(adata, null, 2) + "\n" + msgPrefmt(err) + "\n" + EINSTR[4] );
           txdata.CBLOB ? (!dburl ? imgahlps[1] : uplhlps[1]).classList.remove("is-hidden")
           : !dirtxd || dirhlps[1].classList.remove("is-hidden");
         });
@@ -2311,7 +2312,7 @@ function couchAtt(dirtxd) {
             updseq[dbpc2.name]++;
           }
         }).catch( err => msgHandl( "Alert: Attachment removal attempted & failed.\n"
-          + JSON.stringify(adata, null, 2) + "\n" + msgPrefmt(err) + "\n" + ECOINSTR[4] ));
+          + JSON.stringify(adata, null, 2) + "\n" + msgPrefmt(err) + "\n" + EINSTR[4] ));
       }
     }).catch(msgHandl);
   }
@@ -2391,7 +2392,7 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
       && jfw["file_created"].timestamp === jfw["file_updated"].timestamp ) {
         !jfw[ppty].hasOwnProperty("misc") || (jfw[ppty].misc = "");
         !jfw[ppty].hasOwnProperty("version")
-        || (jfw[ppty].version = ECOTMPLS.publmgr[ppty].version);
+        || (jfw[ppty].version = ETMPLS.publmgr[ppty].version);
       }
     };
   epsets.appchks[25] || !jfw.filefrags || jfw.filefrags.forEach((ffi, i) => {
@@ -2408,7 +2409,7 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
   || jfw.filefrags.splice(idx < 0 ? 1 : 1 + idx); //cntXClear();
   epsets.appchks[25] || !tmp1pc || Object.keys(tmp1pc.parseconfigs || {}) //cntXClear();
     .forEach( k => !tmp1pc.parseconfigs[k] || !/^linksc/.test(k) && !tmp1pc.parseconfigs[k][1]
-      || (jfw.parseconfigs[k] = jsonParse(JSON.stringify(ECOTMPLS.publmgr.parseconfigs[k]))) );
+      || (jfw.parseconfigs[k] = jsonParse(JSON.stringify(ETMPLS.publmgr.parseconfigs[k]))) );
   if (/^~DVIZ_\w/.test(jfw._id) && jfw._id.replace(/^~DVIZ_/, "") !== fileref) {
     jfw._id = (/^~DVIZ_/.test(fileref) ? "" : "~DVIZ_") + fileref;
     jfw._rev = "";
@@ -2496,7 +2497,7 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
     jfw.file_created.subdir || (jfw.file_created.subdir = dirref);
     if ( pchutrg && ( !pf3stor.dbsdir
     || !pf3stor.dbsdir.some(ar => ar[1] && ar[1].replace(/^\./, "") === dirref) )) {
-      vassets = JSON.stringify(ECOTMPLS.assets)
+      vassets = JSON.stringify(ETMPLS.assets)
       .replace(/("_id":")8-assets",/, "$1" + dirdot + dirref + "\",\"_rev\":\"\",")
       .replace(/("ts_created":)0(,"ts_updated":)0/, "$1" + tstamp1 + "$2" + tstamp1);
       couchPut({ DBNAME: dbpch.name, vassets: vassets });
@@ -2758,7 +2759,7 @@ pfsSel(resel, cbfnc) { // also triggered by pfsResets, pfsListGen, couchAtt, tmp
       myIncr(new RegExp("^" + flgdir + flgapp + fileref.replace(/\.\w{2,4}$|$/, flgsrc), "i"));
       pfsinp.value = flgapp + fileref.replace( /(?=\.\w{2,4}$|$)/,
         flgsrc + (myct < 10 ? "0" + myct : myct) );
-      flgapp ? dataDispl(JSON.stringify(ECOTMPLS[pfslist.value]), 1)
+      flgapp ? dataDispl(JSON.stringify(ETMPLS[pfslist.value]), 1)
       : couchQry(txdPrep(pfslist.value)[0], 1);
       window.setTimeout(() => {
         pfslist.blur();
@@ -2836,7 +2837,7 @@ pf2Sel(espr) { // also triggered by pfsResets
         (err, val) => err ? msgHandl(err) : dataDispl(val || {}, 2) );
     } else if (optg === "APP templates") {
       pf2inp.value = fileref;
-      dataDispl(JSON.stringify(ECOTMPLS[pf2list.value]), 2);
+      dataDispl(JSON.stringify(ETMPLS[pf2list.value]), 2);
     } else if (/^(?:DB|TEAM) templates$/.test(optg)) {
       pf2inp.value = fileref;
       couchQry(txdPrep(pf2list.value)[0], 2);
@@ -2945,7 +2946,7 @@ ptySel(rowi) { // also triggered by jdePtyGen, dataDispl, srcSel, ptySel, jdeDft
     pksub = { 7: "scriptsconstr", 8: "scriptsincl", 10: "linksincl" }[rowi];
     pvfw = filewkg.parseconfigs[pksub];
     pvfw.push( rowi !== 8
-    ? jsonParse(JSON.stringify(ECOTMPLS.publmgr.parseconfigs[pksub][0]))
+    ? jsonParse(JSON.stringify(ETMPLS.publmgr.parseconfigs[pksub][0]))
     : { fncname: "", applytofrag: Array.from(pvfw[0].applytofrag).map(e => true) } );
     influxSet(true);
     rawtxta.value = JSON.stringify(filewkg, null, 2);
@@ -3056,11 +3057,11 @@ jdePtyUpd(rowslr, ptyk, plak, plai, plbgi) {
       pksub = { 7: "scriptsconstr", 8: "scriptsincl", 10: "linksincl" }[rowslr];
       pvfw = filewkg.parseconfigs[pksub];
       ptyAdd1 = () => pvfw.push( rowslr !== 8
-        ? jsonParse(JSON.stringify(ECOTMPLS.publmgr.parseconfigs[pksub][0]))
+        ? jsonParse(JSON.stringify(ETMPLS.publmgr.parseconfigs[pksub][0]))
         : { fncname: "", applytofrag: Array.from(pvfw[0].applytofrag).map(e => true) } );
     } else if (jobj && ((elz = jobj[jobj.length - 1] || "").fncname || elz.filepath)) {
       jobj.push( rowslr !== 8
-      ? jsonParse(JSON.stringify(ECOTMPLS.publmgr.parseconfigs.linksincl[0]))
+      ? jsonParse(JSON.stringify(ETMPLS.publmgr.parseconfigs.linksincl[0]))
       : { fncname: "", applytofrag: Array.from(jobj[0].applytofrag).map(e => true) } );
     }
   }
@@ -3347,7 +3348,7 @@ ibmConnect() {
       || !tmidnew ? "a00_" : "a" + (+tmidnew < 9 ? "0" : "") + ++tmidnew + "_",
     tstamp1 = Date.now(),
     dbOpen = (rmtdn = {}) => {
-      rdataFetch( Object.assign( Object.assign({}, ECOXREQD), {
+      rdataFetch( Object.assign( Object.assign({}, EXREQD), {
         prms: {
           dbname: rmtdn.DBNAME,
           clact:  "dbadd"
@@ -3431,7 +3432,7 @@ ibmConnect() {
         !zindr || pdbListGen();
       }
     },
-    cntcGen = u1st => Object.assign( jsonParse(JSON.stringify(ECOTMPLS.contact)),
+    cntcGen = u1st => Object.assign( jsonParse(JSON.stringify(ETMPLS.contact)),
       tm0cntcs[epsets.uname] = {
         _id: u1st ? "!" + (valinp[2] || "myteam") + "-aaa"
           : "!" + (epsets.teamid || "myteam") + "-"
@@ -3445,7 +3446,7 @@ ibmConnect() {
         emails:     !pcloud ? [epsets.uemail] : pcloud.idpUserInfo.emails.map(ob => ob.value),
         image_src:  userinfo && userinfo.picture || "avatar000.png"
     }),
-    dbidGen = () => Object.assign( jsonParse(JSON.stringify(ECOTMPLS.prjid)), {
+    dbidGen = () => Object.assign( jsonParse(JSON.stringify(ETMPLS.prjid)), {
       _id: "~DBID_" + valinp[1],
       file_created: {
         username:  epsets.uname,
@@ -3469,7 +3470,7 @@ ibmConnect() {
     }),
     teamDSet = () => {
       if (valinp[2] && !/^[a-z][0-9_a-z$,+-]*$/.test(valinp[2])) { return espEnter(); }
-      rdataFetch( Object.assign( Object.assign({}, ECOXREQD), {
+      rdataFetch( Object.assign( Object.assign({}, EXREQD), {
         prms: {
           uemail: epsets.uemail,
           uname:  epsets.uname || null,
@@ -3588,10 +3589,6 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-memos
   key = key == null ? "" : "" + key;
   return gloObj() || ( /^attlist/.test(key) ? attListGen()
   : /^pfslist/.test(key) ? pfsListGen()
-  : /^(?:HLJS|)STYS?/i.test(key) ? HLJSSTYS[ptyTest(1)] || rsltFbk(HLJSSTYS)
-  : /^(?:COUCH|C)TXD/i.test(key) ? COUCHTXD[ptyTest(1)] || rsltFbk(COUCHTXD)
-  : /^(?:ECO|)X?REQD?/i.test(key) ? ECOXREQD[ptyTest()] || rsltFbk(ECOXREQD)
-  : /^(?:ECO|)JSCON/i.test(key) ? ECOJSCON[ptyTest()] || rsltFbk(ECOJSCON)
   : /^(?:tm0|)urole?/.test(key) ? tm0urole
   : /^dbpch/.test(key) ? dbpch && dbpch[ptyTest()]
     || rsltFbk(Object.assign(Object.assign({}, dbpch), { taskqueue: undefined }))
@@ -3610,17 +3607,21 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-memos
   : /^(?:f1?|filewkg)\.[ls]\d*$/.test(key) ? dPrc.sty(filewkg) || rsltFbk(filewkg)
   : /^(?:f1?|filewkg)\.h\d*$/.test(key) ? dPrc.htm(filewkg) || rsltFbk(filewkg)
   : /^f1?\b|^filewkg/.test(key) ? filewkg && filewkg[ptyTest()] || rsltFbk(filewkg)
-  : /^9|^webdoc(?:Gen|)|^wdG/i.test(key) && (filewkg || "").filefrags ? webdocGen(1)
-  : /^8|^(?:ECO|)SDOCS?/i.test(key) ? ECOSDOCS[ptyTest(1)] || rsltFbk(ECOSDOCS)
-  : /^7|^(?:ECO|)MODJ?S?/i.test(key) ? ECOMODJS[ptyTest()] || rsltFbk(ECOMODJS)
-  : /^6|^(?:ECO|)TMPLS?/i.test(key) ? ECOTMPLS[ptyTest()] || rsltFbk(ECOTMPLS)
-  : /^5|^(?:ECO|)INSTR?/i.test(key) ? ECOINSTR[ptyTest(1)] || rsltFbk(ECOINSTR)
+  : /^webdoc(?:Gen|)|^wdG/i.test(key) && (filewkg || "").filefrags ? webdocGen(1)
+  : /^(?:ECO|E|HL|HLJS|)STYS?/i.test(key) ? EC0.STYS[ptyTest(1)] || rsltFbk(EC0.STYS)
+  : /^(?:ECO|E|)JSCON/i.test(key) ? EC0.JSCON[ptyTest()] || rsltFbk(EC0.JSCON)
+  : /^(?:ECO|E|)SDOCS?/i.test(key) ? EC0.SDOCS[ptyTest(1)] || rsltFbk(EC0.SDOCS)
+  : /^9|^(?:ECO|E|)(?:COUCH|C)TXD/i.test(key) ? ECTXD[ptyTest(1)] || rsltFbk(ECTXD)
+  : /^8|^(?:ECO|E|)X?REQD?/i.test(key) ? EXREQD[ptyTest()] || rsltFbk(EXREQD)
+  : /^7|^(?:ECO|E|)MODJ?S?/i.test(key) ? EMODJS[ptyTest()] || rsltFbk(EMODJS)
+  : /^6|^(?:ECO|E|)TMPLS?/i.test(key) ? ETMPLS[ptyTest()] || rsltFbk(ETMPLS)
+  : /^5|^(?:ECO|E|)INSTR?/i.test(key) ? EINSTR[ptyTest(1)] || rsltFbk(EINSTR)
   : /^4|^assets?|^a?urls?|^blobs?/i.test(key) ? aurls[ptyTest()] || rsltFbk(aurls)
   : /^3|^team|^tm0$|^(?:tm0|)cntcs?|^contacts?/i.test(key) ? tm0cntcs[ptyTest()] || rsltFbk(tm0cntcs)
   : /^2|^couch|^c?accts?|^c?accounts?/i.test(key) ? caccts[ptyTest(1)] || rsltFbk(caccts)
   : /^1|^(?:eco|)idtoks?/i.test(key) ? idtoks && idtoks[ptyTest()] || rsltFbk(idtoks)
   : /^0|epsets?|(?:eco|)presets?/i.test(key) ? epsets && epsets[ptyTest()] || rsltFbk(epsets)
-  : rsltFbk(ECOINSTR[0]) );
+  : rsltFbk(EINSTR[0]) );
 },
 tmplLoad() {
   let tmplrads = document.querySelector('#ecoguides #tmplrad').elements["tmplrad"],
@@ -3651,8 +3652,8 @@ guideLoad() {
 calcGen() {
   if (fwinflux) { return; }
   let calcdemo = document.querySelector('#ecoesp0 #calctogswi').checked,
-    calctmpl = jsonParse(JSON.stringify(ECOTMPLS.publmgr)),
-    calccnt = (ECOSDOCS[0] || "").split(/\n\n(?=<\/xmp>\n| *p = 5\n)/);
+    calctmpl = jsonParse(JSON.stringify(ETMPLS.publmgr)),
+    calccnt = (EC0.SDOCS[0] || "").split(/\n\n(?=<\/xmp>\n| *p = 5\n)/);
   pfsResets();
   calctmpl = Object.assign( calctmpl, {
     _id: "",
@@ -3675,7 +3676,7 @@ calcGen() {
 diffGen(evt, txt1, txt2) { // also triggered by dviz-dboxupd
   if (fwinflux) { return; }
   let pnbr = +/\d+$/.exec(!evt ? "0" : evt.target.parentElement.id),
-    difftmpl = jsonParse(JSON.stringify(ECOTMPLS.publmgr));
+    difftmpl = jsonParse(JSON.stringify(ETMPLS.publmgr));
   txt1 = txt1 || ( document.querySelector('#ecoesp0 #ptyvals' + pnbr + '>input')
     || document.querySelector('#ecoesp0 #ptyvals' + pnbr + '>textarea')
     || document.querySelector( '#ecoesp0 #ptyvals'
@@ -3706,7 +3707,7 @@ diffGen(evt, txt1, txt2) { // also triggered by dviz-dboxupd
     filefrags: [
       { idtxt: "SOURCE1", labeltxt: "SOURCE1", titletxt: "SOURCE pane #1.", contenttxt: txt1 },
       { idtxt: "SOURCE2", labeltxt: "SOURCE2", titletxt: "SOURCE pane #2.", contenttxt: txt2 },
-      { idtxt: "SOURCE3", labeltxt: "SOURCE3", titletxt: "SOURCE pane #3.", contenttxt: ECOSDOCS[1] || "" }
+      { idtxt: "SOURCE3", labeltxt: "SOURCE3", titletxt: "SOURCE pane #3.", contenttxt: EC0.SDOCS[1] || "" }
     ]
   });
   dataDispl(difftmpl, 1, () => EC1.tabs0Tog(0));
@@ -3715,10 +3716,10 @@ dvizGen(idx) {
   if (fwinflux) { return; }
   let dvizrads = document.querySelector('#ecoesp0 #dvizrad').elements["dvizrad"],
     fileDViz = idx => {
-      let dviztmpl = jsonParse(JSON.stringify(ECOTMPLS.publmgr));
+      let dviztmpl = jsonParse(JSON.stringify(ETMPLS.publmgr));
       pfsResets();
       dviztmpl._id = "";
-      dviztmpl.filefrags[0].contenttxt = ECOSDOCS[6 - idx] || ""; // 2 or 3
+      dviztmpl.filefrags[0].contenttxt = EC0.SDOCS[6 - idx] || ""; // 2 or 3
       dataDispl(dviztmpl, 1, () => EC1.tabs0Tog(0));
     },
     cntcDViz = idx => {
@@ -3730,7 +3731,7 @@ dvizGen(idx) {
           ? !epsets.teamid || ar[0].replace(/^!([0-9a-z]+)-.*/i, "$1") !== epsets.teamid
           : ar[0].replace(/^!([0-9a-z]+)-.*/i, "$1") === epsets.teamid )).sort(),
         cct = csg.length,
-        dviztmpl = jsonParse(JSON.stringify(ECOTMPLS.publmgr));
+        dviztmpl = jsonParse(JSON.stringify(ETMPLS.publmgr));
       pfsResets();
       dviztmpl._id = "";
       dviztmpl.contributors = csg.map(ar => ar[1].replace(/[^\w.@-]+/g, "-"));
@@ -3738,12 +3739,12 @@ dvizGen(idx) {
       dviztmpl.loadconfigs.fragsrcxs = [false, ...csg.map(ar => "./" + ar[0]), false];
       dviztmpl.filefrags = [
         { idtxt: "SOURCE1", labeltxt: "SOURCE1", titletxt: "SOURCE pane #1.",
-          contenttxt: (ECOSDOCS[4] || "").replace(/\n *`\.trim\(\)[^]+$/, "") },
+          contenttxt: (EC0.SDOCS[4] || "").replace(/\n *`\.trim\(\)[^]+$/, "") },
         ...csg.map( (e, i) =>
           ({ idtxt: `SOURCE${2 + i}`, labeltxt: `SOURCE${2 + i}`,
             titletxt: `SOURCE pane #${2 + i}.`, contenttxt: "" })),
         { idtxt: `SOURCE${2 + cct}`, labeltxt: `SOURCE${2 + cct}`,
-          titletxt: `SOURCE pane #${2 + cct}.`, contenttxt: (ECOSDOCS[4] || "")
+          titletxt: `SOURCE pane #${2 + cct}.`, contenttxt: (EC0.SDOCS[4] || "")
           .replace(/^[^]+?\n *const cntcs = `\n/, "")
           .replace(/\.\.\/\.\.\/a00_myteam\/-res-img\//g, () => !cdb ? "" : `../../${cdb}/-res-img/`) }
       ];
@@ -3823,7 +3824,7 @@ qconSyncD() {
     EC2.pchSel();
   } else if ( rexibm.test(txdata.DBORIG) && ecoat && txdata.DBNAME && !txdata.FILEID
   && (!txdata.USRNAM || /^$|password/i.test(txdata.PSSWRD)) && (!reqipch || txdata.DESTROY) ) {
-    rdataFetch( Object.assign( Object.assign({}, ECOXREQD), {
+    rdataFetch( Object.assign( Object.assign({}, EXREQD), {
       prms: {
         dbname: txdata.DBNAME,
         clact:  txdata.DESTROY ? "dbnix" : "dbadd"
@@ -3835,7 +3836,7 @@ qconSyncD() {
   } else if (/^\b\S+$/.test(valcon) || txdata.DBNAME) {
     couchSync(txdata, valcon);
   } else {
-    msgHandl(ECOINSTR[1]);
+    msgHandl(EINSTR[1]);
     msgHandl(txdata);
   }
 },
@@ -3886,7 +3887,7 @@ qconRetrvD(cbfnc, errfnc) { // also triggered by guideLoad, dviz-idxlist, dviz-m
   } else if ( rexibm.test(txdata.DBORIG) && ecoat && txdata.DBNAME
   && (!txdata.USRNAM || /^$|password/i.test(txdata.PSSWRD)) ) {
     // todo: when is it better than couchQry?
-    rdataFetch( Object.assign( Object.assign({}, ECOXREQD), {
+    rdataFetch( Object.assign( Object.assign({}, EXREQD), {
         prms: {
           dbname: txdata.DBNAME,
           docid:  txdata.FILEID,
@@ -3934,7 +3935,7 @@ qconSubmD(ccommit) {
     ibmcosTxD(txdata, typpmgr, 1).then(rdataFetch).then(msgHandl).catch(msgHandl);
   } else if ( rexibm.test(txdata.DBORIG) && ecoat && txdata.DBNAME && txdata.FILEID
   && (!txdata.USRNAM || /^$|password/i.test(txdata.PSSWRD)) ) {
-    rdataFetch( Object.assign( Object.assign({}, ECOXREQD), {
+    rdataFetch( Object.assign( Object.assign({}, EXREQD), {
         prms: {
           dbname: txdata.DBNAME || "",
           docid:  txdata.FILEID || "",
@@ -4135,7 +4136,7 @@ discAdd(discsync) {
     }).catch(msgHandl);
   } else if ( idtoks && tm0cntcs[epsets.uname]
   && tm0cntcs[epsets.uname].roles.find(e => /^Reviewer$/i.test(e)) ) {
-    rdataFetch( Object.assign( Object.assign({}, ECOXREQD), {
+    rdataFetch( Object.assign( Object.assign({}, EXREQD), {
         prms: {
           dbname: dbpch.name,
           docid:  cobj._id || "",
