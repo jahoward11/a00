@@ -860,7 +860,7 @@ window.onload = function () {
       { switchon: 1, keytxt: "markdownItImplicitFigures" }
     ],
     fnc: function (str, idx, feats = []) {
-      let fts2 = ECOMODJS.markdownit.features
+      let fts2 = EC0.MODJS.markdownit.features
           .map(o2 => feats.find(o1 => o1.keytxt === o2.keytxt) || o2),
         mdit = window.markdownit && window.markdownit({
           html: fts2[0].switchon,
