@@ -1,6 +1,7 @@
 window.ECOSDOCS = [
 // * * * * * 0: calcjs * * * * *
-`<style type="text/css">
+`<title>JavaScript Calculator</title>
+<style type="text/css">
 *, *::before, *::after { box-sizing: inherit; }
 html {
   min-width: 375px;
@@ -480,7 +481,7 @@ let q2Bcopy, q2Bhtml,
     + (zoff || /maximum-/.test(metavp.content) ? "initial-scale=1" : "maximum-scale=1") ),
   titSave = (evt, tnew) => {
     cheadg.setAttribute('contenteditable', false);
-    (document.querySelector('#ecorender>title') || document.querySelector('head>title')).innerHTML
+    (document.querySelector('#ecorender title') || document.querySelector('head>title')).innerHTML
     = cheadg.innerHTML = (tnew || cheadg.textContent.trim().substring(0, 32));
   },
   gridAdj = idx => {
@@ -565,7 +566,7 @@ let q2Bcopy, q2Bhtml,
       viewSet();
     } else if (idx === 7) {
       calcCopy();
-    } else if (idx === 8) {
+    } else if (idx === 8 && !dentr.type) {
       window.location.href = "https://jahoward11.github.io/a00/-app-cjs/calcjs0.html";
     }
   },

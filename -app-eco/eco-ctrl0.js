@@ -63,17 +63,20 @@ const hostgh = /\.github\.io$/.test(window.location.host),
   rexrmt = /^https?:\/\/[ \w/#%!?=&@:.,+~-]+$/,
   rexwba = /\.(?:giff?|jpe?g|m?js|png|s?css)$/i;
 
-window.ecoqjs = window.ecoqjs || {}; // delayed loadup
 window.ecomjs = window.ecomjs || {}; // delayed loadup
-window.ECOJSCON = window.ECOJSCON || [];
-window.ECOSDOCS = window.ECOSDOCS || []; // delayed loadup
-window.HLJSSTYS = window.HLJSSTYS || [];
+window.ecoqjs = window.ecoqjs || {}; // delayed loadup
+
+const ECOJSCON = window.ECOJSCON || [];
+const ECOSDOCS = window.ECOSDOCS || []; // delayed loadup
+const HLJSSTYS = window.HLJSSTYS || [];
 
 const COUCHTXD = jsonParse(JSON.stringify(window.COUCHTXD || []));
 const ECOINSTR = jsonParse(JSON.stringify(window.ECOINSTR || []));
-const ECOMODJS = jsonParse(JSON.stringify(window.ECOMODJS || {}));
 const ECOTMPLS = jsonParse(JSON.stringify(window.ECOTMPLS || {}));
 const ECOXREQD = jsonParse(JSON.stringify(window.ECOXREQD || {}));
+
+const ECOMODJS = jsonParse(JSON.stringify(window.ECOMODJS || {}));
+Object.keys(ECOMODJS).forEach(m => ECOMODJS[m].fnc = window.ECOMODJS[m].fnc);
 
 function msgPrefmt(msg, con) {
   let robj, stk;
