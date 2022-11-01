@@ -443,7 +443,7 @@ body {
 (function () {
 'use strict';
 let q2Bcopy, q2Bhtml,
-  cinit = "",
+  cinit = window.cinit || window.localStorage._cinit || "",
   cmods = [], dload = "", jsrcs = [], v0set = 0, val0s = [],
   metavp = document.querySelector('body>#ecorender meta[name=viewport]')
     || document.querySelector('head>meta[name=viewport]'),
@@ -524,7 +524,7 @@ let q2Bcopy, q2Bhtml,
     + "\\n  // dload= | load specified data set into *ENTRY* field"
     + "\\n  // val0s= | re-assign initial values of pre-loaded data set"
     + "\\n  // jsrcs= | inject supplemental JavaScript resources\\n\\n// "
-    + (dentr.type ? "window.localStorage._cinit" : "window.location.search")
+    + (!dentr.type ? "window.location.search" : "window.localStorage._cinit =\\n// window.cinit")
     + " = \\"" + qrys.join("&") + "\\"\\n // + \\""
     + (!qrys.length ? "" : "&") + "cmods=\\" + encodeURIComponent(\\"3,5,prj42.mjs\\")"
     + ( (xsetlist || "").value
@@ -706,8 +706,7 @@ let q2Bcopy, q2Bhtml,
 window.xstor = {};
 window.dentr = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
   || { value: datxmp.textContent.replace(/\\n+$|^\\n+/g, "") };
-(dentr.type ? cinit || window.localStorage._cinit || "" : window.location.search || cinit)
-.replace(/^\\?/, "").split("&").forEach( qi =>
+(dentr.type ? cinit : window.location.search).replace(/^\\?/, "").split("&").forEach( qi =>
   /^jsrcs=./.test(qi) ? (jsrcs = window.decodeURIComponent(qi.replace(/^jsrcs=/, "")).split(/[ ,]+/))
   : /^cmods=./.test(qi) ? (cmods = window.decodeURIComponent(qi.replace(/^cmods=/, "")).split(/[ ,]+/))
   : /^dload=./.test(qi) ? (dload = window.decodeURIComponent(qi.replace(/^dload=/, "")))

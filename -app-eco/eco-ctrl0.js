@@ -2678,14 +2678,15 @@ tabs0Tog(idx, exit) { // also triggered by dataDispl, dropboxTx, blobHandl, prvT
   }
 },
 txtaSel(txtaid, sel) {
-  let utxta = document.querySelector((txtaid === "qcontxta" ? '#econav0 #' : '#ecoesp0 #') + txtaid);
+  let utxta = document.querySelector(
+      (/attinp|qcontxta/.test(txtaid) ? '#econav0 #' : '#ecoesp0 #') + txtaid );
   if (txtaid === "swaptxta") {
     utxta.classList.remove("is-warning", "is-success");
     document.querySelector('#ecoesp0 #toolswap .help').innerHTML = "";
   }
   if (sel) {
     utxta.focus();
-    utxta.setSelectionRange(0, utxta.textLength);
+    /attinp/.test(txtaid) ? utxta.select() : utxta.setSelectionRange(0, utxta.textLength);
   } else { //clr
     utxta.value = txtaid !== "jsctxta" ? "" : "> ";
     txtaid !== "jsctxta" || (document.querySelector('#ecoesp0 #jsclist').selectedIndex = 0);
