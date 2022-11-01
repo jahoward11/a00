@@ -291,7 +291,7 @@ function assts2Blob() {
   let dbpc2, nscr,
     jsclist = document.querySelector('#ecoesp0 #jsclist'),
     hlslist = document.querySelector('#ecoesp0 #hlslist'),
-    iniscripts = document.querySelector('#iniscripts'),
+    iniscripts = document.querySelector('body>#iniscripts'),
     attPrc1 = (docid, akey) =>
       /^blob:/.test(aurls[akey]) || !dbpc2 || dbpc2.getAttachment(docid, akey)
         .then(ablob => aurls[akey] = URL.createObjectURL(ablob))
@@ -816,7 +816,7 @@ function jdeDftGen() {
 
 function swapListGen() {
   const context = {
-    swapitems: [["Preview content (HTML)", "#ecorender"], ["File data (JSON)", "#ecoesp0 #rawtxta"]]
+    swapitems: [["Preview content (HTML)", "body>#ecorender"], ["File data (JSON)", "#ecoesp0 #rawtxta"]]
       .concat( !filewkg ? []
         : filewkg.file_type === "eco-srcdoc" ? [["Source doc: CONTENT", "content"]]
         : filewkg.file_type === "eco-scrap" ? [["Scrap file: CONTENT", "content"]]
@@ -1205,7 +1205,7 @@ function modjsLoad() {
   let nscr, spnm, idxfp,
     ct = {},
     pchlist = document.querySelector('#ecoesp0 #pchlist'),
-    iniscripts = document.querySelector('#iniscripts'),
+    iniscripts = document.querySelector('body>#iniscripts'),
     scriptmod = document.querySelector('#iniscripts>script[type=module]:last-child'),
     modxs = filewkg.parseconfigs.scriptsincl
       .map( sii => !/\*\d*$/.test(sii.fncname) && typeof window[sii.fncname] !== 'function'
@@ -1322,16 +1322,16 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
   let elsass, elsscr, elssty, lang, mnlen, ndiv, pla11, sidx, tft, tpl, udobj,
     valatt = document.querySelector('#econav0 #attinp').value.trim(),
     valatl = document.querySelector('#econav0 #attlist').value,
-    ecolinks = document.querySelector('#ecolinks'),
-    ecorender = document.querySelector('#ecorender'),
-    prv2s = document.querySelectorAll('#ecosrcview, #ecoguides'),
+    ecolinks = document.querySelector('body>#ecolinks'),
+    ecorender = document.querySelector('body>#ecorender'),
+    prv2s = document.querySelectorAll('body>#ecosrcview, body>#ecoguides'),
     prjdisc = document.querySelector('#ecoesp0 #prjdisc'),
     adsbls = document.querySelectorAll('#ecoesp0 #prjdisc>.media input[type=checkbox]:not(:checked)'),
     srcpane = document.querySelector('#ecoesp0 :not(.is-hidden)>#jdedft>#srcpanes>.textarea:not(.is-hidden):not([disabled])'),
     rawtxta = document.querySelector('#ecoesp0 #rawtxta'),
     eftypes = document.querySelectorAll('#ecoesp0 #tooltypes>.eftype'),
     pchlist = document.querySelector('#ecoesp0 #pchlist'),
-    ecoscripts = document.querySelector('#ecoscripts'),
+    ecoscripts = document.querySelector('body>#ecoscripts'),
     disciscurr = 0,
     tstamp1 = Date.now(),
     rexurl = /( src=| href=|@import +(?:url\(|)|\S+: *url\()('|"|)(\S+?)(?=['"](?: |\/?>)|\2?\)?; *$)/gim,
@@ -1828,7 +1828,7 @@ function annosGet(fileref = "") {
 }
 
 function webdocGen(redirect, pdata = filewkg || jsonParse(JSON.stringify(ETMPLS.publmgr))) {
-  let ecolinks = document.querySelector('#ecolinks'),
+  let ecolinks = document.querySelector('body>#ecolinks'),
     sdir = pdata.file_updated.subdir,
     scriptsconstr = pdata.parseconfigs.scriptsconstr,
     scriptsincl = pdata.parseconfigs.scriptsincl,
@@ -1842,9 +1842,9 @@ function webdocGen(redirect, pdata = filewkg || jsonParse(JSON.stringify(ETMPLS.
     sifragsbound = null;
   reniscurr = true;
   ecolinks.innerHTML
-  = document.querySelector('#ecorender').innerHTML
-  = document.querySelector('#ecosrcview').innerHTML
-  = document.querySelector('#ecoscripts').innerHTML = null;
+  = document.querySelector('body>#ecorender').innerHTML
+  = document.querySelector('body>#ecosrcview').innerHTML
+  = document.querySelector('body>#ecoscripts').innerHTML = null;
   fragstxt = pdata.filefrags.map( ob => typeof ob.contenttxt !== 'string'
     || !ob.contenttxt ? ob.contenttxt : ob.contenttxt.trim() + "\n\n" );
   scriptsincl.forEach( (sii, i) => sifragsbound == null &&
@@ -2509,10 +2509,10 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
 window.EC1 = {
 espExit() {
   EC1.tabs0Tog(0, 1);
-  document.querySelectorAll('#econav0, #ecorender, #ecosrcview, #ecoguides')
+  document.querySelectorAll('body>#econav0, body>#ecorender, body>#ecosrcview, body>#ecoguides')
   .forEach(el => el.classList.add("is-hidden"));
   document.documentElement.classList.add("has-background-grey-lighter");
-  document.querySelector('#ecoprj0').classList.remove("is-hidden");
+  document.querySelector('body>#ecoprj0').classList.remove("is-hidden");
 },
 pdbSel() { // also triggered by (pchSel>...>)pdbListGen, pchSel-reset
   let pdbinp = document.querySelector('#ecoprj0 #pdbinp'),
@@ -2542,12 +2542,12 @@ pdbInp() {
   }
 },
 navTog() { // also triggered by attSel, tabs0Tog, formFoc
-  document.querySelector('#navscrmask').classList.toggle("is-hidden");
+  document.querySelector('body>#navscrmask').classList.toggle("is-hidden");
   document.querySelectorAll('#econav0 .navbar-burger, #econav0>#econavbar')
   .forEach(el => el.classList.toggle("is-active"));
 },
 prvTog() {
-  let prvs = document.querySelectorAll('#ecorender, #ecosrcview, #ecoguides'),
+  let prvs = document.querySelectorAll('body>#ecorender, body>#ecosrcview, body>#ecoguides'),
     srcvstyle = document.querySelector('#ecosrcview>style:first-child'),
     srcvpre = document.querySelector('#ecosrcview>.srcview'),
     lnksTog = () => document.querySelectorAll('#ecosrcview>.srcvlink')
@@ -2572,13 +2572,13 @@ attSel(renswap) { // also triggered by attListGen, blobHandl, couchQry, attInp, 
   let attinp = document.querySelector('#econav0 #attinp'),
     attlist = document.querySelector('#econav0 #attlist'),
     idx = attlist.selectedIndex,
-    prv2s = document.querySelectorAll('#ecosrcview, #ecoguides'),
+    prv2s = document.querySelectorAll('body>#ecosrcview, body>#ecoguides'),
     prjdisc = document.querySelector('#ecoesp0 #prjdisc'),
     nbaropen = document.querySelector('#econav0>#econavbar').classList.contains("is-active");
   idx < 1 || !nbaropen || EC1.navTog();
   renswap === 0 || (attinp.value = idx < 1 ? "" : attlist.options[idx].textContent);
-  document.querySelector('#ecolinks').innerHTML
-  = document.querySelector('#ecoscripts').innerHTML = null;
+  document.querySelector('body>#ecolinks').innerHTML
+  = document.querySelector('body>#ecoscripts').innerHTML = null;
   reniscurr = false;
   EC2.srvrSel();
   if (idx > 0) {
@@ -2595,7 +2595,7 @@ attSel(renswap) { // also triggered by attListGen, blobHandl, couchQry, attInp, 
       + '\n<main class="container content">\n  <h4 class="has-text-grey-light is-italic">'
       + 'Preview screen is empty.</h4>\n</main>\n</section>', 5 );
     !document.querySelector('#econav0 #prvtab.is-active')
-    || document.querySelector('#ecorender').classList.remove("is-hidden");
+    || document.querySelector('body>#ecorender').classList.remove("is-hidden");
   }
 },
 attInp() {
@@ -2640,10 +2640,10 @@ tabs0Tog(idx, exit) { // also triggered by dataDispl, dropboxTx, blobHandl, prvT
   let bodcsty = window.getComputedStyle(document.body),
     tabs = document.querySelectorAll('#econav0 .navbar-start>a, #econav0 .navbar-dropdown>a'),
     tab2 = document.querySelector('#econav0 .has-dropdown>a'),
-    screens = document.querySelectorAll('#ecorender, #ecoesp0 .escreen'),
-    prv2s = document.querySelectorAll('#ecosrcview, #ecoguides'),
+    screens = document.querySelectorAll('body>#ecorender, #ecoesp0 .escreen'),
+    prv2s = document.querySelectorAll('body>#ecosrcview, body>#ecoguides'),
     srcvstyle = document.querySelector('#ecosrcview>style:first-child'),
-    ecoesp0 = document.querySelector('#ecoesp0'),
+    ecoesp0 = document.querySelector('body>#ecoesp0'),
     valatt = document.querySelector('#econav0 #attinp').value,
     valpfs = document.querySelector('#econav0 #pfsinp').value,
     nbaropen = document.querySelector('#econav0>#econavbar').classList.contains("is-active"),
@@ -2867,7 +2867,7 @@ pf2Tog() { // also triggered by jdePtyGen
   }
 },
 formFoc(fldid, nbar) { // fldid == null : select list
-  let econav0 = document.querySelector('#econav0');
+  let econav0 = document.querySelector('body>#econav0');
   if (!nbar) {
     !document.querySelector('#econav0>#econavbar').classList.contains("is-active") || EC1.navTog();
     fldid == null || window.innerHeight > 684 || econav0.classList.add("mtup2");
@@ -2884,7 +2884,7 @@ formFoc(fldid, nbar) { // fldid == null : select list
   }
 },
 formBlr(nbar) { // also triggered by jdeDftUpd, jdePtyUpd, jdeRawUpd
-  let econav0 = document.querySelector('#econav0'),
+  let econav0 = document.querySelector('body>#econav0'),
     ywin = window.scrollY;
   if (nbar && window.innerWidth < 685) {
     econav0.classList.remove("is-absolute");
@@ -3187,7 +3187,7 @@ tabs6Tog(idx) { // also triggered by ibmConnect
 },
 swplTog() { // also triggered by xsrcTog, ibmConnect
   let ebran1 = document.querySelector('#econav0 #ebran1'),
-    ecoesp0 = document.querySelector('#ecoesp0'),
+    ecoesp0 = document.querySelector('body>#ecoesp0'),
     swaplist = document.querySelector('#ecoesp0 #swaplist'),
     swpltogswi = document.querySelector('#ecoesp0 #swpltogswi'),
     wraptogswi = document.querySelector('#ecoesp0 #wraptogswi'),
@@ -3313,7 +3313,7 @@ window.EC2 = {
 ibmConnect() {
   let dbpc1, dbpc2, pcloud, ridx, rmtdn, tm2txd, userinfo,
     zindr = 0,
-    ecoprj0 = document.querySelector('#ecoprj0'),
+    ecoprj0 = document.querySelector('body>#ecoprj0'),
     valinp = ( document.querySelector('#ecoprj0 #pdblist').value
       || document.querySelector('#ecoprj0 #pdbinp').value ).trim().match(/^(.*?)(?:(?:@|a\d\d_)(.*)|)$/),
     blrbpik = document.querySelector('#ecoprj0 #pdbblurbs>article:not(.is-hidden)'),
@@ -3401,7 +3401,7 @@ ibmConnect() {
       !(asels[1].selectedIndex = epsets.prvmode)
       || dataDispl( '<link href="' + a00path
         + '/-res-css/bulma0.9-minireset.css" type="text/css" rel="stylesheet" />\n'
-        + document.querySelector('#ecorender').innerHTML.trim(), 5 );
+        + document.querySelector('body>#ecorender').innerHTML.trim(), 5 );
       emodeSet();
       EC1.tabs5Tog(asels[3].selectedIndex = epsets.tabsdflt[0] || 0);
       EC1.tabs6Tog(asels[4].selectedIndex = epsets.tabsdflt[1] || 0);
@@ -3416,7 +3416,7 @@ ibmConnect() {
     espEnter = dsetskip => {
       typeof dsetskip === 'number' && !msgwelcome || ecoInit();
       document.documentElement.classList.remove("has-background-grey-lighter");
-      document.querySelectorAll('#econav0, #ecorender')
+      document.querySelectorAll('body>#econav0, body>#ecorender')
       .forEach(el => el.classList.remove("is-hidden"));
       if ( !dsetskip && idtoks
       && !reqipch && /^[a-z][0-9_a-z$,+-]*$/.test(valinp[1]) ) {
@@ -4027,7 +4027,7 @@ mnTog(xpnd) {
   !mnmask || xpnd == !document.querySelector('#ecorender #mnbar.minz')
   || document.querySelectorAll('#ecorender .mnote, #ecorender #mnbar')
     .forEach(el => el.classList.toggle("minz"))
-  || document.querySelector('#ecorender').style.setProperty( "--mnbodrt",
+  || document.querySelector('body>#ecorender').style.setProperty( "--mnbodrt",
     ( nmain && +getComputedStyle(nmain).marginRight.replace(/px/, "")
       || +getComputedStyle(document.body).paddingRight.replace(/px/, "")
       + +getComputedStyle(document.body).borderRightWidth.replace(/px/, "")
@@ -4075,7 +4075,7 @@ discTog(evt) {
   }
   !evt || document.querySelectorAll('#ecoesp0 #prjdisc>.media .mtdn3>input[type=checkbox]')
     .forEach(el => el.checked = true);
-  document.querySelector('#ecorender').innerHTML = null;
+  document.querySelector('body>#ecorender').innerHTML = null;
   reniscurr = false;
   prjDiscGen();
 },
@@ -4370,7 +4370,7 @@ logOut() {
       : "\nHowever, local-storage data remains intact and available on device." )
     + ( dbpurg1 ? "\nAlso, all imported, database data has been deleted."
       : "\nHowever, previously imported, database data remains intact and available on device." ) );
-  document.querySelector('#ecorender').innerHTML
+  document.querySelector('body>#ecorender').innerHTML
   = '<p id="msgwelcome"><b>System Error:</b> Please restart web app.</p>';
   sethlps[0].classList.remove("is-hidden");
   logtbtn.disabled = true;
@@ -4463,20 +4463,20 @@ logOut() {
       msgHandl(err);
     }
   } else { prjsenet = {}; }
-  tmplpdblist = await Handlebars.compile(document.querySelector('#pdblist-tmpl').innerHTML);
-  tmplpdbblurbs = await Handlebars.compile(document.querySelector('#pdbblurbs-tmpl').innerHTML);
-  tmplattlist = await Handlebars.compile(document.querySelector('#attlist-tmpl').innerHTML);
-  tmplprjdisc = await Handlebars.compile(document.querySelector('#prjdisc-tmpl').innerHTML);
-  tmplpfslist = await Handlebars.compile(document.querySelector('#pfslist-tmpl').innerHTML);
-  tmpljdedft = await Handlebars.compile(document.querySelector('#jdedft-tmpl').innerHTML);
-  tmpljdepty = await Handlebars.compile(document.querySelector('#jdepty-tmpl').innerHTML);
-  tmplpchlist = await Handlebars.compile(document.querySelector('#pchlist-tmpl').innerHTML);
-  tmpldirlist = await Handlebars.compile(document.querySelector('#dirlist-tmpl').innerHTML);
-  tmplrmtlist = await Handlebars.compile(document.querySelector('#rmtlist-tmpl').innerHTML);
-  tmplswaplist = await Handlebars.compile(document.querySelector('#swaplist-tmpl').innerHTML);
-  tmpljsclist = await Handlebars.compile(document.querySelector('#jsclist-tmpl').innerHTML);
-  tmpldbolist = await Handlebars.compile(document.querySelector('#dbolist-tmpl').innerHTML);
-  tmplhlslist = await Handlebars.compile(document.querySelector('#hlslist-tmpl').innerHTML);
+  tmplpdblist = await Handlebars.compile(document.querySelector('body>#pdblist-tmpl').innerHTML);
+  tmplpdbblurbs = await Handlebars.compile(document.querySelector('body>#pdbblurbs-tmpl').innerHTML);
+  tmplattlist = await Handlebars.compile(document.querySelector('body>#attlist-tmpl').innerHTML);
+  tmplprjdisc = await Handlebars.compile(document.querySelector('body>#prjdisc-tmpl').innerHTML);
+  tmplpfslist = await Handlebars.compile(document.querySelector('body>#pfslist-tmpl').innerHTML);
+  tmpljdedft = await Handlebars.compile(document.querySelector('body>#jdedft-tmpl').innerHTML);
+  tmpljdepty = await Handlebars.compile(document.querySelector('body>#jdepty-tmpl').innerHTML);
+  tmplpchlist = await Handlebars.compile(document.querySelector('body>#pchlist-tmpl').innerHTML);
+  tmpldirlist = await Handlebars.compile(document.querySelector('body>#dirlist-tmpl').innerHTML);
+  tmplrmtlist = await Handlebars.compile(document.querySelector('body>#rmtlist-tmpl').innerHTML);
+  tmplswaplist = await Handlebars.compile(document.querySelector('body>#swaplist-tmpl').innerHTML);
+  tmpljsclist = await Handlebars.compile(document.querySelector('body>#jsclist-tmpl').innerHTML);
+  tmpldbolist = await Handlebars.compile(document.querySelector('body>#dbolist-tmpl').innerHTML);
+  tmplhlslist = await Handlebars.compile(document.querySelector('body>#hlslist-tmpl').innerHTML);
   assts2Blob();
   pdbListGen();
   pfsListGen();

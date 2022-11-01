@@ -5337,13 +5337,14 @@ const hostgh = /\.github\.io$/.test(window.location.host),
       ? resp : JSON.stringify(resp, null, 2) ) + "\n\n",
   espBndl = () => {
     document.documentElement.classList.add("has-background-grey-lighter");
-    document.querySelector('#ecoprj0').classList.remove("is-hidden");
-    document.querySelector('#navscrmask').classList.add("is-fixed");
-    document.querySelectorAll('#econav0, #ecorender').forEach(e => e.classList.add("is-hidden"));
-    document.querySelectorAll('#ecoprj0, #ecoguides, #ecoesp0')
+    document.querySelector('body>#ecoprj0').classList.remove("is-hidden");
+    document.querySelector('body>#navscrmask').classList.add("is-fixed");
+    document.querySelectorAll('body>#econav0, body>#ecorender')
+    .forEach(e => e.classList.add("is-hidden"));
+    document.querySelectorAll('body>#ecoprj0, body>#ecoguides, body>#ecoesp0')
     .forEach(e => e.classList.add("is-absolute"));
-    document.querySelector('#econav0').classList.add("hgtnav0");
-    document.querySelectorAll('#navscrmask, #econav0 #qcni2')
+    document.querySelector('body>#econav0').classList.add("hgtnav0");
+    document.querySelectorAll('body>#navscrmask, #econav0 #qcni2')
     .forEach(e => e.classList.add("is-hidden"));
     document.querySelectorAll('#econav0 .navbar-burger, #econav0>#econavbar')
     .forEach(e => e.classList.remove("is-active"));
@@ -5358,7 +5359,7 @@ const hostgh = /\.github\.io$/.test(window.location.host),
     //nscr.async = false; //respShow(err),
     nscr.onerror = err => rjct("**Alert: Script resource GET/load error occured.");
     nscr.onload = rslv;
-    !urlblob || document.querySelector('#iniscripts').appendChild(nscr);
+    !urlblob || document.querySelector('body>#iniscripts').appendChild(nscr);
   }),
   asstsLoad = pchinjpr => pchinjpr
     .then(() => dbpch = window.PouchDB && new PouchDB(DB_NAMES[0]))
