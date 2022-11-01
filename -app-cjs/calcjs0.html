@@ -340,9 +340,11 @@ body {
 <script src="../../a00/-res-js/localforage.min.js" type="text/javascript"></script>
 <script type="module">
 let q2Bcopy, q2Bhtml,
+  cinit = "",
   cmods = [], dload = "", jsrcs = [], v0set = 0, val0s = [],
-  metavp = document.querySelector('#ecorender>meta[name=viewport]')
+  metavp = document.querySelector('body>#ecorender meta[name=viewport]')
     || document.querySelector('head>meta[name=viewport]'),
+  ecoscrs = document.querySelector('body>#ecoscripts'),
   datxmp = document.querySelector('#cmain>#datxmp'),
   cheadg = document.querySelector('#cmain>#cheadg'),
   recon = document.querySelector('#cmain>#recon'),
@@ -373,13 +375,13 @@ let q2Bcopy, q2Bhtml,
     nscr.innerHTML = !url && cnt ? cnt : null;
     nscr.onerror = err => rjct("**Alert: Script resource GET/load error occured.");
     nscr.onload = rslv;
-    !(url || cnt) || document.body.appendChild(nscr);
+    !(url || cnt) || (dentr.type && ecoscrs || document.body).appendChild(nscr);
   }),
   zoomTog = zoff => metavp.setAttribute( 'content', "width=device-width, "
     + (zoff || /maximum-/.test(metavp.content) ? "initial-scale=1" : "maximum-scale=1") ),
   titSave = (evt, tnew) => {
     cheadg.setAttribute('contenteditable', false);
-    (document.querySelector('#ecorender title') || document.querySelector('head>title')).innerHTML
+    (document.querySelector('body>#ecorender title') || document.querySelector('head>title')).innerHTML
     = cheadg.innerHTML = (tnew || cheadg.textContent.trim().substring(0, 32));
   },
   gridAdj = idx => {
@@ -419,9 +421,11 @@ let q2Bcopy, q2Bhtml,
     + "\n  // dload= | load specified data set into *ENTRY* field"
     + "\n  // val0s= | re-assign initial values of pre-loaded data set"
     + "\n  // jsrcs= | inject supplemental JavaScript resources\n\n// "
-    + (dentr.type ? "window_location_search" : "window.location.search") + " = \"" + qrys.join("&")
-    + "\"\n // + \"" + (!qrys.length ? "" : "&") + "cmods=\" + encodeURIComponent(\"3,5,prj42.mjs\")"
-    + ((xsetlist || "").value ? "" : "\n // + \"&dload=\" + encodeURIComponent(\"https://host/pathname\")")
+    + (dentr.type ? "window.localStorage._cinit" : "window.location.search")
+    + " = \"" + qrys.join("&") + "\"\n // + \""
+    + (!qrys.length ? "" : "&") + "cmods=\" + encodeURIComponent(\"3,5,prj42.mjs\")"
+    + ( (xsetlist || "").value
+      ? "" : "\n // + \"&dload=\" + encodeURIComponent(\"https://host/pathname\")" )
     + "\n // + \"&val0s=\" + encodeURIComponent(\"a:10,b:20,c:30\")"
     + "\n // + \"&jsrcs=\" + encodeURIComponent(\"../-res-js/jstat.js\")\n<br>";
     window.getSelection().setPosition(quad2B.firstChild, quad2B.textContent.length);
@@ -429,7 +433,7 @@ let q2Bcopy, q2Bhtml,
   calcCopy = () => {
     let nanc = document.createElement('a'),
       chtml = '<!DOCTYPE html>\n<html lang="en">\n<head>\n'
-      + (document.querySelector('#ecorender') || document.documentElement).innerHTML
+      + (document.querySelector('body>#ecorender') || document.documentElement).innerHTML
         .replace(/\n+$|^\n+|^<head>\n?|^#cmain \.iwarn[^]+?\n(?=@media print {\n)|,\n *xsetLoad = [^]+?(?=;\nwindow\.xstor =)|^ *!\/\^http.+xlstGen[^]+?;\n|\n*<script\b.*><\/script>(?=$|<\/body>)|\n?<\/body>$/gim, "")
         .replace(/^(<\/style>)[^]*?\n(?=<div .+><\/div>$)/im, "$1\n</head>\n<body>\n")
         .replace(/^(<xmp id="datxmp".*?>)[^]*?(?=<\/xmp>)/im, (m, c1) => c1 + "\n" + dentr.value + "\n")
@@ -457,7 +461,7 @@ let q2Bcopy, q2Bhtml,
       cheadg.setAttribute('contenteditable', true);
       cheadg.focus();
     } else if (idx === 3) {
-      [cgrid, xctrls].forEach(e => e.classList.toggle("is-hidden"));
+      [cgrid, xctrls].forEach(e => e && e.classList.toggle("is-hidden"));
     } else if (/[45]/.test(idx)) {
       gridAdj(idx);
     } else if (idx === 6 && ((xsetlist || "").value || !dentr.value)) {
@@ -659,7 +663,8 @@ let q2Bcopy, q2Bhtml,
 window.xstor = {};
 window.dentr = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
   || { value: datxmp.textContent.replace(/\n+$|^\n+/g, "") };
-window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
+(dentr.type ? cinit || window.localStorage._cinit || "" : window.location.search || cinit)
+.replace(/^\?/, "").split("&").forEach( qi =>
   /^jsrcs=./.test(qi) ? (jsrcs = window.decodeURIComponent(qi.replace(/^jsrcs=/, "")).split(/[ ,]+/))
   : /^cmods=./.test(qi) ? (cmods = window.decodeURIComponent(qi.replace(/^cmods=/, "")).split(/[ ,]+/))
   : /^dload=./.test(qi) ? (dload = window.decodeURIComponent(qi.replace(/^dload=/, "")))
@@ -669,7 +674,7 @@ window.location.search.replace(/^\?/, "").split("&").forEach( qi =>
       && ( /^\//.test(e[1]) ? [eval(e[1]), !/^['"]|=>/.test(e[2]) ? e[2] : eval(e[2])]
         : [new RegExp("^([\\t ]*" + e[1] + "[\\t ]*=[\\t ]*).*?(?=[\\t ]*//|$)", "m"), "$1" + e[2]] )))
   : /^title=/.test(qi) ? titSave(0, window.decodeURIComponent(qi.replace(/^title=/, "")))
-  : /^!displ$/.test(qi) ? [cgrid, xctrls].forEach(e => e.classList.add("is-hidden"))
+  : /^!displ$/.test(qi) ? [cgrid, xctrls].forEach(e => e && e.classList.add("is-hidden"))
   : /^!zlock$/.test(qi) ? zoomTog(1)
   : /^!row1$/.test(qi) ? gridAdj(4)
   : /^!col1$/.test(qi) ? gridAdj(5) : 0 );
