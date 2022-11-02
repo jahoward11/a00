@@ -492,7 +492,7 @@ let q2Bcopy, q2Bhtml,
       reslts = xprsns.map(xpri => {
         try {
           xpri = xpri && xpri
-            .replace( /^(?=[\t ]*{)|^.*?(?=\/\/|<\/?\w+ [ \w]+=.+>|\(? *function\b[ \w]*\(.*?\) *{|\(? *(?:[$\wÀ-Ͽ]+|\([^]*?\)) *=>|$)/g,
+            .replace( /^(?=[\t ]*{)|^.*?(?=\/\/|<\/?\w+ [ \w]+=.+>|\(? *function\b[ \w]*\(.*?\) *{|\(? *(?:[$\wÀ-Ͽ]+|\([^(]*?\)) *=>|$)/g,
               m0 => m0.replace( /([ ({]|^)(?:_\.|)([$_a-zÀ-Ͽ][$\wÀ-Ͽ]*)(?=\s*=\s*(?:$|[$\wÀ-Ͽ'"`([{./+-]))/gi,
                 (m1, c1, c2) => _ks.push(c2) && c1 + "_." + c2 )
               .replace( /([\t =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([$_](?!\.)[$\wÀ-Ͽ]*|[A-Za-zÀ-Ͽ][$\wÀ-Ͽ]*)(?! *=|['":])/g,
