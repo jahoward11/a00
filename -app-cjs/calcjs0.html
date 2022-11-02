@@ -340,8 +340,8 @@ body {
 <script src="../../a00/-res-js/localforage.min.js" type="text/javascript"></script>
 <script type="module">
 let q2Bcopy, q2Bhtml,
-  cinit = window.cinit || window.localStorage._cinit || "",
   cmods = [], dload = "", jsrcs = [], v0set = 0, val0s = [],
+  cinit = window.cinit || window.localStorage._cinit || "",
   metavp = document.querySelector('body>#ecorender meta[name=viewport]')
     || document.querySelector('head>meta[name=viewport]'),
   ecoscrs = document.querySelector('body>#ecoscripts'),
@@ -492,16 +492,16 @@ let q2Bcopy, q2Bhtml,
       reslts = xprsns.map(xpri => {
         try {
           xpri = xpri && xpri
-            .replace( /^(?=[\t ]*{)|^.*?(?=\/\/|<\/?\w+ [ \w]+=.+>|\(? *function\b[ \w]*\(.*?\) *{|\(? *(?:[$\wÀ-Ͽ]+|\([^)]*\)) *=>|$)/g,
+            .replace( /^(?=[\t ]*{)|^.*?(?=\/\/|<\/?\w+ [ \w]+=.+>|\(? *function\b[ \w]*\(.*?\) *{|\(? *(?:[$\wÀ-Ͽ]+|\([^]*?\)) *=>|$)/g,
               m0 => m0.replace( /([ ({]|^)(?:_\.|)([$_a-zÀ-Ͽ][$\wÀ-Ͽ]*)(?=\s*=\s*(?:$|[$\wÀ-Ͽ'"`([{./+-]))/gi,
                 (m1, c1, c2) => _ks.push(c2) && c1 + "_." + c2 )
               .replace( /([\t =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\b)([$_](?!\.)[$\wÀ-Ͽ]*|[A-Za-zÀ-Ͽ][$\wÀ-Ͽ]*)(?! *=|['":])/g,
-                (m1, c1, c2) => window[c2] || !_ks.some(k => k === c2) ? m1 : c1 + "_." + c2 ) );
+                (m1, c1, c2) => window[c2] || !_ks.includes(c2) ? m1 : c1 + "_." + c2 ) );
           rslt = eval(xpri.replace(/\x0c$|\\f$|&#x0*[Cc];$|^\x0c|^\\f|^&#x0*[Cc];/g, ""));
-          return ( !/\x0c$|\\f$|&#x0*[Cc];$|^\x0c|^\\f|^&#x0*[Cc];/.test(xpri) ? ""
-            : "<div class=pagebb></div>" )
-          + ( rslt == null ? "" : typeof rslt === 'string' ? rslt.replace(/\n/g, "\\n")
-            : rslt.toString().replace(/\s+/g, " ") );
+          return ( !/\x0c$|\\f$|&#x0*[Cc];$|^\x0c|^\\f|^&#x0*[Cc];/.test(xpri)
+            ? "" : "<div class=pagebb></div>" )
+          + ( rslt == null ? "" : typeof rslt === 'string'
+            ? rslt.replace(/\n/g, "\\n") : rslt.toString().replace(/\s+/g, " ") );
         } catch (err) { reShow(err); return err; }
       }),
       $ks = Object.keys($);
