@@ -1141,7 +1141,7 @@ function rsrcsXGet(txdata = {}) {
     fragsrcxs = filewkg.loadconfigs && filewkg.loadconfigs.fragsrcxs || [],
     rexcdir = /^(?:\.\/|(?:\.\.\/(?:\.\.\/(.*)\/|))(.*)\/|)([^\/]*)$/,
     rexsdoc = /^(?:\.\/|\.\.\/.*\/)([^\/]+)$/i,
-    rexlobj = /^(?:\/\/.+|\$\w*\.?\w*)$/,
+    rexlobj = /^(?:\/\/|\$).*$/,
     rsrcGet1 = (ffi, i) => { // todo: test accommodation of path `./filename`; will subdir ever matter?
       if (ffi.contenttxt) { return; }
       if ( !( ffi.titletxt && typeof ffi.titletxt === 'object'
@@ -1176,7 +1176,7 @@ function rsrcsXGet(txdata = {}) {
           txdata = {};
           dropboxTx(jsonParse(JSON.stringify(txd2)), rslv, rjct);
         }).catch(msgHandl);
-      } else if (/^\/\/.+$/.test(txdata.FILEID) && window.localforage) {
+      } else if (/^\/\/.*$/.test(txdata.FILEID) && window.localforage) {
         // note: unexpected lf behavior because of promise-wrap
         return localforage.getItem(txdata.FILEID.replace(/^\/\//, ""))
         .then(val => !/^{".+}$/.test(val) ? val : (jsonParse(val) || "").content).catch(msgPrefmt);
