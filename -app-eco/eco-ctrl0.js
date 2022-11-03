@@ -3582,13 +3582,14 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-memos
     rsltFbk = rslt => pty && fbx ? ""
       : /^(?:keys|ks?)$/i.test(pty) && ecoqjs.fncTry(Object.keys, rslt) || rslt,
     ptyTest = d => pty = key.replace(!d ? /^\w+\.(.+)$|.*/ : /^\w+\.(\d+)$|.*/, "$1"),
-    gloObj = () => (/^import\(/.test(key) || window[key.replace(/^new +|[.([].+/g, "")])
+    gloObj = (/^import\(/.test(key) || window[key.replace(/^new +|[.([].+/g, "")])
       && ( !(pty = /^(\w+)(\.keys|\.ks?|)$/.exec(key)) ? ecoqjs.fncTry(window.eval, key)
       : pty[2] ? window[pty[1]]["keys"] || ecoqjs.fncTry(Object.keys, window.eval(pty[1]))
       : !/^Handlebars$/.test(key) ? window[key]
       : Object.assign(Object.assign({}, Handlebars), { Parser: {}, default: {} }) );
   key = key == null ? "" : "" + key;
-  return gloObj() || ( /^attlist/.test(key) ? attListGen()
+  return gloObj != null ? gloObj
+  : /^attlist/.test(key) ? attListGen()
   : /^pfslist/.test(key) ? pfsListGen()
   : /^(?:tm0|)urole?/.test(key) ? tm0urole
   : /^dbpch/.test(key) ? dbpch && dbpch[ptyTest()]
@@ -3622,7 +3623,7 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-memos
   : /^2|^couch|^c?accts?|^c?accounts?/i.test(key) ? caccts[ptyTest(1)] || rsltFbk(caccts)
   : /^1|^(?:eco|)idtoks?/i.test(key) ? idtoks && idtoks[ptyTest()] || rsltFbk(idtoks)
   : /^0|epsets?|(?:eco|)presets?/i.test(key) ? epsets && epsets[ptyTest()] || rsltFbk(epsets)
-  : rsltFbk(EINSTR[0]) );
+  : rsltFbk(EINSTR[0]);
 },
 tmplLoad() {
   let tmplrads = document.querySelector('#ecoguides #tmplrad').elements["tmplrad"],
