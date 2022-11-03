@@ -3653,8 +3653,7 @@ guideLoad() {
 calcGen() {
   if (fwinflux) { return; }
   let calcdemo = document.querySelector('#ecoesp0 #calctogswi').checked,
-    calctmpl = jsonParse(JSON.stringify(ETMPLS.publmgr)),
-    calccnt = (EC0.SDOCS[0] || "").split(/\n\n(?=<\/xmp>\n| *p = 5\n)/);
+    calctmpl = jsonParse(JSON.stringify(ETMPLS.publmgr));
   pfsResets();
   calctmpl = Object.assign( calctmpl, {
     _id: "",
@@ -3664,11 +3663,11 @@ calcGen() {
     }),
     filefrags: [
       { idtxt: "SOURCE1", labeltxt: "SOURCE1", titletxt: "SOURCE pane #1.",
-        contenttxt: calccnt[0] || "" },
+        contenttxt: EC0.SDOCS[0][0] || "" },
       { idtxt: "SOURCE2", labeltxt: "SOURCE2", titletxt: "SOURCE pane #2.",
-        contenttxt: !calcdemo ? "" : calccnt[1] || "" },
+        contenttxt: !calcdemo ? "" : EC0.SDOCS[0][1] || "" },
       { idtxt: "SOURCE3", labeltxt: "SOURCE3", titletxt: "SOURCE pane #3.",
-        contenttxt: calccnt[2] || "" }
+        contenttxt: EC0.SDOCS[0][2] || "" }
     ]
   });
   window.scrollTo(0, 0);

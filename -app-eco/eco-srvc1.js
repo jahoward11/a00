@@ -2,7 +2,7 @@ window.EC0 = window.EC0 || {};
 
 EC0.SDOCS = [
 // * * * * * 0: calcjs * * * * *
-`<style type="text/css">
+[ `<style type="text/css">
 *, *::before, *::after { box-sizing: inherit; }
 html {
   min-width: 375px;
@@ -249,8 +249,8 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
 <div id="scrnmask" class="is-hidden"></div>
 <main id="cmain">
 <xmp id="datxmp" class="is-hidden">
-
- p = 5
+`,
+` p = 5
  q = 32
  r = Math.random()
 
@@ -401,8 +401,8 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
 // - developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators
 // - developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Numbers_and_dates
 //
-
-</xmp>
+`,
+`</xmp>
 <h4 id="cheadg">JavaScript Calculator</h4>
 <pre id="recon"></pre>
 <span id="mctnr"><select id="menulist" class="anone" title="CalcJS View Options">
@@ -595,7 +595,7 @@ let q2Bcopy, q2Bhtml,
       reslts = xprsns.map(xpri => {
         try {
           xpri = xpri && xpri
-            .replace( /^(?=[\\t ]*{)|^.*?(?=\\/\\/|<\\/?\\w+ [ \\w]+=.+>|\\(? *function\\b[ \\w]*\\(.*?\\) *{|\\(? *(?:[$\\wÀ-Ͽ]+|\\([^(]*?\\)) *=>|$)/g,
+            .replace( /^(?=[\\t ]*{)|^.*?(?=\\/\\/|<\\/?\\w+ [ \\w]+=.+>|\\(? *(?:[$\\wÀ-Ͽ]+|\\([^(]*?\\)) *=>|\\(? *function\\b[ \\w]*\\(.*?\\) *{|$)/g,
               m0 => m0.replace( /([ ({]|^)(?:_\\.|)([$_a-zÀ-Ͽ][$\\wÀ-Ͽ]*)(?=\\s*=\\s*(?:$|[$\\wÀ-Ͽ'"\`([{./+-]))/gi,
                 (m1, c1, c2) => _ks.push(c2) && c1 + "_." + c2 )
               .replace( /([\\t =<>([{!?,;:%/*+-]|^)(?!(?:if|else|try|catch|for|in|of|do|while|switch|break|continue|new|var|let|const|typeof|instanceof|function|return|throw|delete|true|false|null|undefined)\\b)([$_](?!\\.)[$\\wÀ-Ͽ]*|[A-Za-zÀ-Ͽ][$\\wÀ-Ͽ]*)(?! *=|['":])/g,
@@ -743,7 +743,8 @@ cheadg.onblur = titSave;
 menulist.onchange = menuSel;
 quad2B.onpaste = txtPste;
 })();
-</script>`,
+</script>
+` ],
 // * * * * * 1: srcdiff * * * * *
 `<!--
 <xmp id="s1txt0" class="is-hidden"></xmp>
