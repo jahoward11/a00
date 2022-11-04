@@ -73,11 +73,9 @@ EC0.STYS = EC0.STYS || [];
 
 const ECTXD = jsonParse(JSON.stringify(EC0.CTXD || []));
 const EINSTR = jsonParse(JSON.stringify(EC0.INSTR || []));
+const EMODJS = jsonParse(JSON.stringify(EC0.MODJS || {}));
 const ETMPLS = jsonParse(JSON.stringify(EC0.TMPLS || {}));
 const EXREQD = jsonParse(JSON.stringify(EC0.XREQD || {}));
-
-const EMODJS = jsonParse(JSON.stringify(EC0.MODJS || {}));
-Object.keys(EMODJS).forEach(m => EMODJS[m].fnc = EC0.MODJS[m].fnc);
 
 function msgPrefmt(msg, con) {
   let robj, stk;
@@ -298,11 +296,13 @@ function assts2Blob() {
         .catch(msgHandl),
     modsInj = () => {
       ["eco-srvc1.js", "eco-srvc2.js"].concat(!protfile ? [] : "eco-srvc3.js")
-      .forEach(jsi => {
+      .forEach((jsi, i) => {
         nscr = document.createElement('script');
         nscr.src = aurls[jsi];
         nscr.type = 'text/javascript';
         protfile || hostibm || nscr.setAttribute('crossorigin', 'use-credentials');
+        i < 2 || ( nscr.onload = () => Object.keys(EMODJS)
+          .forEach(k => EMODJS[k].fnc = EC0.MODJS[k].fnc || ecomjs[k] || null) );
         iniscripts.appendChild(nscr);
       });
       if (!protfile) {
@@ -311,8 +311,9 @@ function assts2Blob() {
         nscr.innerHTML
           = '\nimport * as srvc3 from "' + aurls["eco-srvc3.mjs"]
           //+ '";\nimport * as srvc4 from "' + aurls["eco-srvc4.mjs"]
-          + '";\nlet f;\nfor (f in srvc3) ecomjs[f] = srvc3[f];\n'
-          //+ '\nfor (f in srvc4) ecomjs[f] = srvc4[f];\n';
+          + '";\nlet k;\nfor (k in srvc3) (ecomjs[k] = srvc3[k])'
+          + '\n  && (EMODJS[k].fnc = EC0.MODJS[k].fnc || srvc3[k] || null);\n'
+          //+ 'for (k in srvc4) ecomjs[k] = srvc4[k];\n';
         iniscripts.appendChild(nscr);
       }
       jsclist.innerHTML = tmpljsclist && tmpljsclist({ jscitems: EC0.JSCON });
@@ -1568,6 +1569,12 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
   if ( typeof udata === 'string' && /^{\s*"[^]+}$|^\[[^]+\]$/.test(udata.trim())
   && (udobj = jsonParse(udata)) ) {
     return dataDispl(udobj, destindr, cbfnc, cfgs);
+  } else if (udata && typeof udata === 'object') {
+    Object.keys(udata).toString() !== Object.keys(EMODJS["html2md"]).toString()
+    || (udata.fnc = (udata.fnc || ecomjs[udata.fncname] || "").toString() || null);
+    Object.keys(udata).toString() !== Object.keys(EMODJS).toString()
+    || Object.keys(udata).forEach( k => (udata[k] = Object.assign({}, udata[k]))
+      && (udata[k].fnc = (udata[k].fnc || ecomjs[k] || "").toString() || null) );
   }
   if ( destindr === 0 && ( !filewkg || !/^eco-(?:publmgr|scrap|srcdoc)$/.test(filewkg.file_type)
   || !srcpane && rawtxta.value )) {
@@ -1589,11 +1596,6 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
     filewkg === udata || ( filewkg = Object.assign( Array.isArray(udata) ? []
       : !udata.hasOwnProperty("_id") || typeof udata._id !== 'string' ? {}
       : { _id: "", _rev: "" }, udata ));
-    Object.keys(filewkg).toString() !== Object.keys(EMODJS["html2md"]).toString() || filewkg.fnc
-    || (filewkg.fnc = (ecomjs[filewkg.fncname] || "").toString() || null);
-    Object.keys(filewkg).toString() !== Object.keys(EMODJS).toString()
-    || Object.keys(filewkg).forEach( k => (filewkg[k] = Object.assign({}, filewkg[k]))
-      && (filewkg[k].fnc = (filewkg[k].fnc || ecomjs[k] || "").toString() || null) );
     if (destindr) {
       Object.assign(filewkg, { _id: "", _rev: "" });
       !filewkg.hasOwnProperty("ts_created") || (filewkg.ts_updated = filewkg.ts_created = tstamp1);

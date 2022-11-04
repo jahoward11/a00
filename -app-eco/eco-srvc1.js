@@ -124,12 +124,12 @@ body {
   color: Grey;
   margin: 0 0 4px;
 }
-#cmain>#mctnr {
+#cmain>#mlctnr {
   float: right;
   position: relative;
   margin: -24px 0 0 0;
 }
-#cmain>#mctnr::after {
+#cmain>#mlctnr::after {
   position: absolute;
   top: -2px;
   right: 5px;
@@ -137,7 +137,7 @@ body {
   content: "\\2630"; /* ☰ &#x2630; */
   pointer-events: none;
 }
-#cmain>#mctnr>#menulist {
+#cmain>#mlctnr>#menulist {
   color: transparent;
   width: 24px;
   height: 20px;
@@ -229,7 +229,7 @@ body {
   body { padding: 0; }
   #cgrid>#quad1A { box-shadow: inset 0 -1px LightGrey; }
   #cgrid>#quad1B { box-shadow: inset 0 -1px LightSteelBlue; }
-  #cmain>#mctnr, #cgrid #dfinal, #cgrid #dinitl,
+  #cmain>#mlctnr, #cgrid #dfinal, #cgrid #dinitl,
   #cmain>#xctrls { display: none; }
 }
 @media print and (resolution: 300dpi) and (width: 2572px), /* Pixel2, mode:desktop */
@@ -405,7 +405,7 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
 `</xmp>
 <h4 id="cheadg">JavaScript Calculator</h4>
 <pre id="recon"></pre>
-<span id="mctnr"><select id="menulist" class="anone" title="CalcJS View Options">
+<span id="mlctnr"><select id="menulist" class="anone" title="CalcJS View Options">
   <option></option>
   <option>&nbsp;&pm; Lock/unlock screen zoom</option>
   <option>&thinsp;&rsaquo;&#x2cd; Rename doc TITLE</option>
@@ -451,7 +451,7 @@ let q2Bcopy, q2Bhtml,
   datxmp = document.querySelector('#cmain>#datxmp'),
   cheadg = document.querySelector('#cmain>#cheadg'),
   recon = document.querySelector('#cmain>#recon'),
-  menulist = document.querySelector('#cmain>#mctnr>#menulist'),
+  menulist = document.querySelector('#cmain>#mlctnr>#menulist'),
   cgrid = document.querySelector('#cmain>#cgrid'),
   quad1A = document.querySelector('#cgrid>#quad1A'),
   quad1B = document.querySelector('#cgrid>#quad1B'),
