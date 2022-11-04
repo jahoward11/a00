@@ -879,7 +879,8 @@ window.onload = function () {
             return ""; // use external default escaping
           }
         });
-      if (!mdit) { return str;
+      if (!mdit) {
+        return str;
       } else {
         fts2.forEach( (ob, i) =>
           i < 6 || [7, 11, 16, 19].includes(i) || !ob.switchon || !window[ob.keytxt]

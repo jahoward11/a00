@@ -311,8 +311,8 @@ function assts2Blob() {
         nscr.innerHTML
           = '\nimport * as srvc3 from "' + aurls["eco-srvc3.mjs"]
           //+ '";\nimport * as srvc4 from "' + aurls["eco-srvc4.mjs"]
-          + '";\nlet k;\nfor (k in srvc3) (ecomjs[k] = srvc3[k])'
-          + '\n  && (EMODJS[k].fnc = EC0.MODJS[k].fnc || srvc3[k] || null);\n'
+          + '";\nlet k;\nfor (k in srvc3) {\n  ecomjs[k] = srvc3[k];'
+          + '\n  EMODJS[k].fnc = EC0.MODJS[k].fnc || srvc3[k] || null;\n}\n'
           //+ 'for (k in srvc4) ecomjs[k] = srvc4[k];\n';
         iniscripts.appendChild(nscr);
       }
