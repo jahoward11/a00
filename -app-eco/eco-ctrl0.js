@@ -290,6 +290,8 @@ function assts2Blob() {
     jsclist = document.querySelector('#ecoesp0 #jsclist'),
     hlslist = document.querySelector('#ecoesp0 #hlslist'),
     iniscripts = document.querySelector('body>#iniscripts'),
+    modsMrg = () => Object.keys(EMODJS)
+      .forEach(k => EMODJS[k].fnc = EC0.MODJS[k].fnc || ecomjs[k] || null),
     attPrc1 = (docid, akey) =>
       /^blob:/.test(aurls[akey]) || !dbpc2 || dbpc2.getAttachment(docid, akey)
         .then(ablob => aurls[akey] = URL.createObjectURL(ablob))
@@ -301,8 +303,7 @@ function assts2Blob() {
         nscr.src = aurls[jsi];
         nscr.type = 'text/javascript';
         protfile || hostibm || nscr.setAttribute('crossorigin', 'use-credentials');
-        i < 2 || ( nscr.onload = () => Object.keys(EMODJS)
-          .forEach(k => EMODJS[k].fnc = EC0.MODJS[k].fnc || ecomjs[k] || null) );
+        i < 2 || (nscr.onload = modsMrg);
         iniscripts.appendChild(nscr);
       });
       if (!protfile) {
@@ -311,9 +312,9 @@ function assts2Blob() {
         nscr.innerHTML
           = '\nimport * as srvc3 from "' + aurls["eco-srvc3.mjs"]
           //+ '";\nimport * as srvc4 from "' + aurls["eco-srvc4.mjs"]
-          + '";\nlet k;\nfor (k in srvc3) {\n  ecomjs[k] = srvc3[k];'
-          + '\n  EMODJS[k].fnc = EC0.MODJS[k].fnc || srvc3[k] || null;\n}\n'
+          + '";\nlet k;\nfor (k in srvc3) ecomjs[k] = srvc3[k];\n'
           //+ 'for (k in srvc4) ecomjs[k] = srvc4[k];\n';
+        nscr.onload = modsMrg;
         iniscripts.appendChild(nscr);
       }
       jsclist.innerHTML = tmpljsclist && tmpljsclist({ jscitems: EC0.JSCON });
