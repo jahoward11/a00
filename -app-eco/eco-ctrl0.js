@@ -1571,10 +1571,12 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
     return dataDispl(udobj, destindr, cbfnc, cfgs);
   } else if (udata && typeof udata === 'object') {
     Object.keys(udata).toString() !== Object.keys(EMODJS["html2md"]).toString()
-    || (udata.fnc = (udata.fnc || "").toString() || null);
+    || !(udata = jsonParse(JSON.stringify(udata)))
+    || (udata.fnc = (EMODJS[udata.fncname].fnc || "").toString() || null);
     Object.keys(udata).toString() !== Object.keys(EMODJS).toString()
+    || !(udata = jsonParse(JSON.stringify(udata)))
     || Object.keys(udata).forEach( k => (udata[k] = Object.assign({}, udata[k]))
-      && (udata[k].fnc = (udata[k].fnc || "").toString() || null) );
+      && (udata[k].fnc = (EMODJS[k].fnc || "").toString() || null) );
   }
   if ( destindr === 0 && ( !filewkg || !/^eco-(?:publmgr|scrap|srcdoc)$/.test(filewkg.file_type)
   || !srcpane && rawtxta.value )) {
@@ -1858,8 +1860,8 @@ function webdocGen(redirect, pdata = filewkg || jsonParse(JSON.stringify(ETMPLS.
       fnx = scx.deftxt && scx.deftxt !== ETMPLS.publmgr.parseconfigs.scriptsconstr[0].deftxt
           && ((str, idx) => (new Function("return (" + scx.deftxt + ")"))()(str, idx))
         || (EMODJS[sii.fncname.replace(/\*\d*$/, "")] || "").fnc
-        || ecomjs[sii.fncname] || ecoqjs[sii.fncname]
-        || typeof window[sii.fncname] === 'function' && window[sii.fncname] || (str => str);
+        || ecomjs[sii.fncname] || ecoqjs[sii.fncname] || window[sii.fncname];
+    typeof fnx === 'function' || (fnx = str => str);
     if (i1 < sifragsbound && (i1 + 1 < sifragsbound || sii.applytofrag.some(e => !e))) {
       fragstxt = fragstxt.map( (fti, i2) =>
         !sii.applytofrag[i2] ? fti : fnx(fti, i2, scx.features, pdata.filefrags[i2]) );
