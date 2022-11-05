@@ -49,7 +49,7 @@ EC0.JSCON = [
   `qcontxta.value = JSON.stringify(EC2.objQA("idtoks.idTokenPayload"), null, 2); EC2.qconSyncD();`,
   `//PouchDB("mydb1").get("myfile").then(doc => doc.filefrags[0].contenttxt)`,
   `fetch(EC2.u2Blob("ebook-annos-fns.js")).then(resp => resp.text())`,
-  `document.head.innerHTML.replace(/<style[^]+/, "")`,
+  `document.head.outerHTML.replace(/<style[^]+<\\/style>\\n?/, "")`,
   `document.querySelector('head>style').innerHTML`,
   `document.querySelector('#ecolinks').innerHTML`,
   `document.querySelector('#iniscripts').innerHTML.replace(/(?=<\\w)/g, "\\n")`,
