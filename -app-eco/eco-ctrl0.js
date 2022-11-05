@@ -126,7 +126,8 @@ function rdataFetch(txdata = {}, idx = 0) {
 }
 
 function anumlIncr(anum) {
-  return !/^[a-z]{3}$/i.test(anum) ? "zza" : ecoqjs.toAlpha(1 + ecoqjs.frAlpha(anum)).toLowerCase();
+  return !/^[a-z]{3}$/i.test(anum) ? "zza"
+  : (ecoqjs.toAlpha(1 + ecoqjs.frAlpha(anum)) || "zza").toLowerCase();
 }
 
 function a00Set() {
@@ -290,8 +291,6 @@ function assts2Blob() {
     jsclist = document.querySelector('#ecoesp0 #jsclist'),
     hlslist = document.querySelector('#ecoesp0 #hlslist'),
     iniscripts = document.querySelector('body>#iniscripts'),
-    modsMrg = () => Object.keys(EMODJS)
-      .forEach(k => EMODJS[k].fnc = EC0.MODJS[k].fnc || ecomjs[k] || null),
     attPrc1 = (docid, akey) =>
       /^blob:/.test(aurls[akey]) || !dbpc2 || dbpc2.getAttachment(docid, akey)
         .then(ablob => aurls[akey] = URL.createObjectURL(ablob))
@@ -303,7 +302,7 @@ function assts2Blob() {
         nscr.src = aurls[jsi];
         nscr.type = 'text/javascript';
         protfile || hostibm || nscr.setAttribute('crossorigin', 'use-credentials');
-        i < 2 || (nscr.onload = modsMrg);
+        i < 2 || (nscr.onload = EC2.mjsMrg);
         iniscripts.appendChild(nscr);
       });
       if (!protfile) {
@@ -312,9 +311,9 @@ function assts2Blob() {
         nscr.innerHTML
           = '\nimport * as srvc3 from "' + aurls["eco-srvc3.mjs"]
           //+ '";\nimport * as srvc4 from "' + aurls["eco-srvc4.mjs"]
-          + '";\nlet k;\nfor (k in srvc3) ecomjs[k] = srvc3[k];\n'
+          + '";\nwindow.ecomjs = window.ecomjs || {};'
+          + '\nlet k;\nfor (k in srvc3) ecomjs[k] = srvc3[k];\n!window.EC2 || EC2.mjsMrg();\n'
           //+ 'for (k in srvc4) ecomjs[k] = srvc4[k];\n';
-        nscr.onload = modsMrg;
         iniscripts.appendChild(nscr);
       }
       jsclist.innerHTML = tmpljsclist && tmpljsclist({ jscitems: EC0.JSCON });
@@ -1572,10 +1571,10 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
     return dataDispl(udobj, destindr, cbfnc, cfgs);
   } else if (udata && typeof udata === 'object') {
     Object.keys(udata).toString() !== Object.keys(EMODJS["html2md"]).toString()
-    || (udata.fnc = (udata.fnc || ecomjs[udata.fncname] || "").toString() || null);
+    || (udata.fnc = (udata.fnc || "").toString() || null);
     Object.keys(udata).toString() !== Object.keys(EMODJS).toString()
     || Object.keys(udata).forEach( k => (udata[k] = Object.assign({}, udata[k]))
-      && (udata[k].fnc = (udata[k].fnc || ecomjs[k] || "").toString() || null) );
+      && (udata[k].fnc = (udata[k].fnc || "").toString() || null) );
   }
   if ( destindr === 0 && ( !filewkg || !/^eco-(?:publmgr|scrap|srcdoc)$/.test(filewkg.file_type)
   || !srcpane && rawtxta.value )) {
@@ -3579,6 +3578,9 @@ wdGen(pdata) { return !(pdata || "").filefrags ? pdata : webdocGen(1, pdata); },
 u2Blob(url) { // also triggered by prjDiscGen, jdeDftGen, dviz-memos, dviz-contacts
   return aurls[(url || "").replace(/^\S*\//, "")] || aurls[url]
   || (url || "").replace(/^\.\.\/\.\.(?!\/a00\/)(?=\S+[^\s\/]$)/, a00orig) || url;
+},
+mjsMrg() { // also triggered by assts2Blob
+  Object.keys(EMODJS).forEach(k => EMODJS[k].fnc = EC0.MODJS[k].fnc || ecomjs[k] || null);
 },
 objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-memos
   let pty,
