@@ -262,8 +262,9 @@ try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap";
 
  2. Reproduce the GUI text from the calculator-app tutorial code, and
     __begin building a standalone web app__.
-    + Un-comment the following two lines of code to generate the
-      web-doc text that will be the app framework.
+    + Un-comment the following two lines of code and execute its
+      operations (by de-focusing the calculator app's *ENTRY* pane)
+      to generate the web-doc text that will be the app framework.
 */
 
 // dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
@@ -277,23 +278,11 @@ try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap";
     + *Note:* When opened up in a web browser, the web app will not
       be responsive because it does not yet have any script code.
 
- 3. Add in the puzzle's inner logic (its "script", extracted from the
-    tutorial code) to __turn a static web doc into a dynamic web app__
-    -- an interactive game.
-    + To generate the web-app script, first un-comment the following
-      two lines of code.
-    + *Function:* This code will temporarily store user-copied text
-      to a global variable, \`tutor2js\`. Note that with this variable
-      we will subsequently retrieve and restructure special script
-      text that is customized to breathe life into our web-app game.
-*/
-
-// recon.innerHTML = "" // clears any orange text (in case GUI text is still visible)
-// navigator.clipboard.readText().then(s => window.tutor2js = s).catch(reShow)
-
-/*
-    + Then, also select and copy the following two blocks of code --
-      beginning with \`tnx = …\` and ending with \`g1Reset();\`.
+ 3. Add in the puzzle's inner logic -- its script -- to __turn a static__
+    __web doc into a dynamic web app__ -- an interactive game.
+    + To generate the web-app script code, first select and copy the
+      following two blocks of code -- beginning with \`tnx = …\` and
+      ending with \`g1Reset();\`.
 */
 
 tnx = tcx = psh = rval = cval = tmax = tovr = m1trk = unsh = cxs = shxs = shuf = tarr = cr1s = cr2s = "";
@@ -317,13 +306,17 @@ window.m1Rvrs = () => !(_.m1trk || "").length || tileSli(... _.m1trk.pop(), 1);
 g1Reset();
 
 /*
-    + After letting that operation execute (by de-focusing the
-      calculator app's *ENTRY* pane), un-comment the following two
-      lines of code to display our desired, resulting script text.
+    + Next, un-comment the following three lines of code and execute
+      its operations (by de-focusing the calculator app's *ENTRY* pane).
+    + *Function:* This code temporarily stores user-copied text to a
+      global variable, \`t2js\` -- and subsequently restructures the
+      copied text, producing the custom script code that will breathe
+      life into our web-app game.
 */
 
+// recon.innerHTML = window.t2js = "" // clears any orange text (in case GUI text is still visible) and resets t2js variable
 // scrGen = src => src && (src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm) || []).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
-// reShow(scrGen(window.tutor2js))
+// !!window.t2js || navigator.clipboard.readText().then(s => window.t2js = s).then(_.scrGen).then(reShow).catch(reShow)
 
 /*
     + Select and copy the orange text that appears above, overtop
@@ -343,12 +336,15 @@ g1Reset();
     + To generate the web-app code of a game -- for building another
       standalone game app (as in step's 2 and 3, above) -- make use of
       the text-generating commands already provided in step's 2 and 3.
-      Within those lines of code, above, simply change the \`g1wrap\`
-      variable to the other game's "wrap" ID (e.g., \`g2wrap\`); Also,
-      re-assign to the \`tutor2js\` global variable one of the other
-      game's "script" text (by copying the corresponding text block),
-      then re-comment and un-comment again the final command of
-      step 3 -- the line that reads \`reShow(scrGen(…))\`.
+      Within those lines of code, above:
+      * re-comment (deactivate) the 1st operation of step 3 (i.e., the
+        line \`recon.innerHTML = …\`), and simply change the \`g1wrap\`
+        variable (in the 2nd operation of step 2) to the other game's
+        "wrap" ID (e.g., \`g2wrap\`) -- to generate its HTML framework;
+      * then, to generate its JS code, re-assign to the \`t2js\` global
+        variable the other game's "script" text (by copying the
+        corresponding text block), and un-comment (reactivate) again
+        the 1st operation of step 3.
     + *Take notice:* For each additional game in this tutorial, its
       game board has many elements and structures in common with the
       first one (e.g., \`<table id=g1board>\`) -- but, each has a
@@ -733,7 +729,7 @@ window.dataMgr = ox => { let key = lfinp.value.trim(); if (ox === 2) return !key
 */
 
 /*
-scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
+scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
 dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
 reShow(dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(xstor.JScode.tutorial3) + dwraps[2])
 */
