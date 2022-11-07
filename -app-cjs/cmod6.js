@@ -282,9 +282,9 @@ try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap";
     -- an interactive game.
     + To generate the web-app script, first un-comment the following
       two lines of code.
-    + *Function:* This code will temporarily store user-copied text
-      to a global variable, \`tutor2js\`. Note that with this variable
-      we will subsequently retrieve and restructure special script
+    + *Function:* This code will restructure and temporarily store
+      user-copied text to a global variable, \`tutor2js\`. Note that
+      with this variable we will subsequently retrieve special script
       text that is customized to breathe life into our web-app game.
 
 // scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
@@ -321,7 +321,7 @@ g1Reset();
 */
 
 // recon.innerHTML = "" // clears any orange text (in case GUI text is still visible)
-// reShow(scrGen(window.tutor2js || ""))
+// reShow(window.tutor2js)
 
 /*
     + Select and copy the orange text that appears above, overtop
@@ -345,7 +345,8 @@ g1Reset();
       variable to the other game's "wrap" ID (e.g., \`g2wrap\`); And
       re-assign to the \`tutor2js\` global variable one of the other
       game's "script" code blocks (by copying the corresponding text
-      block and de-focusing the calculator app).
+      block then de-focusing, focusing and de-focusing again the
+      calculator app's ENTRY pane).
     + *Take notice:* For each additional game in this tutorial, its
       game board has many elements and structures in common with the
       first one (e.g., \`<table id=g1board>\`) -- but, each has a
