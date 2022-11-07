@@ -280,8 +280,17 @@ try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap";
  3. Add in the puzzle's inner logic (its "script", extracted from the
     tutorial code) to __turn a static web doc into a dynamic web app__
     -- an interactive game.
-    *Alert:* Read through all procedures of this step before starting.
-    + Select and copy the following two blocks of code --
+    + To generate the web-app script, first un-comment the following
+      two lines of code.
+    + *Function:* This code will temporarily store user-copied text
+      to a global variable, \`tutor2js\`. Note that with this variable
+      we will subsequently retrieve and restructure special script
+      text that is customized to breathe life into our web-app game.
+
+// scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
+// navigator.clipboard.readText().then(s => window.tutor2js = _.scrGen(s)).catch(reShow)
+
+    + Next, select and copy the following two blocks of code --
       beginning with \`tnx = …\` and ending with \`g1Reset();\`.
 */
 
@@ -306,21 +315,13 @@ window.m1Rvrs = () => !(_.m1trk || "").length || tileSli(... _.m1trk.pop(), 1);
 g1Reset();
 
 /*
-    + Unload this tutorial (clear *ENTRY* field), and paste the copied
-      text into the empty *ENTRY* field of the calculator app.
-    + Wrap the pasted text in JS block-comment tags \`/* … */\`.
-      In other words, in the *ENTRY* field, type \`/*\` into a blank
-      line before all of the text and \`*/\` into a blank line after
-      all of the text.
-    + Type \`tutor2js\` into the *DATA-LOAD* input box (directly beneath
-      the calculator), and tap *SAVE*.
-    + Reload this tutorial, and un-comment the following three lines
-      of code.
+    + After letting that operation execute (by de-focusing the
+      calculator app), un-comment the following two lines of code
+      to display our desired, resulting script text.
 */
 
 // recon.innerHTML = "" // clears any orange text (in case GUI text is still visible)
-// scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
-// localforage.getItem("tutor2js").then(val => reShow(_.scrGen(val))).catch(reShow)
+// reShow(scrGen(window.tutor2js || ""))
 
 /*
     + Select and copy the orange text that appears above, overtop
@@ -342,8 +343,9 @@ g1Reset();
       the text-generating commands already provided in step's 2 and 3.
       Within those lines of code, above, simply change the \`g1wrap\`
       variable to the other game's "wrap" ID (e.g., \`g2wrap\`); And
-      update the saved \`tutor2js\` data file with the other game's
-      "script" code blocks.
+      re-assign to the \`tutor2js\` global variable one of the other
+      game's "script" code blocks (by copying the corresponding text
+      block and de-focusing the calculator app).
     + *Take notice:* For each additional game in this tutorial, its
       game board has many elements and structures in common with the
       first one (e.g., \`<table id=g1board>\`) -- but, each has a
