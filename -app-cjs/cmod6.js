@@ -347,8 +347,8 @@ g1Reset();
       variable to the other game's "wrap" ID (e.g., \`g2wrap\`); And
       re-assign to the \`tutor2js\` global variable one of the other
       game's "script" code blocks (by copying the corresponding text
-      block then de-focusing, re-focusing and de-focusing again the
-      *ENTRY* pane of the JavaScript calculator app).
+      block then re-commenting and un-commenting again the final
+      command of step 3 -- the line that begins \`reShow(scrGen(…\`.
     + *Take notice:* For each additional game in this tutorial, its
       game board has many elements and structures in common with the
       first one (e.g., \`<table id=g1board>\`) -- but, each has a
