@@ -340,15 +340,15 @@ g1Reset();
     + Un-comment an associated \`try { … } catch { … }\` line of code
       (following each block of HTML/CSS text) to inject into this web
       page, and display (down below), another game's GUI.
-    + To generate the web-app code of a game -- for building a
+    + To generate the web-app code of a game -- for building another
       standalone game app (as in step's 2 and 3, above) -- make use of
       the text-generating commands already provided in step's 2 and 3.
       Within those lines of code, above, simply change the \`g1wrap\`
-      variable to the other game's "wrap" ID (e.g., \`g2wrap\`); And
+      variable to the other game's "wrap" ID (e.g., \`g2wrap\`); Also,
       re-assign to the \`tutor2js\` global variable one of the other
-      game's "script" code blocks (by copying the corresponding text
-      block then re-commenting and un-commenting again the final
-      command of step 3 -- the line that begins \`reShow(scrGen(…\`.
+      game's "script" text (by copying the corresponding text block),
+      then re-comment and un-comment again the final command of
+      step 3 -- the line that reads \`reShow(scrGen(…))\`.
     + *Take notice:* For each additional game in this tutorial, its
       game board has many elements and structures in common with the
       first one (e.g., \`<table id=g1board>\`) -- but, each has a
