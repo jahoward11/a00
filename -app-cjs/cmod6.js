@@ -281,17 +281,18 @@ try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap";
     tutorial code) to __turn a static web doc into a dynamic web app__
     -- an interactive game.
     + To generate the web-app script, first un-comment the following
-      line of code.
+      two lines of code.
     + *Function:* This code will temporarily store user-copied text
       to a global variable, \`tutor2js\`. Note that with this variable
       we will subsequently retrieve and restructure special script
       text that is customized to breathe life into our web-app game.
 */
 
+// recon.innerHTML = "" // clears any orange text (in case GUI text is still visible)
 // navigator.clipboard.readText().then(s => window.tutor2js = s).catch(reShow)
 
 /*
-    + Next, select and copy the following two blocks of code --
+    + Then, also select and copy the following two blocks of code --
       beginning with \`tnx = …\` and ending with \`g1Reset();\`.
 */
 
@@ -317,12 +318,11 @@ g1Reset();
 
 /*
     + After letting that operation execute (by de-focusing the
-      calculator app's *ENTRY* pane), un-comment the following three
+      calculator app's *ENTRY* pane), un-comment the following two
       lines of code to display our desired, resulting script text.
 */
 
-// recon.innerHTML = "" // clears any orange text (in case GUI text is still visible)
-// scrGen = src => src && src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
+// scrGen = src => src && (src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm) || []).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
 // reShow(scrGen(window.tutor2js))
 
 /*
