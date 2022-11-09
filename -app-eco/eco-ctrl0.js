@@ -3881,7 +3881,7 @@ qconRetrvD(cbfnc, errfnc) { // also triggered by guideLoad, dviz-idxlist, dviz-m
         : /\.(?:h|html?)\d*$/.test(lfkey) ? dPrc.htm(val) : val ), 0, cbfnc ) );
   } else if (rexoqa.test(valcon)) {
     Promise.resolve( EC2.objQA( valcon.replace(/^\$ *|^(\w+):.*/g, "$1"),
-      valatt.replace(/^\$ *\w+:(.+)|.*/g, "$1") ))
+      valcon.replace(/^\$ *\w+:(.+)|.*/g, "$1") ))
     .then(rslt => dataDispl(rslt, 0, cbfnc));
   } else if (txdata.hasOwnProperty("dbox") || txdata.hasOwnProperty("path")) {
     dropboxTx(txdata, cbfnc, errfnc);
