@@ -660,7 +660,7 @@ let q2Bcopy, q2Bhtml,
         && xcshelp.classList.add("iwarn") )
       .catch(reShow);
   };
-window.xstor = {};
+window.xstor = window.xstor || {};
 window.dentr = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
   || { value: datxmp.textContent.replace(/\n+$|^\n+/g, "") };
 (dentr.type ? cinit : window.location.search).replace(/^\?/, "").split("&").forEach( qi =>
@@ -683,7 +683,7 @@ Promise.all(jsrcs.map(e => scrInj(e))).catch(reShow).then(() => {
       .map(e => !/^\d+$/.test(e) ? e : `cmod${e}.js`)
       .map(fnm => fnm && import(/\//.test(fnm) ? fnm : "./" + fnm).catch(reShow)) )
     .then( ms => ms.forEach( (m, i) => !m || typeof m !== 'object'
-      || (xstor[m._module || "module" + (1 + i)] = m) ))
+      || (xstor[m._module || "xmod" + (1 + i)] = m) ))
     .then(() => xlstGen(dload))
     .catch(reShow);
   xsetinp || initLoad();
