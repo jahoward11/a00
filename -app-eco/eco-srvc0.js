@@ -41,7 +41,6 @@ EC0.JSCON = [
   `EC2.u2Blob("avatar000.png")`,
   `EC2.objQA("urls")`,
   `EC2.objQA("epsets")`,
-  `EC2.objQA("filewkg")`,
   `EC2.objQA("lnkstor")`,
   `EC2.objQA("updpch")`,
   `EC2.objQA("MODJS.keys")`,
@@ -59,6 +58,9 @@ EC0.JSCON = [
   `Array.from(document.querySelectorAll('[id]')).map(e => e.id)`,
   `Array.from(document.querySelectorAll('script')).map(e => e.src)`,
   `sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.querySelector('#iniscripts').appendChild(n); }; ""`,
+  `{ let nscr = document.createElement('script'); window.xstor = window.xstor || {}; nscr.type = 'module';
+\\n nscr.innerHTML = 'import("../-dev/prj10.js").then(m => xstor[m._module || "xmod" + Object.keys(xstor).map(k => k.replace(/^xmod(?=\\d*$)|.*/, "")).reduce((a, b) => +b > +a ? b : a, 1)] = m).catch(e => EC2.objQA("msg", e))';
+\\n iniscripts.appendChild(nscr); }`,
   `getComputedStyle(document.documentElement).width`,
   `getComputedStyle(document.documentElement).font`,
   `Array.from(document.styleSheets).map(ss => ss.href)`,
@@ -79,7 +81,7 @@ EC0.JSCON = [
 \\n I1 = ecoqjs.jvarXtract; "" // generate array of JS variable names
 \\n I2 = ecoqjs.jcmtXtract; "" // list JS function names & comments
 \\n I3 = s => s.replace(/[^]+?\\n(function rdataFetch.+(?:\\n.+)+?(?:;?\\s*};?|;)\\n|(?=.*$))[\\n\\S][^]*/, "$1"); ""`,
-  `jtxt = ecoscripts.innerHTML; ""; // I1(jtxt)`,
+  `s0 = ecoscripts.innerHTML; ""; // I1(s0)`,
   `Q1 = (k = "f.c") => Promise.resolve(EC2.objQA(k)); ""; // Q1().then(I2)`,
   `fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then(I3)`,
   `// Console table: ASCII (Latin, Basic) & 8-bit-character (Latin-1 Supp) reference

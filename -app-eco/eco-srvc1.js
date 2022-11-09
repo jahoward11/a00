@@ -703,7 +703,7 @@ let q2Bcopy, q2Bhtml,
       .then( val => dentr.value = val == null ? "" : val.content
         || (typeof val !== 'object' ? "" + val : "// " + JSON.stringify(val)) )
       .then(xprsEval).catch(reShow);
-window.xstor = {};
+window.xstor = window.xstor || {};
 window.dentr = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
   || { value: datxmp.textContent.replace(/\\n+$|^\\n+/g, "") };
 (dentr.type ? cinit : window.location.search).replace(/^\\?/, "").split("&").forEach( qi =>

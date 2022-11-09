@@ -59,7 +59,7 @@ const hostgh = /\.github\.io$/.test(window.location.host),
   rexib2 = /^https:\/\/[\w-]+\.cloudant[\w.]+\//,
   reximg = /\.(?:giff?|jpe?g|png)$/i,
   rexloc = /^(?:(?:\.\.\/\.\.|\.\.|)\/(?=$|\w)|\.\/(?=[^ \/])|\/\/|\$|blob:[\w/:-]*(?!.* ))[ \w/!.*+~-]*$/,
-  rexoqa = /^\$ *(?:new +|)\w*(?:\b[.([].+|)$/,
+  rexoqa = /^\$ *(?:new +|)\w*(?:\b[.:([].+|)$/,
   rexrmt = /^https?:\/\/[ \w/#%!?=&@:.,+~-]+$/,
   rexwba = /\.(?:giff?|jpe?g|m?js|png|s?css)$/i;
 
@@ -167,13 +167,13 @@ function pfsResets() {
   EC1.pfsSel();
 }
 
-function indrChg(elm, va1 = "", ref) {
-  let va0 = elm.value,
+function indrChg(el, va1 = "", ref) {
+  let va0 = el.value,
     eq = ref == null || ref === va1;
-  elm.value = va1;
-  eq && va0 === va1 && !/\bis-[sw]/.test(elm.className)
-  || elm.classList.remove(eq ? "is-warning" : "is-success")
-  || elm.classList.add(!eq ? "is-warning" : "is-success");
+  el.value = va1;
+  eq && va0 === va1 && !/\bis-[sw]/.test(el.className)
+  || el.classList.remove(eq ? "is-warning" : "is-success")
+  || el.classList.add(!eq ? "is-warning" : "is-success");
 }
 
 function updDisbl() {
@@ -1182,7 +1182,7 @@ function rsrcsXGet(txdata = {}) {
         return localforage.getItem(txdata.FILEID.replace(/^\/\//, ""))
         .then(val => !/^{".+}$/.test(val) ? val : (jsonParse(val) || "").content).catch(msgPrefmt);
       } else if (rexoqa.test(txdata.FILEID)) {
-        aobj = EC2.objQA(txdata.FILEID.replace(/^\$ */, ""), 1);
+        aobj = EC2.objQA(txdata.FILEID.replace(/^\$ *|^(\w+):.*/g, "$1"), 1);
         return aobj == null ? ""
         : typeof aobj !== 'object' ? aobj : aobj.content || msgPrefmt(aobj);
       } else if (txdata.url || !txdata.DBNAME && txdata.FILEID) {
@@ -1525,16 +1525,16 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         })
       : styInj();
     },
-    scrInj = (elmscr = {}) => {
+    scrInj = (escr = {}) => {
       let nscr = document.createElement('script');
-      !elmscr.src || (nscr.src = elmscr.src);
-      nscr.type = elmscr.type || 'text/javascript';
+      !escr.src || (nscr.src = escr.src);
+      nscr.type = escr.type || 'text/javascript';
       //nscr.setAttribute('async', "");
       //nscr.setAttribute('defer', "");
       protfile || hostibm || !nscr.src || /^blob:/.test(nscr.src)
       || nscr.setAttribute('crossorigin', 'use-credentials');
-      nscr.innerHTML = elmscr.innerHTML || null;
-      //elmscr.replaceWith(nscr);
+      nscr.innerHTML = escr.innerHTML || null;
+      //escr.replaceWith(nscr);
       return ecoscripts.appendChild(nscr);
     },
     scrGet = a3i => {
@@ -2622,7 +2622,8 @@ attInp() {
         : /\.(?:h|html?)\d*$/.test(lfkey) ? dPrc.htm(val) : val ),
       /\.(?:h|html?)\d*$/.test(lfkey) ? 3 : 7 ) );
   } else if (rexoqa.test(valatt)) {
-    Promise.resolve(EC2.objQA(valatt.replace(/^\$ */, "")))
+    Promise.resolve( EC2.objQA( valatt.replace(/^\$ *|^(\w+):.*/g, "$1"),
+      valatt.replace(/^\$ *\w+:(.+)|.*/g, "$1") ))
     .then(rslt => dataDispl(rslt, /\.(?:h|html?)\d*$/.test(valatt) ? 3 : 7));
   } else if (valatt && txdata.url) {
     rdataFetch(txdata).then( rslt =>
@@ -3577,12 +3578,12 @@ ibmConnect() {
   }
 },
 wdGen(pdata) { return !(pdata || "").filefrags ? pdata : webdocGen(1, pdata); },
+mjsMrg() { // also triggered by assts2Blob
+  Object.keys(EMODJS).forEach(k => EMODJS[k].fnc = EC0.MODJS[k].fnc || ecomjs[k] || null);
+},
 u2Blob(url) { // also triggered by prjDiscGen, jdeDftGen, dviz-memos, dviz-contacts
   return aurls[(url || "").replace(/^\S*\//, "")] || aurls[url]
   || (url || "").replace(/^\.\.\/\.\.(?!\/a00\/)(?=\S+[^\s\/]$)/, a00orig) || url;
-},
-mjsMrg() { // also triggered by assts2Blob
-  Object.keys(EMODJS).forEach(k => EMODJS[k].fnc = EC0.MODJS[k].fnc || ecomjs[k] || null);
 },
 objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-memos
   let pty,
@@ -3596,26 +3597,27 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-memos
       : Object.assign(Object.assign({}, Handlebars), { Parser: {}, default: {} }) );
   key = key == null ? "" : "" + key;
   return gloObj != null ? gloObj
-  : /^attlist/.test(key) ? attListGen()
-  : /^pfslist/.test(key) ? pfsListGen()
-  : /^(?:tm0|)urole?/.test(key) ? tm0urole
-  : /^dbpch/.test(key) ? dbpch && dbpch[ptyTest()]
+  : /^qcon|^q?msg/i.test(key) && fbx && fbx !== 1 ? msgHandl(fbx)
+  : /^attlist/i.test(key) ? attListGen()
+  : /^pfslist/i.test(key) ? pfsListGen()
+  : /^(?:tm0|)urole?/i.test(key) ? tm0urole
+  : /^dbpch/i.test(key) ? dbpch && dbpch[ptyTest()]
     || rsltFbk(Object.assign(Object.assign({}, dbpch), { taskqueue: undefined }))
-  : /^(?:prjs|)(?:eco|e)net/.test(key) ? prjsenet[ptyTest()] || rsltFbk(prjsenet)
-  : /^updseq/.test(key) ? updseq[ptyTest()] || rsltFbk(updseq)
-  : /^updpch/.test(key) ? updpch[ptyTest()] || rsltFbk(updpch)
-  : /^lnkstor/.test(key) ? lnkstor[ptyTest(1)] || rsltFbk(lnkstor)
-  : /^pf3stor/.test(key) ? pf3stor[ptyTest()] || rsltFbk(pf3stor)
-  : /^tmp1pc/.test(key) ? tmp1pc && tmp1pc[ptyTest()] || rsltFbk(tmp1pc)
-  : /^tmp1ff/.test(key) ? tmp1ff && tmp1ff[ptyTest()] || rsltFbk(tmp1ff)
-  : /^(?:f2|file2nd)\.[ct]\d*$/.test(key) ? dPrc.cnt(file2nd) || rsltFbk(file2nd)
-  : /^(?:f2|file2nd)\.[ls]\d*$/.test(key) ? dPrc.sty(file2nd) || rsltFbk(file2nd)
-  : /^(?:f2|file2nd)\.h\d*$/.test(key) ? dPrc.htm(file2nd) || rsltFbk(file2nd)
-  : /^f2\b|^file2nd/.test(key) ? file2nd && file2nd[ptyTest()] || rsltFbk(file2nd)
-  : /^(?:f1?|filewkg)\.[ct]\d*$/.test(key) ? dPrc.cnt(filewkg) || rsltFbk(filewkg)
-  : /^(?:f1?|filewkg)\.[ls]\d*$/.test(key) ? dPrc.sty(filewkg) || rsltFbk(filewkg)
-  : /^(?:f1?|filewkg)\.h\d*$/.test(key) ? dPrc.htm(filewkg) || rsltFbk(filewkg)
-  : /^f1?\b|^filewkg/.test(key) ? filewkg && filewkg[ptyTest()] || rsltFbk(filewkg)
+  : /^(?:prjs|)(?:eco|e)net/i.test(key) ? prjsenet[ptyTest()] || rsltFbk(prjsenet)
+  : /^updseq/i.test(key) ? updseq[ptyTest()] || rsltFbk(updseq)
+  : /^updpch/i.test(key) ? updpch[ptyTest()] || rsltFbk(updpch)
+  : /^lnkstor/i.test(key) ? lnkstor[ptyTest(1)] || rsltFbk(lnkstor)
+  : /^pf3stor/i.test(key) ? pf3stor[ptyTest()] || rsltFbk(pf3stor)
+  : /^tmp1pc/i.test(key) ? tmp1pc && tmp1pc[ptyTest()] || rsltFbk(tmp1pc)
+  : /^tmp1ff/i.test(key) ? tmp1ff && tmp1ff[ptyTest()] || rsltFbk(tmp1ff)
+  : /^(?:f2|file2nd)\.[ct]\d*$/i.test(key) ? dPrc.cnt(file2nd) || rsltFbk(file2nd)
+  : /^(?:f2|file2nd)\.[ls]\d*$/i.test(key) ? dPrc.sty(file2nd) || rsltFbk(file2nd)
+  : /^(?:f2|file2nd)\.h\d*$/i.test(key) ? dPrc.htm(file2nd) || rsltFbk(file2nd)
+  : /^f2\b|^file2nd/i.test(key) ? file2nd && file2nd[ptyTest()] || rsltFbk(file2nd)
+  : /^(?:f1?|filewkg)\.[ct]\d*$/i.test(key) ? dPrc.cnt(filewkg) || rsltFbk(filewkg)
+  : /^(?:f1?|filewkg)\.[ls]\d*$/i.test(key) ? dPrc.sty(filewkg) || rsltFbk(filewkg)
+  : /^(?:f1?|filewkg)\.h\d*$/i.test(key) ? dPrc.htm(filewkg) || rsltFbk(filewkg)
+  : /^f1?\b|^filewkg/i.test(key) ? filewkg && filewkg[ptyTest()] || rsltFbk(filewkg)
   : /^webdoc(?:Gen|)|^wdG/i.test(key) && (filewkg || "").filefrags ? webdocGen(1)
   : /^(?:ECO|E|)SDOCS?/i.test(key) ? EC0.SDOCS[ptyTest(1)] || rsltFbk(EC0.SDOCS)
   : /^(?:ECO|E|HL|HLJS|)STYS?/i.test(key) ? EC0.STYS[ptyTest(1)] || rsltFbk(EC0.STYS)
@@ -3878,7 +3880,9 @@ qconRetrvD(cbfnc, errfnc) { // also triggered by guideLoad, dviz-idxlist, dviz-m
         : /\.(?:[ls]|li?nk|sty|style)\d*$/.test(lfkey) ? dPrc.sty(val)
         : /\.(?:h|html?)\d*$/.test(lfkey) ? dPrc.htm(val) : val ), 0, cbfnc ) );
   } else if (rexoqa.test(valcon)) {
-    Promise.resolve(EC2.objQA(valcon.replace(/^\$ */, ""))).then(rslt => dataDispl(rslt, 0, cbfnc));
+    Promise.resolve( EC2.objQA( valcon.replace(/^\$ *|^(\w+):.*/g, "$1"),
+      valatt.replace(/^\$ *\w+:(.+)|.*/g, "$1") ))
+    .then(rslt => dataDispl(rslt, 0, cbfnc));
   } else if (txdata.hasOwnProperty("dbox") || txdata.hasOwnProperty("path")) {
     dropboxTx(txdata, cbfnc, errfnc);
   } else if (txdata.url) { // non-db filepath/url
