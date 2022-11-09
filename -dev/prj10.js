@@ -122,17 +122,18 @@ Array.from(Array(5).keys())
 
 // window.ecoqjs || scrInj("../-app-eco/eco-srvc1.js").then(reShow).catch(reShow)
 // reShow( Object.fromEntries( Object.entries(ecoqjs).map(oe => [oe[0], oe[1].toString()]) ))
-// fetch("../-app-eco/eco-srvc1.js").then(re => re.text()).then(s => window.jtxt = s).then(reShow).catch(reShow)
-// reShow(ecoqjs.jcmtXtract(jtxt))
+// fetch("../-app-eco/eco-srvc1.js").then(re => re.text()).then(s => window.s0 = s).then(reShow).catch(reShow)
+// reShow(ecoqjs.jcmtXtract(s0))
 // reShow(ecoqjs.jcmtXtract(document.querySelector('script:nth-of-type(3)').outerHTML))
 
 /*
 __For CalcJS in Ecollabs__
  w = window;
- !!w.jtxt || (w.jtxt = ecoscripts.innerHTML); "" // ecoqjs.jvarXtract(jtxt)
+ !!w.s0 || (w.s0 = ecoscripts.innerHTML); "" // ecoqjs.jvarXtract(s0)
  !!w.Q1 || (w.Q1 = (k = "f.c") => Promise.resolve(EC2.objQA(k))); "" // Q1().then(ecoqjs.jcmtXtract)
- !!w.P3 || (w.P3 = px => navigator.clipboard.readText().then(s => px ? px(s) : window.g3 = s));
- // P3(ecoqjs.sortA2Z).then(reShow).catch(reShow)
+ !!w.P3 || (w.P3 = (x = 1) => navigator.clipboard.readText().then(s => window["s" + x] = s));
+ // P3().then(ecoqjs.sortA2Z).then(reShow).catch(reShow)
+ // { let nscr = document.createElement('script'); window.xstor = window.xstor || {}; nscr.type = 'module'; nscr.innerHTML = 'import("../-dev/prj10.js").then(m => xstor[m._module || "xmod" + Object.keys(xstor).map(k => k.replace(/^xmod(?=\d*$)|.*/, "")).reduce((a, b) => +b > +a ? b : a, 1)] = m).catch(e => EC2.objQA("msg", e))'; iniscripts.appendChild(nscr); }
 */
 //`;
 
