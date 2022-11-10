@@ -291,6 +291,8 @@ function assts2Blob() {
     jsclist = document.querySelector('#ecoesp0 #jsclist'),
     hlslist = document.querySelector('#ecoesp0 #hlslist'),
     iniscripts = document.querySelector('body>#iniscripts'),
+    mjsMrg = () => Object.keys(EMODJS)
+      .forEach(k => EMODJS[k].fnc = (EC0.MODJS[k] || "").fnc || ecomjs[k] || null),
     attPrc1 = (docid, akey) =>
       /^blob:/.test(aurls[akey]) || !dbpc2 || dbpc2.getAttachment(docid, akey)
         .then(ablob => aurls[akey] = URL.createObjectURL(ablob))
@@ -301,21 +303,15 @@ function assts2Blob() {
         nscr = document.createElement('script');
         nscr.src = aurls[jsi];
         nscr.type = 'text/javascript';
-        protfile || hostibm || nscr.setAttribute('crossorigin', 'use-credentials');
-        i < 2 || (nscr.onload = EC2.mjsMrg);
+        //protfile || hostibm || nscr.setAttribute('crossorigin', 'use-credentials');
+        i < 2 || (nscr.onload = mjsMrg);
         iniscripts.appendChild(nscr);
       });
-      if (!protfile) {
-        nscr = document.createElement('script');
-        nscr.type = 'module';
-        nscr.innerHTML
-          = '\nimport * as srvc3 from "' + aurls["eco-srvc3.mjs"]
-          //+ '";\nimport * as srvc4 from "' + aurls["eco-srvc4.mjs"]
-          + '";\nwindow.ecomjs = window.ecomjs || {};'
-          + '\nlet k;\nfor (k in srvc3) ecomjs[k] = srvc3[k];\n!window.EC2 || EC2.mjsMrg();\n'
-          //+ 'for (k in srvc4) ecomjs[k] = srvc4[k];\n';
-        iniscripts.appendChild(nscr);
-      }
+      protfile || import(aurls["eco-srvc3.mjs"]).then(m => {
+        let k;
+        for (k in m) ecomjs[k] = m[k];
+        mjsMrg();
+      }).catch(msgHandl);
       jsclist.innerHTML = tmpljsclist && tmpljsclist({ jscitems: EC0.JSCON });
     },
     a00Docs = (dbs = []) => {
@@ -1207,7 +1203,7 @@ function modjsLoad() {
     ct = {},
     pchlist = document.querySelector('#ecoesp0 #pchlist'),
     iniscripts = document.querySelector('body>#iniscripts'),
-    scriptmod = document.querySelector('#iniscripts>script[type=module]:last-child'),
+    //scriptmod = document.querySelector('#iniscripts>script[type=module]:last-child'),
     modxs = filewkg.parseconfigs.scriptsincl
       .map( sii => !/\*\d*$/.test(sii.fncname) && typeof window[sii.fncname] !== 'function'
         && !ecoqjs[sii.fncname] && !ecomjs[sii.fncname]
@@ -1219,7 +1215,7 @@ function modjsLoad() {
       .map(sci => sci.filepath);
   !modxs.length
   || msgHandl("External, JavaScript-file (module) resources are now retrieved and loaded for pre-render parsing.");
-  document.querySelectorAll('#iniscripts>script.ecomjs').forEach(smi => smi.remove());
+  //document.querySelectorAll('#iniscripts>script.ecomjs').forEach(smi => smi.remove());
   Promise.all( mfps.map((fpi, i) => {
     let j = i,
       fpj = fpi,
@@ -1234,7 +1230,7 @@ function modjsLoad() {
     || null;
   }) ).catch(msgHandl)
   .then((mblobs = []) => {
-    !scriptmod || scriptmod.remove();
+    //!scriptmod || scriptmod.remove();
     if (protfile && !mblobs.every(e => e)) {
       mfps.forEach(fpi => {
         nscr = document.createElement('script');
@@ -1243,7 +1239,7 @@ function modjsLoad() {
         nscr.type = 'text/javascript';
         iniscripts.appendChild(nscr);
       });
-    } else if (mblobs.length) {
+    } else if (mblobs.length) { // todo: convert to import() call
       nscr = document.createElement('script');
       nscr.type = 'module';
       nscr.innerHTML = "\n"
@@ -1531,8 +1527,8 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       nscr.type = escr.type || 'text/javascript';
       //nscr.setAttribute('async', "");
       //nscr.setAttribute('defer', "");
-      protfile || hostibm || !nscr.src || /^blob:/.test(nscr.src)
-      || nscr.setAttribute('crossorigin', 'use-credentials');
+      //protfile || hostibm || !nscr.src || /^blob:/.test(nscr.src)
+      //|| nscr.setAttribute('crossorigin', 'use-credentials');
       nscr.innerHTML = escr.innerHTML || null;
       //escr.replaceWith(nscr);
       return ecoscripts.appendChild(nscr);
@@ -1691,7 +1687,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       : '\n<style type="text/css">.hljs-tag { //color: inherit; }</style>'
         + '\n<link class="srcvlink" href="'
         + (aurls[epsets.hlstyle] || a00path + '/-res-hljs/' + epsets.hlstyle)
-        + (protfile || hostlh ? "" : '" crossorigin="use-credentials')
+        //+ (protfile || hostlh ? "" : '" crossorigin="use-credentials')
         + '" type="text/css" rel="stylesheet" disabled />' )
       + '\n<pre class="srcview is-absolute hljs">'
       + ecoqjs.srcvPrep(udata, !epsets.hlstyle && "nohighlight" || lang) + "</pre>";
@@ -3578,9 +3574,6 @@ ibmConnect() {
   }
 },
 wdGen(pdata) { return !(pdata || "").filefrags ? pdata : webdocGen(1, pdata); },
-mjsMrg() { // also triggered by assts2Blob
-  Object.keys(EMODJS).forEach(k => EMODJS[k].fnc = EC0.MODJS[k].fnc || ecomjs[k] || null);
-},
 u2Blob(url) { // also triggered by prjDiscGen, jdeDftGen, dviz-memos, dviz-contacts
   return aurls[(url || "").replace(/^\S*\//, "")] || aurls[url]
   || (url || "").replace(/^\.\.\/\.\.(?!\/a00\/)(?=\S+[^\s\/]$)/, a00orig) || url;
