@@ -59,7 +59,7 @@ EC0.JSCON = [
   `Array.from(document.querySelectorAll('script')).map(e => e.src)`,
   `sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.querySelector('#iniscripts').appendChild(n); }; ""`,
   `window.xstor = window.xstor || {};
-\\n import("../-dev/prj10.js").then(m => xstor[m._module || "xmod" + Object.keys(xstor).map(k => k.replace(/^xmod(?=\\d*$)|.*/, "")).reduce((a, b) => +b > +a ? b : a, 1)] = m).then(Object.keys).catch(e => EC2.objQA("msg", e))`,
+\\n import("../-dev/prj10.js").then(m => xstor[m._module || "xmod" + Object.keys(xstor).map(k => k.replace(/^xmod(?=\\d*$)|.*/, "")).reduce((a, b) => +b > +a ? b : a, 1)] = m).then(Object.keys).catch(e => e)`,
   `getComputedStyle(document.documentElement).width`,
   `getComputedStyle(document.documentElement).font`,
   `Array.from(document.styleSheets).map(ss => ss.href)`,
