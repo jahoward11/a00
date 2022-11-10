@@ -133,7 +133,7 @@ __For CalcJS in Ecollabs__
  !!w.Q1 || (w.Q1 = (k = "f.c") => Promise.resolve(EC2.objQA(k))); "" // Q1().then(ecoqjs.jcmtXtract)
  !!w.P3 || (w.P3 = (x = 1) => navigator.clipboard.readText().then(s => window["s" + x] = s));
  // P3().then(ecoqjs.sortA2Z).then(reShow).catch(reShow)
- // { let nscr = document.createElement('script'); window.xstor = window.xstor || {}; nscr.type = 'module'; nscr.innerHTML = 'import("../-dev/prj10.js").then(m => xstor[m._module || "xmod" + Object.keys(xstor).map(k => k.replace(/^xmod(?=\d*$)|.*/, "")).reduce((a, b) => +b > +a ? b : a, 1)] = m).catch(e => EC2.objQA("msg", e))'; iniscripts.appendChild(nscr); }
+ // import("../-dev/prj10.js").then(m => xstor[m._module || "xmod" + Object.keys(xstor).map(k => k.replace(/^xmod(?=\\d*$)|.*/, "")).reduce((a, b) => +b > +a ? b : a, 1)] = m).catch(e => EC2.objQA("msg", e))
 */
 //`;
 
