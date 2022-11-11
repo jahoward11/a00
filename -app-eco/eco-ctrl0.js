@@ -3225,8 +3225,8 @@ swapExe(parse) {
   let ff2pty, ff2val, lrpl, rpl2,
     attlist = document.querySelector('#econav0 #attlist'),
     fldstxta = document.querySelectorAll('#ecoesp0 #jdedft textarea'),
-    sepainp = document.querySelector('#ecoesp0 #sepainp'),
-    rtrminp = document.querySelector('#ecoesp0 #rtrminp'),
+    swpsinp = document.querySelector('#ecoesp0 #swpsinp'),
+    swprinp = document.querySelector('#ecoesp0 #swprinp'),
     replhelp = document.querySelector('#ecoesp0 #toolswap .help'),
     swaptxta = document.querySelector('#ecoesp0 #swaptxta'),
     swaplist = document.querySelector('#ecoesp0 #swaplist'),
@@ -3241,21 +3241,21 @@ swapExe(parse) {
   ff2val = fldfc2[ff2pty];
   if (parse) {
     try {
-      !/^(?:\w+|\(.*?\)) *=> *\S|^".*"$|^\b[\w.]+$/.test(rtrminp.value.trim())
-      || (rpl2 = window.eval(rtrminp.value));
+      !/^(?:\w+|\(.*?\)) *=> *\S|^".*"$|^\b[\w.]+$/.test(swprinp.value.trim())
+      || (rpl2 = window.eval(swprinp.value));
     } catch (err) {
       replhelp.innerHTML = err;
       swaptxta.value = "";
       return hlpPol();
     }
-    if (/^\/.+\/[im]*g[im]*$/.test(sepainp.value)) {
-      replhelp.innerHTML = (lrpl = (ff2val.trim().match(eval(sepainp.value)) || []).length)
+    if (/^\/.+\/[im]*g[im]*$/.test(swpsinp.value)) {
+      replhelp.innerHTML = (lrpl = (ff2val.trim().match(eval(swpsinp.value)) || []).length)
         + " replacements have been made.";
       hlpPol(lrpl);
     }
-    return swaptxta.value = ff2val.trim().replace( !/^\/.+\/[gim]*$/.test(sepainp.value)
-        ? sepainp.value : eval(sepainp.value),
-      rpl2 || window.eval('"' + rtrminp.value.replace(/(?=")/g, "\\") + '"') );
+    return swaptxta.value = ff2val.trim().replace( !/^\/.+\/[gim]*$/.test(swpsinp.value)
+        ? swpsinp.value : eval(swpsinp.value),
+      rpl2 || window.eval('"' + swprinp.value.replace(/(?=")/g, "\\") + '"') );
   }
   fldfc2[ff2pty] = swaptxta.value;
   swaptxta.value = ff2val;
