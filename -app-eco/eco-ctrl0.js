@@ -312,7 +312,8 @@ function assts2Blob() {
         for (k in m) ecomjs[k] = m[k];
         mjsMrg();
       }).catch(msgHandl);
-      jsclist.innerHTML = tmpljsclist && tmpljsclist({ jscitems: EC0.JSCON });
+      jsclist.innerHTML = tmpljsclist
+        && tmpljsclist({ jscitems: EC0.JSCON.map(s => s.replace(/\n/g, "$&\u2028")) });
     },
     a00Docs = (dbs = []) => {
       if (dbs.some(e => e === "a00") && a00path === localStorage["_ecoa00path"]) {
@@ -1239,7 +1240,8 @@ function modjsLoad() {
         nscr.type = 'text/javascript';
         iniscripts.appendChild(nscr);
       });
-    } else if (mblobs.length) { // todo: convert to import() call
+    } else if (mblobs.length) { // todo: convert to import() call?
+      //mfps.forEach( (fpi, i) => import(mblobs[i] || fpi).then(m => { }).catch(msgHandl);
       nscr = document.createElement('script');
       nscr.type = 'module';
       nscr.innerHTML = "\n"

@@ -21,8 +21,8 @@ EC0.JSCON = [
   `location.href`,
   `navigator.onLine`,
   `Object.fromEntries(
-\\n ["onLine", "appCodeName", "appName", "platform", "product", "vendor", "userAgent", "userAgentData"]
-\\n .map(e => [e, navigator[e]]) )`,
+ ["onLine", "appCodeName", "appName", "platform", "product", "vendor", "userAgent", "userAgentData"]
+ .map(e => [e, navigator[e]]) )`,
   `new Date().toUTCString()`,
   `new Date().toISOString()`,
   `new Date().toLocaleString()`,
@@ -31,7 +31,7 @@ EC0.JSCON = [
   `Array.from(Array(5).keys())`,
   `Object.keys(ecomjs)`,
   `Object.fromEntries( Object.entries(ecoqjs)
-\\n .map(oe => [oe[0], oe[1].toString()]) )`,
+ .map(oe => [oe[0], oe[1].toString()]) )`,
   `Object.keys(localStorage).filter(e => !/mrview-/.test(e))`,
   `//localStorage["key"] = "value"`,
   `//localStorage.removeItem("key")`,
@@ -44,7 +44,8 @@ EC0.JSCON = [
   `EC2.objQA("updpch")`,
   `EC2.objQA("MODJS.keys")`,
   `EC2.objQA("TMPLS.publmgr").parseconfigs.scriptsconstr[0].deftxt`,
-  `qcontxta.value = JSON.stringify(EC2.objQA("idtoks.idTokenPayload"), null, 2); EC2.qconSyncD();`,
+  `// Post-login activation of custom CouchDB access
+ qcontxta.value = JSON.stringify(EC2.objQA("idtoks.idTokenPayload"), null, 2); EC2.qconSyncD();`,
   `//PouchDB("mydb1").get("myfile").then(doc => doc.filefrags[0].contenttxt)`,
   `fetch(EC2.u2Blob("ebook-annos-fns.js")).then(resp => resp.text())`,
   `document.head.outerHTML.replace(/<style[^]+<\\/style>\\n?/, "")`,
@@ -59,7 +60,7 @@ EC0.JSCON = [
   `sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.querySelector('#iniscripts').appendChild(n); }; ""`,
   `import("../-dev/prj10.js").then(m => m.jscmds).catch(e => e)`,
   `window.xstor = window.xstor || {};
-\\n import("../-dev/prj10.js").then(m => xstor[m._module || "xmod" + Object.keys(xstor).map(k => k.replace(/^xmod(?=\\d*$)|.*/, "")).reduce((a, b) => +b > +a ? b : a, 1)] = m).then(Object.keys).catch(e => e)`,
+ import("../-dev/prj10.js").then(m => xstor[m._module || "xmod" + Object.keys(xstor).map(k => k.replace(/^xmod(?=\\d*$)|.*/, "")).reduce((a, b) => +b > +a ? b : a, 1)] = m).then(Object.keys).catch(e => e)`,
   `getComputedStyle(document.documentElement).width`,
   `getComputedStyle(document.documentElement).font`,
   `Array.from(document.styleSheets).map(ss => ss.href)`,
@@ -67,34 +68,34 @@ EC0.JSCON = [
   `indexedDB.databases()`,
   `caches.keys()`,
   `caches.keys().then( keys =>
-\\n caches.open(keys[0]).then( cache => cache.keys().then( keys =>
-\\n keys.map(k => ({ url: k.url, mode: k.mode, dest: k.destination })) )))`,
+ caches.open(keys[0]).then( cache => cache.keys().then( keys =>
+ keys.map(k => ({ url: k.url, mode: k.mode, dest: k.destination })) )))`,
   `Object.keys(window).filter( pty =>
-\\n Object.entries(Object.getOwnPropertyDescriptor(window, pty) || "")
-\\n .filter(e => ['value', 'writable', 'enumerable'].includes(e[0]) && e[1])
-\\n .length === 3 )`,
+ Object.entries(Object.getOwnPropertyDescriptor(window, pty) || "")
+ .filter(e => ['value', 'writable', 'enumerable'].includes(e[0]) && e[1])
+ .length === 3 )`,
   `{ let k, keys = [];
-\\n for (k in document.documentElement) keys.push(k);
-\\n keys.filter(k => !/^on|^aria/.test(k)).sort(); }`,
+ for (k in document.documentElement) keys.push(k);
+ keys.filter(k => !/^on|^aria/.test(k)).sort(); }`,
   `// JavaScript inspect, helper functions
-\\n I1 = ecoqjs.jvarXtract; "" // generate array of JS variable names
-\\n I2 = ecoqjs.jcmtXtract; "" // list JS function names & comments
-\\n I3 = s => s.replace(/[^]+?\\n(function rdataFetch.+(?:\\n.+)+?(?:;?\\s*};?|;)\\n|(?=.*$))[\\n\\S][^]*/, "$1"); ""`,
+ I1 = ecoqjs.jvarXtract; "" // generate array of JS variable names
+ I2 = ecoqjs.jcmtXtract; "" // list JS function names & comments
+ I3 = s => s.replace(/[^]+?\\n(function rdataFetch.+(?:\\n.+)+?(?:;?\\s*};?|;)\\n|(?=.*$))[\\n\\S][^]*/, "$1"); ""`,
   `s0 = ecoscripts.innerHTML; ""; // I1(s0)`,
   `Q1 = (k = "f.c") => Promise.resolve(EC2.objQA(k)); ""; // Q1().then(I2)`,
   `fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()) //.then(I3)`,
   `// Console table: ASCII (Latin, Basic) & 8-bit-character (Latin-1 Supp) reference
-\\n Array.from(Array(64).keys()).map(e => [0, 64, 128, 192].map(d => "0x" + (d + e).toString(16) + (!d && e < 16 ? "  " : " " + String.fromCodePoint(d + e))).join("\\t")).join("\\n")`,
+ Array.from(Array(64).keys()).map(e => [0, 64, 128, 192].map(d => "0x" + (d + e).toString(16) + (!d && e < 16 ? "  " : " " + String.fromCodePoint(d + e))).join("\\t")).join("\\n")`,
   `// Preview table: ASCII (Latin, Basic) & 8-bit-character (Latin-1 Supp) reference
-\\n Array.from(Array(64).keys()).map(e => [0, 64, 128, 192].map(d => "0x" + (d + e).toString(16) + (!d && e < 16 ? "  " : d + e == 124 ? " \\\\|" : " " + String.fromCodePoint(d + e))).join(" | ")).join("\\n")`,
+ Array.from(Array(64).keys()).map(e => [0, 64, 128, 192].map(d => "0x" + (d + e).toString(16) + (!d && e < 16 ? "  " : d + e == 124 ? " \\\\|" : " " + String.fromCodePoint(d + e))).join(" | ")).join("\\n")`,
   `// Console table: Greek alphabet reference
-\\n Array.from(Array(25).keys()).map(e => (913 + e) + "/" + (945 + e) + " " + [913, 945].map(d => String.fromCodePoint(d + e)).join(" ")).join("\\n")`,
+ Array.from(Array(25).keys()).map(e => (913 + e) + "/" + (945 + e) + " " + [913, 945].map(d => String.fromCodePoint(d + e)).join(" ")).join("\\n")`,
   `// Console table: space- & odd-character reference
-\\n ecomjs.spachars.map(e => e[1] + "\\n  ]" + (/^(?:9|10|11|12|13|820[67]|823[23])$/.test(e[0]) ? "" : String.fromCodePoint(e[0])) + "[\\t0x" + e[0].toString(16) + "\\t" + (e[2] || "")).join("\\n")`,
+ ecomjs.spachars.map(e => e[1] + "\\n  ]" + (/^(?:9|10|11|12|13|820[67]|823[23])$/.test(e[0]) ? "" : String.fromCodePoint(e[0])) + "[\\t0x" + e[0].toString(16) + "\\t" + (e[2] || "")).join("\\n")`,
   `// Preview table: space- & odd-character reference
-\\n ecomjs.spachars.map(e => "| ]" + (/^(?:9|10|11|12|13|820[67]|823[23])$/.test(e[0]) ? "" : String.fromCodePoint(e[0])) + "[ | " + e[0] + " | 0x" + e[0].toString(16) + " | " + e[1] + " | " + (e[2] || "").replace(/&/g, "&amp;") + " |").join("\\n")`,
+ ecomjs.spachars.map(e => "| ]" + (/^(?:9|10|11|12|13|820[67]|823[23])$/.test(e[0]) ? "" : String.fromCodePoint(e[0])) + "[ | " + e[0] + " | 0x" + e[0].toString(16) + " | " + e[1] + " | " + (e[2] || "").replace(/&/g, "&amp;") + " |").join("\\n")`,
   `// Console table: 2000s character reference
-\\n Array.from(Array(64).keys()).map(n => (n += 0x2000) && [0, 64, 128, 192].map(d => "0x" + (n + d).toString(16) + " " + String.fromCodePoint(n + d)).join("  \\t")).join("\\n")`
+ Array.from(Array(64).keys()).map(n => (n += 0x2000) && [0, 64, 128, 192].map(d => "0x" + (n + d).toString(16) + " " + String.fromCodePoint(n + d)).join("  \\t")).join("\\n")`
 ];
 
 EC0.XREQD = {
