@@ -30,7 +30,6 @@ EC0.JSCON = [
   `decodeURI("%22%20%22%25%3C%3E%5B%5C%5D%5E%60%7B%7C%7D")`,
   `Array.from(Array(5).keys())`,
   `Object.keys(ecomjs)`,
-  `Object.keys(ecoqjs)`,
   `Object.fromEntries( Object.entries(ecoqjs)
 \\n .map(oe => [oe[0], oe[1].toString()]) )`,
   `Object.keys(localStorage).filter(e => !/mrview-/.test(e))`,
@@ -38,10 +37,10 @@ EC0.JSCON = [
   `//localStorage.removeItem("key")`,
   `Object.getOwnPropertyNames(Math)`,
   `Object.getOwnPropertyNames(Number)`,
+  `EC0.INSTR[0]`,
   `EC2.u2Blob("avatar000.png")`,
   `EC2.objQA("urls")`,
   `EC2.objQA("epsets")`,
-  `EC2.objQA("lnkstor")`,
   `EC2.objQA("updpch")`,
   `EC2.objQA("MODJS.keys")`,
   `EC2.objQA("TMPLS.publmgr").parseconfigs.scriptsconstr[0].deftxt`,
@@ -58,6 +57,7 @@ EC0.JSCON = [
   `Array.from(document.querySelectorAll('[id]')).map(e => e.id)`,
   `Array.from(document.querySelectorAll('script')).map(e => e.src)`,
   `sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.querySelector('#iniscripts').appendChild(n); }; ""`,
+  `import("../-dev/prj10.js").then(m => m.jscmds).catch(e => e)`,
   `window.xstor = window.xstor || {};
 \\n import("../-dev/prj10.js").then(m => xstor[m._module || "xmod" + Object.keys(xstor).map(k => k.replace(/^xmod(?=\\d*$)|.*/, "")).reduce((a, b) => +b > +a ? b : a, 1)] = m).then(Object.keys).catch(e => e)`,
   `getComputedStyle(document.documentElement).width`,
@@ -92,7 +92,9 @@ EC0.JSCON = [
   `// Console table: space- & odd-character reference
 \\n ecomjs.spachars.map(e => e[1] + "\\n  ]" + (/^(?:9|10|11|12|13|820[67]|823[23])$/.test(e[0]) ? "" : String.fromCodePoint(e[0])) + "[\\t0x" + e[0].toString(16) + "\\t" + (e[2] || "")).join("\\n")`,
   `// Preview table: space- & odd-character reference
-\\n ecomjs.spachars.map(e => "| ]" + (/^(?:9|10|11|12|13|820[67]|823[23])$/.test(e[0]) ? "" : String.fromCodePoint(e[0])) + "[ | " + e[0] + " | 0x" + e[0].toString(16) + " | " + e[1] + " | " + (e[2] || "").replace(/&/g, "&amp;") + " |").join("\\n")`
+\\n ecomjs.spachars.map(e => "| ]" + (/^(?:9|10|11|12|13|820[67]|823[23])$/.test(e[0]) ? "" : String.fromCodePoint(e[0])) + "[ | " + e[0] + " | 0x" + e[0].toString(16) + " | " + e[1] + " | " + (e[2] || "").replace(/&/g, "&amp;") + " |").join("\\n")`,
+  `// Console table: 2000s character reference
+\\n Array.from(Array(64).keys()).map(n => (n += 0x2000) && [0, 64, 128, 192].map(d => "0x" + (n + d).toString(16) + " " + String.fromCodePoint(n + d)).join("  \\t")).join("\\n")`
 ];
 
 EC0.XREQD = {
