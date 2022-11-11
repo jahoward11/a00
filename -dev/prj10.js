@@ -99,6 +99,7 @@ const jscmds = `//
 encodeURI("abc !\\"#$%&'()*+,-./:;<=>?@[\\\\]^_\`{|}~123")
 decodeURI("%22%20%22%25%3C%3E%5B%5C%5D%5E%60%7B%7C%7D")
 
+Array.from({ length: 5 })
 Array.from(Array(5).keys())
 
 // reShow(Array.from(Array(64).keys()).map(n => [0, 64, 128, 192].map(d => "0x" + (n + d).toString(16) + (!d && n < 16 ? "  " : " " + String.fromCodePoint(n + d))).join("\\t")).join("\\n"))
@@ -126,16 +127,16 @@ Array.from(Array(5).keys())
 // reShow(ecoqjs.jcmtXtract(s0))
 // reShow(ecoqjs.jcmtXtract(document.querySelector('script:nth-of-type(3)').outerHTML))
 
+//__For CalcJS in Ecollabs__
 /*
-__For CalcJS in Ecollabs__
  w = window;
  !!w.s0 || (w.s0 = ecoscripts.innerHTML); "" // ecoqjs.jvarXtract(s0)
  !!w.Q1 || (w.Q1 = (k = "f.c") => Promise.resolve(EC2.objQA(k))); "" // Q1().then(ecoqjs.jcmtXtract)
  !!w.P3 || (w.P3 = (x = 1) => navigator.clipboard.readText().then(s => window["s" + x] = s));
+*/
  // P3().then(ecoqjs.sortA2Z).then(reShow).catch(reShow)
  // import("../-dev/prj10.js").then(m => xstor[m._module || "xmod" + Object.keys(xstor).map(k => k.replace(/^xmod(?=\\d*$)|.*/, "")).reduce((a, b) => +b > +a ? b : a, 1)] = m).catch(reShow) //.catch(e => EC2.objQA("msg", e))
  // reShow(Object.keys(xstor.util))
-*/
 //`;
 
 const bcaches = `//
