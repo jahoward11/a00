@@ -119,18 +119,18 @@ Array.from(Array(5).keys())
 // reShow(Array.from(document.querySelectorAll('[id]')).map(e => e.id))
 // reShow( document.querySelectorAll('script')[2].textContent.replace( /^(?:const|let|var| ) ?\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)\\n|^(window\\.\\w+(?= *=)[ =])[^]+?(?:;?\\s*\\n[\\]}];?\\n|;\\n(?=\\n|[^\\s\\]}]))|^function +(\\w+.)[^]+?\\n[\\]}];?\\n(?=[\\n\\S])|(.*\\n|.+)/gim, (m, c1, c2, c3) => c3 ? "" : c1 || c2 || m.replace(/(?:[^=a-z]|= *(?=\\d+[,;]|""|''|\\[\\]|\\{\\})|[a-z](?!\\w* *[.,;=]))*(?:\\n|=.+|(\\w+.))/gi, "$1") ).trim().split(/[^.\\w]/) ) //
 // fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then( s => s.replace( /^(?:const|let|var| ) ?\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)\\n|^(window\\.\\w+(?= *=)[ =])[^]+?(?:;?\\s*\\n[\\]}];?\\n|;\\n(?=\\n|[^\\s\\]}]))|^function +(\\w+.)[^]+?\\n[\\]}];?\\n(?=[\\n\\S])|(.*\\n|.+)/gim, (m, c1, c2, c3) => c3 ? "" : c1 || c2 || m.replace(/(?:[^=a-z]|= *(?=\\d+[,;]|""|''|\\[\\]|\\{\\})|[a-z](?!\\w* *[.,;=]))*(?:\\n|=.+|(\\w+.))/gi, "$1") ).trim().split(/[^.\\w]/) ).then(reShow).catch(reShow) //
-// fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then(s => s.replace(/(?:[^]*?\\n|^)(function rdataFetch.+(?:\\n.+)+?(?:;?\\s*};?|;)(?=\\n[\\n\\S]|$))[^]*|[^]*/, "$1")).then(reShow).catch(reShow) //
+// fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then(s => s.replace(/(?:[^]*?\\n|^)(function rdataFetch.+(?:\\n.+?)+?(?:;?\\s*};?|;)(?=\\n[\\n\\S]|$))[^]*|[^]*/, "$1")).then(reShow).catch(reShow) //
 
 // window.ecoqjs || scrInj("../-app-eco/eco-srvc1.js").then(reShow).catch(reShow)
 // reShow( Object.fromEntries( Object.entries(ecoqjs).map(oe => [oe[0], oe[1].toString()]) ))
-// fetch("../-app-eco/eco-srvc1.js").then(re => re.text()).then(s => window.s0 = s).then(reShow).catch(reShow)
-// reShow(ecoqjs.jcmtXtract(s0))
+// fetch("../-app-eco/eco-srvc1.js").then(re => re.text()).then(s => window.s3 = s).then(reShow).catch(reShow)
+// reShow(ecoqjs.jcmtXtract(s3))
 // reShow(ecoqjs.jcmtXtract(document.querySelector('script:nth-of-type(3)').outerHTML))
 
 //__For CalcJS in Ecollabs__
 /*
  w = window;
- !!w.s0 || (w.s0 = ecoscripts.innerHTML); "" // ecoqjs.jvarXtract(s0)
+ !!w.s3 || (w.s3 = ecoscripts.innerHTML); "" // ecoqjs.jvarXtract(s3)
  !!w.Q1 || (w.Q1 = (k = "f.c") => Promise.resolve(EC2.objQA(k))); "" // Q1().then(ecoqjs.jcmtXtract)
  !!w.P3 || (w.P3 = (x = 1) => navigator.clipboard.readText().then(s => window["s" + x] = s));
 */
