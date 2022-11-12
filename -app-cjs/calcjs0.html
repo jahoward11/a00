@@ -344,7 +344,7 @@ let q2Bcopy, q2Bhtml,
   cinit = window.cinit || window.localStorage._cinit || "",
   metavp = document.querySelector('body>#ecorender meta[name=viewport]')
     || document.querySelector('head>meta[name=viewport]'),
-  ecoscrs = document.querySelector('body>#ecoscripts'),
+  ecoscrs = window.EC0 && document.querySelector('body>#ecoscripts'),
   datxmp = document.querySelector('#cmain>#datxmp'),
   cheadg = document.querySelector('#cmain>#cheadg'),
   recon = document.querySelector('#cmain>#recon'),
@@ -375,7 +375,7 @@ let q2Bcopy, q2Bhtml,
     nscr.innerHTML = !url && cnt ? cnt : "";
     nscr.onerror = err => rjct("**Alert: Script resource GET/load error occured.");
     nscr.onload = rslv;
-    !(url || cnt) || (dentr.type && ecoscrs || document.body).appendChild(nscr);
+    !(url || cnt) || (ecoscrs || document.body).appendChild(nscr);
   }),
   zoomTog = zoff => metavp.setAttribute( 'content', "width=device-width, "
     + (zoff || /maximum-/.test(metavp.content) ? "initial-scale=1" : "maximum-scale=1") ),
@@ -421,7 +421,7 @@ let q2Bcopy, q2Bhtml,
     + "\n  // dload= | load specified data set into *ENTRY* field"
     + "\n  // val0s= | re-assign initial values of pre-loaded data set"
     + "\n  // jsrcs= | inject supplemental JavaScript resources\n\n// "
-    + (!dentr.type ? "window.location.search" : "window.localStorage._cinit =\n// window.cinit")
+    + (!ecoscrs ? "window.location.search" : "window.localStorage._cinit =\n// window.cinit")
     + " = \"" + qrys.join("&") + "\"\n // + \""
     + (!qrys.length ? "" : "&") + "cmods=\" + encodeURIComponent(\"3,5,prj42.mjs\")"
     + ( (xsetlist || "").value
@@ -468,7 +468,7 @@ let q2Bcopy, q2Bhtml,
       viewSet();
     } else if (idx === 7) {
       calcCopy();
-    } else if (idx === 8 && !dentr.type) {
+    } else if (idx === 8 && !ecoscrs) {
       window.location.href = "https://jahoward11.github.io/a00/-app-cjs/calcjs0.html";
     }
   },
@@ -559,7 +559,7 @@ let q2Bcopy, q2Bhtml,
     let eobj = evt.target, rnge, seln;
     if ( eobj.parentElement.id === "symlist" || eobj.id !== "scrnmask" && [0, 1, 2, 3, 4, 5, 6]
     .some(i => (eobj = !i ? eobj : eobj["parentElement"] || eobj).id === "quad2B") ) {
-    //&& evt.path[evt.path.length - (!window.EC1 ? 7 : 8)].id === "quad2B" ) {
+    //&& evt.path[evt.path.length - (!window.EC0 ? 7 : 8)].id === "quad2B" ) {
       if (evt.target.parentElement.id === "symlist") {
         seln = window.getSelection();
         seln.removeAllRanges();
@@ -663,7 +663,7 @@ let q2Bcopy, q2Bhtml,
 window.xstor = window.xstor || {};
 window.dentr = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
   || { value: datxmp.textContent.replace(/\n+$|^\n+/g, "") };
-(dentr.type ? cinit : window.location.search).replace(/^\?/, "").split("&").forEach( qi =>
+(ecoscrs ? cinit : window.location.search).replace(/^\?/, "").split("&").forEach( qi =>
   /^jsrcs=./.test(qi) ? (jsrcs = window.decodeURIComponent(qi.replace(/^jsrcs=/, "")).split(/[ ,]+/))
   : /^cmods=./.test(qi) ? (cmods = window.decodeURIComponent(qi.replace(/^cmods=/, "")).split(/[ ,]+/))
   : /^dload=./.test(qi) ? (dload = window.decodeURIComponent(qi.replace(/^dload=/, "")))
