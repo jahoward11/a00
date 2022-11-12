@@ -133,10 +133,11 @@ window.ecoqjs = { // 21
   },
   jvarXtract: str =>
     // generate array of variable names extracted from JavaScript text
-    str
-    .replace( /^(?:const|let|var| ) ?\b[ ,\w]+(?: *= .+|);?(?: *\/\/ *|)\n|^(window\.\w+(?= *=)[ =])[^]+?(?:;?\s*\n[\]}];?\n|;\n(?=\n|[^\s\]}]))|^function +(\w+.)[^]+?\n[\]}];?\n(?=[\n\S])|(.*\n|.+)/gim,
+    Array.from( new Set ( str
+    .replace(/ *\/\/.*|^(window\.\w+ *= *[\[{])[^]+?(?=\n[\]}];$)/gm, "$1")
+    .replace( /^(?:(?:const|let|var) +|  ?(?!const |let |var ))\w[ ,\w]*(?:=.+|);?\n|^(\w[.\w]*(?= *=)[ =])[^]+?(?:;?\s*\n[\]}];?\n|;\n(?=\n|[^\s\]}]))|^function +(\w+.)[^]+?\n[\]}];?\n(?=[\n\S])|(.*\n|.+)/gim,
       (m, c1, c2, c3) => c3 ? "" : c1 || c2 || m.replace(/(?:[^=a-z]|= *(?=\d+[,;]|""|''|\[\]|\{\})|[a-z](?!\w* *[.,;=]))*(?:\n|=.+|(\w+.))/gi, "$1") )
-    .trim().split(/[^.\w]/),
+    .trim().split(/[^.\w]/) )),
   jcmtXtract: str =>
     // extract list of function names & comments in JavaScript text
     str
