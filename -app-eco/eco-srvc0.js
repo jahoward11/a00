@@ -80,8 +80,8 @@ EC0.JSCON = [
   `// JavaScript inspect, helper functions
  I1 = ecoqjs.jvarXtract; "" // generate array of JS variable names
  I2 = ecoqjs.jcmtXtract; "" // list JS function names & comments
- I3 = s => s.replace(/(?:[^]*?\\n|^)(function rdataFetch.+(?:\\n.+)+?(?:;?\\s*};?|;)(?=\\n[\\n\\S]|$))[^]*|[^]*/, "$1"); ""`,
-  `s0 = ecoscripts.innerHTML; ""; // I1(s0)`,
+ I3 = s => s.replace(/(?:[^]*?\\n|^)(function rdataFetch.+(?:\\n.+?)+?(?:;?\\s*};?|;)(?=\\n[\\n\\S]|$))[^]*|[^]*/, "$1"); ""`,
+  `s3 = ecoscripts.innerHTML; ""; // I1(s3)`,
   `Q1 = (k = "f.c") => Promise.resolve(EC2.objQA(k)); ""; // Q1().then(I2)`,
   `fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()) //.then(I3)`,
   `// Console table: ASCII (Latin, Basic) & 8-bit-character (Latin-1 Supp) reference
