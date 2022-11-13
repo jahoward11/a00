@@ -102,30 +102,30 @@ decodeURI("%22%20%22%25%3C%3E%5B%5C%5D%5E%60%7B%7C%7D")
 Array.from({ length: 5 })
 Array.from(Array(5).keys())
 
-// reShow(Array.from(Array(64).keys()).map(n => [0, 64, 128, 192].map(d => "0x" + (n + d).toString(16) + (!d && n < 16 ? "  " : " " + String.fromCodePoint(n + d))).join("\\x09")).join("\\n"))
-// reShow(Array.from(Array(64).keys()).map(n => (n += 0x2000) && [0, 64, 128, 192].map(d => "0x" + (n + d).toString(16) + " " + String.fromCodePoint(n + d)).join("  \\x09")).join("\\n"))
-// reShow(Array.from(Array(25).keys()).map(n => (n + 913) + "/" + (n + 945) + " " + [913, 945].map(d => String.fromCodePoint(n + d)).join(" ")).join("\\n"))
+// reShow( Array.from(Array(64).keys()).map(n => [0, 64, 128, 192].map(d => "0x" + (n + d).toString(16) + (!d && n < 16 ? "  " : " " + String.fromCodePoint(n + d))).join("\\x09")).join("\\n") )
+// reShow( Array.from(Array(64).keys()).map(n => (n += 0x2000) && [0, 64, 128, 192].map(d => "0x" + (n + d).toString(16) + " " + String.fromCodePoint(n + d)).join("  \\x09")).join("\\n") )
+// reShow( Array.from(Array(25).keys()).map(n => (n + 913) + "/" + (n + 945) + " " + [913, 945].map(d => String.fromCodePoint(n + d)).join(" ")).join("\\n") )
 
 // { let k, keys = []; for (k in localStorage) keys.push(k); reShow(keys); }
-// reShow(Object.keys(localStorage))
+// reShow( Object.keys(localStorage) )
 // { let k, k2s, keys = []; for (k in document.documentElement) keys.push(k); reShow(k2s = keys.filter(k => !/^on|^aria/.test(k)).sort()); k2s.length; } //
 // reShow( Object.keys(window).filter( pty => Object.entries(Object.getOwnPropertyDescriptor(window, pty) || "").filter(e => ['value', 'writable', 'enumerable'].includes(e[0]) && e[1]).length === 3 ))
-// reShow(Object.fromEntries(Object.keys(location).map(e => [e, location[e]])))
-// reShow(Object.fromEntries(["onLine", "appCodeName", "appName", "platform", "product", "vendor", "userAgent", "userAgentData"].map(e => [e, navigator[e]])))
-// reShow(Object.getOwnPropertyNames(Math))
-// reShow(Object.getOwnPropertyNames(Number.prototype))
+// reShow( Object.fromEntries(Object.keys(location).map(e => [e, location[e]])) )
+// reShow( Object.fromEntries(["onLine", "appCodeName", "appName", "platform", "product", "vendor", "userAgent", "userAgentData"].map(e => [e, navigator[e]])) )
+// reShow( Object.getOwnPropertyNames(Math) )
+// reShow( Object.getOwnPropertyNames(Number.prototype) )
 
-// reShow( Object.fromEntries( Object.entries(SourceDiff).map(oe => [oe[0], oe[1].toString()]) ))
-// reShow(Array.from(document.querySelectorAll('[id]')).map(e => e.id))
-// reShow( document.querySelectorAll('script')[2].textContent.replace( /^(?:const|let|var| ) ?\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)\\n|^(window\\.\\w+(?= *=)[ =])[^]+?(?:;?\\s*\\n[\\]}];?\\n|;\\n(?=\\n|[^\\s\\]}]))|^function +(\\w+.)[^]+?\\n[\\]}];?\\n(?=[\\n\\S])|(.*\\n|.+)/gim, (m, c1, c2, c3) => c3 ? "" : c1 || c2 || m.replace(/(?:[^=a-z]|= *(?=\\d+[,;]|""|''|\\[\\]|\\{\\})|[a-z](?!\\w* *[.,;=]))*(?:\\n|=.+|(\\w+.))/gi, "$1") ).trim().split(/[^.\\w]/) ) //
-// fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then( s => s.replace( /^(?:const|let|var| ) ?\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)\\n|^(window\\.\\w+(?= *=)[ =])[^]+?(?:;?\\s*\\n[\\]}];?\\n|;\\n(?=\\n|[^\\s\\]}]))|^function +(\\w+.)[^]+?\\n[\\]}];?\\n(?=[\\n\\S])|(.*\\n|.+)/gim, (m, c1, c2, c3) => c3 ? "" : c1 || c2 || m.replace(/(?:[^=a-z]|= *(?=\\d+[,;]|""|''|\\[\\]|\\{\\})|[a-z](?!\\w* *[.,;=]))*(?:\\n|=.+|(\\w+.))/gi, "$1") ).trim().split(/[^.\\w]/) ).then(reShow).catch(reShow) //
+// window.ecoqjs || scrInj("../-app-eco/eco-srvc2.js").then(reShow).catch(reShow)
+// reShow( Object.fromEntries( Object.entries(ecoqjs).map(oe => [oe[0], oe[1].toString()]) )) // localforage, PouchDB, hljs, SourceDiff
+
+// reShow( Array.from(document.querySelectorAll('[id]')).map(e => e.id) )
+// reShow( ecoqjs.jvarXtract(document.querySelectorAll('script')[2].textContent) )
+// reShow( ecoqjs.jcmtXtract(document.querySelector('script:nth-of-type(3)').outerHTML) )
+
+// fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then(ecoqjs.jvarXtract).then(reShow).catch(reShow)
 // fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then(s => s.replace(/(?:[^]*?\\n|^)(function rdataFetch.+(?:\\n.+?)+?(?:;?\\s*};?|;)(?=\\n[\\n\\S]|$))[^]*|[^]*/, "$1")).then(reShow).catch(reShow) //
-
-// window.ecoqjs || scrInj("../-app-eco/eco-srvc1.js").then(reShow).catch(reShow)
-// reShow( Object.fromEntries( Object.entries(ecoqjs).map(oe => [oe[0], oe[1].toString()]) ))
-// fetch("../-app-eco/eco-srvc1.js").then(re => re.text()).then(s => window.s3 = s).then(reShow).catch(reShow)
-// reShow(ecoqjs.jcmtXtract(s3))
-// reShow(ecoqjs.jcmtXtract(document.querySelector('script:nth-of-type(3)').outerHTML))
+// fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then(s => window.s3 = s).then(reShow).catch(reShow)
+// reShow( ecoqjs.jcmtXtract(s3) )
 
 //__For CalcJS in Ecollabs__
 /*
@@ -136,7 +136,7 @@ Array.from(Array(5).keys())
 */
  // P3().then(ecoqjs.sortA2Z).then(reShow).catch(reShow)
  // import("../-dev/prj10.js").then(m => xstor[m._module || "xmod" + Object.keys(xstor).map(k => k.replace(/^xmod(?=\\d*$)|.*/, "")).reduce((a, b) => +b > +a ? b : a, 1)] = m).catch(reShow) //.catch(e => EC2.objQA("msg", e))
- // reShow(Object.keys(xstor.util))
+ // reShow( Object.keys(xstor.util) )
 //`;
 
 const bcaches = `//
