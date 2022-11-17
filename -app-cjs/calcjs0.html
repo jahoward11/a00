@@ -434,7 +434,7 @@ let q2Bcopy, q2Bhtml,
     let nanc = document.createElement('a'),
       chtml = '<!DOCTYPE html>\n<html lang="en">\n<head>\n'
       + (document.querySelector('body>#ecorender') || document.documentElement).innerHTML
-        .replace(/\n+$|^\n+|^<head>\n?|^#cmain \.iwarn[^]+?\n(?=@media print {\n)|^<div id="xctrls".*?>[^]+?\n(?=<\/main>)|,\n *xsetLoad = [^]+?(?=;\nwindow\.xstor =)|^ *!\/\^http.+xlstGen[^]+?;\n|\n*<script\b.*><\/script>(?=$|<\/body>)|\n?<\/body>$/gim, "")
+        .replace(/\n+$|^\n+|^<head>\n?|\n *<option><\/option>\s*<optgroup[^]*?(?=\n *<\/select>)|<span class="ccntr"><button id="xbtnsav">[^]+?(?=\n *<div id="xcshelp")|,\n *xsetSave = [^]+?(?=;\nwindow\.xstor =)|\n*<script\b.*><\/script>(?=$|<\/body>)|\n?<\/body>$/gim, "")
         .replace(/^(<\/style>)[^]*?(?=<div .+><\/div>$)/im, "$1\n</head>\n<body>\n")
         .replace(/^(<xmp id="datxmp".*?>)[^]*?(?=<\/xmp>)/im, (m, c1) => c1 + "\n" + dentr.value + "\n")
         .replace(/^(<pre id="recon">)[^]*?(?=<\/pre>)/im, "$1")
@@ -442,7 +442,7 @@ let q2Bcopy, q2Bhtml,
           '$1$2$3</pre><pre id="quad2B" contenteditable=true></pre>\n  <ul id="symlist" class="is-hidden"></ul>' )
         .replace(/^(<\/style>\n)<script.*?>[^]*?(?=\nlet q2Bcopy,)/im, "$1<script type=\"text/javascript\">\n(function () {\n'use strict';")
         .replace(/^( *cheadg\.textContent === ").+/m, "$1" + cheadg.textContent + "\"")
-        .replace(/^xsetinp\.onblur[^]+?(?=\n<\/script>)/im, "})();")
+        .replace(/^xbtnsav\.onclick[^]+?(?=\n<\/script>)/im, "})();")
       + "\n</" + "body>\n</" + "html>\n";
     nanc.setAttribute('download', "calcjs-draft02.html");
     nanc.setAttribute('href', "data:text/html;charset=utf-8," + window.encodeURIComponent(chtml));
@@ -603,7 +603,7 @@ let q2Bcopy, q2Bhtml,
   xsetLoad = (evt = { target: "" }) => {
     let optg;
     helpClr();
-    if (!evt.target.id && /^https?:\/\/.+$/.test(dload)) {
+    if (!xsetlist || !evt.target.id && /^https?:\/\/.+$/.test(dload)) {
       return initLoad();
     } else if (evt.target.id === "xsetlist" && !xsetlist.value) {
       xsetlist.value = xsetinp.value = dentr.value = "";
@@ -629,17 +629,19 @@ let q2Bcopy, q2Bhtml,
       .then(xprsEval)
       .catch(reShow) );
   },
-  xlstGen = seln => !window.localforage
-  || localforage.keys().then(lfks => {
-    xsetlist.innerHTML = "\n      <option></option>"
-    + [["USERdata", lfks]].concat(Object.entries(xstor)).map( (oe, i) => i && !oe[1] ? ""
-      : "\n      <optgroup label=\"" + oe[0] + "/\">"
-        + (!i ? oe[1] : Object.keys(oe[1]).filter(e => e !== "_module"))
-          .map(e => "\n        <option>" + e + "</option>").join("")
-        + "\n      </optgroup>" ).join("") + "\n    ";
-    (xsetlist.value = seln || "") && xsetlist.value
-    && (v0set || !dload ? xprsEval() : xsetLoad());
-  }).catch(reShow),
+  xlstGen = seln => {
+    let xlRndr = lfks => {
+      xsetlist.innerHTML = "\n      <option></option>" + [["USERdata", lfks]]
+      .concat(Object.entries(xstor)).map( (oe, i) => (i || !lfks) && !oe[1] ? ""
+        : "\n      <optgroup label=\"" + oe[0] + "/\">"
+          + (!i ? oe[1] : Object.keys(oe[1]).filter(e => e !== "_module"))
+            .map(e => "\n        <option>" + e + "</option>").join("")
+          + "\n      </optgroup>" ).join("") + "\n    ";
+      (xsetlist.value = seln || "") && xsetlist.value
+      && (v0set || !dload ? xprsEval() : xsetLoad());
+    };
+    !window.localforage ? xlRndr() : localforage.keys().then(xlRndr).catch(reShow);
+  },
   xsetSave = () => {
     helpClr();
     xsetinp.value = xsetinp.value.trim();
