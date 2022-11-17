@@ -225,6 +225,38 @@ body {
   white-space: nowrap;
 }
 #cgrid.xpndq2B>#symlist { display: none; }
+#cmain .iwarn { color: Orange; }
+#cmain .isucc { color: CornFlowerBlue; }
+#cmain .slist { position: relative; }
+#cmain .slist::after {
+  position: absolute;
+  top: 7px;
+  right: 8px;
+  color: Grey;
+  content: " ";
+  border-top: 8px solid Grey;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  opacity: 0.5;
+  pointer-events: none;
+}
+#cmain .cfield:not(:last-child) { margin-bottom: 8px; } /* 0.5rem */
+#cmain .ccntr:not(:last-of-type) { margin-right: 8px; } /* 0.5rem */
+#cmain :not(.cfield)>:not(.cfield)>.ccntr {
+  display: inline-block;
+  height: 24px; /* 1.5rem */
+  margin-bottom: 8px; /* 0.5rem */
+}
+#cmain .addns>.ccntr { margin-right: 0; }
+#cmain .chelp {
+  font-size: 12px; /* 0.75rem */
+  margin-top: 4px; /* 0.25rem */
+}
+#xctrls #xsetinp { width: 168px; }
+#xctrls #xsetlist {
+  color: transparent;
+  width: 24px;
+}
 @media print {
   body { padding: 0; }
   #cgrid>#quad1A { box-shadow: inset 0 -1px LightGrey; }
@@ -421,6 +453,12 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
   <pre id="quad2A"></pre><pre id="quad2B" contenteditable=true></pre>
   <ul id="symlist" class="is-hidden"></ul>
 </div>
+<div id="xctrls" class="cfield">
+  <span class="addns ccntr"><span class="ccntr">
+    <input type="text" id="xsetinp" placeholder="Load expression set&hellip;" /></span><span class="ccntr slist"><select id="xsetlist" class="anone" title="CalcJS Data Storage">
+    </select></span></span>
+  <div id="xcshelp" class="chelp"></div>
+</div>
 </main>
 <style type="text/css">
 :root {
@@ -537,7 +575,7 @@ let q2Bcopy, q2Bhtml,
     let nanc = document.createElement('a'),
       chtml = '<!DOCTYPE html>\\n<html lang="en">\\n<head>\\n'
       + (document.querySelector('body>#ecorender') || document.documentElement).innerHTML
-        .replace(/\\n+$|^\\n+|^<head>\\n?|^#cmain \\.iwarn[^]+?\\n(?=@media print {\\n)|^<div id="xctrls".*?>[^]+?\\n(?=<\\/main>)|,\\n *xsetLoad = [^]+?(?=;\\nwindow\\.xstor =)|^ *!\\/\\^http.+xlstGen[^]+?;\\n|\\n*<script\\b.*><\\/script>(?=$|<\\/body>)|\\n?<\\/body>$/gim, "")
+        .replace(/\\n+$|^\\n+|^<head>\\n?|\\n *<option><\\/option>\\s*<optgroup[^]*?(?=\\n *<\\/select>)|<span class="ccntr"><button id="xbtnsav">[^]+?(?=\\n *<div id="xcshelp")|,\\n *xsetSave = [^]+?(?=;\\nwindow\\.xstor =)|\\n*<script\\b.*><\\/script>(?=$|<\\/body>)|\\n?<\\/body>$/gim, "")
         .replace(/^(<\\/style>)[^]*?(?=<div .+><\\/div>$)/im, "$1\\n</head>\\n<body>\\n")
         .replace(/^(<xmp id="datxmp".*?>)[^]*?(?=<\\/xmp>)/im, (m, c1) => c1 + "\\n" + dentr.value + "\\n")
         .replace(/^(<pre id="recon">)[^]*?(?=<\\/pre>)/im, "$1")
@@ -545,7 +583,7 @@ let q2Bcopy, q2Bhtml,
           '$1$2$3</pre><pre id="quad2B" contenteditable=true></pre>\\n  <ul id="symlist" class="is-hidden"></ul>' )
         .replace(/^(<\\/style>\\n)<script.*?>[^]*?(?=\\nlet q2Bcopy,)/im, "$1<script type=\\"text/javascript\\">\\n(function () {\\n'use strict';")
         .replace(/^( *cheadg\\.textContent === ").+/m, "$1" + cheadg.textContent + "\\"")
-        .replace(/^xsetinp\\.onblur[^]+?(?=\\n<\\/script>)/im, "})();")
+        .replace(/^xbtnsav\\.onclick[^]+?(?=\\n<\\/script>)/im, "})();")
       + "\\n</" + "body>\\n</" + "html>\\n";
     nanc.setAttribute('download', "calcjs-draft02.html");
     nanc.setAttribute('href', "data:text/html;charset=utf-8," + window.encodeURIComponent(chtml));
@@ -702,7 +740,49 @@ let q2Bcopy, q2Bhtml,
         ? re.json() : re.text() )
       .then( val => dentr.value = val == null ? "" : val.content
         || (typeof val !== 'object' ? "" + val : "// " + JSON.stringify(val)) )
-      .then(xprsEval).catch(reShow);
+      .then(xprsEval).catch(reShow),
+  xsetLoad = (evt = { target: "" }) => {
+    let optg;
+    helpClr();
+    if (!xsetlist || !evt.target.id && /^https?:\\/\\/.+$/.test(dload)) {
+      return initLoad();
+    } else if (evt.target.id === "xsetlist" && !xsetlist.value) {
+      xsetlist.value = xsetinp.value = dentr.value = "";
+      return xprsEval();
+    } else if (evt.target.id === "xsetinp" && dentr.value) {
+      return xsetlist.value === xsetinp.value.replace(/.+\\//, "")
+      || xsetlist.value === xsetinp.value
+      || (xsetlist.value = "");
+    }
+    evt.target.id !== "xsetinp"
+    || (xsetlist.value = xsetinp.value) && xsetlist.value
+    || (xsetlist.value = xsetinp.value.replace(/.+\\//, "")) && xsetlist.value
+    || (xsetlist.value = "");
+    optg = xsetlist.value && xsetlist.selectedOptions[0].parentElement.label;
+    xsetinp.value && (!xsetlist.value || xsetlist.value === xsetinp.value.replace(/.+\\//, ""))
+    || (xsetinp.value = (optg === "USERdata/" ? "" : optg) + xsetlist.value);
+    !optg || ( optg !== "USERdata/"
+    ? ( dentr.value = ((xstor[optg.replace(/\\/$/, "")] || "")[xsetlist.value] || "")
+      .replace(/\\n+$|^\\n+/g, "") ) && xprsEval()
+    : !window.localforage || localforage.getItem(xsetinp.value)
+      .then( val => dentr.value = val == null ? "" : val.content
+        || (typeof val !== 'object' ? "" + val : "// " + JSON.stringify(val)) )
+      .then(xprsEval)
+      .catch(reShow) );
+  },
+  xlstGen = seln => {
+    let xlRndr = lfks => {
+      xsetlist.innerHTML = "\\n      <option></option>" + [["USERdata", lfks]]
+      .concat(Object.entries(xstor)).map( (oe, i) => (i || !lfks) && !oe[1] ? ""
+        : "\\n      <optgroup label=\\"" + oe[0] + "/\\">"
+          + (!i ? oe[1] : Object.keys(oe[1]).filter(e => e !== "_module"))
+            .map(e => "\\n        <option>" + e + "</option>").join("")
+          + "\\n      </optgroup>" ).join("") + "\\n    ";
+      (xsetlist.value = seln || "") && xsetlist.value
+      && (v0set || !dload ? xprsEval() : xsetLoad());
+    };
+    !window.localforage ? xlRndr() : localforage.keys().then(xlRndr).catch(reShow);
+  };
 window.xstor = window.xstor || {};
 window.dentr = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
   || { value: datxmp.textContent.replace(/\\n+$|^\\n+/g, "") };
@@ -721,6 +801,14 @@ window.dentr = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-
   : /^!row1$/.test(qi) ? gridAdj(4)
   : /^!col1$/.test(qi) ? gridAdj(5) : 0 );
 Promise.all(jsrcs.map(e => scrInj(e))).catch(reShow).then(() => {
+  !/^http/.test(window.location.protocol) ? xlstGen(dload)
+  : Promise.all( (cmods.some(e => /^\\d+$/.test(e)) ? cmods : [1,2,3,4,5,6,7,8].concat(cmods))
+      .map(e => !/^\\d+$/.test(e) ? e : \`cmod\${e}.js\`)
+      .map(fnm => fnm && import(/\\//.test(fnm) ? fnm : "./" + fnm).catch(reShow)) )
+    .then( ms => ms.forEach( (m, i) => !m || typeof m !== 'object'
+      || (xstor[m._module || "xmod" + (1 + i)] = m) ))
+    .then(() => xlstGen(dload))
+    .catch(reShow);
   xsetinp || initLoad();
 });
 symlist.innerHTML = "\\n    " + Object.getOwnPropertyNames(Math)
@@ -742,6 +830,8 @@ symlist.innerHTML = "\\n    " + Object.getOwnPropertyNames(Math)
 cheadg.onblur = titSave;
 menulist.onchange = menuSel;
 quad2B.onpaste = txtPste;
+xsetinp.onblur = xsetLoad;
+xsetlist.onchange = xsetLoad;
 })();
 </script>
 ` ],
