@@ -327,7 +327,7 @@ const srtools = `//
 
 // find misapplied emphasis/superscript/code markers in cmods
 /*
- srctxta.textContent = JSON.stringify(xstor.util, null, 2);
+ srctxta.textContent = JSON.stringify(xstor.util, 0, 2);
  srctxta.value = srctxta.innerHTML;
  sepainp.value = "/.+/g";
  rtrminp.value = 'm => m.replace(/(?<!\\\\\\\\)\\\\\\\\n/g, "\\\\n").replace(/\\\\*.+?\\\\*|\\\\^.+?\\\\^|\`.+?\`/g, "<mark>$&</mark>")'; //
