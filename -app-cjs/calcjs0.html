@@ -637,7 +637,7 @@ let q2Bcopy, q2Bhtml,
             .map(e => "\n        <option>" + e + "</option>").join("")
           + "\n      </optgroup>" ).join("") + "\n    ";
       !((xsetlist.value = seln || "") && xsetlist.value)
-      ? ecoscrs && initLoad() : (v0set || !dload ? xprsEval() : xsetLoad());
+      ? ecoscrs && initLoad() : v0set || !dload ? xprsEval() : xsetLoad();
     };
     !window.localforage ? xlRndr() : localforage.keys().then(xlRndr).catch(reShow);
   },
