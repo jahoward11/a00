@@ -2544,7 +2544,7 @@ pdbInp() {
   }
 },
 navTog() { // also triggered by attSel, tabs0Tog, formFoc
-  document.querySelector('body>#navscrmask').classList.toggle("is-hidden");
+  document.querySelector('body>#nav0mask').classList.toggle("is-hidden");
   document.querySelectorAll('#econav0 .navbar-burger, #econav0>#econavbar')
   .forEach(el => el.classList.toggle("is-active"));
 },
@@ -3595,6 +3595,8 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-memos
   : /^qcon|^q?msg/i.test(key) && fbx && fbx !== 1 ? msgHandl(fbx)
   : /^attlist/i.test(key) ? attListGen()
   : /^pfslist/i.test(key) ? pfsListGen()
+  : /^a00p/i.test(key) ? a00path
+  : /^a00o/i.test(key) ? a00orig
   : /^(?:tm0|)urole?/i.test(key) ? tm0urole
   : /^dbpch/i.test(key) ? dbpch && dbpch[ptyTest()]
     || rsltFbk(Object.assign(Object.assign({}, dbpch), { taskqueue: undefined }))

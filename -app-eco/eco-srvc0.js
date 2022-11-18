@@ -81,7 +81,7 @@ EC0.JSCON = [
  I1 = ecoqjs.jvarXtract; "" // generate array of JS variable names
  I2 = ecoqjs.jcmtXtract; "" // list JS function names & comments
  I3 = s => s.replace(/(?:[^]*?\\n|^)(function rdataFetch.+(?:\\n.+?)+?(?:;?\\s*};?|;)(?=\\n[\\n\\S]|$))[^]*|[^]*/, "$1"); ""`,
-  `s3 = ecoscripts.innerHTML; ""; // I1(s3)`,
+  `s4 = ecoscripts.innerHTML; ""; // I1(s4)`,
   `Q1 = (k = "f.c") => Promise.resolve(EC2.objQA(k)); ""; // Q1().then(I2)`,
   `fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()) //.then(I3)`,
   `// Console table: ASCII (Latin, Basic) & 8-bit-character (Latin-1 Supp) reference
@@ -200,6 +200,8 @@ EC0.INSTR = [
 + ' $econet       | retrieved ECONET project previews\n'
 + ' $dbpch        | PouchDB object of currently open DB\n'
 + ' $urole        | user’s team role in currently open DB\n'
++ ' $a00orig      | currently used URL origin of app resources\n'
++ ' $a00path      | currently used URL path to app resources\n'
 + ' $(global-var) | system/user-created global variable (primitive/JS-object/method)\n\n'
 + '__Notes__\n'
 + '- Append `.`-idx/key to access specific element (by index) or property (by key) within object.\n'

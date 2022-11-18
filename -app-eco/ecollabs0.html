@@ -2022,7 +2022,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 /* .is-hidden { display: none; } */
 .is-absolute { position: absolute; }
 .is-fixed { position: fixed; }
-#navscrmask, #ecoprj0, #ecoesp0 {
+#nav0mask, #ecoprj0, #ecoesp0 {
 //position: absolute;
   top: 0;
   left: 0;
@@ -2034,7 +2034,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
   left: 0;
   width: 100%;
 }
-#navscrmask {
+#nav0mask {
 //position: fixed;
   height: 100vh;
   z-index: 19;
@@ -2292,7 +2292,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
   #econav0 #ebran2 { display: none; }
 }
 @media screen and (min-width: 685px), print {
-  #navscrmask { display: none; }
+  #nav0mask { display: none; }
   #econav0 .navbar-dropdown>.navbar-item:nth-of-type(2) { min-width: 480px; }
   #ecoesp0 #prjdisc>.field:first-child>.panel.hasposts { float: right; } /* is-pulled-right */
   #ecoesp0 #prjdisc>.media.hasposts:first-of-type { min-height: 144px; }
@@ -2310,7 +2310,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 </style>
 </head>
 <body class="" has-navbar-fixed-top>
-<div id="navscrmask" onclick="EC1.navTog()"></div>
+<div id="nav0mask" onclick="EC1.navTog()"></div>
 
 <div id="ecoprj0" class="hero is-light is-bold is-hidden">
 <div class="hero-body">
@@ -4292,7 +4292,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
     </div>
   </div>
 
-  <datalist id="eco0tocfmts">
+  <datalist id="ec0tocfmts">
     <option value=" ">(no TOC, no paragraph count)</option>
     <option value="pre">(revert to preset TOC format)</option>
     <option value="auto">(TOC auto formatted)</option>
@@ -4540,8 +4540,8 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
     <div class="panel-block">
       <label class="has-text-grey-light">From:</label>
       <span id="dcinpc" class="control">
-        <input type="text" class="input" onfocus="EC1.formFoc(0)" onblur="EC1.formBlr()" onchange="EC2.discTog(event)" list="eco0dcntcs" value="{{tm0disc}}" />
-        <datalist id="eco0dcntcs">
+        <input type="text" class="input" onfocus="EC1.formFoc(0)" onblur="EC1.formBlr()" onchange="EC2.discTog(event)" list="ec0dcntcs" value="{{tm0disc}}" />
+        <datalist id="ec0dcntcs">
           {{#each dcntcs}}
           <option value="{{this}}">{{#if @last}}(all names){{/if}}</option>
           {{/each}}
@@ -4612,7 +4612,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
       </span>
     </div>
     <div id="discin2c" class="field control is-hidden">
-      <input type="text" id="discinp2" class="input" list="eco0tocfmts" placeholder="TOC format" onfocus="EC1.formFoc(0)" onblur="EC1.formBlr()" {{#if disbl}}disabled{{/if}} />
+      <input type="text" id="discinp2" class="input" list="ec0tocfmts" placeholder="TOC format" onfocus="EC1.formFoc(0)" onblur="EC1.formBlr()" {{#if disbl}}disabled{{/if}} />
     </div>
     <div class="field control">
       <textarea id="disctxta" class="textarea" placeholder="Message" onfocus="EC1.formFoc(0)" onblur="EC1.formBlr()" {{#if disbl}}disabled{{/if}}></textarea>
@@ -4781,8 +4781,8 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
     <button class="button is-static has-text-info taboninp">LINK TO</button>
   </span>
   <span class="control is-expanded">
-    <input type="text" class="input is-fullwidth" onfocus="EC1.formFoc('#dftbtnc0')" onblur="EC1.jdeDftUpd('linkref', 2, 1)" placeholder="(web doc, publmgr file)" list="eco0plinks" value="{{linkref}}" />
-    <datalist id="eco0plinks">
+    <input type="text" class="input is-fullwidth" onfocus="EC1.formFoc('#dftbtnc0')" onblur="EC1.jdeDftUpd('linkref', 2, 1)" placeholder="(web doc, publmgr file)" list="ec0plinks" value="{{linkref}}" />
+    <datalist id="ec0plinks">
       {{#each ../plinks}}<option value="{{this}}" />{{/each}}
     </datalist>
   </span>
@@ -4797,7 +4797,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
     <button class="button is-static has-text-info taboninp">FROM</button>
   </span>
   <span class="control is-expanded">
-    <input type="text" class="input is-fullwidth" onfocus="EC1.formFoc('#dftbtnc1')" onblur="EC1.jdeDftUpd('from', 3, 1)" list="eco0pcntcs" value="{{from}}" />
+    <input type="text" class="input is-fullwidth" onfocus="EC1.formFoc('#dftbtnc1')" onblur="EC1.jdeDftUpd('from', 3, 1)" list="ec0pcntcs" value="{{from}}" />
   </span>
   <span id="dftbtnc1" class="dftbtnc posl2 is-hidden">
     <a class="button is-white has-text-link" onclick="EC1.swapExe()">
@@ -4810,7 +4810,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
     <button class="button is-static has-text-info taboninp">TO</button>
   </span>
   <span class="control is-expanded">
-    <input type="text" class="input is-fullwidth" onfocus="EC1.formFoc('#dftbtnc2')" onblur="EC1.jdeDftUpd('to', 4, 1)" list="eco0pcntcs" value="{{to}}" />
+    <input type="text" class="input is-fullwidth" onfocus="EC1.formFoc('#dftbtnc2')" onblur="EC1.jdeDftUpd('to', 4, 1)" list="ec0pcntcs" value="{{to}}" />
   </span>
   <span id="dftbtnc2" class="dftbtnc posl2 is-hidden">
     <a class="button is-white has-text-link" onclick="EC1.swapExe()">
@@ -4842,7 +4842,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 <div class="field">
   <textarea class="textarea" rows="18" placeholder="Static comment/communication." onfocus="EC1.formFoc('#dftbtnc4')" onblur="EC1.jdeDftUpd('body', 7)">{{body}}</textarea>
 </div>
-<datalist id="eco0pcntcs">
+<datalist id="ec0pcntcs">
   {{#each ../pcntcs}}
   <option value="{{this}}">{{#if @last}}(all names){{/if}}</option>
   {{/each}}
@@ -4854,8 +4854,8 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
     <button class="button is-static has-text-info taboninp">LINK TO</button>
   </span>
   <span class="control is-expanded">
-    <input type="text" class="input is-fullwidth" onfocus="EC1.formFoc('#dftbtnc0')" onblur="EC1.jdeDftUpd('linkref', 2, 1)" placeholder="(web doc, publmgr file)" list="eco0plinks" value="{{linkref}}" />
-    <datalist id="eco0plinks">
+    <input type="text" class="input is-fullwidth" onfocus="EC1.formFoc('#dftbtnc0')" onblur="EC1.jdeDftUpd('linkref', 2, 1)" placeholder="(web doc, publmgr file)" list="ec0plinks" value="{{linkref}}" />
+    <datalist id="ec0plinks">
       {{#each ../plinks}}<option value="{{this}}" />{{/each}}
     </datalist>
   </span>
@@ -4883,7 +4883,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
     <button class="button is-static has-text-info taboninp">TOC FMT</button>
   </span>
   <span class="control is-expanded">
-    <input type="text" class="input is-fullwidth" onfocus="EC1.formFoc('#dftbtnc2')" onblur="EC1.jdeDftUpd('tocfmt', 4, 1)" list="eco0tocfmts" value="{{tocfmt}}" />
+    <input type="text" class="input is-fullwidth" onfocus="EC1.formFoc('#dftbtnc2')" onblur="EC1.jdeDftUpd('tocfmt', 4, 1)" list="ec0tocfmts" value="{{tocfmt}}" />
   </span>
   <span id="dftbtnc2" class="dftbtnc posl2 is-hidden">
     <a class="button is-white has-text-link" onclick="EC1.swapExe()">
@@ -4963,7 +4963,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
     <button class="button is-static has-text-info taboninp">PEOPLE</button>
   </span>
   <span class="control is-expanded">
-    <input type="text" class="input is-fullwidth" onfocus="EC1.formFoc('#dftbtnc4')" onblur="EC1.jdeDftUpd('people', 6, 1)" list="eco0pcntcs" value="{{people}}" />
+    <input type="text" class="input is-fullwidth" onfocus="EC1.formFoc('#dftbtnc4')" onblur="EC1.jdeDftUpd('people', 6, 1)" list="ec0pcntcs" value="{{people}}" />
   </span>
   <span id="dftbtnc4" class="dftbtnc posl2 is-hidden">
     <a class="button is-white has-text-link" onclick="EC1.swapExe()">
@@ -4982,7 +4982,7 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
 <div class="field">
   <textarea class="textarea" rows="18" onfocus="EC1.formFoc('#dftbtnc5')" onblur="EC1.jdeDftUpd('description', 8)">{{description}}</textarea>
 </div>
-<datalist id="eco0pcntcs">
+<datalist id="ec0pcntcs">
   {{#each ../pcntcs}}
   <option value="{{this}}">{{#if @last}}(all names){{/if}}</option>
   {{/each}}
@@ -5338,13 +5338,13 @@ const hostgh = /\.github\.io$/.test(window.location.host),
   espBndl = () => {
     document.documentElement.classList.add("has-background-grey-lighter");
     document.querySelector('body>#ecoprj0').classList.remove("is-hidden");
-    document.querySelector('body>#navscrmask').classList.add("is-fixed");
+    document.querySelector('body>#nav0mask').classList.add("is-fixed");
     document.querySelectorAll('body>#econav0, body>#ecorender')
     .forEach(e => e.classList.add("is-hidden"));
     document.querySelectorAll('body>#ecoprj0, body>#ecoguides, body>#ecoesp0')
     .forEach(e => e.classList.add("is-absolute"));
     document.querySelector('body>#econav0').classList.add("hgtnav0");
-    document.querySelectorAll('body>#navscrmask, #econav0 #qcni2')
+    document.querySelectorAll('body>#nav0mask, #econav0 #qcni2')
     .forEach(e => e.classList.add("is-hidden"));
     document.querySelectorAll('#econav0 .navbar-burger, #econav0>#econavbar')
     .forEach(e => e.classList.remove("is-active"));
