@@ -745,7 +745,7 @@ reShow(dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(
 */
 
 /*
-srctxta.value || import("./spark.js").then(m => srctxta.value = m.dune.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(reShow); //
+srctxta.value || import("../-app-cjs/spark.js").then(m => srctxta.value = m.dune.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(reShow); //
 sepainp.value = "/^.*?(\\\\bdune\\\\b).*\\\\n*|^.*\\\\n*/gim"; //
 rtrminp.value = "(m, c1, i) => { i || (window.it0 = 0); return !c1 ? \\"\\" : \\" \\" + ++it0 + \\". \\" + m; }";
 */
@@ -1167,8 +1167,8 @@ formGen = () => dform.innerHTML = Object.entries(Object.assign({ _id: "", _rev: 
       Un-comment the fifth of the following five lines of code.
 */
 
-// import("./fakes.js").then(m => reShow(m.default)).catch(reShow)
-// import("./fakes.js").then(m => m.default.forEach(c => dbobj.put(c).then(reShow).catch(reShow)))
+// import("../-app-cjs/fakes.js").then(m => reShow(m.default)).catch(reShow)
+// import("../-app-cjs/fakes.js").then(m => m.default.forEach(c => dbobj.put(c).then(reShow).catch(reShow)))
 // dbobj.get("").then(reShow)
 // dbobj.get("").then(d => dbobj.put({ _id: d._id, _rev: d._rev, _deleted: true })).then(reShow).catch(reShow)
 // dbobj.allDocs().then(reShow)
