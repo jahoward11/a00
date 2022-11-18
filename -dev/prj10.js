@@ -12,7 +12,7 @@ _ks.join()
 
 const nformat = `//
 fmt = n => (1000 * n).toFixed(2);
-fmt(Math.random())
+$r = fmt(Math.random())
 //`;
 
 const uiwidth = `//
@@ -162,6 +162,7 @@ const dscripts = `//
 
 reShow(Array.from(document.querySelectorAll('script')).map(e => e.src))
 // reShow(document.querySelector('script:last-of-type').outerHTML)
+// reShow(document.querySelector('body>script:last-of-type').outerHTML)
 
 // reShow(Array.from(document.styleSheets).map(ss => ss.href))
 // reShow(Array.from(document.styleSheets[0].rules).map(ru => ru.cssText))
