@@ -130,7 +130,7 @@ Array.from(Array(5).keys())
 //__For CalcJS in Ecollabs__
 /*
  w = window;
- !!w.s3 || (w.s3 = ecoscripts.innerHTML); "" // ecoqjs.jvarXtract(s3)
+ !!w.s4 || (w.s4 = ecoscripts.innerHTML); "" // ecoqjs.jvarXtract(s4)
  !!w.Q1 || (w.Q1 = (k = "f.c") => Promise.resolve(EC2.objQA(k))); "" // Q1().then(ecoqjs.jcmtXtract)
  !!w.P3 || (w.P3 = (x = 1) => navigator.clipboard.readText().then(s => window["s" + x] = s));
 */
