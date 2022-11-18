@@ -621,9 +621,13 @@ let q2Bcopy, q2Bhtml,
     seln.getRangeAt(0).insertNode(document.createTextNode(pste));
     evt.preventDefault();
   },
-  xprsEval = () => {
+  xprsEval = val => {
     v0set ? (recon.textContent = "") : ++v0set && !val0s.length || ((xsetlist || {}).value = "")
       || val0s.forEach(v => v && (dentr.value = (dentr.value || "").replace(v[0], v[1])));
+    val == null || ( dentr.value
+      = typeof val === 'object' ? val.content || "/*\\n" + JSON.stringify(val, 0, 2) + "\\n*/"
+      : !/^ *{ *".+} *$|^ *\\[.+\\] *$/.test(val) ? "" + val
+      : (val = JSON.parse(val) || "").content || "/*\\n" + JSON.stringify(val, 0, 2) + "\\n*/" );
     let $ = {}, _ = {}, _ks = [], rslt,
       xprsns = (dentr.value || "")
         .replace(/^\\/\\*(?:\\s*?\\n|)([^]*?)\\n?[\\t ]*\\*\\/$/gm, (m, c1) => c1.replace(/^[\\t ]*/gm, "$&//"))
@@ -738,8 +742,6 @@ let q2Bcopy, q2Bhtml,
     : window.fetch(dload, { credentials: 'omit' })
       .then( re => /\\.json$|^https?:\\/\\/\\w[\\w.:-]*\\/\\w[\\w-]*\\/\\w[\\w!.*+~-]*$/.test(dload)
         ? re.json() : re.text() )
-      .then( val => dentr.value = val == null ? "" : val.content
-        || (typeof val !== 'object' ? "" + val : "// " + JSON.stringify(val)) )
       .then(xprsEval).catch(reShow),
   xsetLoad = (evt = { target: "" }) => {
     let optg;
@@ -765,10 +767,7 @@ let q2Bcopy, q2Bhtml,
     ? ( dentr.value = ((xstor[optg.replace(/\\/$/, "")] || "")[xsetlist.value] || "")
       .replace(/\\n+$|^\\n+/g, "") ) && xprsEval()
     : !window.localforage || localforage.getItem(xsetinp.value)
-      .then( val => dentr.value = val == null ? "" : !/^{".+}$/.test(val) ? "" + val
-        : (JSON.parse(val) || "").content || " // " + val )
-      .then(xprsEval)
-      .catch(reShow) );
+      .then(xprsEval).catch(reShow) );
   },
   xlstGen = seln => {
     let xlRndr = lfks => {
