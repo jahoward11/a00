@@ -261,7 +261,7 @@ uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; 
 
 // /spark/.test(window.location.search) || (window.location.search = "cmods=spark.js,../-dev/prj10.js&dload=t3search");
 // srctxta.value = xstor.sparknotes.mythology.replace(/\\n\\*\\/$|^\\/\\*\\n/g, ""); //
-// srctxta.value || import("./spark.js").then(re => srctxta.value = re.mythology.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(reShow); //
+// srctxta.value || import("../-app-cjs/spark.js").then(re => srctxta.value = re.mythology.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(reShow); //
 // sepainp.value = "/^.*?(\\\\bmyth).*\\\\n*|^.*\\\\n*/gim"; //
 // rtrminp.value = "(m, c1, i) => { i || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" <strong>\\" + ++it1 + \\".</strong> <em>[line \\" + it0 + \\"]</em>\\\\n\\" + m.replace(/\\\\bmyth/gi, \\"<mark>$&</mark>\\"); }";
 
@@ -300,7 +300,7 @@ reShow(dwraps[0] + dPreps(dbwrap.outerHTML) + dwraps[1] + scrGen(xstor.JScode.tu
 // full source code (e.g., for building a standalone web app).
 // *Alert:* This app's code is lengthy (about 2300 lines).
 
-// import("./nmgr.js").then(re => re.dwraps[0] + re.nmpage + re.dwraps[1] + re.nmscr + re.dwraps[2]).then(reShow).catch(reShow)
+// import("../-app-cjs/nmgr.js").then(re => re.dwraps[0] + re.nmpage + re.dwraps[1] + re.nmscr + re.dwraps[2]).then(reShow).catch(reShow)
 //`;
 
 const srtools = `//
