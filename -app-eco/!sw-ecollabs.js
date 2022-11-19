@@ -29,7 +29,7 @@ const cacheName = "ecollabs0.15",
   rcvd1 = {},
   tstamp = Date.now(),
   rexkprs = /\/a00\/[\w/!.*+~-]+\??$|\.cloudant[\w.]+\/(?!a00\/)[\w!.*+~-]+\/-res-\w+\/[\w!.*+~-]+$|-res-\w+\/u\d\d[\w!.*+~-]+$|\/eco\/project-list.json$|\/oauth\/v4\/.+\/(?:openid-configuration|publickeys)$|\/\/fonts\.gstatic\.com\/|\.gravatar\.com\/avatar\//,
-  rexupds = /\/a00\/(?:(?:-app-eco\/|-dev.*?\/)[\w!.*+~-]+\??|-res-css\/(?:reset|style)[\w!.*+~-]+|-res-js\/ebook-annos-fns\.js)$|\.cloudant[\w.]+\/(?!a00\/)[\w!.*+~-]+\/-res-\w+\/[\w!.*+~-]+$|-res-\w+\/u\d\d[\w!.*+~-]+$|\/eco\/project-list.json$/;
+  rexupds = /\/a00\/(?:(?:-app.*?\/|-dev.*?\/)[\w!.*+~-]+\??|-res-css\/(?:reset|style)[\w!.*+~-]+|-res-js\/ebook-annos-fns\.js)$|\.cloudant[\w.]+\/(?!a00\/)[\w!.*+~-]+\/-res-\w+\/[\w!.*+~-]+$|-res-\w+\/u\d\d[\w!.*+~-]+$|\/eco\/project-list.json$/;
 
 self.addEventListener('install', e => {
   console.log("[Service Worker] Installing new cache: " + cacheName);
