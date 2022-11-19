@@ -19,7 +19,7 @@ const cacheName = "calcjs0.15",
   rcvd1 = {},
   tstamp = Date.now(),
   rexkprs = /\/a00\/(?:-app-cjs\/calcjs|[\w/!.*+~-]+\??$)/,
-  rexupds = /\/a00\/(?:-app-cjs\/|-dev.*?\/|[\w!.*+~-]+\??$)/;
+  rexupds = /\/a00\/(?:-app.*?\/|-dev.*?\/|[\w!.*+~-]+\??$)/;
 
 self.addEventListener('install', e => {
   console.log("[Service Worker] Installing new cache: " + cacheName);
