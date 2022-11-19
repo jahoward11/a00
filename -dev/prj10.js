@@ -169,7 +169,7 @@ reShow(Array.from(document.querySelectorAll('script')).map(e => e.src))
 //`;
 
 const scrload = `//
-// window.jStat || scrInj("../-res-js/jstat-tdist.js").catch(reShow).then(xprsEval)
+// window.jStat || scrInj("../-res-js/jstat-tdist.js").then(reShow).catch(reShow)
 // window.SourceDiff || scrInj("../-res-js/srcdiff.js").then(reShow).catch(reShow)
 // !!window.markdownit || Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).then(reShow).catch(reShow)
 // !!window.hljs || scrInj("../-res-js/highlight.min.js").then(reShow).catch(reShow)
