@@ -390,7 +390,7 @@ __*Hypothesis Testing &amp; Statistical Significance*__
 */
 
 //- - - - - 
-try { jStat } catch { scrInj("../-res-js/jstat-tdist.js").then(xprsEval).catch(reShow) }
+try { jStat } catch { scrInj("../-res-js/jstat-tdist.js").catch(reShow).then(xprsEval) }
 //`
 
 export {
