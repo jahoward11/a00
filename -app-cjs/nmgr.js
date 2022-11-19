@@ -1105,7 +1105,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       ? r : JSON.stringify(r, 0, 2) ) + "\\n\\n" },
   fncTry = (fnc, a, e) => { try { return fnc(a) }
     catch (err) { return e > 1 ? a : e ? err : undefined } },
-  htmTxt = str => str.replace(/&(?=#?\\w+;)/g, "&amp;").replace(/<(?=!--|[!/]?[a-z])/gi, "&lt;"),
+  htmTxt = str => str.replace(/&(?=#?\\w+;)/g, "&amp;").replace(/<(?=!|\\/?[a-z])/gi, "&lt;"),
   valStr = (v, sp) => v == null ? ""
     : v instanceof Error && v.constructor && !v.reason ? v
     : typeof v === 'object' ? JSON.stringify(v, 0, sp)
