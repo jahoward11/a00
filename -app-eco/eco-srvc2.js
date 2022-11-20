@@ -78,7 +78,7 @@ window.ecoqjs = { // 21
     // prep HTML text for browser display as unrendered source code
     "" + str
     .replace(/&(?=#?\w+;)/g, "&amp;")
-    .replace( /<(!--)|<([!/]?[a-z].*?)(>|(?=<|$))|(--)>/gim,
+    .replace( /<(!)|<(\/?[a-z].*?)(>|(?=<|$))|(--)>/gim,
       (m, c1, c2, c3, c4) => (c4 ? "" : "&lt;") + (c1 || c2 || c4) + (c1 || !c3 ? "" : "&gt;") ),
   srcvPrep: (str = "", lang) => {
     // apply HighlightJS syntax tags to HTML/CSS/JS/JSON/MD text
@@ -133,11 +133,11 @@ window.ecoqjs = { // 21
   },
   jvarXtract: str =>
     // generate array of variable names extracted from JavaScript text
-    Array.from( new Set ( str
-    .replace(/ *\/\/.*|^(window\.\w+ *= *[\[{])[^]+?(?=\n[\]}];$)/gm, "$1")
-    .replace( /^(?:(?:const|let|var) +|  ?(?!const |let |var ))\w[ ,\w]*(?:=.+|);?\n|^(\w[.\w]*(?= *=)[ =])[^]+?(?:;?\s*\n[\]}];?\n|;\n(?=\n|[^\s\]}]))|^function +(\w+.)[^]+?\n[\]}];?\n(?=[\n\S])|(.*\n|.+)/gim,
-      (m, c1, c2, c3) => c3 ? "" : c1 || c2 || m.replace(/(?:[^=a-z]|= *(?=\d+[,;]|""|''|\[\]|\{\})|[a-z](?!\w* *[.,;=]))*(?:\n|=.+|(\w+.))/gi, "$1") )
-    .trim().split(/[^.\w]/) )),
+    Array.from( new Set( str
+      .replace(/ *\/\/.*|^(window\.\w+ *= *[\[{])[^]+?(?=\n[\]}];$)/gm, "$1")
+      .replace( /^(?:(?:const|let|var) +|  ?(?!const |let |var ))\w[ ,\w]*(?:=.+|);?\n|^(\w[.\w]*(?= *=)[ =])[^]+?(?:;?\s*\n[\]}];?\n|;\n(?=\n|[^\s\]}]))|^function +(\w+.)[^]+?\n[\]}];?\n(?=[\n\S])|(.*\n|.+)/gim,
+        (m, c1, c2, c3) => c3 ? "" : c1 || c2 || m.replace(/(?:[^=a-z]|= *(?=\d+[,;]|""|''|\[\]|\{\})|[a-z](?!\w* *[.,;=]))*(?:\n|=.+|(\w+.))/gi, "$1") )
+      .trim().split(/[^.\w]/) )),
   jcmtXtract: str =>
     // extract list of function names & comments in JavaScript text
     str
