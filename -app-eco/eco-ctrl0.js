@@ -3588,7 +3588,7 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-memos
     ptyTest = d => pty = key.replace(!d ? /^\w+\.(.+)$|.*/ : /^\w+\.(\d+)$|.*/, "$1"),
     gloObj = (/^import\(/.test(key) || window[key.replace(/^new +|[.([].+/g, "")])
       && ( !(pty = /^(\w+)(\.keys|\.ks?|)$/.exec(key)) ? ecoqjs.fncTry(window.eval, key)
-      : pty[2] ? ecoqjs.fncTry(window.eval, key) || ecoqjs.fncTry(Object.keys, window.eval(pty[1]))
+      : pty[2] ? ecoqjs.fncTry(window.eval, key) || Object.keys(ecoqjs.fncTry(window.eval, pty[1]) || 0)
       : !/^Handlebars$/.test(key) ? window[key]
       : Object.assign(Object.assign({}, Handlebars), { Parser: {}, default: {} }) );
   key = key == null ? "" : "" + key;
