@@ -1129,6 +1129,7 @@ function txdPrep(filepath) {
       ATTKEY: !fpathes[9] && fpathes[10] || undefined,
       VIEW:   fpathes[9] && fpathes[10] || undefined
     };
+  typeof txdata.dPrc !== 'string' || (txdata.dPrc = ecoqjs.fncTry(window.eval, txdata.dPrc)));
   return [txdata, valcon];
 }
 
@@ -2110,7 +2111,7 @@ function couchQry(txdata, destindr, cbfnc) {
         dbpc2.info().then(resp => dataDispl(resp, destindr, cbfnc)).catch(errShow);
       } else if (txdata.FILEID === "_all_docs") {
         dbpc2.allDocs(txdata.OPTS || {})
-        .then(rslt => dataDispl(rslt, destindr, cbfnc))
+        .then(rslt => dataDispl(!txdata.dPrc ? rslt : txdata.dPrc(rslt), destindr, cbfnc))
         .catch(errShow);
       } else if (txdata.FILEID === "_design_docs") {
         dbpc2.allDocs(optsdds)
