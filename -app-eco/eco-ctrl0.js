@@ -1129,7 +1129,7 @@ function txdPrep(filepath) {
       ATTKEY: !fpathes[9] && fpathes[10] || undefined,
       VIEW:   fpathes[9] && fpathes[10] || undefined
     };
-  typeof txdata.dPrc !== 'string' || (txdata.dPrc = ecoqjs.fncTry(window.eval, txdata.dPrc)));
+  typeof txdata.dPrc !== 'string' || (txdata.dPrc = ecoqjs.fncTry(window.eval, txdata.dPrc));
   return [txdata, valcon];
 }
 
