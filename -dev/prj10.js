@@ -248,8 +248,9 @@ const dbapp = `//
  cqry = txd2 => PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.text());
  uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "rswrap"; ndiv.innerHTML = "\\n<hr />\\n" + cnt; cmain.appendChild(ndiv); };
  // rswrap.remove() // Alert: useful only if edit-testing the GUI code above
- !!window.rswrap || cqry(txd1).then(uiDspl).then(() => !!window.rstor || scrInj(0, 0, rswrap.querySelector('script').innerHTML)).catch(reShow);
+ !!window.rswrap || !(window.pdbs || "").includes(txd1.DBNAME) || cqry(txd1).then(uiDspl).then(() => !!window.rstor || scrInj(0, 0, rswrap.querySelector('script').innerHTML)).catch(reShow);
 */
+
 //`;
 
 const t2puzls = `/*
