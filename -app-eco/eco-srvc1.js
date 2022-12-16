@@ -279,7 +279,7 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
 }
 </style>
 <div id="scrnmask" class="is-hidden"></div>
-<main id="cmain">
+<div id="cmain">
 <xmp id="datxmp" class="is-hidden">
 `,
 ` p = 5
@@ -459,7 +459,7 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
     </select></span></span>
   <div id="xcshelp" class="chelp"></div>
 </div>
-</main>
+</div>
 <style type="text/css">
 :root {
   min-width: 375px;
