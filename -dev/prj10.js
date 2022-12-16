@@ -238,6 +238,20 @@ opts = { method: 'POST', headers: hdrs, body: uenc, redirect: 'follow' };
 fetch("https:/" + "/iam.cloud.ibm.com/identity/token", opts).then(re => re.text()).then(reShow).catch(reShow);
 */`;
 
+const dbapp = `//
+ // !!window.PouchDB || scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(() => PouchDB.allDbs().then(re => window.pdbs = re))).then(reShow).catch(reShow)
+ // !!window.markdownit || Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).then(reShow).catch(reShow)
+ // !!window.hljs || scrInj("../-res-js/highlight.min.js").then(reShow).catch(reShow)
+
+/*
+ txd1 = { DBNAME: "howfam02", FILEID: ".ref", ATTKEY: "hjenn_food2022.html", OPTS: {} };
+ cqry = txd2 => PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.text());
+ uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "rswrap"; ndiv.innerHTML = "\\n<hr />\\n" + cnt; cmain.appendChild(ndiv); };
+ // rswrap.remove() // Alert: useful only if edit-testing the GUI code above
+ !!window.rswrap || cqry(txd1).then(uiDspl).then(() => !!window.rstor || scrInj(0, 0, rswrap.querySelector('script').innerHTML)).catch(reShow);
+*/
+//`;
+
 const t2puzls = `/*
 
 t2x = xstor.JScode.tutorial2;
@@ -339,6 +353,7 @@ export {
   _module, varkeys, nformat,
   uiwidth, publdims, jscmds,
   bcaches, dscripts, scrload,
-  jstatqs, itoken, t2puzls,
-  t3search, t4cntcs, srtools
+  jstatqs, itoken, dbapp,
+  t2puzls, t3search, t4cntcs,
+  srtools
 };
