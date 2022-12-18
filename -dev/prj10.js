@@ -239,16 +239,18 @@ fetch("https:/" + "/iam.cloud.ibm.com/identity/token", opts).then(re => re.text(
 */`;
 
 const dbapp = `//
- // !!window.PouchDB || scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(() => PouchDB.allDbs().then(re => window.pdbs = re))).then(reShow).catch(reShow)
- // !!window.markdownit || Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).then(reShow).catch(reShow)
- // !!window.hljs || scrInj("../-res-js/highlight.min.js").then(reShow).catch(reShow)
-
 /*
- txd1 = { DBNAME: "howfam02", FILEID: ".ref", ATTKEY: "hjenn_food2022.html", OPTS: {} };
- cqry = txd2 => PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.text());
+ dbL = () => !window.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => window.pdbs = re);
+ s1L = () => !!window.PouchDB ? _.dbL() : scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(_.dbL));
+ s2L = () => !!window.markdownit || Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js")));
+ // s3L = () => !!window.hljs || scrInj("../-res-js/highlight.min.js");
+
+ tCfg = () => ({ DBNAME: "howfam02", FILEID: ".ref", ATTKEY: "hjenn_food2022.html", OPTS: {} });
+ cQry = txd => !(window.pdbs || []).includes(txd.DBNAME) || PouchDB(txd.DBNAME).getAttachment(txd.FILEID, txd.ATTKEY, txd.OPTS).then(abl => abl.text());
  uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "rswrap"; ndiv.innerHTML = "\\n<hr />\\n" + cnt; cmain.appendChild(ndiv); };
+ s4L = () => !window.rswrap || !!window.rstor || scrInj(0, 0, (rswrap.querySelector('script') || "").innerHTML || "/**/");
  // rswrap.remove() // Alert: useful only if edit-testing the GUI code above
- !!window.rswrap || !(window.pdbs || []).includes(txd1.DBNAME) || cqry(txd1).then(uiDspl).then(() => !!window.rstor || scrInj(0, 0, rswrap.querySelector('script').innerHTML)).catch(reShow);
+ !!window.rswrap || Promise.resolve().then(s1L).then(s2L).then(tCfg).then(cQry).then(uiDspl).then(s4L).catch(reShow);
 */
 
 //`;
