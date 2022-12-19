@@ -1274,7 +1274,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   filesChg = evt => {
     if (vbas === 5) { return; }
     let hlps,
-      fedit = evt && /editbtn|movebtn/.test((evt.target || "").id),
+      fedit = evt && (/editbtn|movebtn/.test((evt.target || "").id) || evt.DBNAME),
       fmove = evt && /movebtn/.test((evt.target || "").id),
       chks = document.querySelectorAll(vbas > 1 ? qslrs[8] : qslrs[9]),
       chkaf2 = vbas === 1 ? Array.from(chks) : !fmove ? Array.from(chks)
