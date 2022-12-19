@@ -1271,21 +1271,21 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   filesChg = evt => {
     if (vbas === 5) { return; }
     let hlps,
-      fedit = evt && /editbtn|movebtn/.test(evt.target.id),
-      fmove = evt && /movebtn/.test(evt.target.id),
+      fedit = evt && /editbtn|movebtn/.test((evt.target || "").id),
+      fmove = evt && /movebtn/.test((evt.target || "").id),
       chks = document.querySelectorAll(vbas > 1 ? qslrs[8] : qslrs[9]),
       chkaf2 = vbas === 1 ? Array.from(chks) : !fmove ? Array.from(chks)
           .filter(inp => !rexsd.test(inp.parentElement.parentElement.children[1].textContent))
         : Array.from(chks).filter( inp => inp.parentElement.parentElement.children[3]
           && !/^$|asset|attach/i ///^(?:anno|contact|memo|post|prjid|publmgr|scrap|srcdoc)$/
           .test(inp.parentElement.parentElement.children[3].textContent) ),
-      txd2 = {
+      txd2 = evt.DBNAME ? evt : {
         DBNAME: txd1.DBNAME,
         FILEID: "_all_docs",
         OPTS:   {
+          include_docs: fedit,
           keys: chkaf2.map( inp => vbas === 1 ? inp.value
-            : inp.parentElement.parentElement.children[2].textContent ),
-          include_docs: fedit
+            : inp.parentElement.parentElement.children[2].textContent )
         }
       },
       row1Tfm = r1 => {
@@ -1363,12 +1363,12 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     !dbq || dbq.allDocs(txd2.OPTS).then(rdataTfm).then(blkDspl).catch(r2Show);
   },
   fileLoad = evt => {
-    let tanc = evt && (evt.target.nodeName !== 'MARK' ? evt.target : evt.target.parentElement),
+    let tanc = evt && ((evt.target || "").nodeName !== 'MARK' ? evt.target : evt.target.parentElement),
       finp = tanc && ( vbas > 1 ? tanc.parentElement.parentElement.querySelector('input:not(.dnone)')
           : tanc.parentElement.parentElement.parentElement.querySelector('span:not(.dnone)>input') )
         || "",
       sdir = tanc && vbas > 1 && tanc.parentElement.previousElementSibling.textContent,
-      txd2 = {
+      txd2 = evt.DBNAME ? evt : {
         DBNAME: txd1.DBNAME,
         FILEID: !tanc ? "" : sdir && rexsd.test(sdir)
           ? sdir.replace(/\\/$/, "") : tanc.textContent || tanc.dataset.fileid,
@@ -1401,7 +1401,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       .forEach(elm => elm.classList.remove("hhodew", "hsuccl", "hwarnl"));
       !tanc || tanc.parentElement.parentElement.parentElement.classList.add("hhodew");
     }
-    vbas === 5 ? tabActv() || !(window.txd2 = txd2)
+    tanc && vbas === 5 ? tabActv() || !(window.txd2 = txd2)
       || PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS).then( doc => nmdata.innerHTML
         = jp1(Object.assign({ _id: "", _rev: "" }, doc))
         + "\\n<p><strong>To retrieve older revision:</strong>"
@@ -1417,7 +1417,8 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     : aurls[txd2.ATTKEY] ? tabActv() || attVw() : txd2.ATTKEY
     ? tabActv() || PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
       .then(attVw).catch(r2Show)
-    : !finp.checked ? tabActv() || PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS)
+    : !evt.DBNAME && !(finp || "").checked
+    ? tabActv() || PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS)
         .then( doc => nmdata.innerHTML = !finp && ( doc.hasOwnProperty("content")
             ? jp1(doc.content) : !Array.isArray(doc.filefrags) ? 0
             : jp1(doc.filefrags.map(ff => ff.contenttxt).filter(e => e).join("\\n\\n")) )
@@ -2288,7 +2289,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     opensel.value = pdbssel.value = nm0sets.dbdflt || "";
     !pdbssel.value || pdbOpen();
   };
-window.nm0 = { aurls, cntcs, txd1, r2Show, fncTry, htmTxt, valStr, mp1, jb1, jp1 };
+window.nm0 = { aurls, cntcs, txd1, r2Show, fncTry, htmTxt, valStr, mp1, jb1, jp1, filesChg, fileLoad };
 pdbssel.onchange = pdbOpen;
 viewsel.onchange = viewChg;
 colssel.onchange = colsTog;
