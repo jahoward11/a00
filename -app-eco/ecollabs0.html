@@ -5358,7 +5358,8 @@ const hostgh = /\.github\.io$/.test(window.location.host),
     !rmtready || nscr.setAttribute('crossorigin', 'use-credentials');
     //nscr.async = false; //respShow(err),
     nscr.onerror = err => rjct("**Alert: Script resource GET/load error occured.");
-    nscr.onload = rslv;
+    nscr.onsuccess = nscr.onload = rslv;
+    nscr.type !== "module" || window.setTimeout(rslv, 500);
     !urlblob || document.querySelector('body>#iniscripts').appendChild(nscr);
   }),
   asstsLoad = pchinjpr => pchinjpr

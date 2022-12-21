@@ -1475,7 +1475,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         || apath1[1] === "a00" && a00path !== localStorage["_ecoa00path"] ? null
       : /^blob:/.test(ua1) ? a1i[a1i.href ? 'href' : 'src'] = ua1
       : (txdata = txdPrep(apath1[0])[0]).ATTKEY && (txdata.dburl = txurlGen(txCrdtlz(txdata)))
-      ? new Promise( (rslv, rjct) => setTimeout( () =>
+      ? new Promise( (rslv, rjct) => window.setTimeout( () =>
           new PouchDB(txdata.dburl, { skip_setup: true })
           .getAttachment(txdata.FILEID, txdata.ATTKEY, txdata.OPTS || {})
           .then(ablSto).then(rslv), 500 ))
@@ -1498,7 +1498,8 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       apath2[3] || (apath2[3] = ua2.replace(/^(?!blob:).*\//, ""));
       return /^blob:/.test(ua2) ? styInj(ua2)
       : (txdata = txdPrep(apath2[0])[0]).ATTKEY && (txdata.dburl = txurlGen(txCrdtlz(txdata)))
-      ? new Promise( (rslv, rjct) => setTimeout( () => new PouchDB(txdata.dburl, { skip_setup: true })
+      ? new Promise( (rslv, rjct) => window.setTimeout( () =>
+          new PouchDB(txdata.dburl, { skip_setup: true })
           .getAttachment(txdata.FILEID, txdata.ATTKEY, txdata.OPTS || {})
           .then(ablob => rslv(styInj(ablSto(ablob))))
           .catch(err => {
