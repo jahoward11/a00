@@ -240,17 +240,21 @@ fetch("https:/" + "/iam.cloud.ibm.com/identity/token", opts).then(re => re.text(
 
 const dbapp = `//
 /*
- dbL = () => !window.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => window.pdbs = re);
- s1L = () => !!window.PouchDB ? _.dbL() : scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(_.dbL));
+ cQry = () => !(window.pdbs || []).includes((window.txd2 || "").DBNAME) && [] || PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.text()).then(cnt => [txd2.wid, cnt]);
+ uiDspl = ([wid, cnt, scr]) => { if (!wid || !cnt) return; let ndiv = document.createElement('div'); ndiv.id = wid; ndiv.innerHTML = "\\n<hr />\\n" + cnt.trim() + "\\n"; cmain.appendChild(ndiv); return scr || window[wid] && window[wid].querySelector('script'); };
+ mjsL = scr => !scr || scrInj(0, scr.type || 'module', "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
+
+ dbA = () => !window.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => window.pdbs = re);
+ s1L = () => !!window.PouchDB ? _.dbA() : scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(_.dbA));
  s2L = () => !!window.markdownit || Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js")));
  // s3L = () => !!window.hljs || scrInj("../-res-js/highlight.min.js");
+ nmImp = () => window.nmwrap && [] || import("../-app-cjs/nmgr.js").then(re => ["nmwrap", re.nmpage, re.nmscr]);
 
- tCfg = () => ({ DBNAME: "howfam02", FILEID: ".ref", ATTKEY: "hjenn_food2022.html", OPTS: {} });
- cQry = txd => !(window.pdbs || []).includes(txd.DBNAME) || PouchDB(txd.DBNAME).getAttachment(txd.FILEID, txd.ATTKEY, txd.OPTS).then(abl => abl.text());
- uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "rswrap"; ndiv.innerHTML = "\\n<hr />\\n" + cnt; cmain.appendChild(ndiv); };
- s4L = () => !window.rswrap || !!window.rstor || scrInj(0, 0, (rswrap.querySelector('script') || "").innerHTML || "/**/");
- // rswrap.remove() // Alert: useful only if edit-testing the GUI code above
- !!window.rswrap || Promise.resolve().then(s1L).then(s2L).then(tCfg).then(cQry).then(uiDspl).then(s4L).catch(reShow);
+ window.txd2 = { DBNAME: "howfam02", FILEID: ".ref", ATTKEY: "hjenn_food2022.html", OPTS: {}, wid: "rswrap" };
+ s4L = scr => !window[txd2.wid] || !!window.rstor || !scr || scrInj(0, scr.type || 0, "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
+ // window[txd2.wid].remove() // Alert: useful only if edit-testing the GUI code above
+ window[txd2.wid] || Promise.resolve().then(s1L).then(s2L).then(nmImp).then(uiDspl).then(mjsL).then(cQry).then(uiDspl).then(s4L).catch(reShow);
+ // nmwrap.classList.toggle("dnone");
 */
 
 //`;
