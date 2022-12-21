@@ -21,7 +21,7 @@ body {
   padding: 64px 8px;
   overflow-wrap: break-word;
 }
-.is-hidden, .dnone { display: none; }
+.dnone { display: none; }
 #scrnmask {
   position: fixed;
   top: 0;
@@ -132,7 +132,7 @@ body {
   width: 24px;
   height: 20px;
 }
-#cmain>#cgrid:not(.is-hidden) {
+#cmain>#cgrid:not(.dnone) {
   position: relative;
   display: grid;
   grid-template-columns: 168px 1fr;
@@ -257,8 +257,8 @@ body {
   white-space: nowrap;
 }
 #cgrid.xpndq2B>#symlist { display: none; }
-#cmain>#xctrls #xsetinp { width: 168px; }
-#cmain>#xctrls #xsetlist {
+#xctrls #xsetinp { width: 168px; }
+#xctrls #xsetlist {
   color: transparent;
   width: 24px;
 }
@@ -285,9 +285,9 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
 </style>
 </head>
 <body>
-<div id="scrnmask" class="is-hidden"></div>
+<div id="scrnmask" class="dnone"></div>
 <div id="cmain">
-<xmp id="datxmp" class="is-hidden">
+<xmp id="datxmp" class="dnone">
 
 </xmp>
 <div id="cheadg">JavaScript Calculator</div>
@@ -306,7 +306,7 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
 <div id="cgrid" class="cfield">
   <pre id="quad1A"></pre><pre id="quad1B"></pre>
   <pre id="quad2A"></pre><pre id="quad2B" contenteditable=true></pre>
-  <ul id="symlist" class="is-hidden"></ul>
+  <ul id="symlist" class="dnone"></ul>
 </div>
 <div id="xctrls" class="cfield">
   <span class="addns ccntr"><span class="ccntr">
@@ -390,17 +390,17 @@ let q2Bcopy, q2Bhtml,
   },
   gridAdj = idx => {
     if (idx === 4) {
-      [quad1A, quad1B].forEach(e => e.classList.toggle("is-hidden"));
+      [quad1A, quad1B].forEach(e => e.classList.toggle("dnone"));
       cgrid.classList.toggle("clpsrow1");
     } else if (idx === 5) {
-      quad2A.classList.toggle("is-hidden");
+      quad2A.classList.toggle("dnone");
       cgrid.classList.toggle("xpndq2B");
     }
   },
   viewSet = () => {
     let qrys = [];
     /maximum-/.test(metavp.content) || qrys.push("!zlock");
-    !cgrid.classList.contains("is-hidden") || qrys.push("!displ");
+    !cgrid.classList.contains("dnone") || qrys.push("!displ");
     !cgrid.classList.contains("clpsrow1") || qrys.push("!row1");
     !cgrid.classList.contains("xpndq2B") || qrys.push("!col1");
     cheadg.textContent === "JavaScript Calculator"
@@ -443,7 +443,7 @@ let q2Bcopy, q2Bhtml,
         .replace(/^(<xmp id="datxmp".*?>)[^]*?(?=<\/xmp>)/im, (m, c1) => c1 + "\n" + dentr.value + "\n")
         .replace(/^(<pre id="recon">)[^]*?(?=<\/pre>)/im, "$1")
         .replace( /^(<div id="cgrid".*?>\n *<pre id="quad1A".*?>)[^]*?(<\/pre><pre id="quad1B".*?>)[^]*?(<\/pre>\n *<pre id="quad2A".*?>)[^]+?(?=\n<\/div>)/im,
-          '$1$2$3</pre><pre id="quad2B" contenteditable=true></pre>\n  <ul id="symlist" class="is-hidden"></ul>' )
+          '$1$2$3</pre><pre id="quad2B" contenteditable=true></pre>\n  <ul id="symlist" class="dnone"></ul>' )
         .replace(/^(<\/style>\n)<script.*?>[^]*?(?=\nlet q2Bcopy,)/im, "$1<script type=\"text/javascript\">\n(function () {\n'use strict';")
         .replace(/^( *cheadg\.textContent === ").+/m, "$1" + cheadg.textContent + "\"")
         .replace(/^xbtnsav\.onclick[^]+?(?=\n<\/script>)/im, "})();")
@@ -465,7 +465,7 @@ let q2Bcopy, q2Bhtml,
       cheadg.setAttribute('contenteditable', true);
       cheadg.focus();
     } else if (idx === 3) {
-      [cgrid, xctrls].forEach(e => e && e.classList.toggle("is-hidden"));
+      [cgrid, xctrls].forEach(e => e && e.classList.toggle("dnone"));
     } else if (/[45]/.test(idx)) {
       gridAdj(idx);
     } else if (idx === 6 && ((xsetlist || "").value || !dentr.value)) {
@@ -588,13 +588,13 @@ let q2Bcopy, q2Bhtml,
           : quad2B.textContent.indexOf("\n", quad2B.textContent.length * rnge - 1) + 1 );
       }
     } else if (!symlist.className && quad2B.innerHTML === q2Bhtml) {
-      document.querySelector('#scrnmask').className = symlist.className = "is-hidden";
+      document.querySelector('#scrnmask').className = symlist.className = "dnone";
       quad2B.innerHTML = q2Bcopy;
       q2Bcopy = q2Bhtml = null;
     } else if (!symlist.className) {
       (xsetlist || {}).value = "";
       helpClr();
-      document.querySelector('#scrnmask').className = symlist.className = "is-hidden";
+      document.querySelector('#scrnmask').className = symlist.className = "dnone";
       q2Bcopy = q2Bhtml = null;
       dentr.value = quad2B.innerText.replace(/\n+$|^\n+/g, "")
         .replace(/^.*?(?=\/\/|$)/gm, m => m.replace(/\\t/g, "\t"));
@@ -678,7 +678,7 @@ window.dentr = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-
       && ( /^\//.test(e[1]) ? [eval(e[1]), !/^['"]|=>/.test(e[2]) ? e[2] : eval(e[2])]
         : [new RegExp("^([\\t ]*" + e[1] + "[\\t ]*=[\\t ]*).*?(?=[\\t ]*//|$)", "m"), "$1" + e[2]] )))
   : /^title=/.test(qi) ? titSave(0, window.decodeURIComponent(qi.replace(/^title=/, "")))
-  : /^!displ$/.test(qi) ? [cgrid, xctrls].forEach(e => e && e.classList.add("is-hidden"))
+  : /^!displ$/.test(qi) ? [cgrid, xctrls].forEach(e => e && e.classList.add("dnone"))
   : /^!zlock$/.test(qi) ? zoomTog(1)
   : /^!row1$/.test(qi) ? gridAdj(4)
   : /^!col1$/.test(qi) ? gridAdj(5) : 0 );
