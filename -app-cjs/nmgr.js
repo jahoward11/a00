@@ -287,6 +287,7 @@ figure {
   appearance: none;
 }
 #nmwrap select.anone::-ms-expand { display: none; }
+#nmwrap pre { font: normal medium/1.25 monospace; }
 #nmwrap pre:not(.pwrap) {
   white-space: pre;
   overflow-wrap: normal;
