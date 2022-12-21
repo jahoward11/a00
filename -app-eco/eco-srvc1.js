@@ -19,7 +19,7 @@ body {
   padding: 64px 8px;
   overflow-wrap: break-word;
 }
-.is-hidden { display: none; }
+.dnone { display: none; }
 #scrnmask {
   position: fixed;
   top: 0;
@@ -28,9 +28,6 @@ body {
   height: 100vh;
 }
 #cmain {
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  font-weight: normal;
   max-width: 720px;
   margin: 0 auto;
 }
@@ -46,7 +43,7 @@ body {
 #cmain sup { top: -0.5em; }
 #cmain button, #cmain .btn1,
 #cmain input:not([type=checkbox]):not([type=radio]), #cmain select {
-  background: #f8f8f8;
+  background-color: #f8f8f8;
   color: Grey;
   font-size: calc(80px / 6); /* 5rem */
   line-height: 24px; /* 1.5rem */
@@ -63,8 +60,35 @@ body {
   appearance: none;
 }
 #cmain select.anone::-ms-expand { display: none; }
-#cgrid pre, #cmain>#recon {
-  background-color: unset;
+#cmain .iwarn { color: Orange; }
+#cmain .isucc { color: CornFlowerBlue; }
+#cmain .slist { position: relative; }
+#cmain .slist::after {
+  position: absolute;
+  top: 7px;
+  right: 8px;
+  color: Grey;
+  content: " ";
+  border-top: 8px solid Grey;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  opacity: 0.5;
+  pointer-events: none;
+}
+#cmain .cfield:not(:last-child) { margin-bottom: 8px; } /* 0.5rem */
+#cmain .ccntr:not(:last-of-type) { margin-right: 8px; } /* 0.5rem */
+#cmain :not(.cfield)>:not(.cfield)>.ccntr {
+  display: inline-block;
+  height: 24px; /* 1.5rem */
+  margin-bottom: 8px; /* 0.5rem */
+}
+#cmain .addns>.ccntr { margin-right: 0; }
+#cmain .chelp {
+  font-size: 12px; /* 0.75rem */
+  margin-top: 4px; /* 0.25rem */
+}
+#cmain>#recon, #cgrid pre {
+  background: unset;
   color: unset;
   font: normal medium/1.25 monospace;
   margin: 0;
@@ -74,10 +98,56 @@ body {
   overflow-x: hidden;
   white-space: pre;
 }
+#cmain>#recon {
+  color: Orange;
+  padding: 0;
+}
+#cmain>#cheadg, #cmain>#xctrls {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+}
+#cmain>#cheadg {
+  color: Grey;
+  font-weight: bold;
+  margin: 0 0 4px;
+}
+#cmain>#mlctnr {
+  float: right;
+  position: relative;
+  margin: -24px 0 0 0;
+}
+#cmain>#mlctnr::after {
+  position: absolute;
+  top: -2px;
+  right: 5px;
+  color: LightSteelBlue;
+  content: "\\2630"; /* ☰ &#x2630; */
+  pointer-events: none;
+}
+#cmain>#mlctnr>#menulist {
+  color: transparent;
+  width: 24px;
+  height: 20px;
+}
+#cmain>#cgrid:not(.dnone) {
+  position: relative;
+  display: grid;
+  grid-template-columns: 168px 1fr;
+  grid-template-areas:
+    "quad1A quad1B"
+    "quad2A quad2B";
+  width: 100%;
+}
+#cmain>#cgrid.xpndq2B {
+  grid-template-areas:
+    "quad1A quad1B"
+    "quad2B quad2B";
+}
 #cgrid .pagebb { line-height: 0; }
 #cgrid .dnote { color: LightSteelBlue; }
 #cgrid .codin {
-  background: White;
+  background-color: White;
   color: Silver;
 }
 #cgrid .vert { position: absolute; }
@@ -116,46 +186,6 @@ body {
   line-height: 1;
   vertical-align: bottom;
 }
-#cmain>#recon {
-  color: Orange;
-  padding: 0;
-}
-#cmain>#cheadg {
-  color: Grey;
-  margin: 0 0 4px;
-}
-#cmain>#mlctnr {
-  float: right;
-  position: relative;
-  margin: -24px 0 0 0;
-}
-#cmain>#mlctnr::after {
-  position: absolute;
-  top: -2px;
-  right: 5px;
-  color: LightSteelBlue;
-  content: "\\2630"; /* ☰ &#x2630; */
-  pointer-events: none;
-}
-#cmain>#mlctnr>#menulist {
-  color: transparent;
-  width: 24px;
-  height: 20px;
-}
-#cmain>#cgrid:not(.is-hidden) {
-  position: relative;
-  display: grid;
-  grid-template-columns: 168px 1fr;
-  grid-template-areas:
-    "quad1A quad1B"
-    "quad2A quad2B";
-  width: 100%;
-}
-#cmain>#cgrid.xpndq2B {
-  grid-template-areas:
-    "quad1A quad1B"
-    "quad2B quad2B";
-}
 #cgrid>#quad1A, #cgrid>#quad1B { min-height: 56px; }
 #cgrid>#quad2A, #cgrid>#quad2B {
   min-height: 472px;
@@ -171,25 +201,25 @@ body {
 #cgrid>#quad1B, #cgrid>#quad2B { //max-width: 552px; }
 #cgrid>#quad1A {
   grid-area: quad1A;
-  background: LightGrey;
+  background-color: LightGrey;
   color: Grey;
 }
 #cgrid>#quad1B {
   grid-area: quad1B;
-  background: LightSteelBlue;
+  background-color: LightSteelBlue;
   color: LightSlateGrey;
   font-style: italic;
   font-weight: bold;
 }
 #cgrid>#quad2A {
   grid-area: quad2A;
-  background: DarkGrey;
+  background-color: DarkGrey;
   color: WhiteSmoke;
 }
 #cgrid>#quad2B {
   position: relative;
   grid-area: quad2B;
-  background: #f8f8f8;
+  background-color: #f8f8f8;
   color: Grey;
 }
 #cgrid #dfinal, #cgrid #dinitl {
@@ -211,7 +241,7 @@ body {
 #cgrid>#symlist {
   position: absolute;
   top: 0;
-  background: Black;
+  background-color: Black;
   color: White;
   font-size: small;
   width: 168px;
@@ -225,33 +255,6 @@ body {
   white-space: nowrap;
 }
 #cgrid.xpndq2B>#symlist { display: none; }
-#cmain .iwarn { color: Orange; }
-#cmain .isucc { color: CornFlowerBlue; }
-#cmain .slist { position: relative; }
-#cmain .slist::after {
-  position: absolute;
-  top: 7px;
-  right: 8px;
-  color: Grey;
-  content: " ";
-  border-top: 8px solid Grey;
-  border-right: 4px solid transparent;
-  border-left: 4px solid transparent;
-  opacity: 0.5;
-  pointer-events: none;
-}
-#cmain .cfield:not(:last-child) { margin-bottom: 8px; } /* 0.5rem */
-#cmain .ccntr:not(:last-of-type) { margin-right: 8px; } /* 0.5rem */
-#cmain :not(.cfield)>:not(.cfield)>.ccntr {
-  display: inline-block;
-  height: 24px; /* 1.5rem */
-  margin-bottom: 8px; /* 0.5rem */
-}
-#cmain .addns>.ccntr { margin-right: 0; }
-#cmain .chelp {
-  font-size: 12px; /* 0.75rem */
-  margin-top: 4px; /* 0.25rem */
-}
 #xctrls #xsetinp { width: 168px; }
 #xctrls #xsetlist {
   color: transparent;
@@ -259,10 +262,10 @@ body {
 }
 @media print {
   body { padding: 0; }
-  #cgrid>#quad1A { box-shadow: inset 0 -1px LightGrey; }
-  #cgrid>#quad1B { box-shadow: inset 0 -1px LightSteelBlue; }
   #cmain>#mlctnr, #cgrid #dfinal, #cgrid #dinitl,
   #cmain>#xctrls { display: none; }
+  #cgrid>#quad1A { box-shadow: inset 0 -1px LightGrey; }
+  #cgrid>#quad1B { box-shadow: inset 0 -1px LightSteelBlue; }
 }
 @media print and (resolution: 300dpi) and (width: 2572px), /* Pixel2, mode:desktop */
 print and (resolution: 300dpi) and (width: 555px), /* Pixel2, mode:mobile */
@@ -278,9 +281,9 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
   html { width: 768px; }
 }
 </style>
-<div id="scrnmask" class="is-hidden"></div>
+<div id="scrnmask" class="dnone"></div>
 <div id="cmain">
-<xmp id="datxmp" class="is-hidden">
+<xmp id="datxmp" class="dnone">
 `,
 ` p = 5
  q = 32
@@ -435,7 +438,7 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
 //
 `,
 `</xmp>
-<h4 id="cheadg">JavaScript Calculator</h4>
+<div id="cheadg">JavaScript Calculator</div>
 <pre id="recon"></pre>
 <span id="mlctnr"><select id="menulist" class="anone" title="CalcJS View Options">
   <option></option>
@@ -451,7 +454,7 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
 <div id="cgrid" class="cfield">
   <pre id="quad1A"></pre><pre id="quad1B"></pre>
   <pre id="quad2A"></pre><pre id="quad2B" contenteditable=true></pre>
-  <ul id="symlist" class="is-hidden"></ul>
+  <ul id="symlist" class="dnone"></ul>
 </div>
 <div id="xctrls" class="cfield">
   <span class="addns ccntr"><span class="ccntr">
@@ -528,17 +531,17 @@ let q2Bcopy, q2Bhtml,
   },
   gridAdj = idx => {
     if (idx === 4) {
-      [quad1A, quad1B].forEach(e => e.classList.toggle("is-hidden"));
+      [quad1A, quad1B].forEach(e => e.classList.toggle("dnone"));
       cgrid.classList.toggle("clpsrow1");
     } else if (idx === 5) {
-      quad2A.classList.toggle("is-hidden");
+      quad2A.classList.toggle("dnone");
       cgrid.classList.toggle("xpndq2B");
     }
   },
   viewSet = () => {
     let qrys = [];
     /maximum-/.test(metavp.content) || qrys.push("!zlock");
-    !cgrid.classList.contains("is-hidden") || qrys.push("!displ");
+    !cgrid.classList.contains("dnone") || qrys.push("!displ");
     !cgrid.classList.contains("clpsrow1") || qrys.push("!row1");
     !cgrid.classList.contains("xpndq2B") || qrys.push("!col1");
     cheadg.textContent === "JavaScript Calculator"
@@ -581,7 +584,7 @@ let q2Bcopy, q2Bhtml,
         .replace(/^(<xmp id="datxmp".*?>)[^]*?(?=<\\/xmp>)/im, (m, c1) => c1 + "\\n" + dentr.value + "\\n")
         .replace(/^(<pre id="recon">)[^]*?(?=<\\/pre>)/im, "$1")
         .replace( /^(<div id="cgrid".*?>\\n *<pre id="quad1A".*?>)[^]*?(<\\/pre><pre id="quad1B".*?>)[^]*?(<\\/pre>\\n *<pre id="quad2A".*?>)[^]+?(?=\\n<\\/div>)/im,
-          '$1$2$3</pre><pre id="quad2B" contenteditable=true></pre>\\n  <ul id="symlist" class="is-hidden"></ul>' )
+          '$1$2$3</pre><pre id="quad2B" contenteditable=true></pre>\\n  <ul id="symlist" class="dnone"></ul>' )
         .replace(/^(<\\/style>\\n)<script.*?>[^]*?(?=\\nlet q2Bcopy,)/im, "$1<script type=\\"text/javascript\\">\\n(function () {\\n'use strict';")
         .replace(/^( *cheadg\\.textContent === ").+/m, "$1" + cheadg.textContent + "\\"")
         .replace(/^xbtnsav\\.onclick[^]+?(?=\\n<\\/script>)/im, "})();")
@@ -603,7 +606,7 @@ let q2Bcopy, q2Bhtml,
       cheadg.setAttribute('contenteditable', true);
       cheadg.focus();
     } else if (idx === 3) {
-      [cgrid, xctrls].forEach(e => e && e.classList.toggle("is-hidden"));
+      [cgrid, xctrls].forEach(e => e && e.classList.toggle("dnone"));
     } else if (/[45]/.test(idx)) {
       gridAdj(idx);
     } else if (idx === 6 && ((xsetlist || "").value || !dentr.value)) {
@@ -726,13 +729,13 @@ let q2Bcopy, q2Bhtml,
           : quad2B.textContent.indexOf("\\n", quad2B.textContent.length * rnge - 1) + 1 );
       }
     } else if (!symlist.className && quad2B.innerHTML === q2Bhtml) {
-      document.querySelector('#scrnmask').className = symlist.className = "is-hidden";
+      document.querySelector('#scrnmask').className = symlist.className = "dnone";
       quad2B.innerHTML = q2Bcopy;
       q2Bcopy = q2Bhtml = null;
     } else if (!symlist.className) {
       (xsetlist || {}).value = "";
       helpClr();
-      document.querySelector('#scrnmask').className = symlist.className = "is-hidden";
+      document.querySelector('#scrnmask').className = symlist.className = "dnone";
       q2Bcopy = q2Bhtml = null;
       dentr.value = quad2B.innerText.replace(/\\n+$|^\\n+/g, "")
         .replace(/^.*?(?=\\/\\/|$)/gm, m => m.replace(/\\\\t/g, "\\t"));
@@ -796,7 +799,7 @@ window.dentr = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-
       && ( /^\\//.test(e[1]) ? [eval(e[1]), !/^['"]|=>/.test(e[2]) ? e[2] : eval(e[2])]
         : [new RegExp("^([\\\\t ]*" + e[1] + "[\\\\t ]*=[\\\\t ]*).*?(?=[\\\\t ]*//|$)", "m"), "$1" + e[2]] )))
   : /^title=/.test(qi) ? titSave(0, window.decodeURIComponent(qi.replace(/^title=/, "")))
-  : /^!displ$/.test(qi) ? [cgrid, xctrls].forEach(e => e && e.classList.add("is-hidden"))
+  : /^!displ$/.test(qi) ? [cgrid, xctrls].forEach(e => e && e.classList.add("dnone"))
   : /^!zlock$/.test(qi) ? zoomTog(1)
   : /^!row1$/.test(qi) ? gridAdj(4)
   : /^!col1$/.test(qi) ? gridAdj(5) : 0 );
