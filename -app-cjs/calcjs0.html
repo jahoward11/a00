@@ -45,7 +45,7 @@ body {
 #cmain sup { top: -0.5em; }
 #cmain button, #cmain .btn1,
 #cmain input:not([type=checkbox]):not([type=radio]), #cmain select {
-  background: #f8f8f8;
+  background-color: #f8f8f8;
   color: Grey;
   font-size: calc(80px / 6); /* 5rem */
   line-height: 24px; /* 1.5rem */
@@ -90,7 +90,7 @@ body {
   margin-top: 4px; /* 0.25rem */
 }
 #cmain>#recon, #cmain>#cgrid pre {
-  background-color: unset;
+  background: unset;
   color: unset;
   font: normal medium/1.25 monospace;
   margin: 0;
@@ -111,6 +111,7 @@ body {
 }
 #cmain>#cheadg {
   color: Grey;
+  font-weight: bold;
   margin: 0 0 4px;
 }
 #cmain>#mlctnr {
@@ -148,7 +149,7 @@ body {
 #cgrid .pagebb { line-height: 0; }
 #cgrid .dnote { color: LightSteelBlue; }
 #cgrid .codin {
-  background: White;
+  background-color: White;
   color: Silver;
 }
 #cgrid .vert { position: absolute; }
@@ -202,25 +203,25 @@ body {
 #cgrid>#quad1B, #cgrid>#quad2B { //max-width: 552px; }
 #cgrid>#quad1A {
   grid-area: quad1A;
-  background: LightGrey;
+  background-color: LightGrey;
   color: Grey;
 }
 #cgrid>#quad1B {
   grid-area: quad1B;
-  background: LightSteelBlue;
+  background-color: LightSteelBlue;
   color: LightSlateGrey;
   font-style: italic;
   font-weight: bold;
 }
 #cgrid>#quad2A {
   grid-area: quad2A;
-  background: DarkGrey;
+  background-color: DarkGrey;
   color: WhiteSmoke;
 }
 #cgrid>#quad2B {
   position: relative;
   grid-area: quad2B;
-  background: #f8f8f8;
+  background-color: #f8f8f8;
   color: Grey;
 }
 #cgrid #dfinal, #cgrid #dinitl {
@@ -242,7 +243,7 @@ body {
 #cgrid>#symlist {
   position: absolute;
   top: 0;
-  background: Black;
+  background-color: Black;
   color: White;
   font-size: small;
   width: 168px;
@@ -289,7 +290,7 @@ print and (min-width: 954px) and (max-width: 1134px) { /* iPhone/iPad/iMac-Safar
 <xmp id="datxmp" class="is-hidden">
 
 </xmp>
-<h4 id="cheadg">JavaScript Calculator</h4>
+<div id="cheadg">JavaScript Calculator</div>
 <pre id="recon"></pre>
 <span id="mlctnr"><select id="menulist" class="anone" title="CalcJS View Options">
   <option></option>
