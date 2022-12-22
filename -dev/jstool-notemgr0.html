@@ -1181,7 +1181,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   imgLkup = doc => doc && aurls[ (doc.image_src || "").replace(/^(?!https?:).*\//, "")
     || (cntcs[(doc.file_updated || doc.file_created || "").username] || "").image_src
     || !doc.image_src && doc.file_created && "avatar000.png" ] || doc.image_src || "",
-  idGen = (pfx, tsx, unx) => (/^[a-z~][a-z]$/i.test("" + pfx) ? pfx : "~p")
+  idGen = (pfx, tsx, unx) => (/^[a-z~][a-z]$|^~[a-z]{4}_/i.test("" + pfx) ? pfx : "~p")
     + ( typeof tsx === 'string' && /^[\w:.-]*$/.test(tsx) ? tsx
       : (fncTry(v => new Date(v), tsx) || new Date()).toISOString().replace(/\.\w+$|[:-]/g, "") )
     + (typeof unx === 'string' && /^[\w@.-]*$/.test(unx) ? unx : "user000"),
@@ -1372,7 +1372,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           : tanc.parentElement.parentElement.parentElement.querySelector('span:not(.dnone)>input') )
         || "",
       sdir = tanc && vbas > 1 && tanc.parentElement.previousElementSibling.textContent,
-      txd2 = evt.DBNAME ? evt : {
+      txd4 = evt.DBNAME ? evt : {
         DBNAME: txd1.DBNAME,
         FILEID: !tanc ? "" : sdir && rexsd.test(sdir)
           ? sdir.replace(/\/$/, "") : tanc.textContent || tanc.dataset.fileid,
@@ -1384,17 +1384,17 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       },
       reximg = /\.giff?$|\.jpe?g$|\.png$/i,
       rextxt = /\.html?$|\.json$|\.md$|\.m?js$|\.s?css$|\.te?xt$|\.\w{5,}$/i,
-      attVw = abl => reximg.test(txd2.ATTKEY) || abl && /^image/.test(abl.type)
+      attVw = abl => reximg.test(txd4.ATTKEY) || abl && /^image/.test(abl.type)
         ? nmdata.innerHTML = "\n<figure class=image><img src=\""
-          + (aurls[txd2.ATTKEY] || abl && (aurls[txd2.ATTKEY] = URL.createObjectURL(abl)))
+          + (aurls[txd4.ATTKEY] || abl && (aurls[txd4.ATTKEY] = URL.createObjectURL(abl)))
           + "\" /></figure>\n"
-        : fetch(aurls[txd2.ATTKEY] || abl && (aurls[txd2.ATTKEY] = URL.createObjectURL(abl)))
+        : fetch(aurls[txd4.ATTKEY] || abl && (aurls[txd4.ATTKEY] = URL.createObjectURL(abl)))
           .then(r => r.text()).then( str => nmdata.innerHTML = jp1( str,
-            txd2.ATTKEY.replace(/\.(?:(css)|(html?)|(md)|m?(js))$|.*/i, "$1$2$3$4"), "dflow" ))
+            txd4.ATTKEY.replace(/\.(?:(css)|(html?)|(md)|m?(js))$|.*/i, "$1$2$3$4"), "dflow" ))
           .catch(r2Show);
-    //r2Show(txd2);
-    if (!window.PouchDB || !txd2.DBNAME || !txd2.FILEID
-    || txd2.ATTKEY && !reximg.test(txd2.ATTKEY) && !rextxt.test(txd2.ATTKEY)) { return; }
+    //r2Show(txd4);
+    if (!window.PouchDB || !txd4.DBNAME || !txd4.FILEID
+    || txd4.ATTKEY && !reximg.test(txd4.ATTKEY) && !rextxt.test(txd4.ATTKEY)) { return; }
     r2con.textContent = "";
     if (vbas > 1) {
       document.querySelectorAll(qslrs[10])
@@ -1405,30 +1405,31 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       .forEach(elm => elm.classList.remove("hhodew", "hsuccl", "hwarnl"));
       !tanc || tanc.parentElement.parentElement.parentElement.classList.add("hhodew");
     }
-    tanc && vbas === 5 ? tabActv() || !(window.txd2 = txd2)
-      || PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS).then( doc => nmdata.innerHTML
+    tanc && vbas === 5 ? tabActv() || !(nm0.txd4 = txd4)
+      || PouchDB(txd4.DBNAME).get(txd4.FILEID, txd4.OPTS).then( doc => nmdata.innerHTML
         = jp1(Object.assign({ _id: "", _rev: "" }, doc))
         + "\n<p><strong>To retrieve older revision:</strong>"
         + " Use JavaScript console (in Settings) to re-assign desired <code>rev</code> value"
-        + " from list of available options (above) to <code>txd2.OPTS.rev</code>"
+        + " from list of available options (above) to <code>nm0.txd4.OPTS.rev</code>"
         + " key and execute given <code>PouchDB</code> command chain (below).</p>\n"
-        + jp1( "// to view current query values\n txd2\n\n// to retrieve _revs_info"
-          + " within console\n PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS)"
-          + "\n\n// to re-assign revision value\n txd2.OPTS.rev = \"revision\""
-          + "\n\n// to send revision data to display panel\n PouchDB(txd2.DBNAME)"
-          + ".get(txd2.FILEID, txd2.OPTS).then(doc => nmdata.innerHTML = nm0.jp1(doc)); \"\"", "js" ) )
+        + jp1( "// to view current query values\n nm0.txd4\n\n// to retrieve _revs_info"
+          + " within console\n PouchDB(nm0.txd4.DBNAME).get(nm0.txd4.FILEID, nm0.txd4.OPTS)"
+          + "\n\n// to re-assign revision value\n nm0.txd4.OPTS.rev = \"revision\""
+          + "\n\n// to send revision data to display panel"
+          + "\n PouchDB(nm0.txd4.DBNAME).get(nm0.txd4.FILEID, nm0.txd4.OPTS)"
+          + ".then(doc => nmdata.innerHTML = nm0.jp1(doc)).catch(nm0.r2Show); \"\"", "js" ) )
       .catch(r2Show)
-    : aurls[txd2.ATTKEY] ? tabActv() || attVw() : txd2.ATTKEY
-    ? tabActv() || PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
+    : aurls[txd4.ATTKEY] ? tabActv() || attVw() : txd4.ATTKEY
+    ? tabActv() || PouchDB(txd4.DBNAME).getAttachment(txd4.FILEID, txd4.ATTKEY, txd4.OPTS)
       .then(attVw).catch(r2Show)
     : !evt.DBNAME && !(finp || "").checked
-    ? tabActv() || PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS)
+    ? tabActv() || PouchDB(txd4.DBNAME).get(txd4.FILEID, txd4.OPTS)
         .then( doc => nmdata.innerHTML = !finp && ( doc.hasOwnProperty("content")
             ? jp1(doc.content) : !Array.isArray(doc.filefrags) ? 0
             : jp1(doc.filefrags.map(ff => ff.contenttxt).filter(e => e).join("\n\n")) )
           || jp1(Object.assign({ _id: "", _rev: "" }, doc)) )
         .catch(r2Show)
-    : PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS).then(doc => {
+    : PouchDB(txd4.DBNAME).get(txd4.FILEID, txd4.OPTS).then(doc => {
         let lnl, str,
           taHt = k => ( lnl = ( ( str = valStr( fwg[k],
                 !Array.isArray(fwg[k]) || typeof fwg[k][0] === 'object' ? 2 : null ))
@@ -1441,7 +1442,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   <button id=updbtn class="fltrt hgainl"><span class=isucc>&#x267a;</span> UPDATE</button>
   <div class=field>
     <button id=bckbtn class="btn1 hgainl ilink"><strong>&lang;</strong></button>
-    <span class="btn1 opq0" disabled>${txd2.DBNAME} &sol;</span> ${
+    <span class="btn1 opq0" disabled>${txd4.DBNAME} &sol;</span> ${
         !(rval = fwg.loc_subdir || (fwg.file_updated || fwg.file_created || "").subdir) ? ""
         : "<span class=\"btn1 opq0\" disabled>" + rval + " &sol;</span>" }
     <span class="btn1 opq0" disabled>${fwg._id}</span>
@@ -1485,8 +1486,8 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
             fwg._attachments[ !imganm2.value ? f.name : !a1inp.files[1]
               ? imganm2.value : imganm2.value.replace(/(?=\.\w+$|$)/, i > 9 ? i : "0" + i) ]
             = { content_type: f.type, data: f } );
-          !chgs || !txd2.DBNAME || !window.PouchDB || PouchDB(txd2.DBNAME)
-          .put(Object.assign({ _id: "", _rev: "" }, fwg), txd2.OPTS).then( trsp =>
+          !chgs || !txd4.DBNAME || !window.PouchDB || PouchDB(txd4.DBNAME)
+          .put(Object.assign({ _id: "", _rev: "" }, fwg), txd4.OPTS).then( trsp =>
             Object.keys(fwg).forEach( k => /^_id$|^_rev$/.test(k)
               || window["p0" + k].classList.remove("isucc", "iwarn") )
             || hlps[0].classList.remove("dnone") || r2Show(trsp) )
@@ -1820,6 +1821,11 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     }) ).catch(r2Show);
   },
   tabActv = evt => {
+    let txd5 = !Object.keys(nm0cfgs).includes((evt || "").DBNAME)
+        ? txd1 : fncTry(JSON.parse, JSON.stringify(evt)) || txd1;
+    txd5 === txd1 || (pdbssel.selectedIndex = 0) || pdbOpen()
+    || pfahlp.classList.add("dnone") || pfacnt.classList.remove("dnone");
+    !(evt || "").DBNAME || (evt = null) || (tidx = vidx = 1);
     tidx === 2 || pdbcfg.querySelectorAll('.chelp').forEach(e => e.classList.add("dnone"));
     !evt || evt.currentTarget.localName === 'a' || (evt = null);
     tidx = !evt ? (vidx > 3 ? 0 : vidx) : +evt.currentTarget.parentElement.dataset.tabidx;
@@ -1837,17 +1843,18 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         taHt = k => /body|content/i.test(k) ? 16 : /misc/i.test(k) ? 8
           : typeof fwg[k] !== 'object' || Array.isArray(fwg[k]) && typeof fwg[k][0] !== 'object' ? 2
           : !Array.isArray(fwg[k]) && Object.keys(fwg[k]).length < 8 ? 8 : 16;
-      fwg = JSON.parse( JSON.stringify(
-        (nm0sets.p2typs[t01sel.value] || "").t1 || pftyps[t01sel.value] || pftyps.new ));
-      !/^idGen\(.*\)$/.test(fwg._id.trim()) || (fwg._id = eval(fwg._id));
+      fwg = txd5.doc || fncTry( JSON.parse, JSON.stringify(
+        (nm0sets.p2typs[t01sel.value] || "").t1 || pftyps[t01sel.value] || pftyps.new )) || {};
+      !/^idGen\(.*\)$/.test((fwg._id || "").trim()) || (fwg._id = eval(fwg._id));
       !fwg.hasOwnProperty("ts_created") || (fwg.ts_updated = fwg.ts_created = ts0);
       !fwg.file_created || [[fwg.file_created, fwg.file_updated]].forEach(([p0, p1]) => {
         p1 = p1 || {};
         p1.username = p0.username = nm0sets.uname || nm0sets.uemail;
         p1.timestamp = p0.timestamp = ts0;
-        p1.dborigin = p0.dborigin = /127\.0\.0|192\.168\.0|cloudant|localhost/.test(location.origin)
-          ? location.origin : [navigator.userAgent || navigator.userAgentData, location.origin];
-        p1.dbname = p0.dbname = txd1.DBNAME;
+        p0.dborigin || ( p1.dborigin = p0.dborigin
+          = /127\.0\.0|192\.168\.0|cloudant|localhost/.test(location.origin)
+          ? location.origin : [location.origin, navigator.userAgent || navigator.userAgentData] );
+        p1.dbname = p0.dbname = txd5.DBNAME;
         !p0.hasOwnProperty("version") || p0.version || (p1.version = p0.version = "0.1.0");
       });
       !fwg.hasOwnProperty("from") || (fwg.from = un0);
@@ -1886,7 +1893,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           fwg._attachments[ !imganm2.value ? f.name : !a1inp.files[1]
             ? imganm2.value : imganm2.value.replace(/(?=\.\w+$|$)/, i > 9 ? i : "0" + i) ]
           = { content_type: f.type, data: f } );
-        !chgs || !p0_id.value || !txd1.DBNAME || !window.PouchDB || PouchDB(txd1.DBNAME)
+        !chgs || !p0_id.value || !txd5.DBNAME || !window.PouchDB || PouchDB(txd5.DBNAME)
         .put(Object.assign({ _id: "", _rev: "" }, fwg), {}).then( trsp =>
           Object.keys(fwg).forEach( k => /^_id$|^_rev$/.test(k)
             || window["p0" + k].classList.remove("isucc", "iwarn") || (window["p0" + k].disabled = 1) )
@@ -1924,7 +1931,6 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     !evt || !vbas || tidx !== 1 || tabActv();
   },
   viewChg = evt => {
-    let vkey;
     if (vidx > 3 && evt && evt.currentTarget.localName === 'a') { return tabActv(evt); }
     vidx || !viewsel.selectedIndex || (nmdata.innerHTML = "");
     vidx = !evt || evt.currentTarget.localName !== 'a' ? viewsel.selectedIndex
@@ -1942,6 +1948,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     if (vidx < 4 && evt && [nmflow, nmclip].every(e => e.classList.contains("dnone"))) {
       return tabActv(evt);
     }
+    let vkey;
     vidx < 4 || !(vkey = viewsel.value.replace(/-?\d+$|^V\d[:-]/g, "") || "myview")
     || ( v01inp.value = vkey + ( 1
       + ( Array.from(v01sel.options).map(o => o.value.includes(vkey) && /\d+$/.exec(o.value))
@@ -2293,7 +2300,10 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     opensel.value = pdbssel.value = nm0sets.dbdflt || "";
     !pdbssel.value || pdbOpen();
   };
-window.nm0 = { aurls, cntcs, txd1, r2Show, fncTry, htmTxt, valStr, mp1, jb1, jp1, filesChg, fileLoad };
+window.nm0 = {
+  fwg, aurls, cntcs, txd1, r2Show, fncTry, htmTxt, valStr,
+  mp1, jb1, jp1, filesChg, fileLoad, tabActv
+};
 pdbssel.onchange = pdbOpen;
 viewsel.onchange = viewChg;
 colssel.onchange = colsTog;
