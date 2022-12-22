@@ -41,7 +41,7 @@ pre, xmp {
   white-space: pre-wrap;
 }
 table {
-  margin-bottom: 1rem;
+  margin-bottom: 1em;
   border-collapse: collapse;
 //word-break: break-all;
 }
