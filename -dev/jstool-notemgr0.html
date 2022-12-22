@@ -1476,7 +1476,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
             p1.username = nm0sets.uname || nm0sets.uemail || "user000";
             p1.timestamp = ts0;
             p1.dborigin = /127\.0\.0|192\.168\.0|cloudant|localhost/.test(location.origin)
-              ? location.origin : [navigator.userAgent || navigator.userAgentData, location.origin];
+              ? location.origin : [location.origin, navigator.userAgent || navigator.userAgentData];
             p1.dbname = txd1.DBNAME;
             !p1.hasOwnProperty("version") || (p1.version = p1.version.replace(/-?\d+$/, m => ++m));
           });
@@ -2301,7 +2301,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     !pdbssel.value || pdbOpen();
   };
 window.nm0 = {
-  fwg, aurls, cntcs, txd1, r2Show, fncTry, htmTxt, valStr,
+  aurls, cntcs, txd1, r2Show, fncTry, htmTxt, valStr,
   mp1, jb1, jp1, filesChg, fileLoad, tabActv
 };
 pdbssel.onchange = pdbOpen;

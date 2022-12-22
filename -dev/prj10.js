@@ -3,25 +3,25 @@
 const _module = "util";
 
 const varkeys = `//
-{ _ks = _ks.concat(["T1", "T2"]) };
-T3 = 3
-T4 = 4
-Object.keys(_)
-_ks.join()
+ { _ks = _ks.concat(["T1", "T2"]) };
+ T3 = 3
+ T4 = 4
+ Object.keys(_)
+ _ks.join()
 //`;
 
 const nformat = `//
-fmt = n => (1000 * n).toFixed(2);
-$r = fmt(Math.random())
+ fmt = n => (1000 * n).toFixed(2);
+ $r = fmt(Math.random())
 //`;
 
 const uiwidth = `//
-innerWidth
-document.documentElement.clientWidth
-screen.width
-getComputedStyle(cgrid).width
-getComputedStyle(document.documentElement).width
-getComputedStyle(document.documentElement).font
+ innerWidth
+ document.documentElement.clientWidth
+ screen.width
+ getComputedStyle(cgrid).width
+ getComputedStyle(document.documentElement).width
+ getComputedStyle(document.documentElement).font
 //`;
 
 const publdims = `//
@@ -91,16 +91,16 @@ const publdims = `//
  w_̃sc * (w_̃pg / 884)  // w_̃pg + 1.5in
  w_̃sc * (w_̃pg / 932)  // w_̃pg + 2in
 
-980 / (740 / 833)
-6 / 6.75
+ 980 / (740 / 833)
+ 6 / 6.75
 //`;
 
 const jscmds = `//
-encodeURI("abc !\\"#$%&'()*+,-./:;<=>?@[\\\\]^_\`{|}~123")
-decodeURI("%22%20%22%25%3C%3E%5B%5C%5D%5E%60%7B%7C%7D")
+ encodeURI("abc !\\"#$%&'()*+,-./:;<=>?@[\\\\]^_\`{|}~123")
+ decodeURI("%22%20%22%25%3C%3E%5B%5C%5D%5E%60%7B%7C%7D")
 
-Array.from({ length: 5 })
-Array.from(Array(5).keys())
+ Array.from({ length: 5 })
+ Array.from(Array(5).keys())
 
 // reShow( Array.from(Array(64).keys()).map(n => [0, 64, 128, 192].map(d => "0x" + (n + d).toString(16) + (!d && n < 16 ? "  " : " " + String.fromCodePoint(n + d))).join("\\x09")).join("\\n") )
 // reShow( Array.from(Array(64).keys()).map(n => (n += 0x2000) && [0, 64, 128, 192].map(d => "0x" + (n + d).toString(16) + " " + String.fromCodePoint(n + d)).join("  \\x09")).join("\\n") )
@@ -140,7 +140,7 @@ Array.from(Array(5).keys())
 //`;
 
 const bcaches = `//
-caches.keys().then(reShow)
+ caches.keys().then(reShow)
 // caches.keys().then(keys => caches.open(keys[0])).then(cache => cache.keys()).then(keys => keys.map(k => ({ url: k.url, mode: k.mode, dest: k.destination }))).then(reShow)
 // caches.open("calcjs0.15").then(cache => cache.delete("https:/" + "/jahoward11.github.io/a00/-res-js/jstat-tdist.js")).then(reShow)
 // caches.match("https:/" + "/jahoward11.github.io/a00/-res-css/reset-hjas-min0.css").then(re => re.text()).then(reShow)
@@ -160,7 +160,7 @@ const dscripts = `//
 // reShow(symlist.textContent)
 // reShow(symlist.textContent.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\\xa0/g, "&nbsp;"))
 
-reShow(Array.from(document.querySelectorAll('script')).map(e => e.src))
+ reShow(Array.from(document.querySelectorAll('script')).map(e => e.src))
 // reShow(document.querySelector('script:last-of-type').outerHTML)
 // reShow(document.querySelector('body>script:last-of-type').outerHTML)
 
@@ -212,12 +212,12 @@ PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
 //`;
 
 const jstatqs = `//
-exp = [9, 44, 34, 63, 9, 44, 34, 63]
-obs = [8, 28, 39, 75, 10, 61, 29, 50]
-csq = obs.reduce((a, b, i) => a + (b - _.exp[i])**2/_.exp[i], 0)
-1 - jStat.chisquare.cdf(csq, 3)
+ exp = [9, 44, 34, 63, 9, 44, 34, 63]
+ obs = [8, 28, 39, 75, 10, 61, 29, 50]
+ csq = obs.reduce((a, b, i) => a + (b - _.exp[i])**2/_.exp[i], 0)
+ 1 - jStat.chisquare.cdf(csq, 3)
 
-reShow(Object.keys(jStat))
+ reShow(Object.keys(jStat))
 // reShow(Object.getOwnPropertyNames(Math))
 // reShow(Object.getOwnPropertyNames(Number))
 //`;
@@ -226,19 +226,20 @@ const itoken = `/*
 
 *Note:* Token request fails because CORS is disabled at iam.cloud.ibm.com.
 
-hdrs = new Headers();
-hdrs.append("Content-Type", "application/x-www-form-urlencoded");
+ hdrs = new Headers();
+ hdrs.append("Content-Type", "application/x-www-form-urlencoded");
 
-uenc = new URLSearchParams();
-uenc.append("grant_type", "urn:ibm:params:oauth:grant-type:apikey");
-uenc.append("apikey", "___");
+ uenc = new URLSearchParams();
+ uenc.append("grant_type", "urn:ibm:params:oauth:grant-type:apikey");
+ uenc.append("apikey", "___");
 
-opts = { method: 'POST', headers: hdrs, body: uenc, redirect: 'follow' };
+ opts = { method: 'POST', headers: hdrs, body: uenc, redirect: 'follow' };
 
-fetch("https:/" + "/iam.cloud.ibm.com/identity/token", opts).then(re => re.text()).then(reShow).catch(reShow);
+ fetch("https:/" + "/iam.cloud.ibm.com/identity/token", opts).then(re => re.text()).then(reShow).catch(reShow);
 */`;
 
 const dbapp = `//
+// __Recipes DB Webapp__
 /*
  cQry = () => !(window.pdbs || []).includes((window.txd2 || "").DBNAME) && [] || PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.text()).then(cnt => [txd2.wid, cnt]);
  uiDspl = ([wid, cnt, scr]) => { if (!wid || !cnt) return; let ndiv = document.createElement('div'); ndiv.id = wid; ndiv.innerHTML = "\\n<hr />\\n" + cnt.trim() + "\\n"; cmain.appendChild(ndiv); return scr || window[wid] && window[wid].querySelector('script'); };
@@ -259,20 +260,22 @@ const dbapp = `//
 
 //`;
 
-const t2puzls = `/*
+const t2puzls = `//
+/*
+ t2x = xstor.JScode.tutorial2;
+ bodGen = src => "\\n<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/;$|^g\\dui = /g, "").split(/;\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n") + "\\n"; //
+ scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
+ dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=pz1wrap>", "</div>\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
+ reShow(dwraps[0] + bodGen(t2x) + dwraps[1] + scrGen(t2x) + dwraps[2])
+*/
 
-t2x = xstor.JScode.tutorial2;
-bodGen = src => "\\n<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/;$|^g\\dui = /g, "").split(/;\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n") + "\\n"; //
-scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
-dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=pz1wrap>", "</div>\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
-reShow(dwraps[0] + bodGen(t2x) + dwraps[1] + scrGen(t2x) + dwraps[2])
-*/`;
+//`;
 
 const t3search = `//
-t3x = xstor.JScode.tutorial3;
-bodGen = src => "\\n" + src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui = /g, "").split(/;\\nsrui \\+= /).map(eval).join("").trim() + "\\n"; //
-scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
-uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
+ t3x = xstor.JScode.tutorial3;
+ bodGen = src => "\\n" + src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui = /g, "").split(/;\\nsrui \\+= /).map(eval).join("").trim() + "\\n"; //
+ scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
+ uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
 // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
 // try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.strPars || scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(reShow); }
@@ -311,10 +314,10 @@ uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; 
 const t4cntcs = `//
 // __Contacts Directory__
 /*
-scrGen = src => src.match(/^(?:fwg|imgsVw|rexts) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n").replace(/reShow/g, "console.warn").replace(/;\\nwindow\\.(n1Gen = ).+/, (m, c1) => ",\\n  " + (c1 + n1Gen).replace(/\\b_\\.\\b/g, "") + ";\\nwindow.dbobj = window.PouchDB && new PouchDB(\\"" + dbobj.name + "\\");"); //
-dPreps = d => d.replace(/\\n<hr>/, "").replace(/(<details id="?imgdtl.*?>)[^]*?(?=<\\/details>)|(<form id="?dform.*?>)[^]*?(?=<\\/form>)|(<div id="?ndata.*?>)[^]*(?=<\\/div>\\s*<\\/div>)/g, "$1$2$3"); //
-dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Notes Database</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/pouchdb.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
-reShow(dwraps[0] + dPreps(dbwrap.outerHTML) + dwraps[1] + scrGen(xstor.JScode.tutorial4) + dwraps[2])
+ scrGen = src => src.match(/^(?:fwg|imgsVw|rexts) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n").replace(/reShow/g, "console.warn").replace(/;\\nwindow\\.(n1Gen = ).+/, (m, c1) => ",\\n  " + (c1 + n1Gen).replace(/\\b_\\.\\b/g, "") + ";\\nwindow.dbobj = window.PouchDB && new PouchDB(\\"" + dbobj.name + "\\");"); //
+ dPreps = d => d.replace(/\\n<hr>/, "").replace(/(<details id="?imgdtl.*?>)[^]*?(?=<\\/details>)|(<form id="?dform.*?>)[^]*?(?=<\\/form>)|(<div id="?ndata.*?>)[^]*(?=<\\/div>\\s*<\\/div>)/g, "$1$2$3"); //
+ dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Notes Database</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/pouchdb.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
+ reShow(dwraps[0] + dPreps(dbwrap.outerHTML) + dwraps[1] + scrGen(xstor.JScode.tutorial4) + dwraps[2])
 */
 
 // __Note Manager__
@@ -354,6 +357,25 @@ const srtools = `//
  rtrminp.value = 'm => m.replace(/(?<!\\\\\\\\)\\\\\\\\n/g, "\\\\n").replace(/\\\\*.+?\\\\*|\\\\^.+?\\\\^|\`.+?\`/g, "<mark>$&</mark>")'; //
  // rtrminp.value = 'm => m.replace(/([^\\\\\\\\])\\\\\\\\n/g, "$1\\\\n").replace(/([^\\\\\\\\])\\\\\\\\n/g, "$1\\\\n").replace(/\\\\*.+?\\\\*|\\\\^.+?\\\\^|\`.+?\`/g, "<mark>$&</mark>")'; //
 */
+
+//`;
+
+const nmtools = `//
+// __Note Manager Tools__
+/*
+ pcs = JSON.parse(p0parseconfigs.value);
+ ffs = JSON.parse(p0filefrags.value);
+
+ pcs.scriptsconstr[0].usedescription;
+ pcs.scriptsconstr[0].htmlscriptload;
+ pcs.scriptsconstr[0].deftxt;
+ pcs.linksconstr.htmllinktxt;
+ ffs[0].contenttxt;
+
+ p0parseconfigs.value = JSON.stringify(pcs, 0, 2); ""
+ p0filefrags.value = JSON.stringify(ffs, 0, 2); ""
+*/
+
 //`;
 
 export {
@@ -362,5 +384,5 @@ export {
   bcaches, dscripts, scrload,
   jstatqs, itoken, dbapp,
   t2puzls, t3search, t4cntcs,
-  srtools
+  srtools, nmtools
 };
