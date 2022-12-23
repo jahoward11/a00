@@ -1,4 +1,4 @@
-window.ecoqjs = { // 21
+window.ecoqjs = { // 22
   fncTry: (fnc, a, e) => {
     // silently handle potential function execution error
     try { return fnc(a) }
@@ -74,6 +74,12 @@ window.ecoqjs = { // 21
       (++ct > 999 ? sp[0] : ct > 99 ? sp[1] : ct > 9 ? sp[2] : sp[3])
       + ct + sp[1] );
   },
+  idGen: (pfx, tsx, unx) =>
+    // generate unique filename
+    (/^[a-z~][a-z]$|^~[a-z]{4}_/i.test("" + pfx) ? pfx : "~p")
+    + ( typeof tsx === 'string' && /^[\w:.-]*$/.test(tsx) ? tsx
+      : (tsx && new Date(tsx) || new Date()).toISOString().replace(/\.\w+$|[:-]/g, "") )
+    + (typeof unx === 'string' && /^[\w@.-]*$/.test(unx) ? unx : "user000"),
   htmTxt: str =>
     // prep HTML text for browser display as unrendered source code
     "" + str
@@ -101,12 +107,6 @@ window.ecoqjs = { // 21
     .replace(/(,|)\s*(?=["[{])/g, "$1\n")
     .replace( /^\s*\{([^]*?)}\s*/gm, (m, c1) =>
       "{\n" + c1.trim().replace(/^/gm, "  ") + "\n}\n" ),
-  idGen: (pfx, tsx, unx) =>
-    // generate unique filename
-    (/^[a-z~][a-z]$|^~[a-z]{4}_/i.test("" + pfx) ? pfx : "~p")
-    + ( typeof tsx === 'string' && /^[\w:.-]*$/.test(tsx) ? tsx
-      : (fncTry(v => new Date(v), tsx) || new Date()).toISOString().replace(/\.\w+$|[:-]/g, "") )
-    + (typeof unx === 'string' && /^[\w@.-]*$/.test(unx) ? unx : "user000"),
   mdeflistPar: str =>
     // enable paragraphs in MD definition list
     str.replace(/^[:~] +.+\n\n(?!  |:|~|.+\n\n?[:~])/gm, "$&    <!-- -->\n\n"),

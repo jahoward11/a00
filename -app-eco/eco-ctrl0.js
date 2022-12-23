@@ -1,7 +1,7 @@
 // Web Application
 (function() {
 'use strict';
-var appid, dbpch, eb1dflt, file2nd, filewkg, fldfoc, idGen, idtoks,
+var appid, dbpch, eb1dflt, file2nd, filewkg, fldfoc, idtoks,
   prjsenet, tm0disc, tmp1ff, tmp1pc,
   tmplpdblist, tmplpdbblurbs,
   tmplattlist, tmplprjdisc, tmplpfslist,
@@ -291,7 +291,7 @@ function assts2Blob() {
     jsclist = document.querySelector('#ecoesp0 #jsclist'),
     hlslist = document.querySelector('#ecoesp0 #hlslist'),
     iniscripts = document.querySelector('body>#iniscripts'),
-    mjsMrg = () => !(idGen = ecoqjs.idGen) || Object.keys(EMODJS)
+    mjsMrg = () => Object.keys(EMODJS)
       .forEach(k => EMODJS[k].fnc = (EC0.MODJS[k] || "").fnc || ecomjs[k] || null),
     attPrc1 = (docid, akey) =>
       /^blob:/.test(aurls[akey]) || !dbpc2 || dbpc2.getAttachment(docid, akey)
@@ -1600,7 +1600,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       : { _id: "", _rev: "" }, udata ));
     if (destindr) {
       Object.assign( filewkg, { _id: /^idGen\(.*\)$/.test((filewkg._id || "").trim())
-        && ecoqjs.fncTry(eval, filewkg._id) || "", _rev: "" });
+        && ecoqjs.fncTry(eval, "ecoqjs." + filewkg._id) || "", _rev: "" });
       !filewkg.hasOwnProperty("ts_created") || (filewkg.ts_updated = filewkg.ts_created = tstamp1);
       [filewkg.file_created, filewkg.file_updated].forEach((ppty, i) => { if (ppty) {
         ppty.username = epsets.uname;
@@ -3869,6 +3869,7 @@ qconRetrvD(cbfnc, errfnc, txd5) { // also triggered by guideLoad, dviz-idxlist, 
   txd5 || !valcon || !filewkg || !/^eco-(?:publmgr|scrap|srcdoc)$/.test(filewkg.file_type)
   || document.querySelector('#ecoesp0 .escreen:nth-of-type(2):not(.is-hidden)') || EC1.tabs0Tog(4);
   if ((txd5 || "").file_type) {
+    pfsResets();
     dataDispl(txd5, 1, cbfnc);
   } else if (!valcon) {
     pfsResets();
