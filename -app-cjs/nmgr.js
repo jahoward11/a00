@@ -1180,7 +1180,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     || !doc.image_src && doc.file_created && "avatar000.png" ] || doc.image_src || "",
   idGen = (pfx, tsx, unx) => (/^[a-z~][a-z]$|^~[a-z]{4}_/i.test("" + pfx) ? pfx : "~p")
     + ( typeof tsx === 'string' && /^[\\w:.-]*$/.test(tsx) ? tsx
-      : (fncTry(v => new Date(v), tsx) || new Date()).toISOString().replace(/\\.\\w+$|[:-]/g, "") )
+      : (tsx && new Date(tsx) || new Date()).toISOString().replace(/\\.\\w+$|[:-]/g, "") )
     + (typeof unx === 'string' && /^[\\w@.-]*$/.test(unx) ? unx : "user000"),
   nbrX = v => v && (Array.isArray(v) ? v : ("" + v).split("."))
     .map(n => !n ? "" : ("" + n).length > 4 ? n : ("000" + n).substr(-4, 4)).join("."),
@@ -1848,7 +1848,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           : !Array.isArray(fwg[k]) && Object.keys(fwg[k]).length < 8 ? 8 : 16;
       fwg = txd5.doc || fncTry( JSON.parse, JSON.stringify(
         (nm0sets.p2typs[t01sel.value] || "").t1 || pftyps[t01sel.value] || pftyps.new )) || {};
-      !/^idGen\\(.*\\)$/.test((fwg._id || "").trim()) || (fwg._id = eval(fwg._id));
+      !/^idGen\\(.*\\)$/.test((fwg._id || "").trim()) || (fwg._id = fncTry(eval, fwg._id, 2));
       !fwg.hasOwnProperty("ts_created") || (fwg.ts_updated = fwg.ts_created = ts0);
       !fwg.file_created || [[fwg.file_created, fwg.file_updated]].forEach(([p0, p1]) => {
         p1 = p1 || {};
@@ -1857,8 +1857,8 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         p0.dborigin || ( p1.dborigin = p0.dborigin
           = /127\\.0\\.0|192\\.168\\.0|cloudant|localhost/.test(location.origin)
           ? location.origin : [location.origin, navigator.userAgent || navigator.userAgentData] );
-        p1.dbname = p0.dbname = txd5.DBNAME;
-        !p0.hasOwnProperty("version") || p0.version || (p1.version = p0.version = "0.1.0");
+        p0.dbname || (p1.dbname = p0.dbname = txd5.DBNAME);
+        !p0.hasOwnProperty("version") || (p1.version = p0.version = "0.1.0");
       });
       !fwg.hasOwnProperty("from") || (fwg.from = un0);
       pfacnt.innerHTML = "" + \`
