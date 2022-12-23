@@ -2779,7 +2779,7 @@ pfsSel(resel, cbfnc) { // also triggered by pfsResets, pfsListGen, couchAtt, tmp
     }
   }
 },
-pfsInp(noflux, btnsdis) { // also triggered by jdePtyGen, dataDispl, metaChg, swapExe, fileLFDel, dviz-dboxupd
+pfsInp(noflux, btnsdis) { // also triggered by jdePtyGen, dataDispl, metaChg, swapExe, qconRetrvD, fileLFDel, dviz-dboxupd
   let dirref, sdirfw,
     rawtxta = document.querySelector('#ecoesp0 #rawtxta'),
     fileref = document.querySelector('#econav0 #pfsinp').value.replace(/^\u2514 /, "").trim(),
@@ -3869,7 +3869,8 @@ qconRetrvD(cbfnc, errfnc, txd5) { // also triggered by guideLoad, dviz-idxlist, 
   txd5 || !valcon || !filewkg || !/^eco-(?:publmgr|scrap|srcdoc)$/.test(filewkg.file_type)
   || document.querySelector('#ecoesp0 .escreen:nth-of-type(2):not(.is-hidden)') || EC1.tabs0Tog(4);
   if ((txd5 || "").file_type) {
-    pfsResets();
+    document.querySelector('#econav0 #pfsinp').value = "";
+    EC1.pfsInp();
     dataDispl(txd5, 1, cbfnc);
   } else if (!valcon) {
     pfsResets();
