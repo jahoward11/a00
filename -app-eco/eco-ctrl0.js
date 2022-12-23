@@ -1,7 +1,7 @@
 // Web Application
 (function() {
 'use strict';
-var appid, dbpch, eb1dflt, file2nd, filewkg, fldfoc, idtoks,
+var appid, dbpch, eb1dflt, file2nd, filewkg, fldfoc, idGen, idtoks,
   prjsenet, tm0disc, tmp1ff, tmp1pc,
   tmplpdblist, tmplpdbblurbs,
   tmplattlist, tmplprjdisc, tmplpfslist,
@@ -291,7 +291,7 @@ function assts2Blob() {
     jsclist = document.querySelector('#ecoesp0 #jsclist'),
     hlslist = document.querySelector('#ecoesp0 #hlslist'),
     iniscripts = document.querySelector('body>#iniscripts'),
-    mjsMrg = () => Object.keys(EMODJS)
+    mjsMrg = () => !(idGen = ecoqjs.idGen) || Object.keys(EMODJS)
       .forEach(k => EMODJS[k].fnc = (EC0.MODJS[k] || "").fnc || ecomjs[k] || null),
     attPrc1 = (docid, akey) =>
       /^blob:/.test(aurls[akey]) || !dbpc2 || dbpc2.getAttachment(docid, akey)
@@ -1599,15 +1599,16 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       : !udata.hasOwnProperty("_id") || typeof udata._id !== 'string' ? {}
       : { _id: "", _rev: "" }, udata ));
     if (destindr) {
-      Object.assign(filewkg, { _id: "", _rev: "" });
+      Object.assign( filewkg, { _id: /^idGen\(.*\)$/.test((filewkg._id || "").trim())
+        && ecoqjs.fncTry(eval, filewkg._id) || "", _rev: "" });
       !filewkg.hasOwnProperty("ts_created") || (filewkg.ts_updated = filewkg.ts_created = tstamp1);
       [filewkg.file_created, filewkg.file_updated].forEach((ppty, i) => { if (ppty) {
         ppty.username = epsets.uname;
         ppty.timestamp = tstamp1;
-        ppty.dborigin = rmttxd.DBORIG || a00orig || "";
-        ppty.dbname = dbpch ? dbpch.name : !rmttxd.DBNAME ? "" : rmttxd.DBNAME;
-        ppty.subdir = "";
-        !ppty.hasOwnProperty("misc") || (ppty.misc = "");
+        ppty.dborigin || (ppty.dborigin = rmttxd.DBORIG || a00orig || "");
+        ppty.dbname || (ppty.dbname = dbpch ? dbpch.name : !rmttxd.DBNAME ? "" : rmttxd.DBNAME);
+        //ppty.subdir = "";
+        //!ppty.hasOwnProperty("misc") || (ppty.misc = "");
         !ppty.hasOwnProperty("version") || (ppty.version = "0.1.0");
       }});
       !filewkg.hasOwnProperty("from") || (filewkg.from = epsets.uname);
@@ -3849,7 +3850,7 @@ qconSyncD() {
     msgHandl(txdata);
   }
 },
-qconRetrvD(cbfnc, errfnc) { // also triggered by guideLoad, dviz-idxlist, dviz-memos, dviz-dboxupd
+qconRetrvD(cbfnc, errfnc, txd5) { // also triggered by guideLoad, dviz-idxlist, dviz-memos, dviz-dboxupd
 // ### http console input ###
 // *any results from the following txs get sent to preview/jdedft/jderaw*
 // 1 blank: reset edit space
@@ -3865,9 +3866,11 @@ qconRetrvD(cbfnc, errfnc) { // also triggered by guideLoad, dviz-idxlist, dviz-m
   let lfkey,
     [txdata, valcon] = txdPrep(),
     ecoat = (txdata.idtoks || idtoks || "").accessToken;
-  !valcon || !filewkg || !/^eco-(?:publmgr|scrap|srcdoc)$/.test(filewkg.file_type)
+  txd5 || !valcon || !filewkg || !/^eco-(?:publmgr|scrap|srcdoc)$/.test(filewkg.file_type)
   || document.querySelector('#ecoesp0 .escreen:nth-of-type(2):not(.is-hidden)') || EC1.tabs0Tog(4);
-  if (!valcon) {
+  if ((txd5 || "").file_type) {
+    dataDispl(txd5, 1, cbfnc);
+  } else if (!valcon) {
     pfsResets();
     msgHandl("Edit Space is reset.");
   } else if (/^\/\/.*$/.test(valcon) && window.localforage) {
