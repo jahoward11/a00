@@ -239,7 +239,8 @@ const itoken = `/*
 */`;
 
 const dbapp = `//
-// __Recipes DB Webapp__
+// __"Recipes" DB Webapp__
+
 /*
  cQry = () => !(window.pdbs || []).includes((window.txd2 || "").DBNAME) && [] || PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.text()).then(cnt => [txd2.wid, cnt]);
  uiDspl = ([wid, cnt, scr]) => { if (!wid || !cnt) return; let ndiv = document.createElement('div'); ndiv.id = wid; ndiv.innerHTML = "\\n<hr />\\n" + cnt.trim() + "\\n"; cmain.appendChild(ndiv); return scr || window[wid] && window[wid].querySelector('script'); };
@@ -329,6 +330,8 @@ const t4cntcs = `//
 //`;
 
 const srtools = `//
+// __Search-&-Replace Tools__
+
 // prepend bullets to unordered lists
  // sepainp.value = "/^(?!#+ +\\\\S)(?: ?- | ?\\\\d+\\\\. |) *(?=\\\\S)/gm";
  // rtrminp.value = '"- "';
@@ -361,17 +364,30 @@ const srtools = `//
 //`;
 
 const nmtools = `//
-// __Note Manager Tools__
+// __Note-Mgr Tools__
+
 /*
+ Object.keys(nm0)
+
+ str = nmdata.textContent;
+ doc = JSON.parse(nmdata.textContent);
+ st2 = qctxta.value;
+ txd = JSON.parse(qctxta.value);
  pcs = JSON.parse(p0parseconfigs.value);
  ffs = JSON.parse(p0filefrags.value);
 
+ doc.content;
+ doc.parseconfigs.linksconstr.htmllinktxt;
+ doc.filefrags[0].contenttxt;
+ txd.docs[0].file_updated;
  pcs.scriptsconstr[0].usedescription;
  pcs.scriptsconstr[0].htmlscriptload;
  pcs.scriptsconstr[0].deftxt;
  pcs.linksconstr.htmllinktxt;
  ffs[0].contenttxt;
 
+ srctxta.value = str;
+ qctxta.value = JSON.stringify(txd, 0, 2);
  p0parseconfigs.value = JSON.stringify(pcs, 0, 2); ""
  p0filefrags.value = JSON.stringify(ffs, 0, 2); ""
 */
