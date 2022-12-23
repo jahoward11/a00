@@ -768,8 +768,8 @@ let q2Bcopy, q2Bhtml,
     xsetinp.value && (!xsetlist.value || xsetlist.value === xsetinp.value.replace(/.+\\//, ""))
     || (xsetinp.value = (optg === "USERdata/" ? "" : optg) + xsetlist.value);
     !optg || ( optg !== "USERdata/"
-    ? ( dentr.value = ((xstor[optg.replace(/\\/$/, "")] || "")[xsetlist.value] || "")
-      .replace(/\\n+$|^\\n+/g, "") ) && xprsEval()
+    ? !( dentr.value = ((xstor[optg.replace(/\\/$/, "")] || "")[xsetlist.value] || "")
+      .replace(/\\n+$|^\\n+/g, "") ) || xprsEval()
     : !window.localforage || localforage.getItem(xsetinp.value)
       .then(xprsEval).catch(reShow) );
   },
@@ -782,7 +782,7 @@ let q2Bcopy, q2Bhtml,
             .map(e => "\\n        <option>" + e + "</option>").join("")
           + "\\n      </optgroup>" ).join("") + "\\n    ";
       !((xsetlist.value = seln || "") && xsetlist.value)
-      ? ecoscrs && initLoad() : v0set || !dload ? xprsEval() : xsetLoad();
+      ? !ecoscrs || initLoad() : v0set || !dload ? xprsEval() : xsetLoad();
     };
     !window.localforage ? xlRndr() : localforage.keys().then(xlRndr).catch(reShow);
   };
