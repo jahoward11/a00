@@ -1280,7 +1280,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         : Array.from(chks).filter( inp => inp.parentElement.parentElement.children[3]
           && !/^$|asset|attach/i ///^(?:anno|contact|memo|post|prjid|publmgr|scrap|srcdoc)$/
           .test(inp.parentElement.parentElement.children[3].textContent) ),
-      txd2 = evt.DBNAME ? evt : {
+      txd2 = (evt || "").DBNAME ? evt : {
         DBNAME: txd1.DBNAME,
         FILEID: "_all_docs",
         OPTS:   {
@@ -1329,7 +1329,9 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       blkDspl = qrsp => {
         if (!window.qctxta) {
           nmdata.innerHTML = "" + \`
-  <button id=submbtn class="fltrt hgainl"><span class=isucc>&#x27b6;</span> SUBMIT</button>
+  <span class=fltrt>
+  <button id=cnclbtn class=hgainl><strong class=isucc>&lang;</strong> CANCEL</button>&nbsp;
+  <button id=submbtn class=hgainl><span class=isucc>&#x27b6;</span> SUBMIT</button></span>
   <div class=field>
     <h4>DB Bulk Action</h4>
     <div class="alnrt chelp isucc dnone">Data is submitted to local DB.</div>
@@ -1338,6 +1340,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   <div class="cfield alnrt"><button id=qselbtn class="bsml ilink" data-seltrg=qctxta>sel</button></div>
   <textarea id=qctxta class=textarea rows=31></textarea>
   <div id=qchlp class="chelp iwarn dnone"><strong>ALERT:</strong> Invalid JSON.</div>\\n\`;
+          cnclbtn.onclick = pdbOpen;
           submbtn.onclick = pchPut;
           qselbtn.onclick = txtaSel;
           qctxta.onblur = jsonVldt;
@@ -1349,7 +1352,8 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         qctxta.value = valStr(qrsp, 2);
         !tidx || tabActv();
       },
-      dbq = txd2.DBNAME && window.PouchDB && PouchDB(txd2.DBNAME);
+      dbq = Object.keys(nm0cfgs).includes(txd2.DBNAME)
+        && window.PouchDB && PouchDB(txd2.DBNAME);
     r2con.textContent = "";
     if (vbas > 1) {
       document.querySelectorAll(qslrs[10])
@@ -1369,7 +1373,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           : tanc.parentElement.parentElement.parentElement.querySelector('span:not(.dnone)>input') )
         || "",
       sdir = tanc && vbas > 1 && tanc.parentElement.previousElementSibling.textContent,
-      txd4 = evt.DBNAME ? evt : {
+      txd4 = (evt || "").DBNAME ? evt : {
         DBNAME: txd1.DBNAME,
         FILEID: !tanc ? "" : sdir && rexsd.test(sdir)
           ? sdir.replace(/\\/$/, "") : tanc.textContent || tanc.dataset.fileid,
@@ -1390,7 +1394,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
             txd4.ATTKEY.replace(/\\.(?:(css)|(html?)|(md)|m?(js))$|.*/i, "$1$2$3$4"), "dflow" ))
           .catch(r2Show);
     //r2Show(txd4);
-    if (!window.PouchDB || !txd4.DBNAME || !txd4.FILEID
+    if (!window.PouchDB || !Object.keys(nm0cfgs).includes(txd4.DBNAME) || !txd4.FILEID
     || txd4.ATTKEY && !reximg.test(txd4.ATTKEY) && !rextxt.test(txd4.ATTKEY)) { return; }
     r2con.textContent = "";
     if (vbas > 1) {
@@ -1472,8 +1476,9 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           !fwg.file_updated || [fwg.file_updated].forEach(p1 => {
             p1.username = nm0sets.uname || nm0sets.uemail || "user000";
             p1.timestamp = ts0;
-            p1.dborigin = /127\\.0\\.0|192\\.168\\.0|cloudant|localhost/.test(location.origin)
-              ? location.origin : [location.origin, navigator.userAgent || navigator.userAgentData];
+            p1.dborigin || ( p1.dborigin
+              = /127\\.0\\.0|192\\.168\\.0|cloudant|localhost/.test(location.origin)
+              ? location.origin : [location.origin, navigator.userAgent || navigator.userAgentData] );
             p1.dbname = txd1.DBNAME;
             !p1.hasOwnProperty("version") || (p1.version = p1.version.replace(/-?\\d+$/, m => ++m));
           });
@@ -1483,7 +1488,8 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
             fwg._attachments[ !imganm2.value ? f.name : !a1inp.files[1]
               ? imganm2.value : imganm2.value.replace(/(?=\\.\\w+$|$)/, i > 9 ? i : "0" + i) ]
             = { content_type: f.type, data: f } );
-          !chgs || !txd4.DBNAME || !window.PouchDB || PouchDB(txd4.DBNAME)
+          !chgs || !Object.keys(nm0cfgs).includes(txd4.DBNAME)
+          || !window.PouchDB || PouchDB(txd4.DBNAME)
           .put(Object.assign({ _id: "", _rev: "" }, fwg), txd4.OPTS).then( trsp =>
             Object.keys(fwg).forEach( k => /^_id$|^_rev$/.test(k)
               || window["p0" + k].classList.remove("isucc", "iwarn") )
@@ -1890,7 +1896,8 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           fwg._attachments[ !imganm2.value ? f.name : !a1inp.files[1]
             ? imganm2.value : imganm2.value.replace(/(?=\\.\\w+$|$)/, i > 9 ? i : "0" + i) ]
           = { content_type: f.type, data: f } );
-        !chgs || !p0_id.value || !txd5.DBNAME || !window.PouchDB || PouchDB(txd5.DBNAME)
+        !chgs || !p0_id.value || !Object.keys(nm0cfgs).includes(txd5.DBNAME)
+        || !window.PouchDB || PouchDB(txd5.DBNAME)
         .put(Object.assign({ _id: "", _rev: "" }, fwg), {}).then( trsp =>
           Object.keys(fwg).forEach( k => /^_id$|^_rev$/.test(k)
             || window["p0" + k].classList.remove("isucc", "iwarn") || (window["p0" + k].disabled = 1) )
