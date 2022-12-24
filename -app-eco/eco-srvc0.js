@@ -470,7 +470,7 @@ EC0.TMPLS = {
     content: ""
   },
   event: {
-    _id: "4-event", //"idGen(\"~E\", ts0, un0)"
+    _id: "4-event", //"idGen('~E', 0, un0)"
     _rev: "",
     file_type: "eco-event",
     file_created: {
@@ -518,7 +518,7 @@ EC0.TMPLS = {
     descr_extd: ""
   },
   anno: {
-    _id: "6-anno",
+    _id: "6-anno", //"idGen('~a', 0, un0)"
     _rev: "",
     file_type: "eco-anno",
     file_created: {
@@ -534,7 +534,7 @@ EC0.TMPLS = {
     texthl: [""]
   },
   memo: {
-    _id: "7-memo", //"idGen(\"~m\", ts0, un0)"
+    _id: "7-memo", //"idGen('~m', 0, un0)"
     _rev: "",
     file_type: "eco-memo",
     file_created: {

@@ -1180,7 +1180,7 @@ function rsrcsXGet(txdata = {}) {
         return localforage.getItem(txdata.FILEID.replace(/^\/\//, ""))
         .then(val => !/^{".+}$/.test(val) ? val : (jsonParse(val) || "").content).catch(msgPrefmt);
       } else if (rexoqa.test(txdata.FILEID)) {
-        aobj = EC2.objQA(txdata.FILEID.replace(/^\$ *|^(\w+):.*/g, "$1"), 1);
+        aobj = EC2.objQA(txdata.FILEID.replace(/^\$ *|^(\w+):.*/g, "$1"), 0);
         return aobj == null ? ""
         : typeof aobj !== 'object' ? aobj : aobj.content || msgPrefmt(aobj);
       } else if (txdata.url || !txdata.DBNAME && txdata.FILEID) {
@@ -1600,7 +1600,8 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       : { _id: "", _rev: "" }, udata ));
     if (destindr) {
       Object.assign( filewkg, { _id: /^idGen\(.*\)$/.test((filewkg._id || "").trim())
-        && ecoqjs.fncTry(eval, "ecoqjs." + filewkg._id) || "", _rev: "" });
+        && ecoqjs.fncTry( eval, "ecoqjs." + filewkg._id
+          .replace(/\b(?:un0|uname)(?= *\))/i, "EC2.objQA('epsets.uname', 0)") ) || "", _rev: "" });
       !filewkg.hasOwnProperty("ts_created") || (filewkg.ts_updated = filewkg.ts_created = tstamp1);
       [filewkg.file_created, filewkg.file_updated].forEach((ppty, i) => { if (ppty) {
         ppty.username = epsets.uname;
@@ -3585,7 +3586,7 @@ u2Blob(url) { // also triggered by prjDiscGen, jdeDftGen, dviz-memos, dviz-conta
 },
 objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-memos
   let pty,
-    rsltFbk = rslt => pty && fbx ? ""
+    rsltFbk = rslt => pty && fbx === 0 ? ""
       : /^(?:keys|ks?)$/i.test(pty) && ecoqjs.fncTry(Object.keys, rslt) || rslt,
     ptyTest = d => pty = key.replace(!d ? /^\w+\.(.+)$|.*/ : /^\w+\.(\d+)$|.*/, "$1"),
     gloObj = (/^import\(/.test(key) || window[key.replace(/^new +|[.([].+/g, "")])
@@ -3595,7 +3596,7 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-memos
       : Object.assign(Object.assign({}, Handlebars), { Parser: {}, default: {} }) );
   key = key == null ? "" : "" + key;
   return gloObj != null ? gloObj
-  : /^qcon|^q?msg/i.test(key) && fbx && fbx !== 1 ? msgHandl(fbx)
+  : /^qcon|^q?msg/i.test(key) && fbx ? msgHandl(fbx)
   : /^attlist/i.test(key) ? attListGen()
   : /^pfslist/i.test(key) ? pfsListGen()
   : /^a00p/i.test(key) ? a00path

@@ -1681,7 +1681,7 @@ let elsmed, fpl, fxa, pcntcs, rval, uimg, unm,
       //startkey: ["P"], endkey: ["Q"]
     }
   },
-  tmcntcs = window.EC2 && EC2.objQA("team", 1) || {},
+  tmcntcs = window.EC2 && EC2.objQA("team", 0) || {},
   r3con = document.querySelector('main>#r3con'),
   ctotal = document.querySelector('main #ctotal'),
   filts = document.querySelectorAll('main>#cfilt>.panel>.panel-block input'),
@@ -1762,7 +1762,7 @@ let elsmed, fpl, fxa, pcntcs, rval, uimg, unm,
     </article>\` ).join("\\n") + "\\n  ";
 if (!window.PouchDB) { return r3Show("Alert: PouchDB is not loaded. Database is inaccessible."); }
 document.querySelector('main>#cfilt>#plinks').innerHTML = "\\n      "
-+ (window.EC2 && EC2.objQA("pf3stor.dbpubl", 1) || [])
++ (window.EC2 && EC2.objQA("pf3stor.dbpubl", 0) || [])
   .filter(e => e && !/-s\\d\\d+$|\\.(?!json$)\\w{2,4}$/.test(e[1]))
   .map(e => e[1].replace(/(?:-[dv]?[.\\d]+|)\\.\\w{2,4}$/, "")).sort()
   .map(e => \`<option value="\${ e }"></option>\`).join("\\n      ") + "\\n    ";
@@ -1790,7 +1790,7 @@ document.querySelector('main>#cfilt>#pcntcs').innerHTML = "\\n      "
     document.querySelectorAll('main>#postbd .media-content>.field:last-child>details')
     .forEach(e => e.open = filts[8].checked);
   document.querySelector('main>#cfilt>.panel>.panel-heading>.is-pulled-right').onclick = rsltFilt;
-  filts[4].value = window.EC2 && EC2.objQA("epsets.uname", 1) || "";
+  filts[4].value = window.EC2 && EC2.objQA("epsets.uname", 0) || "";
 }).then(rsltFilt)
 .catch(r3Show);
 })();
