@@ -1027,7 +1027,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       content: ""
     },
     event: {
-      _id: "idGen(\\"~E\\", ts0, un0)",
+      _id: "idGen('~E', 0, un0)",
       _rev: "",
       file_type: "event",
       file_created: {
@@ -1052,7 +1052,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       description: ""
     },
     memo: {
-      _id: "idGen(\\"~m\\", ts0, un0)",
+      _id: "idGen('~m', 0, un0)",
       _rev: "",
       file_type: "memo",
       file_created: {
@@ -1069,7 +1069,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       body: ""
     },
     contact: {
-      _id: "!groupID-cUsername",
+      _id: "!groupID-uname",
       _rev: "",
       file_type: "contact",
       ts_created: 0,
@@ -1321,7 +1321,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           hlps[0].classList.remove("dnone");
           r2Show(trsp);
           !vidx || (viewsel.selectedIndex = vidx = 0) || viewChg();
-        }).catch(err => {
+        }).then(txd3.cbf || txd2.cbf).catch(err => {
           hlps[1].classList.remove("dnone");
           r2Show(err);
         });
@@ -1494,6 +1494,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
             Object.keys(fwg).forEach( k => /^_id$|^_rev$/.test(k)
               || window["p0" + k].classList.remove("isucc", "iwarn") )
             || hlps[0].classList.remove("dnone") || r2Show(trsp) )
+          .then(txd4.cbf)
           .catch(err => hlps[1].classList.remove("dnone") || r2Show(err));
         }; //fwgUpd;
         nmdata.querySelectorAll('.field-label button').forEach(e => e.onclick = txtaSel);
@@ -1840,15 +1841,15 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     (!evt ? tabncs[tidx] : evt.currentTarget).parentElement.classList.add('is-active');
     nmpans.forEach(e => e.classList.add("dnone"));
     nmpans[tidx].classList.remove("dnone");
-    if (tidx === 1 && !fwg) {
+    if (tidx === 1 && !fwg && txd5.DBNAME) {
       let ts0 = new Date().getTime(),
-        un0 = nm0sets.uname || "user000",
         taHt = k => /body|content/i.test(k) ? 16 : /misc/i.test(k) ? 8
           : typeof fwg[k] !== 'object' || Array.isArray(fwg[k]) && typeof fwg[k][0] !== 'object' ? 2
           : !Array.isArray(fwg[k]) && Object.keys(fwg[k]).length < 8 ? 8 : 16;
       fwg = txd5.doc || fncTry( JSON.parse, JSON.stringify(
         (nm0sets.p2typs[t01sel.value] || "").t1 || pftyps[t01sel.value] || pftyps.new )) || {};
-      !/^idGen\\(.*\\)$/.test((fwg._id || "").trim()) || (fwg._id = fncTry(eval, fwg._id, 2));
+      !/^idGen\\(.*\\)$/.test((fwg._id || "").trim()) || ( fwg._id
+        = fncTry(eval, "nm0." + fwg._id.replace(/\\b(?:un0|uname)(?= *\\))/i, "nm0.nm0sets.uname"), 2) );
       !fwg.hasOwnProperty("ts_created") || (fwg.ts_updated = fwg.ts_created = ts0);
       !fwg.file_created || [[fwg.file_created, fwg.file_updated]].forEach(([p0, p1]) => {
         p1 = p1 || {};
@@ -1860,9 +1861,11 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         p0.dbname || (p1.dbname = p0.dbname = txd5.DBNAME);
         !p0.hasOwnProperty("version") || (p1.version = p0.version = "0.1.0");
       });
-      !fwg.hasOwnProperty("from") || (fwg.from = un0);
+      !fwg.hasOwnProperty("from") || (fwg.from = nm0sets.uname || "user000");
       pfacnt.innerHTML = "" + \`
-  <button id=savbtn class="fltrt hgainl"><span class=isucc>&#x267a;</span> SAVE</button>
+  <span class=fltrt>
+  <button id=resbtn class=hgainl><strong class=isucc>&lang;</strong> RESET</button>&nbsp;
+  <button id=savbtn class=hgainl><span class=isucc>&#x267a;</span> SAVE</button></span>
   <div class=field>
     <h4>New Note</h4>
     <div class="alnrt chelp isucc dnone">New note is saved in local DB.</div>
@@ -1882,6 +1885,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       a1inp.onchange = () => a3inp.innerHTML = a1inp.files[1]
         ? "<em>[" + a1inp.files.length + " files selected]</em>"
         : a1inp.files[0] ? a1inp.files[0].name : "<span>Locate image&hellip;</span>";
+      resbtn.onclick = pdbOpen;
       savbtn.onclick = () => {
         let chgs = 0,
           hlps = pfacnt.querySelectorAll('.chelp');
@@ -1902,6 +1906,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           Object.keys(fwg).forEach( k => /^_id$|^_rev$/.test(k)
             || window["p0" + k].classList.remove("isucc", "iwarn") || (window["p0" + k].disabled = 1) )
           || (fwg = null) || hlps[0].classList.remove("dnone") || r2Show(trsp) )
+        .then(txd5.cbf)
         .catch(err => hlps[1].classList.remove("dnone") || r2Show(err));
       }; //fwgUpd;
       pfacnt.querySelectorAll('.field-label button').forEach(e => e.onclick = txtaSel);
@@ -2305,8 +2310,9 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     !pdbssel.value || pdbOpen();
   };
 window.nm0 = {
-  aurls, cntcs, txd1, r2Show, fncTry, htmTxt, valStr,
-  mp1, jb1, jp1, filesChg, fileLoad, tabActv
+  aurls, cntcs, nm0cfgs, nm0sets, txd1,
+  r2Show, fncTry, htmTxt, valStr, mp1, jb1, jp1, idGen,
+  filesChg, fileLoad, tabActv
 };
 pdbssel.onchange = pdbOpen;
 viewsel.onchange = viewChg;
