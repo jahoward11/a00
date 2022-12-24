@@ -893,8 +893,8 @@ figure {
     is de-focused (by tapping outside the field), the command or expression is executed by the
     browser and the final result is then displayed in the next line(s) of the text&nbsp;field.
   </p>
-  <button id=jselbtn class="fltrt bsml ilink" data-seltrg=jsctxta>sel</button>
-  <textarea id=jsctxta class=textarea rows=31>&gt; </textarea>
+  <button id=jselbtn class="fltrt bsml ilink" data-seltrg=js2txta>sel</button>
+  <textarea id=js2txta class=textarea rows=31>&gt; </textarea>
 </div>`;
 
 const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
@@ -1131,8 +1131,8 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         .replace(lang !== "md" ? /^_$/ : /\\\\x5f;/g, "_") + "</pre>\\n"
       + (!window.hljs ? "" : "<style>@import \\"" + (aurls[nm0sets.hlsty] || "") + "\\";</style>\\n"),
   jscEval = () => {
-    let fncexp = jsctxta.value.trim().replace(/(?:[^]*\\n|^)>\\s*(?=(?:.|\\n(?!>))*$)/, ""),
-      r1Show = r => jsctxta.value += "\\n" + valStr(r, 2) + "\\n> ";
+    let fncexp = js2txta.value.trim().replace(/(?:[^]*\\n|^)>\\s*(?=(?:.|\\n(?!>))*$)/, ""),
+      r1Show = r => js2txta.value += "\\n" + valStr(r, 2) + "\\n> ";
     !fncexp || Promise.resolve(fncTry(window.eval, fncexp, 1)).then(r1Show).catch(r1Show);
   },
   txtaSel = e => !(e.focus || (e = window.eval(e.target.dataset.seltrg)))
@@ -2335,7 +2335,7 @@ v01sel.onchange = cfgsUpd;
 actrls.forEach(elm => elm.onchange = setsUpd);
 wipebtn.onclick = storDel;
 jselbtn.onclick = txtaSel;
-jsctxta.onblur = jscEval;
+js2txta.onblur = jscEval;
 ( nm0.p2Gen = () => !window.PouchDB || !PouchDB.allDbs
   ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(r2Show) )();`;
 
