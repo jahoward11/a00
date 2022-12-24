@@ -1345,7 +1345,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           qselbtn.onclick = txtaSel;
           qctxta.onblur = jsonVldt;
         }
-        r2con.textContent = "";
+        //r2con.textContent = "";
         hlps = nmdata.querySelectorAll('.chelp');
         hlps.forEach(e => e.classList.add("dnone"));
         qctxta.classList.remove("iwarn");
