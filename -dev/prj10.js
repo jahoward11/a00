@@ -126,6 +126,7 @@ const jscmds = `//
 // fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then(s => s.replace(/(?:[^]*?\\n|^)(function rdataFetch.+(?:\\n.+?)+?(?:;?\\s*};?|;)(?=\\n[\\n\\S]|$))[^]*|[^]*/, "$1")).then(reShow).catch(reShow) //
 // fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then(s => window.s3 = s).then(reShow).catch(reShow)
 // reShow( ecoqjs.jcmtXtract(s3) )
+// reShow( [...new Set((window.s4 = document.querySelectorAll('script')[5].innerHTML).match(/\w*btn\w*/gi))] )
 
 //__For CalcJS in Ecollabs__
 /*
