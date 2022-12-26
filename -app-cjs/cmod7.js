@@ -9,13 +9,13 @@ Note-Manager UI -- one that extends the functionality of the
 demo code written in the \`JScode\` module's data files.
 */
 
-window.nmwrap || import("../-app-cjs/nmgr.js").then(re => { let ndiv = document.createElement('div'); ndiv.id = "nmwrap"; ndiv.innerHTML = "\\n<hr />\\n" + re.nmpage + "\\n"; cmain.appendChild(ndiv); return scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js")).then(() => scrInj(null, 'module', "\\n" + re.nmscr + "\\n")); }).catch(reShow)
+ window.nmwrap || import("../-app-cjs/nmgr.js").then(re => { let ndiv = document.createElement('div'); ndiv.id = "nmwrap"; ndiv.innerHTML = "\\n<hr />\\n" + re.nmpage + "\\n"; cmain.appendChild(ndiv); return scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js")).then(() => scrInj(null, 'module', "\\n" + re.nmscr + "\\n")); }).catch(reShow)
 
  // Un-comment the following line of code to generate the
 // full source code (e.g., for building a standalone web app).
 // *Alert:* This app's code is lengthy (about 2300 lines).
 
-// import("../-app-cjs/nmgr.js").then(re => re.dwraps[0] + re.nmpage + re.dwraps[1] + re.nmscr + re.dwraps[2]).then(reShow).catch(reShow)
+ // import("../-app-cjs/nmgr.js").then(re => re.dwraps[0] + re.nmpage + re.dwraps[1] + re.nmscr + re.dwraps[2]).then(reShow).catch(reShow)
 //`;
 
 const search = `/*
@@ -24,19 +24,19 @@ __Search and Replace: from JS Tutorial 3__
 from the demo code written in the \`JScode\` module's data files.
 */
 
-t3x = xstor.JScode.tutorial3;
-bodGen = src => "\\n" + src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui = /g, "").split(/;\\nsrui \\+= /).map(eval).join("").trim() + "\\n"; //
-scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
-uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
+ t3x = xstor.JScode.tutorial3;
+ bodGen = src => "\\n" + src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui = /g, "").split(/;\\nsrui \\+= /).map(eval).join("").trim() + "\\n"; //
+ scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
+ uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
-// srwrap.remove() // *Alert:* useful only if edit-testing the UI code above
+ // srwrap.remove() // *Alert:* useful only if edit-testing the UI code above
 try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.strPars || scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(reShow); }
 
  // Un-comment the following two lines of code to generate the
 // full source code (e.g., for building a standalone web app).
 
-// dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
-// srctxta.value = (dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(t3x) + dwraps[2]);
+ // dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
+ // srctxta.value = (dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(t3x) + dwraps[2]);
 //`;
 
 const textdiff = `/*
@@ -87,9 +87,9 @@ xdui += "\\n<span class=\\"cfield fltrt\\"><label class=ccntr><input type=text i
 xdui += "\\n<h4>SOURCE2 (original)</h4>";
 xdui += "\\n<pre id=s2rslt></pre>\\n";
 
-// srwrap.remove() // *Alert:* useful only if edit-testing the UI code above
-try { xdwrap } catch { ndiv = document.createElement('div'); ndiv.id = "xdwrap"; ndiv.innerHTML = xdui; cmain.appendChild(ndiv); }
-try { SourceDiff } catch { scrInj("../-res-js/srcdiff.js").catch(reShow) }
+ // srwrap.remove() // *Alert:* useful only if edit-testing the UI code above
+ try { xdwrap } catch { ndiv = document.createElement('div'); ndiv.id = "xdwrap"; ndiv.innerHTML = xdui; cmain.appendChild(ndiv); }
+ try { SourceDiff } catch { scrInj("../-res-js/srcdiff.js").catch(reShow) }
 
 fncTry = (fnc, a, e) => { try { return fnc(a) } catch (err) { return e > 1 ? a : e ? err : undefined }};
 diffGen = ([s1txt, s2txt]) => { if (!window.SourceDiff || !s1txt || !s2txt) { return s1rslt.innerHTML = s2rslt.innerHTML = ""; } let dif = new SourceDiff.Diff(true), fmt = new SourceDiff.DiffFormatter(dif); [s2rslt.innerHTML, s1rslt.innerHTML] = fmt.formattedDiff(s2txt, s1txt); };
@@ -104,9 +104,9 @@ s2rslt.onscroll = () => { s1rslt.scrollLeft = s2rslt.scrollLeft; s1rslt.scrollTo
 // full source code (e.g., for building a standalone web app).
 
 /*
-scrGen = src => "let " + src.match(/^fncTry = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
-dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Source-Text Diffs</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script src=\\"../../a00/-res-js/srcdiff.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
-reShow(dwraps[0] + xdwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(xstor.JStool.textdiff) + dwraps[2])
+ scrGen = src => "let " + src.match(/^fncTry = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
+ dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Source-Text Diffs</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script src=\\"../../a00/-res-js/srcdiff.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
+ reShow(dwraps[0] + xdwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(xstor.JStool.textdiff) + dwraps[2])
 */
 //`;
 
