@@ -102,31 +102,31 @@ const jscmds = `//
  Array.from({ length: 5 })
  Array.from(Array(5).keys())
 
-// reShow( Array.from(Array(64).keys()).map(n => [0, 64, 128, 192].map(d => "0x" + (n + d).toString(16) + (!d && n < 16 ? "  " : " " + String.fromCodePoint(n + d))).join("\\x09")).join("\\n") )
-// reShow( Array.from(Array(64).keys()).map(n => (n += 0x2000) && [0, 64, 128, 192].map(d => "0x" + (n + d).toString(16) + " " + String.fromCodePoint(n + d)).join("  \\x09")).join("\\n") )
-// reShow( Array.from(Array(25).keys()).map(n => (n + 913) + "/" + (n + 945) + " " + [913, 945].map(d => String.fromCodePoint(n + d)).join(" ")).join("\\n") )
+ // reShow( Array.from(Array(64).keys()).map(n => [0, 64, 128, 192].map(d => "0x" + (n + d).toString(16) + (!d && n < 16 ? "  " : " " + String.fromCodePoint(n + d))).join("\\x09")).join("\\n") )
+ // reShow( Array.from(Array(64).keys()).map(n => (n += 0x2000) && [0, 64, 128, 192].map(d => "0x" + (n + d).toString(16) + " " + String.fromCodePoint(n + d)).join("  \\x09")).join("\\n") )
+ // reShow( Array.from(Array(25).keys()).map(n => (n + 913) + "/" + (n + 945) + " " + [913, 945].map(d => String.fromCodePoint(n + d)).join(" ")).join("\\n") )
 
-// { let k, keys = []; for (k in localStorage) keys.push(k); reShow(keys); }
-// reShow( Object.keys(localStorage) )
-// { let k, k2s, keys = []; for (k in document.documentElement) keys.push(k); reShow(k2s = keys.filter(k => !/^on|^aria/.test(k)).sort()); k2s.length; } //
-// reShow( Object.keys(window).filter( pty => Object.entries(Object.getOwnPropertyDescriptor(window, pty) || "").filter(e => ['value', 'writable', 'enumerable'].includes(e[0]) && e[1]).length === 3 ))
-// reShow( Object.fromEntries(Object.keys(location).map(e => [e, location[e]])) )
-// reShow( Object.fromEntries(["onLine", "appCodeName", "appName", "platform", "product", "vendor", "userAgent", "userAgentData"].map(e => [e, navigator[e]])) )
-// reShow( Object.getOwnPropertyNames(Math) )
-// reShow( Object.getOwnPropertyNames(Number.prototype) )
+ // { let k, keys = []; for (k in localStorage) keys.push(k); reShow(keys); }
+ // reShow( Object.keys(localStorage) )
+ // { let k, k2s, keys = []; for (k in document.documentElement) keys.push(k); reShow(k2s = keys.filter(k => !/^on|^aria/.test(k)).sort()); k2s.length; } //
+ // reShow( Object.keys(window).filter( pty => Object.entries(Object.getOwnPropertyDescriptor(window, pty) || "").filter(e => ['value', 'writable', 'enumerable'].includes(e[0]) && e[1]).length === 3 ))
+ // reShow( Object.fromEntries(Object.keys(location).map(e => [e, location[e]])) )
+ // reShow( Object.fromEntries(["onLine", "appCodeName", "appName", "platform", "product", "vendor", "userAgent", "userAgentData"].map(e => [e, navigator[e]])) )
+ // reShow( Object.getOwnPropertyNames(Math) )
+ // reShow( Object.getOwnPropertyNames(Number.prototype) )
 
-// window.ecoqjs || scrInj("../-app-eco/eco-srvc2.js").then(reShow).catch(reShow)
-// reShow( Object.fromEntries( Object.entries(ecoqjs).map(oe => [oe[0], oe[1].toString()]) )) // localforage, PouchDB, hljs, SourceDiff
+ // window.ecoqjs || scrInj("../-app-eco/eco-srvc2.js").then(reShow).catch(reShow)
+ // reShow( Object.fromEntries( Object.entries(ecoqjs).map(oe => [oe[0], oe[1].toString()]) )) // localforage, PouchDB, hljs, SourceDiff
 
-// reShow( Array.from(document.querySelectorAll('[id]')).map(e => e.id) )
-// reShow( ecoqjs.jvarXtract(document.querySelectorAll('script')[2].textContent) )
-// reShow( ecoqjs.jcmtXtract(document.querySelector('script:nth-of-type(3)').outerHTML) )
+ // reShow( Array.from(document.querySelectorAll('[id]')).map(e => e.id) )
+ // reShow( ecoqjs.jvarXtract(document.querySelectorAll('script')[2].textContent) )
+ // reShow( ecoqjs.jcmtXtract(document.querySelector('script:nth-of-type(3)').outerHTML) )
 
-// fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then(ecoqjs.jvarXtract).then(reShow).catch(reShow)
-// fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then(s => s.replace(/(?:[^]*?\\n|^)(function rdataFetch.+(?:\\n.+?)+?(?:;?\\s*};?|;)(?=\\n[\\n\\S]|$))[^]*|[^]*/, "$1")).then(reShow).catch(reShow) //
-// fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then(s => window.s3 = s).then(reShow).catch(reShow)
-// reShow( ecoqjs.jcmtXtract(s3) )
-// reShow( [...new Set((window.s4 = document.querySelectorAll('script')[5].innerHTML).match(/\w*btn\w*/gi))] )
+ // fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then(ecoqjs.jvarXtract).then(reShow).catch(reShow)
+ // fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then(s => s.replace(/(?:[^]*?\\n|^)(function rdataFetch.+(?:\\n.+?)+?(?:;?\\s*};?|;)(?=\\n[\\n\\S]|$))[^]*|[^]*/, "$1")).then(reShow).catch(reShow) //
+ // fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then(s => window.s3 = s).then(reShow).catch(reShow)
+ // reShow( ecoqjs.jcmtXtract(s3) )
+ // reShow( [...new Set((window.s4 = document.querySelectorAll('script')[5].innerHTML).match(/\w*btn\w*/gi))] )
 
 //__For CalcJS in Ecollabs__
 /*
@@ -142,49 +142,49 @@ const jscmds = `//
 
 const bcaches = `//
  caches.keys().then(reShow)
-// caches.keys().then(keys => caches.open(keys[0])).then(cache => cache.keys()).then(keys => keys.map(k => ({ url: k.url, mode: k.mode, dest: k.destination }))).then(reShow)
-// caches.open("calcjs0.15").then(cache => cache.delete("https:/" + "/jahoward11.github.io/a00/-res-js/jstat-tdist.js")).then(reShow)
-// caches.match("https:/" + "/jahoward11.github.io/a00/-res-css/reset-hjas-min0.css").then(re => re.text()).then(reShow)
+ // caches.keys().then(keys => caches.open(keys[0])).then(cache => cache.keys()).then(keys => keys.map(k => ({ url: k.url, mode: k.mode, dest: k.destination }))).then(reShow)
+ // caches.open("calcjs0.15").then(cache => cache.delete("https:/" + "/jahoward11.github.io/a00/-res-js/jstat-tdist.js")).then(reShow)
+ // caches.match("https:/" + "/jahoward11.github.io/a00/-res-css/reset-hjas-min0.css").then(re => re.text()).then(reShow)
 
-// indexedDB.databases().then(reShow)
+ // indexedDB.databases().then(reShow)
 
-// reShow(Object.keys(localStorage).filter(e => !/mrview-/.test(e)))
-// localStorage["key"] = "value"
-// localStorage.removeItem("key")
+ // reShow(Object.keys(localStorage).filter(e => !/mrview-/.test(e)))
+ // localStorage["key"] = "value"
+ // localStorage.removeItem("key")
 //`;
 
 const dscripts = `//
-// reShow(document.head.outerHTML)
-// reShow(cheadg.outerHTML)
-// reShow(menulist.outerHTML)
-// reShow(menulist.textContent.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\\xa0/g, "&nbsp;"))
-// reShow(symlist.textContent)
-// reShow(symlist.textContent.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\\xa0/g, "&nbsp;"))
+ // reShow(document.head.outerHTML)
+ // reShow(cheadg.outerHTML)
+ // reShow(menulist.outerHTML)
+ // reShow(menulist.textContent.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\\xa0/g, "&nbsp;"))
+ // reShow(symlist.textContent)
+ // reShow(symlist.textContent.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\\xa0/g, "&nbsp;"))
 
  reShow(Array.from(document.querySelectorAll('script')).map(e => e.src))
-// reShow(document.querySelector('script:last-of-type').outerHTML)
-// reShow(document.querySelector('body>script:last-of-type').outerHTML)
+ // reShow(document.querySelector('script:last-of-type').outerHTML)
+ // reShow(document.querySelector('body>script:last-of-type').outerHTML)
 
-// reShow(Array.from(document.styleSheets).map(ss => ss.href))
-// reShow(Array.from(document.styleSheets[0].rules).map(ru => ru.cssText))
+ // reShow(Array.from(document.styleSheets).map(ss => ss.href))
+ // reShow(Array.from(document.styleSheets[0].rules).map(ru => ru.cssText))
 //`;
 
 const scrload = `//
-// window.jStat || scrInj("../-res-js/jstat-tdist.js").then(reShow).catch(reShow)
-// window.SourceDiff || scrInj("../-res-js/srcdiff.js").then(reShow).catch(reShow)
-// !!window.markdownit || Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).then(reShow).catch(reShow)
-// !!window.hljs || scrInj("../-res-js/highlight.min.js").then(reShow).catch(reShow)
-// !!window.js_beautify || scrInj("../-res-js/jsbeautify1.14.0.js").then(reShow).catch(reShow)
-// !!(window.hljs && window.js_beautify) || Promise.all(["../-res-js/highlight.min.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then(reShow).catch(reShow)
-// !!window.PouchDB || scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js")).catch(reShow)
+ // window.jStat || scrInj("../-res-js/jstat-tdist.js").then(reShow).catch(reShow)
+ // window.SourceDiff || scrInj("../-res-js/srcdiff.js").then(reShow).catch(reShow)
+ // !!window.markdownit || Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).then(reShow).catch(reShow)
+ // !!window.hljs || scrInj("../-res-js/highlight.min.js").then(reShow).catch(reShow)
+ // !!window.js_beautify || scrInj("../-res-js/jsbeautify1.14.0.js").then(reShow).catch(reShow)
+ // !!(window.hljs && window.js_beautify) || Promise.all(["../-res-js/highlight.min.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then(reShow).catch(reShow)
+ // !!window.PouchDB || scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js")).catch(reShow)
 
-// import("../-dev/prj10.js").then(re => (xstor[re._module] = re) && xlstGen()).catch(reShow)
-// import("../-dev/prj10.js").then(re => reShow(re.jscmds)).catch(reShow)
-// import("../-res-js/ebook-annos.mjs").then(re => window["tocNavLtGen"] = re.tocNavLtGen).catch(reShow)
-// fetch("../-res-js/ebook-annos-fns.js").then(re => re.text()).then(reShow).catch(reShow)
-// localforage.getItem("t2js").then(reShow).catch(reShow)
-// PouchDB("mydb1").get("myfile").then(doc => doc.content).then(reShow).catch(reShow)
-// PouchDB.allDbs().then(reShow)
+ // import("../-dev/prj10.js").then(re => (xstor[re._module] = re) && xlstGen()).catch(reShow)
+ // import("../-dev/prj10.js").then(re => reShow(re.jscmds)).catch(reShow)
+ // import("../-res-js/ebook-annos.mjs").then(re => window["tocNavLtGen"] = re.tocNavLtGen).catch(reShow)
+ // fetch("../-res-js/ebook-annos-fns.js").then(re => re.text()).then(reShow).catch(reShow)
+ // localforage.getItem("t2js").then(reShow).catch(reShow)
+ // PouchDB("mydb1").get("myfile").then(doc => doc.content).then(reShow).catch(reShow)
+ // PouchDB.allDbs().then(reShow)
 
 /*
 window.txd2 = {
@@ -203,13 +203,13 @@ PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
   || _.rdr.readAsText(abl) ); //!(/^blob:/.test(aurls[txd2.ATTKEY]) || (aurls[txd2.ATTKEY] = URL.createObjectURL(abl)))
 */
 
-// window.txd2 = { DBNAME: "db", FILEID: "id", ATTKEY: "key", OPTS: {} };
-// PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.text()).then(reShow).catch(reShow)
-// PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => fetch(aurls[txd2.ATTKEY] = URL.createObjectURL(abl)).then(re => re.text()).then(reShow).catch(reShow)
+ // window.txd2 = { DBNAME: "db", FILEID: "id", ATTKEY: "key", OPTS: {} };
+ // PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.text()).then(reShow).catch(reShow)
+ // PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => fetch(aurls[txd2.ATTKEY] = URL.createObjectURL(abl)).then(re => re.text()).then(reShow).catch(reShow)
 
-// sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.body.appendChild(n); };
-// !!window.PouchDB || sc2Inj("../-res-js/pouchdb.min.js")
-// !!window.PouchDB || fetch("../-res-js/pouchdb.min.js").then(re => re.blob()).then(URL.createObjectURL).then(_.sc2Inj).catch(reShow)
+ // sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.body.appendChild(n); };
+ // !!window.PouchDB || sc2Inj("../-res-js/pouchdb.min.js")
+ // !!window.PouchDB || fetch("../-res-js/pouchdb.min.js").then(re => re.blob()).then(URL.createObjectURL).then(_.sc2Inj).catch(reShow)
 //`;
 
 const jstatqs = `//
@@ -219,8 +219,8 @@ const jstatqs = `//
  1 - jStat.chisquare.cdf(csq, 3)
 
  reShow(Object.keys(jStat))
-// reShow(Object.getOwnPropertyNames(Math))
-// reShow(Object.getOwnPropertyNames(Number))
+ // reShow(Object.getOwnPropertyNames(Math))
+ // reShow(Object.getOwnPropertyNames(Number))
 //`;
 
 const itoken = `/*
@@ -279,38 +279,38 @@ const t3search = `//
  scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
  uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
-// srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
-// try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.strPars || scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(reShow); }
+ // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
+ // try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.strPars || scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(reShow); }
 
-// dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
-// srctxta.textContent = (dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(t3x) + dwraps[2]);
-// srctxta.value = recon.innerHTML = srctxta.innerHTML;
+ // dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
+ // srctxta.textContent = (dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(t3x) + dwraps[2]);
+ // srctxta.value = recon.innerHTML = srctxta.innerHTML;
 
-// /spark/.test(window.location.search) || (window.location.search = "cmods=spark.js,../-dev/prj10.js&dload=t3search");
-// srctxta.value = xstor.sparknotes.mythology.replace(/\\n\\*\\/$|^\\/\\*\\n/g, ""); //
-// srctxta.value || import("../-app-cjs/spark.js").then(re => srctxta.value = re.mythology.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(reShow); //
-// sepainp.value = "/^.*?(\\\\bmyth).*\\\\n*|^.*\\\\n*/gim"; //
-// rtrminp.value = "(m, c1, i) => { i || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" <strong>\\" + ++it1 + \\".</strong> <em>[line \\" + it0 + \\"]</em>\\\\n\\" + m.replace(/\\\\bmyth/gi, \\"<mark>$&</mark>\\"); }";
+ // /spark/.test(window.location.search) || (window.location.search = "cmods=spark.js,../-dev/prj10.js&dload=t3search");
+ // srctxta.value = xstor.sparknotes.mythology.replace(/\\n\\*\\/$|^\\/\\*\\n/g, ""); //
+ // srctxta.value || import("../-app-cjs/spark.js").then(re => srctxta.value = re.mythology.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(reShow); //
+ // sepainp.value = "/^.*?(\\\\bmyth).*\\\\n*|^.*\\\\n*/gim"; //
+ // rtrminp.value = "(m, c1, i) => { i || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" <strong>\\" + ++it1 + \\".</strong> <em>[line \\" + it0 + \\"]</em>\\\\n\\" + m.replace(/\\\\bmyth/gi, \\"<mark>$&</mark>\\"); }";
 
 /*
 - github.com/markdown-it/markdown-it/ v12.0.6
 - markdown-it.github.io/markdown-it/
 */
-// try { !!markdownit } catch { Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).catch(reShow) }
-// window.docMrkp = md => markdownit({ html: 1, typographer: 1 }).use(markdownItDecorate).use(markdownitDeflist).use(markdownItImplicitFigures).use(markdownitIns).use(markdownitMark).use(markdownitSub).use(markdownitSup).render(md.replace(/[^-](?=--[^-])/g, "$&-")); //
-// sepainp.value = "/[^]+/";
-// rtrminp.value = "docMrkp";
+ // !!window.markdownit || Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).catch(reShow)
+ // window.docMrkp = md => markdownit({ html: 1, typographer: 1 }).use(markdownItDecorate).use(markdownitDeflist).use(markdownItImplicitFigures).use(markdownitIns).use(markdownitMark).use(markdownitSub).use(markdownitSup).render(md.replace(/[^-](?=--[^-])/g, "$&-")); //
+ // sepainp.value = "/[^]+/";
+ // rtrminp.value = "docMrkp";
 
 /*
 - github.com/beautify-web/js-beautify/ v1.14.0
 - github.com/highlightjs/highlight.js/ v10.4.1
 - highlightjs.org
 */
-// !!window.hljs || scrInj("../-res-js/highlight.min.js").then(reShow).catch(reShow)
-// try { !!(hljs && js_beautify) } catch { Promise.all(["../-res-js/highlight.min.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then(reShow).catch(reShow) }
-// bpre = str => str.replace(/(?=\\.concat\\(|\\.forEach\\(|\\.map\\(|\\.match\\(|\\.replace\\()/g, "\\n");
-// window.jb1 = str => js_beautify(str, { "indent_size": 2, "space_after_anon_function": 1, "break-chained-methods": 1, "keep-array-indentation": 1 });
-// window.jh1 = str => "<pre class=hljs>" + hljs.highlightAuto(!window.jb1 ? str : jb1(str)).value + "</pre><style>@import \\"../../a00/-res-hljs/atom-one-light.css\\"; #srwrap pre>pre.hljs { margin: 0; white-space: inherit; }</style>";
+ // !!window.hljs || scrInj("../-res-js/highlight.min.js").then(reShow).catch(reShow)
+ // !!(window.hljs && window.js_beautify) || Promise.all(["../-res-js/highlight.min.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then(reShow).catch(reShow) }
+ // bpre = str => str.replace(/(?=\\.concat\\(|\\.forEach\\(|\\.map\\(|\\.match\\(|\\.replace\\()/g, "\\n");
+ // window.jb1 = str => js_beautify(str, { "indent_size": 2, "space_after_anon_function": 1, "break-chained-methods": 1, "keep-array-indentation": 1 });
+ // window.jh1 = str => "<pre class=hljs>" + hljs.highlightAuto(!window.jb1 ? str : jb1(str)).value + "</pre><style>@import \\"../../a00/-res-hljs/atom-one-light.css\\"; #srwrap pre>pre.hljs { margin: 0; white-space: inherit; }</style>";
 //`;
 
 const t4cntcs = `//
@@ -327,7 +327,7 @@ const t4cntcs = `//
 // full source code (e.g., for building a standalone web app).
 // *Alert:* This app's code is lengthy (about 2300 lines).
 
-// import("../-app-cjs/nmgr.js").then(re => re.dwraps[0] + re.nmpage + re.dwraps[1] + re.nmscr + re.dwraps[2]).then(reShow).catch(reShow)
+ // import("../-app-cjs/nmgr.js").then(re => re.dwraps[0] + re.nmpage + re.dwraps[1] + re.nmscr + re.dwraps[2]).then(reShow).catch(reShow)
 //`;
 
 const srtools = `//
