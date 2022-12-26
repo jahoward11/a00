@@ -30,7 +30,7 @@ from the demo code written in the \`JScode\` module's data files.
  uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
  // srwrap.remove() // *Alert:* useful only if edit-testing the UI code above
-try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.strPars || scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(reShow); }
+ try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.strPars || scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(reShow); }
 
  // Un-comment the following two lines of code to generate the
 // full source code (e.g., for building a standalone web app).

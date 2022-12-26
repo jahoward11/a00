@@ -185,8 +185,8 @@ ucui = "\\n<hr style=\\"margin: 1.5rem 0;\\" />\\n<h4 class=cfield>Unit Converte
 ucui += "\\n<div class=cfield><span class=ccntr><input type=text id=ucinp placeholder=\\"Enter measurement&hellip;\\" /></span><span class=ccntr><select id=ulist0>\\n";
 ucui += opts + "\\n</select></span></div>\\n<div class=cfield><span class=ccntr><input type=text id=ucout readonly /></span><span class=ccntr><select id=ulist1>\\n";
 ucui += opts + "\\n</select></span></div>\\n";
-// try { ucwrap } catch { ndiv = document.createElement('div'); ndiv.id = "ucwrap"; ndiv.innerHTML = ucui; cmain.appendChild(ndiv); }
-// [ucinp, ulist0, ulist1].forEach((e, i) => e[!i ? 'onblur' : 'onchange'] = _.ucShow)
+ // try { ucwrap } catch { ndiv = document.createElement('div'); ndiv.id = "ucwrap"; ndiv.innerHTML = ucui; cmain.appendChild(ndiv); }
+ // [ucinp, ulist0, ulist1].forEach((e, i) => e[!i ? 'onblur' : 'onchange'] = _.ucShow)
 //`;
 
 const tutorial2 = `/*
@@ -239,8 +239,8 @@ g1ui += "\\n<label class=ccntr><input type=button value=\\"&orarr; NEW GAME\\" o
 g1ui += "\\n<table id=g1board></table>\\n<div id=g1scor class=cfield>Count: <span id=g1movs>0</span></div>";
 g1ui += "\\n<div><input type=button class=ccntr value=\\"RETRACT MOVE\\" onclick=m1Rvrs() /><input type=button value=\\"RESET COUNTER\\" onclick=c1Zero() /></div>\\n";
 
-// g1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
-try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap"; ndiv.innerHTML = g1ui; cmain.appendChild(ndiv); }
+ // g1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
+ try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap"; ndiv.innerHTML = g1ui; cmain.appendChild(ndiv); }
 
 /*
     + The rendered GUI, below, is built from the leading block of
@@ -267,8 +267,8 @@ try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap";
       to generate the web-doc text that will be the app framework.
 */
 
-// dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
-// reShow(dwraps[0] + g1wrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + dwraps[2])
+ // dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
+ // reShow(dwraps[0] + g1wrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + dwraps[2])
 
 /*
     + Select and copy the orange text that appears above, overtop
@@ -314,9 +314,9 @@ g1Reset();
       life into our web-app game.
 */
 
-// recon.innerHTML = window.t2js = "" // clears any orange text (in case GUI text is still visible) and resets t2js variable
-// scrGen = src => src && (src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm) || []).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
-// !!window.t2js || navigator.clipboard.readText().then(s => window.t2js = s).then(_.scrGen).then(reShow).catch(reShow)
+ // recon.innerHTML = window.t2js = "" // clears any orange text (in case GUI text is still visible) and resets t2js variable
+ // scrGen = src => src && (src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm) || []).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
+ // !!window.t2js || navigator.clipboard.readText().then(s => window.t2js = s).then(_.scrGen).then(reShow).catch(reShow)
 
 /*
     + Select and copy the orange text that appears above, overtop
@@ -394,8 +394,8 @@ g2ui += "\\n<div id=g2scor class=cfield>Count: <span id=g2movs>0</span></div>";
 g2ui += "\\n<div class=cfield><span class=ccntr><input type=button value=\\"RESET COUNTER\\" onclick=c2Zero() /></span></div>";
 g2ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u2tog /> Allow single-diode toggle&mdash;Suspend&nbsp;counter</label></div>\\n";
 
-// g2wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
-// try { g2wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g2wrap"; ndiv.innerHTML = g2ui; cmain.appendChild(ndiv); }
+ // g2wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
+ // try { g2wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g2wrap"; ndiv.innerHTML = g2ui; cmain.appendChild(ndiv); }
 
 m2trk = 0;
 lit0s = [ "", ["0,0", "0,4", "1,1", "1,3", "2,2", "3,1", "3,3", "4,0", "4,4"], ["0,2", "1,1", "1,3", "2,0", "2,4", "3,1", "3,3", "4,2"], ["0,0", "0,2", "0,4", "2,0", "2,4", "4,0", "4,2", "4,4"], ["2,1", "2,3", "3,2", "4,1", "4,2", "4,3"], ["2,1", "2,3"], ["0,2", "1,2", "2,2", "3,2", "4,2"], ["1,1", "1,2", "1,3", "2,1", "2,3", "3,1", "3,2", "3,3"], ["0,4", "4,0"], ["2,2"], ["0,2", "1,1", "2,0", "2,4", "3,3", "4,2"] ];
@@ -438,8 +438,8 @@ g3ui += "\\n<div id=g3scor class=cfield>Count: <span id=g3movs>0</span></div>";
 g3ui += "\\n<div class=cfield><input type=button class=ccntr value=\\"RETRACT MOVE\\" onclick=m3Rvrs() /><input type=button value=\\"RESET COUNTER\\" onclick=c3Zero() /></div>";
 g3ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u3tog /> Allow free peg placement&mdash;Suspend&nbsp;counter</label></div>\\n";
 
-// g3wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
-// try { g3wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g3wrap"; ndiv.innerHTML = g3ui; cmain.appendChild(ndiv); }
+ // g3wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
+ // try { g3wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g3wrap"; ndiv.innerHTML = g3ui; cmain.appendChild(ndiv); }
 
 jopts = peg0s = "";
 m3trk = [];
@@ -682,8 +682,8 @@ srui += "\\n<div class=cfield><textarea id=trgtxta class=textarea></textarea><di
 srui += "\\n<div class=cfield>\\n<datalist id=pfiles></datalist>\\n<span class=ccntr><button onclick=dataMgr(2)>\\n<span>&uArr;</span></button></span><span class=ccntr><input type=text id=lfinp list=pfiles placeholder=\\"filename/key/CMD&hellip;\\" onfocus=hlp3Clr() /></span><span class=ccntr><button onclick=dataMgr(1)>\\n<span class=isucc>&#x267a;</span> SAVE</button></span><span class=ccntr><button onclick=dataMgr()>\\n<span class=iwarn>&#x2715;</span> DEL</button></span>\\n<div id=lfhelp class=chelp></div>\\n</div>";
 srui += "\\n<div id=trgrndr class=cfield></div>\\n";
 
-// srwrap.remove() // *Alert:* useful only if edit-testing the UI code above
-// try { srwrap } catch { ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = srui; cmain.appendChild(ndiv); }
+ // srwrap.remove() // *Alert:* useful only if edit-testing the UI code above
+ // try { srwrap } catch { ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = srui; cmain.appendChild(ndiv); }
 
 /*
     + The following "script" code that makes this UI functional hinges
@@ -729,9 +729,9 @@ window.dataMgr = ox => { let key = lfinp.value.trim(); if (ox === 2) return !key
 */
 
 /*
-scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
-dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
-reShow(dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(xstor.JScode.tutorial3) + dwraps[2])
+ scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
+ dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
+ reShow(dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(xstor.JScode.tutorial3) + dwraps[2])
 */
 
 /*
@@ -745,9 +745,9 @@ reShow(dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(
 */
 
 /*
-srctxta.value || import("../-app-cjs/spark.js").then(m => srctxta.value = m.dune.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(reShow); //
-sepainp.value = "/^.*?(\\\\bdune\\\\b).*\\\\n*|^.*\\\\n*/gim"; //
-rtrminp.value = "(m, c1, i) => { i || (window.it0 = 0); return !c1 ? \\"\\" : \\" \\" + ++it0 + \\". \\" + m; }";
+ srctxta.value || import("../-app-cjs/spark.js").then(m => srctxta.value = m.dune.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(reShow); //
+ sepainp.value = "/^.*?(\\\\bdune\\\\b).*\\\\n*|^.*\\\\n*/gim"; //
+ rtrminp.value = "(m, c1, i) => { i || (window.it0 = 0); return !c1 ? \\"\\" : \\" \\" + ++it0 + \\". \\" + m; }";
 */
 
 /*
@@ -762,7 +762,7 @@ rtrminp.value = "(m, c1, i) => { i || (window.it0 = 0); return !c1 ? \\"\\" : \\
     + Un-comment the following one line of code, then tap "PARSE".
 */
 
-// rtrminp.value = "(m, c1, i) => { i || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" \\" + ++it1 + \\". [line \\" + it0 + \\"]\\\\n\\" + m; }";
+ // rtrminp.value = "(m, c1, i) => { i || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" \\" + ++it1 + \\". [line \\" + it0 + \\"]\\\\n\\" + m; }";
 
 /*
     + This result gives us a helpful location reference for every
@@ -776,7 +776,7 @@ rtrminp.value = "(m, c1, i) => { i || (window.it0 = 0); return !c1 ? \\"\\" : \\
       "PARSE" button) and tap "PARSE".
 */
 
-// rtrminp.value = "(m, c1, i) => { i || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" <strong>\\" + ++it1 + \\".</strong> <em>[line \\" + it0 + \\"]</em>\\\\n\\" + m.replace(/\\\\bdune\\\\b/gi, \\"<mark>$&</mark>\\"); }";
+ // rtrminp.value = "(m, c1, i) => { i || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" <strong>\\" + ++it1 + \\".</strong> <em>[line \\" + it0 + \\"]</em>\\\\n\\" + m.replace(/\\\\bdune\\\\b/gi, \\"<mark>$&</mark>\\"); }";
 
 /*
  7. Use search-and-replace to __apply HTML markup to an article__,
@@ -796,12 +796,12 @@ rtrminp.value = "(m, c1, i) => { i || (window.it0 = 0); return !c1 ? \\"\\" : \\
 */
 
 /*
-try { !!markdownit } catch { Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).catch(reShow) }
-window.docMrkp = md => markdownit({ html: 1, typographer: 1 }).use(markdownitDeflist).render(md.replace(/[^-](?=--[^-])/g, "$&-")); //
-rndrsel.selectedIndex = 0;
-sepainp.value = "/[^]+/";
-rtrminp.value = "docMrkp";
-hlp2Clr()
+ !!window.markdownit || Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).catch(reShow)
+ window.docMrkp = md => markdownit({ html: 1, typographer: 1 }).use(markdownitDeflist).render(md.replace(/[^-](?=--[^-])/g, "$&-")); //
+ rndrsel.selectedIndex = 0;
+ sepainp.value = "/[^]+/";
+ rtrminp.value = "docMrkp";
+ hlp2Clr()
 */
 
 /*
@@ -831,9 +831,9 @@ hlp2Clr()
 */
 
 /*
-rndrsel.selectedIndex = 1; rtrminp.value = trgtxta.value = ""; hlp2Clr()
-window.lineUnwr = str => str.replace(/(\\S) *\\n(?!\\n|#|>|[:*+~-]? |\\d+\\.\\s|$)/g, "$1 "); //
-window.lineWrap = str => { let cpl = 70, cut = 0, brk = "\\n", rex = "^$" + (cut ? "|.{" + cpl + "}|\\\\S.*$" : "|(^\\\\n*|)\\\\S.{0," + (cpl - 1) + "}(?= |$)"); return str.match(new RegExp(rex, "gm")).join(brk); }; //
+ rndrsel.selectedIndex = 1; rtrminp.value = trgtxta.value = ""; hlp2Clr()
+ window.lineUnwr = str => str.replace(/(\\S) *\\n(?!\\n|#|>|[:*+~-]? |\\d+\\.\\s|$)/g, "$1 "); //
+ window.lineWrap = str => { let cpl = 70, cut = 0, brk = "\\n", rex = "^$" + (cut ? "|.{" + cpl + "}|\\\\S.*$" : "|(^\\\\n*|)\\\\S.{0," + (cpl - 1) + "}(?= |$)"); return str.match(new RegExp(rex, "gm")).join(brk); }; //
 */
 
 /*
@@ -968,10 +968,10 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
       retrieved in multiple, creative, sometimes elaborate ways.
 */
 
-// sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.body.appendChild(n); };
-// !!window.PouchDB || fetch("../-res-js/pouchdb.min.js").then(re => re.blob()).then(URL.createObjectURL).then(_.sc2Inj).catch(reShow)
+ // sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.body.appendChild(n); };
+ // !!window.PouchDB || fetch("../-res-js/pouchdb.min.js").then(re => re.blob()).then(URL.createObjectURL).then(_.sc2Inj).catch(reShow)
 
-// try { !!PouchDB } catch { scrInj("../-res-js/pouchdb.min.js").then(reShow).catch(reShow) }
+ // try { !!PouchDB } catch { scrInj("../-res-js/pouchdb.min.js").then(reShow).catch(reShow) }
 
 /*
  2. Use *PouchDB* to __create a *contacts* database__ that will contain
@@ -999,8 +999,8 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
 */
 
 /*
-dbase = "cntcs-demo";
-!window.PouchDB || !/^[a-z][0-9_a-z-]*$/.test(dbase) || (window.dbobj = new PouchDB(dbase))
+ dbase = "cntcs-demo";
+ !window.PouchDB || !/^[a-z][0-9_a-z-]*$/.test(dbase) || (window.dbobj = new PouchDB(dbase))
 */
 
 /*
@@ -1012,7 +1012,7 @@ dbase = "cntcs-demo";
       when the *ENTRY* field of the calculator app is clear.
 */
 
-// PouchDB("").destroy().then(reShow)
+ // PouchDB("").destroy().then(reShow)
 
 /*
     + *Also good to know:* To confirm that a local DB has been
@@ -1021,7 +1021,7 @@ dbase = "cntcs-demo";
       present. (List appears above, overtop the calculator.)
 */
 
-// indexedDB.databases().then(reShow)
+ // indexedDB.databases().then(reShow)
 
 /*
  3. __Build a data-entry UI__ for entering the details of one contact;
@@ -1106,8 +1106,8 @@ d2ui += "\\n<div class=\\"alnrt chelp isucc dnone\\">New contact is saved in loc
 d2ui += "\\n<div class=\\"alnrt chelp iwarn dnone\\">New-contact save attempt failed.</div>\\n</div>";
 d2ui += "\\n<form id=dform></form>";
 
-// dbwrap.remove() // *Alert:* useful only if edit-testing the UI code above
-// try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d2ui + "\\n"; cmain.appendChild(ndiv); }
+ // dbwrap.remove() // *Alert:* useful only if edit-testing the UI code above
+ // try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d2ui + "\\n"; cmain.appendChild(ndiv); }
 
 fwg = ak = ""
 fncTry = (fnc, a, e) => { try { return fnc(a) } catch (err) { return e > 1 ? a : e ? err : undefined }};
@@ -1167,11 +1167,11 @@ formGen = () => dform.innerHTML = Object.entries(Object.assign({ _id: "", _rev: 
       Un-comment the fifth of the following five lines of code.
 */
 
-// import("../-app-cjs/fakes.js").then(m => reShow(m.default)).catch(reShow)
-// import("../-app-cjs/fakes.js").then(m => m.default.forEach(c => dbobj.put(c).then(reShow).catch(reShow)))
-// dbobj.get("").then(reShow)
-// dbobj.get("").then(d => dbobj.put({ _id: d._id, _rev: d._rev, _deleted: true })).then(reShow).catch(reShow)
-// dbobj.allDocs().then(reShow)
+ // import("../-app-cjs/fakes.js").then(m => reShow(m.default)).catch(reShow)
+ // import("../-app-cjs/fakes.js").then(m => m.default.forEach(c => dbobj.put(c).then(reShow).catch(reShow)))
+ // dbobj.get("").then(reShow)
+ // dbobj.get("").then(d => dbobj.put({ _id: d._id, _rev: d._rev, _deleted: true })).then(reShow).catch(reShow)
+ // dbobj.allDocs().then(reShow)
 
 /*
  5. Use *PouchDB* to __add one more data file__ to your database that will
@@ -1190,7 +1190,7 @@ formGen = () => dform.innerHTML = Object.entries(Object.assign({ _id: "", _rev: 
       it has executed once already.
 */
 
-// dbobj.put({ _id: "-res-img" }).then(reShow).catch(reShow)
+ // dbobj.put({ _id: "-res-img" }).then(reShow).catch(reShow)
 
 /*
  6. __Build a UI__ with applicable *PouchDB* functions __for attaching images__
@@ -1233,8 +1233,8 @@ d3ui += "\\n<div class=\\"chelp isucc dnone\\">Image is removed from \\"-res-img
 d3ui += "\\n<div class=\\"chelp iwarn dnone\\">Image-removal attempt failed.</div>\\n</div>";
 d3ui += "\\n<details id=imgdtl open=true></details>";
 
-!window.dbwrap || dbwrap.remove() // necessary to clear UI from step 3
-try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d3ui + "\\n"; cmain.appendChild(ndiv); hlps = dbwrap.querySelectorAll('.chelp'); }
+ !window.dbwrap || dbwrap.remove() // necessary to clear UI from step 3
+ try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d3ui + "\\n"; cmain.appendChild(ndiv); hlps = dbwrap.querySelectorAll('.chelp'); }
 
 imgsVw = () => imgdtl.innerHTML = "<summary>Gallery</summary>" + Object.entries(aurls).map(([k, v]) => "\\n<p><img src=" + v + " /> " + k + "</p>").join("") + "\\n";
 isRtrv = () => !dbobj || dbobj.get("-res-img").then( d => Promise.all( Object.keys(d._attachments || "").map( k => aurls[k] || dbobj.getAttachment("-res-img", k).then(b => aurls[k] = URL.createObjectURL(b)) ) ).then(_.imgsVw) ).catch(reShow);
@@ -1247,8 +1247,8 @@ window.aurls = window.aurls || {};
 */
 
 /*
-simgs = Array.from(Array(10)).map((e, i) => "stockimg" + i + ".jpg");
-!dbobj || dbobj.get("-res-img").then(d => { d._attachments || (d._attachments = {}); return Promise.all(_.simgs.map(e => fetch("../-res-img2/" + e).then(re => re.blob()))).then( bs => _.simgs.forEach( (e, i) => !(aurls[e] = URL.createObjectURL(bs[i])) || (d._attachments[e] = { content_type: bs[i].type, data: bs[i] }) ) || dbobj.put(d) ); }).then(reShow).then(_.imgsVw).catch(reShow)
+ simgs = Array.from(Array(10)).map((e, i) => "stockimg" + i + ".jpg");
+ !dbobj || dbobj.get("-res-img").then(d => { d._attachments || (d._attachments = {}); return Promise.all(_.simgs.map(e => fetch("../-res-img2/" + e).then(re => re.blob()))).then( bs => _.simgs.forEach( (e, i) => !(aurls[e] = URL.createObjectURL(bs[i])) || (d._attachments[e] = { content_type: bs[i].type, data: bs[i] }) ) || dbobj.put(d) ); }).then(reShow).then(_.imgsVw).catch(reShow)
 */
 
 /*
@@ -1301,8 +1301,8 @@ d5ui += ' + \`</div>\\\\n</details>\\\\n<details>\${ !/anno|event|memo|post|srcd
 d5ui += ' + (!(d.map_refs || "")[0] ? "" : "<strong>Map refs:</strong> " + d.map_refs.join(", ") + "\\\\n") + (!(d.people || "")[0] ? "" : "<strong>People:</strong> " + d.people.join(", ") + "\\\\n") + (!d.hasOwnProperty("description") ? "" : "<strong>Description:</strong> " + d.description + "\\\\n") + (!d.hasOwnProperty("birthdate") ? "" : "<strong>Birthdate:</strong> " + d.birthdate + "\\\\n") + (!d.hasOwnProperty("emails") ? "" : "<strong>Emails:</strong> " + d.emails.join(", ") + "\\\\n") + (!d.hasOwnProperty("phones") ? "" : "<strong>Phones:</strong> " + d.phones.join(", ") + "\\\\n")'; //
 d5ui += ' + (!(d.social_profiles || "")[0] ? "" : "<strong>Social profiles:</strong> " + d.social_profiles.join(", ") + "\\\\n") + (!(d.project_urls || "")[0] ? "" : "<strong>Project urls:</strong> " + d.project_urls.join(", ") + "\\\\n") + (!(d.team_groups || "")[0] ? "" : "<strong>Team groups:</strong> " + d.team_groups.join(", ") + "\\\\n") + ( !/contact|phone/i.test(d.file_type) ? "" : (!d.ts_created ? "" : "<strong>Joined team:</strong> " + _.ts2Fmt(d.ts_created) + "\\\\n") + (!d.ts_updated ? "" : "<strong>Last updated:</strong> " + _.ts2Fmt(d.ts_updated) + "\\\\n") ) }</div>\\\\n</details>\\\\n</div>\\\\n</article>\`'; //
 
-!window.dbwrap || dbwrap.remove() // necessary to clear UI from step 3 or 6
-try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d3ui + d2ui + d4ui + "\\n"; cmain.appendChild(ndiv); hlps = dbwrap.querySelectorAll('.chelp'); }
+ !window.dbwrap || dbwrap.remove() // necessary to clear UI from step 3 or 6
+ try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d3ui + d2ui + d4ui + "\\n"; cmain.appendChild(ndiv); hlps = dbwrap.querySelectorAll('.chelp'); }
 
 rexts = /^m[rs]\\.? +|^mrs\\.? +|[.,;:/]/gi; //
 rexns = /^(?:m[rs]\\b\\.?|mrs\\b\\.?|) *(.*?) *((?:\\bde +|\\bvon +|)['‘’\\w-]+)([ ,]*\\b[js]r\\.?|[ ,]*\\b[ivx]+|)$/i; //
@@ -1345,9 +1345,9 @@ window.aurls = window.aurls || {};
 */
 
 /*
-dtmpl.key = "t1src"; // "t2evt"; "t3mem"; "t4cnt";
-dbase = "recipes-home"; // "log-workouts"; "journal2022"; "contacts-work";
-!window.PouchDB || !/^[a-z][0-9_a-z-]*$/.test(dbase) || (window.dbobj = new PouchDB(dbase))
+ dtmpl.key = "t1src"; // "t2evt"; "t3mem"; "t4cnt";
+ dbase = "recipes-home"; // "log-workouts"; "journal2022"; "contacts-work";
+ !window.PouchDB || !/^[a-z][0-9_a-z-]*$/.test(dbase) || (window.dbobj = new PouchDB(dbase))
 */
 //`;
 
