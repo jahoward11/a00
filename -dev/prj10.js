@@ -239,8 +239,7 @@ const itoken = `/*
  fetch("https:/" + "/iam.cloud.ibm.com/identity/token", opts).then(re => re.text()).then(reShow).catch(reShow);
 */`;
 
-const dbapp = `//
-// __"Recipes" DB Webapp__
+const dbapp = `// __"Recipes" DB Webapp__
 
 /*
  cQry = () => !(window.pdbs || []).includes((window.txd2 || "").DBNAME) && [] || PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.text()).then(cnt => [txd2.wid, cnt]);
@@ -330,8 +329,7 @@ const t4cntcs = `//
  // import("../-app-cjs/nmgr.js").then(re => re.dwraps[0] + re.nmpage + re.dwraps[1] + re.nmscr + re.dwraps[2]).then(reShow).catch(reShow)
 //`;
 
-const srtools = `//
-// __Search-&-Replace Tools__
+const srtools = `// __Search-&-Replace Tools__
 
 // prepend bullets to unordered lists
  // sepainp.value = "/^(?!#+ +\\\\S)(?: ?- | ?\\\\d+\\\\. |) *(?=\\\\S)/gm";
@@ -364,8 +362,7 @@ const srtools = `//
 
 //`;
 
-const nmtools = `//
-// __Note-Mgr Tools__
+const nmtools = `// __Note-Mgr Tools__
 
 /*
  Object.keys(nm0)
