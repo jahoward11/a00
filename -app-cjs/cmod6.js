@@ -474,7 +474,7 @@ practical algorithms -- the kind that refine and repackage for human
 consumption the raw data that we often encounter in our modern world.
 Applying __core JavaScript protocols__ only, we will automate some common,
 time-consuming, publishing tasks -- enabling ourselves to do any one
-or another of these kind of tasks within but an instant.
+or another of these kinds of tasks within but an instant.
 
  Specifically, we will:
  1) locate a substring of the text of a lengthy document,
@@ -870,8 +870,8 @@ three tutorials.
 
  __tutorial1		tutorial2	       tutorial3__
  docu….createElement()	.remove()	       localforage.keys()
- .id			.outerHTML	       localforage.getItem()
- .value			.onclick	       localforage.setItem()
+ .id			.outerHTML	       localforage.setItem()
+ .value			.onclick	       localforage.getItem()
  .innerHTML		.checked	       localforage.removeItem()
  .appendChild()		.classList.add()       .then().catch()
  .onblur		.classList.remove()    .focus()

@@ -389,8 +389,8 @@ __*Hypothesis Testing &amp; Statistical Significance*__
   *P*(rejecting *H*~0~ | *H*~0~ false) = 1 - *P*(type II error)
 */
 
-//- - - - - 
-try { jStat } catch { scrInj("../-res-js/jstat-tdist.js").then(() => xprsEval()).catch(reShow) }
+//- - - - -
+window.jStat || scrInj("../-res-js/jstat-tdist.js").then(() => xprsEval()).catch(reShow)
 //`
 
 export {
