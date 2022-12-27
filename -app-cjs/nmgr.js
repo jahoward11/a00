@@ -1503,9 +1503,9 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       }).catch(r2Show);
   },
   filtExe = () => {
-    let negs = /^-/.test(filtinp.value),
-      rexf = /^\\/.+\\/[gim]*$/.test(filtinp.value.trim()) ? eval(filtinp.value)
-        : new RegExp(filtinp.value.replace(/^-/, "") || "^$", "gi");
+    let negs = /^-/.test(filtinp.value.trim()),
+      rexf = filtinp.value.trim().replace(/^-/, "").replace(/&/g, "(?:&amp;|&(?!#?\\\\w+;))");
+    rexf = /^\\/.+\\/[gim]*$/.test(rexf) ? eval(rexf) : new RegExp(rexf || "^$", "gi");
     r2con.textContent = "";
     document.querySelectorAll(vbas > 1 ? qslrs[4] : qslrs[11]).forEach(inp => inp.checked = 0);
     document.querySelectorAll('#nmtbl tbody>tr:not([id])').forEach(tr => {
