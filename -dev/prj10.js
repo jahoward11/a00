@@ -107,7 +107,7 @@ const jscmds = `//
  // reShow( Array.from(Array(25).keys()).map(n => (n + 913) + "/" + (n + 945) + " " + [913, 945].map(d => String.fromCodePoint(n + d)).join(" ")).join("\\n") )
 
  // { let k, keys = []; for (k in localStorage) keys.push(k); reShow(keys); }
- // reShow( Object.keys(localStorage) )
+ // reShow( Object.keys(localStorage).filter(e => !/mrview-/.test(e)) )
  // { let k, k2s, keys = []; for (k in document.documentElement) keys.push(k); reShow(k2s = keys.filter(k => !/^on|^aria/.test(k)).sort()); k2s.length; } //
  // reShow( Object.keys(window).filter( pty => Object.entries(Object.getOwnPropertyDescriptor(window, pty) || "").filter(e => ['value', 'writable', 'enumerable'].includes(e[0]) && e[1]).length === 3 ))
  // reShow( Object.fromEntries(Object.keys(location).map(e => [e, location[e]])) )
@@ -119,14 +119,14 @@ const jscmds = `//
  // reShow( Object.fromEntries( Object.entries(ecoqjs).map(oe => [oe[0], oe[1].toString()]) )) // localforage, PouchDB, hljs, SourceDiff
 
  // reShow( Array.from(document.querySelectorAll('[id]')).map(e => e.id) )
- // reShow( ecoqjs.jvarXtract(document.querySelectorAll('script')[2].textContent) )
+ // reShow( ecoqjs.jvarXtract(document.scripts[2].textContent) )
  // reShow( ecoqjs.jcmtXtract(document.querySelector('script:nth-of-type(3)').outerHTML) )
 
  // fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then(ecoqjs.jvarXtract).then(reShow).catch(reShow)
  // fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then(s => s.replace(/(?:[^]*?\\n|^)(function rdataFetch.+(?:\\n.+?)+?(?:;?\\s*};?|;)(?=\\n[\\n\\S]|$))[^]*|[^]*/, "$1")).then(reShow).catch(reShow) //
  // fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then(s => window.s3 = s).then(reShow).catch(reShow)
  // reShow( ecoqjs.jcmtXtract(s3) )
- // reShow( [...new Set((window.s4 = document.querySelectorAll('script')[5].innerHTML).match(/\w*btn\w*/gi))] )
+ // reShow( [...new Set((window.s5 = document.scripts[5].innerHTML).match(/\\w*btn\\w*/gi))] )
 
 //__For CalcJS in Ecollabs__
 /*
@@ -148,9 +148,13 @@ const bcaches = `//
 
  // indexedDB.databases().then(reShow)
 
- // reShow(Object.keys(localStorage).filter(e => !/mrview-/.test(e)))
+ // reShow(Object.keys(localStorage))
+ // localStorage.key = "value"
  // localStorage["key"] = "value"
+ // localStorage.setItem("key", "value")
+ // localStorage.getItem("key")
  // localStorage.removeItem("key")
+ // localStorage.length
 //`;
 
 const dscripts = `//
@@ -161,7 +165,8 @@ const dscripts = `//
  // reShow(symlist.textContent)
  // reShow(symlist.textContent.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\\xa0/g, "&nbsp;"))
 
- reShow(Array.from(document.querySelectorAll('script')).map(e => e.src))
+ reShow(Array.from(document.scripts).map(e => e.src || e.type))
+ // reShow(document.scripts[0].outerHTML)
  // reShow(document.querySelector('script:last-of-type').outerHTML)
  // reShow(document.querySelector('body>script:last-of-type').outerHTML)
 
@@ -176,13 +181,18 @@ const scrload = `//
  // !!window.hljs || scrInj("../-res-js/highlight.min.js").then(reShow).catch(reShow)
  // !!window.js_beautify || scrInj("../-res-js/jsbeautify1.14.0.js").then(reShow).catch(reShow)
  // !!(window.hljs && window.js_beautify) || Promise.all(["../-res-js/highlight.min.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then(reShow).catch(reShow)
- // !!window.PouchDB || scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js")).catch(reShow)
+ // window.localforage || scrInj("../-res-js/localforage.min.js").then(reShow).catch(reShow)
+ // !!window.PouchDB || scrInj("../-res-js/pouchdb.min.js").then(reShow).then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(reShow)).catch(reShow)
 
  // import("../-dev/prj10.js").then(re => (xstor[re._module] = re) && xlstGen()).catch(reShow)
  // import("../-dev/prj10.js").then(re => reShow(re.jscmds)).catch(reShow)
  // import("../-res-js/ebook-annos.mjs").then(re => window["tocNavLtGen"] = re.tocNavLtGen).catch(reShow)
  // fetch("../-res-js/ebook-annos-fns.js").then(re => re.text()).then(reShow).catch(reShow)
+ // localforage.keys().then(reShow).catch(reShow)
+ // localforage.setItem("t2js", "// Tutorial 2").then(reShow).catch(reShow)
  // localforage.getItem("t2js").then(reShow).catch(reShow)
+ // localforage.removeItem("t2js").then(reShow).catch(reShow)
+ // localforage.length().then(reShow).catch(reShow)
  // PouchDB("mydb1").get("myfile").then(doc => doc.content).then(reShow).catch(reShow)
  // PouchDB.allDbs().then(reShow)
 
@@ -292,18 +302,18 @@ const t3search = `//
  // rtrminp.value = "(m, c1, i) => { i || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" <strong>\\" + ++it1 + \\".</strong> <em>[line \\" + it0 + \\"]</em>\\\\n\\" + m.replace(/\\\\bmyth/gi, \\"<mark>$&</mark>\\"); }";
 
 /*
-- github.com/markdown-it/markdown-it/ v12.0.6
-- markdown-it.github.io/markdown-it/
+ - github.com/markdown-it/markdown-it/ v12.0.6
+ - markdown-it.github.io/markdown-it/
 */
- // !!window.markdownit || Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).catch(reShow)
+ // !!window.markdownit || Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).then(reShow).catch(reShow)
  // window.docMrkp = md => markdownit({ html: 1, typographer: 1 }).use(markdownItDecorate).use(markdownitDeflist).use(markdownItImplicitFigures).use(markdownitIns).use(markdownitMark).use(markdownitSub).use(markdownitSup).render(md.replace(/[^-](?=--[^-])/g, "$&-")); //
  // sepainp.value = "/[^]+/";
  // rtrminp.value = "docMrkp";
 
 /*
-- github.com/beautify-web/js-beautify/ v1.14.0
-- github.com/highlightjs/highlight.js/ v10.4.1
-- highlightjs.org
+ - github.com/beautify-web/js-beautify/ v1.14.0
+ - github.com/highlightjs/highlight.js/ v10.4.1
+ - highlightjs.org
 */
  // !!window.hljs || scrInj("../-res-js/highlight.min.js").then(reShow).catch(reShow)
  // !!(window.hljs && window.js_beautify) || Promise.all(["../-res-js/highlight.min.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then(reShow).catch(reShow) }
