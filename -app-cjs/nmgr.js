@@ -1532,7 +1532,8 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       }));
     } else if (filtinp.value) {
       document.querySelectorAll(qslrs[5])
-      .forEach(e => e.innerHTML = e.innerHTML.replace(rexf, "<mark>$&</mark>"));
+      .forEach(e => e.innerHTML = e.innerHTML.replace( /(.*?)(<\\/?\\w.*?>|$)/g,
+        (m, c1, c2) => c1.replace(rexf, "<mark>$&</mark>") + c2 ));
       document.querySelectorAll('#nmclip .media')
       .forEach(e => /<mark>/.test(e.innerHTML) != negs || e.classList.add("dnone"));
     }
