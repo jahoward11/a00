@@ -986,6 +986,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     <span class="ccntr cleft">&nbsp;</span><span class=ccntr>`
     + `<input type=text id=imganm2 placeholder="Rename as attachment&hellip;" /></span>
   </div>\n`,
+  it1 = document.createElement('i'),
   nmthds = document.querySelectorAll('#nmtbl thead'),
   nmtbod = document.querySelector('#nmtbl tbody'),
   nmtfts = document.querySelectorAll('#nmtbl tfoot'),
@@ -1138,8 +1139,8 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       r1Show = r => js2txta.value += "\n" + valStr(r, 2) + "\n> ";
     !fncexp || Promise.resolve(fncTry(window.eval, fncexp, 1)).then(r1Show).catch(r1Show);
   },
-  txtaSel = e => !(e.focus || (e = window.eval(e.target.dataset.seltrg)))
-    || e.focus() || e.setSelectionRange(0, e.textLength),
+  txtaSel = ta => !(ta.focus || (ta = window.eval(ta.target.dataset.seltrg)))
+    || ta.focus() || ta.setSelectionRange(0, ta.textLength),
   typTest = (val, l2) => [ typeof ( val = typeof val !== 'string' ? val : fncTry(JSON.parse, val)
       || ( /^\d+$/.test(val.trim()) ? +val
         : /^(false|null|true)$/.test(val.trim()) ? eval(val) : val ) ),
@@ -1310,7 +1311,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       },
       jsonVldt = () => {
         r2con.textContent = "";
-        hlps.forEach(e => e.classList.add("dnone"));
+        hlps.forEach(el => el.classList.add("dnone"));
         fncTry(JSON.parse, qctxta.value) ? qctxta.classList.remove("iwarn")
         : qctxta.classList.add("iwarn") || hlps[2].classList.remove("dnone");
       },
@@ -1350,7 +1351,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         }
         //r2con.textContent = "";
         hlps = nmdata.querySelectorAll('.chelp');
-        hlps.forEach(e => e.classList.add("dnone"));
+        hlps.forEach(el => el.classList.add("dnone"));
         qctxta.classList.remove("iwarn");
         qctxta.value = valStr(qrsp, 2);
         !tidx || tabActv();
@@ -1470,8 +1471,8 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           let ts0 = new Date().getTime(),
             chgs = 0,
             hlps = nmdata.querySelectorAll('.chelp');
-          hlps.forEach(e => e.classList.add("dnone"));
-          Array.from(nmdata.querySelectorAll('.label')).map(e => e.textContent)
+          hlps.forEach(el => el.classList.add("dnone"));
+          Array.from(nmdata.querySelectorAll('.label')).map(el => el.textContent)
           .forEach( k => /^_id$|^_rev$/.test(k)
             || !/isucc|iwarn/.test(window["p0" + k].className)
             || !++chgs || (fwg[k] = typTest(window["p0" + k].value, 1)[2]) );
@@ -1500,15 +1501,15 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           .then(txd4.cbf)
           .catch(err => hlps[1].classList.remove("dnone") || r2Show(err));
         }; //fwgUpd;
-        nmdata.querySelectorAll('.field-label button').forEach(e => e.onclick = txtaSel);
+        nmdata.querySelectorAll('.field-label button').forEach(btn => btn.onclick = txtaSel);
         Object.keys(fwg).forEach(k => /^_id$|^_rev$/.test(k) || (window["p0" + k].onblur = dataVld));
         tidx !== 1 || tabActv();
       }).catch(r2Show);
   },
   filtExe = () => {
-    let negs = /^-/.test(filtinp.value.trim()),
-      rexf = filtinp.value.trim().replace(/^-/, "").replace(/&/g, "(?:&amp;|&(?!#?\\w+;))");
-    rexf = /^\/.+\/[gim]*$/.test(rexf) ? eval(rexf) : new RegExp(rexf || "^$", "gi");
+    let negs = /^ *-/.test(filtinp.value),
+      rexf = filtinp.value.replace(/^ *-/, "");
+    rexf = /^\/.+\/[gim]*$/.test(rexf.trim()) ? eval(rexf) : new RegExp(rexf || "^$", "gi");
     r2con.textContent = "";
     document.querySelectorAll(vbas > 1 ? qslrs[4] : qslrs[11]).forEach(inp => inp.checked = 0);
     document.querySelectorAll('#nmtbl tbody>tr:not([id])').forEach(tr => {
@@ -1518,8 +1519,8 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         = (i !== 2 ? td : td.firstChild).innerHTML.replace(/<\/?mark>/g, "") ));
     });
     document.querySelectorAll(qslrs[5])
-    .forEach(e => e.innerHTML = e.innerHTML.replace(/<\/?mark>/g, ""));
-    document.querySelectorAll('#nmclip .media').forEach(e => e.classList.remove("dnone"));
+    .forEach(el => el.innerHTML = el.innerHTML.replace(/<\/?mark>/g, ""));
+    document.querySelectorAll('#nmclip .media').forEach(el => el.classList.remove("dnone"));
     if (vbas > 1 && filtinp.value) {
       document.querySelectorAll('#nmtbl tbody>tr:not([id]):not([hidden])')
       .forEach( tr => Array.from(tr.children).forEach( (td, i) => {
@@ -1535,10 +1536,12 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       }));
     } else if (filtinp.value) {
       document.querySelectorAll(qslrs[5])
-      .forEach( e => e.innerHTML = e.innerHTML.replace( /(.*?)(<\/?\w.*?>|$)/g,
-        (m, c1, c2) => c1.replace(rexf, "<mark>$&</mark>") + c2 ));
+      .forEach( el => el.innerHTML = el.innerHTML.match(/[^]*?(?:<\/?\w.*?>|$)/g)
+        .map( st => st.replace( /([^]*?)(<\/?\w.*?>|$)/, (m, c1, c2) =>
+          (!(it1.innerHTML = c1) ? "" : it1.textContent.replace(rexf, "<mark>$&</mark>"))
+          + c2 )).join("") );
       document.querySelectorAll('#nmclip .media')
-      .forEach(e => /<mark>/.test(e.innerHTML) != negs || e.classList.add("dnone"));
+      .forEach(el => /<mark>/.test(el.innerHTML) != negs || el.classList.add("dnone"));
     }
   },
   blk2Tog = () => {
@@ -1551,7 +1554,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     let hid = document.querySelector(vbas > 1 ? qslrs[6] : qslrs[7]);
     document.querySelectorAll( vbas > 1 ? qslrs[4]
       : '#nmclip .media-content>details:first-of-type>summary>span' )
-    .forEach(e => e.className = hid ? "" : "dnone");
+    .forEach(el => el.className = hid ? "" : "dnone");
     if (hid) {
       blk2Tog();
     } else {
@@ -1574,7 +1577,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   chksTog = evt => {
     let r1idx = evt.target.parentElement.parentElement.rowIndex - 2,
       sdtrs = document.querySelectorAll('#nmtbl tbody>tr[id]'),
-      rsidx = Array.from(sdtrs || "").map(e => e.rowIndex - 2),
+      rsidx = Array.from(sdtrs || []).map(tr => tr.rowIndex - 2),
       r2idx = rsidx[rsidx.findIndex(n => n === r1idx) + 1]
         || ((document.querySelector('#nmtbl tbody>tr:last-of-type') || "").rowIndex - 1),
       trows = document.querySelectorAll('#nmtbl tbody>tr');
@@ -1606,7 +1609,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       rowid = evt.target.parentElement.parentElement.id,
       r1idx = evt.target.parentElement.parentElement.rowIndex - 2,
       sdtrs = document.querySelectorAll('#nmtbl tbody>tr[id]'),
-      rsidx = Array.from(sdtrs || "").map(e => e.rowIndex - 2),
+      rsidx = Array.from(sdtrs || []).map(tr => tr.rowIndex - 2),
       r2idx = rsidx[rsidx.findIndex(n => n === r1idx) + 1]
         || ((document.querySelector('#nmtbl tbody>tr:last-of-type') || "").rowIndex - 1),
       trows = document.querySelectorAll('#nmtbl tbody>tr');
@@ -1645,8 +1648,8 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     .then(re => {
       let dels = re.results.filter(r => r.deleted);
       ftotal.innerText = dels.length;
-      [nmthds[0], nmtfts[0]].forEach(e => e.classList.add("dnone"));
-      [nmthds[1], nmtfts[1]].forEach(e => e.classList.remove("dnone"));
+      [nmthds[0], nmtfts[0]].forEach(el => el.classList.add("dnone"));
+      [nmthds[1], nmtfts[1]].forEach(el => el.classList.remove("dnone"));
       nmtbod.innerHTML = qd5Fmt( ss0 === "seq" ? ordFlip(dels)
         : ordFlip(dels.map(r => [r.id, r])).map(sr => sr[1]) );
       chksRstr();
@@ -1670,8 +1673,8 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           || rval.hasOwnProperty("loc_subdir") && !/^[.-]./.test(r.id) || rval.file_created ).length
           + calcSum( re.rows.map( r => !(rval = r.doc || r.value)._attachments ? 0
               : Object.keys(rval._attachments).length ));
-      [nmthds[1], nmtfts[1]].forEach(e => e.classList.add("dnone"));
-      [nmthds[0], nmtfts[0]].forEach(e => e.classList.remove("dnone"));
+      [nmthds[1], nmtfts[1]].forEach(el => el.classList.add("dnone"));
+      [nmthds[0], nmtfts[0]].forEach(el => el.classList.remove("dnone"));
       nmtbod.innerHTML = rdc ? "" : vbas !== 2
       ? qd3Fmt( !ss0 || vbas !== 4 && ss0 === "id" || vbas === 4 && ss1 === "timestamp" ? re.rows
         : ordFlip(re.rows.map(r => [ptyX(r.doc || r.value), r.id, r])).map(sr => sr[2]) )
@@ -1817,11 +1820,11 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       if (rdc) { return; }
       hdrsswi.onchange = ev2 =>
         document.querySelectorAll('#nmclip .media-content>details:first-of-type')
-        .forEach(e => e.open = ev2.target.checked);
+        .forEach(el => el.open = ev2.target.checked);
       bodsswi.onchange = ev2 =>
         document.querySelectorAll('#nmclip .media-content>details:last-of-type')
-        .forEach(e => e.open = ev2.target.checked);
-      document.querySelectorAll(qslrs[12]).forEach(e => e.onclick = fileLoad);
+        .forEach(el => el.open = ev2.target.checked);
+      document.querySelectorAll(qslrs[12]).forEach(anc => anc.onclick = fileLoad);
       document.querySelectorAll(qslrs[11]).forEach(inp => inp.onchange = blk2Tog);
       vidx > 8 && !(nm0sets.p2vws[vusr] || "").hdrs || hdrsswi.click();
       !(nm0sets.p2vws[vusr] || "").bods || bodsswi.click();
@@ -1834,16 +1837,17 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     txd5 === txd1 || (pdbssel.selectedIndex = 0) || pdbOpen()
     || pfahlp.classList.add("dnone") || pfacnt.classList.remove("dnone");
     !(evt || "").DBNAME || (evt = null) || (tidx = vidx = 1);
-    tidx === 2 || pdbcfg.querySelectorAll('.chelp').forEach(e => e.classList.add("dnone"));
+    tidx === 2 || pdbcfg.querySelectorAll('.chelp').forEach(el => el.classList.add("dnone"));
     !evt || evt.currentTarget.localName === 'a' || (evt = null);
     tidx = !evt ? (vidx > 3 ? 0 : vidx) : +evt.currentTarget.parentElement.dataset.tabidx;
-    [nmflow, nmclip].some(e => !e.classList.contains('dnone')) || (viewsel.selectedIndex = vidx = tidx);
+    [nmflow, nmclip].some(el => !el.classList.contains('dnone'))
+    || (viewsel.selectedIndex = vidx = tidx);
     pdbssel.selectedIndex > 1 || vidx === 2 || (pdbssel.selectedIndex = 0);
     pdbssel.selectedIndex === 1 || nm0sets.usecfg == use1swi.checked || use1swi.click();
     !/^[013]$/.test(vidx) || (ftotal.innerText = "_");
     tabncs.forEach(anc => anc.parentElement.classList.remove('is-active'));
     (!evt ? tabncs[tidx] : evt.currentTarget).parentElement.classList.add('is-active');
-    nmpans.forEach(e => e.classList.add("dnone"));
+    nmpans.forEach(el => el.classList.add("dnone"));
     nmpans[tidx].classList.remove("dnone");
     if (tidx === 1 && !fwg && txd5.DBNAME) {
       let ts0 = new Date().getTime(),
@@ -1893,8 +1897,8 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       savbtn.onclick = () => {
         let chgs = 0,
           hlps = pfacnt.querySelectorAll('.chelp');
-        hlps.forEach(e => e.classList.add("dnone"));
-        Array.from(pfacnt.querySelectorAll('.label')).map(e => e.textContent)
+        hlps.forEach(el => el.classList.add("dnone"));
+        Array.from(pfacnt.querySelectorAll('.label')).map(el => el.textContent)
         .forEach( k => /^_id$|^_rev$/.test(k)
           || !/isucc|iwarn/.test(window["p0" + k].className)
           || !++chgs || (fwg[k] = typTest(window["p0" + k].value, 1)[2]) );
@@ -1913,12 +1917,12 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         .then(txd5.cbf)
         .catch(err => hlps[1].classList.remove("dnone") || r2Show(err));
       }; //fwgUpd;
-      pfacnt.querySelectorAll('.field-label button').forEach(e => e.onclick = txtaSel);
+      pfacnt.querySelectorAll('.field-label button').forEach(btn => btn.onclick = txtaSel);
       Object.keys(fwg).forEach(k => /^_id$|^_rev$/.test(k) || (window["p0" + k].onblur = dataVld));
     }
   },
   viewRte = evt => {
-    [nmflow, nmclip].forEach(e => e.classList.add("dnone"));
+    [nmflow, nmclip].forEach(el => el.classList.add("dnone"));
     nmtbod.innerHTML = nmclip.innerHTML = "";
     vidx < 4 || (nmdata.innerHTML = fwg = null);
     [ss0, ss1] = sortsel.value.split("."); //!evt || evt.target.id !== "sortsel" ||
@@ -1932,7 +1936,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       window.PouchDB || !txd1.DBNAME || r2con.textContent
       || r2Show("ALERT: PouchDB is not loaded. Database is inaccessible.");
       pdbssel.selectedIndex === 1
-      || [nmflow, nmclip].some(e => !e.classList.contains('dnone')) || tabActv();
+      || [nmflow, nmclip].some(el => !el.classList.contains('dnone')) || tabActv();
     } else if (vbas < 2) {
       !vbas || (r2con.textContent = ""); // keep msg left by filesChg, fileLoad
       !vbas ? tabActv() : nmclip.classList.remove("dnone") || clipsGen(evt);
@@ -1958,7 +1962,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       filtctrl.classList.remove("dnone");
       v02inp.value = v01inp.value = filtinp.value = moveinp.value = "";
     }
-    if (vidx < 4 && evt && [nmflow, nmclip].every(e => e.classList.contains("dnone"))) {
+    if (vidx < 4 && evt && [nmflow, nmclip].every(el => el.classList.contains("dnone"))) {
       return tabActv(evt);
     }
     let vkey;
@@ -1983,7 +1987,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       ts0 = new Date().getTime(),
       db0 = pdb0inp.value.trim(),
       hlps = pdbcfg.querySelectorAll('.chelp');
-    hlps.forEach(e => e.classList.add("dnone"));
+    hlps.forEach(el => el.classList.add("dnone"));
     if (!evt || !cfg && !/pdb0btn/.test(evt.target.id)) {
       return;
     } else if (/(dbpw|dbun|orig)inp|pw1swi|[tv]01sel/.test(evt.target.id)) {
@@ -2004,7 +2008,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         .catch(err => hlps[3].classList.remove("dnone") || r2Show(err));
       evt.target.id !== "dbd1btn" || PouchDB(txd1.DBNAME).destroy().then(trsp => {
         let dbs = Array.from(opensel.options).map(o => o.value).filter(e => e && e !== txd1.DBNAME);
-        [pdbssel, opensel, cntcsel].forEach( (e, i) => e.innerHTML
+        [pdbssel, opensel, cntcsel].forEach( (el, i) => el.innerHTML
           = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
             .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
         opensel.value = nm0sets.dbdflt || "";
@@ -2023,7 +2027,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           remot: { un: dbuninp.value.trim() || nm0sets.uname || "", pw: dbpwinp.value.trim(),
             pw1: pw1swi.checked, orig: originp.value.trim(), publ: 0 } })
         || (localStorage._nm0cfgs = JSON.stringify(nm0cfgs));
-        [pdbssel, opensel, cntcsel].forEach( (e, i) => e.innerHTML
+        [pdbssel, opensel, cntcsel].forEach( (el, i) => el.innerHTML
           = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
             .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
         opensel.value = nm0sets.dbdflt || "";
@@ -2055,7 +2059,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       || !evt.target.value || !(ntr = document.createElement('tr'))
       || !( ntr.innerHTML = "<td><input type=text /></td><td><select class=anone>" + dtOpts()
         + "</select></td><td><input type=text /></td>" ) || !t1tbod.appendChild(ntr)
-      || ntr.querySelectorAll('input, select').forEach(e => e.onchange = t1sChg);
+      || ntr.querySelectorAll('input, select').forEach(el => el.onchange = t1sChg);
       return t01inp.value || ( t01inp.value = tkey + ( 1
         + ( Array.from(t01sel.options).map(o => o.value.includes(tkey) && /\d+$/.exec(o.value))
           .filter(e => e).map(e => +e).sort().reverse()[0] || 1 ) ));
@@ -2068,7 +2072,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           + " /></td><td><select class=anone" + (i ? ">" : " disabled>") + dtOpts(typTest(v)[1])
           + "</select></td><td><input type=text value='"
           + valStr(v) + "' /></td></tr>" ).join("") + "\n      ";
-    t1tbod.querySelectorAll('input, select').forEach(e => e.onchange = t1sChg);
+    t1tbod.querySelectorAll('input, select').forEach(el => el.onchange = t1sChg);
     !evt || evt.target.id !== "t01sel" || cfgsUpd(evt);
   },
   t0sChg = () => {
@@ -2123,9 +2127,9 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       hid = vbas && document.querySelector(vbas > 1 ? qslrs[6] : qslrs[7]),
       ps = ["dbdflt", "dbdflt", "vwdflt", "dbcntc", "uname", "uemail", "usecfg", "useset"], //"ddoc"
       idx = evt && actrls.concat([use1swi, use2swi, t0abtn, t0dbtn, v0abtn, v0dbtn])
-        .findIndex(e => e.id === evt.target.id);
+        .findIndex(el => el.id === evt.target.id);
     if (typeof idx !== 'number' || idx < 0) { return; }
-    hlps.forEach(e => e.classList.add("dnone"));
+    hlps.forEach(el => el.classList.add("dnone"));
     idx || (opensel.value = !openswi.checked ? "" : txd1.DBNAME);
     idx < 8 ? ( nm0sets[ps[idx]]
       = !idx ? opensel.value : idx > 5 ? evt.target.checked : evt.target.value )
@@ -2137,7 +2141,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
               [tr.children[0].firstChild.value, typTest(tr.children[2].firstChild.value, 1)[2]] )
             .filter(e => e[0]) ) ) }) )
     : idx < 10 ? ( !t0cs.length ? hlps[9].classList.remove("dnone") : hlps[8].classList.remove("dnone")
-      || t0cs.forEach(e => delete nm0sets.p2typs[e.parentElement.textContent.replace(/^\s/, "")]) )
+      || t0cs.forEach(el => delete nm0sets.p2typs[el.parentElement.textContent.replace(/^\s/, "")]) )
     : idx < 11 ? ( !vbas || !v01inp.value ? hlps[11].classList.remove("dnone")
       : hlps[10].classList.remove("dnone") || ( nm0sets.p2vws[v01inp.value]
         = { v0: ["V" + vbas + "-" + v01inp.value, v02inp.value], base: vbas, ddoc: v03inp.value,
@@ -2146,7 +2150,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           sort: sortsel.value, desc: descswi.checked, filt: filtinp.value, cbxs: !hid,
           hdrs: vbas < 2 && hdrsswi.checked, bods: vbas < 2 && bodsswi.checked } ) )
     : !v0cs.length ? hlps[13].classList.remove("dnone") : hlps[12].classList.remove("dnone")
-      || v0cs.forEach(e => delete nm0sets.p2vws[e.parentElement.textContent.replace(/^\s?V\d-/, "")]);
+      || v0cs.forEach(el => delete nm0sets.p2vws[el.parentElement.textContent.replace(/^\s?V\d-/, "")]);
     idx !== 8 || !t01inp.value || t0sChg() || !(t01sel.value = t01inp.value)
     || (t01inp.value = t02inp.value = "") || t1sChg();
     idx !== 9 || !t0cs.length || t0sChg() || !txd1.DBNAME || t1sChg();
@@ -2164,7 +2168,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   pdbSync = evt => {
     let cfg = nm0cfgs[txd1.DBNAME],
       hlps = pdbcfg.querySelectorAll('.chelp');
-    hlps.forEach(e => e.classList.add("dnone"));
+    hlps.forEach(el => el.classList.add("dnone"));
     if (cfg && evt && evt.target.id === "pfilbtn") {
       dbpwinp.value = originp.value ? "" : (cfg.remot || "").pw || "";
       dbuninp.value = originp.value ? "" : (cfg.remot || "").un || "";
@@ -2288,7 +2292,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         .then(abl => aurls[k] = URL.createObjectURL(abl)).catch(r2Show).then(() => aurls[k] = v) );
     !nm0sets.bedit || [moveinp, movebtn].forEach(elm => elm.classList.add("dnone"))
     || editbtn.classList.remove("dnone");
-    [pdbssel, opensel, cntcsel].forEach( (e, i) => e.innerHTML
+    [pdbssel, opensel, cntcsel].forEach( (el, i) => el.innerHTML
       = ["\n      <option></option>", i ? "" : "\n      <option>&plus; New DB</option>"]
         .concat(dbs.map(e => "\n      <option>" + e + "</option>")).join("") + "\n      " );
     cntcsel.value = nm0sets.dbcntc || "";
@@ -2333,7 +2337,8 @@ tabncs.forEach(anc => anc.onclick = viewChg);
 [pw1swi, dbd0btn, dbd1btn, pdb0btn].forEach(btn => btn.onclick = cfgsUpd);
 t01sel.onchange = t1sChg;
 v01sel.onchange = cfgsUpd;
-[[use1swi, pdbcfg], [use2swi, nmsets]].forEach( ([s, e]) => s.onclick = evt => e.querySelectorAll('p')
+[[use1swi, pdbcfg], [use2swi, nmsets]]
+.forEach( ([sw, el]) => sw.onclick = evt => el.querySelectorAll('p')
   .forEach(p => p.classList[!s.checked ? "add" : "remove"]("dnone")) || setsUpd(evt) );
 [t0abtn, v0abtn, t0dbtn, v0dbtn].forEach(btn => btn.onclick = setsUpd);
 actrls.forEach(elm => elm.onchange = setsUpd);
