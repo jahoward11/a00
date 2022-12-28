@@ -408,7 +408,7 @@ const nmtools = `// __Note-Mgr Tools__
 
 export {
   _module, varkeys, nformat,
-  uiwidth, publdims, jscmds,
+  uiwidth, publdims, jsrefq,
   bcaches, dscripts, scrload,
   jstatqs, itoken, dbapp,
   t2puzls, t3search, t4cntcs,
