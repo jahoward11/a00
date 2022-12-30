@@ -390,7 +390,7 @@ let q2Bcopy, q2Bhtml,
   },
   gridAdj = idx => {
     if (idx === 4) {
-      [quad1A, quad1B].forEach(e => e.classList.toggle("dnone"));
+      [quad1A, quad1B].forEach(el => el.classList.toggle("dnone"));
       cgrid.classList.toggle("clpsrow1");
     } else if (idx === 5) {
       quad2A.classList.toggle("dnone");
@@ -465,7 +465,7 @@ let q2Bcopy, q2Bhtml,
       cheadg.setAttribute('contenteditable', true);
       cheadg.focus();
     } else if (idx === 3) {
-      [cgrid, xctrls].forEach(e => e && e.classList.toggle("dnone"));
+      [cgrid, xctrls].forEach(el => el && el.classList.toggle("dnone"));
     } else if (/[45]/.test(idx)) {
       gridAdj(idx);
     } else if (idx === 6 && ((xsetlist || "").value || !dentr.value)) {
@@ -576,7 +576,7 @@ let q2Bcopy, q2Bhtml,
         seln.addRange(rnge);
       } else if (symlist.className) {
         rnge = Array.from(quad2B.childNodes)
-          .findIndex(e => e.isSameNode(seln = window.getSelection().focusNode) || e.contains(seln))
+          .findIndex(el => el.isSameNode(seln = window.getSelection().focusNode) || el.contains(seln))
           / quad2B.childNodes.length;
         rnge = rnge < 0.15 ? 0 : rnge > 0.85 ? 1 : rnge;
         document.querySelector('#scrnmask').className = symlist.className = "";
@@ -678,7 +678,7 @@ window.dentr = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-
       && ( /^\//.test(e[1]) ? [eval(e[1]), !/^['"]|=>/.test(e[2]) ? e[2] : eval(e[2])]
         : [new RegExp("^([\\t ]*" + e[1] + "[\\t ]*=[\\t ]*).*?(?=[\\t ]*//|$)", "m"), "$1" + e[2]] )))
   : /^title=/.test(qi) ? titSave(0, window.decodeURIComponent(qi.replace(/^title=/, "")))
-  : /^!displ$/.test(qi) ? [cgrid, xctrls].forEach(e => e && e.classList.add("dnone"))
+  : /^!displ$/.test(qi) ? [cgrid, xctrls].forEach(el => el && el.classList.add("dnone"))
   : /^!zlock$/.test(qi) ? zoomTog(1)
   : /^!row1$/.test(qi) ? gridAdj(4)
   : /^!col1$/.test(qi) ? gridAdj(5) : 0 );

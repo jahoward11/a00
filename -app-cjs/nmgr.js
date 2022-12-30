@@ -1574,7 +1574,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   chksTog = evt => {
     let r1idx = evt.target.parentElement.parentElement.rowIndex - 2,
       sdtrs = document.querySelectorAll('#nmtbl tbody>tr[id]'),
-      rsidx = Array.from(sdtrs || []).map(tr => tr.rowIndex - 2),
+      rsidx = Array.from(sdtrs).map(tr => tr.rowIndex - 2),
       r2idx = rsidx[rsidx.findIndex(n => n === r1idx) + 1]
         || ((document.querySelector('#nmtbl tbody>tr:last-of-type') || "").rowIndex - 1),
       trows = document.querySelectorAll('#nmtbl tbody>tr');
@@ -1606,7 +1606,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       rowid = evt.target.parentElement.parentElement.id,
       r1idx = evt.target.parentElement.parentElement.rowIndex - 2,
       sdtrs = document.querySelectorAll('#nmtbl tbody>tr[id]'),
-      rsidx = Array.from(sdtrs || []).map(tr => tr.rowIndex - 2),
+      rsidx = Array.from(sdtrs).map(tr => tr.rowIndex - 2),
       r2idx = rsidx[rsidx.findIndex(n => n === r1idx) + 1]
         || ((document.querySelector('#nmtbl tbody>tr:last-of-type') || "").rowIndex - 1),
       trows = document.querySelectorAll('#nmtbl tbody>tr');
@@ -1622,7 +1622,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       document.querySelectorAll('#nmtbl tbody>tr:not([id])').forEach(tr => tr.hidden = !xpd);
     }
   },
-  colsTog = (evt, resel = (nm0sets.p2vws[vusr] || "").sort) => {
+  colsTog = (evt, resel = (nm0sets.p2vws[vusr] || []).sort) => {
     let opts = Array.from(colssel.selectedOptions).map(o => 1 + o.index);
     !evt || (resel = sortsel.value);
     document.querySelectorAll('#nmtbl :not(.dnone)>tr')
