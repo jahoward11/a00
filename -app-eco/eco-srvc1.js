@@ -531,7 +531,7 @@ let q2Bcopy, q2Bhtml,
   },
   gridAdj = idx => {
     if (idx === 4) {
-      [quad1A, quad1B].forEach(e => e.classList.toggle("dnone"));
+      [quad1A, quad1B].forEach(el => el.classList.toggle("dnone"));
       cgrid.classList.toggle("clpsrow1");
     } else if (idx === 5) {
       quad2A.classList.toggle("dnone");
@@ -606,7 +606,7 @@ let q2Bcopy, q2Bhtml,
       cheadg.setAttribute('contenteditable', true);
       cheadg.focus();
     } else if (idx === 3) {
-      [cgrid, xctrls].forEach(e => e && e.classList.toggle("dnone"));
+      [cgrid, xctrls].forEach(el => el && el.classList.toggle("dnone"));
     } else if (/[45]/.test(idx)) {
       gridAdj(idx);
     } else if (idx === 6 && ((xsetlist || "").value || !dentr.value)) {
@@ -717,7 +717,7 @@ let q2Bcopy, q2Bhtml,
         seln.addRange(rnge);
       } else if (symlist.className) {
         rnge = Array.from(quad2B.childNodes)
-          .findIndex(e => e.isSameNode(seln = window.getSelection().focusNode) || e.contains(seln))
+          .findIndex(el => el.isSameNode(seln = window.getSelection().focusNode) || el.contains(seln))
           / quad2B.childNodes.length;
         rnge = rnge < 0.15 ? 0 : rnge > 0.85 ? 1 : rnge;
         document.querySelector('#scrnmask').className = symlist.className = "";
@@ -799,7 +799,7 @@ window.dentr = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-
       && ( /^\\//.test(e[1]) ? [eval(e[1]), !/^['"]|=>/.test(e[2]) ? e[2] : eval(e[2])]
         : [new RegExp("^([\\\\t ]*" + e[1] + "[\\\\t ]*=[\\\\t ]*).*?(?=[\\\\t ]*//|$)", "m"), "$1" + e[2]] )))
   : /^title=/.test(qi) ? titSave(0, window.decodeURIComponent(qi.replace(/^title=/, "")))
-  : /^!displ$/.test(qi) ? [cgrid, xctrls].forEach(e => e && e.classList.add("dnone"))
+  : /^!displ$/.test(qi) ? [cgrid, xctrls].forEach(el => el && el.classList.add("dnone"))
   : /^!zlock$/.test(qi) ? zoomTog(1)
   : /^!row1$/.test(qi) ? gridAdj(4)
   : /^!col1$/.test(qi) ? gridAdj(5) : 0 );
@@ -934,8 +934,8 @@ const s1txt0 = document.querySelector('xmp#s1txt0'),
     [s2rslt.innerHTML, s1rslt.innerHTML]
     = fmt.formattedDiff(s2txt0.textContent, s1txt0.textContent);
   };
-[s1swi, s2swi].forEach( e => e.onchange = () => {
-  [s1rslt, s2rslt].forEach(e => e.classList.remove("ht0", "ht2x"));
+[s1swi, s2swi].forEach( sw => sw.onchange = () => {
+  [s1rslt, s2rslt].forEach(el => el.classList.remove("ht0", "ht2x"));
   if (s1swi.checked && s2swi.checked) {
     s1rslt.classList.add("ht0");
     s2rslt.classList.add("ht0");
@@ -1316,8 +1316,8 @@ let rva2, rval, ss0, ss1,
         DBNAME: txd1.DBNAME,
         FILEID: "_all_docs",
         OPTS:   {
-          keys: chkaf2.map(inp => inp.parentElement.parentElement.children[2].textContent),
-          include_docs: fmove
+          include_docs: fmove,
+          keys: chkaf2.map(inp => inp.parentElement.parentElement.children[2].textContent)
         }
       },
       rd2Qcon = d2s => {
@@ -1372,9 +1372,9 @@ let rva2, rval, ss0, ss1,
       || (qcontxta.value = JSON.stringify(txd2, 0, 2)); //|| !window.EC2 ...&& EC2.qconRetrvD();
   },
   filtExe = () => {
-    let negs = /^-/.test(filtinp.value),
-      rexf = /^\\/.+\\/[gim]*$/.test(filtinp.value.trim()) ? eval(filtinp.value)
-        : new RegExp(filtinp.value.replace(/^-/, "") || "^$", "gi");
+    let negs = /^ *-/.test(filtinp.value),
+      rexf = filtinp.value.replace(/^ *-/, "");
+    rexf = /^\\/.+\\/[gim]*$/.test(rexf.trim()) ? eval(rexf) : new RegExp(rexf || "^$", "gi");
     document.querySelectorAll(qslrs[4]).forEach(inp => inp.checked = 0);
     document.querySelectorAll('main tbody>tr:not([id])').forEach(tr => {
       tr.classList.remove("is-hidden", "match");
@@ -1425,7 +1425,7 @@ let rva2, rval, ss0, ss1,
   chksTog = evt => {
     let r1idx = evt.target.parentElement.parentElement.rowIndex - 2,
       sdtrs = document.querySelectorAll('main tbody>tr[id]'),
-      rsidx = Array.from(sdtrs || "").map(e => e.rowIndex - 2),
+      rsidx = Array.from(sdtrs).map(tr => tr.rowIndex - 2),
       r2idx = rsidx[rsidx.findIndex(n => n === r1idx) + 1]
         || ((document.querySelector('main tbody>tr:last-of-type') || "").rowIndex - 1),
       trows = document.querySelectorAll('main tbody>tr');
@@ -1463,7 +1463,7 @@ let rva2, rval, ss0, ss1,
       rowid = evt.target.parentElement.parentElement.id,
       r1idx = evt.target.parentElement.parentElement.rowIndex - 2,
       sdtrs = document.querySelectorAll('main tbody>tr[id]'),
-      rsidx = Array.from(sdtrs || "").map(e => e.rowIndex - 2),
+      rsidx = Array.from(sdtrs).map(tr => tr.rowIndex - 2),
       r2idx = rsidx[rsidx.findIndex(n => n === r1idx) + 1]
         || ((document.querySelector('main tbody>tr:last-of-type') || "").rowIndex - 1),
       trows = document.querySelectorAll('main tbody>tr');
@@ -1505,8 +1505,8 @@ let rva2, rval, ss0, ss1,
     .then(re => {
       let dels = re.results.filter(r => r.deleted);
       ftotal.innerText = dels.length;
-      [cmthds[0], cmtfts[0]].forEach(e => e.classList.add("is-hidden"));
-      [cmthds[1], cmtfts[1]].forEach(e => e.classList.remove("is-hidden"));
+      [cmthds[0], cmtfts[0]].forEach(el => el.classList.add("is-hidden"));
+      [cmthds[1], cmtfts[1]].forEach(el => el.classList.remove("is-hidden"));
       cmtbod.innerHTML = qd5Fmt( ss0 === "seq" ? ordFlip(dels)
         : ordFlip(dels.map(r => [r.id, r])).map(sr => sr[1]) );
       chksRstr();
@@ -1526,8 +1526,8 @@ let rva2, rval, ss0, ss1,
         : re.rows.filter(r => /^eco-(?!assets$)./.test((r.doc || r.value).file_type)).length
           + calcSum( re.rows.map( r => !(rval = r.doc || r.value)._attachments
             ? 0 : Object.keys(rval._attachments).length ));
-      [cmthds[1], cmtfts[1]].forEach(e => e.classList.add("is-hidden"));
-      [cmthds[0], cmtfts[0]].forEach(e => e.classList.remove("is-hidden"));
+      [cmthds[1], cmtfts[1]].forEach(el => el.classList.add("is-hidden"));
+      [cmthds[0], cmtfts[0]].forEach(el => el.classList.remove("is-hidden"));
       cmtbod.innerHTML = vidx
       ? qd3Fmt( !ss0 || vidx !== 2 && ss0 === "id" || vidx === 2 && ss1 === "timestamp" ? re.rows
         : ordFlip(re.rows.map(r => [ptyX(r.doc || r.value), r.id, r])).map(sr => sr[2]) )
@@ -1714,7 +1714,7 @@ let elsmed, fpl, fxa, pcntcs, rval, uimg, unm,
         && rowEval( filts[6].value, rval.file_type !== "eco-anno" ? rval.body
           : rval.tags.concat([rval.tocfmt]).concat(rval.texthl).join("\\n") ) )
       .map(r => r.idx);
-    elsmed.forEach(e => e.classList.add("is-hidden"));
+    elsmed.forEach(el => el.classList.add("is-hidden"));
     ridxs.forEach(x => elsmed[x].classList.remove("is-hidden"));
     ctotal.textContent = ridxs.length || "0";
   },
@@ -1782,13 +1782,13 @@ document.querySelector('main>#cfilt>#pcntcs').innerHTML = "\\n      "
 .then(() => {
   elsmed = document.querySelectorAll('main>#postbd>.media');
   document.querySelectorAll('main>#postbd .media-content>.field:first-child a')
-  .forEach(e => e.onclick = fileLoad);
+  .forEach(anc => anc.onclick = fileLoad);
   filts[7].onchange = () =>
     document.querySelectorAll('main>#postbd .media-content>.field:first-child>details')
-    .forEach(e => e.open = filts[7].checked);
+    .forEach(el => el.open = filts[7].checked);
   filts[8].onchange = () =>
     document.querySelectorAll('main>#postbd .media-content>.field:last-child>details')
-    .forEach(e => e.open = filts[8].checked);
+    .forEach(el => el.open = filts[8].checked);
   document.querySelector('main>#cfilt>.panel>.panel-heading>.is-pulled-right').onclick = rsltFilt;
   filts[4].value = window.EC2 && EC2.objQA("epsets.uname", 0) || "";
 }).then(rsltFilt)
@@ -1967,7 +1967,7 @@ cmain.innerHTML += cntcs.map( o => !o ||
   </article>\`
 ).join("\\n") + "\\n";
 document.querySelector('main input[type=checkbox]').onchange
-= evt => document.querySelectorAll('main details').forEach(e => e.open = evt.target.checked);
+= evt => document.querySelectorAll('main details').forEach(el => el.open = evt.target.checked);
 })();
 </script>`
 ];
