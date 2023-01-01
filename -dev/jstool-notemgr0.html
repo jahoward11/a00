@@ -1117,16 +1117,16 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     : typeof v !== 'string' ? "" + v
     : !/^{\s*['"][^]+}$|^\[[^]+\]$/.test(v.trim()) ? v
     : JSON.stringify(fncTry(JSON.parse, v), 0, sp) || v,
-  mp1 = (str, lang) => lang !== "md" && ( lang
+  mP1 = (str, lang) => lang !== "md" && ( lang
     || !/^(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S[^]*?\n(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S/m.test(str) )
     ? [str, lang] : [ str
       .replace( /([^]*?)((?:\s|\W|^)(\*\*?|__?)(\*\*?|__?|)[^\s*_][^]*?[^\s*_]\4\3(?=\s|\W|$)|$)/g,
         (c, m1, m2) => m1.replace(/\*/g, "\\x2a;").replace(/_/g, "\\x5f;") + m2 ), "md" ],
-  jb1 = (str, lang) => typeof str === 'object' ? [valStr(str, 2), "json"]
-    : !window.js_beautify || lang !== "js" ? mp1(valStr(str), lang)
+  jB1 = (str, lang) => typeof str === 'object' ? [valStr(str, 2), "json"]
+    : !window.js_beautify || lang !== "js" ? mP1(valStr(str), lang)
     : [ js_beautify( str, { "indent_size": 2, "space_after_anon_function": 1,
         "break-chained-methods": 1, "keep-array-indentation": 1 }), lang ],
-  jp1 = (str, lang, cl) => !([str, lang] = jb1(str, lang)) ? str
+  jP1 = (str, lang, cl) => !([str, lang] = jB1(str, lang)) ? str
     : "\n<pre class=\"" + (cl != null ? cl : "pwrap") + " hljs\">"
       //#nmwrap pre>pre.hljs { margin: 0; white-space: inherit; }
       + ( !window.hljs ? htmTxt(str)
@@ -1134,10 +1134,10 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
         .replace(lang !== "md" ? /^\*$/ : /\\x2a;/g, "*")
         .replace(lang !== "md" ? /^_$/ : /\\x5f;/g, "_") + "</pre>\n"
       + (!window.hljs ? "" : "<style>@import \"" + (aurls[nm0sets.hlsty] || "") + "\";</style>\n"),
-  jscEval = () => {
+  js2Eval = () => {
     let fncexp = js2txta.value.trim().replace(/(?:[^]*\n|^)>\s*(?=(?:.|\n(?!>))*$)/, ""),
-      r1Show = r => js2txta.value += "\n" + valStr(r, 2) + "\n> ";
-    !fncexp || Promise.resolve(fncTry(window.eval, fncexp, 1)).then(r1Show).catch(r1Show);
+      js2Show = r => js2txta.value += "\n" + valStr(r, 2) + "\n> ";
+    !fncexp || Promise.resolve(fncTry(window.eval, fncexp, 1)).then(js2Show).catch(js2Show);
   },
   txtaSel = ta => !(ta.focus || (ta = window.eval(ta.target.dataset.seltrg)))
     || ta.focus() || ta.setSelectionRange(0, ta.textLength),
@@ -1394,7 +1394,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
           + (aurls[txd4.ATTKEY] || abl && (aurls[txd4.ATTKEY] = URL.createObjectURL(abl)))
           + "\" /></figure>\n"
         : fetch(aurls[txd4.ATTKEY] || abl && (aurls[txd4.ATTKEY] = URL.createObjectURL(abl)))
-          .then(r => r.text()).then( str => nmdata.innerHTML = jp1( str,
+          .then(r => r.text()).then( str => nmdata.innerHTML = jP1( str,
             txd4.ATTKEY.replace(/\.(?:(css)|(html?)|(md)|m?(js))$|.*/i, "$1$2$3$4"), "dflow" ))
           .catch(r2Show);
     //r2Show(txd4);
@@ -1412,17 +1412,17 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     }
     tanc && vbas === 5 ? tabActv() || !(nm0.txd4 = txd4)
       || PouchDB(txd4.DBNAME).get(txd4.FILEID, txd4.OPTS).then( doc => nmdata.innerHTML
-        = jp1(Object.assign({ _id: "", _rev: "" }, doc))
+        = jP1(Object.assign({ _id: "", _rev: "" }, doc))
         + "\n<p><strong>To retrieve older revision:</strong>"
         + " Use JavaScript console (in Settings) to re-assign desired <code>rev</code> value"
         + " from list of available options (above) to <code>nm0.txd4.OPTS.rev</code>"
         + " key and execute given <code>PouchDB</code> command chain (below).</p>\n"
-        + jp1( "// to view current query values\n nm0.txd4\n\n// to retrieve _revs_info"
+        + jP1( "// to view current query values\n nm0.txd4\n\n// to retrieve _revs_info"
           + " within console\n PouchDB(nm0.txd4.DBNAME).get(nm0.txd4.FILEID, nm0.txd4.OPTS)"
           + "\n\n// to re-assign revision value\n nm0.txd4.OPTS.rev = \"revision\""
           + "\n\n// to send revision data to display panel"
           + "\n PouchDB(nm0.txd4.DBNAME).get(nm0.txd4.FILEID, nm0.txd4.OPTS)"
-          + ".then(doc => nmdata.innerHTML = nm0.jp1(doc)).catch(nm0.r2Show); \"\"", "js" ) )
+          + ".then(doc => nmdata.innerHTML = nm0.jP1(doc)).catch(nm0.r2Show); \"\"", "js" ) )
       .catch(r2Show)
     : aurls[txd4.ATTKEY] ? tabActv() || attVw() : txd4.ATTKEY
     ? tabActv() || PouchDB(txd4.DBNAME).getAttachment(txd4.FILEID, txd4.ATTKEY, txd4.OPTS)
@@ -1430,9 +1430,9 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     : !evt.DBNAME && !(finp || "").checked
     ? tabActv() || PouchDB(txd4.DBNAME).get(txd4.FILEID, txd4.OPTS)
         .then( doc => nmdata.innerHTML = !finp && ( doc.hasOwnProperty("content")
-            ? jp1(doc.content) : !Array.isArray(doc.filefrags) ? 0
-            : jp1(doc.filefrags.map(ff => ff.contenttxt).filter(e => e).join("\n\n")) )
-          || jp1(Object.assign({ _id: "", _rev: "" }, doc)) )
+            ? jP1(doc.content) : !Array.isArray(doc.filefrags) ? 0
+            : jP1(doc.filefrags.map(ff => ff.contenttxt).filter(e => e).join("\n\n")) )
+          || jP1(Object.assign({ _id: "", _rev: "" }, doc)) )
         .catch(r2Show)
     : PouchDB(txd4.DBNAME).get(txd4.FILEID, txd4.OPTS).then(doc => {
         let lnl, str,
@@ -2319,7 +2319,7 @@ let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
   };
 window.nm0 = {
   aurls, cntcs, nm0cfgs, nm0sets, txd1,
-  r2Show, fncTry, htmTxt, valStr, mp1, jb1, jp1, idGen,
+  r2Show, fncTry, htmTxt, valStr, mP1, jB1, jP1, idGen,
   filesChg, fileLoad, tabActv
 };
 pdbssel.onchange = pdbOpen;
@@ -2344,7 +2344,7 @@ v01sel.onchange = cfgsUpd;
 actrls.forEach(elm => elm.onchange = setsUpd);
 wipebtn.onclick = storDel;
 jselbtn.onclick = txtaSel;
-js2txta.onblur = jscEval;
+js2txta.onblur = js2Eval;
 ( nm0.p2Gen = () => !window.PouchDB || !PouchDB.allDbs
   ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(r2Show) )();
 </script>
