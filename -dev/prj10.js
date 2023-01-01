@@ -258,7 +258,7 @@ const dbapp = `// __"Recipes" DB Webapp__
 /*
  cQry = () => !(window.pdbs || []).includes((window.txd2 || "").DBNAME) && [] || PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.text()).then(cnt => [txd2.wid, cnt]);
  uiDspl = ([wid, cnt, scr]) => { if (!wid || !cnt) return; let ndiv = document.createElement('div'); ndiv.id = wid; ndiv.innerHTML = "\\n<hr />\\n" + cnt.trim() + "\\n"; cmain.appendChild(ndiv); return scr || window[wid] && window[wid].querySelector('script'); };
- mjsL = scr => !scr || scrInj(0, scr.type || 'module', "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
+ smL = scr => !scr || scrInj(0, scr.type || 'module', "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
 
  dbA = () => !window.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => window.pdbs = re);
  s1L = () => !!window.PouchDB ? _.dbA() : scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(_.dbA));
@@ -269,7 +269,9 @@ const dbapp = `// __"Recipes" DB Webapp__
  window.txd2 = { DBNAME: "howfam02", FILEID: ".ref", ATTKEY: "hjenn_food2022.html", OPTS: {}, wid: "rswrap" };
  s4L = scr => !scr || !window[txd2.wid] || !!window.rstor && (Array.from(document.scripts).find(si => /window\.rstor *=/.test(si.innerHTML)) || document.createElement('i')).remove() || scrInj(0, scr.type || 0, "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
  // window[txd2.wid].remove() // Alert: useful only if edit-testing the GUI code above
- window[txd2.wid] || Promise.resolve().then(s1L).then(s2L).then(nmImp).then(uiDspl).then(mjsL).then(cQry).then(uiDspl).then(s4L).catch(reShow);
+
+ window[txd2.wid] || Promise.resolve().then(s1L).then(s2L).then(nmImp).then(uiDspl).then(smL).then(cQry).then(uiDspl).then(s4L).catch(reShow);
+
  // nmwrap.classList.toggle("dnone");
 */
 
@@ -294,6 +296,8 @@ const t3search = `//
 
  // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
  // try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.strPars || scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(reShow); }
+
+ // srctxta.textContent = trgtxta.value; srctxta.value = srctxta.innerHTML;
 
  // dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
  // srctxta.textContent = (dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(t3x) + dwraps[2]);
