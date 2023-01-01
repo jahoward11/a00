@@ -268,8 +268,8 @@ const dbapp = `// __"Recipes" DB Webapp__
 
  window.txd2 = { DBNAME: "howfam02", FILEID: ".ref", ATTKEY: "hjenn_food2022.html", OPTS: {}, wid: "rswrap" };
  s4L = scr => !scr || !window[txd2.wid] || !!window.rstor && (Array.from(document.scripts).find(si => /window\.rstor *=/.test(si.innerHTML)) || document.createElement('i')).remove() || scrInj(0, scr.type || 0, "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
- // window[txd2.wid].remove() // Alert: useful only if edit-testing the GUI code above
 
+ // window[txd2.wid].remove() // Alert: useful only if edit-testing the GUI code above
  window[txd2.wid] || Promise.resolve().then(s1L).then(s2L).then(nmImp).then(uiDspl).then(smL).then(cQry).then(uiDspl).then(s4L).catch(reShow);
 
  // nmwrap.classList.toggle("dnone");
