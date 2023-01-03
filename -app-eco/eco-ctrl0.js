@@ -43,7 +43,7 @@ const hostgh = /\.github\.io$/.test(window.location.host),
     "ebook-annos-fns.js":     a00path + "/-res-js/ebook-annos-fns.js",
     "srcdiff.js":             a00path + "/-res-js/srcdiff.js"
   },
-  dPrc = {
+  dprc = {
     cnt: d => d && ( d.hasOwnProperty("content") ? d.content : !Array.isArray(d.filefrags)
       ? d : d.filefrags.map(ff => ff.contenttxt).filter(e => e).join("\n\n") ),
     sty: d => d && ( !((d.parseconfigs || "").linksconstr || "").hasOwnProperty("htmllinktxt")
@@ -2619,9 +2619,9 @@ attInp() {
     ? localforage.keys((err, keys) => err ? msgHandl(err) : dataDispl(keys, 7))
     : localforage.getItem( lfkey.replace(rexept, ""), (err, val) => err ? msgHandl(err)
       : dataDispl( !/^{".+}$/.test(val) || !jsonParse(val) ? val : !(val = jsonParse(val))
-        || ( /\.(?:[ct]|content|te?xt\d)\d*$/.test(lfkey) ? dPrc.cnt(val)
-        : /\.(?:[ls]|li?nk|sty|style)\d*$/.test(lfkey) ? dPrc.sty(val)
-        : /\.(?:h|html?)\d*$/.test(lfkey) ? dPrc.htm(val) : val ),
+        || ( /\.(?:[ct]|content|te?xt\d)\d*$/.test(lfkey) ? dprc.cnt(val)
+        : /\.(?:[ls]|li?nk|sty|style)\d*$/.test(lfkey) ? dprc.sty(val)
+        : /\.(?:h|html?)\d*$/.test(lfkey) ? dprc.htm(val) : val ),
       /\.(?:h|html?)\d*$/.test(lfkey) ? 3 : 7 ) );
   } else if (rexoqa.test(valatt)) {
     Promise.resolve( EC2.objQA( valatt.replace(/^\$ *|^(\w+):.*/g, "$1"),
@@ -2635,9 +2635,9 @@ attInp() {
     .catch(msgHandl);
   } else if (!idx && rexept.test(txdata.FILEID)) {
     txdata.FILEID = txdata.FILEID.replace(rexept, "");
-    txdata.dPrc = /\.(?:[ct]|content|te?xt\d)\d*$/.test(valatt) ? dPrc.cnt
-      : /\.(?:[ls]|li?nk|sty|style)\d*$/.test(valatt) ? dPrc.sty
-      : /\.(?:h|html?)\d*$/.test(valatt) ? dPrc.htm : 0;
+    txdata.dPrc = /\.(?:[ct]|content|te?xt\d)\d*$/.test(valatt) ? dprc.cnt
+      : /\.(?:[ls]|li?nk|sty|style)\d*$/.test(valatt) ? dprc.sty
+      : /\.(?:h|html?)\d*$/.test(valatt) ? dprc.htm : 0;
     couchQry(txdata, /\.(?:h|html?)\d*$/.test(valatt) ? 3 : 7);
   } else if (valatt) {
     couchQry(txdata, 3);
@@ -3611,13 +3611,13 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-memos
   : /^pf3stor/i.test(key) ? pf3stor[ptyTest()] || rsltFbk(pf3stor)
   : /^tmp1pc/i.test(key) ? tmp1pc && tmp1pc[ptyTest()] || rsltFbk(tmp1pc)
   : /^tmp1ff/i.test(key) ? tmp1ff && tmp1ff[ptyTest()] || rsltFbk(tmp1ff)
-  : /^(?:f2|file2nd)\.[ct]\d*$/i.test(key) ? dPrc.cnt(file2nd) || rsltFbk(file2nd)
-  : /^(?:f2|file2nd)\.[ls]\d*$/i.test(key) ? dPrc.sty(file2nd) || rsltFbk(file2nd)
-  : /^(?:f2|file2nd)\.h\d*$/i.test(key) ? dPrc.htm(file2nd) || rsltFbk(file2nd)
+  : /^(?:f2|file2nd)\.[ct]\d*$/i.test(key) ? dprc.cnt(file2nd) || rsltFbk(file2nd)
+  : /^(?:f2|file2nd)\.[ls]\d*$/i.test(key) ? dprc.sty(file2nd) || rsltFbk(file2nd)
+  : /^(?:f2|file2nd)\.h\d*$/i.test(key) ? dprc.htm(file2nd) || rsltFbk(file2nd)
   : /^f2\b|^file2nd/i.test(key) ? file2nd && file2nd[ptyTest()] || rsltFbk(file2nd)
-  : /^(?:f1?|filewkg)\.[ct]\d*$/i.test(key) ? dPrc.cnt(filewkg) || rsltFbk(filewkg)
-  : /^(?:f1?|filewkg)\.[ls]\d*$/i.test(key) ? dPrc.sty(filewkg) || rsltFbk(filewkg)
-  : /^(?:f1?|filewkg)\.h\d*$/i.test(key) ? dPrc.htm(filewkg) || rsltFbk(filewkg)
+  : /^(?:f1?|filewkg)\.[ct]\d*$/i.test(key) ? dprc.cnt(filewkg) || rsltFbk(filewkg)
+  : /^(?:f1?|filewkg)\.[ls]\d*$/i.test(key) ? dprc.sty(filewkg) || rsltFbk(filewkg)
+  : /^(?:f1?|filewkg)\.h\d*$/i.test(key) ? dprc.htm(filewkg) || rsltFbk(filewkg)
   : /^f1?\b|^filewkg/i.test(key) ? filewkg && filewkg[ptyTest()] || rsltFbk(filewkg)
   : /^webdoc(?:Gen|)|^wdG/i.test(key) && (filewkg || "").filefrags ? webdocGen(1)
   : /^(?:ECO|E|)SDOCS?/i.test(key) ? EC0.SDOCS[ptyTest(1)] || rsltFbk(EC0.SDOCS)
@@ -3881,9 +3881,9 @@ qconRetrvD(cbfnc, errfnc, txd5) { // also triggered by guideLoad, dviz-idxlist, 
     ? localforage.keys((err, keys) => err ? msgHandl(err) : dataDispl(keys, 0, cbfnc))
     : localforage.getItem( lfkey.replace(rexept, ""), (err, val) => err ? msgHandl(err)
       : dataDispl( !/^{".+}$/.test(val) || !jsonParse(val) ? val : !(val = jsonParse(val))
-        || ( /\.(?:[ct]|content|te?xt\d)\d*$/.test(lfkey) ? dPrc.cnt(val)
-        : /\.(?:[ls]|li?nk|sty|style)\d*$/.test(lfkey) ? dPrc.sty(val)
-        : /\.(?:h|html?)\d*$/.test(lfkey) ? dPrc.htm(val) : val ), 0, cbfnc ) );
+        || ( /\.(?:[ct]|content|te?xt\d)\d*$/.test(lfkey) ? dprc.cnt(val)
+        : /\.(?:[ls]|li?nk|sty|style)\d*$/.test(lfkey) ? dprc.sty(val)
+        : /\.(?:h|html?)\d*$/.test(lfkey) ? dprc.htm(val) : val ), 0, cbfnc ) );
   } else if (rexoqa.test(valcon)) {
     Promise.resolve( EC2.objQA( valcon.replace(/^\$ *|^(\w+):.*/g, "$1"),
       valcon.replace(/^\$ *\w+:(.+)|.*/g, "$1") ))
@@ -3919,9 +3919,9 @@ qconRetrvD(cbfnc, errfnc, txd5) { // also triggered by guideLoad, dviz-idxlist, 
     .catch(msgHandl);
   } else if (!txdata.ATTKEY && rexept.test(txdata.FILEID)) {
     txdata = txdPrep(valcon.replace(rexept, ""))[0];
-    txdata.dPrc = /\.(?:[ct]|content|te?xt\d)\d*$/.test(valcon) ? dPrc.cnt
-      : /\.(?:[ls]|li?nk|sty|style)\d*$/.test(valcon) ? dPrc.sty
-      : /\.(?:h|html?)\d*$/.test(valcon) ? dPrc.htm : 0;
+    txdata.dPrc = /\.(?:[ct]|content|te?xt\d)\d*$/.test(valcon) ? dprc.cnt
+      : /\.(?:[ls]|li?nk|sty|style)\d*$/.test(valcon) ? dprc.sty
+      : /\.(?:h|html?)\d*$/.test(valcon) ? dprc.htm : 0;
     couchQry(txdata, 0, cbfnc);
   } else {
     couchQry(txdPrep(0)[0], 0, cbfnc);
