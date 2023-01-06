@@ -1,6 +1,6 @@
 /*
 HTML/Javascript CSI e-book annotations functions
-Copyright (c) 2021 J.A. Howard | github.com/jahoward11
+Copyright (c) 2023 J.A. Howard | github.com/jahoward11
 */
 
 (function () { //rstate, elsscr, afnccalled
@@ -21,6 +21,7 @@ const h1node = window.editorApp || window.EC1 ? null : document.head,
   dswrap = document.querySelector(d1wrap + '>section:first-child') ? ">section"
     : document.querySelector(d1wrap + '>.section') ? ">.section" : "",
   dmwrap = !document.querySelector(d1wrap + dswrap + '>main') ? "" : ">main",
+  dcnode = document.querySelector(d1wrap + dswrap + dmwrap),
   dstyles = (window.editorApp || window.EC1 ? d1node : document).querySelectorAll('style'),
   rexhlwr = /<!-- *(?:annotations-hili|annoshl|texthl).*\n*([^]*?)\n*-->/i,
   rexhlmc = /((?:(?:\n*\/.+\/[gim]*|\n*{[ *+:=_~]*\\?[#.]?\w*}|\n*.+?{ *\+\+ *\\?[#.]?\w*})(?:\n|(?=$))|\n)+|^)([^]*?)(?=(?:\n+\/.+\/[gim]*|\n*{[ *+:=_~]*\\?[#.]?\w*}|\n+.+?{ *\+\+ *\\?[#.]?\w*})(?:\n|$)|\n\n|$)/g,
@@ -61,7 +62,6 @@ let hnbgn = acs.ptchbg[acs.ptchbg[0]],
   tocfmt = typeof acs.tocfmt !== 'number' ?  acs.tocfmt
     : (Number.isInteger(acs.tocfmt) && acs.tocfmt > 0 ? acs.tocfmt.toString() : "");
 let chid = d1node.querySelector('#header') ? "header" : "top",
-  dcnode = document.querySelector(d1wrap + dswrap + dmwrap),
   divnew, divinnr, h16mask, h16nav,
   hdgtags = ['>h1:not(#title)', '>h2:not(#title):not(#author)', '>h3:not(#date)', '>h4', '>h5', '>h6']
     .map(e => d1wrap + dswrap + dmwrap + e),
@@ -377,7 +377,7 @@ acs = {
   texthl: acs.texthl || []
 };
 texthl = ( !Array.isArray(acs.texthl) && acs.texthl ? acs.texthl
-  : (d1node.innerHTML.match(rexhlwr) || ["", ""])[1] )
+  : (dcnode.innerHTML.match(rexhlwr) || ["", ""])[1] )
   .replace(/(?: +|^)\/\/.*| +$|^ +/gm, "").replace(/(\\n)\n(?=.)/g, "$1");
 texthl = ( !/\v/.test(texthl) ? texthl
   : texthl.replace(/[^\n\v](?=\n.)/gm, "$&\n").replace(/\v$/gm, "") )
@@ -402,11 +402,11 @@ if (!Array.isArray(acs.texthl) || !acs.texthl.length) { //(/(?:[^\\]|^)(?:\\\\)*
   : texthl.split("\n").map(e => !/^\/.+\/[gim]*$/.test(e) ? e : eval(e) || e);
 }
 
-d1node.innerHTML = d1node.innerHTML.replace(/<!-- *(?:\/\/ *)?(?:anno|text)[^]*?-->\n?/gi, "");
-d1node.normalize();
+dcnode.innerHTML = dcnode.innerHTML.replace(/<!-- *(?:\/\/ *)?(?:anno|text)[^]*?-->\n?/gi, "");
+dcnode.normalize();
 !acs.codehl || hljsSetup();
-htmlpers = d1node.innerHTML.match(rexperi) || []; // preserve periph
-d1node.innerHTML = d1node.innerHTML.replace(rexperi, "<!--phold-periph-->"); // placehold periph
+htmlpers = dcnode.innerHTML.match(rexperi) || []; // preserve periph
+dcnode.innerHTML = dcnode.innerHTML.replace(rexperi, "<!--phold-periph-->"); // placehold periph
 //if (typeof acs.tocfmt !== 'number' || acs.tocfmt >= 0) { refnbrAssn(); }
 if (!d1node.querySelector('.refnbr')) {
   !(window.editorApp || window.EC1)
@@ -414,17 +414,31 @@ if (!d1node.querySelector('.refnbr')) {
   refnbrAssn();
   annosXlink();
 }
-d1node.innerHTML = annosHilit(d1node.innerHTML);
+dcnode.innerHTML = annosHilit(dcnode.innerHTML);
 !window.mnmask
 || d1node.querySelectorAll('mark>ins.mnote').forEach(e => e.parentElement.after(" ", e))
 || d1node.querySelectorAll('mark>ins.mnote').forEach(e => e.parentElement.after(" ", e))
 || d1node.querySelectorAll('td:not(first-of-type)>ins.mnote')
   .forEach(e => e.parentElement.parentElement.firstElementChild.append(" ", e));
-!tocbuild || d1node.querySelector('#TOC') // insert toc
-|| ( d1node.innerHTML = d1node.innerHTML
-  .replace( /(<header\b.*?>[^]*?<\/header>\n+|<\/h[1-6]>[^]*?\n(?= *<main\b.*?>))|^(?= *<(?:figure|hr)\b.*?>(?:[^<]|<(?!\/?header\b.*?>|figure\b.*?>|hr\b.*?>))*?(?:<(?:div|p)\b.*? class=['"]?navch\b.*?>|<h([1-6])\b.*?>.*?<\/h\2>)| *<(?:div|p)\b.*? class=['"]?navch\b.*?>)/im,
-    "$1" + tocbuild ) ); //<div style=\"display: none;\">\\newpage </div>\n\n" );
-d1node.innerHTML = d1node.innerHTML.replace(/<!--phold-periph-->/gi, () => htmlpers[pei++]);
+if (tocbuild && !d1node.querySelector('#TOC')) { // insert toc
+  let el0, el1,
+    tag = /^<(\w+)( +id="(.*?)"|)( +class="(.*?)"|).*?>/.exec(tocbuild),
+    ntoc = document.createElement(tag[1]);
+  ntoc.id = tag[2];
+  ntoc.className = tag[3];
+  ntoc.innerHTML = "\n" + tocbuild.replace(/<\/\w+>\n$|^<.+?>/g, "");
+  !( el0 = d1node.querySelector('.navch')
+    || d1node.querySelector('main')
+    || d1node.querySelectorAll('hr~h1, hr~h2, hr~h3, hr~h4')[0]
+    || d1node.querySelectorAll('figure~h1, figure~h2, figure~h3, figure~h4')[0]
+    || d1node.querySelectorAll('h1, h2, h3, h4')[0]
+    || d1node.firstElementChild )
+  || !( el0.nodeName === 'MAIN'
+    || [1,2,3,4,5].find( e => /^FIGURE$|^HR$/.test( ( el1 = Array.from(Array(e))
+        .reduce(a => a.previousElementSibling, el0) || "" ).nodeName ) && (el0 = el1) ) || 1 )
+  || el0.parentElement.insertBefore(ntoc, el0);
+}
+dcnode.innerHTML = dcnode.innerHTML.replace(/<!--phold-periph-->/gi, () => htmlpers[pei++]);
 // restore periph
 if ( !Array.from(dstyles).some( s => /#TOC\b/.test(s.innerHTML) && /\.refnbr\b/.test(s.innerHTML)
 || /^@import ".*\/style-hjas-dflt0\.css"/m.test(s.innerHTML) )) {
