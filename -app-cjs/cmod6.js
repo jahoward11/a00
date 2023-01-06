@@ -1346,7 +1346,7 @@ window.aurls = window.aurls || {};
 
 /*
  dtmpl.key = "t1src"; // "t2evt"; "t3mem"; "t4cnt";
- dbase = "recipes-home"; // "log-workouts"; "journal2022"; "contacts-work";
+ dbase = "recipes-home"; // "log-workouts"; "journal2023"; "contacts-work";
  !window.PouchDB || !/^[a-z][0-9_a-z-]*$/.test(dbase) || (window.dbobj = new PouchDB(dbase))
 */
 //`;
