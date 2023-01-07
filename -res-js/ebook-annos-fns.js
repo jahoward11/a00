@@ -440,7 +440,7 @@ if (tocbuild && !d1node.querySelector('#TOC')) { // insert toc
 }
 dcnode.innerHTML = dcnode.innerHTML.replace(/<!--phold-periph-->/gi, () => htmlpers[pei++]);
 // restore periph
-if ( !Array.from(dstyles).some( s => /#TOC\b/.test(s.innerHTML) && /\.refnbr\b/.test(s.innerHTML)
+if ( !Array.from(dstyles).some( s => /#TOC\b/.test(s.innerHTML) || /\.refnbr\b/.test(s.innerHTML)
 || /^@import ".*\/style-hjas-dflt0\.css"/m.test(s.innerHTML) )) {
   nsty = document.createElement('style');
   nsty.setAttribute('type', 'text/css');
