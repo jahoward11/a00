@@ -404,7 +404,7 @@ if (!Array.isArray(acs.texthl) || !acs.texthl.length) { //(/(?:[^\\]|^)(?:\\\\)*
 }
 
 dcnode.innerHTML = dcnode.innerHTML.replace(/<!-- *(?:\/\/ *)?(?:anno|text)[^]*?-->\n?/gi, "");
-dcnode.normalize();
+//dcnode.normalize();
 !acs.codehl || hljsSetup();
 htmlpers = dcnode.innerHTML.match(rexperi) || []; // preserve periph
 dcnode.innerHTML = dcnode.innerHTML.replace(rexperi, "<!--phold-periph-->"); // placehold periph
