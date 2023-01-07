@@ -422,7 +422,7 @@ dcnode.innerHTML = annosHilit(dcnode.innerHTML);
 || d1node.querySelectorAll('td:not(first-of-type)>ins.mnote')
   .forEach(e => e.parentElement.parentElement.firstElementChild.append(" ", e));
 if (tocbuild && !d1node.querySelector('#TOC')) { // insert toc
-  tag = /^<(\w+)( +id="(.*?)"|)( +class="(.*?)"|).*?>/.exec(tocbuild);
+  tag = /^<(\w+)(?: +id="(.*?)"|)(?: +class="(.*?)"|).*?>/.exec(tocbuild);
   ntoc = document.createElement(tag[1]);
   ntoc.id = tag[2];
   ntoc.className = tag[3];
