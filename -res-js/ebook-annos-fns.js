@@ -426,7 +426,7 @@ if (tocbuild && !d1node.querySelector('#TOC')) { // insert toc
   ntoc = document.createElement(tag[1]);
   ntoc.id = tag[2];
   ntoc.className = tag[3];
-  ntoc.innerHTML = "\n" + tocbuild.replace(/<\/\w+>\n$|^<.+?>/g, "");
+  ntoc.innerHTML = tocbuild.replace(/<\/\w+>\n$|^<.+?>/g, "");
   !( el0 = d1node.querySelector('.navch')
     || d1node.querySelector('main')
     || d1node.querySelectorAll('hr~h1, hr~h2, hr~h3, hr~h4')[0]
