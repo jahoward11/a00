@@ -11,9 +11,9 @@ window.annos.fns = window.annos.fns || function x(cfgs) {
 'use strict';
 var acs = cfgs && !cfgs.eventPhase && cfgs || window.annos && window.annos.configs || {},
   annoblocks = [], //refnbrAssn, annosXlink
-  bodwid, dstyle0, htmlpers, masthd, nmain,
+  bodwid, dstyle0, el0, el1, htmlpers, masthd, nmain, nsty, ntoc,
   pei = 0,
-  nsty, texthl,
+  tag, texthl,
   tocbuild = ""; //refnbrAssn, annosfns
 const h1node = window.editorApp || window.EC1 ? null : document.head,
   d1wrap = window.editorApp ? "#esrender_42qz0xfp" : window.EC1 ? "#ecorender" : "body",
@@ -37,7 +37,7 @@ function chNbr(chnbru) { //refnbrAssn, annosXlink
 
 function hljsSetup() {
   let codeblocks = document.querySelectorAll('code'),
-    pcode, prenew;
+    npre, pcode;
   Array.from(codeblocks).some(cbi => /<span class="hljs-\w+">/.test(cbi.innerHTML))
   || codeblocks.forEach(cbi => {
     pcode = cbi.parentElement;
@@ -45,9 +45,9 @@ function hljsSetup() {
       if (pcode.nodeName === 'P' || pcode.className === "language-p") {
         // NOCS generates P>CODE. Markdownit generates PRE>CODE.
         // Transform either one to PRE>P>CODE.
-        prenew = document.createElement('pre');
-        prenew.innerHTML = "<p>" + pcode.innerHTML + "</p>";
-        pcode.parentElement.replaceChild(prenew, pcode);
+        npre = document.createElement('pre');
+        npre.innerHTML = "<p>" + pcode.innerHTML + "</p>";
+        pcode.parentElement.replaceChild(npre, pcode);
       } else if (pcode.nodeName === 'PRE' && window.hljs) { //&& !cbi.className
         window.hljs.highlightBlock(cbi);
       } //hljs.initHighlighting();
@@ -62,7 +62,7 @@ let hnbgn = acs.ptchbg[acs.ptchbg[0]],
   tocfmt = typeof acs.tocfmt !== 'number' ?  acs.tocfmt
     : (Number.isInteger(acs.tocfmt) && acs.tocfmt > 0 ? acs.tocfmt.toString() : "");
 let chid = d1node.querySelector('#header') ? "header" : "top",
-  divnew, divinnr, h16mask, h16nav,
+  divinnr, h16mask, h16nav,
   hdgtags = ['>h1:not(#title)', '>h2:not(#title):not(#author)', '>h3:not(#date)', '>h4', '>h5', '>h6']
     .map(e => d1wrap + dswrap + dmwrap + e),
   hnpatt, hnpatt1, hnpatt2, hnseps,
@@ -77,6 +77,7 @@ let chid = d1node.querySelector('#header') ? "header" : "top",
   mnotect = 0,
   navchlen = dcnode.querySelectorAll('.navch').length,
   navct = 0,
+  ndiv,
   pari_navct = null,
   parlen,
   pars = null,
@@ -212,32 +213,32 @@ for (j = 0, parlen = pars.length; j < parlen; j++) { //for (let [j, pari] of par
   if ( pari_navct !== null && j - pari_navct && (j - pari_navct) % acs.pnfreq === 0
   && ( pars[j].previousElementSibling === null
   || !/\bmnote/i.test(pars[j].previousElementSibling.className) )) {
-    divnew = document.createElement('div');
-    divnew.id = "ch"
+    ndiv = document.createElement('div');
+    ndiv.id = "ch"
       + (hxrlvl && hnpatt ? hnpatt().replace(/\W+$|^\W+/g, "").replace(/\W+/g, ".") : ptchbg[0])
       + "par" + (j - pari_navct);
-    divnew.className = "refnbr";
-    divnew.setAttribute('align', 'right');
-  //divnew.style.fontSize = "0.625em"; //x-small
-  //divnew.style.lineHeight = "0.9em";
-  //divnew.style.color = "silver";
-  //divnew.style.maxWidth = "4em";
-  //divnew.style.margin = "0 0 0 auto";
-  //divnew.style.padding = "0 0.25em";
-  //divnew.style.cssFloat = "right";
-  //divnew.style.clear = "right";
-    divnew.innerHTML = navct && chNbr(hnbgn) > 0 ? divinnr()
+    ndiv.className = "refnbr";
+    ndiv.setAttribute('align', 'right');
+  //ndiv.style.fontSize = "0.625em"; //x-small
+  //ndiv.style.lineHeight = "0.9em";
+  //ndiv.style.color = "silver";
+  //ndiv.style.maxWidth = "4em";
+  //ndiv.style.margin = "0 0 0 auto";
+  //ndiv.style.padding = "0 0.25em";
+  //ndiv.style.cssFloat = "right";
+  //ndiv.style.clear = "right";
+    ndiv.innerHTML = navct && chNbr(hnbgn) > 0 ? divinnr()
       : "<a href=#" + chid + "><strong>" + (!hxrlvl || hxct_hhx[3] ? "&loz;" : "Fwd") + "</strong></a>"
       + (acs.pnwrap < 0 ? "" : (j - pari_navct).toString().replace(/.*/, eval(pnwrap)));
     pcontainer = pars[j].parentElement.nodeName !== 'PRE' ? pars[j] : pars[j].parentElement;
-    pcontainer.parentElement.insertBefore(divnew, pcontainer);
+    pcontainer.parentElement.insertBefore(ndiv, pcontainer);
   }
 }
-if (!d1node.querySelector('.refnbr')) { //(hxrlvl < 0 || hxrlvl > 6) {
-  divnew = document.createElement('div');
-  divnew.className = "refnbr";
-  divnew.style.display = "none";
-  d1node.appendChild(divnew);
+if (!dcnode.querySelector('.refnbr')) { //(hxrlvl < 0 || hxrlvl > 6) {
+  ndiv = document.createElement('div');
+  ndiv.className = "refnbr";
+  ndiv.style.display = "none";
+  dcnode.appendChild(ndiv);
 }
 !hxlen.some(e => e) || !((tf05[2] && tf05[3]) || (tf05[0] && tf05[1]))
 || ( tochxs = d1node.querySelectorAll( hdgtags.slice( ...( tf05[2] && tf05[3]
@@ -408,7 +409,7 @@ dcnode.normalize();
 htmlpers = dcnode.innerHTML.match(rexperi) || []; // preserve periph
 dcnode.innerHTML = dcnode.innerHTML.replace(rexperi, "<!--phold-periph-->"); // placehold periph
 //if (typeof acs.tocfmt !== 'number' || acs.tocfmt >= 0) { refnbrAssn(); }
-if (!d1node.querySelector('.refnbr')) {
+if (!dcnode.querySelector('.refnbr')) {
   !(window.editorApp || window.EC1)
   || window.console.log("App detected. Applying ebook-annos-fns to render.");
   refnbrAssn();
@@ -421,9 +422,8 @@ dcnode.innerHTML = annosHilit(dcnode.innerHTML);
 || d1node.querySelectorAll('td:not(first-of-type)>ins.mnote')
   .forEach(e => e.parentElement.parentElement.firstElementChild.append(" ", e));
 if (tocbuild && !d1node.querySelector('#TOC')) { // insert toc
-  let el0, el1,
-    tag = /^<(\w+)( +id="(.*?)"|)( +class="(.*?)"|).*?>/.exec(tocbuild),
-    ntoc = document.createElement(tag[1]);
+  tag = /^<(\w+)( +id="(.*?)"|)( +class="(.*?)"|).*?>/.exec(tocbuild);
+  ntoc = document.createElement(tag[1]);
   ntoc.id = tag[2];
   ntoc.className = tag[3];
   ntoc.innerHTML = "\n" + tocbuild.replace(/<\/\w+>\n$|^<.+?>/g, "");
