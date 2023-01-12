@@ -814,7 +814,8 @@ function jdeDftGen() {
 
 function swapListGen() {
   const context = {
-    swapitems: [["Preview content (HTML)", "body>#ecorender"], ["File data (JSON)", "#ecoesp0 #rawtxta"]]
+    swapitems: [ ["Preview content (HTML)", "body>#ecorender"],
+      ["Preview script (JS)", "body>#ecoscripts"], ["File data (JSON)", "#ecoesp0 #rawtxta"] ]
       .concat( !filewkg ? []
         : filewkg.file_type === "eco-srcdoc" ? [["Source doc: CONTENT", "content"]]
         : filewkg.file_type === "eco-scrap" ? [["Scrap file: CONTENT", "content"]]
@@ -827,7 +828,8 @@ function swapListGen() {
         : filewkg.file_type === "eco-contact"
           ? [["Contact file: SHORT BIO", "bio_short"], ["Contact file: MISCELLANY", "miscellany"]]
         : !filewkg.filefrags ? []
-        : filewkg.filefrags.map(ob => ["Publish mgr: " + ob.labeltxt, null]) )
+        : filewkg.filefrags.map(ob => ["Publish mgr: " + ob.labeltxt, null])
+          .concat([["Publish mgr: htmllinktxt", null]]) )
   };
   document.querySelector('#ecoesp0 #swaplist').innerHTML = tmplswaplist && tmplswaplist(context);
 }
@@ -3231,19 +3233,20 @@ swapExe(parse) {
   let ff2pty, ff2val, lrpl, rpl2,
     attlist = document.querySelector('#econav0 #attlist'),
     fldstxta = document.querySelectorAll('#ecoesp0 #jdedft textarea'),
+    hlnktxta = document.querySelector('#ecoesp0 #ptyvals9>span:nth-of-type(7)>textarea'),
     swpsinp = document.querySelector('#ecoesp0 #swpsinp'),
     swprinp = document.querySelector('#ecoesp0 #swprinp'),
     replhelp = document.querySelector('#ecoesp0 #toolswap .help'),
     swaptxta = document.querySelector('#ecoesp0 #swaptxta'),
     swaplist = document.querySelector('#ecoesp0 #swaplist'),
     idx = swaplist.selectedIndex,
-    sliste = idx > 0 && idx < 3 && document.querySelector(swaplist.value),
-    fldfc2 = fldfoc || sliste || fldstxta && fldstxta[idx - 3],
+    sliste = idx > 0 && idx < 4 && document.querySelector(swaplist.value),
+    fldfc2 = fldfoc || sliste || fldstxta && fldstxta[idx - 4] || hlnktxta,
     hlpPol = y => [swaptxta, replhelp].forEach(el => el.classList.add(!y ? "is-warning" : "is-success"));
   if (!fldfc2) { return; }
   [swaptxta, replhelp].forEach(el => el.classList.remove("is-warning", "is-success"));
   replhelp.innerHTML = "";
-  ff2pty = fldfc2.id === "ecorender" ? "innerHTML" : "value";
+  ff2pty = /^eco(?:render|scripts)$/.test(fldfc2.id) ? "innerHTML" : "value";
   ff2val = fldfc2[ff2pty];
   if (parse) {
     try {
@@ -3265,24 +3268,25 @@ swapExe(parse) {
   }
   fldfc2[ff2pty] = swaptxta.value;
   swaptxta.value = ff2val;
-  if (idx === 1) { // fldfc2.id === "ecorender"
+  if (/^[12]$/.test(idx)) { // /^eco(?:render|scripts)$/.test(fldfc2.id)
     attlist.value = "";
     EC1.attSel(1);
-  } else if (idx > 2) { // fldfc2.id !== "rawtxta"
-    !(filewkg || "").filefrags || EC1.srcSel(idx - 3);
+  } else if (idx > 3 && fldfc2 !== hlnktxta) { // fldfc2.id !== "rawtxta"
+    !(filewkg || "").filefrags || EC1.srcSel(idx - 4);
     EC1.jdeDftUpd(swaplist.value);
     swaplist.selectedIndex = idx;
-  } else if (idx === 2 || fldfoc && fldfoc.id === "rawtxta") {
+  } else if (idx === 3 || fldfoc && fldfoc.id === "rawtxta") {
     if (!filewkg || !jsonParse(rawtxta.value)) {
       fwResets(1);
       document.querySelector('#econav0 #pfslist').selectedIndex = 0;
       EC1.pfsInp();
-      idx > 2 || (swaplist.selectedIndex = idx);
+      idx > 3 || (swaplist.selectedIndex = idx);
     } else {
       EC1.jdeRawUpd();
     }
-  } else if (fldfoc) {
+  } else if (fldfoc || fldfc2 === hlnktxta) {
     fldfc2.onblur();
+    fldfc2 !== hlnktxta || (swaplist.selectedIndex = idx);
   }
 },
 wrapTog() { // also triggered by ibmConnect
