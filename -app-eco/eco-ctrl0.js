@@ -1852,7 +1852,7 @@ function webdocGen(redirect, pdata = filewkg || jsonParse(JSON.stringify(ETMPLS.
   = document.querySelector('body>#ecosrcview').innerHTML
   = document.querySelector('body>#ecoscripts').innerHTML = null;
   fragstxt = pdata.filefrags.map( ob => typeof ob.contenttxt !== 'string'
-    || !ob.contenttxt ? ob.contenttxt : ob.contenttxt.trim() + "\n\n" );
+    || !ob.contenttxt ? ob.contenttxt : ob.contenttxt.replace(/\n+$|^\n+/g, "") + "\n\n" );
   scriptsincl.forEach( (sii, i) => sifragsbound == null &&
     (sii.applytofrag.every(e => e) || i + 1 === sil) && (sifragsbound = i) );
   scriptsincl.forEach((sii, i1) => {
@@ -3748,18 +3748,24 @@ dvizGen(idx) {
       dviztmpl.contributors = csg.map(ar => ar[1].replace(/[^\w.@-]+/g, "-"));
       !cdb || (dviztmpl.loadconfigs.commondirpath = `../../${cdb}/contacts/`);
       dviztmpl.loadconfigs.fragsrcxs = [false, ...csg.map(ar => "./" + ar[0]), false];
+      dviztmpl.parseconfigs = Object.assign( dviztmpl.parseconfigs, {
+        scriptsconstr: [{
+          fncname:  "elmsDelin", filepath: "", usedescription: "", htmlscriptload: "",
+          features: [{ switchon: false, keytxt: "", valtxt: "" }],
+          deftxt:   `function (str) {\n  return str.trim().replace(/^/gm, "    ") + ",\\n"\n  ;\n}`
+        }],
+        scriptsincl: [{ fncname: "elmsDelin", applytofrag: [false, ...csg.map(ar => true), false] }]
+      });
       dviztmpl.filefrags = [
         { idtxt: "SOURCE1", labeltxt: "SOURCE1", titletxt: "SOURCE pane #1.",
-          contenttxt: (EC0.SDOCS[4] || "").replace(/\n *`\.trim\(\)[^]+$/, "") },
+          contenttxt: EC0.SDOCS[4][0] },
         ...csg.map( (e, i) =>
           ({ idtxt: `SOURCE${2 + i}`, labeltxt: `SOURCE${2 + i}`,
-            titletxt: `SOURCE pane #${2 + i}.`, contenttxt: "" })),
+            titletxt: `SOURCE pane #${2 + i}.`, contenttxt: "" }) ),
         { idtxt: `SOURCE${2 + cct}`, labeltxt: `SOURCE${2 + cct}`,
-          titletxt: `SOURCE pane #${2 + cct}.`, contenttxt: (EC0.SDOCS[4] || "")
-          .replace(/^[^]+?\n *const cntcs = `\n/, "")
+          titletxt: `SOURCE pane #${2 + cct}.`, contenttxt: EC0.SDOCS[4][1]
           .replace(/\.\.\/\.\.\/a00_myteam\/-res-img\//g, () => !cdb ? "" : `../../${cdb}/-res-img/`) }
       ];
-      dviztmpl.parseconfigs.scriptsincl[0].applytofrag = dviztmpl.filefrags.map(e => true);
       window.scrollTo(0, 0);
       dataDispl(dviztmpl, 1, () => EC1.tabs0Tog(0));
     };

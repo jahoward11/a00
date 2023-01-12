@@ -1796,7 +1796,7 @@ document.querySelector('main>#cfilt>#pcntcs').innerHTML = "\\n      "
 })();
 </script>`,
 // * * * * * 4: dviz-contacts * * * * *
-`<!-- link href="../../a00/-res-css/bulma0.9.3.min.css" type="text/css" rel="stylesheet" -->
+[ `<!-- link href="../../a00/-res-css/bulma0.9.3.min.css" type="text/css" rel="stylesheet" -->
 <style type="text/css">
 *, *::before, *::after { box-sizing: inherit; }
 html, details>* {
@@ -1939,8 +1939,8 @@ main .image>figcaption { text-align: center; }
 <script type="text/javascript">
 (function() {
 'use strict';
-const cntcs = \`
-  \`.trim().split(/\\n+(?={)/).filter(e => /^{\\s*"[^]+}$/.test(e)).map(JSON.parse),
+const cntcs = [`,
+`  ],
   cmain = document.querySelector('main'),
   aurlGen = (isrc = "avatar000.png") => !window.EC2
     ? (!isrc || /\\//.test(isrc) ? "" : "../../a00_myteam/-res-img/") + (isrc || "")
@@ -1969,5 +1969,6 @@ cmain.innerHTML += cntcs.map( o => !o ||
 document.querySelector('main input[type=checkbox]').onchange
 = evt => document.querySelectorAll('main details').forEach(el => el.open = evt.target.checked);
 })();
-</script>`
+</script>
+` ]
 ];
