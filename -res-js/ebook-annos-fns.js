@@ -435,7 +435,7 @@ if (tocbuild && !d1node.querySelector('#TOC')) { // insert toc
     || d1node.firstElementChild )
   || !( el0.nodeName === 'MAIN'
     || [1,2,3,4,5].find( e => /^FIGURE$|^HR$/.test( ( el1 = Array.from(Array(e))
-        .reduce(a => a.previousElementSibling, el0) || "" ).nodeName ) && (el0 = el1) ) || 1 )
+        .reduce(a => a.previousElementSibling || a, el0) || "" ).nodeName ) && (el0 = el1) ) || 1 )
   || el0.parentElement.insertBefore(ntoc, el0);
 }
 dcnode.innerHTML = dcnode.innerHTML.replace(/<!--phold-periph-->/gi, () => htmlpers[pei++]);
