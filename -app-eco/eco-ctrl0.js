@@ -3257,12 +3257,12 @@ swapExe(parse) {
       swaptxta.value = "";
       return hlpPol();
     }
-    if (/^\/.+\/[im]*g[im]*$/.test(swpsinp.value)) {
-      replhelp.innerHTML = (lrpl = (ff2val.trim().match(eval(swpsinp.value)) || []).length)
+    if (/^\/.+\/[im]*g[im]*$/.test(swpsinp.value.trim())) {
+      replhelp.innerHTML = (lrpl = (ff2val.match(eval(swpsinp.value)) || []).length)
         + " replacements have been made.";
       hlpPol(lrpl);
     }
-    return swaptxta.value = ff2val.trim().replace( !/^\/.+\/[gim]*$/.test(swpsinp.value)
+    return swaptxta.value = ff2val.replace( !/^\/.+\/[gim]*$/.test(swpsinp.value.trim())
         ? swpsinp.value : eval(swpsinp.value),
       rpl2 || window.eval('"' + swprinp.value.replace(/(?=")/g, "\\") + '"') );
   }
