@@ -440,14 +440,17 @@ if (tocbuild && !d1node.querySelector('#TOC')) { // insert toc
 }
 dcnode.innerHTML = dcnode.innerHTML.replace(/<!--phold-periph-->/gi, () => htmlpers[pei++]);
 // restore periph
-if ( !Array.from(dstyles).some( s => /#TOC\b/.test(s.innerHTML) || /\.refnbr\b/.test(s.innerHTML)
+if ( !Array.from(dstyles).some( s => /#TOC\b/.test(s.innerHTML)
+|| /\n\.navch, p\.navch .+\n\.refnbr .+\n\.mnote, ins\.mnote /.test(s.innerHTML)
 || /^@import ".*\/style-hjas-dflt0\.css"/m.test(s.innerHTML) )) {
   nsty = document.createElement('style');
   nsty.setAttribute('type', 'text/css');
   nsty.innerHTML //= "\n.hljs, pre.hljs { padding: 0; background-color: transparent; }" )
-  = "\n.ssbr { clear: right; color: DarkGrey; margin: 1em 0; text-align: center; }"
+  = "\n.toc { font: small sans-serif; }"
+  + "\n.toc ul { list-style-type: none; }"
+  + "\n.ssbr { clear: right; color: DarkGrey; margin: 1em 0; text-align: center; }"
   + "\n.navch, p.navch { margin: 0; padding: 0; }"
-  + "\n.refnbr { clear: right; float: right; color: DarkGrey; font-size: 0.625em; line-height: 0.9; margin: 0 calc(0px - var(--rnblqrt, 0px)) 0 auto; padding: 0 0.25em; text-align: left; user-select: none; }"
+  + "\n.refnbr { clear: right; float: right; color: DarkGrey; font: 10px/0.9 sans-serif; margin: 0 calc(0px - var(--rnblqrt, 0px)) 0 auto; padding: 0 4px; text-align: left; user-select: none; }"
   //+ "\n.refnbr a:link, .refnbr a:visited { color: LightSteelBlue; text-decoration: none; }"
   + "\n.mnote, ins.mnote { box-sizing: border-box; clear: right; float: right; background-color: WhiteSmoke; color: SlateGrey; font: normal x-small Helvetica, Arial, sans-serif; width: 312px; margin: 0 8px 8px; padding: 0.1em 0.3em 0.2em; box-shadow: 0 1px 2px -1px DarkGrey; text-decoration: none; user-select: none; white-space: pre-wrap; }"
   + ( !dswrap ? "\n"
