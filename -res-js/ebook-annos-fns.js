@@ -13,7 +13,7 @@ var acs = cfgs && !cfgs.eventPhase && cfgs || window.annos && window.annos.confi
   annoblocks = [], //refnbrAssn, annosXlink
   bodwid, dstyle0, el0, el1, htmlpers, masthd, nmain, nsty, ntoc,
   pei = 0,
-  tag, texthl,
+  tag, texthl, tocbuls,
   tocbuild = ""; //refnbrAssn, annosfns
 const h1node = window.editorApp || window.EC1 ? null : document.head,
   d1wrap = window.editorApp ? "#esrender_42qz0xfp" : window.EC1 ? "#ecorender" : "body",
@@ -102,7 +102,7 @@ tf05 = Array.isArray(tocfmt) && tocfmt[0] !== null && tocfmt[1] !== null ? tocfm
   : (typeof tocfmt !== 'string' || /^auto/i.test(tocfmt))
     ? [ tf0auto, tf1auto, hxtoplvl < 0 ? 0 : hxtoplvl, (tf1auto + tf0auto || hxtoplvl) - hxtoplvl,
       null, null ]
-  : tocfmt.trim().replace(/^[^e]+$/i, m => m.replace(/#/g, "e"))
+  : tocfmt.trim().replace(/^[bu]/i, "").replace(/^[^e]+$/i, m => m.replace(/#/g, "e"))
     .replace( /^.*?e[cr]*h?([1-6]).*$|^[^eh]*?([1-6])[^eh]*[er]*$|.*/i, (m, c1, c2) =>
     ( c1 ? c1 + m.replace(/[er]+$|[^e]+/gi, "").length.toString()
       : c2 ? c2 + m.replace(/[^1-6]+/g, "").length.toString() : "00" )
@@ -116,6 +116,8 @@ hnseps = Array.isArray(tocfmt) && tocfmt.length >= 7 + (tf05[1] || tf05[3]) ? to
       .replace(/.*?e.*/, m => m.replace(/e(\d)|\d/gi, "$1")).replace(/\d(?=\d)/g, "$&.").split(/\d/)
   : [""].concat(".".repeat((tf05[1] || tf05[3] || 1) - 1).split(""))
     .concat(tf05[1] === 1 || !tf05[1] && tf05[3] === 1 ? ["."] : [""]);
+tocbuls = /^[bu]/i.test(tocfmt[0] || hnseps[0]);
+hnseps[0] = hnseps[0].replace(/^[bu]/i, "");
 hxchlvl = tf05[4] !== null ? tf05[4] : tf05[0] && tf05[1]
   ? [3, 2, 1, 4, 5, 6].find(l => hxlen[l] && tf05[0] <= l && tf05[0] + tf05[1] > l) || 0
   : [3, 2, 1, 4, 5, 6].find(l => hxlen[l] && tf05[2] <= l && tf05[2] + tf05[3] > l) || 0;
@@ -446,11 +448,12 @@ if ( !Array.from(dstyles).some( s => /#TOC\b/.test(s.innerHTML)
   nsty = document.createElement('style');
   nsty.setAttribute('type', 'text/css');
   nsty.innerHTML //= "\n.hljs, pre.hljs { padding: 0; background-color: transparent; }" )
-  = "\n.toc { font: small sans-serif; }"
-  + "\n.toc ul { list-style-type: none; }"
+  = "\n.toc { font: small system-ui, sans-serif; }"
+  + (tocbuls ? "" : "\n.toc ul, .content .menu ul { list-style-type: none; }")
+  + "\n.content .menu-list, .content .menu li+li { margin: 0; }"
   + "\n.ssbr { clear: right; color: DarkGrey; margin: 1em 0; text-align: center; }"
   + "\n.navch, p.navch { margin: 0; padding: 0; }"
-  + "\n.refnbr { clear: right; float: right; color: DarkGrey; font: 10px/0.9 sans-serif; margin: 0 calc(0px - var(--rnblqrt, 0px)) 0 auto; padding: 0 4px; text-align: left; user-select: none; }"
+  + "\n.refnbr { clear: right; float: right; color: DarkGrey; font: 10px/0.9 system-ui, sans-serif; margin: 0 calc(0px - var(--rnblqrt, 0px)) 0 auto; padding: 0 4px; text-align: left; user-select: none; }"
   //+ "\n.refnbr a:link, .refnbr a:visited { color: LightSteelBlue; text-decoration: none; }"
   + "\n.mnote, ins.mnote { box-sizing: border-box; clear: right; float: right; background-color: WhiteSmoke; color: SlateGrey; font: normal x-small Helvetica, Arial, sans-serif; width: 312px; margin: 0 8px 8px; padding: 0.1em 0.3em 0.2em; box-shadow: 0 1px 2px -1px DarkGrey; text-decoration: none; user-select: none; white-space: pre-wrap; }"
   + ( !dswrap ? "\n"
