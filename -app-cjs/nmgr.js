@@ -983,7 +983,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     <span class="ccntr cleft">&nbsp;</span><span class=ccntr>\`
     + \`<input type=text id=imganm2 placeholder="Rename as attachment&hellip;" /></span>
   </div>\\n\`,
-  it1 = document.createElement('i'),
+  nit = document.createElement('i'),
   nmthds = document.querySelectorAll('#nmtbl thead'),
   nmtbod = document.querySelector('#nmtbl tbody'),
   nmtfts = document.querySelectorAll('#nmtbl tfoot'),
@@ -1535,7 +1535,7 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
       document.querySelectorAll(qslrs[5])
       .forEach( el => el.innerHTML = el.innerHTML.match(/[^]*?(?:<\\/?\\w.*?>|$)/g)
         .map( st => st.replace( /([^]*?)(<\\/?\\w.*?>|$)/, (m, c1, c2) =>
-          (!(it1.innerHTML = c1) ? "" : it1.textContent.replace(rexf, "<mark>$&</mark>"))
+          (!(nit.innerHTML = c1) ? "" : nit.textContent.replace(rexf, "<mark>$&</mark>"))
           + c2 )).join("") );
       document.querySelectorAll('#nmclip .media')
       .forEach(el => /<mark>/.test(el.innerHTML) != negs || el.classList.add("dnone"));
