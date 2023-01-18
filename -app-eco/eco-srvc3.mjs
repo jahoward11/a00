@@ -580,6 +580,7 @@ const symchars = [
   [8868, "Down tack", "&top; &DownTee;"],
   [8869, "Up tack", "&bot; &perp; &bottom; &UpTee;"],
   [8901, "Dot operator", "&sdot;"],
+  [8942, "Vertical ellipsis", "&vellip;"],
   [8943, "Midline horizontal ellipsis"],
   [8968, "Left ceiling", "&lceil; &LeftCeiling;"],
   [8969, "Right ceiling", "&rceil; &RightCeiling;"],
@@ -690,7 +691,8 @@ const symchars = [
   [10754, "N-ary circled times operator", "&xotime; &bigotimes;"],
   [10761, "N-ary times operator"],
   [10784, "Z notation schema piping"],
-  [10799, "Vector or cross product", "&Cross;"]
+  [10799, "Vector or cross product", "&Cross;"],
+  [128269, "Left-pointing magnifying glass"]
 ];
 
 const htmlxncodes = [
@@ -869,7 +871,8 @@ const htmlxncodes = [
   ["\u2212", "&minus;"], // Minus
   ["\u22c5", "&sdot;"], // Dot operator
   ["\u25ca", "&loz;"], // Lozenge
-  ["\u3000", "&#x3000;"] // Ideographic space
+  ["\u3000", "&#x3000;"], // Ideographic space
+  ["\u{1f50d}", "&#x1f50d;"] // Left magnifying glass
 ];
 
 const xchar2htmlnc = (str, idx, feats = [{}]) => {
