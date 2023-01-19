@@ -1,4 +1,4 @@
-window.ecoqjs = { // 22
+window.ecoqjs = { // 23
   fncTry: (fnc, a, e) => {
     // silently handle potential function execution error
     try { return fnc(a) }
