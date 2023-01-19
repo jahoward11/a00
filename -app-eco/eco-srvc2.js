@@ -92,7 +92,7 @@ window.ecoqjs = { // 23
       rex = new RegExp("([^]*?)(" + (rcs[1] || rcs[0] || "$") + "|$)", rcs[2] || "gi"),
       htmTx0 = s => s.replace(/&/g, "&amp;").replace(/\xa0/g, "&nbsp;")
         .replace(/>/g, "&gt;").replace(/</g, "&lt;");
-    return "" + str
+    return ("" + str)
       .replace(rex, (m, c1, c2) => htmTx0(c1) + (!c2 ? "" : "<mark>" + htmTx0(c2) + "</mark>"));
   },
   srcvPrep: (str = "", lang) => {
