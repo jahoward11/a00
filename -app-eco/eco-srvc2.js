@@ -88,8 +88,8 @@ window.ecoqjs = { // 23
       (m, c1, c2, c3, c4) => (c4 ? "" : "&lt;") + (c1 || c2 || c4) + (c1 || !c3 ? "" : "&gt;") ),
   findTxt: (sep, str) => {
     // highlight matches & prep HTML text for browser display as unrendered source code
-    let rex = new RegExp( "([^]*?)("
-        + (("" + sep).replace(/\/(.+)\/[gim]*|(.*)/, "$1$2") || "$") + "|$)", "gi" ),
+    let rcs = ("" + sep).trim().match(/\/(.+)\/([gim]*)/) || ["" + sep],
+      rex = new RegExp("([^]*?)(" + (rcs[1] || rcs[0] || "$") + "|$)", rcs[2] || "gi"),
       htmTx0 = s => s.replace(/&/g, "&amp;").replace(/\xa0/g, "&nbsp;")
         .replace(/>/g, "&gt;").replace(/</g, "&lt;");
     return "" + str
