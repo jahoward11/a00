@@ -383,8 +383,8 @@ acs = {
 texthl = ( !Array.isArray(acs.texthl) && acs.texthl ? acs.texthl
   : (dcnode.innerHTML.match(rexhlwr) || ["", ""])[1] )
   .replace(/(?: +|^)\/\/.*| +$|^ +/gm, "").replace(/(\\n)\n(?=.)/g, "$1");
-texthl = ( !/\v/.test(texthl) ? texthl
-  : texthl.replace(/[^\n\v](?=\n.)/gm, "$&\n").replace(/\v$/gm, "") )
+texthl = ( !/\v|.\\v./.test(texthl) ? texthl
+  : texthl.replace(/[^\n\v](?=\n.)|.\\v(?=.)/g, "$&\n").replace(/\v$|\\v$/gm, "") )
 .replace( rexhlmc, (m, c1, c2) => !c2 ? m : c1 + "\n(" + c2.trim()
   .replace(/(?=[$().?[\\{|])/g, "\\") // escape 9/12 md chars
   .replace(/(\*\*?|__?)(\*\*?|__?|)(.+?)\2\1/g, "(?:<(?:em|strong)>){1,2}$3(?:</(?:em|strong)>){1,2}")
