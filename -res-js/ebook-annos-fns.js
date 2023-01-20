@@ -15,14 +15,15 @@ var acs = cfgs && !cfgs.eventPhase && cfgs || window.annos && window.annos.confi
   pei = 0,
   tag, texthl, tocbuls,
   tocbuild = ""; //refnbrAssn, annosfns
-const h1node = window.editorApp || window.EC1 ? null : document.head,
-  d1wrap = window.editorApp ? "#esrender_42qz0xfp" : window.EC1 ? "#ecorender" : "body",
+const h1node = window.editorApp || window.EC0 ? null : document.head,
+  d1wrap = window.cmain && (window.xctrls || "").nextElementSibling ? "#cmain>:last-child"
+    : window.editorApp ? "#esrender_42qz0xfp" : window.EC0 ? "#ecorender" : "body",
   d1node = document.querySelector(d1wrap),
   dswrap = document.querySelector(d1wrap + '>section:first-child') ? ">section"
     : document.querySelector(d1wrap + '>.section') ? ">.section" : "",
   dmwrap = !document.querySelector(d1wrap + dswrap + '>main') ? "" : ">main",
   dcnode = document.querySelector(d1wrap + dswrap + dmwrap),
-  dstyles = (window.editorApp || window.EC1 ? d1node : document).querySelectorAll('style'),
+  dstyles = (window.editorApp || window.EC0 ? d1node : document).querySelectorAll('style'),
   rexhlwr = /<!-- *(?:annotations-hili|annoshl|texthl).*\n*([^]*?)\n*-->/i,
   rexhlmc = /((?:(?:\n*\/.+\/[gim]*|\n*{[ *+:=_~]*\\?[#.]?\w*}|\n*.+?{ *\+\+ *\\?[#.]?\w*})(?:\n|(?=$))|\n)+|^)([^]*?)(?=(?:\n+\/.+\/[gim]*|\n*{[ *+:=_~]*\\?[#.]?\w*}|\n+.+?{ *\+\+ *\\?[#.]?\w*})(?:\n|$)|\n\n|$)/g,
   rexperi = /<!--[^]*?-->|<(script|style)\b.*?>[^]*?<\/\1>/gi,
@@ -412,7 +413,7 @@ htmlpers = dcnode.innerHTML.match(rexperi) || []; // preserve periph
 dcnode.innerHTML = dcnode.innerHTML.replace(rexperi, "<!--phold-periph-->"); // placehold periph
 //if (typeof acs.tocfmt !== 'number' || acs.tocfmt >= 0) { refnbrAssn(); }
 if (!dcnode.querySelector('.refnbr')) {
-  !(window.editorApp || window.EC1)
+  !(window.editorApp || window.EC0)
   || window.console.log("App detected. Applying ebook-annos-fns to render.");
   refnbrAssn();
   annosXlink();
@@ -484,7 +485,7 @@ window.setTimeout(() => {
 
 const rstate = document.readyState,
   elsscr = window.editorApp ? document.querySelectorAll('#esrender_42qz0xfp script')
-    : window.EC1 ? document.querySelectorAll('#ecorender script')
+    : window.EC0 ? document.querySelectorAll('#ecorender script')
     : document.body.querySelectorAll('script'),
   afnccalled = window.NodeList.prototype.isPrototypeOf(elsscr)
     && Array.from(elsscr).some(e => /\bannos\.fns\b/.test(e.innerHTML));
