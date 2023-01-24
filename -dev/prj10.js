@@ -140,7 +140,7 @@ const jsrefq = `//
  !!w.P3 || (w.P3 = (x = 1) => navigator.clipboard.readText().then(s => window["s" + x] = s));
 */
  // P3().then(ecoqjs.sortA2Z).then(reShow).catch(reShow)
- // import("../-dev/prj10.js").then(m => xstor[m._module || "xmod" + Object.keys(xstor).map(k => k.replace(/^xmod(?=\\d*$)|.*/, "")).reduce((a, b) => +b > +a ? b : a, 1)] = m).catch(reShow) //.catch(e => EC2.objQA("msg", e))
+ // import("../-dev/prj10.js").then(m => xstor[m._module || "xmod" + Object.keys(xstor).map(k => k.replace(/^xmod(?=\\d*$)|.*/, "")).reduce((a, b) => +b > +a ? b : a, 1)] = m).catch(reShow) //.catch(e => EC2.objQA("msg:", e))
  // reShow( Object.keys(xstor.util) )
 //`;
 
