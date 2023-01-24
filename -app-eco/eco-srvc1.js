@@ -103,7 +103,7 @@ body {
   padding: 0;
 }
 #cmain>#cheadg, #cmain>#mlctnr, #cmain>#xctrls {
-  font: normal 16px Helvetica, Arial, sans-serif;
+  font: normal 16px/1.25 Helvetica, Arial, sans-serif;
 }
 #cmain>#cheadg {
   color: Grey;
@@ -117,7 +117,7 @@ body {
 }
 #cmain>#mlctnr::after {
   position: absolute;
-  top: -2px;
+//top: -2px;
   right: 5px;
   color: LightSteelBlue;
   content: "\\2630"; /* ☰ &#x2630; */
