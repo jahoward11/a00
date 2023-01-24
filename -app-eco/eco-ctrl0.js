@@ -59,7 +59,7 @@ const hostgh = /\.github\.io$/.test(window.location.host),
   rexib2 = /^https:\/\/[\w-]+\.cloudant[\w.]+\//,
   reximg = /\.(?:giff?|jpe?g|png)$/i,
   rexloc = /^(?:(?:\.\.\/\.\.|\.\.|)\/(?=$|\w)|\.\/(?=[^ \/])|\/\/|\$|blob:[\w/:-]*(?!.* ))[ \w/!.*+~-]*$/,
-  rexoqa = /^\$ *(?:new +|)\w*(?:\b[.:([].+|)$/,
+  rexoqa = /^\$ *(?:new +|)\w*(?:\b[.:([].*|)$/,
   rexrmt = /^https?:\/\/[ \w/#%!?=&@:.,+~-]+$/,
   rexwba = /\.(?:giff?|jpe?g|m?js|png|s?css)$/i;
 
@@ -1171,20 +1171,20 @@ function rsrcsXGet(txdata = {}) {
           : txdata.DBNAME || fragsrcxs[i] === false ? null : rexsdoc.test(ffi.titletxt) && ffi.titletxt
             || rexloc.test(cdirpath) && cdirpath + txdata.FILEID;
       }
-      if (txdata.hasOwnProperty("dbox") || txdata.hasOwnProperty("path")) {
+      if (rexoqa.test(txdata.FILEID)) {
+        aobj = EC2.objQA(txdata.FILEID.replace(/^\$ *|^(\w+):.*/g, "$1"), 0);
+        return aobj == null ? ""
+        : typeof aobj !== 'object' ? aobj : aobj.content || msgPrefmt(aobj);
+      } else if (/^\/\/.*$/.test(txdata.FILEID) && window.localforage) {
+        // note: unexpected lf behavior because of promise-wrap
+        return localforage.getItem(txdata.FILEID.replace(/^\/\//, ""))
+        .then(val => !/^{".+}$/.test(val) ? val : (jsonParse(val) || "").content).catch(msgPrefmt);
+      } else if (txdata.hasOwnProperty("dbox") || txdata.hasOwnProperty("path")) {
         return new Promise((rslv, rjct) => {
           let txd2 = Object.assign({}, txdata);
           txdata = {};
           dropboxTx(jsonParse(JSON.stringify(txd2)), rslv, rjct);
         }).catch(msgHandl);
-      } else if (/^\/\/.*$/.test(txdata.FILEID) && window.localforage) {
-        // note: unexpected lf behavior because of promise-wrap
-        return localforage.getItem(txdata.FILEID.replace(/^\/\//, ""))
-        .then(val => !/^{".+}$/.test(val) ? val : (jsonParse(val) || "").content).catch(msgPrefmt);
-      } else if (rexoqa.test(txdata.FILEID)) {
-        aobj = EC2.objQA(txdata.FILEID.replace(/^\$ *|^(\w+):.*/g, "$1"), 0);
-        return aobj == null ? ""
-        : typeof aobj !== 'object' ? aobj : aobj.content || msgPrefmt(aobj);
       } else if (txdata.url || !txdata.DBNAME && txdata.FILEID) {
         !rexib2.test(txdata.url) || ( txdata = {
             url:  txurlGen(txCrdtlz(txdPrep(txdata.url)[0])),
@@ -2616,7 +2616,11 @@ attInp() {
   valatt === attkey || (attlist.value = valatt)
   && (idx = attlist.selectedIndex) > 0 || (idx = attlist.selectedIndex = 0);
   EC1.attSel(0);
-  if (/^\/\/.*$/.test(valatt) && window.localforage) {
+  if (rexoqa.test(valatt)) {
+    Promise.resolve( EC2.objQA( valatt.replace(/^\$ *|^(\w+):.*/g, "$1"),
+      valatt.replace(/^\$ *\w+:(.+)|.*/g, "$1") ))
+    .then(rslt => dataDispl(rslt, /\.(?:h|html?)\d*$/.test(valatt) ? 3 : 7));
+  } else if (/^\/\/.*$/.test(valatt) && window.localforage) {
     !(lfkey = valatt.replace(/^\/\//, ""))
     ? localforage.keys((err, keys) => err ? msgHandl(err) : dataDispl(keys, 7))
     : localforage.getItem( lfkey.replace(rexept, ""), (err, val) => err ? msgHandl(err)
@@ -2625,10 +2629,6 @@ attInp() {
         : /\.(?:[ls]|li?nk|sty|style)\d*$/.test(lfkey) ? dprc.sty(val)
         : /\.(?:h|html?)\d*$/.test(lfkey) ? dprc.htm(val) : val ),
       /\.(?:h|html?)\d*$/.test(lfkey) ? 3 : 7 ) );
-  } else if (rexoqa.test(valatt)) {
-    Promise.resolve( EC2.objQA( valatt.replace(/^\$ *|^(\w+):.*/g, "$1"),
-      valatt.replace(/^\$ *\w+:(.+)|.*/g, "$1") ))
-    .then(rslt => dataDispl(rslt, /\.(?:h|html?)\d*$/.test(valatt) ? 3 : 7));
   } else if (valatt && txdata.url) {
     rdataFetch(txdata).then( rslt =>
       /^image/.test(rslt.type) ? dataDispl(imgWrap(valatt), 6)
@@ -3584,11 +3584,11 @@ ibmConnect() {
   }
 },
 wdGen(pdata) { return !(pdata || "").filefrags ? pdata : webdocGen(1, pdata); },
-u2Blob(url) { // also triggered by prjDiscGen, jdeDftGen, dviz-memos, dviz-contacts
+u2Blob(url) { // also triggered by prjDiscGen, jdeDftGen, dviz-posts, dviz-contacts
   return aurls[(url || "").replace(/^\S*\//, "")] || aurls[url]
   || (url || "").replace(/^\.\.\/\.\.(?!\/a00\/)(?=\S+[^\s\/]$)/, a00orig) || url;
 },
-objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-memos
+objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-posts
   let pty,
     rsltFbk = rslt => pty && fbx === 0 ? ""
       : /^(?:keys|ks?)$/i.test(pty) && ecoqjs.fncTry(Object.keys, rslt) || rslt,
@@ -3600,9 +3600,11 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-memos
       : Object.assign(Object.assign({}, Handlebars), { Parser: {}, default: {} }) );
   key = key == null ? "" : "" + key;
   return gloObj != null ? gloObj
-  : /^qcon|^q?msg/i.test(key) && fbx ? msgHandl(fbx)
-  : /^attlist/i.test(key) ? attListGen()
-  : /^pfslist/i.test(key) ? pfsListGen()
+  : /^qcon:|^q?msg:/i.test(key) ? msgHandl(fbx || "error?")
+  : /^calc:|^cjs:/i.test(key) ? EC2.calcGen(1, fbx)
+  : /^diff?:/i.test(key) ? EC2.diffGen(fbx || "0")
+  : /^att(?:list|):/i.test(key) ? attListGen()
+  : /^pfs(?:list|):/i.test(key) ? pfsListGen()
   : /^a00p/i.test(key) ? a00path
   : /^a00o/i.test(key) ? a00orig
   : /^(?:tm0|)urole?/i.test(key) ? tm0urole
@@ -3617,11 +3619,11 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-memos
   : /^tmp1ff/i.test(key) ? tmp1ff && tmp1ff[ptyTest()] || rsltFbk(tmp1ff)
   : /^(?:f2|file2nd)\.[ct]\d*$/i.test(key) ? dprc.cnt(file2nd) || rsltFbk(file2nd)
   : /^(?:f2|file2nd)\.[ls]\d*$/i.test(key) ? dprc.sty(file2nd) || rsltFbk(file2nd)
-  : /^(?:f2|file2nd)\.h\d*$/i.test(key) ? dprc.htm(file2nd) || rsltFbk(file2nd)
+  : /^(?:f2|file2nd)\.(?:h|html?)\d*$/i.test(key) ? dprc.htm(file2nd) || rsltFbk(file2nd)
   : /^f2\b|^file2nd/i.test(key) ? file2nd && file2nd[ptyTest()] || rsltFbk(file2nd)
   : /^(?:f1?|filewkg)\.[ct]\d*$/i.test(key) ? dprc.cnt(filewkg) || rsltFbk(filewkg)
   : /^(?:f1?|filewkg)\.[ls]\d*$/i.test(key) ? dprc.sty(filewkg) || rsltFbk(filewkg)
-  : /^(?:f1?|filewkg)\.h\d*$/i.test(key) ? dprc.htm(filewkg) || rsltFbk(filewkg)
+  : /^(?:f1?|filewkg)\.(?:h|html?)\d*$/i.test(key) ? dprc.htm(filewkg) || rsltFbk(filewkg)
   : /^f1?\b|^filewkg/i.test(key) ? filewkg && filewkg[ptyTest()] || rsltFbk(filewkg)
   : /^webdoc(?:Gen|)|^wdG/i.test(key) && (filewkg || "").filefrags ? webdocGen(1)
   : /^(?:ECO|E|)SDOCS?/i.test(key) ? EC0.SDOCS[ptyTest(1)] || rsltFbk(EC0.SDOCS)
@@ -3665,16 +3667,17 @@ guideLoad() {
     EC2.qconRetrvD(() => EC1.tabs0Tog(0));
   }
 },
-calcGen() {
+calcGen(redir, cinit = "") {
   if (fwinflux) { return; }
   let calcdemo = document.querySelector('#ecoesp0 #calctogswi').checked,
     calctmpl = jsonParse(JSON.stringify(ETMPLS.publmgr));
-  pfsResets();
+  redir ? (attinp.value = "$CALC:" + (cinit || (!calcdemo ? "empty" : "demo"))) : pfsResets();
   calctmpl = Object.assign( calctmpl, {
     _id: "",
     loadconfigs:  Object.assign(calctmpl.loadconfigs, { tabselected: "SOURCE2" }),
     parseconfigs: Object.assign( calctmpl.parseconfigs, {
-      scriptsincl: [{ fncname: "htmlWrapTags", applytofrag: [true, true, true] }]
+      scriptsincl: [ { fncname: "htmlWrapTags", applytofrag: [true, true, true] },
+        { fncname: "", applytofrag: [true, true, true] } ]
     }),
     filefrags: [
       { idtxt: "SOURCE1", labeltxt: "SOURCE1", titletxt: "SOURCE pane #1.",
@@ -3682,33 +3685,36 @@ calcGen() {
       { idtxt: "SOURCE2", labeltxt: "SOURCE2", titletxt: "SOURCE pane #2.",
         contenttxt: !calcdemo ? "" : EC0.SDOCS[0][1] || "" },
       { idtxt: "SOURCE3", labeltxt: "SOURCE3", titletxt: "SOURCE pane #3.",
-        contenttxt: EC0.SDOCS[0][2] || "" }
+        contenttxt: (EC0.SDOCS[0][2] || "").replace( /\._cinit \|\| "/, "$&"
+          + (!/^\w+$/.test(cinit) ? "" : "dload=") + cinit ) }
     ]
   });
   window.scrollTo(0, 0);
-  dataDispl(calctmpl, 1, () => EC1.tabs0Tog(0));
+  redir ? webdocGen(0, calctmpl) || EC1.tabs0Tog(0) : dataDispl(calctmpl, 1, () => EC1.tabs0Tog(0));
 },
 diffGen(evt, txt1, txt2) { // also triggered by dviz-dboxupd
   if (fwinflux) { return; }
-  let pnbr = +/\d+$/.exec(!evt ? "0" : evt.target.parentElement.id),
+  let elm1,
+    pnbr = !evt || !evt.target ? +evt || 0 : +/\d+$/.exec(evt.target.parentElement.id),
     difftmpl = jsonParse(JSON.stringify(ETMPLS.publmgr));
-  txt1 = txt1 || ( document.querySelector('#ecoesp0 #ptyvals' + pnbr + '>input')
+  txt1 = txt1 || ( elm1 = document.querySelector('#ecoesp0 #ptyvals' + pnbr + '>input')
     || document.querySelector('#ecoesp0 #ptyvals' + pnbr + '>textarea')
     || document.querySelector( '#ecoesp0 #ptyvals'
       + pnbr + '>span:not(.is-hidden)>textarea' )
     || document.querySelector( '#ecoesp0 #ptyvals'
-      + pnbr + '>div>span:not(.is-hidden)>textarea' ) || "").value || "";
+      + pnbr + '>div>span:not(.is-hidden)>textarea' ) || "" ).value || "";
   txt2 = txt2 || ( document.querySelector('#ecoesp0 #pt2vals' + pnbr + '>input')
     || document.querySelector('#ecoesp0 #pt2vals' + pnbr + '>textarea')
     || document.querySelector( '#ecoesp0 #pt2vals'
       + pnbr + '>span:not(.is-hidden)>textarea')
     || document.querySelector('#ecoesp0 #pt2vals'
-      + pnbr + '>div>span:not(.is-hidden)>textarea' ) || "").value || "";
-  pfsResets();
+      + pnbr + '>div>span:not(.is-hidden)>textarea' ) || "" ).value || "";
+  evt ? (attinp.value = "$DIFF:" + /,.*?(\w+)(?=')/.exec("" + elm1.onblur)[1]) : pfsResets();
+    //"$DIFF:ptyvals" + pnbr + ">..."
   difftmpl = Object.assign( difftmpl, {
     _id: "",
     parseconfigs: Object.assign( difftmpl.parseconfigs, {
-      scriptsconstr: [{
+      scriptsconstr: [ {
         fncname:  "srctxt0Wraps", filepath: "", usedescription: "", htmlscriptload: "",
         features: [{ switchon: false, keytxt: "", valtxt: "" }],
         deftxt:   `function (str, idx) {
@@ -3716,8 +3722,9 @@ diffGen(evt, txt1, txt2) { // also triggered by dviz-dboxupd
   + str.replace(/<(?=\\/xmp>)/g, "&lt;")
   + '</xmp>\\n'
   ;
-}`    }],
-      scriptsincl: [{ fncname: "srctxt0Wraps", applytofrag: [true, true, false] }]
+}`    }, difftmpl.parseconfigs.scriptsconstr[0] ],
+      scriptsincl: [ { fncname: "srctxt0Wraps", applytofrag: [true, true, false] },
+        { fncname: "", applytofrag: [true, true, true] } ]
     }),
     filefrags: [
       { idtxt: "SOURCE1", labeltxt: "SOURCE1", titletxt: "SOURCE pane #1.", contenttxt: txt1 },
@@ -3725,7 +3732,7 @@ diffGen(evt, txt1, txt2) { // also triggered by dviz-dboxupd
       { idtxt: "SOURCE3", labeltxt: "SOURCE3", titletxt: "SOURCE pane #3.", contenttxt: EC0.SDOCS[1] || "" }
     ]
   });
-  dataDispl(difftmpl, 1, () => EC1.tabs0Tog(0));
+  evt ? webdocGen(0, difftmpl) || EC1.tabs0Tog(0) : dataDispl(difftmpl, 1, () => EC1.tabs0Tog(0));
 },
 dvizGen(idx) {
   if (fwinflux) { return; }
@@ -3861,7 +3868,7 @@ qconSyncD() {
     msgHandl(txdata);
   }
 },
-qconRetrvD(cbfnc, errfnc, txd5) { // also triggered by guideLoad, dviz-idxlist, dviz-memos, dviz-dboxupd
+qconRetrvD(cbfnc, errfnc, txd5) { // also triggered by guideLoad, dviz-idxlist, dviz-posts, dviz-dboxupd
 // ### http console input ###
 // *any results from the following txs get sent to preview/jdedft/jderaw*
 // 1 blank: reset edit space
@@ -3886,6 +3893,10 @@ qconRetrvD(cbfnc, errfnc, txd5) { // also triggered by guideLoad, dviz-idxlist, 
   } else if (!valcon) {
     pfsResets();
     msgHandl("Edit Space is reset.");
+  } else if (rexoqa.test(valcon)) {
+    Promise.resolve( EC2.objQA( valcon.replace(/^\$ *|^(\w+):.*/g, "$1"),
+      valcon.replace(/^\$ *\w+:(.+)|.*/g, "$1") ))
+    .then(rslt => dataDispl(rslt, 0, cbfnc));
   } else if (/^\/\/.*$/.test(valcon) && window.localforage) {
     !(lfkey = valcon.replace(/^\/\//, ""))
     ? localforage.keys((err, keys) => err ? msgHandl(err) : dataDispl(keys, 0, cbfnc))
@@ -3894,10 +3905,6 @@ qconRetrvD(cbfnc, errfnc, txd5) { // also triggered by guideLoad, dviz-idxlist, 
         || ( /\.(?:[ct]|content|te?xt\d)\d*$/.test(lfkey) ? dprc.cnt(val)
         : /\.(?:[ls]|li?nk|sty|style)\d*$/.test(lfkey) ? dprc.sty(val)
         : /\.(?:h|html?)\d*$/.test(lfkey) ? dprc.htm(val) : val ), 0, cbfnc ) );
-  } else if (rexoqa.test(valcon)) {
-    Promise.resolve( EC2.objQA( valcon.replace(/^\$ *|^(\w+):.*/g, "$1"),
-      valcon.replace(/^\$ *\w+:(.+)|.*/g, "$1") ))
-    .then(rslt => dataDispl(rslt, 0, cbfnc));
   } else if (txdata.hasOwnProperty("dbox") || txdata.hasOwnProperty("path")) {
     dropboxTx(txdata, cbfnc, errfnc);
   } else if (txdata.url) { // non-db filepath/url

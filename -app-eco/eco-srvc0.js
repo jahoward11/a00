@@ -878,10 +878,10 @@ window.onload = function () {
             let lang = (feats.find(ob => ob.keytxt === "highlight") || "").valtxt;
             if (lang && window.hljs && window.hljs.getLanguage(lang)) {
               try { return window.hljs.highlight(cblock, {language: lang}).value;
-              } catch (err) { msgHandl("hljs lang error: " + err); }
+              } catch (err) { EC2.objQA("msg:", "hljs lang error: " + err); }
             }
             try { return window.hljs && window.hljs.highlightAuto(cblock).value;
-            } catch (err) { msgHandl("hljs auto error: " + err); }
+            } catch (err) { EC2.objQA("msg:", "hljs auto error: " + err); }
             return ""; // use external default escaping
           }
         });
