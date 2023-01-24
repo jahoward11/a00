@@ -165,9 +165,9 @@ const dscripts = `//
  // reShow(document.head.outerHTML)
  // reShow(cheadg.outerHTML)
  // reShow(menulist.outerHTML)
- // reShow(menulist.textContent.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\\xa0/g, "&nbsp;"))
+ // reShow(menulist.textContent.replace(/&/g, "&amp;").replace(/\\xa0/g, "&nbsp;").replace(/>/g, "&gt;").replace(/</g, "&lt;"))
  // reShow(symlist.textContent)
- // reShow(symlist.textContent.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\\xa0/g, "&nbsp;"))
+ // reShow(symlist.textContent.replace(/&/g, "&amp;").replace(/\\xa0/g, "&nbsp;").replace(/>/g, "&gt;").replace(/</g, "&lt;"))
 
  reShow(Array.from(document.scripts).map(e => e.src || e.type))
  // reShow(document.scripts[0].outerHTML)
