@@ -82,15 +82,16 @@ window.ecoqjs = { // 23
     + (typeof unx === 'string' && /^[\w@.-]*$/.test(unx) ? unx : "user000"),
   htmTxt: str =>
     // prep HTML text for browser display as unrendered source code
-    "" + str
+    ("" + str)
     .replace(/&(?=#?\w+;)/g, "&amp;")
     .replace( /<(!)|<(\/?[a-z].*?)(>|(?=<|$))|(--)>/gim,
       (m, c1, c2, c3, c4) => (c4 ? "" : "&lt;") + (c1 || c2 || c4) + (c1 || !c3 ? "" : "&gt;") ),
   findTxt: (sep, str) => {
     // highlight matches & prep HTML text for browser display as unrendered source code
-    let rcs = ("" + sep).trim().match(/\/(.+)\/([gim]*)/) || [],
-      rex = new RegExp("([^]*?)(" + (rcs[1] || ("" + sep) || "$") + "|$)", !rcs[1] ? "gi" : rcs[2]),
-      htmTx0 = s => s.replace(/&/g, "&amp;").replace(/\xa0/g, "&nbsp;")
+    let rcs = ("" + sep).trim().match(/\/(.+)\/([gim]*)/) || ["" + sep],
+      rex = new RegExp("([^]*?)(" + (rcs[1] || rcs[0] || "$") + "|$)", !rcs[1] ? "gi" : rcs[2]),
+      htmTx0 = s => s
+        .replace(/&/g, "&amp;").replace(/\xa0/g, "&nbsp;")
         .replace(/>/g, "&gt;").replace(/</g, "&lt;");
     return ("" + str)
       .replace(rex, (m, c1, c2) => htmTx0(c1) + (!c2 ? "" : "<mark>" + htmTx0(c2) + "</mark>"));
