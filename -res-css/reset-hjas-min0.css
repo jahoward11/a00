@@ -53,11 +53,11 @@ table td, table th {
 table td:not([align]), table th:not([align]) { text-align: left; }
 table td { vertical-align: top; }
 table th { vertical-align: bottom; }
-.dnone { display: none; }
 .ssbr {
   color: DarkGrey;
   text-align: center;
 }
+.dnone { display: none; }
 @media print {
   body { width: 648px; margin: 0 auto; padding: 0; }
   img:not([height]) { max-height: 324px; }
