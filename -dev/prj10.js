@@ -126,6 +126,7 @@ const jsrefq = `//
  // reShow( ecoqjs.jvarXtract(document.scripts[2].textContent) )
  // reShow( ecoqjs.jcmtXtract(document.querySelector('script:nth-of-type(3)').outerHTML) )
 
+ // fetch("../-app-cjs/calcjs0.html").then(re => re.text()).then(reShow).catch(reShow)
  // fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then(ecoqjs.jvarXtract).then(reShow).catch(reShow)
  // fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then(s => s.replace(/(?:[^]*?\\n|^)(function rdataFetch.+(?:\\n.+?)+?(?:;?\\s*};?|;)(?=\\n[\\n\\S]|$))[^]*|[^]*/, "$1")).then(reShow).catch(reShow) //
  // fetch("../-app-eco/eco-ctrl0.js").then(re => re.text()).then(s => window.s3 = s).then(reShow).catch(reShow)
@@ -149,6 +150,7 @@ const bcaches = `//
  // caches.keys().then(keys => caches.open(keys[0])).then(cache => cache.keys()).then(keys => keys.map(k => ({ url: k.url, mode: k.mode, dest: k.destination }))).then(reShow)
  // caches.open("calcjs0.15").then(cache => cache.delete("https:/" + "/jahoward11.github.io/a00/-res-js/jstat-tdist.js")).then(reShow)
  // caches.match("https:/" + "/jahoward11.github.io/a00/-res-css/reset-hjas-min0.css").then(re => re.text()).then(reShow)
+ // caches.match("https:/" + "/jahoward11.github.io/a00/-app-cjs/calcjs0.html").then(re => re.text()).then(reShow)
 
  // indexedDB.databases().then(reShow)
 
@@ -176,6 +178,7 @@ const dscripts = `//
 
  // reShow(Array.from(document.styleSheets).map(ss => ss.href))
  // reShow(Array.from(document.styleSheets[0].rules).map(ru => ru.cssText))
+ // reShow(document.querySelectorAll('style')[0].outerHTML)
 //`;
 
 const scrload = `//
@@ -190,7 +193,7 @@ const scrload = `//
  // !!window.PouchDB || scrInj("../-res-js/pouchdb.min.js").then(reShow).then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(reShow)).catch(reShow)
 
  // import("../-dev/prj10.js").then(re => (xstor[re._module] = re) && xlstGen()).catch(reShow)
- // import("../-dev/prj10.js").then(re => reShow(re.jscmds)).catch(reShow)
+ // import("../-dev/prj10.js").then(re => reShow(re.jsrefq)).catch(reShow)
  // import("../-res-js/ebook-annos.mjs").then(re => window["tocNavLtGen"] = re.tocNavLtGen).catch(reShow)
  // fetch("../-res-js/ebook-annos-fns.js").then(re => re.text()).then(reShow).catch(reShow)
  // localforage.keys().then(reShow).catch(reShow)
@@ -254,7 +257,7 @@ const itoken = `/*
  fetch("https:/" + "/iam.cloud.ibm.com/identity/token", opts).then(re => re.text()).then(reShow).catch(reShow);
 */`;
 
-const dbapp = `// __"Recipes" DB Webapp__
+const webapp1 = `// __"Recipes" DB Webapp__
 
 /*
  cQry = () => !(window.pdbs || []).includes((window.txd2 || "").DBNAME) && [] || PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.text()).then(cnt => [txd2.wid, cnt]);
@@ -269,6 +272,30 @@ const dbapp = `// __"Recipes" DB Webapp__
 
  window.txd2 = { DBNAME: "howfam02", FILEID: ".ref", ATTKEY: "hjenn_food2022.html", OPTS: {}, wid: "rswrap" };
  s4L = scr => !scr || !window[txd2.wid] || !!window.rkeys && (Array.from(document.scripts).find(si => /window\.rkeys *=/.test(si.innerHTML)) || document.createElement('i')).remove() || !(window.annos || scrInj("../-res-js/ebook-annos-fns.js")) || scrInj(0, scr.type || 0, "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
+
+ // window[txd2.wid].remove() // Alert: useful only if edit-testing the GUI code above
+ window[txd2.wid] || Promise.resolve().then(s1L).then(s2L).then(nmImp).then(uiDspl).then(smL).then(cQry).then(uiDspl).then(s4L).catch(reShow);
+
+ // nmwrap.classList.toggle("dnone");
+*/
+
+//`;
+
+const webapp2 = `// __"Disc: Family Gospel" DB Webapp__
+
+/*
+ cQry = () => !(window.pdbs || []).includes((window.txd2 || "").DBNAME) && [] || PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.text()).then(cnt => [txd2.wid, cnt]);
+ uiDspl = ([wid, cnt, scr]) => { if (!wid || !cnt) return; let ndiv = document.createElement('div'); ndiv.id = wid; ndiv.innerHTML = "\\n<hr />\\n" + cnt.trim() + "\\n"; cmain.appendChild(ndiv); return scr || window[wid] && window[wid].querySelector('script:last-of-type'); };
+ smL = scr => !scr || scrInj(0, scr.type || 'module', "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
+
+ dbA = () => !window.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => window.pdbs = re);
+ s1L = () => !!window.PouchDB ? _.dbA() : scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(_.dbA));
+ s2L = () => !!window.markdownit || Promise.all(["", "-decorate", "-ins", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js")));
+ // s3L = () => !!window.hljs || scrInj("../-res-js/highlight.min.js");
+ nmImp = () => window.nmwrap && [] || import("../-app-cjs/nmgr.js").then(re => ["nmwrap", re.nmpage, re.nmscr]);
+
+ window.txd2 = { DBNAME: "howfam02", FILEID: ".records", ATTKEY: "hjas_disc-famgospeltbits.html", OPTS: {}, wid: "nswrap" };
+ s4L = scr => !scr || !window[txd2.wid] || !!window.nkeys && (Array.from(document.scripts).find(si => /window\.nkeys *=/.test(si.innerHTML)) || document.createElement('i')).remove() || !(window.annos || scrInj("../-res-js/ebook-annos-fns.js")) || scrInj(0, scr.type || 0, "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
 
  // window[txd2.wid].remove() // Alert: useful only if edit-testing the GUI code above
  window[txd2.wid] || Promise.resolve().then(s1L).then(s2L).then(nmImp).then(uiDspl).then(smL).then(cQry).then(uiDspl).then(s4L).catch(reShow);
@@ -415,7 +442,7 @@ export {
   _module, varkeys, nformat,
   uiwidth, publdims, jsrefq,
   bcaches, dscripts, scrload,
-  jstatqs, itoken, dbapp,
-  t2puzls, t3search, t4cntcs,
-  srtools, nmtools
+  jstatqs, itoken, webapp1,
+  webapp2, t2puzls, t3search,
+  t4cntcs, srtools, nmtools
 };
