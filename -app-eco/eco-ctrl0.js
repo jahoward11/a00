@@ -3604,7 +3604,7 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-posts
   : /^qcon:|^q?msg:/i.test(key) ? msgHandl(fbx || "error?")
   : /^calc:|^cjs:/i.test(key) ? EC2.calcGen(fbx, 1)
   : /^diff?:/i.test(key) ? EC2.diffGen(fbx || "0")
-  : /^datx?:|^dbx:/i.test(key) ? EC2.dvizGen(4, 1)
+  : /^datx?:|^dbx:|^in?dx:/i.test(key) ? EC2.dvizGen(4, 1)
   : /^memo?:|^post:/i.test(key) ? EC2.dvizGen(3, 1)
   : /^cntcs?:|^contacts?:|^dviz:/i.test(key) ? EC2.dvizGen(fbx || 2, 1)
   : /^att(?:list|):/i.test(key) ? attListGen()
@@ -3754,7 +3754,7 @@ dvizGen(idx, redir) {
     cbFnc = () => (attlist.value = attinp.value = "") || !(redir || EC1.tabs0Tog(0) || 1)
       || ( attinp.value = idx < 3 ? "$CNTC:"
           + (!idx ? "blank" : idx < 2 ? (!dbpch ? "n/a" : dbpch.name) : epsets.teamid || "team")
-        : (idx < 4 ? "$POST:" : "$DATX:") + (!dbpch ? "n/a" : dbpch.name) ),
+        : (idx < 4 ? "$POST:" : "$INDX:") + (!dbpch ? "n/a" : dbpch.name) ),
     fileDViz = idx => {
       let dviztmpl = jsonParse(JSON.stringify(ETMPLS.publmgr));
       redir || pfsResets();
