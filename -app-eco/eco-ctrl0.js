@@ -1718,6 +1718,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
           .then(a2innrs => elssty[j].innerHTML = "\n" + a2innrs.join(";\n").trim() + "\n");
       }) ).catch(msgHandl) )
     .then(() => Promise.all(Array.from(elsscr).map(scrGet)).catch(msgHandl))
+    .then(() => !cbfnc || cbfnc())
     .then(() => {
       if (!typanno) { return; }
       ndiv = document.createElement('div');
@@ -1835,7 +1836,7 @@ function annosGet(fileref = "") {
   });
 }
 
-function webdocGen(redirect, pdata = filewkg || jsonParse(JSON.stringify(ETMPLS.publmgr))) {
+function webdocGen(redir, pdata = filewkg || jsonParse(JSON.stringify(ETMPLS.publmgr)), cbfnc) {
   let ecolinks = document.querySelector('body>#ecolinks'),
     sdir = pdata.file_updated.subdir,
     scriptsconstr = pdata.parseconfigs.scriptsconstr,
@@ -1879,7 +1880,7 @@ function webdocGen(redirect, pdata = filewkg || jsonParse(JSON.stringify(ETMPLS.
     }
   });
   sil > 1 || (rsltcontent = fragstxt.join(""));
-  if (linksconstr.linksinclrender && !redirect) {
+  if (linksconstr.linksinclrender && !redir) {
     linksincl.forEach( lnki => linkrenders += !(lnki.applytorender && lnki.filepath) ? ""
       : '<link href="' + (epsets.appchks[26] ? lnki.filepath : EC2.u2Blob(lnki.filepath))
         + '" type="text/css" rel="stylesheet" async />\n' );
@@ -1902,11 +1903,11 @@ function webdocGen(redirect, pdata = filewkg || jsonParse(JSON.stringify(ETMPLS.
       : /^[34]$|^bottom|^end|^fin|^body$/.test(linksconstr.insertposition)
       ? rsltcontent + linkinserts + "\n" : rsltcontent;
   }
-  if (redirect) {
+  if (redir) {
     return rsltcontent;
   } else {
     annosGet((!sdir ? "" : sdir + "/") + pdata._id).catch(msgHandl)
-    .then(cfgs => dataDispl(rsltcontent, 3, null, cfgs));
+    .then(cfgs => dataDispl(rsltcontent, 3, cbfnc, cfgs));
   }
 }
 
@@ -3601,8 +3602,11 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-posts
   key = key == null ? "" : "" + key;
   return gloObj != null ? gloObj
   : /^qcon:|^q?msg:/i.test(key) ? msgHandl(fbx || "error?")
-  : /^calc:|^cjs:/i.test(key) ? EC2.calcGen(1, fbx)
+  : /^calc:|^cjs:/i.test(key) ? EC2.calcGen(fbx, 1)
   : /^diff?:/i.test(key) ? EC2.diffGen(fbx || "0")
+  : /^datx?:|^dbx:/i.test(key) ? EC2.dvizGen(4, 1)
+  : /^memo?:|^post:/i.test(key) ? EC2.dvizGen(3, 1)
+  : /^cntcs?:|^contacts?:|^dviz:/i.test(key) ? EC2.dvizGen(fbx || 2, 1)
   : /^att(?:list|):/i.test(key) ? attListGen()
   : /^pfs(?:list|):/i.test(key) ? pfsListGen()
   : /^a00p/i.test(key) ? a00path
@@ -3667,11 +3671,15 @@ guideLoad() {
     EC2.qconRetrvD(() => EC1.tabs0Tog(0));
   }
 },
-calcGen(redir, cinit = "") {
+calcGen(cinit = "", redir) {
   if (fwinflux) { return; }
-  let calcdemo = document.querySelector('#ecoesp0 #calctogswi').checked,
-    calctmpl = jsonParse(JSON.stringify(ETMPLS.publmgr));
-  redir ? (attinp.value = "$CALC:" + (cinit || (!calcdemo ? "empty" : "demo"))) : pfsResets();
+  let attinp = document.querySelector('#econav0 #attinp'),
+    attlist = document.querySelector('#econav0 #attlist'),
+    calcdemo = document.querySelector('#ecoesp0 #calctogswi').checked,
+    calctmpl = jsonParse(JSON.stringify(ETMPLS.publmgr)),
+    cbFnc = () => (attlist.value = attinp.value = "") || !(redir || EC1.tabs0Tog(0) || 1)
+      || (attinp.value = "$CALC:" + (cinit || (!calcdemo ? "empty" : "demo")));
+  redir || pfsResets();
   calctmpl = Object.assign( calctmpl, {
     _id: "",
     loadconfigs:  Object.assign(calctmpl.loadconfigs, { tabselected: "SOURCE2" }),
@@ -3690,13 +3698,17 @@ calcGen(redir, cinit = "") {
     ]
   });
   window.scrollTo(0, 0);
-  redir ? webdocGen(0, calctmpl) || EC1.tabs0Tog(0) : dataDispl(calctmpl, 1, () => EC1.tabs0Tog(0));
+  !redir ? dataDispl(calctmpl, 1, cbFnc) : webdocGen(0, calctmpl, cbFnc);
 },
 diffGen(evt, txt1, txt2) { // also triggered by dviz-dboxupd
   if (fwinflux) { return; }
   let elm1,
     pnbr = !evt || !evt.target ? +evt || 0 : +/\d+$/.exec(evt.target.parentElement.id),
-    difftmpl = jsonParse(JSON.stringify(ETMPLS.publmgr));
+    difftmpl = jsonParse(JSON.stringify(ETMPLS.publmgr)),
+    attinp = document.querySelector('#econav0 #attinp'),
+    attlist = document.querySelector('#econav0 #attlist'),
+    cbFnc = () => (attlist.value = attinp.value = "") || !(evt || EC1.tabs0Tog(0) || 1)
+      || !elm1 || (attinp.value = "$DIFF:" + /,.*?(\w+)(?=')/.exec("" + elm1.onblur)[1]);
   txt1 = txt1 || ( elm1 = document.querySelector('#ecoesp0 #ptyvals' + pnbr + '>input')
     || document.querySelector('#ecoesp0 #ptyvals' + pnbr + '>textarea')
     || document.querySelector( '#ecoesp0 #ptyvals'
@@ -3709,8 +3721,7 @@ diffGen(evt, txt1, txt2) { // also triggered by dviz-dboxupd
       + pnbr + '>span:not(.is-hidden)>textarea')
     || document.querySelector('#ecoesp0 #pt2vals'
       + pnbr + '>div>span:not(.is-hidden)>textarea' ) || "" ).value || "";
-  evt ? (attinp.value = "$DIFF:" + /,.*?(\w+)(?=')/.exec("" + elm1.onblur)[1]) : pfsResets();
-    //"$DIFF:ptyvals" + pnbr + ">..."
+  evt || pfsResets();
   difftmpl = Object.assign( difftmpl, {
     _id: "",
     parseconfigs: Object.assign( difftmpl.parseconfigs, {
@@ -3729,20 +3740,27 @@ diffGen(evt, txt1, txt2) { // also triggered by dviz-dboxupd
     filefrags: [
       { idtxt: "SOURCE1", labeltxt: "SOURCE1", titletxt: "SOURCE pane #1.", contenttxt: txt1 },
       { idtxt: "SOURCE2", labeltxt: "SOURCE2", titletxt: "SOURCE pane #2.", contenttxt: txt2 },
-      { idtxt: "SOURCE3", labeltxt: "SOURCE3", titletxt: "SOURCE pane #3.", contenttxt: EC0.SDOCS[1] || "" }
+      { idtxt: "SOURCE3", labeltxt: "SOURCE3", titletxt: "SOURCE pane #3.",
+        contenttxt: EC0.SDOCS[1] || "" }
     ]
-  });
-  evt ? webdocGen(0, difftmpl) || EC1.tabs0Tog(0) : dataDispl(difftmpl, 1, () => EC1.tabs0Tog(0));
+  }); //"$DIFF:ptyvals" + pnbr + ">..."
+  !evt ? dataDispl(difftmpl, 1, cbFnc) : webdocGen(0, difftmpl, cbFnc);
 },
-dvizGen(idx) {
+dvizGen(idx, redir) {
   if (fwinflux) { return; }
-  let dvizrads = document.querySelector('#ecoesp0 #dvizrad').elements["dvizrad"],
+  let attinp = document.querySelector('#econav0 #attinp'),
+    attlist = document.querySelector('#econav0 #attlist'),
+    dvizrads = document.querySelector('#ecoesp0 #dvizrad').elements["dvizrad"],
+    cbFnc = () => (attlist.value = attinp.value = "") || !(redir || EC1.tabs0Tog(0) || 1)
+      || ( attinp.value = idx < 3 ? "$CNTC:"
+          + (!idx ? "blank" : idx < 2 ? (!dbpch ? "n/a" : dbpch.name) : epsets.teamid || "team")
+        : (idx < 4 ? "$POST:" : "$DATX:") + (!dbpch ? "n/a" : dbpch.name) ),
     fileDViz = idx => {
       let dviztmpl = jsonParse(JSON.stringify(ETMPLS.publmgr));
-      pfsResets();
+      redir || pfsResets();
       dviztmpl._id = "";
       dviztmpl.filefrags[0].contenttxt = EC0.SDOCS[6 - idx] || ""; // 2 or 3
-      dataDispl(dviztmpl, 1, () => EC1.tabs0Tog(0));
+      !redir ? dataDispl(dviztmpl, 1, cbFnc) : webdocGen(0, dviztmpl, cbFnc);
     },
     cntcDViz = idx => {
       idx == null || (dvizrads = { value: idx });
@@ -3754,18 +3772,19 @@ dvizGen(idx) {
           : ar[0].replace(/^!([0-9a-z]+)-.*/i, "$1") === epsets.teamid )).sort(),
         cct = csg.length,
         dviztmpl = jsonParse(JSON.stringify(ETMPLS.publmgr));
-      pfsResets();
+      redir || pfsResets();
       dviztmpl._id = "";
       dviztmpl.contributors = csg.map(ar => ar[1].replace(/[^\w.@-]+/g, "-"));
       !cdb || (dviztmpl.loadconfigs.commondirpath = `../../${cdb}/contacts/`);
       dviztmpl.loadconfigs.fragsrcxs = [false, ...csg.map(ar => "./" + ar[0]), false];
       dviztmpl.parseconfigs = Object.assign( dviztmpl.parseconfigs, {
-        scriptsconstr: [{
+        scriptsconstr: [ {
           fncname:  "elmsDelin", filepath: "", usedescription: "", htmlscriptload: "",
           features: [{ switchon: false, keytxt: "", valtxt: "" }],
           deftxt:   `function (str) {\n  return str.trim().replace(/^/gm, "    ") + ",\\n"\n  ;\n}`
-        }],
-        scriptsincl: [{ fncname: "elmsDelin", applytofrag: [false, ...csg.map(ar => true), false] }]
+        }, dviztmpl.parseconfigs.scriptsconstr[0] ],
+        scriptsincl: [ { fncname: "elmsDelin", applytofrag: [false, ...csg.map(ar => true), false] },
+          { fncname: "", applytofrag: [true, ...csg.map(ar => true), true] } ]
       });
       dviztmpl.filefrags = [
         { idtxt: "SOURCE1", labeltxt: "SOURCE1", titletxt: "SOURCE pane #1.",
@@ -3778,9 +3797,9 @@ dvizGen(idx) {
           .replace(/\.\.\/\.\.\/a00_myteam\/-res-img\//g, () => !cdb ? "" : `../../${cdb}/-res-img/`) }
       ];
       window.scrollTo(0, 0);
-      dataDispl(dviztmpl, 1, () => EC1.tabs0Tog(0));
+      !redir ? dataDispl(dviztmpl, 1, cbFnc) : webdocGen(0, dviztmpl, cbFnc);
     };
-  (idx = idx != null ? idx : +dvizrads.value) < 0
+  (idx = idx != null ? +idx : +dvizrads.value) < 0
   || (idx < 3 ? cntcDViz(idx) : idx < 5 && fileDViz(idx));
 },
 qconSyncD() {
