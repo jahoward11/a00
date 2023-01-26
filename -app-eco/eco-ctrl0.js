@@ -3701,26 +3701,25 @@ calcGen(cinit = "", redir) {
   !redir ? dataDispl(calctmpl, 1, cbFnc) : webdocGen(0, calctmpl, cbFnc);
 },
 diffGen(evt, txt1, txt2) { // also triggered by dviz-dboxupd
-  if (fwinflux) { return; }
   let elm1,
     pnbr = !evt || !evt.target ? +evt || 0 : +/\d+$/.exec(evt.target.parentElement.id),
     difftmpl = jsonParse(JSON.stringify(ETMPLS.publmgr)),
     attinp = document.querySelector('#econav0 #attinp'),
     attlist = document.querySelector('#econav0 #attlist'),
-    cbFnc = () => (attlist.value = attinp.value = "") || !(evt || EC1.tabs0Tog(0) || 1)
-      || !elm1 || (attinp.value = "$DIFF:" + /,.*?(\w+)(?=')/.exec("" + elm1.onblur)[1]);
+    cbFnc = () => (attlist.value = attinp.value = "") || !(evt || EC1.tabs0Tog(0))
+      || (attinp.value = "$DIFF:" + (!elm1 ? "" : /,.*?(\w+)(?=')/.exec("" + elm1.onblur)[1]));
   txt1 = txt1 || ( elm1 = document.querySelector('#ecoesp0 #ptyvals' + pnbr + '>input')
     || document.querySelector('#ecoesp0 #ptyvals' + pnbr + '>textarea')
     || document.querySelector( '#ecoesp0 #ptyvals'
       + pnbr + '>span:not(.is-hidden)>textarea' )
     || document.querySelector( '#ecoesp0 #ptyvals'
-      + pnbr + '>div>span:not(.is-hidden)>textarea' ) || "" ).value || "";
+      + pnbr + '>div>span:not(.is-hidden)>textarea' ) || "" ).value || "SOURCE pane #1.";
   txt2 = txt2 || ( document.querySelector('#ecoesp0 #pt2vals' + pnbr + '>input')
     || document.querySelector('#ecoesp0 #pt2vals' + pnbr + '>textarea')
     || document.querySelector( '#ecoesp0 #pt2vals'
       + pnbr + '>span:not(.is-hidden)>textarea')
     || document.querySelector('#ecoesp0 #pt2vals'
-      + pnbr + '>div>span:not(.is-hidden)>textarea' ) || "" ).value || "";
+      + pnbr + '>div>span:not(.is-hidden)>textarea' ) || "" ).value || "SOURCE pane #2.";
   evt || pfsResets();
   difftmpl = Object.assign( difftmpl, {
     _id: "",
