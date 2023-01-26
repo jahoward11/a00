@@ -486,6 +486,7 @@ let q2Bcopy, q2Bhtml,
   cinit = window.cinit || window.localStorage._cinit || "",
   metavp = document.querySelector('body>#ecorender meta[name=viewport]')
     || document.querySelector('head>meta[name=viewport]'),
+  ecopans = document.querySelectorAll('#ecoesp0 #jdedft>#srcpanes>.textarea'),
   ecoscrs = window.EC0 && document.querySelector('body>#ecoscripts'),
   datxmp = document.querySelector('#cmain>#datxmp'),
   cheadg = document.querySelector('#cmain>#cheadg'),
@@ -785,8 +786,8 @@ let q2Bcopy, q2Bhtml,
     !window.localforage ? xlRndr() : localforage.keys().then(xlRndr).catch(reShow);
   };
 window.xstor = window.xstor || {};
-window.dentr = document.querySelector('#ecoesp0 #jdedft>#srcpanes>.textarea:nth-of-type(2)')
-  || { value: datxmp.textContent.replace(/\\n+$|^\\n+/g, "") };
+window.dentr = ecopans.length === 3 && /^<\\/xmp>\\n<div id="cheadg">/.test(ecopans[2].value)
+  ? ecopans[1] : { value: datxmp.textContent.replace(/\\n+$|^\\n+/g, "") };
 (ecoscrs ? cinit : window.location.search).replace(/^\\?/, "").split("&").forEach( qi =>
   /^jsrcs=./.test(qi) ? (jsrcs = window.decodeURIComponent(qi.replace(/^jsrcs=/, "")).split(/[ ,]+/))
   : /^cmods=./.test(qi) ? (cmods = window.decodeURIComponent(qi.replace(/^cmods=/, "")).split(/[ ,]+/))
