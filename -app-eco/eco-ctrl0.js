@@ -3677,7 +3677,7 @@ calcGen(cinit = "", redir) {
     attlist = document.querySelector('#econav0 #attlist'),
     calcdemo = document.querySelector('#ecoesp0 #calctogswi').checked,
     calctmpl = jsonParse(JSON.stringify(ETMPLS.publmgr)),
-    cbFnc = () => (attlist.value = attinp.value = "") || !(redir || EC1.tabs0Tog(0) || 1)
+    cbFnc = () => (attlist.value = attinp.value = "") || !(redir || EC1.tabs0Tog(0))
       || (attinp.value = "$CALC:" + (cinit || (!calcdemo ? "empty" : "demo")));
   redir || pfsResets();
   calctmpl = Object.assign( calctmpl, {
