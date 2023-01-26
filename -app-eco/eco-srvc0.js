@@ -58,7 +58,7 @@ EC0.JSCON = [
   `Array.from(document.querySelectorAll('[id]')).map(e => e.id)`,
   `Array.from(document.querySelectorAll('script')).map(e => e.src)`,
   `sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.querySelector('#iniscripts').appendChild(n); }; ""`,
-  `import("../-dev/prj10.js").then(m => m.jscmds).catch(e => e)`,
+  `import("../-dev/prj10.js").then(m => m.jsrefq).catch(e => e)`,
   `window.xstor = window.xstor || {};
  import("../-dev/prj10.js").then(m => xstor[m._module || "xmod" + Object.keys(xstor).map(k => k.replace(/^xmod(?=\\d*$)|.*/, "")).reduce((a, b) => +b > +a ? b : a, 1)] = m).then(Object.keys).catch(e => e)`,
   `getComputedStyle(document.documentElement).width`,
@@ -925,8 +925,8 @@ window.onload = function () {
 (function () {
   let mytxta = document.querySelector('#textareaid'),
     tit = /^<(title\\b)(.*?)>(.+?)<\\/\\1>$/im.exec(mytxta.value)
-      || /^<(h\\d|p)\\b.*? (?:id|class)=(['"]?)title\\2>(.+?)<\\/\\1>$/im.exec(mytxta.value)
-      || /^<(h\\d|p)\\b(.*?)>(.+?)<\\/\\1>$/im.exec(mytxta.value) || ["", "", "", ""],
+      || /^<(div|h\\d|p)\\b.*? (?:id|class)=(['"]?)\\w*(?:head|title)\\w*\\2>(.+?)<\\/\\1>$/im.exec(mytxta.value)
+      || /^<(div|h\\d|p)\\b(.*?)>(.+?)<\\/\\1>$/im.exec(mytxta.value) || ["", "", "", ""],
     docpts = /^(<style\\b(?:[^<]|<(?=\\/?style\\b))+<\\/style>|)\\s*([^]*)$/.exec(mytxta.value.trim());
   mytxta.value = "<!DOCTYPE html>\\n<html lang="en">\\n<head>\\n<title>"
   + tit[3].replace(/<\\/?\b.+?>/g, "").substring(0, 127)
@@ -939,8 +939,8 @@ window.onload = function () {
     features: [{ switchon: false, keytxt: "", valtxt: "" }],
     fnc: function (str) {
       let tit = /^<(title\b)(.*?)>(.+?)<\/\1>$/im.exec(str)
-          || /^<(h\d|p)\b.*? (?:id|class)=(['"]?)title\2>(.+?)<\/\1>$/im.exec(str)
-          || /^<(h\d|p)\b(.*?)>(.+?)<\/\1>$/im.exec(str) || ["", "", "", ""],
+          || /^<(div|h\d|p)\b.*? (?:id|class)=(['"]?)\w*(?:head|title)\w*\2>(.+?)<\/\1>$/im.exec(str)
+          || /^<(div|h\d|p)\b(.*?)>(.+?)<\/\1>$/im.exec(str) || ["", "", "", ""],
         docpts = /^(<style\b(?:[^<]|<(?=\/?style\b))+<\/style>|)\s*([^]*)$/.exec(str.trim());
       return "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<title>"
         + tit[3].replace(/<\/?\b.+?>/g, "").substring(0, 127)

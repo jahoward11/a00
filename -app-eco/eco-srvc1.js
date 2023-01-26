@@ -478,6 +478,7 @@ body {
   body { width: unset; margin: 0; padding: 0; }
 }
 </style>
+<script src="../../a00/-res-js/localforage.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 (function () {
 'use strict';
@@ -517,7 +518,7 @@ let q2Bcopy, q2Bhtml,
     || !window.navigator.onLine || nscr.setAttribute('crossorigin', 'use-credentials');
     nscr.innerHTML = !url && cnt ? cnt : "";
     nscr.onerror = err => rjct("**Alert: Script resource GET/load error occured.");
-    nscr.onsuccess = nscr.onload = rslv;
+    nscr.onload = rslv;
     nscr.type !== "module" || window.setTimeout(rslv, 500);
     !(url || cnt) || (ecoscrs || document.body).appendChild(nscr);
   }),
