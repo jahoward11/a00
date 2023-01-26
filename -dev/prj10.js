@@ -201,10 +201,9 @@ const scrload = `//
  // localforage.getItem("t2js").then(reShow).catch(reShow)
  // localforage.removeItem("t2js").then(reShow).catch(reShow)
  // localforage.length().then(reShow).catch(reShow)
- // PouchDB.allDbs().then(re => window.pdbs = re);
- // !pdbs[2] || reShow(new PouchDB(pdbs[2]).info())
+ // PouchDB.allDbs().then(re => window.pdbs = re).then(reShow).catch(reShow)
+ // !pdbs[2] || new PouchDB(pdbs[2]).info().then(reShow).catch(reShow)
  // PouchDB("mydb1").get("myfile").then(doc => doc.content).then(reShow).catch(reShow)
- // PouchDB.allDbs().then(reShow)
 
 /*
 window.txd2 = {
@@ -260,53 +259,6 @@ const itoken = `/*
  fetch("https:/" + "/iam.cloud.ibm.com/identity/token", opts).then(re => re.text()).then(reShow).catch(reShow);
 */`;
 
-const webapp1 = `// __"Recipes" DB Webapp__
-
-/*
- cQry = () => !(window.pdbs || []).includes((window.txd2 || "").DBNAME) && [] || PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.text()).then(cnt => [txd2.wid, cnt]);
- uiDspl = ([wid, cnt, scr]) => { if (!wid || !cnt) return; let ndiv = document.createElement('div'); ndiv.id = wid; ndiv.innerHTML = "\\n<hr />\\n" + cnt.trim() + "\\n"; cmain.appendChild(ndiv); return scr || window[wid] && window[wid].querySelector('script:last-of-type'); };
- smL = scr => !scr || scrInj(0, scr.type || 'module', "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
-
- dbA = () => !window.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => window.pdbs = re);
- s1L = () => !!window.PouchDB ? _.dbA() : scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(_.dbA));
- s2L = () => !!window.markdownit || Promise.all(["", "-decorate", "-ins", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js")));
- // s3L = () => !!window.hljs || scrInj("../-res-js/highlight.min.js");
- nmImp = () => window.nmwrap && [] || import("../-app-cjs/nmgr.js").then(re => ["nmwrap", re.nmpage, re.nmscr]);
-
- window.txd2 = { DBNAME: "howfam02", FILEID: ".ref", ATTKEY: "hjenn_food2022.html", OPTS: {}, wid: "rswrap" };
- s4L = scr => !scr || !window[txd2.wid] || !!window.rkeys && (Array.from(document.scripts).find(si => /window\.rkeys *=/.test(si.innerHTML)) || document.createElement('i')).remove() || !(window.annos || scrInj("../-res-js/ebook-annos-fns.js")) || scrInj(0, scr.type || 0, "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
-
- // window[txd2.wid].remove() // Alert: useful only if edit-testing the GUI code above
- window[txd2.wid] || Promise.resolve().then(s1L).then(s2L).then(nmImp).then(uiDspl).then(smL).then(cQry).then(uiDspl).then(s4L).catch(reShow);
-
- // nmwrap.classList.toggle("dnone");
-*/
-
-//`;
-
-const webapp2 = `// __"Disc: Family Gospel" DB Webapp__
-
-/*
- cQry = () => !(window.pdbs || []).includes((window.txd2 || "").DBNAME) && [] || PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.text()).then(cnt => [txd2.wid, cnt]);
- uiDspl = ([wid, cnt, scr]) => { if (!wid || !cnt) return; let ndiv = document.createElement('div'); ndiv.id = wid; ndiv.innerHTML = "\\n<hr />\\n" + cnt.trim() + "\\n"; cmain.appendChild(ndiv); return scr || window[wid] && window[wid].querySelector('script:last-of-type'); };
- smL = scr => !scr || scrInj(0, scr.type || 'module', "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
-
- dbA = () => !window.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => window.pdbs = re);
- s1L = () => !!window.PouchDB ? _.dbA() : scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(_.dbA));
- s2L = () => !!window.markdownit || Promise.all(["", "-decorate", "-ins", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js")));
- // s3L = () => !!window.hljs || scrInj("../-res-js/highlight.min.js");
- nmImp = () => window.nmwrap && [] || import("../-app-cjs/nmgr.js").then(re => ["nmwrap", re.nmpage, re.nmscr]);
-
- window.txd2 = { DBNAME: "howfam02", FILEID: ".records", ATTKEY: "hjas_disc-famgospeltbits.html", OPTS: {}, wid: "nswrap" };
- s4L = scr => !scr || !window[txd2.wid] || !!window.nkeys && (Array.from(document.scripts).find(si => /window\.nkeys *=/.test(si.innerHTML)) || document.createElement('i')).remove() || !(window.annos || scrInj("../-res-js/ebook-annos-fns.js")) || scrInj(0, scr.type || 0, "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
-
- // window[txd2.wid].remove() // Alert: useful only if edit-testing the GUI code above
- window[txd2.wid] || Promise.resolve().then(s1L).then(s2L).then(nmImp).then(uiDspl).then(smL).then(cQry).then(uiDspl).then(s4L).catch(reShow);
-
- // nmwrap.classList.toggle("dnone");
-*/
-
-//`;
 
 const t2puzls = `//
 /*
@@ -418,7 +370,7 @@ const nmtools = `// __Note-Mgr Tools__
  PouchDB.allDbs().then(re => window.pdbs = re)
  window.pdbs = Array.from(opensel.options).map(opt => opt.value).splice(1)
  pdbs.includes(nm0.txd1.DBNAME)
- new PouchDB(pdbs[2]).info()
+ !pdbs[2] || new PouchDB(pdbs[2]).info()
 
  str = nmdata.textContent;
  doc = JSON.parse(nmdata.textContent);
@@ -445,11 +397,60 @@ const nmtools = `// __Note-Mgr Tools__
 
 //`;
 
+const webapp1 = `// __"Recipes" DB Webapp__
+
+/*
+ cQry = () => !(window.pdbs || []).includes((window.txd2 || "").DBNAME) && [] || PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.text()).then(cnt => [txd2.wid, cnt]);
+ uiDspl = ([wid, cnt, scr]) => { if (!wid || !cnt) return; let ndiv = document.createElement('div'); ndiv.id = wid; ndiv.innerHTML = "\\n<hr />\\n" + cnt.trim() + "\\n"; cmain.appendChild(ndiv); return scr || window[wid] && window[wid].querySelector('script:last-of-type'); };
+ smL = scr => !scr || scrInj(0, scr.type || 'module', "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
+
+ dbA = () => !window.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => window.pdbs = re);
+ s1L = () => !!window.PouchDB ? _.dbA() : scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(_.dbA));
+ s2L = () => !!window.markdownit || Promise.all(["", "-decorate", "-ins", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js")));
+ // s3L = () => !!window.hljs || scrInj("../-res-js/highlight.min.js");
+ nmImp = () => window.nmwrap && [] || import("../-app-cjs/nmgr.js").then(re => ["nmwrap", re.nmpage, re.nmscr]);
+
+ window.txd2 = { DBNAME: "howfam02", FILEID: ".ref", ATTKEY: "hjenn_food2022.html", OPTS: {}, wid: "rswrap" };
+ s4L = scr => !scr || !window[txd2.wid] || !!window.rkeys && (Array.from(document.scripts).find(si => /window\.rkeys *=/.test(si.innerHTML)) || document.createElement('i')).remove() || !(window.annos || scrInj("../-res-js/ebook-annos-fns.js")) || scrInj(0, scr.type || 0, "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
+
+ // window[txd2.wid].remove() // Alert: useful only if edit-testing the GUI code above
+ window[txd2.wid] || Promise.resolve().then(s1L).then(s2L).then(nmImp).then(uiDspl).then(smL).then(cQry).then(uiDspl).then(s4L).catch(reShow);
+
+ // nmwrap.classList.toggle("dnone");
+*/
+
+//`;
+
+const webapp2 = `// __"Disc: Family Gospel" DB Webapp__
+
+/*
+ cQry = () => !(window.pdbs || []).includes((window.txd2 || "").DBNAME) && [] || PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.text()).then(cnt => [txd2.wid, cnt]);
+ uiDspl = ([wid, cnt, scr]) => { if (!wid || !cnt) return; let ndiv = document.createElement('div'); ndiv.id = wid; ndiv.innerHTML = "\\n<hr />\\n" + cnt.trim() + "\\n"; cmain.appendChild(ndiv); return scr || window[wid] && window[wid].querySelector('script:last-of-type'); };
+ smL = scr => !scr || scrInj(0, scr.type || 'module', "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
+
+ dbA = () => !window.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => window.pdbs = re);
+ s1L = () => !!window.PouchDB ? _.dbA() : scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(_.dbA));
+ s2L = () => !!window.markdownit || Promise.all(["", "-decorate", "-ins", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js")));
+ // s3L = () => !!window.hljs || scrInj("../-res-js/highlight.min.js");
+ nmImp = () => window.nmwrap && [] || import("../-app-cjs/nmgr.js").then(re => ["nmwrap", re.nmpage, re.nmscr]);
+
+ window.txd2 = { DBNAME: "howfam02", FILEID: ".records", ATTKEY: "hjas_disc-famgospeltbits.html", OPTS: {}, wid: "nswrap" };
+ s4L = scr => !scr || !window[txd2.wid] || !!window.nkeys && (Array.from(document.scripts).find(si => /window\.nkeys *=/.test(si.innerHTML)) || document.createElement('i')).remove() || !(window.annos || scrInj("../-res-js/ebook-annos-fns.js")) || scrInj(0, scr.type || 0, "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
+
+ // window[txd2.wid].remove() // Alert: useful only if edit-testing the GUI code above
+ window[txd2.wid] || Promise.resolve().then(s1L).then(s2L).then(nmImp).then(uiDspl).then(smL).then(cQry).then(uiDspl).then(s4L).catch(reShow);
+
+ // nmwrap.classList.toggle("dnone");
+*/
+
+//`;
+
 export {
-  _module, varkeys, nformat,
-  uiwidth, publdims, jsrefq,
-  bcaches, dscripts, scrload,
-  jstatqs, itoken, webapp1,
-  webapp2, t2puzls, t3search,
-  t4cntcs, srtools, nmtools
+  _module,
+  varkeys, nformat, uiwidth, publdims,
+  jsrefq, bcaches, dscripts, scrload,
+  jstatqs, itoken,
+  t2puzls, t3search, t4cntcs,
+  srtools, nmtools,
+  webapp1, webapp2
 };
