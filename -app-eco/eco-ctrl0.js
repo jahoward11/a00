@@ -3713,13 +3713,13 @@ diffGen(evt, txt1, txt2) { // also triggered by dviz-dboxupd
     || document.querySelector( '#ecoesp0 #ptyvals'
       + pnbr + '>span:not(.is-hidden)>textarea' )
     || document.querySelector( '#ecoesp0 #ptyvals'
-      + pnbr + '>div>span:not(.is-hidden)>textarea' ) || "" ).value || "SOURCE pane #1.";
+      + pnbr + '>div>span:not(.is-hidden)>textarea' ) || "" ).value || "";
   txt2 = txt2 || ( document.querySelector('#ecoesp0 #pt2vals' + pnbr + '>input')
     || document.querySelector('#ecoesp0 #pt2vals' + pnbr + '>textarea')
     || document.querySelector( '#ecoesp0 #pt2vals'
       + pnbr + '>span:not(.is-hidden)>textarea')
     || document.querySelector('#ecoesp0 #pt2vals'
-      + pnbr + '>div>span:not(.is-hidden)>textarea' ) || "" ).value || "SOURCE pane #2.";
+      + pnbr + '>div>span:not(.is-hidden)>textarea' ) || "" ).value || "";
   evt || pfsResets();
   difftmpl = Object.assign( difftmpl, {
     _id: "",
@@ -3737,8 +3737,10 @@ diffGen(evt, txt1, txt2) { // also triggered by dviz-dboxupd
         { fncname: "", applytofrag: [true, true, true] } ]
     }),
     filefrags: [
-      { idtxt: "SOURCE1", labeltxt: "SOURCE1", titletxt: "SOURCE pane #1.", contenttxt: txt1 },
-      { idtxt: "SOURCE2", labeltxt: "SOURCE2", titletxt: "SOURCE pane #2.", contenttxt: txt2 },
+      { idtxt: "SOURCE1", labeltxt: "SOURCE1", titletxt: "SOURCE pane #1.",
+        contenttxt: evt != null ? txt1 : "SOURCE pane #1." },
+      { idtxt: "SOURCE2", labeltxt: "SOURCE2", titletxt: "SOURCE pane #2.",
+        contenttxt: evt != null ? txt2 : "SOURCE pane #2." },
       { idtxt: "SOURCE3", labeltxt: "SOURCE3", titletxt: "SOURCE pane #3.",
         contenttxt: EC0.SDOCS[1] || "" }
     ]
