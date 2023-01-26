@@ -897,7 +897,7 @@ figure {
   <textarea id=js2txta class=textarea rows=31>&gt; </textarea>
 </div>`;
 
-const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
+const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
   j = 0,  tidx = 0, vidx = 0,
   aurls = {},
   cntcs = {},
@@ -2289,6 +2289,11 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     .forEach( ([f, k, v]) => !dbs.includes("a00") || !window.PouchDB ? (aurls[k] = v)
       : PouchDB("a00").getAttachment(f, k)
         .then(abl => aurls[k] = URL.createObjectURL(abl)).catch(r2Show).then(() => aurls[k] = v) );
+    window.nm0 = {
+      aurls, cntcs, nm0cfgs, nm0sets, txd1,
+      r2Show, fncTry, htmTxt, valStr, mP1, jB1, jP1, idGen,
+      filesChg, fileLoad, tabActv, p2Gen
+    };
     !nm0sets.bedit || [moveinp, movebtn].forEach(elm => elm.classList.add("dnone"))
     || editbtn.classList.remove("dnone");
     [pdbssel, opensel, cntcsel].forEach( (el, i) => el.innerHTML
@@ -2316,11 +2321,6 @@ const nmscr = `let cvs, fwg, rva2, rval, ss0, ss1, vbas, vusr,
     opensel.value = pdbssel.value = nm0sets.dbdflt || "";
     !pdbssel.value || pdbOpen();
   };
-window.nm0 = {
-  aurls, cntcs, nm0cfgs, nm0sets, txd1,
-  r2Show, fncTry, htmTxt, valStr, mP1, jB1, jP1, idGen,
-  filesChg, fileLoad, tabActv
-};
 pdbssel.onchange = pdbOpen;
 viewsel.onchange = viewChg;
 colssel.onchange = colsTog;
@@ -2344,7 +2344,7 @@ actrls.forEach(elm => elm.onchange = setsUpd);
 wipebtn.onclick = storDel;
 jselbtn.onclick = txtaSel;
 js2txta.onblur = js2Eval;
-( nm0.p2Gen = () => !window.PouchDB || !PouchDB.allDbs
+( p2Gen = () => !window.PouchDB || !PouchDB.allDbs
   ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(r2Show) )();`;
 
 export { dwraps, nmpage, nmscr };
