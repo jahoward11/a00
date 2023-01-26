@@ -182,9 +182,9 @@ const dscripts = `//
 //`;
 
 const scrload = `//
+ // window.annos || scrInj("../-res-js/ebook-annos-fns.js").then(reShow).catch(reShow)
  // window.jStat || scrInj("../-res-js/jstat-tdist.js").then(reShow).catch(reShow)
  // window.SourceDiff || scrInj("../-res-js/srcdiff.js").then(reShow).catch(reShow)
- // window.annos || scrInj("../-res-js/ebook-annos-fns.js").then(reShow).catch(reShow)
  // !!window.markdownit || Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).then(reShow).catch(reShow)
  // !!window.hljs || scrInj("../-res-js/highlight.min.js").then(reShow).catch(reShow)
  // !!window.js_beautify || scrInj("../-res-js/jsbeautify1.14.0.js").then(reShow).catch(reShow)

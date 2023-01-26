@@ -2341,7 +2341,7 @@ t01sel.onchange = t1sChg;
 v01sel.onchange = cfgsUpd;
 [[use1swi, pdbcfg], [use2swi, nmsets]]
 .forEach( ([sw, el]) => sw.onclick = evt => el.querySelectorAll('p')
-  .forEach(p => p.classList[!s.checked ? "add" : "remove"]("dnone")) || setsUpd(evt) );
+  .forEach(p => p.classList[!sw.checked ? "add" : "remove"]("dnone")) || setsUpd(evt) );
 [t0abtn, v0abtn, t0dbtn, v0dbtn].forEach(btn => btn.onclick = setsUpd);
 actrls.forEach(elm => elm.onchange = setsUpd);
 wipebtn.onclick = storDel;
