@@ -201,6 +201,8 @@ const scrload = `//
  // localforage.getItem("t2js").then(reShow).catch(reShow)
  // localforage.removeItem("t2js").then(reShow).catch(reShow)
  // localforage.length().then(reShow).catch(reShow)
+ // PouchDB.allDbs().then(re => window.pdbs = re);
+ // !pdbs[2] || reShow(new PouchDB(pdbs[2]).info())
  // PouchDB("mydb1").get("myfile").then(doc => doc.content).then(reShow).catch(reShow)
  // PouchDB.allDbs().then(reShow)
 
@@ -222,6 +224,7 @@ PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
 */
 
  // window.txd2 = { DBNAME: "db", FILEID: "id", ATTKEY: "key", OPTS: {} };
+ // pdbs.includes(txd2.DBNAME)
  // PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.text()).then(reShow).catch(reShow)
  // PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => fetch(aurls[txd2.ATTKEY] = URL.createObjectURL(abl)).then(re => re.text()).then(reShow).catch(reShow)
 
@@ -412,6 +415,10 @@ const nmtools = `// __Note-Mgr Tools__
 
 /*
  Object.keys(nm0)
+ PouchDB.allDbs().then(re => window.pdbs = re)
+ window.pdbs = Array.from(opensel.options).map(opt => opt.value).splice(1)
+ pdbs.includes(nm0.txd1.DBNAME)
+ new PouchDB(pdbs[2]).info()
 
  str = nmdata.textContent;
  doc = JSON.parse(nmdata.textContent);
