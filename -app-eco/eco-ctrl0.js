@@ -3128,7 +3128,7 @@ jdeRawUpd(noflux) { // also triggered by swapExe, dviz-dboxupd
   let jdata,
     pfsinp = document.querySelector('#econav0 #pfsinp'),
     rawtxta = document.querySelector('#ecoesp0 #rawtxta');
-  fldfoc = !epsets.swapchks[0] ? null : fldmfd;
+  fldfoc = !epsets.swapchks[0] ? null : rawtxta;
   !epsets.swapchks[0] || (document.querySelector('#ecoesp0 #prsebtn').disabled = !fldfoc);
   EC1.formBlr();
   jdeRawAlert();
@@ -3603,6 +3603,7 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-posts
   return gloObj != null ? gloObj
   : /^qcon:|^q?msg:/i.test(key) ? msgHandl(fbx || "error?")
   : /^calc:|^cjs:/i.test(key) ? EC2.calcGen(fbx, 1)
+  : /^fi?nd:/i.test(key) ? navigator.clipboard.readText().then(s => EC2.findGen(s, fbx))
   : /^diff?:/i.test(key) ? EC2.diffGen(fbx || "0")
   : /^datx?:|^dbx:|^in?dx:/i.test(key) ? EC2.dvizGen(4, 1)
   : /^memo?:|^post:/i.test(key) ? EC2.dvizGen(3, 1)
@@ -3699,6 +3700,36 @@ calcGen(cinit = "", redir) {
   });
   window.scrollTo(0, 0);
   !redir ? dataDispl(calctmpl, 1, cbFnc) : webdocGen(0, calctmpl, cbFnc);
+},
+findGen(str, sv = "") {
+  let findtmpl = jsonParse(JSON.stringify(ETMPLS.publmgr)),
+    attinp = document.querySelector('#econav0 #attinp'),
+    attlist = document.querySelector('#econav0 #attlist'),
+    cbFnc = () => (attlist.value = attinp.value = "") || !(fldfoc || EC1.tabs0Tog(0) || 1)
+      || (attinp.value = "$FIND:" + (sv || ""));
+  str = typeof str === 'string' ? str : (fldfoc || "").value || "";
+  fldfoc || pfsResets();
+  findtmpl = Object.assign( findtmpl, {
+    _id: "",
+    parseconfigs: Object.assign( findtmpl.parseconfigs, {
+      scriptsconstr: [ {
+        fncname:  "strlitPrep", filepath: "", usedescription: "", htmlscriptload: "",
+        features: [{ switchon: false, keytxt: "", valtxt: "" }],
+        deftxt:   "function (str) {\n  return str\n  .replace(/[\\\\`]|\\$\\{/g, \"\\\\$&\")\n  ;\n}"
+      }, findtmpl.parseconfigs.scriptsconstr[0] ],
+      scriptsincl: [ { fncname: "strlitPrep", applytofrag: [false, true, false] },
+        { fncname: "", applytofrag: [true, true, true] } ]
+    }),
+    filefrags: [
+      { idtxt: "SOURCE1", labeltxt: "SOURCE1", titletxt: "SOURCE pane #1.", contenttxt:
+        (EC0.SDOCS[5][0] || "").replace(/id="sepainp"(?=><label)/, "$& value=\"" + sv + "\"") },
+      { idtxt: "SOURCE2", labeltxt: "SOURCE2", titletxt: "SOURCE pane #2.", contenttxt: str },
+      { idtxt: "SOURCE3", labeltxt: "SOURCE3", titletxt: "SOURCE pane #3.",
+        contenttxt: EC0.SDOCS[5][1] || "" }
+    ]
+  });
+  findtmpl.loadconfigs.tabselected = "SOURCE2";
+  !fldfoc ? dataDispl(findtmpl, 1, cbFnc) : webdocGen(0, findtmpl, cbFnc);
 },
 diffGen(evt, txt1, txt2) { // also triggered by dviz-dboxupd
   let elm1,
