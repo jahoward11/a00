@@ -3694,7 +3694,7 @@ calcGen(cinit = "", redir) {
         contenttxt: !calcdemo ? "" : EC0.SDOCS[0][1] || "" },
       { idtxt: "SOURCE3", labeltxt: "SOURCE3", titletxt: "SOURCE pane #3.",
         contenttxt: (EC0.SDOCS[0][2] || "").replace( /\._cinit \|\| "/, "$&"
-          + (!/^\w+$/.test(cinit) ? "" : "dload=") + cinit ) }
+          + (!/^\b[\w.]+$/.test(cinit) ? "" : "dload=") + cinit ) }
     ]
   });
   window.scrollTo(0, 0);
