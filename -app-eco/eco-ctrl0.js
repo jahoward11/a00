@@ -1547,7 +1547,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         ablSto = ablob => aurls[apath3[3]] = URL.createObjectURL(ablob);
       apath3[2] = apath3[2] && (/^[.-]\b/.test(apath3[2]) ? "" : ".") + apath3[2];
       apath3[3] || !a3i.src || (apath3[3] = a3i.src.replace(/^(?!blob:).*\//, ""));
-      return typanno
+      return /\b(?:highlight|localforage|markdown-it|pouchdb)\b/.test(a3i.src) || typanno
       && (/\bebook-annos-fns\.js$/.test(a3i.src) || ua3 === EC2.u2Blob("ebook-annos-fns.js")) ? null
       : !epsets.appchks[27] && /^blob:/.test(ua3) ? scrInj({ src: ua3 })
       : (txdata = txdPrep(apath3[0])[0]).ATTKEY && (txdata.dburl = txurlGen(txCrdtlz(txdata)))
