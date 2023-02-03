@@ -3609,7 +3609,7 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-posts
   : /^diff?:/i.test(key) ? EC2.diffGen(fbx || "0")
   : /^datx?:|^dbx:|^in?dx:/i.test(key) ? EC2.dvizGen(4, 1)
   : /^memo?:|^po?st:/i.test(key) ? EC2.dvizGen(3, 1)
-  : /^cntc?s?:|^contacts?:|^dviz:/i.test(key) ? EC2.dvizGen(fbx || 2, 1)
+  : /^cntc?s?:|^contacts?:|^dvi?z:/i.test(key) ? EC2.dvizGen(fbx || 2, 1)
   : /^att(?:list|):/i.test(key) ? attListGen()
   : /^pfs(?:list|):/i.test(key) ? pfsListGen()
   : /^a00p/i.test(key) ? a00path
@@ -3707,7 +3707,7 @@ findGen(spv, str) {
     attinp = document.querySelector('#econav0 #attinp'),
     attlist = document.querySelector('#econav0 #attlist'),
     cbFnc = () => (attlist.value = attinp.value = "") || !(fldfoc || EC1.tabs0Tog(0) || 1)
-      || (attinp.value = "$FIND:" + (spv || "")),
+      || (attinp.value = !str ? "" : "$FIND:" + (spv || "")),
     srctxt = typeof str === 'string' ? str : (fldfoc || "").value || "";
   findtmpl = Object.assign( findtmpl, {
     _id: "",
@@ -3784,7 +3784,7 @@ dvizGen(idx, redir) {
     attlist = document.querySelector('#econav0 #attlist'),
     dvizrads = document.querySelector('#ecoesp0 #dvizrad').elements["dvizrad"],
     cbFnc = () => (attlist.value = attinp.value = "") || !(redir || EC1.tabs0Tog(0) || 1)
-      || ( attinp.value = idx < 3 ? "$CNTC:"
+      || ( attinp.value = !redir && !idx ? "" : idx < 3 ? "$CNTC:"
           + (!idx ? "blank" : idx < 2 ? (!dbpch ? "n/a" : dbpch.name) : epsets.teamid || "team")
         : (idx < 4 ? "$POST:" : "$INDX:") + (!dbpch ? "n/a" : dbpch.name) ),
     fileDViz = idx => {
@@ -3796,16 +3796,19 @@ dvizGen(idx, redir) {
     },
     cntcDViz = idx => {
       idx == null || (dvizrads = { value: idx });
-      let cdb = +dvizrads.value && ( +dvizrads.value === 1
+      let ffs,
+        cdb = +dvizrads.value && ( +dvizrads.value < 2
           ? dbpch && dbpch.name : epsets.teamid && "a00_" + epsets.teamid ),
         csg = Object.entries(tm0cntcs).map(oe => [oe[1]._id, oe[0]])
-        .filter( ar => cdb && ( +dvizrads.value === 1
+        .filter( ar => cdb && ( +dvizrads.value < 2
           ? !epsets.teamid || ar[0].replace(/^!([0-9a-z]+)-.*/i, "$1") !== epsets.teamid
           : ar[0].replace(/^!([0-9a-z]+)-.*/i, "$1") === epsets.teamid )).sort(),
-        cct = csg.length,
+        cct = csg.length
+          || csg.push(["", "", JSON.stringify(Object.assign(ETMPLS.contact, { _id: "" }), 0, 2)]),
         dviztmpl = jsonParse(JSON.stringify(ETMPLS.publmgr));
       dviztmpl._id = "";
-      dviztmpl.contributors = csg.map(ar => ar[1].replace(/[^\w.@-]+/g, "-"));
+      dviztmpl.contributors = csg.map(ar => (ar[1] || "").replace(/[^\w.@-]+/g, "-"));
+      !csg[0][2] || (dviztmpl.loadconfigs.tabselected = "SOURCE2");
       !cdb || (dviztmpl.loadconfigs.commondirpath = `../../${cdb}/contacts/`);
       dviztmpl.loadconfigs.fragsrcxs = [false, ...csg.map(ar => "./" + ar[0]), false];
       dviztmpl.parseconfigs = Object.assign( dviztmpl.parseconfigs, {
@@ -3817,19 +3820,24 @@ dvizGen(idx, redir) {
         scriptsincl: [ { fncname: "elmsDelin", applytofrag: [false, ...csg.map(ar => true), false] },
           { fncname: "", applytofrag: [true, ...csg.map(ar => true), true] } ]
       });
-      dviztmpl.filefrags = [
+      ffs = dviztmpl.filefrags = [
         { idtxt: "SOURCE1", labeltxt: "SOURCE1", titletxt: "SOURCE pane #1.",
           contenttxt: EC0.SDOCS[4][0] },
-        ...csg.map( (e, i) =>
+        ...csg.map( (ar, i) =>
           ({ idtxt: `SOURCE${2 + i}`, labeltxt: `SOURCE${2 + i}`,
-            titletxt: `SOURCE pane #${2 + i}.`, contenttxt: "" }) ),
+            titletxt: `SOURCE pane #${2 + i}.`, contenttxt: ar[2] || "" }) ),
         { idtxt: `SOURCE${2 + cct}`, labeltxt: `SOURCE${2 + cct}`,
           titletxt: `SOURCE pane #${2 + cct}.`, contenttxt: EC0.SDOCS[4][1]
           .replace(/\.\.\/\.\.\/a00_myteam\/-res-img\//g, () => !cdb ? "" : `../../${cdb}/-res-img/`) }
       ];
       //redir || pfsResets();
       window.scrollTo(0, 0);
-      !filewkg && !redir ? dataDispl(dviztmpl, 1, cbFnc) : webdocGen(0, dviztmpl, cbFnc);
+      !filewkg && !redir ? dataDispl(dviztmpl, 1, cbFnc)
+      : Promise.all( !window.PouchDB || !cdb || !csg[0][0]
+          ? [] : csg.map(ar => new PouchDB(cdb).get(ar[0])) )
+        .then( cds => cds.forEach( (cd, i) => ffs[1 + i].contenttxt
+            = JSON.stringify(Object.assign({ _id: "", _rev: "" }, cd), 0, 2) )
+          || webdocGen(0, dviztmpl, cbFnc) ).catch(msgHandl);
     };
   (idx = idx != null ? +idx : +dvizrads.value) < 0
   || (idx < 3 ? cntcDViz(idx) : idx < 5 && fileDViz(idx));
