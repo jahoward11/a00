@@ -1971,22 +1971,22 @@ document.querySelector('main input[type=checkbox]').onchange
 </script>
 ` ],
 // * * * * * 1: txtfind * * * * *
-[ `<div id="fwrap">
+[ `<div id="ftwrap">
 <style type="text/css">
 *, *::before, *::after { box-sizing: inherit; }
 html { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }
 button, input, select, pre { margin: 0; }
 hr { margin: 1.5rem 0; }
-#fwrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 100%; margin: 24px auto; }
-#fwrap button, #fwrap .btn1, #fwrap input:not([type=checkbox]):not([type=radio]), #fwrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }
-#fwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }
-#fwrap .iwarn { color: Orange; }
-#fwrap .isucc { color: CornFlowerBlue; }
-#fwrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }
-#fwrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }
-#fwrap :not(.cfield)>:not(.cfield)>.ccntr { display: inline-block; height: 1.5rem; margin-bottom: 0.5rem; }
-#fwrap .chelp { font-size: 0.75rem; line-height: normal; margin-top: 0.25rem; }
-#fwrap .pwrap { white-space: pre-wrap; }
+#ftwrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 100%; margin: 24px auto; }
+#ftwrap button, #ftwrap .btn1, #ftwrap input:not([type=checkbox]):not([type=radio]), #ftwrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }
+#ftwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }
+#ftwrap .iwarn { color: Orange; }
+#ftwrap .isucc { color: CornFlowerBlue; }
+#ftwrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }
+#ftwrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }
+#ftwrap :not(.cfield)>:not(.cfield)>.ccntr { display: inline-block; height: 1.5rem; margin-bottom: 0.5rem; }
+#ftwrap .chelp { font-size: 0.75rem; line-height: normal; margin-top: 0.25rem; }
+#ftwrap .pwrap { white-space: pre-wrap; }
 #sepainp { width: 240px; }
 #lfinp { width: 176px; }
 #trgrndr { display: flow-root; margin-top: 1rem; border: dashed gainsboro; border-width: 1px 0; }
@@ -2007,7 +2007,6 @@ hr { margin: 1.5rem 0; }
 <script type="module">
 let srctxt = \``,
 `\`,
-  fncTry = (fnc, a, e) => { try { return fnc(a) } catch (err) { return e > 1 ? a : e ? err : undefined }},
   rsltVw = rslt => {
     let ri = rndrsel.selectedIndex;
     trgrndr.innerHTML = ri > 1 ? rslt
