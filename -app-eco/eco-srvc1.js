@@ -837,6 +837,69 @@ xsetlist.onchange = xsetLoad;
 })();
 </script>
 ` ],
+// * * * * * 1: txtfind * * * * *
+[ `<div id="ftwrap">
+<style type="text/css">
+*, *::before, *::after { box-sizing: inherit; }
+html { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }
+button, input, select, pre { margin: 0; }
+hr { margin: 1.5rem 0; }
+#ftwrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 100%; margin: 24px auto; }
+#ftwrap button, #ftwrap .btn1, #ftwrap input:not([type=checkbox]):not([type=radio]), #ftwrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }
+#ftwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }
+#ftwrap .iwarn { color: Orange; }
+#ftwrap .isucc { color: CornFlowerBlue; }
+#ftwrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }
+#ftwrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }
+#ftwrap :not(.cfield)>:not(.cfield)>.ccntr { display: inline-block; height: 1.5rem; margin-bottom: 0.5rem; }
+#ftwrap .chelp { font-size: 0.75rem; line-height: normal; margin-top: 0.25rem; }
+#ftwrap .pwrap { white-space: pre-wrap; }
+#sepainp { width: 240px; }
+#trgrndr { display: flow-root; margin-top: 1rem; border: dashed gainsboro; border-width: 1px 0; }
+</style>
+<h3 class="cfield">Find w/i Text</h3>
+<div class="cfield"><input type="text" id="sepainp"><label onclick="sepainp.select()"> Search Pattern</label></div>
+<div class="cfield">
+<span class="ccntr"><select id="rndrsel">
+<option>PRE render</option>
+<option selected>PRE-wrap render</option>
+<option>Normal render</option>
+</select></span><span class="ccntr"><input type="button" id="prs2btn" value="⥤ PARSE"></span>
+</div>
+<h4 class="cfield">Result</h4>
+<div class="cfield"><div id="trghelp" class="chelp"></div></div>
+<div id="trgrndr" class="cfield"></div>
+</div>
+<script type="module">
+let srctxt = \``,
+`\`,
+  rsltVw = rslt => {
+    let ri = rndrsel.selectedIndex;
+    trgrndr.innerHTML = ri > 1 ? rslt
+      : "\\n<pre" + (!ri ? ">" : " class=pwrap>") + rslt.replace(/\\n$|^\\n/g, "") + "</pre>\\n";
+  },
+  htmTx0 = s => s
+    .replace(/&/g, "&amp;").replace(/\\xa0/g, "&nbsp;")
+    .replace(/>/g, "&gt;").replace(/</g, "&lt;"),
+  findTx0 = (sep, str) => {
+    let rcs = ("" + sep).trim().match(/\\/(.+)\\/([gim]*)/) || ["" + sep],
+      rex = new RegExp("([^]*?)(" + (rcs[1] || rcs[0] || "$") + "|$)", !rcs[1] ? "gi" : rcs[2]);
+    return ("" + str)
+      .replace(/<\\\\(?=\\/\\w+>)/g, "<")
+      .replace(rex, (m, c1, c2) => htmTx0(c1) + (!c2 ? "" : "<mark>" + htmTx0(c2) + "</mark>"));
+  },
+  strPrse = () => {
+    let lm;
+    trghelp.innerHTML = trgrndr.innerHTML = "";
+    trghelp.classList.remove("iwarn", "isucc");
+    rsltVw(findTx0(sepainp.value, srctxt));
+    !sepainp.value || !( trghelp.innerHTML
+      = (lm = (trgrndr.innerHTML.match(/<mark>/g) || "").length) + " matches have been found." )
+    || trghelp.classList.add(!lm ? "iwarn" : "isucc");
+  };
+(prs2btn.onclick = strPrse)();
+</script>
+` ],
 // * * * * * 2: srcdiff * * * * *
 `<!--
 <xmp id="s1txt0" class="is-hidden"></xmp>
@@ -1968,69 +2031,6 @@ cmain.innerHTML += cntcs.map( o => !o ||
 document.querySelector('main input[type=checkbox]').onchange
 = evt => document.querySelectorAll('main details').forEach(el => el.open = evt.target.checked);
 })();
-</script>
-` ],
-// * * * * * 1: txtfind * * * * *
-[ `<div id="ftwrap">
-<style type="text/css">
-*, *::before, *::after { box-sizing: inherit; }
-html { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }
-button, input, select, pre { margin: 0; }
-hr { margin: 1.5rem 0; }
-#ftwrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 100%; margin: 24px auto; }
-#ftwrap button, #ftwrap .btn1, #ftwrap input:not([type=checkbox]):not([type=radio]), #ftwrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }
-#ftwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }
-#ftwrap .iwarn { color: Orange; }
-#ftwrap .isucc { color: CornFlowerBlue; }
-#ftwrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }
-#ftwrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }
-#ftwrap :not(.cfield)>:not(.cfield)>.ccntr { display: inline-block; height: 1.5rem; margin-bottom: 0.5rem; }
-#ftwrap .chelp { font-size: 0.75rem; line-height: normal; margin-top: 0.25rem; }
-#ftwrap .pwrap { white-space: pre-wrap; }
-#sepainp { width: 240px; }
-#lfinp { width: 176px; }
-#trgrndr { display: flow-root; margin-top: 1rem; border: dashed gainsboro; border-width: 1px 0; }
-</style>
-<h3 class="cfield">Find w/i Text</h3>
-<div class="cfield"><input type="text" id="sepainp"><label onclick="sepainp.select()"> Search Pattern</label></div>
-<div class="cfield">
-<span class="ccntr"><select id="rndrsel">
-<option>PRE render</option>
-<option selected>PRE-wrap render</option>
-<option>Normal render</option>
-</select></span><span class="ccntr"><input type="button" id="prs2btn" value="⥤ PARSE"></span>
-</div>
-<h4 class="cfield">Result</h4>
-<div class="cfield"><div id="trghelp" class="chelp"></div></div>
-<div id="trgrndr" class="cfield"></div>
-</div>
-<script type="module">
-let srctxt = \``,
-`\`,
-  rsltVw = rslt => {
-    let ri = rndrsel.selectedIndex;
-    trgrndr.innerHTML = ri > 1 ? rslt
-      : "\\n<pre" + (!ri ? ">" : " class=pwrap>") + rslt.replace(/\\n$|^\\n/g, "") + "</pre>\\n";
-  },
-  htmTx0 = s => s
-    .replace(/&/g, "&amp;").replace(/\\xa0/g, "&nbsp;")
-    .replace(/>/g, "&gt;").replace(/</g, "&lt;"),
-  findTx0 = (sep, str) => {
-    let rcs = ("" + sep).trim().match(/\\/(.+)\\/([gim]*)/) || ["" + sep],
-      rex = new RegExp("([^]*?)(" + (rcs[1] || rcs[0] || "$") + "|$)", !rcs[1] ? "gi" : rcs[2]);
-    return ("" + str)
-      .replace(rex, (m, c1, c2) => htmTx0(c1) + (!c2 ? "" : "<mark>" + htmTx0(c2) + "</mark>"));
-  },
-  strPrse = () => {
-    let lm;
-    trghelp.innerHTML = trgrndr.innerHTML = "";
-    trghelp.classList.remove("iwarn", "isucc");
-    rsltVw(findTx0(sepainp.value, srctxt));
-    !sepainp.value || !( trghelp.innerHTML
-      = (lm = (trgrndr.innerHTML.match(/<mark>/g) || "").length) + " matches have been found." )
-    || trghelp.classList.add(!lm ? "iwarn" : "isucc");
-  };
-(prs2btn.onclick = strPrse)();
 </script>
 ` ]
 ];

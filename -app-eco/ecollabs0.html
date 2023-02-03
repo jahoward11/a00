@@ -2243,10 +2243,10 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
   padding: 0 4px;
   vertical-align: baseline;
 }
-#ecoesp0:not(.fldswaps) #jderaw #rawbtnc>.button,
-#ecoesp0:not(.fldswaps) #jdedft .dftbtnc>.button,
+#ecoesp0:not(.fldswaps) #jderaw #rawbtnc>.button:nth-of-type(1),
+#ecoesp0:not(.fldswaps) #jdedft .dftbtnc>.button:nth-of-type(1),
 #ecoesp0:not(.fldswaps) #jdepty .ptybtnc>.button:nth-of-type(1),
-#ecoesp0:not(.fldswaps) #jdepty .ptybtnc>.button:nth-of-type(2),
+/* #ecoesp0:not(.txtfind) #jdepty .ptybtnc>.button:nth-of-type(2), */
 #ecoesp0 #jdepty:not(.ptydiffs) .ptybtnc>.button:nth-of-type(3) { display: none; }
 #ecoesp0 #publpre .select>select, #ecoesp0 #publmet .input,
 #ecoesp0 #publcmt .select>select, #ecoesp0 #publcmt #uplfpath,
@@ -4029,11 +4029,11 @@ a.has-text-danger:hover, a.has-text-danger:focus { color: #ee1742 !important; }
       </span>
       <div class="label has-text-grey">Browser Command UI</div>
       <div class="field control">
-        <textarea id="jsctxta" class="textarea is-family-code is-size-7" rows="31" onfocus="EC1.formFoc(0)" onblur="EC1.formBlr(); EC2.jsconEval();">&gt; </textarea>
+        <textarea id="jsctxta" class="textarea is-family-code is-size-7" rows="31" onfocus="EC1.formFoc(0)" onblur="EC1.formBlr(); EC1.jsconEval();">&gt; </textarea>
       </div>
       <div class="label has-text-grey-light">Useful Commands</div>
       <div class="field control select">
-        <select id="jsclist" onfocus="EC1.formFoc()" onchange="EC2.jsconInj(event)">
+        <select id="jsclist" onfocus="EC1.formFoc()" onchange="EC1.jsconInj(event)">
         </select>
       </div>
     </div>
