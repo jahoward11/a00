@@ -838,22 +838,22 @@ xsetlist.onchange = xsetLoad;
 </script>
 ` ],
 // * * * * * 1: txtfind * * * * *
-[ `<div id="ftwrap">
+[ `<div id="tfwrap">
 <style type="text/css">
 *, *::before, *::after { box-sizing: inherit; }
 html { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }
 button, input, select, pre { margin: 0; }
 hr { margin: 1.5rem 0; }
-#ftwrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 100%; margin: 24px auto; }
-#ftwrap button, #ftwrap .btn1, #ftwrap input:not([type=checkbox]):not([type=radio]), #ftwrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }
-#ftwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }
-#ftwrap .iwarn { color: Orange; }
-#ftwrap .isucc { color: CornFlowerBlue; }
-#ftwrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }
-#ftwrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }
-#ftwrap :not(.cfield)>:not(.cfield)>.ccntr { display: inline-block; height: 1.5rem; margin-bottom: 0.5rem; }
-#ftwrap .chelp { font-size: 0.75rem; line-height: normal; margin-top: 0.25rem; }
-#ftwrap .pwrap { white-space: pre-wrap; }
+#tfwrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 100%; margin: 24px auto; }
+#tfwrap button, #tfwrap .btn1, #tfwrap input:not([type=checkbox]):not([type=radio]), #tfwrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }
+#tfwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }
+#tfwrap .iwarn { color: Orange; }
+#tfwrap .isucc { color: CornFlowerBlue; }
+#tfwrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }
+#tfwrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }
+#tfwrap :not(.cfield)>:not(.cfield)>.ccntr { display: inline-block; height: 1.5rem; margin-bottom: 0.5rem; }
+#tfwrap .chelp { font-size: 0.75rem; line-height: normal; margin-top: 0.25rem; }
+#tfwrap .pwrap { white-space: pre-wrap; }
 #sepainp { width: 240px; }
 #trgrndr { display: flow-root; margin-top: 1rem; border: dashed gainsboro; border-width: 1px 0; }
 </style>

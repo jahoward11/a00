@@ -2694,8 +2694,8 @@ txtaSel(txtaid, sel) {
     document.querySelector('#ecoesp0 #toolswap .help').innerHTML = "";
   }
   if (sel) {
-    utxta.focus();
-    /attinp/.test(txtaid) ? utxta.select() : utxta.setSelectionRange(0, utxta.textLength);
+    window.navigator.userAgentData || /attinp/.test(txtaid)
+    ? utxta.select() : utxta.setSelectionRange(0, utxta.textLength);
   } else { //clr
     utxta.value = txtaid !== "jsctxta" ? "" : "> ";
     txtaid !== "jsctxta" || (document.querySelector('#ecoesp0 #jsclist').selectedIndex = 0);
@@ -3357,7 +3357,8 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-posts
   return gloObj != null ? gloObj
   : /^qcon:|^q?msg:/i.test(key) ? msgHandl(fbx || "error?")
   : /^calc:|^cjs:/i.test(key) ? EC2.calcGen(fbx, 1)
-  : /^fi?nd:/i.test(key) ? navigator.clipboard.readText().then(s => EC2.findGen(fbx, s))
+  : /^fi?nd:/i.test(key) ? navigator.clipboard.readText()
+    .then(s => EC2.findGen(fbx, s)).catch(e => EC2.findGen(fbx, e))
   : /^diff?:/i.test(key) ? EC2.diffGen(fbx || "0")
   : /^datx?:|^dbx:|^in?dx:/i.test(key) ? EC2.dvizGen(4, 1)
   : /^memo?:|^po?st:/i.test(key) ? EC2.dvizGen(3, 1)
