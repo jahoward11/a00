@@ -3472,6 +3472,7 @@ findGen(spv, str) {
           + "\n  .replace(/<(?=\\/script>)/g, \"<\\\\\")\n  ;\n}"
       }, findtmpl.parseconfigs.scriptsconstr[0] ],
       scriptsincl: [ { fncname: "strlitPrep", applytofrag: [false, true, false] },
+        { fncname: "htmlWrapTags", applytofrag: [true, true, true] },
         { fncname: "", applytofrag: [true, true, true] } ]
     }),
     filefrags: [
@@ -3519,6 +3520,7 @@ diffGen(evt, txt1, txt2) { // also triggered by dviz-dboxupd
   ;
 }`    }, difftmpl.parseconfigs.scriptsconstr[0] ],
       scriptsincl: [ { fncname: "txt0Wraps", applytofrag: [true, true, false] },
+        { fncname: "htmlWrapTags", applytofrag: [true, true, true] },
         { fncname: "", applytofrag: [true, true, true] } ]
     }),
     filefrags: [

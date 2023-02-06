@@ -924,9 +924,9 @@ window.onload = function () {
     htmlscriptload: `<script type="text/javascript">
 (function () {
   let mytxta = document.querySelector('#textareaid'),
-    tit = /^<(title\\b)(.*?)>(.+?)<\\/\\1>$/im.exec(mytxta.value)
-      || /^<(div|h\\d|p)\\b.*? (?:id|class)=(['"]?)\\w*(?:head|title)\\w*\\2>(.+?)<\\/\\1>$/im.exec(mytxta.value)
-      || /^<(div|h\\d|p)\\b(.*?)>(.+?)<\\/\\1>$/im.exec(mytxta.value) || ["", "", "", ""],
+    tit = /^ *<(title\\b)(.*?)>(.+?)<\\/\\1>$/im.exec(mytxta.value)
+      || /^ *<(div|h\\d|p)\\b.*? (?:id|class)=(['"]?)\\w*(?:head|title)\\w*\\2>(.+?)<\\/\\1>$/im.exec(mytxta.value)
+      || /^ *<(div|h\\d|p)\\b(.*?)>(.+?)<\\/\\1>$/im.exec(mytxta.value) || ["", "", "", ""],
     docpts = /^(<style\\b(?:[^<]|<(?=\\/?style\\b))+<\\/style>|)\\s*([^]*)$/.exec(mytxta.value.trim());
   mytxta.value = "<!DOCTYPE html>\\n<html lang="en">\\n<head>\\n<title>"
   + tit[3].replace(/<\\/?\b.+?>/g, "").substring(0, 127)
@@ -938,9 +938,9 @@ window.onload = function () {
 </script>`,
     features: [{ switchon: false, keytxt: "", valtxt: "" }],
     fnc: function (str) {
-      let tit = /^<(title\b)(.*?)>(.+?)<\/\1>$/im.exec(str)
-          || /^<(div|h\d|p)\b.*? (?:id|class)=(['"]?)\w*(?:head|title)\w*\2>(.+?)<\/\1>$/im.exec(str)
-          || /^<(div|h\d|p)\b(.*?)>(.+?)<\/\1>$/im.exec(str) || ["", "", "", ""],
+      let tit = /^ *<(title\b)(.*?)>(.+?)<\/\1>$/im.exec(str)
+          || /^ *<(div|h\d|p)\b.*? (?:id|class)=(['"]?)\w*(?:head|title)\w*\2>(.+?)<\/\1>$/im.exec(str)
+          || /^ *<(div|h\d|p)\b(.*?)>(.+?)<\/\1>$/im.exec(str) || ["", "", "", ""],
         docpts = /^(<style\b(?:[^<]|<(?=\/?style\b))+<\/style>|)\s*([^]*)$/.exec(str.trim());
       return "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<title>"
         + tit[3].replace(/<\/?\b.+?>/g, "").substring(0, 127)

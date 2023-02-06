@@ -967,6 +967,7 @@ print and (min-width: 738px) and (max-width: 785px) {
 </style>
 <section class="section">
 <main class="container">
+  <h2 class="is-hidden">Source Diff</h2>
   <label class="has-text-link is-pulled-right">
     <input type="checkbox" id="s1swi" />hide
   </label>
