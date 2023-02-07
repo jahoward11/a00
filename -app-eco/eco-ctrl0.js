@@ -3377,7 +3377,7 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, dataDispl, attInp, qconRetrvD,
   : /^datx?:|^dbx:|^in?dx:/i.test(key) ? EC2.dvizGen(4, fbx, 1)
   : /^memo?:|^po?st:/i.test(key) ? EC2.dvizGen(3, fbx, 1)
   : /^cntc?s?:|^contacts?:|^dvi?z:/i.test(key)
-    ? EC2.dvizGen(/^[0-4]$/.test(fbx) ? fbx : fbx ? 1 : 2, /^[0-4]$/.test(fbx) ? null : fbx, 1)
+    ? (/^[0-4]$/.test(fbx) ? EC2.dvizGen(fbx, null, 1) : EC2.dvizGen(fbx ? 1 : 2, fbx, 1))
   : /^att(?:list|):/i.test(key) ? attListGen()
   : /^pfs(?:list|):/i.test(key) ? pfsListGen()
   : /^a00p/i.test(key) ? a00path
@@ -3555,8 +3555,8 @@ dvizGen(idx, dbn, redir) {
     attlist = document.querySelector('#econav0 #attlist'),
     dvizrads = document.querySelector('#ecoesp0 #dvizrad').elements["dvizrad"],
     pchlist = document.querySelector('#ecoesp0 #pchlist'),
-    dbs = Array.from(pchlist.options).map(op => op.value),
-    dbpc2 = dbn && dbs.some(e => e === dbn) && window.PouchDB && new PouchDB(dbn) || dbpch,
+    dbpc2 = window.PouchDB && dbn
+      && Array.from(pchlist.options).some(op => op.value === dbn) && new PouchDB(dbn) || dbpch,
     cbFnc = () => (attlist.value = attinp.value = "") || !(redir || EC1.tabs0Tog(0) || 1)
       || ( attinp.value = !redir && !idx ? "" : idx < 3 ? "$CNTC:"
           + (!idx ? "blank" : idx < 2 ? (!dbpc2 ? "n/a" : dbpc2.name) : epsets.teamid || "team")
@@ -3565,7 +3565,7 @@ dvizGen(idx, dbn, redir) {
       let dviztmpl = jsonParse(JSON.stringify(ETMPLS.publmgr));
       dviztmpl._id = "";
       dviztmpl.filefrags[0].contenttxt = (EC0.SDOCS[7 - idx] || "") // 3 or 4
-        .replace(/(^ *DBNAME: ).+(?=,\n)/m, (m, c1) => !dbpc2 ? m : c1 + dbpc2.name;
+        .replace(/^( *DBNAME: ).+(?=,\n)/m, (m, c1) => !dbpc2 ? m : c1 + '"' + dbpc2.name + '"');
       //redir || pfsResets();
       !filewkg && !redir ? dataDispl(dviztmpl, 1, cbFnc) : webdocGen(0, dviztmpl, cbFnc);
     },
@@ -3574,7 +3574,7 @@ dvizGen(idx, dbn, redir) {
       let cdb = +dvizrads.value && ( +dvizrads.value < 2
           ? dbpc2 && dbpc2.name : epsets.teamid && "a00_" + epsets.teamid ),
         csg = Object.entries(tm0cntcs).map(oe => [oe[1]._id, oe[0]])
-        .filter( ar => cdb && ( +dvizrads.value < 2
+        .filter( ar => cdb && ( +dvizrads.value < 2 && cdb !== "a00_" + epsets.teamid
           ? !epsets.teamid || ar[0].replace(/^!([0-9a-z]+)-.*/i, "$1") !== epsets.teamid
           : ar[0].replace(/^!([0-9a-z]+)-.*/i, "$1") === epsets.teamid )).sort(),
         cct = csg.length
