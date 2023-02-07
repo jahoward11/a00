@@ -1084,7 +1084,7 @@ function fwResets(invalid) {
   swapListGen();
 }
 
-function txurlGen(txdata) {
+function txurlGen(txdata = {}) {
   let dborgn = /^(https?:\/\/)(.+?)\/?$/.exec(txdata.DBORIG || "") || [];
   if (window.PouchDB && dborgn[1] && dborgn[2] && txdata.DBNAME) {
     return dborgn[1]
@@ -1910,7 +1910,7 @@ function webdocGen(redir, pdata = filewkg || jsonParse(JSON.stringify(ETMPLS.pub
   }
 }
 
-function dropboxTx(txdata, xrslv, xrjct = _=>_) {
+function dropboxTx(txdata = {}, xrslv, xrjct = _=>_) {
   // dropbox(apiFunction, apiArguments, handlers);
   let blobwrite,
     dbat = localStorage["__dbat"],
@@ -2326,7 +2326,7 @@ function couchAtt(dirtxd) {
   }
 }
 
-function ibmcosTxD(txdata, typpmgr, send) {
+function ibmcosTxD(txdata = {}, typpmgr, send) {
   let rawtxta = document.querySelector('#ecoesp0 #rawtxta'),
     pchlist = document.querySelector('#ecoesp0 #pchlist'),
     reqipch = txdata.DBNAME && Array.from(pchlist.options).some(op => op.value === txdata.DBNAME),
@@ -3194,6 +3194,20 @@ tabs6Tog(idx) { // also triggered by ibmConnect
   !toolpnls[idx]
   || document.querySelector('#ecoesp0 ' + toolpnls[idx]).classList.remove("is-hidden");
 },
+imgLct() {
+  let imgainp = document.querySelector('#ecoesp0 #eftass input[type=file]'),
+    ifname = document.querySelector('#ecoesp0 #eftass .file-name'),
+    pfslist = document.querySelector('#econav0 #pfslist'),
+    optg = pfslist.value && pfslist.selectedOptions[0].parentElement.label;
+  imgainp.files[0] && !imgainp.files[1]
+    ? ifname.classList.add("has-text-dark")
+    : ifname.classList.remove("has-text-dark");
+  ifname.innerHTML = imgainp.files[1]
+    ? "(" + imgainp.files.length + " files selected)"
+    : imgainp.files[0] ? imgainp.files[0].name : "Locate image&hellip;";
+  document.querySelector('#ecoesp0 #imgabtn').disabled
+  = optg && optg !== "LOCAL temporary files" && imgainp.files[0] ? false : true;
+},
 swplTog() { // also triggered by xsrcTog, ibmConnect
   let ebran1 = document.querySelector('#econav0 #ebran1'),
     ecoesp0 = document.querySelector('body>#ecoesp0'),
@@ -3343,7 +3357,7 @@ u2Blob(url) { // also triggered by prjDiscGen, jdeDftGen, dviz-posts, dviz-conta
   return aurls[(url || "").replace(/^\S*\//, "")] || aurls[url]
   || (url || "").replace(/^\.\.\/\.\.(?!\/a00\/)(?=\S+[^\s\/]$)/, a00orig) || url;
 },
-objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-posts
+objQA(key, fbx) { // also triggered by rsrcsXGet, dataDispl, attInp, qconRetrvD, dviz-posts
   let pty,
     rsltFbk = rslt => pty && fbx === 0 ? ""
       : /^(?:keys|ks?)$/i.test(pty) && ecoqjs.fncTry(Object.keys, rslt) || rslt,
@@ -3360,9 +3374,10 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, attInp, qconRetrvD, dviz-posts
   : /^fi?nd:/i.test(key) ? navigator.clipboard.readText()
     .then(s => EC2.findGen(fbx, s)).catch(e => EC2.findGen(fbx, e))
   : /^diff?:/i.test(key) ? EC2.diffGen(fbx || "0")
-  : /^datx?:|^dbx:|^in?dx:/i.test(key) ? EC2.dvizGen(4, 1)
-  : /^memo?:|^po?st:/i.test(key) ? EC2.dvizGen(3, 1)
-  : /^cntc?s?:|^contacts?:|^dvi?z:/i.test(key) ? EC2.dvizGen(fbx || 2, 1)
+  : /^datx?:|^dbx:|^in?dx:/i.test(key) ? EC2.dvizGen(4, fbx, 1)
+  : /^memo?:|^po?st:/i.test(key) ? EC2.dvizGen(3, fbx, 1)
+  : /^cntc?s?:|^contacts?:|^dvi?z:/i.test(key)
+    ? EC2.dvizGen(/^[0-4]$/.test(fbx) ? fbx : fbx ? 1 : 2, /^[0-4]$/.test(fbx) ? null : fbx, 1)
   : /^att(?:list|):/i.test(key) ? attListGen()
   : /^pfs(?:list|):/i.test(key) ? pfsListGen()
   : /^a00p/i.test(key) ? a00path
@@ -3535,25 +3550,29 @@ diffGen(evt, txt1, txt2) { // also triggered by dviz-dboxupd
   //evt || pfsResets();
   !filewkg && (!evt || !evt.target) ? dataDispl(difftmpl, 1, cbFnc) : webdocGen(0, difftmpl, cbFnc);
 },
-dvizGen(idx, redir) {
+dvizGen(idx, dbn, redir) {
   let attinp = document.querySelector('#econav0 #attinp'),
     attlist = document.querySelector('#econav0 #attlist'),
     dvizrads = document.querySelector('#ecoesp0 #dvizrad').elements["dvizrad"],
+    pchlist = document.querySelector('#ecoesp0 #pchlist'),
+    dbs = Array.from(pchlist.options).map(op => op.value),
+    dbpc2 = dbn && dbs.some(e => e === dbn) && window.PouchDB && new PouchDB(dbn) || dbpch,
     cbFnc = () => (attlist.value = attinp.value = "") || !(redir || EC1.tabs0Tog(0) || 1)
       || ( attinp.value = !redir && !idx ? "" : idx < 3 ? "$CNTC:"
-          + (!idx ? "blank" : idx < 2 ? (!dbpch ? "n/a" : dbpch.name) : epsets.teamid || "team")
-        : (idx < 4 ? "$POST:" : "$INDX:") + (!dbpch ? "n/a" : dbpch.name) ),
+          + (!idx ? "blank" : idx < 2 ? (!dbpc2 ? "n/a" : dbpc2.name) : epsets.teamid || "team")
+        : (idx < 4 ? "$POST:" : "$INDX:") + (!dbpc2 ? "n/a" : dbpc2.name) ),
     fileDViz = idx => {
       let dviztmpl = jsonParse(JSON.stringify(ETMPLS.publmgr));
       dviztmpl._id = "";
-      dviztmpl.filefrags[0].contenttxt = EC0.SDOCS[7 - idx] || ""; // 3 or 4
+      dviztmpl.filefrags[0].contenttxt = (EC0.SDOCS[7 - idx] || "") // 3 or 4
+        .replace(/(^ *DBNAME: ).+(?=,\n)/m, (m, c1) => !dbpc2 ? m : c1 + dbpc2.name;
       //redir || pfsResets();
       !filewkg && !redir ? dataDispl(dviztmpl, 1, cbFnc) : webdocGen(0, dviztmpl, cbFnc);
     },
     cntcDViz = idx => {
       idx == null || (dvizrads = { value: idx });
       let cdb = +dvizrads.value && ( +dvizrads.value < 2
-          ? dbpch && dbpch.name : epsets.teamid && "a00_" + epsets.teamid ),
+          ? dbpc2 && dbpc2.name : epsets.teamid && "a00_" + epsets.teamid ),
         csg = Object.entries(tm0cntcs).map(oe => [oe[1]._id, oe[0]])
         .filter( ar => cdb && ( +dvizrads.value < 2
           ? !epsets.teamid || ar[0].replace(/^!([0-9a-z]+)-.*/i, "$1") !== epsets.teamid
@@ -4161,20 +4180,6 @@ srvrUpl() {
   : !attlist.value ? attExe()
   : dbpch.getAttachment(attlist.value.replace(/^([^/]+)\/.*|.*/, "$1"), attinp.value)
     .then(attExe).catch(msgHandl);
-},
-imgLct() {
-  let imgainp = document.querySelector('#ecoesp0 #eftass input[type=file]'),
-    ifname = document.querySelector('#ecoesp0 #eftass .file-name'),
-    pfslist = document.querySelector('#econav0 #pfslist'),
-    optg = pfslist.value && pfslist.selectedOptions[0].parentElement.label;
-  imgainp.files[0] && !imgainp.files[1]
-    ? ifname.classList.add("has-text-dark")
-    : ifname.classList.remove("has-text-dark");
-  ifname.innerHTML = imgainp.files[1]
-    ? "(" + imgainp.files.length + " files selected)"
-    : imgainp.files[0] ? imgainp.files[0].name : "Locate image&hellip;";
-  document.querySelector('#ecoesp0 #imgabtn').disabled
-  = optg && optg !== "LOCAL temporary files" && imgainp.files[0] ? false : true;
 },
 logOut() {
   let stoempswi = document.querySelector('#ecoesp0 #stoempswi'),
