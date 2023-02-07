@@ -1416,6 +1416,7 @@ let rva2, rval, ss0, ss1,
   },
   fileLoad = evt => {
     let td1txt = evt.target.parentElement.parentElement.children[1].textContent,
+      attinp = document.querySelector('#econav0 #attinp'),
       attlist = document.querySelector('#econav0 #attlist'),
       qcontxta = document.querySelector('#econav0 #qcontxta'),
       fwinflux = document.querySelector('#ecoguides .button[disabled]'),
@@ -1428,9 +1429,10 @@ let rva2, rval, ss0, ss1,
         }
       };
     /^[.-]\\w/.test(td1txt)
-    ? !window.EC1 || !attlist
-      || (attlist.value = td1txt + evt.target.textContent.replace(/ \\(\\d+k\\)$/, ""))
-      && EC1.attSel()
+    ? !window.EC1 || !attinp || !attlist
+      || !(attlist.value = td1txt += evt.target.textContent.replace(/ \\(\\d+k\\)$/, ""))
+      || ( attlist.value ? EC1.attSel()
+        : !(attinp.value = "/" + txd2.DBNAME + "/" + td1txt) || EC1.attInp() )
     : fwinflux || !qcontxta
       || (qcontxta.value = JSON.stringify(txd2, 0, 2)); //|| !window.EC2 ...&& EC2.qconRetrvD();
   },
