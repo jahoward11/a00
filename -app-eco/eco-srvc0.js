@@ -202,7 +202,7 @@ EC0.INSTR = [
 + ' $urole        | user’s team role in currently open DB\n'
 + ' $a00orig      | currently used URL origin of app resources\n'
 + ' $a00path      | currently used URL path to app resources\n'
-+ ' $(global-var) | system/user-created global variable (primitive/JS-object/method)\n\n'
++ ' $(global-var) | system/app/user-created global variable (primitive/JS-object/method)\n\n'
 + '__Notes__\n'
 + '- Append `.`-idx/key to access specific element (by index) or property (by key) within object.\n'
 + '- Append `.keys` (or `.k`) to list all property keys of object.\n'

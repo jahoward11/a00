@@ -140,6 +140,22 @@ function a00Set() {
     + "\nSystem Error: Please restart web app." );
 }
 
+function cntcLite(d, id = "", dbn = "", dbteam, apath) { return d && {
+  _id:       id, //.replace(/^!([a-z]{3})-(myteam)$/, "!$2-$1"), // temp cleanup
+  _pdb:      dbn,
+  name_full: d.name_full,
+  //name_user: d.name_user,
+  roles:     [d.roles].flat(),
+  email:     (d.emails || [""])[0],
+  image_src: aurls[ ( apath = d.image_src
+      && d.image_src.match(rexatt) || [] )[3] || d.image_src ]
+    || window.PouchDB && dbteam && apath[1] === dbteam && apath[2] && apath[3]
+    && !( new PouchDB(dbteam)
+      .getAttachment(apath[2], apath[3])
+      .then(ablob => aurls[apath[3]] = URL.createObjectURL(ablob))
+      .catch(msgHandl) ) || d.image_src
+}};
+
 function imgWrap(url) {
   return '<link href="' + a00path
   + '/-res-css/bulma0.9-minireset.css" type="text/css" rel="stylesheet" />'
@@ -292,8 +308,8 @@ function assts2Blob() {
     iniscripts = document.querySelector('body>#iniscripts'),
     mjsMrg = () => Object.keys(EMODJS)
       .forEach(k => EMODJS[k].fnc = (EC0.MODJS[k] || "").fnc || ecomjs[k] || null),
-    attPrc1 = (docid, akey) =>
-      /^blob:/.test(aurls[akey]) || !dbpc2 || dbpc2.getAttachment(docid, akey)
+    attPrc1 = (docid, akey, dbpc3) =>
+      /^blob:/.test(aurls[akey]) || !dbpc3 || dbpc3.getAttachment(docid, akey)
         .then(ablob => aurls[akey] = URL.createObjectURL(ablob))
         .catch(msgHandl),
     modsInj = () => {
@@ -315,20 +331,22 @@ function assts2Blob() {
         && tmpljsclist({ jscitems: EC0.JSCON.map(s => s.replace(/\n/g, "$&\u2028")) });
     },
     a00Docs = (dbs = []) => {
+      dbs.forEach( dbi => !dbi || (dbi = new PouchDB(dbi)).get("-res-img")
+        .then( adoc => !adoc._attachments || Object.keys(adoc._attachments)
+          .forEach(akey => attPrc1("-res-img", akey, dbi)) ).catch() );
       if (dbs.some(e => e === "a00") && a00path === localStorage["_ecoa00path"]) {
         dbpc2 = new PouchDB("a00");
-        ["-res-img", "-res-css"].forEach( docid => dbpc2.get(docid).then( adoc =>
-          !adoc._attachments || Object.keys(adoc._attachments).forEach( akey =>
-            attPrc1(docid, akey) ) ).catch(msgHandl) );
+        dbpc2.get("-res-css").then( adoc => !adoc._attachments || Object.keys(adoc._attachments)
+          .forEach(akey => attPrc1("-res-css", akey, dbpc2)) ).catch(msgHandl);
         dbpc2.get("-res-hljs").then(adoc => {
           hlslist.innerHTML = tmplhlslist
           && tmplhlslist({ hlstys: Object.keys(adoc._attachments).sort() });
           hlslist.value = epsets.hlstyle;
-          !hlslist.value || attPrc1("-res-hljs", hlslist.value);
+          !hlslist.value || attPrc1("-res-hljs", hlslist.value, dbpc2);
         });
-        ["ebook-annos-fns.js", "srcdiff.js"].forEach(akey => attPrc1("-res-js", akey));
+        ["ebook-annos-fns.js", "srcdiff.js"].forEach(akey => attPrc1("-res-js", akey, dbpc2));
         Promise.all( ["eco-srvc1.js", "eco-srvc2.js", "eco-srvc3.js", "eco-srvc3.mjs"]
-          .map(akey => attPrc1("-app-eco", akey)) )
+          .map(akey => attPrc1("-app-eco", akey, dbpc2)) )
         .then(modsInj);
       } else {
         !epsets.hlstyle || (aurls[epsets.hlstyle] = a00path + "/-res-hljs/" + epsets.hlstyle);
@@ -348,7 +366,7 @@ function assts2Blob() {
 }
 
 function pdbListGen() { // also "dboListGen", "pchListGen"
-  let dbpc2, dbteam, idr, prjitems,
+  let dbpc2, dbteam, idr, opts, prjitems, rval,
     dbs2 = [],
     context = { pchitems: [], pr1items: [], pr0items: [] },
     pdblist = document.querySelector('#ecoprj0 #pdblist'),
@@ -411,15 +429,22 @@ function pdbListGen() { // also "dboListGen", "pchListGen"
       pdblist.value = pchlist.value || epsets.dbdflt;
       EC1.pdbSel();
     },
-    pr0sGen = rsltqry => !rsltqry || !rsltqry.rows
+    pr0sGen = rqry => !rqry || !rqry.rows
       ? listsRfrsh()
-      : Promise.all( rsltqry.rows
+      : Promise.all( rqry.rows
           .filter(r => /^~DBID_/i.test(r.id) && (r.doc || "")._id)
           .map(r => pimg2Blob(r.doc)) )
         .then(docs => (context.pr0items = docs.map(dbidPrep)) && listsRfrsh())
         .catch(listsRfrsh),
     pr0sGet = msgerr => {
       !msgerr || msgHandl(msgerr);
+      opts = { endkey: "\"", include_docs: true };
+      dbs2.forEach( dbi => !dbi || (dbi = new PouchDB(dbi))
+        .query("ecosorter/files-contact").catch(() => dbi.allDocs(opts))
+        .then( rqry => !rqry.rows || rqry.rows.forEach( (r, i) =>
+          tm0cntcs[ (rval = r.doc || r.value).name_user || rval.name_full.replace(/[^\w.@-]+/g, "-")
+            || r.id.replace(/^!/, "") ] = cntcLite(rval, r.id, dbi.name, dbteam) ))
+        .catch(msgHandl) );
       prjsenet ? pr0sGen(prjsenet)
       : rdataFetch(EXREQD, 1).then(rq => pr0sGen(prjsenet = rq)).catch(listsRfrsh);
     },
@@ -429,14 +454,14 @@ function pdbListGen() { // also "dboListGen", "pchListGen"
         pr0sGet();
       } else if ( !( dbteam = dbs1
       .find(e => epsets.teamid ? e === "a00_" + epsets.teamid : /^a\d\d_\w/.test(e)) )) {
-        Promise.all( dbs1.map( dbi => dbi && (dbpc2 = new PouchDB(dbi))
-          .allDocs({ startkey: "~DBID_", endkey: "~DBID_~", include_docs: true })
-          .then( rsltqry => rsltqry.rows
-            && rsltqry.rows.find(r => r.id.replace(/^~DBID_/, "") === dbi) )
-          .then(r => (r || "").doc && pimg2Blob(r.doc, dbpc2))
-          .then(doc => (doc || "")._id && dbidPrep(doc)) ))
-        .then(dbids => { context.pchitems
-          = dbs1.map(e => dbids.find(d => (d || "")._id === e) || dbidFbk(e)) })
+        opts = { startkey: "~DBID_", endkey: "~DBID_~", include_docs: true };
+        Promise.all( dbs1.map( dbi => dbi && (dbi = new PouchDB(dbi)).allDocs(opts)
+          .then( rqry => !rqry.rows
+            || rqry.rows.find(r => r.id.replace(/^~DBID_/, "") === dbi.name) )
+          .then(r => !(r || "").doc || pimg2Blob(r.doc, dbi))
+          .then(doc => !(doc || "")._id || dbidPrep(doc)) ))
+        .then(dbids => { context.pchitems = dbs1
+          .map(e => dbids.find(d => (d || "")._id === e) || dbidFbk(e)); })
         .then(pr0sGet).catch(pr0sGet);
       } else {
         epsets.teamid || !(epsets.teamid = dbteam.replace(/^a\d\d_/, ""))
@@ -447,10 +472,12 @@ function pdbListGen() { // also "dboListGen", "pchListGen"
             /^blob:/.test(aurls[akey]) || dbpc2.getAttachment("-res-img", akey)
               .then(ablob => aurls[akey] = URL.createObjectURL(ablob)) ) )
         .catch(msgHandl);
-        dbpc2.query("ecosorter/files-support").then(rsltqry => {
-          prjitems = !rsltqry.rows || rsltqry.rows
-            .filter(r => /^~DBID_/i.test(r.id) && (r.value || "")._id)
-            .map(r => dbidPrep(r.value));
+        opts = { startkey: "~", endkey: "~a", include_docs: true };
+        dbpc2.query("ecosorter/files-support").catch(() => dbpc2.allDocs(opts))
+        .then(rqry => {
+          prjitems = !rqry.rows || rqry.rows
+            .filter(r => /^~DBID_/i.test(r.id) && (r.doc || r.value || "")._id)
+            .map(r => dbidPrep(r.doc || r.value));
           return !prjitems || Promise.all(prjitems.map(pimg2Blob)).then(() => {
             context.pchitems = dbs1.map(e => prjitems.find(d => d._id === e) || dbidFbk(e));
             context.pr1items = prjitems.filter(d => dbs1.findIndex(e => e === d._id) < 0);
@@ -488,23 +515,23 @@ function attListGen(attonly, publupd) { // also "dirListGen"
       attlist.value = typeof publupd !== 'number' ? "" : valatl;
       !tmplattlist || EC1.attSel();
     },
-    rsltFmt = rsltqry => {
-      context.diritems = rsltqry && rsltqry.rows
-      && rsltqry.rows.filter(r => /^[.-]\b/.test(r.id))
+    rsltFmt = rqry => {
+      context.diritems = rqry && rqry.rows
+      && rqry.rows.filter(r => /^[.-]\b/.test(r.id))
       .map( r => [ r.id.replace(/^\./, "") + "/", r.id,
         Object.keys((r.doc || r.value)._attachments || {}).sort() ]) || [];
       context.attitems = context.diritems.filter(ar => rexcats.test(ar[1]));
       listsRfrsh();
     };
-  const opts = { endkey: "0", include_docs: true };
+  const opts = { startkey: "-", endkey: "/", include_docs: true };
   document.querySelectorAll('#ecoesp0 #toolapp .rsetbtn').forEach(btn => btn.disabled = true);
   !dbpch ? listsRfrsh()
-  : dbpch.query("ecosorter/files-attlist")
-    .catch(() => dbpch.allDocs(opts)).then(rsltFmt).catch(listsRfrsh);
+  : dbpch.query("ecosorter/files-attlist").catch(() => dbpch.allDocs(opts))
+    .then(rsltFmt).catch(listsRfrsh);
 }
 
 function pfsListGen(fileref, publupd, filelf) {
-  let dbpc2, dbteam, apath, rval, sdir,
+  let apath, dbpc2, dbteam, opts, rval, sdir,
     zindr = 0,
     pfslist = document.querySelector('#econav0 #pfslist'),
     pf2list = document.querySelector('#econav0 #pf2list'),
@@ -513,22 +540,6 @@ function pfsListGen(fileref, publupd, filelf) {
     context = {
       filesapp: hides[21] ? null : Object.entries(ETMPLS).map(oe => [oe[1]._id, oe[0]])
     },
-    cntcLite = (d, id) => ({
-      _id:       id.replace(/^!([a-z]{3})-(myteam)$/, "!$2-$1"), // temp cleanup
-      name_full: d.name_full,
-      //name_user: d.name_user,
-      roles:     [d.roles].flat(),
-      email:     (d.emails || [""])[0],
-      image_src: aurls[ ( apath = d.image_src
-          && d.image_src.match(rexatt) || [] )[3] || d.image_src ]
-        || !window.PouchDB || !dbteam || apath[1] !== dbteam || !apath[2] || !apath[3]
-        ? d.image_src
-        : new PouchDB(dbteam)
-          .getAttachment(apath[2], apath[3])
-          .then(ablob => aurls[apath[3]] = URL.createObjectURL(ablob))
-          .then(() => d.image_src)
-          .catch(msgHandl)
-    }),
     docPrc2 = docid =>
       !dbpch || dbpch.name === "a00" || dbpch.get(docid).then( adoc =>
         !adoc._attachments || Object.keys(adoc._attachments).forEach( akey =>
@@ -559,32 +570,32 @@ function pfsListGen(fileref, publupd, filelf) {
       !fileref || !tmplpfslist || optg && optg !== "LOCAL temporary files" && fwinflux || fileResel();
       attListGen(0, publupd);
     },
-    rsltFmt = rsltqry => {
-      pf3stor.dbpubl = rsltqry.rows.filter( r => /^[0-9a-z]/i.test(r.id)
+    rsltFmt = rqry => {
+      pf3stor.dbpubl = rqry.rows.filter( r => /^[0-9a-z]/i.test(r.id)
         && /^eco-(?:publmgr|srcdoc)$/.test((r.doc || r.value).file_type) )
         .map(r => [!(sdir = (r.doc || r.value).file_updated.subdir) ? "" : sdir + "/", r.id]).sort();
-      pf3stor.dbsdir = rsltqry.rows.filter(r => /^[.-]\b/.test(r.id))
+      pf3stor.dbsdir = rqry.rows.filter(r => /^[.-]\b/.test(r.id))
         .map(r => [r.id.replace(/^\./, "") + "/", r.id]);
-      pf3stor.dbcntc = rsltqry.rows.filter(r => /^!/.test(r.id))
+      pf3stor.dbcntc = rqry.rows.filter(r => /^!/.test(r.id))
         .map( r => [ (!(sdir = (rval = r.doc || r.value).loc_subdir) ? "" : sdir + "/")
           + (rval.name_user || rval.name_full || r.id.replace(/^!/, "")), r.id ]).sort();
-      context = !rsltqry.rows ? context : {
+      context = !rqry.rows ? context : {
         fileslf:   context.fileslf,
-        filesnon:  hides[9] ? null : rsltqry.rows.filter( r => /^[0-9a-z]/i.test(r.id)
+        filesnon:  hides[9] ? null : rqry.rows.filter( r => /^[0-9a-z]/i.test(r.id)
           && !/^eco-(?:publmgr|scrap|srcdoc)$/
           .test((r.doc || r.value).file_type) ).map(r => r.id),
-        filesscr:  hides[10] ? null : rsltqry.rows.filter( r => /^[0-9a-z]/i.test(r.id)
+        filesscr:  hides[10] ? null : rqry.rows.filter( r => /^[0-9a-z]/i.test(r.id)
           && /^eco-scrap$/.test((r.doc || r.value).file_type) ).map( r =>
             [!(sdir = (r.doc || r.value).loc_subdir) ? "" : sdir + "/", r.id] ),
         filespubl: hides[11] ? null : pf3stor.dbpubl,
         filessdir: hides[12] ? null : pf3stor.dbsdir,
         filescntc: hides[13] ? null : pf3stor.dbcntc,
-        filesdbid: hides[14] ? null : rsltqry.rows.filter(r => /^~DBID_/.test(r.id))
+        filesdbid: hides[14] ? null : rqry.rows.filter(r => /^~DBID_/.test(r.id))
           .map( r => [ (!(sdir = (r.doc || r.value).file_updated.subdir) ? "" : sdir + "/")
             + r.id.replace(/^~DBID_/, ""), r.id ]),
-        filesdviz: hides[15] ? null : rsltqry.rows.filter(r => /^~DVIZ_/.test(r.id))
+        filesdviz: hides[15] ? null : rqry.rows.filter(r => /^~DVIZ_/.test(r.id))
           .map(r => [r.id.replace(/^~DVIZ_/, ""), r.id]),
-        filestmpl: hides[16] ? null : rsltqry.rows.filter(r => /^~TMP[\dL]_/i.test(r.id))
+        filestmpl: hides[16] ? null : rqry.rows.filter(r => /^~TMP[\dL]_/i.test(r.id))
           .map(r => [r.id.replace(/^~TMP[\dL]_/, ""), r.id]),
         filescnt2: context.filescnt2,
         filesdbi2: context.filesdbi2,
@@ -592,16 +603,17 @@ function pfsListGen(fileref, publupd, filelf) {
         filestmp2: context.filestmp2,
         filesapp:  context.filesapp
       };
-      !rsltqry.rows || rsltqry.rows.filter(r => /^!/.test(r.id)).forEach( r =>
-        tm0cntcs[(rval = r.doc || r.value).name_user || rval.name_full || r.id.replace(/^!/, "")]
-        = cntcLite(rval, r.id) );
+      !rqry.rows || rqry.rows.filter(r => /^!/.test(r.id)).forEach( r =>
+        tm0cntcs[(rval = r.doc || r.value).name_user || rval.name_full.replace(/[^\w.@-]+/g, "-")
+          || r.id.replace(/^!/, "")] = cntcLite(rval, r.id, dbpch.name, dbteam) );
       pf3stor.dbsdir.map(ar => ar[1]).forEach(docPrc2);
       listsRfrsh();
     },
     pf1sGet = () => {
-      const opts = { endkey: "~a", include_docs: true };
-      !dbpch ? listsRfrsh() : dbpch.query("ecosorter/files-pfslist")
-        .catch(() => dbpch.allDocs(opts)).then(rsltFmt).catch(listsRfrsh);
+      opts = { endkey: "~a", include_docs: true };
+      !dbpch ? listsRfrsh()
+      : dbpch.query("ecosorter/files-pfslist").catch(() => dbpch.allDocs(opts))
+        .then(rsltFmt).catch(listsRfrsh);
     },
     tlistsGen = (dbs1 = []) => {
       if ( !window.PouchDB || !( dbteam = dbs1
@@ -609,6 +621,7 @@ function pfsListGen(fileref, publupd, filelf) {
       || dbpch && dbteam === dbpch.name ) {
         dbteam || !epsets.uname || ( tm0cntcs[epsets.uname] = {
           _id:       "!aaa",
+          _pdb:      dbpch && dbpch.name || "",
           name_full: epsets.ungvn + " " + epsets.unfam,
           //name_user: epsets.uname,
           roles:     ["Solo"],
@@ -617,12 +630,15 @@ function pfsListGen(fileref, publupd, filelf) {
         } );
         pf1sGet();
       } else {
+        opts = { endkey: "\"", include_docs: true };
         dbpc2 = new PouchDB(dbteam);
-        dbpc2.query("ecosorter/files-contact").then(rsltqry => {
-          context.filescnt2 = hides[17] ? null : rsltqry.rows
-            && rsltqry.rows.map(r => [r.key, "/" + dbteam + "/" + r.id]);
-          !rsltqry.rows || rsltqry.rows.forEach( (r, i) =>
-            tm0cntcs[r.key] = cntcLite(r.value, r.id) );
+        dbpc2.query("ecosorter/files-contact").catch(() => dbpc2.allDocs(opts))
+        .then(rqry => {
+          context.filescnt2 = hides[17] ? null : rqry.rows
+            && rqry.rows.map(r => [r.key, "/" + dbteam + "/" + r.id]);
+          !rqry.rows || rqry.rows.forEach( (r, i) =>
+            tm0cntcs[(rval = r.doc || r.value).name_user || rval.name_full.replace(/[^\w.@-]+/g, "-")
+              || r.id.replace(/^!/, "")] = cntcLite(rval, r.id, dbpc2.name, dbteam) );
           epsets.ungvn || ( epsets.ungvn
           = ((tm0cntcs[epsets.uname] || "").name_full || "").replace(/ .*$/, "") ) && zindr++;
           epsets.unfam || ( epsets.unfam
@@ -630,16 +646,18 @@ function pfsListGen(fileref, publupd, filelf) {
           epsets.uemail || (epsets.uemail = (tm0cntcs[epsets.uname] || "").email) && zindr++;
           !zindr || (localStorage["_ecopresets"] = JSON.stringify(epsets));
         }).then(() => {
-          return dbpc2.query("ecosorter/files-support").then(rsltqry => {
-            if (rsltqry.rows) {
+          opts = { startkey: "~", endkey: "~a", include_docs: true };
+          return dbpc2.query("ecosorter/files-support").catch(() => dbpc2.allDocs(opts))
+          .then(rqry => {
+            if (rqry.rows) {
               context.filesdbi2 = hides[18] ? null
-              : rsltqry.rows.filter(r => /^~DBID_/i.test(r.id))
+              : rqry.rows.filter(r => /^~DBID_/i.test(r.id))
                 .map(r => [r.id.replace(/^~DBID_/, ""), "/" + dbteam + "/" + r.id]);
               context.filesdvz2 = hides[19] ? null
-              : rsltqry.rows.filter(r => /^~DVIZ_/i.test(r.id))
+              : rqry.rows.filter(r => /^~DVIZ_/i.test(r.id))
                 .map(r => [r.id.replace(/^~DVIZ_/, ""), "/" + dbteam + "/" + r.id]);
               context.filestmp2 = hides[20] ? null
-              : rsltqry.rows.filter(r => /^~TMP[\dL]_/i.test(r.id))
+              : rqry.rows.filter(r => /^~TMP[\dL]_/i.test(r.id))
                 .map(r => [r.id.replace(/^~TMP[\dL]_/, ""), "/" + dbteam + "/" + r.id]);
             }
           }).then(pf1sGet);
@@ -662,7 +680,6 @@ function pfsListGen(fileref, publupd, filelf) {
       .catch(listsRfrsh);
     };
   document.querySelectorAll('#ecoesp0 #toolapp .rsetbtn').forEach(btn => btn.disabled = true);
-  tm0cntcs = {};
   fileref || !pfslist.value || optg !== "LOCAL temporary files" || (filelf = fileref = pfslist.value);
   !window.localforage ? dbsallGet()
   : localforage.keys((err, keys) => err ? listsRfrsh(err) : lflistGen(keys));
@@ -693,10 +710,10 @@ function prjDiscGen() {
       || (discrad.elements["discrad"].value = epsets.discdays);
       EC2.discTyp(epsets.disctype);
     },
-    rsltFmt = rsltqry => {
+    rsltFmt = rqry => {
       context.disbl = !context.unmdspl || !attlist.value && !pfslist.value;
-      context.discitems = rsltqry.rows
-      && rsltqry.rows.filter( r => /^~[amp]\d{8}|^~[a-z]{3}[AP]\d{8}/.test(r.id) //\d{8,}T\d{6}$
+      context.discitems = rqry.rows
+      && rqry.rows.filter( r => /^~[amp]\d{8}|^~[a-z]{3}[AP]\d{8}/.test(r.id) //\d{8,}T\d{6}$
         && (rval = r.doc || r.value).linkref
         && (attlist.value || pfslist.value && pfslist.selectedOptions[0].textContent)
         .indexOf( ( !(sdir = rval.file_created.subdir)
@@ -739,8 +756,8 @@ function prjDiscGen() {
     prjdisc.innerHTML = tm0disc = null;
   } else {
     !dbpch ? listsRfrsh()
-    : dbpch.query("ecosorter/files-static", opts1)
-      .catch(() => dbpch.allDocs(opts0)).then(rsltFmt).catch(listsRfrsh);
+    : dbpch.query("ecosorter/files-static", opts1).catch(() => dbpch.allDocs(opts0))
+      .then(rsltFmt).catch(listsRfrsh);
   }
 }
 
@@ -1836,6 +1853,11 @@ function annosGet(fileref = "") {
 }
 
 function webdocGen(redir, pdata = filewkg || jsonParse(JSON.stringify(ETMPLS.publmgr)), cbfnc) {
+  if ( !pdata || !Array.isArray(pdata.filefrags) || !pdata.filefrags[0]
+  || !(pdata.parseconfigs || "").linksconstr || ["scriptsconstr", "scriptsincl", "linksincl"]
+  .some(e => !Array.isArray(pdata.parseconfigs[e]) || !pdata.parseconfigs[e][0]) ) {
+    return redir ? pdata : dataDispl(pdata, 3, cbfnc);
+  }
   let ecolinks = document.querySelector('body>#ecolinks'),
     sdir = pdata.file_updated.subdir,
     scriptsconstr = pdata.parseconfigs.scriptsconstr,
@@ -3410,7 +3432,7 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, dataDispl, attInp, qconRetrvD,
   : /^6|^(?:ECO|E|)TMPLS?/i.test(key) ? ETMPLS[ptyTest()] || rsltFbk(ETMPLS)
   : /^5|^(?:ECO|E|)MODJ?S?/i.test(key) ? EMODJS[ptyTest()] || rsltFbk(EMODJS)
   : /^4|^assets?|^a?urls?|^blobs?/i.test(key) ? aurls[ptyTest()] || rsltFbk(aurls)
-  : /^3|^team|^tm0$|^(?:tm0|)cntcs?|^contacts?/i.test(key) ? tm0cntcs[ptyTest()] || rsltFbk(tm0cntcs)
+  : /^3|^team|^tm0$|^(?:tm0|)cntc?s?|^contacts?/i.test(key) ? tm0cntcs[ptyTest()] || rsltFbk(tm0cntcs)
   : /^2|^couch|^c?accts?|^c?accounts?/i.test(key) ? caccts[ptyTest(1)] || rsltFbk(caccts)
   : /^1|^(?:eco|)idtoks?/i.test(key) ? idtoks && idtoks[ptyTest()] || rsltFbk(idtoks)
   : /^0|epsets?|(?:eco|)presets?/i.test(key) ? epsets && epsets[ptyTest()] || rsltFbk(epsets)
@@ -3573,18 +3595,16 @@ dvizGen(idx, dbn, redir) {
       idx == null || (dvizrads = { value: idx });
       let cdb = +dvizrads.value && ( +dvizrads.value < 2
           ? dbpc2 && dbpc2.name : epsets.teamid && "a00_" + epsets.teamid ),
-        csg = Object.entries(tm0cntcs).map(oe => [oe[1]._id, oe[0]])
-        .filter( ar => cdb && ( +dvizrads.value < 2 && cdb !== "a00_" + epsets.teamid
-          ? !epsets.teamid || ar[0].replace(/^!([0-9a-z]+)-.*/i, "$1") !== epsets.teamid
-          : ar[0].replace(/^!([0-9a-z]+)-.*/i, "$1") === epsets.teamid )).sort(),
+        csg = Object.entries(tm0cntcs).map(oe => [oe[0], oe[1]._id, oe[1]._pdb])
+          .filter(ar => cdb && ar[2] === cdb).sort(),
         cct = csg.length
-          || csg.push(["", "", JSON.stringify(Object.assign(ETMPLS.contact, { _id: "" }), 0, 2)]),
+          || csg.push(["", "", "", JSON.stringify(Object.assign(ETMPLS.contact, { _id: "" }), 0, 2)]),
         dviztmpl = jsonParse(JSON.stringify(ETMPLS.publmgr));
       dviztmpl._id = "";
-      dviztmpl.contributors = csg.map(ar => (ar[1] || "").replace(/[^\w.@-]+/g, "-"));
+      dviztmpl.contributors = csg.map(ar => (ar[0] || "").replace(/[^\w.@-]+/g, "-"));
       !csg[0][2] || (dviztmpl.loadconfigs.tabselected = "SOURCE2");
       !cdb || (dviztmpl.loadconfigs.commondirpath = `../../${cdb}/contacts/`);
-      dviztmpl.loadconfigs.fragsrcxs = [false, ...csg.map(ar => "./" + ar[0]), false];
+      dviztmpl.loadconfigs.fragsrcxs = [false, ...csg.map(ar => "./" + ar[1]), false];
       dviztmpl.parseconfigs = Object.assign( dviztmpl.parseconfigs, {
         scriptsconstr: [ {
           fncname:  "elmsDelin", filepath: "", usedescription: "", htmlscriptload: "",
@@ -3599,7 +3619,7 @@ dvizGen(idx, dbn, redir) {
           contenttxt: EC0.SDOCS[5][0] },
         ...csg.map( (ar, i) =>
           ({ idtxt: `SOURCE${2 + i}`, labeltxt: `SOURCE${2 + i}`,
-            titletxt: `SOURCE pane #${2 + i}.`, contenttxt: ar[2] || "" }) ),
+            titletxt: `SOURCE pane #${2 + i}.`, contenttxt: ar[3] || "" }) ),
         { idtxt: `SOURCE${2 + cct}`, labeltxt: `SOURCE${2 + cct}`,
           titletxt: `SOURCE pane #${2 + cct}.`, contenttxt: EC0.SDOCS[5][1]
           .replace(/\.\.\/\.\.\/a00_myteam\/-res-img\//g, () => !cdb ? "" : `../../${cdb}/-res-img/`) }
@@ -3608,7 +3628,7 @@ dvizGen(idx, dbn, redir) {
       window.scrollTo(0, 0);
       !filewkg && !redir ? dataDispl(dviztmpl, 1, cbFnc)
       : Promise.all( !window.PouchDB || !cdb || !csg[0][0]
-          ? [] : csg.map(ar => new PouchDB(cdb).get(ar[0])) )
+          ? [] : csg.map(ar => new PouchDB(cdb).get(ar[1])) )
         .then( cds => cds.forEach( (cd, i) => dviztmpl.filefrags[1 + i].contenttxt
             = JSON.stringify(Object.assign({ _id: "", _rev: "" }, cd), 0, 2) )
           || webdocGen(0, dviztmpl, cbFnc) ).catch(msgHandl);
@@ -4444,13 +4464,14 @@ ibmConnect() {
           return !dbpc1 || !(tm2txd = caccts.find(ob => ob.DBNAME === dbpc1.name)) || !tm2txd.USRNAM
           ? espEnter()
           : dbpc1.info().then(resp => {
-            dbpc2 = new PouchDB(txurlGen(tm2txd), { skip_setup: true });  // slow sync team db
+              const opts = { endkey: "\"", include_docs: true };
+              dbpc2 = new PouchDB(txurlGen(tm2txd), { skip_setup: true });  // slow sync team db
               return dbpc1.replicate.from(dbpc2, { batches_limit: 1, batch_size: 1, live: false })
               .then(() => dbpc1.info())
               .then(rsp2 => updseq[dbpc1.name] = rsp2.update_seq)
-              .then(() => dbpc1.query("ecosorter/files-contact"))
-              .then( rsltqry => !rsltqry || !rsltqry.rows || rsltqry.rows.forEach( (r, i) =>
-                tm0cntcs[r.key] = { _id: r.id, roles: r.value.roles } ))
+              .then(() => dbpc1.query("ecosorter/files-contact")).catch(() => dbpc1.allDocs(opts))
+              .then( rqry => !rqry || !rqry.rows || rqry.rows.forEach( (r, i) =>
+                tm0cntcs[r.key] = { _id: r.id, roles: (r.doc || r.value).roles } ))
               .then( () => tm0urole = tm0cntcs[epsets.uname]
                 && tm0cntcs[epsets.uname].roles.find(e => /^Admin$|^Lead$|^Contributor$/i.test(e))
                 || (caccts.find(ob => ob.DBNAME === valinp[1] || fbktxd.DBNAME) || "").USRNAM )
