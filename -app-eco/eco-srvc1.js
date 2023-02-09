@@ -847,36 +847,36 @@ hr { margin: 1.5rem 0; }
 #tfwrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 100%; margin: 24px auto; }
 #tfwrap button, #tfwrap .btn1, #tfwrap input:not([type=checkbox]):not([type=radio]), #tfwrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }
 #tfwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }
+#tfwrap .btn1 { background: transparent; }
+#tfwrap .hwarn { background: Orange; }
 #tfwrap .iwarn { color: Orange; }
 #tfwrap .isucc { color: CornFlowerBlue; }
-#tfwrap .hwarn { background: Orange; }
-#tfwrap .hclear { background: transparent; }
 #tfwrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }
 #tfwrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }
-#tfwrap :not(.cfield)>:not(.cfield)>.ccntr { display: inline-block; height: 1.5rem; margin-bottom: 0.5rem; }
 #tfwrap .chelp { font-size: 0.75rem; line-height: normal; margin-top: 0.25rem; }
 #tfwrap .pwrap { white-space: pre-wrap; }
+#tfwrap .iblock { display: inline-block; margin-top: 0.5rem;  }
 #tfwrap>#tfnav { position: fixed; top: 0; right: 0.5rem; opacity: 0.5; z-index: 4; }
 #ecorender>#tfwrap>#tfnav { top: 45.5px; }
 #tfwrap>#tfnav>#tf0cnt { width: 72px; }
 #tfwrap>#sepainp { width: 240px; }
-#tfwrap>#trgrndr { display: flow-root; margin-top: 1rem; border: dashed gainsboro; border-width: 1px 0; }
+#tfwrap>#trgrndr { display: flow-root; margin: 1rem 0; border: dashed gainsboro; border-width: 1px 0; }
 </style>
 <span id="tfnav">
 <button id="tf1bck">&#x25e4;</button><button id="tf0cnt">0 of 0</button><button id="tf1fwd">&#x25e2;</button>
 </span>
 <h3 class="cfield">Find w/i Text</h3>
-<div class="cfield"><input type="text" id="sepainp"><label class="btn1 hclear" onclick="sepainp.select()"> Search Pattern</label></div>
-<div class="cfield">
+<span class="ccntr iblock">
+<input type="text" id="sepainp"><label class="btn1" onclick="sepainp.select()">Search Pattern</label>
+</span> <span class="ccntr iblock">
 <span class="ccntr"><select id="rndrsel">
 <option>PRE render</option>
 <option selected>PRE-wrap render</option>
 <option>Normal render</option>
 </select></span><span class="ccntr"><input type="button" id="prs2btn" value="⥤ PARSE"></span>
-</div>
-<h4 class="cfield">Result</h4>
-<div class="cfield"><div id="trghelp" class="chelp"></div></div>
-<div id="trgrndr" class="cfield"></div>
+</span>
+<div id="trghelp" class="chelp"></div>
+<div id="trgrndr"></div>
 </div>
 <script type="module">
 let srctxt = \``,
@@ -901,10 +901,12 @@ let srctxt = \``,
     .replace(/>/g, "&gt;").replace(/</g, "&lt;"),
   findTx0 = (sep, str) => {
     let rcs = ("" + sep).trim().match(/\\/(.+)\\/([gim]*)/) || ["" + sep],
-      rex = new RegExp("([^]*?)(" + (rcs[1] || rcs[0] || "$") + "|$)", !rcs[1] ? "gi" : rcs[2]);
+      rex = new RegExp( "([^]*?)(" + (rcs[1] || rcs[0] || "$") + "|$)("
+        + (!rcs[1] || /g/.test(rcs[2]) ? "" : "[^]*") + ")", !rcs[1] ? "gi" : rcs[2] );
     return ("" + str)
       .replace(/<\\\\(?=\\/\\w+>)/g, "<")
-      .replace(rex, (m, c1, c2) => htmTx0(c1) + (!c2 ? "" : "<mark>" + htmTx0(c2) + "</mark>"));
+      .replace( rex, (m, c1, c2, c3) => htmTx0(c1)
+        + (!c2 ? "" : "<mark>" + htmTx0(c2) + "</mark>") + htmTx0(c3) );
   },
   strPrse = () => {
     let lm;
