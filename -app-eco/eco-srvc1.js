@@ -849,16 +849,24 @@ hr { margin: 1.5rem 0; }
 #tfwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }
 #tfwrap .iwarn { color: Orange; }
 #tfwrap .isucc { color: CornFlowerBlue; }
+#tfwrap .hwarn { background: Orange; }
+#tfwrap .hclear { background: transparent; }
 #tfwrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }
 #tfwrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }
 #tfwrap :not(.cfield)>:not(.cfield)>.ccntr { display: inline-block; height: 1.5rem; margin-bottom: 0.5rem; }
 #tfwrap .chelp { font-size: 0.75rem; line-height: normal; margin-top: 0.25rem; }
 #tfwrap .pwrap { white-space: pre-wrap; }
-#sepainp { width: 240px; }
-#trgrndr { display: flow-root; margin-top: 1rem; border: dashed gainsboro; border-width: 1px 0; }
+#tfwrap>#tfnav { position: fixed; top: 0; right: 0.5rem; opacity: 0.5; z-index: 4; }
+#ecorender>#tfwrap>#tfnav { top: 45.5px; }
+#tfwrap>#tfnav>#tf0cnt { width: 72px; }
+#tfwrap>#sepainp { width: 240px; }
+#tfwrap>#trgrndr { display: flow-root; margin-top: 1rem; border: dashed gainsboro; border-width: 1px 0; }
 </style>
+<span id="tfnav">
+<button id="tf1bck">&#x25e4;</button><button id="tf0cnt">0 of 0</button><button id="tf1fwd">&#x25e2;</button>
+</span>
 <h3 class="cfield">Find w/i Text</h3>
-<div class="cfield"><input type="text" id="sepainp"><label onclick="sepainp.select()"> Search Pattern</label></div>
+<div class="cfield"><input type="text" id="sepainp"><label class="btn1 hclear" onclick="sepainp.select()"> Search Pattern</label></div>
 <div class="cfield">
 <span class="ccntr"><select id="rndrsel">
 <option>PRE render</option>
@@ -873,6 +881,16 @@ hr { margin: 1.5rem 0; }
 <script type="module">
 let srctxt = \``,
 `\`,
+  tfNav = incr => {
+    let mks = document.querySelectorAll('#trgrndr mark'),
+      len = mks.length,
+      nbr = incr == null && 1 || (+tf0cnt.innerText.replace(/ .+/, "") + incr) || 0;
+    nbr = !len ? 0 : nbr > len ? 1 : !nbr ? len : nbr;
+    tf0cnt.innerText = nbr + " of " + len;
+    (mks[nbr - 1] || tfnav).scrollIntoView({ behavior: "smooth", block: "center" });
+    (document.querySelector('#trgrndr mark.hwarn') || {}).className = "";
+    !mks[nbr - 1] || (mks[nbr - 1].className = "hwarn");
+  },
   rsltVw = rslt => {
     let ri = rndrsel.selectedIndex;
     trgrndr.innerHTML = ri > 1 ? rslt
@@ -896,7 +914,11 @@ let srctxt = \``,
     !sepainp.value || !( trghelp.innerHTML
       = (lm = (trgrndr.innerHTML.match(/<mark>/g) || "").length) + " matches have been found." )
     || trghelp.classList.add(!lm ? "iwarn" : "isucc");
+    tfNav();
   };
+tf1bck.onclick = () => tfNav(-1);
+tf0cnt.onclick = () => tfNav(0);
+tf1fwd.onclick = () => tfNav(1);
 (prs2btn.onclick = strPrse)();
 </script>
 ` ],
