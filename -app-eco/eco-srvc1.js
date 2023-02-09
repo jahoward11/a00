@@ -858,7 +858,7 @@ hr { margin: 1.5rem 0; }
 #tfwrap .iblock { display: inline-block; margin-top: 0.5rem;  }
 #tfwrap>#tfnav { position: fixed; top: 0; right: 0.5rem; opacity: 0.5; z-index: 4; }
 #ecorender>#tfwrap>#tfnav { top: 45.5px; }
-#tfwrap>#tfnav>#tf0cnt { width: 72px; }
+#tfwrap>#tfnav>#tf0cnt { min-width: 72px; }
 #tfwrap>#sepainp { width: 240px; }
 #tfwrap>#trgrndr { display: flow-root; margin: 1rem 0; border: dashed gainsboro; border-width: 1px 0; }
 </style>
