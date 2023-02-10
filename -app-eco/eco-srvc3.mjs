@@ -1340,7 +1340,7 @@ const mditPrepPhase5 = str => {
   ;
 };
 
-export {
+export { // 20
   annosGlDeploy, dchar2code, dcharClean,
   grechars, headerGen, htmlnc2xchar,
   htmlnc2xchar1, htmlxncodes, hdgIDGen,

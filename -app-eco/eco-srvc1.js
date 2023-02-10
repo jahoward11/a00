@@ -2020,7 +2020,7 @@ main .image>figcaption { text-align: center; }
   <hr />
   <div class="field has-text-right">
     <label class="checkbox has-text-link">
-      <input type="checkbox" /> Show all details
+      <input id="dtlswi" type="checkbox" /> Show all details
     </label>
   </div>
 </main>
@@ -2055,8 +2055,8 @@ cmain.innerHTML += cntcs.map( o => !o ||
     </div>
   </article>\`
 ).join("\\n") + "\\n";
-document.querySelector('main input[type=checkbox]').onchange
-= evt => document.querySelectorAll('main details').forEach(el => el.open = evt.target.checked);
+dtlswi.onchange = evt => document.querySelectorAll('main details')
+  .forEach(el => el.open = evt.target.checked);
 })();
 </script>
 ` ]

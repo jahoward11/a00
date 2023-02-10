@@ -1,4 +1,4 @@
-window.ecomjs = window.ecomjs || {};
+window.ecomjs = window.ecomjs || {}; // 20
 
 ecomjs.spachars = [
   [9, "Horizontal tab, \\t", "&Tab;"],

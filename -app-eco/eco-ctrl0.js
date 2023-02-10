@@ -2547,6 +2547,21 @@ espExit() {
   document.documentElement.classList.add("has-background-grey-lighter");
   document.querySelector('body>#ecoprj0').classList.remove("is-hidden");
 },
+txtaSel(txtaid, sel) {
+  let utxta = document.querySelector(
+      (/attinp|qcontxta/.test(txtaid) ? '#econav0 #' : '#ecoesp0 #') + txtaid );
+  if (txtaid === "swaptxta") {
+    utxta.classList.remove("is-warning", "is-success");
+    document.querySelector('#ecoesp0 #toolswap .help').innerHTML = "";
+  }
+  if (sel) {
+    window.navigator.userAgentData || /attinp/.test(txtaid)
+    ? utxta.select() : utxta.setSelectionRange(0, utxta.textLength);
+  } else { //clr
+    utxta.value = txtaid !== "jsctxta" ? "" : "> ";
+    txtaid !== "jsctxta" || (document.querySelector('#ecoesp0 #jsclist').selectedIndex = 0);
+  }
+},
 pdbSel() { // also triggered by (pchSel>...>)pdbListGen, pchSel-reset
   let pdbinp = document.querySelector('#ecoprj0 #pdbinp'),
     pdblist = document.querySelector('#ecoprj0 #pdblist'),
@@ -2709,21 +2724,6 @@ tabs0Tog(idx, exit) { // also triggered by dataDispl, dropboxTx, blobHandl, prvT
     !screens[idx] || screens[idx].classList.remove("is-hidden");
     idx > 1 || !(valatt || exit) || !nbaropen || EC1.navTog();
     idx < 2 || !valpfs || !nbaropen || EC1.navTog();
-  }
-},
-txtaSel(txtaid, sel) {
-  let utxta = document.querySelector(
-      (/attinp|qcontxta/.test(txtaid) ? '#econav0 #' : '#ecoesp0 #') + txtaid );
-  if (txtaid === "swaptxta") {
-    utxta.classList.remove("is-warning", "is-success");
-    document.querySelector('#ecoesp0 #toolswap .help').innerHTML = "";
-  }
-  if (sel) {
-    window.navigator.userAgentData || /attinp/.test(txtaid)
-    ? utxta.select() : utxta.setSelectionRange(0, utxta.textLength);
-  } else { //clr
-    utxta.value = txtaid !== "jsctxta" ? "" : "> ";
-    txtaid !== "jsctxta" || (document.querySelector('#ecoesp0 #jsclist').selectedIndex = 0);
   }
 },
 qconTog(idx) { // also triggered by ibmConnect
