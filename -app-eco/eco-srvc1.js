@@ -885,11 +885,11 @@ let srctxt = \``,
     let mks = document.querySelectorAll('#trgrndr mark'),
       len = mks.length,
       nbr = incr == null && 1 || (+tf0cnt.innerText.replace(/ .+/, "") + incr) || 0;
-    nbr = !len ? 0 : nbr > len ? 1 : !nbr ? len : nbr;
-    tf0cnt.innerText = nbr + " of " + len;
-    (mks[nbr - 1] || tfnav).scrollIntoView({ behavior: "smooth", block: "center" });
-    (document.querySelector('#trgrndr mark.hwarn') || {}).className = "";
-    !mks[nbr - 1] || (mks[nbr - 1].className = "hwarn");
+    nbr = !len ? 0 : nbr > len ? 1 : nbr < 1 ? len : nbr;
+    tf0cnt.innerText = (incr == null ? "0" : nbr) + " of " + len;
+    incr == null || (mks[nbr - 1] || tfnav).scrollIntoView({ behavior: "smooth", block: "center" })
+    || ((document.querySelector('#trgrndr mark.hwarn') || {}).className = "")
+    || ((mks[nbr - 1] || {}).className = "hwarn");
   },
   rsltVw = rslt => {
     let ri = rndrsel.selectedIndex;

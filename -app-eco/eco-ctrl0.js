@@ -285,8 +285,24 @@ function publResets() {
   }
 }
 
-function assts2Blob() {
-  let dbpc2, nscr,
+function cntcLite(d, id, dbn, dbteam, apath) { return d && {
+  _id:       id || "", //.replace(/^!([a-z]{3})-(myteam)$/, "!$2-$1"), // temp cleanup
+  _pdb:      dbn || "",
+  name_full: d.name_full || "",
+  //name_user: d.name_user,
+  roles:     [d.roles || ""].flat(),
+  email:     (d.emails || [""])[0],
+  image_src: aurls[ ( apath = d.image_src
+      && d.image_src.match(rexatt) || [] )[3] || d.image_src || "" ]
+    || window.PouchDB && dbteam && apath[1] === dbteam && apath[2] && apath[3]
+    && !( new PouchDB(dbteam)
+      .getAttachment(apath[2], apath[3])
+      .then(ablob => aurls[apath[3]] = URL.createObjectURL(ablob))
+      .catch(msgHandl) ) || d.image_src || ""
+}};
+
+function assts2Blob() { // on startup: ...
+  let dbpc2, dbteam, nscr, opts, rval,
     jsclist = document.querySelector('#ecoesp0 #jsclist'),
     hlslist = document.querySelector('#ecoesp0 #hlslist'),
     iniscripts = document.querySelector('body>#iniscripts'),
@@ -314,12 +330,21 @@ function assts2Blob() {
       jsclist.innerHTML = tmpljsclist
         && tmpljsclist({ jscitems: EC0.JSCON.map(s => s.replace(/\n/g, "$&\u2028")) });
     },
-    a00Docs = (dbs = []) => {
+    a00Docs = (dbs = []) => { // -retrieve -res-img att's from all dbs
       dbs.forEach( dbi => !dbi || (dbi = new PouchDB(dbi)).get("-res-img")
         .then( adoc => !adoc._attachments || Object.keys(adoc._attachments)
           .forEach(akey => attPrc1(dbi, "-res-img", akey)) ).catch(e => e) );
-      if (dbs.some(e => e === "a00") && a00path === localStorage["_ecoa00path"]) {
-        dbpc2 = new PouchDB("a00");
+      opts = { endkey: "\"", include_docs: true }; // -retrieve contacts from all dbs
+      dbteam = dbs.find(e => !epsets.teamid ? /^a\d\d_\w/.test(e) : e === "a00_" + epsets.teamid);
+      dbs.forEach( dbi => !dbi || (dbi = new PouchDB(dbi))
+        .query("ecosorter/files-contact").catch(() => dbi.allDocs(opts))
+        .then( rqry => !rqry.rows || rqry.rows.forEach( (r, i) =>
+          tm0cntcs[ (rval = r.doc || r.value).name_user
+            || (rval.name_full || "").replace(/[^\w.@-]+/g, "-") || r.id.replace(/^!/, "") ]
+          = cntcLite(rval, r.id, dbi.name, dbteam) ))
+        .catch(msgHandl) );
+      if ( dbs.some(e => e === "a00") && a00path === localStorage["_ecoa00path"]
+      && (dbpc2 = new PouchDB("a00")) ) { // -retrieve select resources from db "a00"
         dbpc2.get("-res-css").then( adoc => !adoc._attachments || Object.keys(adoc._attachments)
           .forEach(akey => attPrc1(dbpc2, "-res-css", akey)) ).catch(msgHandl);
         dbpc2.get("-res-hljs").then(adoc => {
@@ -332,7 +357,7 @@ function assts2Blob() {
         Promise.all( ["eco-srvc1.js", "eco-srvc2.js", "eco-srvc3.js", "eco-srvc3.mjs"]
           .map(akey => attPrc1(dbpc2, "-app-eco", akey)) )
         .then(modsInj);
-      } else {
+      } else { // -retrieve select resources from server file directory
         !epsets.hlstyle || (aurls[epsets.hlstyle] = a00path + "/-res-hljs/" + epsets.hlstyle);
         protfile || /^blob:/.test(aurls["bulma0.9-minireset.css"])
         || ["bulma0.9-content.css", "bulma0.9-minireset.css", "ebook-annos-fns.js", "srcdiff.js"]
@@ -349,23 +374,7 @@ function assts2Blob() {
   || PouchDB.allDbs().then(a00Docs).catch(msgHandl);
 }
 
-function cntcLite(d, id, dbn, dbteam, apath) { return d && {
-  _id:       id || "", //.replace(/^!([a-z]{3})-(myteam)$/, "!$2-$1"), // temp cleanup
-  _pdb:      dbn || "",
-  name_full: d.name_full || "",
-  //name_user: d.name_user,
-  roles:     [d.roles || ""].flat(),
-  email:     (d.emails || [""])[0],
-  image_src: aurls[ ( apath = d.image_src
-      && d.image_src.match(rexatt) || [] )[3] || d.image_src || "" ]
-    || window.PouchDB && dbteam && apath[1] === dbteam && apath[2] && apath[3]
-    && !( new PouchDB(dbteam)
-      .getAttachment(apath[2], apath[3])
-      .then(ablob => aurls[apath[3]] = URL.createObjectURL(ablob))
-      .catch(msgHandl) ) || d.image_src || ""
-}};
-
-function pdbListGen() { // also "dboListGen", "pchListGen"
+function pdbListGen() { // also "dboListGen", "pchListGen" // on each data sync: ...
   let dbpc2, dbteam, idr, opts, prjitems, rval,
     dbs2 = [],
     context = { pchitems: [], pr1items: [], pr0items: [] },
@@ -390,7 +399,7 @@ function pdbListGen() { // also "dboListGen", "pchListGen"
       .catch(() => !apath[1] || /^a00$/.test(apath[1]) || (d.image_src = ""))
       .then(() => d);
     },
-    dbidFbk = e => ({
+    dbidFbk = e => e && {
       _id:         e,
       seltxt:      e.replace( /^a(\d\d)_(.+)$/,
           (m, c1, c2) => "@" + c2 + (c1 === "00" ? "" : ` (${c1})`) )
@@ -405,8 +414,8 @@ function pdbListGen() { // also "dboListGen", "pchListGen"
         : "<\xa0More details about the "
           + e + " project will be displayed here"
           + "\u2014when added by the project team leader.\xa0>"
-    }),
-    dbidPrep = d => ({
+    },
+    dbidPrep = d => d && {
       _id:         d._id.replace(/^~DBID_/, ""),
       seltxt:      (idr = d._id.replace(/^~DBID_/, ""))
         .replace(/^a(\d\d)_(.+)$/, (m, c1, c2) => "@" + c2 + (c1 === "00" ? "" : ` (${c1})`))
@@ -415,7 +424,7 @@ function pdbListGen() { // also "dboListGen", "pchListGen"
       image_src:   (d.image_src || "").replace(/^\.\.\/\.\./, d.file_updated.dborigin || "$&"),
       descr_short: d.descr_short,
       descr_extd:  d.descr_extd
-    }),
+    },
     listsRfrsh = msgerr => {
       !msgerr || msgHandl(msgerr);
       context.pchitems.length || (context.pchitems = dbs2.map(dbidFbk));
@@ -439,13 +448,13 @@ function pdbListGen() { // also "dboListGen", "pchListGen"
     pr0sGet = msgerr => {
       !msgerr || msgHandl(msgerr);
       opts = { endkey: "\"", include_docs: true };
-      dbs2.forEach( dbi => !dbi || (dbi = new PouchDB(dbi))
-        .query("ecosorter/files-contact").catch(() => dbi.allDocs(opts))
+      !dbpch || dbpch // -retrieve, update contacts from current db
+        .query("ecosorter/files-contact").catch(() => dbpch.allDocs(opts))
         .then( rqry => !rqry.rows || rqry.rows.forEach( (r, i) =>
           tm0cntcs[ (rval = r.doc || r.value).name_user
             || (rval.name_full || "").replace(/[^\w.@-]+/g, "-") || r.id.replace(/^!/, "") ]
-          = cntcLite(rval, r.id, dbi.name, dbteam) ))
-        .catch(msgHandl) );
+          = cntcLite(rval, r.id, dbpch.name, dbteam) ))
+        .catch(msgHandl);
       prjsenet ? pr0sGen(prjsenet)
       : rdataFetch(EXREQD, 1).then(rq => pr0sGen(prjsenet = rq)).catch(listsRfrsh);
     },
@@ -453,8 +462,8 @@ function pdbListGen() { // also "dboListGen", "pchListGen"
       dbs2 = dbs1.sort();
       if (!window.PouchDB || !dbs1.length) {
         pr0sGet();
-      } else if ( !( dbteam = dbs1
-      .find(e => epsets.teamid ? e === "a00_" + epsets.teamid : /^a\d\d_\w/.test(e)) )) {
+      } else if ( !( dbteam = dbs1 // -retrieve db identity from each prj db
+      .find(e => !epsets.teamid ? /^a\d\d_\w/.test(e) : e === "a00_" + epsets.teamid) )) {
         opts = { startkey: "~DBID_", endkey: "~DBID_~", include_docs: true };
         Promise.all( dbs1.map( dbi => dbi && (dbi = new PouchDB(dbi)).allDocs(opts)
           .then( rqry => !rqry.rows
@@ -464,10 +473,9 @@ function pdbListGen() { // also "dboListGen", "pchListGen"
         .then(dbids => { context.pchitems = dbs1
           .map(e => dbids.find(d => (d || "")._id === e) || dbidFbk(e)); })
         .then(pr0sGet).catch(pr0sGet);
-      } else {
+      } else if (dbpc2 = new PouchDB(dbteam)) { // -retrieve imgs & prj-db ids from db "myteam"
         epsets.teamid || !(epsets.teamid = dbteam.replace(/^a\d\d_/, ""))
         || (localStorage["_ecopresets"] = JSON.stringify(epsets));
-        dbpc2 = new PouchDB(dbteam);
         dbpc2.get("-res-img").then( adoc => !adoc._attachments
           || Object.keys(adoc._attachments).forEach( akey =>
             /^blob:/.test(aurls[akey]) || dbpc2.getAttachment("-res-img", akey)
@@ -484,7 +492,7 @@ function pdbListGen() { // also "dboListGen", "pchListGen"
             context.pr1items = prjitems.filter(d => dbs1.findIndex(e => e === d._id) < 0);
           });
         }).catch(pr0sGet).then(pr0sGet);
-      }
+      } else { pr0sGet(); }
     };
   !window.PouchDB || !PouchDB.allDbs ? pdbsGen()
   : PouchDB.allDbs().then(pdbsGen).catch(pr0sGet);
@@ -531,7 +539,7 @@ function attListGen(attonly, publupd) { // also "dirListGen"
     .then(rsltFmt).catch(listsRfrsh);
 }
 
-function pfsListGen(fileref, publupd, filelf) {
+function pfsListGen(fileref, publupd, filelf) { // on each db open: ...
   let apath, dbpc2, dbteam, opts, rval, sdir,
     zindr = 0,
     pfslist = document.querySelector('#econav0 #pfslist'),
@@ -604,10 +612,6 @@ function pfsListGen(fileref, publupd, filelf) {
         filestmp2: context.filestmp2,
         filesapp:  context.filesapp
       };
-      !rqry.rows || rqry.rows.filter(r => /^!/.test(r.id)).forEach( r =>
-        tm0cntcs[ (rval = r.doc || r.value).name_user
-          || (rval.name_full || "").replace(/[^\w.@-]+/g, "-") || r.id.replace(/^!/, "") ]
-        = cntcLite(rval, r.id, dbpch.name, dbteam) );
       pf3stor.dbsdir.map(ar => ar[1]).forEach(docPrc2);
       listsRfrsh();
     },
@@ -618,7 +622,7 @@ function pfsListGen(fileref, publupd, filelf) {
         .then(rsltFmt).catch(listsRfrsh);
     },
     tlistsGen = (dbs1 = []) => {
-      if ( !window.PouchDB || !( dbteam = dbs1
+      if ( !window.PouchDB || !( dbteam = dbs1 // -generate placeholder contact-obj for solo user
       .find(e => epsets.teamid ? e === "a00_" + epsets.teamid : /^a\d\d_\w/.test(e)) )
       || dbpch && dbteam === dbpch.name ) {
         dbteam || !epsets.uname || ( tm0cntcs[epsets.uname] = {
@@ -631,16 +635,13 @@ function pfsListGen(fileref, publupd, filelf) {
           image_src: "avatar000.png"
         } );
         pf1sGet();
-      } else {
+      } else if (dbpc2 = new PouchDB(dbteam)) {
+      // -retrieve user contact data, contact ids & all prj support files from db "myteam"
         opts = { endkey: "\"", include_docs: true };
-        dbpc2 = new PouchDB(dbteam);
         dbpc2.query("ecosorter/files-contact").catch(() => dbpc2.allDocs(opts))
         .then(rqry => {
           context.filescnt2 = hides[17] ? null : rqry.rows
             && rqry.rows.map(r => [r.key, "/" + dbteam + "/" + r.id]);
-          //!rqry.rows || rqry.rows.forEach( (r, i) => tm0cntcs[ (rval = r.doc || r.value).name_user
-                //|| (rval.name_full || "").replace(/[^\w.@-]+/g, "-") || r.id.replace(/^!/, "") ]
-              //= cntcLite(rval, r.id, dbpc2.name, dbteam) );
           epsets.ungvn || ( epsets.ungvn
           = ((tm0cntcs[epsets.uname] || "").name_full || "").replace(/ .*$/, "") ) && zindr++;
           epsets.unfam || ( epsets.unfam
@@ -667,7 +668,7 @@ function pfsListGen(fileref, publupd, filelf) {
           listsRfrsh(err);
           pf1sGet();
         });
-      }
+      } else { pf1sGet(); }
     },
     dbsallGet = () => !window.PouchDB || !PouchDB.allDbs ? tlistsGen()
       : PouchDB.allDbs().then(tlistsGen),
@@ -3941,7 +3942,7 @@ mnNav(incr) {
     nbr = incr == null && 1 || mncount && (+mncount.innerText.replace(/ .+/, "") + incr) || 0,
     ptQ = e => document.elementFromPoint(
       document.documentElement.clientWidth - 5, e + window.innerHeight / 2 );
-  nbr = !len ? 0 : nbr > las ? 1 : !nbr ? las : nbr;
+  nbr = !len ? 0 : nbr > las ? 1 : nbr < 1 ? las : nbr;
   if (incr == 0) {
     ofy = [0, 10, -10, 20, -20, 30, -30, 40, -40, 50, -50, 60, -60, 70, -70, 80, -80, 90]
       .find(n => ptQ(n).classList.contains("mnote")) || -90;

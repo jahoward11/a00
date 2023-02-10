@@ -732,7 +732,7 @@ mycon.innerHTML = hdgIDGen(mycon.innerHTML);
     filepath: "../../a00/-app-eco/eco-srvc3.mjs",
     usedescription: "menubar-gen@0.0.1  \n- Pre-parse `div.menubar` block with Markdownit- and custom- script.\n- Dependencies: hdgIDGen",
     htmlscriptload: `<script type="module">
-import menubarGen from "../../a00/-app-eco/eco-srvc3.mjs";
+import { hdgIDGen, menubarGen } from "../../a00/-app-eco/eco-srvc3.mjs";
 let mycon = document.querySelector('#containerid');
 mycon.innerHTML = menubarGen(mycon.innerHTML);
 </script>`,
