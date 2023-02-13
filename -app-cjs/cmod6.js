@@ -215,7 +215,7 @@ __*Tutorial Two: Building a sliding-tiles puzzle (and other games)*__
 // __* * * SLIDING TILES * * *__
 g1ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
 g1ui += "\\nhtml { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }";
-g1ui += "\\nbutton, input, select { margin: 0; }\\nhr { margin: 1.5rem 0; }";
+g1ui += "\\nbutton, input, select, pre { margin: 0; }\\nhr { margin: 1.5rem 0; }";
 g1ui += "\\n#g1wrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px 0; }";
 g1ui += "\\n#g1wrap button, #g1wrap .btn1, #g1wrap input:not([type=checkbox]):not([type=radio]), #g1wrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
 g1ui += "\\n#g1wrap .cfield { max-width: 359px; }\\n#g1wrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }";
@@ -366,7 +366,7 @@ g1Reset();
 // __* * * LIGHTS OUT * * *__
 g2ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
 g2ui += "\\nhtml { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }";
-g2ui += "\\nbutton, input, select { margin: 0; }\\nhr { margin: 1.5rem 0; }";
+g2ui += "\\nbutton, input, select, pre { margin: 0; }\\nhr { margin: 1.5rem 0; }";
 g2ui += "\\n#g2wrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px 0; }";
 g2ui += "\\n#g2wrap button, #g2wrap .btn1, #g2wrap input:not([type=checkbox]):not([type=radio]), #g2wrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
 g2ui += "\\n#g2wrap .cfield { max-width: 359px; }\\n#g2wrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }";
@@ -406,7 +406,7 @@ window.litSwi = (rx, cx) => { u2tog.checked ? window["n" + rx + cx].classList.to
 // __* * * PEGS * * *__
 g3ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
 g3ui += "\\nhtml { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }";
-g3ui += "\\nbutton, input, select { margin: 0; }\\nhr { margin: 1.5rem 0; }";
+g3ui += "\\nbutton, input, select, pre { margin: 0; }\\nhr { margin: 1.5rem 0; }";
 g3ui += "\\n#g3wrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px 0; }";
 g3ui += "\\n#g3wrap button, #g3wrap .btn1, #g3wrap input:not([type=checkbox]):not([type=radio]), #g3wrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
 g3ui += "\\n#g3wrap .cfield { max-width: 359px; }\\n#g3wrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }";
@@ -656,7 +656,7 @@ str.replace(/(deaf)\\w+ (\\w+)\\./i, (m, c1, c2) => \`\${c1}? Or \${c2.replace(/
 
 srui = "\\n<style type=\\"text/css\\">\\n*, *::before, *::after { box-sizing: inherit; }";
 srui += "\\nhtml { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }";
-srui += "\\nbutton, input, select { margin: 0; }\\nhr { margin: 1.5rem 0; }\\n[list]::-webkit-calendar-picker-indicator { display: none !important; }";
+srui += "\\nbutton, input, select, pre { margin: 0; }\\nhr { margin: 1.5rem 0; }\\n[list]::-webkit-calendar-picker-indicator { display: none !important; }";
 srui += "\\n.textarea { background-color: white; border-color: #dbdbdb; border-radius: 4px; display: block; max-width: 100%; min-width: 100%; padding: calc(0.75em - 1px); resize: vertical; }";
 srui += "\\n#srwrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
 srui += "\\n#srwrap button, #srwrap .btn1, #srwrap input:not([type=checkbox]):not([type=radio]), #srwrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
@@ -1053,7 +1053,7 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
 d1ui = d2ui = d3ui = d4ui = d5ui = ""
 d1ui += "\\n<style type=\\"text/css\\">\\n*, *::before, *::after { box-sizing: inherit; }";
 d1ui += "\\nhtml { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }";
-d1ui += "\\nbutton, input, select { margin: 0; }\\nhr { margin: 1.5rem 0; }";
+d1ui += "\\nbutton, input, select, pre { margin: 0; }\\nhr { margin: 1.5rem 0; }";
 d1ui += "\\nfigure { margin: 1em 0; padding: 0 1em; }";
 d1ui += "\\n.image { display: block; position: relative; }";
 d1ui += "\\n.image img { display: block; height: auto; max-width: 100%; }";
