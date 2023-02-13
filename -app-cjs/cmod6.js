@@ -680,7 +680,7 @@ srui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x296
 srui += "\\n<h4 class=cfield><label onclick=txtaSel(trgtxta)>Target</label></h4>";
 srui += "\\n<div class=cfield><textarea id=trgtxta class=textarea></textarea><div id=trghelp class=chelp></div></div>";
 srui += "\\n<div class=cfield>\\n<datalist id=pfiles></datalist>\\n<span class=ccntr><button onclick=dataMgr(2)>\\n<span>&uArr;</span></button></span><span class=ccntr><input type=text id=lfinp list=pfiles placeholder=\\"filename/key/CMD&hellip;\\" onfocus=hlp3Clr() /></span><span class=ccntr><button onclick=dataMgr(1)>\\n<span class=isucc>&#x267a;</span> SAVE</button></span><span class=ccntr><button onclick=dataMgr()>\\n<span class=iwarn>&#x2715;</span> DEL</button></span>\\n<div id=lfhelp class=chelp></div>\\n</div>";
-srui += "\\n<div id=trgrndr class=\"cfield dflow\"></div>\\n";
+srui += "\\n<div id=trgrndr class=\\"cfield dflow\\"></div>\\n";
 
  // srwrap.remove() // *Alert:* useful only if edit-testing the UI code above
  // try { srwrap } catch { ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = srui; cmain.appendChild(ndiv); }
