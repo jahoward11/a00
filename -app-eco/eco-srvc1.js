@@ -854,21 +854,22 @@ hr { margin: 1.5rem 0; }
 #tfwrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }
 #tfwrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }
 #tfwrap .chelp { font-size: 0.75rem; line-height: normal; margin-top: 0.25rem; }
+#tfwrap .mtd0c5 { margin-top: 0.5rem; }
 #tfwrap .pwrap { white-space: pre-wrap; }
-#tfwrap .iblock { display: inline-block; margin-top: 0.5rem;  }
+#tfwrap .diblk, #tfwrap .btn1 { display: inline-block; }
 #tfwrap>#tfnav { position: fixed; top: 0; right: 0.5rem; opacity: 0.5; z-index: 4; }
 #ecorender>#tfwrap>#tfnav { top: 45.5px; }
 #tfwrap>#tfnav>#tf0cnt { min-width: 72px; }
 #tfwrap>#sepainp { width: 240px; }
-#tfwrap>#trgrndr { display: flow-root; margin: 1rem 0; border: dashed gainsboro; border-width: 1px 0; }
+#tfwrap>#trgrndr { margin: 1rem 0; border: dashed gainsboro; border-width: 1px 0; }
 </style>
 <span id="tfnav">
 <button id="tf1bck">&#x25e4;</button><button id="tf0cnt">0 of 0</button><button id="tf1fwd">&#x25e2;</button>
 </span>
 <h3 class="cfield">Find w/i Text</h3>
-<span class="ccntr iblock">
+<span class="ccntr diblk mtd0c5">
 <input type="text" id="sepainp"><label class="btn1" onclick="sepainp.select()">Search Pattern</label>
-</span> <span class="ccntr iblock">
+</span> <span class="ccntr diblk mtd0c5">
 <span class="ccntr"><select id="rndrsel">
 <option>PRE render</option>
 <option selected>PRE-wrap render</option>
