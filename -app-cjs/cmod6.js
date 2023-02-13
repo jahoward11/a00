@@ -667,9 +667,9 @@ srui += "\\n#srwrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }";
 srui += "\\n#srwrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }";
 srui += "\\n#srwrap :not(.cfield)>.ccntr { display: inline-block; height: 1.5rem; margin-bottom: 0.5rem; }";
 srui += "\\n#srwrap .chelp { font-size: 0.75rem; line-height: normal; margin-top: 0.25rem; }";
-srui += "\\n#srwrap .pwrap { white-space: pre-wrap; }";
-srui += "\\n#srctxta, #trgtxta { font-family: system-ui; height: 288px; }\\n#sepainp, #rtrminp { width: 288px; }\\n#lfinp { width: 176px; }";
-srui += "\\n#trgrndr { margin-top: 1rem; border: dashed gainsboro; border-width: 1px 0; }";
+srui += "\\n#srwrap .pwrap { white-space: pre-wrap; }\\n#srwrap .dflow { display: flow-root; overflow-x: auto; }";
+srui += "\\n#srwrap #srctxta, #srwrap #trgtxta { font-family: system-ui; height: 288px; }\\n#srwrap #sepainp, #srwrap #rtrminp { width: 288px; }\\n#srwrap #lfinp { width: 176px; }";
+srui += "\\n#srwrap>#trgrndr { margin-top: 1rem; border: dashed gainsboro; border-width: 1px 0; }";
 srui += "\\n</style>\\n<hr />\\n<h4 class=cfield><label onclick=txtaSel(srctxta)>Source</label></h4>";
 srui += "\\n<div class=cfield><textarea id=srctxta class=textarea></textarea></div>";
 srui += "\\n<div class=cfield><input type=text id=sepainp /><label onclick=\\"sepainp.select()\\"> Search</label></div>";
@@ -680,7 +680,7 @@ srui += "\\n</select></span><span class=ccntr><input type=button value=\\"&#x296
 srui += "\\n<h4 class=cfield><label onclick=txtaSel(trgtxta)>Target</label></h4>";
 srui += "\\n<div class=cfield><textarea id=trgtxta class=textarea></textarea><div id=trghelp class=chelp></div></div>";
 srui += "\\n<div class=cfield>\\n<datalist id=pfiles></datalist>\\n<span class=ccntr><button onclick=dataMgr(2)>\\n<span>&uArr;</span></button></span><span class=ccntr><input type=text id=lfinp list=pfiles placeholder=\\"filename/key/CMD&hellip;\\" onfocus=hlp3Clr() /></span><span class=ccntr><button onclick=dataMgr(1)>\\n<span class=isucc>&#x267a;</span> SAVE</button></span><span class=ccntr><button onclick=dataMgr()>\\n<span class=iwarn>&#x2715;</span> DEL</button></span>\\n<div id=lfhelp class=chelp></div>\\n</div>";
-srui += "\\n<div id=trgrndr class=cfield></div>\\n";
+srui += "\\n<div id=trgrndr class=\"cfield dflow\"></div>\\n";
 
  // srwrap.remove() // *Alert:* useful only if edit-testing the UI code above
  // try { srwrap } catch { ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = srui; cmain.appendChild(ndiv); }
