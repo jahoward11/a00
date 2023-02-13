@@ -669,7 +669,7 @@ srui += "\\n#srwrap :not(.cfield)>.ccntr { display: inline-block; height: 1.5rem
 srui += "\\n#srwrap .chelp { font-size: 0.75rem; line-height: normal; margin-top: 0.25rem; }";
 srui += "\\n#srwrap .pwrap { white-space: pre-wrap; }";
 srui += "\\n#srctxta, #trgtxta { font-family: system-ui; height: 288px; }\\n#sepainp, #rtrminp { width: 288px; }\\n#lfinp { width: 176px; }";
-srui += "\\n#trgrndr { display: flow-root; margin-top: 1rem; border: dashed gainsboro; border-width: 1px 0; }";
+srui += "\\n#trgrndr { margin-top: 1rem; border: dashed gainsboro; border-width: 1px 0; }";
 srui += "\\n</style>\\n<hr />\\n<h4 class=cfield><label onclick=txtaSel(srctxta)>Source</label></h4>";
 srui += "\\n<div class=cfield><textarea id=srctxta class=textarea></textarea></div>";
 srui += "\\n<div class=cfield><input type=text id=sepainp /><label onclick=\\"sepainp.select()\\"> Search</label></div>";
