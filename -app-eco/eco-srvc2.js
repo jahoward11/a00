@@ -1,4 +1,4 @@
-window.ecoqjs = { // 23
+window.ecoqjs = { // 24
   fncTry: (fnc, a, e) => {
     // silently handle potential function execution error
     try { return fnc(a) }
@@ -98,6 +98,26 @@ window.ecoqjs = { // 23
       .replace(/<\\(?=\/\w+>)/g, "<")
       .replace( rex, (m, c1, c2, c3) => htmTx0(c1)
         + (!c2 ? "" : "<mark>" + htmTx0(c2) + "</mark>") + htmTx0(c3) );
+  },
+  findHTM: (sep, str) => {
+    // highlight text matches in HTML content; preserve webdoc structure
+    str = ("" + str)
+      .replace(/<\\(?=\/\w+>)/g, "<")
+      .replace(/<!--[^]*?-->|<(link|meta)\b.*?>|<(script)\b.*?>[^]*?<\/\1>/gi, "");
+    let nit = document.createElement('i'),
+      rcs = ("" + sep).trim().match(/\/(.+)\/([gim]*)/) || ["" + sep],
+      rex = new RegExp( "([^]*?)(" + (rcs[1] || rcs[0] || "$") + "|$)("
+        + (!rcs[1] || /g/.test(rcs[2]) ? "" : "[^]*") + ")", !rcs[1] ? "gi" : rcs[2] ),
+      stys = str.match(/<(style)\b.*?>[^]*?<\/\1>/gi) || [];
+    return stys.join("\n") + "\n" + str
+      .replace(/<(style)\b.*?>[^]*?<\/\1>/gi, "")
+      .match(/[^]*?(?:<\/?\w.*?>|$)/g)
+      .map( (st, i) => i && rcs[1] && !/g/.test(rcs[2]) ? st
+        : st.replace( /([^]*?)(<\/?\w.*?>|$)/, (m, c1, c2) =>
+          ( !(nit.innerHTML = c1) ? "" : nit.textContent
+            .replace(rex, (n, d1, d2, d3) => d1 + (!d2 ? "" : "<mark>" + d2 + "</mark>") + d3) )
+          + c2 ) )
+      .join("");
   },
   srcvPrep: (str = "", lang) => {
     // apply HighlightJS syntax tags to HTML/CSS/JS/JSON/MD text
