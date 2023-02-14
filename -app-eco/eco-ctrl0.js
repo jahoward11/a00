@@ -1873,11 +1873,10 @@ function webdocGen(redir, pdata = filewkg || jsonParse(JSON.stringify(ETMPLS.pub
     fragstxt = [],
     rsltcontent = "",
     sifragsbound = null;
-  reniscurr = true;
-  ecolinks.innerHTML
-  = document.querySelector('body>#ecorender').innerHTML
-  = document.querySelector('body>#ecosrcview').innerHTML
-  = document.querySelector('body>#ecoscripts').innerHTML = null;
+  redir || !(reniscurr = true) || ( ecolinks.innerHTML
+    = document.querySelector('body>#ecorender').innerHTML
+    = document.querySelector('body>#ecosrcview').innerHTML
+    = document.querySelector('body>#ecoscripts').innerHTML = null );
   fragstxt = pdata.filefrags.map( ob => typeof ob.contenttxt !== 'string'
     || !ob.contenttxt ? ob.contenttxt : ob.contenttxt.replace(/\n+$|^\n+/g, "") + "\n\n" );
   scriptsincl.forEach( (sii, i) => sifragsbound == null &&
@@ -3273,14 +3272,15 @@ swapExe(parse) {
     attlist = document.querySelector('#econav0 #attlist'),
     fldstxta = document.querySelectorAll('#ecoesp0 #jdedft textarea'),
     hlnktxta = document.querySelector('#ecoesp0 #ptyvals9>span:nth-of-type(7)>textarea'),
-    swpsinp = document.querySelector('#ecoesp0 #swpsinp'),
-    swprinp = document.querySelector('#ecoesp0 #swprinp'),
+    swpltogswi = document.querySelector('#ecoesp0 #swpltogswi'),
+    swpseinp = document.querySelector('#ecoesp0 #swpseinp'),
+    swpreinp = document.querySelector('#ecoesp0 #swpreinp'),
     replhelp = document.querySelector('#ecoesp0 #toolswap .help'),
     swaptxta = document.querySelector('#ecoesp0 #swaptxta'),
     swaplist = document.querySelector('#ecoesp0 #swaplist'),
     idx = swaplist.selectedIndex,
     sliste = idx > 0 && idx < 4 && document.querySelector(swaplist.value),
-    fldfc2 = fldfoc || sliste || fldstxta && fldstxta[idx - 4] || hlnktxta,
+    fldfc2 = swpltogswi.checked && fldfoc || sliste || fldstxta && fldstxta[idx - 4] || hlnktxta,
     hlpPol = y => [swaptxta, replhelp].forEach(el => el.classList.add(!y ? "is-warning" : "is-success"));
   if (!fldfc2) { return; }
   [swaptxta, replhelp].forEach(el => el.classList.remove("is-warning", "is-success"));
@@ -3289,21 +3289,21 @@ swapExe(parse) {
   ff2val = fldfc2[ff2pty];
   if (parse) {
     try {
-      !/^(?:\w+|\(.*?\)) *=> *\S|^".*"$|^\b[\w.]+$/.test(swprinp.value.trim())
-      || (rpl2 = window.eval(swprinp.value));
+      !/^(?:\w+|\(.*?\)) *=> *\S|^".*"$|^\b[\w.]+$/.test(swpreinp.value.trim())
+      || (rpl2 = window.eval(swpreinp.value));
     } catch (err) {
       replhelp.innerHTML = err;
       swaptxta.value = "";
       return hlpPol();
     }
-    if (/^\/.+\/[im]*g[im]*$/.test(swpsinp.value.trim())) {
-      replhelp.innerHTML = (lrpl = (ff2val.match(eval(swpsinp.value)) || []).length)
+    if (/^\/.+\/[im]*g[im]*$/.test(swpseinp.value.trim())) {
+      replhelp.innerHTML = (lrpl = (ff2val.match(eval(swpseinp.value)) || []).length)
         + " replacements have been made.";
       hlpPol(lrpl);
     }
-    return swaptxta.value = ff2val.replace( !/^\/.+\/[gim]*$/.test(swpsinp.value.trim())
-        ? swpsinp.value : eval(swpsinp.value),
-      rpl2 || window.eval('"' + swprinp.value.replace(/(?=")/g, "\\") + '"') );
+    return swaptxta.value = ff2val.replace( !/^\/.+\/[gim]*$/.test(swpseinp.value.trim())
+        ? swpseinp.value : eval(swpseinp.value),
+      rpl2 || window.eval('"' + swpreinp.value.replace(/(?=")/g, "\\") + '"') );
   }
   fldfc2[ff2pty] = swaptxta.value;
   swaptxta.value = ff2val;
