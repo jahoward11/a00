@@ -91,8 +91,8 @@ if (!navchlen && htitle && !/\btitle\b/i.test(htitle.id)) { htitle.id = "title";
 hxlen = [0].concat(hdgtags.map(e => d1node.querySelectorAll(e).length));
 if (!hxlen.some(e => e)) {
   let p0 = dcnode.querySelector('p:not(#author):not(#date)');
-  !p0 ? dcnode.appendChild(document.createElement('h3'))
-  : p0.parentElement.insertBefore(document.createElement('h3'), p0);
+  !p0 ? dcnode.appendChild(document.createElement('h3')).insertAdjacentText('afterend', "\n")
+  : p0.parentElement.insertBefore(document.createElement('h3'), p0).insertAdjacentText('afterend', "\n");
 }
 hxtoplvl = hxlen.findIndex(l => l);
 tf0auto = hxtoplvl < 0 ? 0 : [1, 2, 3, 4, 5, 6].find(n => hxtoplvl <= n && hxlen[n] > 1) || 0;
@@ -234,14 +234,14 @@ for (j = 0, parlen = pars.length; j < parlen; j++) { //for (let [j, pari] of par
       : "<a href=#" + chid + "><strong>" + (!hxrlvl || hxct_hhx[3] ? "&loz;" : "Fwd") + "</strong></a>"
       + (acs.pnwrap < 0 ? "" : (j - pari_navct).toString().replace(/.*/, eval(pnwrap)));
     pcontainer = pars[j].parentElement.nodeName !== 'PRE' ? pars[j] : pars[j].parentElement;
-    pcontainer.parentElement.insertBefore(ndiv, pcontainer);
+    pcontainer.parentElement.insertBefore(ndiv, pcontainer).insertAdjacentText('afterend', "\n");
   }
 }
 if (!dcnode.querySelector('.refnbr')) { //(hxrlvl < 0 || hxrlvl > 6) {
   ndiv = document.createElement('div');
   ndiv.className = "refnbr";
   ndiv.style.display = "none";
-  dcnode.appendChild(ndiv);
+  dcnode.appendChild(ndiv).insertAdjacentText('afterend', "\n");
 }
 !hxlen.some(e => e) || !((tf05[2] && tf05[3]) || (tf05[0] && tf05[1]))
 || ( tochxs = d1node.querySelectorAll( hdgtags.slice( ...( tf05[2] && tf05[3]
@@ -439,7 +439,7 @@ if (tocbuild && !d1node.querySelector('#TOC')) { // insert toc
   || !( el0.nodeName === 'MAIN'
     || [1,2,3,4,5].find( e => /^FIGURE$|^HR$/.test( ( el1 = Array.from(Array(e))
         .reduce(a => a.previousElementSibling || a, el0) || "" ).nodeName ) && (el0 = el1) ) || 1 )
-  || el0.parentElement.insertBefore(ntoc, el0);
+  || el0.parentElement.insertBefore(ntoc, el0).insertAdjacentText('afterend', "\n");
 }
 dcnode.innerHTML = dcnode.innerHTML.replace(/<!--phold-periph-->/gi, () => htmlpers[pei++]);
 // restore periph
@@ -468,8 +468,9 @@ if ( !Array.from(dstyles).some( s => /#TOC\b/.test(s.innerHTML)
   || d1node.querySelector('#title')
   || document.querySelector(d1wrap + dswrap + dmwrap + '>h1')
   || document.querySelector(d1wrap + dswrap + dmwrap + '>h2');
-  dstyle0 || masthd ? (h1node || d1node).insertBefore(nsty, dstyle0 || masthd)
-  : (h1node || d1node).appendChild(nsty);
+  dstyle0 || masthd
+  ? (h1node || d1node).insertBefore(nsty, dstyle0 || masthd).insertAdjacentText('afterend', "\n")
+  : (h1node || d1node).appendChild(nsty).insertAdjacentText('afterend', "\n");
 }
 window.setTimeout(() => {
   nmain = document.querySelector('main');
