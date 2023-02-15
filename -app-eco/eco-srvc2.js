@@ -103,7 +103,7 @@ window.ecoqjs = { // 24
     // highlight text matches in HTML content; preserve webdoc structure
     str = ("" + str)
       .replace(/<\\(?=\/\w+>)/g, "<")
-      .replace(/<!--[^]*?-->|<(link|meta)\b.*?>|<(script)\b.*?>[^]*?<\/\1>/gi, "");
+      .replace(/<!--[^]*?-->|<(?:link|meta)\b.*?>|<(script)\b.*?>[^]*?<\/\1>/gi, "");
     let nit = document.createElement('i'),
       rcs = ("" + sep).trim().match(/\/(.+)\/([gim]*)/) || ["" + sep],
       rex = new RegExp( "([^]*?)(" + (rcs[1] || rcs[0] || "$") + "|$)("
