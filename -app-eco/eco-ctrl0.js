@@ -3235,8 +3235,8 @@ imgLct() {
 swplTog() { // also triggered by xsrcTog, ibmConnect
   let ebran1 = document.querySelector('#econav0 #ebran1'),
     ecoesp0 = document.querySelector('body>#ecoesp0'),
-    swaplist = document.querySelector('#ecoesp0 #swaplist'),
     swpltogswi = document.querySelector('#ecoesp0 #swpltogswi'),
+    swaplist = document.querySelector('#ecoesp0 #swaplist'),
     wraptogswi = document.querySelector('#ecoesp0 #wraptogswi'),
     xchkson = epsets.appchks.slice(22, 29).some(e => e);
   epsets.swapchks[0] === swpltogswi.checked
@@ -3269,15 +3269,16 @@ swplSel() { // also triggered by swplTog
 },
 swapExe(parse) {
   let ff2pty, ff2val, lrpl, rpl2,
+    attinp = document.querySelector('#econav0 #attinp'),
     attlist = document.querySelector('#econav0 #attlist'),
     fldstxta = document.querySelectorAll('#ecoesp0 #jdedft textarea'),
     hlnktxta = document.querySelector('#ecoesp0 #ptyvals9>span:nth-of-type(7)>textarea'),
     swpltogswi = document.querySelector('#ecoesp0 #swpltogswi'),
+    swaplist = document.querySelector('#ecoesp0 #swaplist'),
     swpseinp = document.querySelector('#ecoesp0 #swpseinp'),
     swpreinp = document.querySelector('#ecoesp0 #swpreinp'),
-    replhelp = document.querySelector('#ecoesp0 #toolswap .help'),
     swaptxta = document.querySelector('#ecoesp0 #swaptxta'),
-    swaplist = document.querySelector('#ecoesp0 #swaplist'),
+    replhelp = document.querySelector('#ecoesp0 #toolswap .help'),
     idx = swaplist.selectedIndex,
     sliste = idx > 0 && idx < 4 && document.querySelector(swaplist.value),
     fldfc2 = swpltogswi.checked && fldfoc || sliste || fldstxta && fldstxta[idx - 4] || hlnktxta,
@@ -3310,6 +3311,7 @@ swapExe(parse) {
   if (/^[12]$/.test(idx)) { // /^eco(?:render|scripts)$/.test(fldfc2.id)
     attlist.value = "";
     EC1.attSel(1);
+    attinp.value = "$SWAP:";
   } else if (idx > 3 && fldfc2 !== hlnktxta) { // fldfc2.id !== "rawtxta"
     !(filewkg || "").filefrags || EC1.srcSel(idx - 4);
     EC1.jdeDftUpd(swaplist.value);
@@ -3382,6 +3384,16 @@ u2Blob(url) { // also triggered by prjDiscGen, jdeDftGen, dviz-posts, dviz-conta
   return aurls[(url || "").replace(/^\S*\//, "")] || aurls[url]
   || (url || "").replace(/^\.\.\/\.\.(?!\/a00\/)(?=\S+[^\s\/]$)/, a00orig) || url;
 },
+prvSwap(exe) {
+  let attinp = document.querySelector('#econav0 #attinp'),
+    attlist = document.querySelector('#econav0 #attlist'),
+    swpltogswi = document.querySelector('#ecoesp0 #swpltogswi'),
+    swaplist = document.querySelector('#ecoesp0 #swaplist');
+  swpltogswi.checked = false;
+  swaplist.selectedIndex = 1;
+  EC1.swplSel();
+  exe ? EC1.swapExe() : (attlist.value = "") || (attinp.value = "$SWAP:");
+},
 objQA(key, fbx) { // also triggered by rsrcsXGet, dataDispl, attInp, qconRetrvD, dviz-posts
   let pty,
     rsltFbk = rslt => pty && fbx === 0 ? ""
@@ -3395,6 +3407,9 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, dataDispl, attInp, qconRetrvD,
   key = key == null ? "" : "" + key;
   return gloObj != null ? gloObj
   : /^qcon:|^q?msg:/i.test(key) ? msgHandl(fbx || "error?")
+  : /^att(?:list|):/i.test(key) ? attListGen()
+  : /^pfs(?:list|):/i.test(key) ? pfsListGen()
+  : /^swa?p:/i.test(key) ? EC2.prvSwap(fbx)
   : /^calc:|^cjs:/i.test(key) ? EC2.calcGen(fbx, 1)
   : /^fi?nd:/i.test(key) ? navigator.clipboard.readText()
     .then(s => EC2.findGen(fbx, s)).catch(e => EC2.findGen(fbx, e))
@@ -3403,8 +3418,6 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, dataDispl, attInp, qconRetrvD,
   : /^memo?:|^po?st:/i.test(key) ? EC2.dvizGen(3, fbx, 1)
   : /^cntc?s?:|^contacts?:|^dvi?z:/i.test(key)
     ? (/^[0-4]$/.test(fbx) ? EC2.dvizGen(fbx, null, 1) : EC2.dvizGen(fbx ? 1 : 2, fbx, 1))
-  : /^att(?:list|):/i.test(key) ? attListGen()
-  : /^pfs(?:list|):/i.test(key) ? pfsListGen()
   : /^a00p/i.test(key) ? a00path
   : /^a00o/i.test(key) ? a00orig
   : /^(?:tm0|)urole?/i.test(key) ? tm0urole
