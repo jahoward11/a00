@@ -3450,6 +3450,7 @@ prvSwap(exe) {
     swpltogswi = document.querySelector('#ecoesp0 #swpltogswi'),
     swaplist = document.querySelector('#ecoesp0 #swaplist');
   swpltogswi.checked = false;
+  EC1.swplTog();
   swaplist.selectedIndex = 1;
   EC1.swplSel();
   exe ? EC1.swapExe() : (attlist.value = "") || (attinp.value = "$SWAP:");
