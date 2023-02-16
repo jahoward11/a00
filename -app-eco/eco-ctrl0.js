@@ -95,10 +95,32 @@ function msgHandl(msg) {
   += "\n\n  * * * * *\n" + msgPrefmt(msg).trim().replace(/^/gm, "  ") + "\n  * * * * *\n";
 }
 
+function a00Set() {
+  caccts = caccts.sort((a, b) => a.DBNAME > b.DBNAME ? 1 : -1);
+  let orig0 = hostibm && window.location.origin
+  || (caccts.find(ob => /^a\d\d/.test(ob.DBNAME) && ob.DBORIG) || "").DBORIG
+  || (caccts.find(ob => ob.DBORIG) || "").DBORIG;
+  localStorage["_ecoa00orig"] === orig0 || !(localStorage["_ecoa00orig"] = orig0)
+  || msgHandl( "Alert: A new default, DB origin has been set but not applied to all stored asset URLs."
+    + "\nSystem Error: Please restart web app." );
+}
+
 function jsonParse(jobj) {
   try { return (jobj = JSON.parse(jobj)) != null && typeof jobj === 'object' ? jobj
     : msgHandl("Alert: #/bool/null was provided instead of JSON text.") && undefined;
   } catch (err) { msgHandl("Alert: Invalid JSON text was provided.\n" + err); }
+}
+
+function anumlIncr(anum) {
+  return !/^[a-z]{3}$/i.test(anum) ? "zza"
+  : (ecoqjs.toAlpha(1 + ecoqjs.frAlpha(anum)) || "zza").toLowerCase();
+}
+
+function imgWrap(url) {
+  return '<link href="' + a00path
+  + '/-res-css/bulma0.9-minireset.css" type="text/css" rel="stylesheet" />'
+  + '\n<section class="section">\n<main class="container content">\n  <figure><img src="'
+  + url + '" /></figure>\n</main>\n</section>\n';
 }
 
 function rdataFetch(txdata = {}, idx = 0) {
@@ -125,38 +147,10 @@ function rdataFetch(txdata = {}, idx = 0) {
       : /\.json$/.test(txdata.url) ? 'json' : 'text' ) ]());
 }
 
-function anumlIncr(anum) {
-  return !/^[a-z]{3}$/i.test(anum) ? "zza"
-  : (ecoqjs.toAlpha(1 + ecoqjs.frAlpha(anum)) || "zza").toLowerCase();
-}
-
-function a00Set() {
-  caccts = caccts.sort((a, b) => a.DBNAME > b.DBNAME ? 1 : -1);
-  let orig0 = hostibm && window.location.origin
-  || (caccts.find(ob => /^a\d\d/.test(ob.DBNAME) && ob.DBORIG) || "").DBORIG
-  || (caccts.find(ob => ob.DBORIG) || "").DBORIG;
-  localStorage["_ecoa00orig"] === orig0 || !(localStorage["_ecoa00orig"] = orig0)
-  || msgHandl( "Alert: A new default, DB origin has been set but not applied to all stored asset URLs."
-    + "\nSystem Error: Please restart web app." );
-}
-
-function imgWrap(url) {
-  return '<link href="' + a00path
-  + '/-res-css/bulma0.9-minireset.css" type="text/css" rel="stylesheet" />'
-  + '\n<section class="section">\n<main class="container content">\n  <figure><img src="'
-  + url + '" /></figure>\n</main>\n</section>\n';
-}
-
-function emodeSet() {
-  let ebran1 = document.querySelector('#econav0 #ebran1');
-  eb1dflt = epsets.prvmode ? "has-text-grey-light" : "has-text-primary";
-  if (ebran1.classList.contains("has-text-primary")) {
-    ebran1.classList.remove("has-text-primary");
-    ebran1.classList.add(eb1dflt);
-  } else if (ebran1.classList.contains("has-text-grey-light")) {
-    ebran1.classList.remove("has-text-grey-light");
-    ebran1.classList.add(eb1dflt);
-  }
+function updDisbl() {
+  document.querySelectorAll('#econav0 #fupdbtnc>button, #ecoesp0 #pchbtn')
+  .forEach(el => el.disabled = true);
+  msgHandl(EINSTR[6]);
 }
 
 function pfsResets() {
@@ -176,17 +170,23 @@ function indrChg(el, va1 = "", ref) {
   || el.classList.add(!eq ? "is-warning" : "is-success");
 }
 
-function updDisbl() {
-  document.querySelectorAll('#econav0 #fupdbtnc>button, #ecoesp0 #pchbtn')
-  .forEach(el => el.disabled = true);
-  msgHandl(EINSTR[6]);
-}
-
 function tswapHide() {
   fldfoc = null;
   document.querySelectorAll('#ecoesp0 .dftbtnc:not(.is-hidden), #ecoesp0 .ptybtnc:not(.is-hidden), #ecoesp0 #rawbtnc:not(.is-hidden)')
   .forEach(el => el.classList.add("is-hidden"));
   document.querySelector('#ecoesp0 #prsebtn').disabled = true;
+}
+
+function emodeSet() {
+  let ebran1 = document.querySelector('#econav0 #ebran1');
+  eb1dflt = epsets.prvmode ? "has-text-grey-light" : "has-text-primary";
+  if (ebran1.classList.contains("has-text-primary")) {
+    ebran1.classList.remove("has-text-primary");
+    ebran1.classList.add(eb1dflt);
+  } else if (ebran1.classList.contains("has-text-grey-light")) {
+    ebran1.classList.remove("has-text-grey-light");
+    ebran1.classList.add(eb1dflt);
+  }
 }
 
 function xsrcTog() {
@@ -2654,11 +2654,11 @@ attInp() {
     txdata = txdPrep(valatt)[0];
   valatt === attkey || (attlist.value = valatt)
   && (idx = attlist.selectedIndex) > 0 || (idx = attlist.selectedIndex = 0);
-  EC1.attSel(0);
+  /^\$swa?p:/i.test(valatt) || EC1.attSel(0);
   if (rexoqa.test(valatt)) {
     Promise.resolve( EC2.objQA( valatt.replace(/^\$ *|^(\w+):.*/g, "$1"),
       valatt.replace(/^\$ *\w+:(.+)|.*/g, "$1") ))
-    .then(rslt => dataDispl(rslt, /\.(?:h|html?)\d*$/.test(valatt) ? 3 : 7));
+    .then(rslt => rslt == null || dataDispl(rslt, /\.(?:h|html?)\d*$/.test(valatt) ? 3 : 7));
   } else if (/^\/\/.*$/.test(valatt) && window.localforage) {
     !(lfkey = valatt.replace(/^\/\//, ""))
     ? localforage.keys((err, keys) => err ? msgHandl(err) : dataDispl(keys, 7))
@@ -3284,8 +3284,8 @@ swapExe(parse) {
     fldfc2 = swpltogswi.checked && fldfoc || sliste || fldstxta && fldstxta[idx - 4] || hlnktxta,
     hlpPol = y => [swaptxta, replhelp].forEach(el => el.classList.add(!y ? "is-warning" : "is-success"));
   if (!fldfc2) { return; }
-  [swaptxta, replhelp].forEach(el => el.classList.remove("is-warning", "is-success"));
   replhelp.innerHTML = "";
+  [swaptxta, replhelp].forEach(el => el.classList.remove("is-warning", "is-success"));
   ff2pty = /^eco(?:render|scripts)$/.test(fldfc2.id) ? "innerHTML" : "value";
   ff2val = fldfc2[ff2pty];
   if (parse) {
@@ -3384,16 +3384,6 @@ u2Blob(url) { // also triggered by prjDiscGen, jdeDftGen, dviz-posts, dviz-conta
   return aurls[(url || "").replace(/^\S*\//, "")] || aurls[url]
   || (url || "").replace(/^\.\.\/\.\.(?!\/a00\/)(?=\S+[^\s\/]$)/, a00orig) || url;
 },
-prvSwap(exe) {
-  let attinp = document.querySelector('#econav0 #attinp'),
-    attlist = document.querySelector('#econav0 #attlist'),
-    swpltogswi = document.querySelector('#ecoesp0 #swpltogswi'),
-    swaplist = document.querySelector('#ecoesp0 #swaplist');
-  swpltogswi.checked = false;
-  swaplist.selectedIndex = 1;
-  EC1.swplSel();
-  exe ? EC1.swapExe() : (attlist.value = "") || (attinp.value = "$SWAP:");
-},
 objQA(key, fbx) { // also triggered by rsrcsXGet, dataDispl, attInp, qconRetrvD, dviz-posts
   let pty,
     rsltFbk = rslt => pty && fbx === 0 ? ""
@@ -3411,8 +3401,8 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, dataDispl, attInp, qconRetrvD,
   : /^pfs(?:list|):/i.test(key) ? pfsListGen()
   : /^swa?p:/i.test(key) ? EC2.prvSwap(fbx)
   : /^calc:|^cjs:/i.test(key) ? EC2.calcGen(fbx, 1)
-  : /^fi?nd:/i.test(key) ? navigator.clipboard.readText()
-    .then(s => EC2.findGen(fbx, s)).catch(e => EC2.findGen(fbx, e))
+  : /^fi?nd:/i.test(key) ? !navigator.clipboard.readText()
+    .then(s => EC2.findGen(fbx, s)).catch(e => EC2.findGen(fbx, e)) || null
   : /^diff?:/i.test(key) ? EC2.diffGen(fbx || "0")
   : /^datx?:|^dbx:|^in?dx:/i.test(key) ? EC2.dvizGen(4, fbx, 1)
   : /^memo?:|^po?st:/i.test(key) ? EC2.dvizGen(3, fbx, 1)
@@ -3453,6 +3443,16 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, dataDispl, attInp, qconRetrvD,
   : /^1|^(?:eco|)idtoks?/i.test(key) ? idtoks && idtoks[ptyTest()] || rsltFbk(idtoks)
   : /^0|epsets?|(?:eco|)presets?/i.test(key) ? epsets && epsets[ptyTest()] || rsltFbk(epsets)
   : rsltFbk(EINSTR[0]);
+},
+prvSwap(exe) {
+  let attinp = document.querySelector('#econav0 #attinp'),
+    attlist = document.querySelector('#econav0 #attlist'),
+    swpltogswi = document.querySelector('#ecoesp0 #swpltogswi'),
+    swaplist = document.querySelector('#ecoesp0 #swaplist');
+  swpltogswi.checked = false;
+  swaplist.selectedIndex = 1;
+  EC1.swplSel();
+  exe ? EC1.swapExe() : (attlist.value = "") || (attinp.value = "$SWAP:");
 },
 tmplLoad() {
   let tmplrads = document.querySelector('#ecoguides #tmplrad').elements["tmplrad"],
@@ -3765,7 +3765,7 @@ qconRetrvD(cbfnc, errfnc, txd5) { // also triggered by guideLoad, dviz-idxlist, 
   } else if (rexoqa.test(valcon)) {
     Promise.resolve( EC2.objQA( valcon.replace(/^\$ *|^(\w+):.*/g, "$1"),
       valcon.replace(/^\$ *\w+:(.+)|.*/g, "$1") ))
-    .then(rslt => dataDispl(rslt, 0, cbfnc));
+    .then(rslt => rslt == null || dataDispl(rslt, 0, cbfnc));
   } else if (/^\/\/.*$/.test(valcon) && window.localforage) {
     !(lfkey = valcon.replace(/^\/\//, ""))
     ? localforage.keys((err, keys) => err ? msgHandl(err) : dataDispl(keys, 0, cbfnc))
