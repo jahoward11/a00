@@ -85,7 +85,7 @@ window.ecoqjs = { // 24
     ("" + str)
     .replace(/&(?=#?\w+;)/g, "&amp;")
     .replace( /<(!)|<(\/?[a-z].*?)(>|(?=<|$))|(--)>/gim,
-      (m, c1, c2, c3, c4) => (c4 ? "" : "&lt;") + (c1 || c2 || c4) + (c1 || !c3 ? "" : "&gt;") ),
+      (m, c1, c2, c3, c4) => (c4 ? "" : "&lt;") + (c1 || c2 || c4) + (c1 || !c3 && !c4 ? "" : "&gt;") ),
   findTxt: (sep, str) => {
     // highlight matches & prep HTML text for browser display as unrendered source code
     let rcs = ("" + sep).trim().match(/\/(.+)\/([gim]*)/) || ["" + sep],
