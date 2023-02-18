@@ -243,7 +243,7 @@ function influxSet(yes) {
 
 function publResets() {
   // triggered by (pfsListGen>)attListGen, dataDispl, pfsSel-reset, pchUpd
-  // -- not by jdeRawAlert, tabs0Tog, tabs5Tog, (pdbListGen>)pdbSel
+  // -- not by jdeRawAlert, tabs0Act, tabs5Act, (pdbListGen>)pdbSel
   let subdir = filewkg && filewkg.file_updated && filewkg.file_updated.subdir,
     cntchlps = document.querySelectorAll('#ecoesp0 #eftcntc .help'),
     cntcbtn = document.querySelector('#ecoesp0 #cntcbtn'),
@@ -374,7 +374,7 @@ function assts2Blob() { // on startup: ...
   || PouchDB.allDbs().then(a00Docs).catch(msgHandl);
 }
 
-function pdbListGen() { // also "dboListGen", "pchListGen" // on each data sync: ...
+function pdbListGen() { // also "dboListGen", "pchListGen" // on each db open/sync: ...
   let dbpc2, dbteam, idr, opts, prjitems, rval,
     dbs2 = [],
     context = { pchitems: [], pr1items: [], pr0items: [] },
@@ -425,7 +425,7 @@ function pdbListGen() { // also "dboListGen", "pchListGen" // on each data sync:
       descr_short: d.descr_short,
       descr_extd:  d.descr_extd
     },
-    listsRfrsh = msgerr => {
+    listsRfrsh = msgerr => { // todo: nec. only on startup or destroy/creat/rebrand -ing db?
       !msgerr || msgHandl(msgerr);
       context.pchitems.length || (context.pchitems = dbs2.map(dbidFbk));
       pc2list.innerHTML = pchlist.innerHTML = tmplpchlist && tmplpchlist(context);
@@ -473,7 +473,8 @@ function pdbListGen() { // also "dboListGen", "pchListGen" // on each data sync:
         .then(dbids => { context.pchitems = dbs1
           .map(e => dbids.find(d => (d || "")._id === e) || dbidFbk(e)); })
         .then(pr0sGet).catch(pr0sGet);
-      } else if (dbpc2 = new PouchDB(dbteam)) { // -retrieve imgs & prj-db ids from db "myteam"
+      } else if ( (!pf3stor.dbcntc || dbteam === (dbpch || "").name)
+      && (dbpc2 = new PouchDB(dbteam)) ) { // -retrieve imgs & prj-db ids from db "myteam"
         epsets.teamid || !(epsets.teamid = dbteam.replace(/^a\d\d_/, ""))
         || (localStorage["_ecopresets"] = JSON.stringify(epsets));
         dbpc2.get("-res-img").then( adoc => !adoc._attachments
@@ -539,7 +540,7 @@ function attListGen(attonly, publupd) { // also "dirListGen"
     .then(rsltFmt).catch(listsRfrsh);
 }
 
-function pfsListGen(fileref, publupd, filelf) { // on each db open: ...
+function pfsListGen(fileref, publupd, filelf) { // on each db open/sync: ...
   let apath, dbpc2, dbteam, opts, rval, sdir,
     zindr = 0,
     pfslist = document.querySelector('#econav0 #pfslist'),
@@ -574,7 +575,7 @@ function pfsListGen(fileref, publupd, filelf) { // on each db open: ...
       tm0urole = dbpch && ( tm0cntcs[epsets.uname]
         && tm0cntcs[epsets.uname].roles.find(e => /^Admin$|^Lead$|^Contributor$/i.test(e))
         || (caccts.find(ob => ob.DBNAME === dbpch.name) || "").USRNAM );
-      !/^Contributor$/i.test(tm0urole) || dbpch.name !== dbteam || (tm0urole = false);
+      !/^Contributor$/i.test(tm0urole) || dbteam !== (dbpch || "").name || (tm0urole = false);
       pfslist.innerHTML = pf2list.innerHTML = tmplpfslist && tmplpfslist(context);
       !fileref || !tmplpfslist || optg && optg !== "LOCAL temporary files" && fwinflux || fileResel();
       attListGen(0, publupd);
@@ -624,7 +625,7 @@ function pfsListGen(fileref, publupd, filelf) { // on each db open: ...
     tlistsGen = (dbs1 = []) => {
       if ( !window.PouchDB || !( dbteam = dbs1 // -generate placeholder contact-obj for solo user
       .find(e => epsets.teamid ? e === "a00_" + epsets.teamid : /^a\d\d_\w/.test(e)) )
-      || dbpch && dbteam === dbpch.name ) {
+      || pf3stor.dbcntc && dbpch && dbteam === dbpch.name ) {
         dbteam || !epsets.uname || ( tm0cntcs[epsets.uname] = {
           _id:       "!aaa",
           _pdb:      dbpch && dbpch.name || "",
@@ -1613,7 +1614,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
   } else if (!destindr && (!udata || typeof udata !== 'object')) {
     rawtxta.value = udata;
     fwResets();
-    EC1.tabs0Tog(4);
+    EC1.tabs0Act(4);
   } else if (!destindr || destindr === 1) { // if (typeof udata === 'object')
     reniscurr = false;
     filewkg === udata || ( filewkg = Object.assign( Array.isArray(udata) ? []
@@ -1694,7 +1695,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
     file2nd = pmgrPrefmt(file2nd);
     file2nd = ecoPrefmt(file2nd);
     jdePtyGen();
-    EC1.tabs0Tog(3);
+    EC1.tabs0Act(3);
   } else if (destindr) { // render attachment/blob/publmgr-webdoc in preview screen
     ecorender.innerHTML || !prjdisc.innerHTML || disciscurr++;
     // because prjDiscGen is already triggered by discTog
@@ -1706,7 +1707,8 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
       : epsets.appchks[26] || typeof udata !== 'string' || destindr === 3
         && (!cfgs || valatt && !/^(?:\/[a-z][0-9_a-z$,+-]*\/|)[.-]\b.+\.html?$/.test(valatl || valatt))
         ? udata : udata.replace(rexurl, (m, c1, c2, c3) => c1 + c2 + EC2.u2Blob(c3));
-    lang || !/^(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S[^]*?\n(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S/m.test(udata)
+    lang || /^<(\w+).*?>[^]*?<\/\1>\n *<(\w+).*?>[^]*?<\/\2>\n *<(\w+).*?>[^]*?<\/\3>$/m.test(udata)
+    || !/^(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S[^]*?\n(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S/m.test(udata)
     || !(lang = "md") || ( udata = udata
       .replace( /([^]*?)((?:\s|\W|^)(\*\*?|__?)(\*\*?|__?|)[^\s*_][^]*?[^\s*_]\4\3(?=\s|\W|$)|$)/g,
         (c, m1, m2) => m1.replace(/\*/g, "\\x2a;").replace(/_/g, "\\x5f;") + m2 ) );
@@ -1721,7 +1723,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
     !document.querySelector('#econav0 #prvtab.is-active') || ecorender.classList.remove("is-hidden");
     if (!window.PouchDB || destindr > 4) { return; }
     disciscurr || prjDiscGen();
-    document.querySelector('#econav0 #disctab.is-active') && prjdisc.innerHTML || EC1.tabs0Tog(0);
+    document.querySelector('#econav0 #disctab.is-active') && prjdisc.innerHTML || EC1.tabs0Act(0);
     elsass = epsets.appchks[28] ? []
       : document.querySelectorAll('#ecolinks link, #ecorender link, #ecorender img, #ecosrcview link');
     elssty = epsets.appchks[28] ? []
@@ -2540,7 +2542,7 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
 
 window.EC1 = {
 espExit() {
-  EC1.tabs0Tog(0, 1);
+  EC1.tabs0Act(0, 1);
   document.querySelectorAll('body>#econav0, body>#ecorender, body>#ecosrcview, body>#ecoguides')
   .forEach(el => el.classList.add("is-hidden"));
   document.documentElement.classList.add("has-background-grey-lighter");
@@ -2588,7 +2590,7 @@ pdbInp() {
     .forEach(el => el.classList.add("is-hidden"));
   }
 },
-navTog() { // also triggered by attSel, tabs0Tog, formFoc
+navTog() { // also triggered by attSel, tabs0Act, formFoc
   document.querySelector('body>#nav0mask').classList.toggle("is-hidden");
   document.querySelectorAll('#econav0 .navbar-burger, #econav0>#econavbar')
   .forEach(el => el.classList.toggle("is-active"));
@@ -2610,12 +2612,12 @@ prvTog() {
     window.navigator.userAgentData || prvs[1].classList.contains("is-hidden")
     || window.setTimeout(() => lnksTog() || lnksTog(), 1000);
   } else if (!epsets.prvmode) {
-    EC1.tabs0Tog(0);
+    EC1.tabs0Act(0);
     document.querySelector('#econav0 #ebrand').classList.toggle("has-background-grey");
     prvs.forEach((el, i) => i === 1 || el.classList.toggle("is-hidden"));
   }
 },
-attSel(renswap) { // also triggered by attListGen, blobHandl, couchQry, attInp, tabs0Tog, pfsSel, swapExe, fileLFDel, dviz-idxlist
+attSel(renswap) { // also triggered by attListGen, blobHandl, couchQry, attInp, tabs0Act, pfsSel, swapExe, fileLFDel, dviz-idxlist
   let attinp = document.querySelector('#econav0 #attinp'),
     attlist = document.querySelector('#econav0 #attlist'),
     idx = attlist.selectedIndex,
@@ -2684,7 +2686,7 @@ attInp() {
     couchQry(txdata, 3);
   }
 },
-tabs0Tog(idx, exit) { // also triggered by dataDispl, dropboxTx, blobHandl, prvTog, tmplLoad, calcGen, diffGen, dvizGen, qconRetrvD, dviz-dboxupd
+tabs0Act(idx, exit) { // also triggered by dataDispl, dropboxTx, blobHandl, prvTog, tmplLoad, calcGen, diffGen, dvizGen, qconRetrvD, dviz-dboxupd
   let bodcsty = window.getComputedStyle(document.body),
     tabs = document.querySelectorAll('#econav0 .navbar-start>a, #econav0 .navbar-dropdown>a'),
     tab2 = document.querySelector('#econav0 .has-dropdown>a'),
@@ -3175,7 +3177,7 @@ jdeRawUpd(noflux) { // also triggered by swapExe, dviz-dboxupd
     jdePtyGen();
   }
 },
-tabs5Tog(idx) { // also triggered by ibmConnect
+tabs5Act(idx) { // also triggered by ibmConnect
   let publtabs = document.querySelectorAll('#ecoesp0 #publtabs>ul>li'),
     publas = document.querySelectorAll('#ecoesp0 #publtabs>ul>li>a'),
     ptabactv = document.querySelector('#ecoesp0 #publtabs>ul>li.is-active'),
@@ -3204,7 +3206,7 @@ metaChg(evt, pty) {
       : filewkg.file_updated.version.replace(/\d+$/, m => ++m) ) ? "is-warning" : "is-success" );
   }
 },
-tabs6Tog(idx) { // also triggered by ibmConnect
+tabs6Act(idx) { // also triggered by ibmConnect
   let tooltabs = document.querySelectorAll('#ecoesp0 #tooltabs>ul>li'),
     toolas = document.querySelectorAll('#ecoesp0 #tooltabs>ul>li>a'),
     ttabactv = document.querySelector('#ecoesp0 #tooltabs>ul>li.is-active'),
@@ -3400,13 +3402,13 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, dataDispl, attInp, qconRetrvD,
   : /^att(?:list|):/i.test(key) ? attListGen()
   : /^pfs(?:list|):/i.test(key) ? pfsListGen()
   : /^swa?p:/i.test(key) ? EC2.prvSwap(fbx)
-  : /^calc:|^cjs:/i.test(key) ? EC2.calcGen(fbx, 1)
+  : /^calc?:|^cjs:/i.test(key) ? EC2.calcGen(fbx, 1)
   : /^fi?nd:/i.test(key) ? !navigator.clipboard.readText()
     .then(s => EC2.findGen(fbx, s)).catch(e => EC2.findGen(fbx, e)) || null
   : /^diff?:/i.test(key) ? EC2.diffGen(fbx || "0")
-  : /^datx?:|^dbx:|^in?dx:/i.test(key) ? EC2.dvizGen(4, fbx, 1)
+  : /^datx?:|^dbx:|^in?de?x:/i.test(key) ? EC2.dvizGen(4, fbx, 1)
   : /^memo?:|^po?st:/i.test(key) ? EC2.dvizGen(3, fbx, 1)
-  : /^cntc?s?:|^contacts?:|^dvi?z:/i.test(key)
+  : /^co?nta?c?t?s?:|^dvi?z:/i.test(key)
     ? (/^[0-4]$/.test(fbx) ? EC2.dvizGen(fbx, null, 1) : EC2.dvizGen(fbx ? 1 : 2, fbx, 1))
   : /^a00p/i.test(key) ? a00path
   : /^a00o/i.test(key) ? a00orig
@@ -3460,7 +3462,7 @@ tmplLoad() {
     pfslist = document.querySelector('#econav0 #pfslist');
   if ( !fwinflux && ( pfslist.selectedIndex = Array.from(pfslist.options)
   .findIndex(op => op.parentElement.label === "APP templates" && op.value === tmplrads.value) )) {
-    EC1.tabs0Tog(2);
+    EC1.tabs0Act(2);
     EC1.pfsSel();
   }
 },
@@ -3478,7 +3480,7 @@ guideLoad() {
     };
   if (!fwinflux && guiderads.value) {
     qcontxta.value = JSON.stringify(txdata, null, 2) + "\n";
-    EC2.qconRetrvD(() => EC1.tabs0Tog(0));
+    EC2.qconRetrvD(() => EC1.tabs0Act(0));
   }
 },
 calcGen(cinit = "", redir) {
@@ -3486,7 +3488,7 @@ calcGen(cinit = "", redir) {
     attlist = document.querySelector('#econav0 #attlist'),
     calcdemo = document.querySelector('#ecoesp0 #calctogswi').checked,
     calctmpl = jsonParse(JSON.stringify(ETMPLS.publmgr)),
-    cbFnc = () => (attlist.value = attinp.value = "") || !(redir || EC1.tabs0Tog(0))
+    cbFnc = () => (attlist.value = attinp.value = "") || !(redir || EC1.tabs0Act(0))
       || (attinp.value = "$CALC:" + (cinit || (!calcdemo ? "empty" : "demo")));
   calctmpl = Object.assign( calctmpl, {
     _id: "",
@@ -3513,7 +3515,7 @@ findGen(spv, str) {
   let findtmpl = jsonParse(JSON.stringify(ETMPLS.publmgr)),
     attinp = document.querySelector('#econav0 #attinp'),
     attlist = document.querySelector('#econav0 #attlist'),
-    cbFnc = () => (attlist.value = attinp.value = "") || !(fldfoc || EC1.tabs0Tog(0) || 1)
+    cbFnc = () => (attlist.value = attinp.value = "") || !(fldfoc || EC1.tabs0Act(0) || 1)
       || (attinp.value = !str ? "" : "$FIND:" + (spv || "")),
     srctxt = typeof str === 'string' ? str : (fldfoc || "").value || "";
   findtmpl = Object.assign( findtmpl, {
@@ -3547,7 +3549,7 @@ diffGen(evt, txt1, txt2) { // also triggered by dviz-dboxupd
     difftmpl = jsonParse(JSON.stringify(ETMPLS.publmgr)),
     attinp = document.querySelector('#econav0 #attinp'),
     attlist = document.querySelector('#econav0 #attlist'),
-    cbFnc = () => (attlist.value = attinp.value = "") || !(evt && evt.target || EC1.tabs0Tog(0) || evt)
+    cbFnc = () => (attlist.value = attinp.value = "") || !(evt && evt.target || EC1.tabs0Act(0) || evt)
       || (attinp.value = "$DIFF:" + (!elm1 ? "" : /,.*?(\w+)(?=')/.exec("" + elm1.onblur)[1]));
   txt1 = txt1 || ( elm1 = document.querySelector('#ecoesp0 #ptyvals' + pnbr + '>input')
     || document.querySelector('#ecoesp0 #ptyvals' + pnbr + '>textarea')
@@ -3596,7 +3598,7 @@ dvizGen(idx, dbn, redir) {
     pchlist = document.querySelector('#ecoesp0 #pchlist'),
     dbpc2 = window.PouchDB && dbn
       && Array.from(pchlist.options).some(op => op.value === dbn) && new PouchDB(dbn) || dbpch,
-    cbFnc = () => (attlist.value = attinp.value = "") || !(redir || EC1.tabs0Tog(0) || 1)
+    cbFnc = () => (attlist.value = attinp.value = "") || !(redir || EC1.tabs0Act(0) || 1)
       || ( attinp.value = !redir && !idx ? "" : idx < 3 ? "$CNTC:"
           + (!idx ? "blank" : idx < 2 ? (!dbpc2 ? "n/a" : dbpc2.name) : epsets.teamid || "team")
         : (idx < 4 ? "$POST:" : "$INDX:") + (!dbpc2 ? "n/a" : dbpc2.name) ),
@@ -3755,7 +3757,7 @@ qconRetrvD(cbfnc, errfnc, txd5) { // also triggered by guideLoad, dviz-idxlist, 
     [txdata, valcon] = txdPrep(),
     ecoat = (txdata.idtoks || idtoks || "").accessToken;
   txd5 || !valcon || !filewkg || !/^eco-(?:publmgr|scrap|srcdoc)$/.test(filewkg.file_type)
-  || document.querySelector('#ecoesp0 .escreen:nth-of-type(2):not(.is-hidden)') || EC1.tabs0Tog(4);
+  || document.querySelector('#ecoesp0 .escreen:nth-of-type(2):not(.is-hidden)') || EC1.tabs0Act(4);
   if ((txd5 || "").file_type) {
     document.querySelector('#econav0 #pfsinp').value = "";
     EC1.pfsInp();
@@ -4394,8 +4396,8 @@ ibmConnect() {
         + '/-res-css/bulma0.9-minireset.css" type="text/css" rel="stylesheet" />\n'
         + document.querySelector('body>#ecorender').innerHTML.trim(), 5 );
       emodeSet();
-      EC1.tabs5Tog(asels[3].selectedIndex = epsets.tabsdflt[0] || 0);
-      EC1.tabs6Tog(asels[4].selectedIndex = epsets.tabsdflt[1] || 0);
+      EC1.tabs5Act(asels[3].selectedIndex = epsets.tabsdflt[0] || 0);
+      EC1.tabs6Act(asels[4].selectedIndex = epsets.tabsdflt[1] || 0);
       document.querySelector('#ecoesp0 #swpltogswi').checked = epsets.swapchks[0];
       document.querySelector('#ecoesp0 #wraptogswi').checked = epsets.swapchks[1];
       EC1.wrapTog();
