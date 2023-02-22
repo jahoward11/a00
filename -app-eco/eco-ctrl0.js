@@ -3950,23 +3950,22 @@ mnTog(xpnd) {
   || [mnmask, mnnav].forEach(el => el.classList.toggle("is-hidden"));
 },
 mnNav(incr) {
-  let ofy, mn0,
+  let nbr,
+    mncount = document.querySelector('#ecorender>#mnnav #mncount'),
     mnots = document.querySelectorAll('#ecorender .mnote'),
     len = mnots.length,
-    las = len && +mnots[len - 1].id.replace(/mnot(\d+)/, "$1"),
-    mncount = document.querySelector('#ecorender>#mnnav #mncount'),
-    nbr = incr == null && 1 || mncount && (+mncount.innerText.replace(/ .+/, "") + incr) || 0,
-    ptQ = e => document.elementFromPoint(
-      document.documentElement.clientWidth - 5, e + window.innerHeight / 2 );
-  nbr = !len ? 0 : nbr > las ? 1 : nbr < 1 ? las : nbr;
-  if (incr == 0) {
-    ofy = [0, 10, -10, 20, -20, 30, -30, 40, -40, 50, -50, 60, -60, 70, -70, 80, -80, 90]
-      .find(n => ptQ(n).classList.contains("mnote")) || -90;
-    nbr = +ptQ(ofy).id.replace(/^mnot/, "") || nbr;
+    las = len && +/\d+$/.exec(mnots[len - 1].id) || 0,
+    posY = el => el && el.getBoundingClientRect().y - window.innerHeight / 2;
+  if (incr != 0) {
+    nbr = incr == null && 1 || mncount && (+/^\d+/.exec(mncount.innerText) + incr),
+    nbr = !len ? 0 : nbr > las ? 1 : nbr < 1 ? las : nbr;
+  } else {
+    nbr = Array.from(mnots).findIndex(el => posY(el) > -1);
+    nbr = nbr < 0 ? las : !nbr ? 1 : -posY(mnots[nbr - 1]) < posY(mnots[nbr]) ? nbr : nbr + 1;
   }
-  !mncount || !(mncount.innerText = nbr + " of " + las) || incr == null
-  || !(mn0 = document.querySelector('#ecorender #mnot' + nbr))
-  || mn0.scrollIntoView({ behavior: "smooth", block: "center" });
+  !mncount || (mncount.innerText = (incr == null ? "0" : nbr) + " of " + las);
+  incr == null || !mnots[nbr - 1]
+  || mnots[nbr - 1].scrollIntoView({ behavior: "smooth", block: "center" });
 },
 discTog(evt) {
   let dload = document.querySelectorAll('#ecoesp0 #prjdisc>.field .mlft2>input[type=checkbox]'),
