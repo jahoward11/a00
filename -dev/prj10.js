@@ -352,6 +352,14 @@ const srtools = `// __Search-&-Replace Tools__
  // sepainp.value = "/(?=\`|\\\\\\\\|\\\\$\\\\{[^]*?\\\\})/g";
  // rtrminp.value = "\\\\\\\\";
 
+// in disc log, set off chronology date with stylized h4 tags
+ // sepainp.value = "/(\\\\n\\\\n|\\\\n#+.*\\\\n|^)(20\\\\d\\\\d(?:-\\\\d\\\\d){0,2}) *(?=\\\\n|$)/gi";
+ // rtrminp.value = "$1#### $2 <!-- {#$2.dchron} -->  ";
+
+// in disc log, set off speaker name with bold tags
+ // sepainp.value = "/(\\\\n\\\\n|\\\\n#.*\\\\n|\\\\n20\\\\d\\\\d(?:-\\\\d\\\\d){0,2} *\\\\n|^)(?!at?\\\\d*:|aims?:|answers?:|(?:be|)cause:|by:|clues?:|conclusions?:|dates?:|ergo:|expect(?:ed|):|final:|for:|from:|givens?:|goals?:|hints?:|i[fn]:|initial:|locations?:|messages?:|msgs?:|names?:|next:|notes?:|object(?:ive|)s?:|observed?:|on:|outcomes?:|places?:|points?:|purposes?:|q\\\\d*:|questions?:|reasons?:|responses?:|results?:|[st]o:|subj(?:ect|):|takeaways?:|targets?:|then:|therefore:|thus:|time:|tips?:|with:)[A-Z](\\\\w*:)(?=\\\\s)/gi";
+ // rtrminp.value = "$1__$2__";
+
 // find misapplied emphasis/superscript/code markers in cmods
 /*
  srctxta.textContent = JSON.stringify(xstor.util, 0, 2);
