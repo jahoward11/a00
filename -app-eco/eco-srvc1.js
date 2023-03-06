@@ -1413,7 +1413,7 @@ let rva2, rval, ss0, ss1,
         qcontxta.value = "$dstor";
         EC2.qconRetrvD(() => {
           qcontxta.value += "\\n/" + txd2.DBNAME;
-          EC1.tabs0Tog(3);
+          EC1.tabs0Act(3);
         });
       },
       row1Tfm = r1 => {

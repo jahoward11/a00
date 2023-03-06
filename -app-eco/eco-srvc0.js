@@ -125,7 +125,10 @@ EC0.CTXD = [
     DBNAME: "myPrjHomeDB02",
     FILEID: "",
     ATTKEY: "",
-    OPTS:   {}
+    OPTS:   {
+      rev: null,
+      revs_info: true
+    }
   },
   {
     DBNAME: "myPrjHomeDB03",

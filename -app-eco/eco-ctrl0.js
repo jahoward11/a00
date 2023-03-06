@@ -3811,9 +3811,9 @@ qconRetrvD(cbfnc, errfnc, txd5) { // also triggered by guideLoad, dviz-idxlist, 
     txdata.dPrc = /\.(?:[ct]|content|te?xt\d)\d*$/.test(valcon) ? dprc.cnt
       : /\.(?:[ls]|li?nk|sty|style)\d*$/.test(valcon) ? dprc.sty
       : /\.(?:h|html?)\d*$/.test(valcon) ? dprc.htm : 0;
-    couchQry(txdata, 0, cbfnc);
+    couchQry(txdata, txdata.destindr || 0, cbfnc);
   } else {
-    couchQry(txdPrep(0)[0], 0, cbfnc);
+    couchQry(txdPrep(0)[0], txdata.destindr || 0, cbfnc);
   }
 },
 qconSubmD(ccommit) {
