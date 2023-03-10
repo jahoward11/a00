@@ -13,7 +13,7 @@ var acs = cfgs && !cfgs.eventPhase && cfgs || window.annos && window.annos.confi
   annoblocks = [], //refnbrAssn, annosXlink
   bodwid, dstyle0, el0, el1, htmlpers, masthd, nmain, nsty, ntoc,
   pei = 0,
-  tag, texthl, tocbuls,
+  tag, tocbuls,
   tocbuild = ""; //refnbrAssn, annosfns
 const h1node = window.editorApp || window.EC0 ? null : document.head,
   d1wrap = window.cmain && (window.xctrls || "").nextElementSibling ? "#cmain>:last-child"
@@ -24,9 +24,12 @@ const h1node = window.editorApp || window.EC0 ? null : document.head,
   dmwrap = !document.querySelector(d1wrap + dswrap + '>main') ? "" : ">main",
   dcnode = document.querySelector(d1wrap + dswrap + dmwrap),
   dstyles = (window.editorApp || window.EC0 ? d1node : document).querySelectorAll('style'),
-  rexhlwr = /<!-- *(?:annotations-hili|annoshl|texthl).*\n*([^]*?)\n*-->/i,
   rexhlmc = /((?:(?:\n*\/.+\/[gim]*|\n*{[ *+:=_~]*\\?[#.]?\w*}|\n*.+?{ *\+\+ *\\?[#.]?\w*})(?:\n|(?=$))|\n)+|^)([^]*?)(?=(?:\n+\/.+\/[gim]*|\n*{[ *+:=_~]*\\?[#.]?\w*}|\n+.+?{ *\+\+ *\\?[#.]?\w*})(?:\n|$)|\n\n|$)/g,
-  rexperi = /<!--[^]*?-->|<(script|style)\b.*?>[^]*?<\/\1>/gi,
+  rexfrgs = /[^]*?(?:<!-- *(?:\/\/ *|)(?:anno(?:tation|)s?(?:hl|)|texthl)\b.*-->|$)/gi,
+  rexhlwr = /<!-- *(?:\/\/ *|)(?:anno(?:tation|)s?(?:hl|)|texthl)\b.*?(?:\n+[^]*?|)-->/gi,
+  rexhlw2 = /<!-- *(?!\/\/).+\n+([^]*?)\n*-->|[^]+/i,
+  rexhlw3 = /(<!-- *(?:\/\/ *|)(?:anno(?:tation|)s?(?:hl|)|texthl)\b.*?)(?:\n[^]*?|)(?=-->)/gi,
+  rexperi = /<!--(?! *(?:\/\/ *|)(?:anno(?:tation|)s?(?:hl|)|texthl)\b.*-->)[^]*?-->|<(script|style)\b.*?>[^]*?<\/\1>/gi,
   blqLeft = n => !n || !/^(?:BLOCKQUOTE|DL|DD|LI|OL|UL)$/.test(n.nodeName) ? 0
     : +getComputedStyle(n).marginLeft.replace(/px/, "")
       + +getComputedStyle(n).borderLeftWidth.replace(/px/, "")
@@ -97,9 +100,9 @@ if (!hxlen.some(e => e)) {
 hxtoplvl = hxlen.findIndex(l => l);
 tf0auto = hxtoplvl < 0 ? 0 : [1, 2, 3, 4, 5, 6].find(n => hxtoplvl <= n && hxlen[n] > 1) || 0;
 tf1auto = !tf0auto ? 0 : hxlen[3] && tf0auto <= 2 ? 4 - tf0auto : hxlen[2] && tf0auto <= 1 ? 2 : 1;
-tf05 = Array.isArray(tocfmt) && tocfmt[0] !== null && tocfmt[1] !== null ? tocfmt.slice(0, 6)
+tf05 = Array.isArray(tocfmt) && tocfmt[0] != null && tocfmt[1] != null ? tocfmt.slice(0, 6)
     .concat([tocfmt[0], tocfmt[1], null, null].slice(tocfmt.length < 6 ? tocfmt.length - 2 : 4))
-    .map(e => e === null ? null : !+e || !Number.isInteger(+e) || +e < 0 ? 0 : +e)
+    .map(e => e == null ? null : !+e || !Number.isInteger(+e) || +e < 0 ? 0 : +e)
   : (typeof tocfmt !== 'string' || /^auto/i.test(tocfmt))
     ? [ tf0auto, tf1auto, hxtoplvl < 0 ? 0 : hxtoplvl, (tf1auto + tf0auto || hxtoplvl) - hxtoplvl,
       null, null ]
@@ -119,11 +122,11 @@ hnseps = Array.isArray(tocfmt) && tocfmt.length >= 7 + (tf05[1] || tf05[3]) ? to
     .concat(tf05[1] === 1 || !tf05[1] && tf05[3] === 1 ? ["."] : [""]);
 tocbuls = /^[bu]/i.test(tocfmt[0] || hnseps[0]);
 hnseps[0] = hnseps[0].replace(/^[bu]/i, "");
-hxchlvl = tf05[4] !== null ? tf05[4] : tf05[0] && tf05[1]
+hxchlvl = tf05[4] != null ? tf05[4] : tf05[0] && tf05[1]
   ? [3, 2, 1, 4, 5, 6].find(l => hxlen[l] && tf05[0] <= l && tf05[0] + tf05[1] > l) || 0
   : [3, 2, 1, 4, 5, 6].find(l => hxlen[l] && tf05[2] <= l && tf05[2] + tf05[3] > l) || 0;
-hxrlvl = tf05[5] !== null ? tf05[5] : hxchlvl;
-if (tf05[2] === null || tf05[3] === null) { tf05[2] = tf05[0]; tf05[3] = tf05[1]; }
+hxrlvl = tf05[5] != null ? tf05[5] : hxchlvl;
+if (tf05[2] == null || tf05[3] == null) { tf05[2] = tf05[0]; tf05[3] = tf05[1]; }
 if (hxrlvl && hxrlvl < 7 && (!tf05[0] || !tf05[1])) { hntoc--;
   if (tf05[2] && tf05[3] && hxrlvl >= tf05[2]) { tf05[0] = tf05[2]; tf05[1] = hxrlvl - tf05[2] + 1;
   } else { tf05[0] = hxrlvl; tf05[1] = 1; }
@@ -213,8 +216,8 @@ for (j = 0, parlen = pars.length; j < parlen; j++) { //for (let [j, pari] of par
   && /\bmnote/i.test(pars[j].previousElementSibling.className) ) {
     annoblocks["ch" + (chNbr(hnbgn) - 1 + navct) + "par" + (j - pari_navct)] = ++mnotect;
   }
-  if ( pari_navct !== null && j - pari_navct && (j - pari_navct) % acs.pnfreq === 0
-  && ( pars[j].previousElementSibling === null
+  if ( pari_navct != null && j - pari_navct && (j - pari_navct) % acs.pnfreq === 0
+  && ( pars[j].previousElementSibling == null
   || !/\bmnote/i.test(pars[j].previousElementSibling.className) )) {
     ndiv = document.createElement('div');
     ndiv.id = "ch"
@@ -256,7 +259,7 @@ hnwrap1 = !Array.isArray(acs.hnwrap) || acs.hnwrap.length <= 1 ? "$& "
   : /=>/.test(acs.hnwrap[1]) ? eval(acs.hnwrap[1])
   : (acs.hnwrap[1] || "") + (/\$[&123]/.test(acs.hnwrap[1]) ? "" : "$& ");
 hnwrap3 = !Array.isArray(acs.hnwrap) || acs.hnwrap.length <= 2
-|| acs.hnwrap[3] === null || acs.hnwrap[3] === false || acs.hnwrap[3] === 0 ? ""
+|| acs.hnwrap[3] == null || acs.hnwrap[3] === false || acs.hnwrap[3] === 0 ? ""
   : /=>/.test(acs.hnwrap[3]) ? eval(acs.hnwrap[3])
   : (acs.hnwrap[3] || "") + (/\$[&123]/.test(acs.hnwrap[3]) ? "" : "$& ");
 for (hxi = 0, hxsl = tochxs.length; hxi < hxsl; hxi++) {
@@ -324,14 +327,14 @@ function annosXlink() {
       }
 */
 
-function annosHilit(dochtml) {
+function annosHilit(dochtml, i) {
   let acolor, aptys, atag,
     cdflts = {span: "", mark: ".ye6", strong: "", em: "", s: "", ins: ""},
     isrex, mnct = 0, rfnc, sepa, tdflt = "mark",
     mdit = window.markdownit && window.markdownit();
   !(mdit && window.markdownitIns && window.markdownitSub && window.markdownitSup)
   || (mdit = mdit.use(window.markdownitIns).use(window.markdownitSub).use(window.markdownitSup));
-  acs.texthl.forEach(txt => {
+  !Array.isArray(acs.texthl[i]) || acs.texthl[i].forEach(txt => {
     aptys = /{ *([*+=_~]*) *([#.]?\w*|\\#[0-9a-f]{3,6}) *}$/.exec(txt) || ["", "", ""];
     aptys[3] = typeof txt !== 'string' ? "" : txt.replace(/ *{[ *+=_~]*\\?[#.]?\w* *}$/, "");
     atag = (isrex = txt instanceof RegExp) ? tdflt
@@ -347,12 +350,12 @@ function annosHilit(dochtml) {
       : acolor ? " style=\"background: " + acolor.replace(/^\\/, "") + ";\"" : "";
     sepa = atag === "ins" && aptys[3]
       ? eval(sepa.toString().replace(/(?=(?:\(\?=.*?\)|)\/[gim]*$)/, "<\\/\\w+>"))
-      : isrex ? txt : !aptys[3] ? /^$/ : !texthl ? aptys[3] : new RegExp(aptys[3]);
+      : isrex ? txt : !aptys[3] ? /^$/ : new RegExp(aptys[3]); //!texthl ? aptys[3] :
       //("\\b" + aptys[3] + "\\b", "gi")
     rfnc = atag === "ins" ? ( !aptys[3] ? "$&"
         : "$& <ins" + (acolor || " id=mnot" + ++mnct + " class=mnote") + ">"
           + (!mdit ? aptys[3] : mdit.renderInline(aptys[3])).replace(/\\n/g, "\n") + "</ins>" )
-      : isrex || !texthl ? "<" + atag + acolor + ">$&</" + atag + ">"
+      : isrex ? "<" + atag + acolor + ">$&</" + atag + ">" //|| !texthl
       : (...args) => "<" + atag + acolor + ">" + ( args.slice(1, args.length - 2)
           .map((e, i) => e + (i%2 ? "<" + atag + acolor + ">" : "</" + atag + ">")).join("")
           || args[0] ) + "</" + atag + ">";
@@ -377,36 +380,38 @@ acs = {
   pnwrap: acs.pnwrap || (acs.pnwrap === "" ? "" : "<br />"),
   pnfreq: acs.pnfreq > 0 && acs.pnfreq || (acs.pnfreq <= 0 ? 0 : 5),
   numalt: acs.numalt || [], //["Zeroth", "First", "Second", "Third"],
-  codehl: acs.codehl || 1,
-  texthl: acs.texthl || []
+  codehl: acs.codehl == null ? 1 : acs.codehl,
+  texthl: acs.texthl //[]
 };
-texthl = ( !Array.isArray(acs.texthl) && acs.texthl ? acs.texthl
-  : (dcnode.innerHTML.match(rexhlwr) || ["", ""])[1] )
-  .replace(/(?: +|^)\/\/.*| +$|^ +/gm, "").replace(/(\\n)\n(?=.)/g, "$1");
-texthl = ( !/\v|.\\v./.test(texthl) ? texthl
-  : texthl.replace(/[^\n\v](?=\n.)|.\\v(?=.)/g, "$&\n").replace(/\v$|\\v$/gm, "") )
-.replace( rexhlmc, (m, c1, c2) => !c2 ? m : c1 + "\n(" + c2.trim()
-  .replace(/(?=[$().?[\\{|])/g, "\\") // escape 9/12 md chars
-  .replace(/(\*\*?|__?)(\*\*?|__?|)(.+?)\2\1/g, "(?:<(?:em|strong)>){1,2}$3(?:</(?:em|strong)>){1,2}")
-  .replace(/( |^)==(.+?)==(?=[^\w=])/gm, "$1<mark>$2</mark>")
-  .replace(/( |^)~~(.+?)~~(?=[^\w~])/gm, "$1<s>$2</s>")
-  .replace(/( |^)\+\+(.+?)\+\+(?=[^\w+])/gm, "$1<ins>$2</ins>")
-  .replace(/( |^)(`+)(.+?)\2(?=[^\w`])/gm, "$1<code>$3</code>")
-  .replace(/~(\w+)~/g, "<sub>$1</sub>")
-  .replace(/\^(\w+)\^/g, "<sup>$1</sup>")
-  .replace(/(?=[*+^])/g, "\\") // escape 3/12 md chars
-  .replace(/&(?!#?\w+;)/g, "(?:&|&amp;)").replace(/\xa0|&nbsp;/g, "(?:\\xa0|&nbsp;)")
-  .replace( /\\\(\\\?[!:=].*?[^\n\\]\\\)/g, m => m.replace(/\\(.)/g, "$1")
-    .replace(/\\\\\\n/g, "<br>").replace(/\\\\ /g, "(?:\\xa0|&nbsp;)") )
-  .replace(/[ \u2008-\u200b]*(?:---?|\u2014)[ \u2008-\u200b]*/g, "[\\x20\\u2008-\\u200b\\u2014-]+")
-  .replace(/[\t ]+/g, "\\s+").replace(/["'‘’“”]/g, "(?:[\"'‘’“”]|&quot;)")
-  .replace(/\n/g, ")(.*?)(") + ")" ).replace(/\n\n+/g, "\n").trim();
-if (!Array.isArray(acs.texthl) || !acs.texthl.length) { //(/(?:[^\\]|^)(?:\\\\)*\\(?!\\)/g, "$&\\")
-  acs.texthl = !texthl ? []
-  : texthl.split("\n").map(e => !/^\/.+\/[gim]*$/.test(e) ? e : eval(e) || e);
-}
+acs.texthl = ( acs.texthl && acs.texthl.length
+  ? (Array.isArray(acs.texthl) ? acs.texthl : [acs.texthl])
+  : (dcnode.innerHTML.match(rexhlwr) || []).map(tgi => tgi.replace(rexhlw2, "$1")) )
+.map( tgi => Array.isArray(tgi) ? tgi
+  : (tgi = ("" + tgi).replace(/(?: +|^)\/\/.*| +$|^ +/gm, "").replace(/(\\n)\n(?=.)/g, "$1"))
+    && ( !/\v|.\\v./.test(tgi) ? tgi
+        : tgi.replace(/[^\n\v](?=\n.)|.\\v(?=.)/g, "$&\n").replace(/\v$|\\v$/gm, "") )
+      .replace( rexhlmc, (m, c1, c2) => !c2 ? m : c1 + "\n(" + c2.trim()
+        .replace(/(?=[$().?[\\{|])/g, "\\") // escape 9/12 md chars
+        .replace( /(\*\*?|__?)(\*\*?|__?|)(.+?)\2\1/g,
+          "(?:<(?:em|strong)>){1,2}$3(?:</(?:em|strong)>){1,2}" )
+        .replace(/( |^)==(.+?)==(?=[^\w=])/gm, "$1<mark>$2</mark>")
+        .replace(/( |^)~~(.+?)~~(?=[^\w~])/gm, "$1<s>$2</s>")
+        .replace(/( |^)\+\+(.+?)\+\+(?=[^\w+])/gm, "$1<ins>$2</ins>")
+        .replace(/( |^)(`+)(.+?)\2(?=[^\w`])/gm, "$1<code>$3</code>")
+        .replace(/~(\w+)~/g, "<sub>$1</sub>")
+        .replace(/\^(\w+)\^/g, "<sup>$1</sup>")
+        .replace(/(?=[*+^])/g, "\\") // escape 3/12 md chars
+        .replace(/&(?!#?\w+;)/g, "(?:&|&amp;)").replace(/\xa0|&nbsp;/g, "(?:\\xa0|&nbsp;)")
+        .replace( /\\\(\\\?[!:=].*?[^\n\\]\\\)/g, m => m.replace(/\\(.)/g, "$1")
+          .replace(/\\\\\\n/g, "<br>").replace(/\\\\ /g, "(?:\\xa0|&nbsp;)") )
+        .replace( /[ \u2008-\u200b]*(?:---?|\u2014)[ \u2008-\u200b]*/g,
+          "[\\x20\\u2008-\\u200b\\u2014-]+" )
+        .replace(/[\t ]+/g, "\\s+").replace(/["'‘’“”]/g, "(?:[\"'‘’“”]|&quot;)")
+        .replace(/\n/g, ")(.*?)(") + ")" )
+      .replace(/\n\n+/g, "\n").trim() //(/(?:[^\\]|^)(?:\\\\)*\\(?!\\)/g, "$&\\")
+      .split("\n").map(e => !/^\/.+\/[gim]*$/.test(e) ? e : eval(e) || e) );
 
-dcnode.innerHTML = dcnode.innerHTML.replace(/<!-- *(?:\/\/ *)?(?:anno|text)[^]*?-->\n?/gi, "");
+dcnode.innerHTML = dcnode.innerHTML.replace(rexhlw3, "$1");
 //dcnode.normalize();
 !acs.codehl || hljsSetup();
 htmlpers = dcnode.innerHTML.match(rexperi) || []; // preserve periph
@@ -418,7 +423,7 @@ if (!dcnode.querySelector('.refnbr')) {
   refnbrAssn();
   annosXlink();
 }
-dcnode.innerHTML = annosHilit(dcnode.innerHTML);
+dcnode.innerHTML = dcnode.innerHTML.match(rexfrgs).map(annosHilit).join("");
 !window.mnmask
 || d1node.querySelectorAll('mark>ins.mnote').forEach(e => e.parentElement.after(" ", e))
 || d1node.querySelectorAll('mark>ins.mnote').forEach(e => e.parentElement.after(" ", e))
@@ -441,8 +446,8 @@ if (tocbuild && !d1node.querySelector('#TOC')) { // insert toc
         .reduce(a => a.previousElementSibling || a, el0) || "" ).nodeName ) && (el0 = el1) ) || 1 )
   || el0.parentElement.insertBefore(ntoc, el0).insertAdjacentText('afterend', "\n");
 }
-dcnode.innerHTML = dcnode.innerHTML.replace(/<!--phold-periph-->/gi, () => htmlpers[pei++]);
-// restore periph
+dcnode.innerHTML = dcnode.innerHTML
+.replace(/<!--phold-periph-->/gi, () => htmlpers[pei++]); // restore periph
 if ( !Array.from(dstyles).some( s => /#TOC\b/.test(s.innerHTML)
 || /\n\.navch, p\.navch .+\n\.refnbr .+\n\.mnote, ins\.mnote /.test(s.innerHTML)
 || /^@import ".*\/style-hjas-dflt0\.css"/m.test(s.innerHTML) )) {
