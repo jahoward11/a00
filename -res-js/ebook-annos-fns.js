@@ -388,7 +388,7 @@ acs.texthl = ( acs.texthl && acs.texthl.length
   : (dcnode.innerHTML.match(rexhlwr) || []).map(tgi => tgi.replace(rexhlw2, "$1")) )
 .map( tgi => Array.isArray(tgi) ? tgi
   : (tgi = ("" + tgi).replace(/ +\/\/.*|^\/\/.*\n?| +$|^ +/gm, "").replace(/(\\n)\n(?=.)/g, "$1"))
-    && ( !/\v|.\\v.|\n\n\/?(?:[^\S\/]/.test(tgi) ? tgi
+    && ( !/\v|.\\v./.test(tgi) && /\S\n\n\/?[^\S\/]/.test(tgi) ? tgi
         : tgi.replace(/[^\n\v](?=\n.)|.\\v(?=.)/g, "$&\n").replace(/\v$|\\v$/gm, "") )
       .replace( rexhlmc, (m, c1, c2) => !c2 ? m : c1 + "\n(" + c2.trim()
         .replace(/(?=[$().?[\\{|])/g, "\\") // escape 9/12 md chars
