@@ -577,7 +577,7 @@ function pfsListGen(fileref, publupd, filelf) { // on each db open/sync: ...
         || (caccts.find(ob => ob.DBNAME === dbpch.name) || "").USRNAM );
       !/^Contributor$/i.test(tm0urole) || dbteam !== (dbpch || "").name || (tm0urole = false);
       pfslist.innerHTML = pf2list.innerHTML = tmplpfslist && tmplpfslist(context);
-      !fileref || !tmplpfslist || filelf !== 1 && fwinflux || fileResel();
+      !fileref || !tmplpfslist || filelf && fwinflux || fileResel();
       attListGen(0, publupd);
     },
     rsltFmt = rqry => {
