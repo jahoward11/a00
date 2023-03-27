@@ -577,7 +577,7 @@ function pfsListGen(fileref, publupd, filelf) { // on each db open/sync: ...
         || (caccts.find(ob => ob.DBNAME === dbpch.name) || "").USRNAM );
       !/^Contributor$/i.test(tm0urole) || dbteam !== (dbpch || "").name || (tm0urole = false);
       pfslist.innerHTML = pf2list.innerHTML = tmplpfslist && tmplpfslist(context);
-      !tmplpfslist || !fileref || filelf !== 1 && fwinflux || fileResel();
+      !tmplpfslist || !fileref || typeof filelf !== 'number' && fwinflux || fileResel();
       attListGen(0, publupd);
     },
     rsltFmt = rqry => {
@@ -2242,7 +2242,7 @@ function couchPut(txdata = txdPrep()[0]) {
           if ( !optg || optg !== "LOCAL temporary files"
           || !Array.from(fileslf.children).some(op => op.value === fileref) ) {
             !txdata.DELETE || filewkg !== cobj || (fileref = "");
-            !txdata.vassets ? pfsListGen(fileref, subdir) : attListGen(0, subdir);
+            !txdata.vassets ? pfsListGen(fileref, subdir, 0) : attListGen(0, subdir);
           } else if (!txdata.vassets) {
             EC2.fileLFUpd(resp.rev, subdir);
           }
