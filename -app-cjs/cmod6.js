@@ -747,7 +747,7 @@ window.dataMgr = ox => { let key = lfinp.value.trim(); if (ox === 2) return !key
 /*
  srctxta.value || import("../-app-cjs/spark.js").then(m => srctxta.value = m.dune.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(reShow); //
  sepainp.value = "/^.*?(\\\\bdune\\\\b).*\\\\n*|^.*\\\\n*/gim"; //
- rtrminp.value = "(m, c1, i) => { i || (window.it0 = 0); return !c1 ? \\"\\" : \\" \\" + ++it0 + \\". \\" + m; }";
+ rtrminp.value = "(m, c1, p) => { p || (window.it0 = 0); return !c1 ? \\"\\" : \\" \\" + ++it0 + \\". \\" + m; }";
 */
 
 /*
@@ -762,7 +762,7 @@ window.dataMgr = ox => { let key = lfinp.value.trim(); if (ox === 2) return !key
     + Un-comment the following one line of code, then tap "PARSE".
 */
 
- // rtrminp.value = "(m, c1, i) => { i || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" \\" + ++it1 + \\". [line \\" + it0 + \\"]\\\\n\\" + m; }";
+ // rtrminp.value = "(m, c1, p) => { p || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" \\" + ++it1 + \\". [line \\" + it0 + \\"]\\\\n\\" + m; }";
 
 /*
     + This result gives us a helpful location reference for every
@@ -776,7 +776,7 @@ window.dataMgr = ox => { let key = lfinp.value.trim(); if (ox === 2) return !key
       "PARSE" button) and tap "PARSE".
 */
 
- // rtrminp.value = "(m, c1, i) => { i || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" <strong>\\" + ++it1 + \\".</strong> <em>[line \\" + it0 + \\"]</em>\\\\n\\" + m.replace(/\\\\bdune\\\\b/gi, \\"<mark>$&</mark>\\"); }";
+ // rtrminp.value = "(m, c1, p) => { p || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" <strong>\\" + ++it1 + \\".</strong> <em>[line \\" + it0 + \\"]</em>\\\\n\\" + m.replace(/\\\\bdune\\\\b/gi, \\"<mark>$&</mark>\\"); }";
 
 /*
  7. Use search-and-replace to __apply HTML markup to an article__,
