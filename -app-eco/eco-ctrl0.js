@@ -3270,7 +3270,7 @@ swplSel() { // also triggered by swplTog
   [swapbtn, prsebtn].forEach(btn => btn.disabled = !swaplist.selectedIndex);
 },
 swapExe(parse) {
-  let ff2pty, ff2val, lrpl, rpl2, ser2
+  let ff2pty, ff2val, lrpl, rpl2, ser2,
     attinp = document.querySelector('#econav0 #attinp'),
     attlist = document.querySelector('#econav0 #attlist'),
     fldstxta = document.querySelectorAll('#ecoesp0 #jdedft textarea'),
