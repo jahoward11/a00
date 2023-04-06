@@ -119,7 +119,10 @@ EC0.CTXD = [
     DBNAME: "myPrjHomeDB01",
     FILEID: "",
     ATTKEY: "",
-    OPTS:   {}
+    OPTS:   {
+      "batches_limit": 1,
+      "batch_size": 1
+    }
   },
   {
     DBNAME: "myPrjHomeDB02",
