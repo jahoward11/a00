@@ -596,13 +596,13 @@ function pfsListGen(fileref, publupd, filelf) { // on each db open/sync: ...
           .test((r.doc || r.value).file_type) ).map(r => r.id),
         filesscr:  hides[10] ? null : rqry.rows.filter( r => /^[0-9a-z]/i.test(r.id)
           && /^eco-scrap$/.test((r.doc || r.value).file_type) ).map( r =>
-            [!(sdir = (r.doc || r.value).loc_subdir) ? "" : sdir + "/", r.id] ),
+            [!(sdir = (r.doc || r.value).loc_subdir) ? "" : sdir + "/", r.id] ).sort(),
         filespubl: hides[11] ? null : pf3stor.dbpubl,
         filessdir: hides[12] ? null : pf3stor.dbsdir,
         filescntc: hides[13] ? null : pf3stor.dbcntc,
         filesdbid: hides[14] ? null : rqry.rows.filter(r => /^~DBID_/.test(r.id))
           .map( r => [ (!(sdir = (r.doc || r.value).file_updated.subdir) ? "" : sdir + "/")
-            + r.id.replace(/^~DBID_/, ""), r.id ]),
+            + r.id.replace(/^~DBID_/, ""), r.id ]).sort(),
         filesdviz: hides[15] ? null : rqry.rows.filter(r => /^~DVIZ_/.test(r.id))
           .map(r => [r.id.replace(/^~DVIZ_/, ""), r.id]),
         filestmpl: hides[16] ? null : rqry.rows.filter(r => /^~TMP[\dL]_/i.test(r.id))
@@ -3270,7 +3270,7 @@ swplSel() { // also triggered by swplTog
   [swapbtn, prsebtn].forEach(btn => btn.disabled = !swaplist.selectedIndex);
 },
 swapExe(parse) {
-  let ff2pty, ff2val, lrpl, rpl2,
+  let ff2pty, ff2val, lrpl, rpl2, ser2
     attinp = document.querySelector('#econav0 #attinp'),
     attlist = document.querySelector('#econav0 #attlist'),
     fldstxta = document.querySelectorAll('#ecoesp0 #jdedft textarea'),
@@ -3292,21 +3292,22 @@ swapExe(parse) {
   ff2val = fldfc2[ff2pty];
   if (parse) {
     try {
-      !/^(?:\w+|\(.*?\)) *=> *\S|^".*"$|^\b[\w.]+$/.test(swpreinp.value.trim())
-      || (rpl2 = window.eval(swpreinp.value));
+      rpl2 = /^(?:\w+|\(.*?\)) *=> *\S|^".*"$|^\b[\w.]+$/.test(swpreinp.value.trim())
+      ? window.eval(swpreinp.value)
+      : window.eval('"' + swpreinp.value.replace(/(?=")/g, "\\") + '"');
     } catch (err) {
       replhelp.innerHTML = err;
       swaptxta.value = "";
       return hlpPol();
     }
-    if (/^\/.+\/[im]*g[im]*$/.test(swpseinp.value.trim())) {
-      replhelp.innerHTML = (lrpl = (ff2val.match(eval(swpseinp.value)) || []).length)
+    ser2 = /^\/.+\/[gim]*$/.test(swpseinp.value.trim())
+    && ecoqjs.fncTry(eval, swpseinp.value) || ecoqjs.fncTry(window.eval, swpseinp.value, 2);
+    if (ser2 instanceof RegExp && ser2.global) {
+      replhelp.innerHTML = (lrpl = (ff2val.match(ser2) || []).length)
         + " replacements have been made.";
       hlpPol(lrpl);
     }
-    return swaptxta.value = ff2val.replace( !/^\/.+\/[gim]*$/.test(swpseinp.value.trim())
-        ? swpseinp.value : eval(swpseinp.value),
-      rpl2 || window.eval('"' + swpreinp.value.replace(/(?=")/g, "\\") + '"') );
+    return swaptxta.value = ff2val.replace(ser2, rpl2);
   }
   fldfc2[ff2pty] = swaptxta.value;
   swaptxta.value = ff2val;
@@ -3387,6 +3388,7 @@ u2Blob(url) { // also triggered by prjDiscGen, jdeDftGen, dviz-posts, dviz-conta
   || (url || "").replace(/^\.\.\/\.\.(?!\/a00\/)(?=\S+[^\s\/]$)/, a00orig) || url;
 },
 objQA(key, fbx) { // also triggered by rsrcsXGet, dataDispl, attInp, qconRetrvD, dviz-posts
+  key = key == null ? "" : "" + key;
   let pty,
     rsltFbk = rslt => pty && fbx === 0 ? ""
       : /^(?:keys|ks?)$/i.test(pty) && ecoqjs.fncTry(Object.keys, rslt) || rslt,
@@ -3396,7 +3398,6 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, dataDispl, attInp, qconRetrvD,
       : pty[2] ? ecoqjs.fncTry(window.eval, key) || Object.keys(ecoqjs.fncTry(window.eval, pty[1]) || 0)
       : !/^Handlebars$/.test(key) ? window[key]
       : Object.assign(Object.assign({}, Handlebars), { Parser: {}, default: {} }) );
-  key = key == null ? "" : "" + key;
   return gloObj != null ? gloObj
   : /^qcon:|^q?msg:/i.test(key) ? msgHandl(fbx || "error?")
   : /^att(?:list|):/i.test(key) ? attListGen()
