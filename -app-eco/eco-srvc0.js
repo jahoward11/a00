@@ -607,7 +607,7 @@ import xchar2htmlnc from "../../a00/-app-eco/eco-srvc3.mjs";
 let mycon = document.querySelector('#containerid');
 mycon.innerHTML = xchar2htmlnc(mycon.innerHTML);
 </script>`,
-    features: [{ htmlxncodes: "ecomjs.htmlxncodes" }],
+    features: [{ htmlxncodes: "" }],
     fnc: null
   },
   xchar2htmlnc1: {
@@ -619,7 +619,7 @@ import xchar2htmlnc1 from "../../a00/-app-eco/eco-srvc3.mjs";
 let mycon = document.querySelector('#containerid');
 mycon.innerHTML = xchar2htmlnc1(mycon.innerHTML);
 </script>`,
-    features: [{ htmlxncodes: "ecomjs.htmlxncodes" }],
+    features: [{ htmlxncodes: "" }],
     fnc: null
   },
   htmlnc2xchar: {
@@ -631,7 +631,7 @@ import htmlnc2xchar from "../../a00/-app-eco/eco-srvc3.mjs";
 let mycon = document.querySelector('#containerid');
 mycon.innerHTML = htmlnc2xchar(mycon.innerHTML);
 </script>`,
-    features: [{ htmlxncodes: "ecomjs.htmlxncodes" }],
+    features: [{ htmlxncodes: "" }],
     fnc: null
   },
   htmlnc2xchar1: {
@@ -643,7 +643,7 @@ import htmlnc2xchar1 from "../../a00/-app-eco/eco-srvc3.mjs";
 let mycon = document.querySelector('#containerid');
 mycon.innerHTML = htmlnc2xchar1(mycon.innerHTML);
 </script>`,
-    features: [{ htmlxncodes: "ecomjs.htmlxncodes" }],
+    features: [{ htmlxncodes: "" }],
     fnc: null
   },
   dcharClean: {
@@ -966,7 +966,7 @@ import html2md from "../../a00/-res-js/u00-html2md.mjs";
 let mycon = document.querySelector('#containerid');
 mycon.innerHTML = html2md(mycon.innerHTML, null, [{ htmlxncodes: htmlxncodes }]);
 </script>`,
-    features: [{ htmlxncodes: "ecomjs.htmlxncodes" }],
+    features: [{ htmlxncodes: "" }],
     fnc: null
   }
 };
