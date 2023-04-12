@@ -120,7 +120,7 @@ hnseps = Array.isArray(tocfmt) && tocfmt.length >= 7 + (tf05[1] || tf05[3]) ? to
       .replace(/.*?e.*/, m => m.replace(/e(\d)|\d/gi, "$1")).replace(/\d(?=\d)/g, "$&.").split(/\d/)
   : [""].concat(".".repeat((tf05[1] || tf05[3] || 1) - 1).split(""))
     .concat(tf05[1] === 1 || !tf05[1] && tf05[3] === 1 ? ["."] : [""]);
-tocbuls = /^[bu]/i.test(tocfmt[0] || hnseps[0]);
+tocbuls = typeof tocfmt === 'string' && /^[bu]/i.test(tocfmt) || /^[bu]/i.test(hnseps[0]);
 hnseps[0] = hnseps[0].replace(/^[bu]/i, "");
 hxchlvl = tf05[4] != null ? tf05[4] : tf05[0] && tf05[1]
   ? [3, 2, 1, 4, 5, 6].find(l => hxlen[l] && tf05[0] <= l && tf05[0] + tf05[1] > l) || 0
