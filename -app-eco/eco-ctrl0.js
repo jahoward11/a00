@@ -2225,7 +2225,7 @@ function couchPut(txdata = txdPrep()[0]) {
       pchhlps[1].classList.remove("is-hidden");
     });
   } else if ((cobj || "").hasOwnProperty("_id")) {
-    subdir = !!filewkg.filefrags && (cobj.file_created || "").subdir || 1;
+    subdir = !!filewkg.filefrags && (cobj.file_updated || cobj.file_created || "").subdir || 1;
     dbpc2.get(cobj._id = cobj._id || txdata.FILEID).catch(err => {
       if (err.name === 'not_found') {
         !txdata.DELETE || msgHandl("Alert: Delete operation failed.\n" + msgPrefmt(err));
