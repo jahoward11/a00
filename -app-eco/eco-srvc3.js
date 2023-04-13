@@ -1178,7 +1178,7 @@ ecomjs.headerGen = str => {
     str = str
     .replace(/^%.*(?:\n.+)*?\n%.*(?:\n.+)*?(?=\n%)/m, m => m.replace(/  +\n *(?!%)|\n +/g, "<br />"))
     // prep br for header-block parse/conversion
-    .replace( /^% *(.+?) *\n% *(.*?) *\n% *(.*?) *(?:\n|(?![^]))([^]*?)(\n+(?:(?:- *){3,}|(?:\+ *){3,}|(?:\* *){3,}|#{1,6} *\S.*|<h[\dr]\b.*?>.*?|\n)\n[^]*?|)(?=\n<script\b.*?>[^]*<\/script>\s*|)(?![^])/im,
+    .replace( /^% *(.+?) *\n% *(.*?) *\n% *(.*?) *(?:\n|(?![^]))([^]*?)(\n+(?:(?:- *){3,}|(?:\+ *){3,}|(?:\* *){3,}|#{1,6} *\S.*|<h[\dr]\b.*?>.*?|\n)\n[^]*?|)(?=\n<script\b.*?>[^]*<\/script>\s*|(?![^]))/im,
       (m, c1, c2, c3, c4, c5) =>
       '<header>\n<h1 id="title">' + mdit.renderInline(c1) + "</h1>\n"
       + (!c2.length ? "" : '<p id="author">' + mdit.renderInline(c2) + "</p>\n")
