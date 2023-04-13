@@ -1170,24 +1170,25 @@ ecomjs.menubarGen = str => {
 };
 
 ecomjs.headerGen = str => {
-  // convert header-block pandoc-to-html, or else insert hidden header block with anchor
+  // convert header-block pandoc-to-html, or else insert hidden header block
   // strip any remaining pandoc header block
+  // if present, wrap remaining content in main tags
   let mdit = window.markdownit && window.markdownit({ html: 1 }) || { renderInline: _=>_ };
-  if (!/^<(?:div id=['"]?|)header.*>/im.test(str)) {
+  if (!/^<(?:div id="?|)header\b.*?>/im.test(str)) {
     str = str
     .replace(/^%.*(?:\n.+)*?\n%.*(?:\n.+)*?(?=\n%)/m, m => m.replace(/  +\n *(?!%)|\n +/g, "<br />"))
     // prep br for header-block parse/conversion
-    .replace( /^% *(.+?) *\n% *(.*?) *\n% *(.*?) *$/m, (m, c1, c2, c3) =>
-      '<header id="header">\n<h1 id="title">' + mdit.renderInline(c1) + "</h1>\n"
+    .replace( /^% *(.+?) *\n% *(.*?) *\n% *(.*?) *(?:\n|(?![^]))([^]*?)(\n+(?:(?:- *){3,}|(?:\+ *){3,}|(?:\* *){3,}|#{1,6} *\S.*|<h[\dr]\b.*?>.*?|\n)\n[^]*?|)(?=\n<script\b.*?>[^]*<\/script>\s*|)(?![^])/im,
+      (m, c1, c2, c3, c4, c5) =>
+      '<header>\n<h1 id="title">' + mdit.renderInline(c1) + "</h1>\n"
       + (!c2.length ? "" : '<p id="author">' + mdit.renderInline(c2) + "</p>\n")
-      + (!c3.length ? "" : '<p id="date">' + mdit.renderInline(c3) + "</p>\n") + "</header>" );
+      + (!c3.length ? "" : '<p id="date">' + mdit.renderInline(c3) + "</p>\n")
+      + (!c4 ? "" : c4 + "\n") + "</header>" + (!c5 ? "" : "\n<main>\n" + c5 + "\n</main>") );
     //'% ' + c1 + '\n% ' + c2 + '\n% ' + c3 + '\n\n' +
   }
-  str = str.replace(/^\n%.*(?:\n.+)*?\n%.*(?:\n.+)*?\n%.*(?=\n\n)/gm, "");
-  return /^<(?:div id=['"]?|)header.*>/im.test(str) ? str
-  : str ///^(#{1,6} .+)/m
-    .replace(/^(?=.)/m, '<header id="header" style="visibility: hidden;"></header>\n\n');
-  //.replace(/<\/header>\n+(?:##? .*\n|)(?:(?!#+ ).*\n)*?- - -$/m, "$&\n\n<!-- {size=1} -->");
+  return /^<(?:div id="?|)header\b.*?>/im.test(str)
+  ? str.replace(/^\n%.*(?:\n.+)*?\n%.*(?:\n.+)*?\n%.*(?=\n\n)/gm, "")
+  : str.replace(/^(?=.)/m, '<header style="visibility: hidden;"></header>\n\n');
 };
 
 ecomjs.mdtblConv21 = str => {
