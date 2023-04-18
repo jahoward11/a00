@@ -3294,7 +3294,7 @@ swapExe(parse) {
     try {
       rpl2 = /^(?:\w+|\(.*?\)) *=> *\S|^".*"$|^\b[\w.]+$/.test(swpreinp.value.trim())
       ? window.eval(swpreinp.value)
-      : window.eval('"' + swpreinp.value.replace(/(?=")/g, "\\") + '"');
+      : window.eval('"' + swpreinp.value.replace(/(?=\\")/g, "\\") + '"');
     } catch (err) {
       replhelp.innerHTML = err;
       swaptxta.value = "";
