@@ -1,4 +1,4 @@
-window.ecoqjs = { // 24
+window.ecoqjs = { // 25
   fncTry: (fnc, a, e) => {
     // silently handle potential function execution error
     try { return fnc(a) }
@@ -80,24 +80,25 @@ window.ecoqjs = { // 24
     + ( typeof tsx === 'string' && /^[\w:.-]*$/.test(tsx) ? tsx
       : (tsx && new Date(tsx) || new Date()).toISOString().replace(/\.\w+$|[:-]/g, "") )
     + (typeof unx === 'string' && /^[\w@.-]*$/.test(unx) ? unx : "user000"),
-  htmTxt: str =>
+  htmTx0: str =>
     // prep HTML text for browser display as unrendered source code
     ("" + str)
     .replace(/&(?=#?\w+;)/g, "&amp;")
     .replace( /<(!)|<(\/?[a-z].*?)(>|(?=<|$))|(--)>/gim,
       (m, c1, c2, c3, c4) => (c4 ? "" : "&lt;") + (c1 || c2 || c4) + (c1 || !c3 && !c4 ? "" : "&gt;") ),
+  htmTxt = s => s
+    // prep HTML text for browser display as unrendered source code; preserve nbsp
+    .replace(/&/g, "&amp;").replace(/\xa0/g, "&nbsp;")
+    .replace(/>/g, "&gt;").replace(/</g, "&lt;");
   findTxt: (sep, str) => {
     // highlight matches & prep HTML text for browser display as unrendered source code
     let rcs = ("" + sep).trim().match(/\/(.+)\/([gim]*)/) || ["" + sep],
       rex = new RegExp( "([^]*?)(" + (rcs[1] || rcs[0] || "$") + "|$)("
-        + (!rcs[1] || /g/.test(rcs[2]) ? "" : "[^]*") + ")", !rcs[1] ? "gi" : rcs[2] ),
-      htmTx0 = s => s
-        .replace(/&/g, "&amp;").replace(/\xa0/g, "&nbsp;")
-        .replace(/>/g, "&gt;").replace(/</g, "&lt;");
+        + (!rcs[1] || /g/.test(rcs[2]) ? "" : "[^]*") + ")", !rcs[1] ? "gi" : rcs[2] );
     return ("" + str)
       .replace(/<\\(?=\/\w+>)/g, "<")
-      .replace( rex, (m, c1, c2, c3) => htmTx0(c1)
-        + (!c2 ? "" : "<mark>" + htmTx0(c2) + "</mark>") + htmTx0(c3) );
+      .replace( rex, (m, c1, c2, c3) => ecoqjs.htmTxt(c1)
+        + (!c2 ? "" : "<mark>" + ecoqjs.htmTxt(c2) + "</mark>") + ecoqjs.htmTxt(c3) );
   },
   findHTM: (sep, str) => {
     // highlight text matches in HTML content; preserve webdoc structure

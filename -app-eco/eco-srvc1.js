@@ -860,7 +860,7 @@ hr { margin: 1.5rem 0; }
 #tfwrap>#tfnav { position: fixed; top: 0; right: 0.5rem; opacity: 0.5; z-index: 4; }
 #ecorender>#tfwrap>#tfnav { top: 45.5px; }
 #tfwrap>#tfnav>#tf0cnt { min-width: 72px; }
-#tfwrap>#sepainp { width: 240px; }
+#tfwrap>#se2inp { width: 240px; }
 #tfwrap>#trgrndr { margin: 1rem 0; border: dashed gainsboro; border-width: 1px 0; }
 </style>
 <span id="tfnav">
@@ -868,7 +868,7 @@ hr { margin: 1.5rem 0; }
 </span>
 <h3 class="cfield">Find w/i Text</h3>
 <span class="ccntr diblk mtd0c5">
-<input type="text" id="sepainp"><label class="btn1" onclick="sepainp.select()">Search Pattern</label>
+<input type="text" id="se2inp"><label class="btn1" onclick="se2inp.select()">Search Pattern</label>
 </span> <span class="ccntr diblk mtd0c5">
 <span class="ccntr"><select id="rndrsel">
 <option>PRE render</option>
@@ -897,24 +897,24 @@ let srctxt = \``,
     trgrndr.innerHTML = ri > 1 ? rslt
       : "\\n<pre" + (!ri ? ">" : " class=pwrap>") + rslt.replace(/\\n$|^\\n/g, "") + "</pre>\\n";
   },
-  htmTx0 = s => s
+  htmTx2 = s => s
     .replace(/&/g, "&amp;").replace(/\\xa0/g, "&nbsp;")
     .replace(/>/g, "&gt;").replace(/</g, "&lt;"),
-  findTx0 = (sep, str) => {
+  findTx2 = (sep, str) => {
     let rcs = ("" + sep).trim().match(/\\/(.+)\\/([gim]*)/) || ["" + sep],
       rex = new RegExp( "([^]*?)(" + (rcs[1] || rcs[0] || "$") + "|$)("
         + (!rcs[1] || /g/.test(rcs[2]) ? "" : "[^]*") + ")", !rcs[1] ? "gi" : rcs[2] );
     return ("" + str)
       .replace(/<\\\\(?=\\/\\w+>)/g, "<")
-      .replace( rex, (m, c1, c2, c3) => htmTx0(c1)
-        + (!c2 ? "" : "<mark>" + htmTx0(c2) + "</mark>") + htmTx0(c3) );
+      .replace( rex, (m, c1, c2, c3) => htmTx2(c1)
+        + (!c2 ? "" : "<mark>" + htmTx2(c2) + "</mark>") + htmTx2(c3) );
   },
-  strPrse = () => {
+  strPrs2 = () => {
     let lm;
     trghelp.innerHTML = trgrndr.innerHTML = "";
     trghelp.classList.remove("iwarn", "isucc");
-    rsltVw(findTx0(sepainp.value, srctxt));
-    !sepainp.value || !( trghelp.innerHTML
+    rsltVw(findTx2(se2inp.value, srctxt));
+    !se2inp.value || !( trghelp.innerHTML
       = (lm = (trgrndr.innerHTML.match(/<mark>/g) || "").length) + " matches have been found." )
     || trghelp.classList.add(!lm ? "iwarn" : "isucc");
     tfNav();
@@ -922,7 +922,7 @@ let srctxt = \``,
 tf1bck.onclick = () => tfNav(-1);
 tf0cnt.onclick = () => tfNav(0);
 tf1fwd.onclick = () => tfNav(1);
-(prs2btn.onclick = strPrse)();
+(prs2btn.onclick = strPrs2)();
 </script>
 ` ],
 // * * * * * 2: srcdiff * * * * *
