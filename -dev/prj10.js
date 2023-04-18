@@ -169,12 +169,13 @@ const dscripts = `//
  // reShow(menulist.outerHTML)
  // reShow(menulist.textContent.replace(/&/g, "&amp;").replace(/\\xa0/g, "&nbsp;").replace(/>/g, "&gt;").replace(/</g, "&lt;"))
  // reShow(symlist.textContent)
- // reShow(symlist.textContent.replace(/&/g, "&amp;").replace(/\\xa0/g, "&nbsp;").replace(/>/g, "&gt;").replace(/</g, "&lt;"))
+ // reShow(ecoqjs.htmTxt(symlist.textContent))
 
  reShow(Array.from(document.scripts).map(e => e.src || e.type))
  // reShow(document.scripts[0].outerHTML)
  // reShow(document.querySelector('script:last-of-type').outerHTML)
  // reShow(document.querySelector('body>script:last-of-type').outerHTML)
+ // reShow(ecoscripts.querySelectorAll('script')[1].outerHTML)
 
  // reShow(Array.from(document.styleSheets).map(ss => ss.href))
  // reShow(Array.from(document.styleSheets[0].rules).map(ru => ru.cssText))
@@ -290,7 +291,7 @@ const t3search = `//
  // srctxta.value = xstor.sparknotes.mythology.replace(/\\n\\*\\/$|^\\/\\*\\n/g, ""); //
  // srctxta.value || import("../-app-cjs/spark.js").then(re => srctxta.value = re.mythology.replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(reShow); //
  // sepainp.value = "/^.*?(\\\\bmyth).*\\\\n*|^.*\\\\n*/gim"; //
- // rtrminp.value = "(m, c1, i) => { i || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" <strong>\\" + ++it1 + \\".</strong> <em>[line \\" + it0 + \\"]</em>\\\\n\\" + m.replace(/\\\\bmyth/gi, \\"<mark>$&</mark>\\"); }";
+ // rtrminp.value = "(m, c1, p) => { p || (window.it0 = window.it1 = 0); ++it0; return !c1 ? \\"\\" : \\" <strong>\\" + ++it1 + \\".</strong> <em>[line \\" + it0 + \\"]</em>\\\\n\\" + m.replace(/\\\\bmyth/gi, \\"<mark>$&</mark>\\"); }";
 
 /*
  - github.com/markdown-it/markdown-it/ v12.0.6
@@ -307,7 +308,8 @@ const t3search = `//
  - highlightjs.org
 */
  // !!window.hljs || scrInj("../-res-js/highlight.min.js").then(reShow).catch(reShow)
- // !!(window.hljs && window.js_beautify) || Promise.all(["../-res-js/highlight.min.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then(reShow).catch(reShow) }
+ // !!window.js_beautify || scrInj("../-res-js/jsbeautify1.14.0.js").then(reShow).catch(reShow)
+ // !!(window.hljs && window.js_beautify) || Promise.all(["../-res-js/highlight.min.js", "../-res-js/jsbeautify1.14.0.js"].map(e => scrInj(e))).then(reShow).catch(reShow)
  // bpre = str => str.replace(/(?=\\.concat\\(|\\.forEach\\(|\\.map\\(|\\.match\\(|\\.replace\\()/g, "\\n");
  // window.jb1 = str => js_beautify(str, { "indent_size": 2, "space_after_anon_function": 1, "break-chained-methods": 1, "keep-array-indentation": 1 });
  // window.jh1 = str => "<pre class=hljs>" + hljs.highlightAuto(!window.jb1 ? str : jb1(str)).value + "</pre><style>@import \\"../../a00/-res-hljs/atom-one-light.css\\"; #srwrap pre>pre.hljs { margin: 0; white-space: inherit; }</style>";
@@ -328,47 +330,6 @@ const t4cntcs = `//
 // *Alert:* This app's code is lengthy (about 2300 lines).
 
  // import("../-app-cjs/nmgr.js").then(re => re.dwraps[0] + re.nmpage + re.dwraps[1] + re.nmscr + re.dwraps[2]).then(reShow).catch(reShow)
-//`;
-
-const srtools = `// __Search-&-Replace Tools__
-
-// prepend bullets to unordered lists
- // sepainp.value = "/^(?!#+ +\\\\S)(?: ?- | ?\\\\d+\\\\. |) *(?=\\\\S)/gm";
- // rtrminp.value = '"- "';
-
-// renumber ordered lists
- // sepainp.value = "/^(?!#+ +\\\\S)(?: ?- | ?\\\\d+\\\\. |) *(\\\\S.*)/gm"; //
- // rtrminp.value = '(m, c1, i) => { i || (window.it0 = 0); return (++it0 > 9 ? "" : " ") + it0 + ". " + c1; }'; //
-
-// add up list of costs
- // sepainp.value = "/[^]*- - -\\\\n([^]*)/"; //
- // rtrminp.value = "(m, c1) => c1.split(/\\\\n?\\\\/\\\\/.*|\\\\n(?:.*[:=]|) *\\\\$?(?=-?[\\\\d.]+$)|\\\\n.*$/m).filter(e => e).reduce((a,b) => +a + (+b || 0), 0)"; //
-
-// prep "themes" text-blocks from ldsconf notes for famgenconf
- // sepainp.value = "/^#+ +(S\\\\w\\\\w)(?:\\\\w*?day|)( \\\\d)(?::00 |)([AP]M)(?:\\\\n.+)+/gm";
- // rtrminp.value = '(m, c1, c2, c3) => m.replace(/(\\\\(\\\\S+)(?=\\\\)$)/gm, "$1, " + c1 + c2 + c3 )';
-
-// prep text for string literal
- // sepainp.value = "/(?=\`|\\\\\\\\|\\\\$\\\\{[^]*?\\\\})/g";
- // rtrminp.value = "\\\\\\\\";
-
-// in disc log, set off chronology date with stylized h4 tags
- // sepainp.value = "/(\\\\n\\\\n|\\\\n#+.*\\\\n|^)(20\\\\d\\\\d(?:-\\\\d\\\\d){0,2}) *(?=\\\\n|$)/gi";
- // rtrminp.value = "$1#### $2 <!-- {#$2.dchron} -->  ";
-
-// in disc log, set off speaker name with bold tags
- // sepainp.value = "/(\\\\n\\\\n|\\\\n#.*\\\\n|\\\\n20\\\\d\\\\d(?:-\\\\d\\\\d){0,2} *\\\\n|^)(?!at?\\\\d*:|aims?:|answers?:|(?:be|)cause:|birth:|born:|by:|clues?:|conclusions?:|dates?:|death:|died:|ergo:|expect(?:ed|):|final:|for:|from:|givens?:|goals?:|hints?:|i[fn]:|initial:|locations?:|messages?:|msgs?:|names?:|next:|notes?:|object(?:ive|)s?:|observed?:|on:|outcomes?:|places?:|points?:|purposes?:|q\\\\d*:|questions?:|reasons?:|responses?:|results?:|[st]o:|subj(?:ect|):|takeaways?:|targets?:|then:|therefore:|thus:|time:|tips?:|with:)[A-Z](\\\\w*:)(?=\\\\s)/gi";
- // rtrminp.value = "$1__$2__";
-
-// find misapplied emphasis/superscript/code markers in cmods
-/*
- srctxta.textContent = JSON.stringify(xstor.util, 0, 2);
- srctxta.value = srctxta.innerHTML;
- sepainp.value = "/.+/g";
- rtrminp.value = 'm => m.replace(/(?<!\\\\\\\\)\\\\\\\\n/g, "\\\\n").replace(/\\\\*.+?\\\\*|\\\\^.+?\\\\^|\`.+?\`/g, "<mark>$&</mark>")'; //
- // rtrminp.value = 'm => m.replace(/([^\\\\\\\\])\\\\\\\\n/g, "$1\\\\n").replace(/([^\\\\\\\\])\\\\\\\\n/g, "$1\\\\n").replace(/\\\\*.+?\\\\*|\\\\^.+?\\\\^|\`.+?\`/g, "<mark>$&</mark>")'; //
-*/
-
 //`;
 
 const nmtools = `// __Note-Mgr Tools__
@@ -459,6 +420,5 @@ export {
   jsrefq, bcaches, dscripts, scrload,
   jstatqs, itoken,
   t2puzls, t3search, t4cntcs,
-  srtools, nmtools,
-  webapp1, webapp2
+  nmtools, webapp1, webapp2
 };
