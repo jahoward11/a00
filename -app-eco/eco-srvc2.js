@@ -85,7 +85,7 @@ window.ecoqjs = { // 25
     .replace(/&(?=#?\w+;)/g, "&amp;")
     .replace( /<(!)|<(\/?[a-z].*?)(>|(?=<|$))|(--)>/gim,
       (m, c1, c2, c3, c4) => (c4 ? "" : "&lt;") + (c1 || c2 || c4) + (c1 || !c3 && !c4 ? "" : "&gt;") ),
-  htmTxt: = str => ("" + str)
+  htmTxt: str => ("" + str)
     // prep HTML text for browser display as unrendered source code; preserve nbsp
     .replace(/&/g, "&amp;").replace(/\xa0/g, "&nbsp;")
     .replace(/>/g, "&gt;").replace(/</g, "&lt;"),
