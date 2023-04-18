@@ -51,9 +51,9 @@ window.ecoqjs = { // 25
     }
     return str;
   },
-  lineUnwr: str =>
+  lineUnwr: str => str
     // remove line breaks
-    str.replace(/(\S) *\n(?!\n|#|>|[:*+~-]? |\d+\.\s|$)/g, "$1 "),
+    .replace(/(\S) *\n(?!\n|#|>|[:*+~-]? |\d+\.\s|$)/g, "$1 "),
   lineWrap: str => {
     // insert line breaks
     let cpl = 72, // width: 72 cpl
@@ -63,9 +63,9 @@ window.ecoqjs = { // 25
         + (cut ? "|.{" + cpl + "}|.+$" : "|\\S+?(\\s|$)");
     return str.match(new RegExp(rex, "g")).join(brk);
   },
-  sortA2Z: str =>
+  sortA2Z: str => str
     // re-sort list of words alphabetically
-    str.trim().split("\n").sort().join("\n"),
+    .trim().split("\n").sort().join("\n"),
   lineCount: str => {
     // sequentially number each line of text
     let ct = 0, sp = ["", " ", "  ", "   "];
@@ -80,13 +80,12 @@ window.ecoqjs = { // 25
     + ( typeof tsx === 'string' && /^[\w:.-]*$/.test(tsx) ? tsx
       : (tsx && new Date(tsx) || new Date()).toISOString().replace(/\.\w+$|[:-]/g, "") )
     + (typeof unx === 'string' && /^[\w@.-]*$/.test(unx) ? unx : "user000"),
-  htmTx0: str =>
+  htmTx0: str => ("" + str)
     // prep HTML text for browser display as unrendered source code
-    ("" + str)
     .replace(/&(?=#?\w+;)/g, "&amp;")
     .replace( /<(!)|<(\/?[a-z].*?)(>|(?=<|$))|(--)>/gim,
       (m, c1, c2, c3, c4) => (c4 ? "" : "&lt;") + (c1 || c2 || c4) + (c1 || !c3 && !c4 ? "" : "&gt;") ),
-  htmTxt = s => s
+  htmTxt: = str => ("" + str)
     // prep HTML text for browser display as unrendered source code; preserve nbsp
     .replace(/&/g, "&amp;").replace(/\xa0/g, "&nbsp;")
     .replace(/>/g, "&gt;").replace(/</g, "&lt;"),
@@ -129,25 +128,22 @@ window.ecoqjs = { // 25
       .replace(lang !== "md" ? /^\*$/ : /\\x2a;/g, "*")
       .replace(lang !== "md" ? /^_$/ : /\\x5f;/g, "_");
   },
-  prettyCSS: str =>
+  prettyCSS: str => str
     // q+d CSS prettify
-    str
     .replace(/([;}])\s*/g, "$1\n")
     .replace( / *\{([^{}]+)}\s*/g, (m, c1) =>
       " {\n" + c1.trim().replace(/^/gm, "  ") + "\n}\n" ),
-  prettyJSON: str =>
+  prettyJSON: str => str
     // q+d JSON prettify
-    str
     .replace(/(,|)\s*(?=["[{])/g, "$1\n")
     .replace( /^\s*\{([^]*?)}\s*/gm, (m, c1) =>
       "{\n" + c1.trim().replace(/^/gm, "  ") + "\n}\n" ),
-  mdeflistPar: str =>
+  mdeflistPar: str => str
     // enable paragraphs in MD definition list
-    str.replace(/^[:~] +.+\n\n(?!  |:|~|.+\n\n?[:~])/gm, "$&    <!-- -->\n\n"),
-  mtheadsAfix: str =>
+    .replace(/^[:~] +.+\n\n(?!  |:|~|.+\n\n?[:~])/gm, "$&    <!-- -->\n\n"),
+  mtheadsAfix: str => str
     // prep headless, minimal MD table by inserting MD thead tags
     // note: thead column pattern matches last row
-    str
     .replace(/\n.*?\|.*\n?$/, "$&\n\n")
     .replace(/^(?=.*?\|.*\n?)/, "\n")
     .replace( /^((?:\| *|(?= *[^\s|]))(?:(?:\\\\)*\\\||[^\n|])*\|.*\n)+\n/gm,
@@ -178,17 +174,15 @@ window.ecoqjs = { // 25
       .replace( /^(?:(?:const|let|var) +|  ?(?!const |let |var ))\w[ ,\w]*(?:=.+|);?\n|^(\w[.\w]*(?= *=)[ =])[^]+?(?:;?\s*\n[\]}];?\n|;\n(?=\n|[^\s\]}]))|^function +(\w+.)[^]+?\n[\]}];?\n(?=[\n\S])|(.*\n|.+)/gim,
         (m, c1, c2, c3) => c3 ? "" : c1 || c2 || m.replace(/(?:[^=a-z]|= *(?=\d+[,;]|""|''|\[\]|\{\})|[a-z](?!\w* *[.,;=]))*(?:\n|=.+|(\w+.))/gi, "$1") )
       .trim().split(/[^.\w]/) )),
-  jcmtXtract: str =>
+  jcmtXtract: str => str
     // extract list of function names & comments in JavaScript text
-    str
     .replace(/^ ? ?( *(?:\w[\w.]* *[:=] *(?:\(.*?\)|\w+) *=>|(?:\w[\w.]* *[:=][ \w]*|)\bfunction\b.+{|(?!catch|if|for|try|while)\w[\w.]* *\(.*?\) *{).*\n)|^ *\/\/\S.*?\n|^ ? ?( *\/\/ .+\n)|^ ?( *).+?( \/\/ .+\n)|^.*?\n(\n)*/gm, "$1$2$3$4$5")
     .trim(),
-  dboxDirlist: str =>
+  dboxDirlist: str => str
     // extract folder/file names in Dropbox folder meta data
-    str.replace(/^ *"path_display": "(.*?)",(\n)|.*\n/gm, "$1$2"),
-  gmailCleanup: str =>
+    .replace(/^ *"path_display": "(.*?)",(\n)|.*\n/gm, "$1$2"),
+  gmailCleanup: str => str
     // standardize spaces, blank lines, blockquotes of Google-email content
-    str
     .replace(/(\S  )[ \t]*$|\t+$|^[ \t]+$/gm, "$1")
     .replace(/^\n\n+/gm, "\n")
     .replace(/\S(?=\n.)/g, "$&  ")
