@@ -89,7 +89,7 @@ window.ecoqjs = { // 25
   htmTxt = s => s
     // prep HTML text for browser display as unrendered source code; preserve nbsp
     .replace(/&/g, "&amp;").replace(/\xa0/g, "&nbsp;")
-    .replace(/>/g, "&gt;").replace(/</g, "&lt;");
+    .replace(/>/g, "&gt;").replace(/</g, "&lt;"),
   findTxt: (sep, str) => {
     // highlight matches & prep HTML text for browser display as unrendered source code
     let rcs = ("" + sep).trim().match(/\/(.+)\/([gim]*)/) || ["" + sep],
