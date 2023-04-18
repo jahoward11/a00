@@ -905,7 +905,7 @@ let srctxt = \``,
       rex = new RegExp( "([^]*?)(" + (rcs[1] || rcs[0] || "$") + "|$)("
         + (!rcs[1] || /g/.test(rcs[2]) ? "" : "[^]*") + ")", !rcs[1] ? "gi" : rcs[2] );
     return ("" + str)
-      .replace(/<\\\\(?=\\/\\w+>)/g, "<")
+      .replace(/<\\\\(?=\\/\\w+)/g, "<")
       .replace( rex, (m, c1, c2, c3) => htmTx2(c1)
         + (!c2 ? "" : "<mark>" + htmTx2(c2) + "</mark>") + htmTx2(c3) );
   },

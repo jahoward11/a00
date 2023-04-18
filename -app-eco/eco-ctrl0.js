@@ -3526,7 +3526,7 @@ findGen(spv, str) {
         fncname:  "strlitPrep", filepath: "", usedescription: "", htmlscriptload: "",
         features: [{ switchon: false, keytxt: "", valtxt: "" }],
         deftxt:   "function (str) {\n  return str\n  .replace(/(?=`|\\\\|\\$\\{)/g, \"\\\\\")"
-          + "\n  .replace(/<(?=\\/script>)/g, \"<\\\\\")\n  ;\n}"
+          + "\n  .replace(/<(?=\\/script)/g, \"<\\\\\")\n  ;\n}"
       }, findtmpl.parseconfigs.scriptsconstr[0] ],
       scriptsincl: [ { fncname: "strlitPrep", applytofrag: [false, true, false] },
         { fncname: "htmlWrapTags", applytofrag: [true, true, true] },
