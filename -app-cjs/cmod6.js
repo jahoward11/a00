@@ -709,15 +709,16 @@ srui += "\\n<div id=trgrndr class=\\"cfield dflow\\"></div>\\n";
       of its field's content; and to store "Target" data locally.
 */
 
-rxs = [/^\\/.+\\/[im]*g[im]*$/, /^\\/.+\\/[gim]*$/, /^(?:\\w+|\\(.*?\\)) *=> *\\S|^".*"$|^\\b[\\w.]+$/]; //
+rxs = [/^$/, /^\\/.+\\/[gim]*$/, /^(?:\\w+|\\(.*?\\)) *=> *\\S|^".*"$|^\\b[\\w.]+$/]; //
 fncTry = (fnc, a, e) => { try { return fnc(a) } catch (err) { return e > 1 ? a : e ? err : undefined }};
 hlp2Clr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc"));
+hlp2Pol = (s2, lm) => !(s2 instanceof RegExp) || !s2.global || !(trghelp.innerHTML = (lm = (srctxta.value.match(s2) || []).length) + " replacements have been made.") || [trgtxta, trghelp].forEach(e => e.classList.add(!lm ? "iwarn" : "isucc"));
 rsltVw = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 2 ? rslt : "\\n<pre" + (ri < 2 ? ">" : " class=pwrap>") + rslt + "</pre>\\n"; };
 pfsRfr = () => !window.localforage || localforage.keys().then(ks => pfiles.innerHTML = ["trgtxta.value", "srctxta.value", "dentr.value", "recon.textContent", "recon.innerHTML"].concat(ks).map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(console.warn);
 datLoad = k => Promise.resolve(_.fncTry(window.eval, k)).then(v => v != null ? v : localStorage.getItem(k) || window.localforage && localforage.getItem(k)).then(v => v == null ? "" : typeof v === 'object' ? JSON.stringify(v, 0, 2) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(_.fncTry(JSON.parse, v), 0, 2) || v).then(v => trgtxta.value = v.replace(/(\\*\\/) $/gm, "$1").replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(console.warn);
 window.txtaSel = e => _.hlp2Clr() || e.focus() || e.setSelectionRange(0, e.textLength);
 window.cntSwap = () => _.hlp2Clr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
-window.strPars = () => { let lm, r2, sv = sepainp.value, rv = rtrminp.value, h1P = y => [trgtxta, trghelp].forEach(e => e.classList.add(!y ? "iwarn" : "isucc")); _.hlp2Clr(); !_.rxs[2].test(rv.trim()) || (r2 = _.fncTry(window.eval, rv, 1)) instanceof Error && (trghelp.innerHTML = r2) && (r2 = null) /* !(trgtxta.value = r2 = "") && h1P() */; !_.rxs[0].test(sv) || ( trghelp.innerHTML = (lm = (srctxta.value.match(eval(sv)) || []).length) + " replacements have been made." ) && h1P(lm); _.rsltVw( srctxta.value.replace( _.rxs[1].test(sv) ? eval(sv) : _.fncTry(window.eval, sv, 2), r2 || window.eval('"' + rv.replace(/(?=[\\\\"])/g, "\\\\") + '"') )); };
+window.strPars = () => { let r2, rv = rtrminp.value, s2, sv = sepainp.value; _.hlp2Clr(); ( !_.rxs[2].test(rv.trim()) || (r2 = _.fncTry(window.eval, rv, 1)) instanceof Error && (trghelp.innerHTML = r2) ) && (r2 = window.eval('"' + rv.replace(/(?=[\\\\"])/g, "\\\\") + '"')); s2 = _.rxs[1].test(sv.trim()) && _.fncTry(eval, sv) || _.fncTry(window.eval, sv, 2); _.hlp2Pol(s2); _.rsltVw(srctxta.value.replace(s2, r2)); };
 window.hlp3Clr = () => (lfhelp.innerHTML = "") || lfhelp.classList.remove("iwarn", "isucc");
 window.dataMgr = ox => { let key = lfinp.value.trim(); if (ox === 2) return !key || trgtxta.value || _.hlp2Clr() || _.datLoad(key); !key || !window.localforage || localforage[!ox ? "removeItem" : "setItem"](key, ox && "/*\\n" + trgtxta.value.replace(/\\*\\/$/gm, "$& ") + "\\n*/").then(() => _.pfsRfr() && (lfhelp.innerHTML = "USERdata file is " + (!ox ? "deleted." : "saved locally.")) && lfhelp.classList.add(!ox ? "iwarn" : "isucc")).catch(console.warn); }; //
 !window.srwrap || pfsRfr();
