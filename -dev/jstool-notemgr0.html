@@ -1115,7 +1115,7 @@ let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
     : v instanceof Error && v.constructor && !v.reason ? v
     : typeof v === 'object' ? JSON.stringify(v, 0, sp)
     : typeof v !== 'string' ? "" + v
-    : !/^{\s*['"][^]+}$|^\[[^]+\]$/.test(v.trim()) ? v
+    : !/^{\s*"[^]+}$|^\[[^]+\]$/.test(v.trim()) ? v
     : JSON.stringify(fncTry(JSON.parse, v), 0, sp) || v,
   mP1 = (str, lang) => lang !== "md" && ( lang
     || !/^(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S[^]*?\n(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S/m.test(str) )
@@ -2255,7 +2255,7 @@ let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
         email:     (d.emails || [""])[0],
         image_src: (d.image_src || "").replace(/^(?!https?:).*\//, "")
       });
-    nm0sets = /^{['"].+}$/.test(localStorage._nm0sets)
+    nm0sets = /^{".+}$/.test(localStorage._nm0sets)
       && fncTry(JSON.parse, localStorage._nm0sets) || nm0sets;
     [ "uemail", "uname", "dbcntc", "dbdflt", "vwdflt", "bedit", "usecfg", "useset",
       "hlsty", "p2typs", "p2vws" ].every(pty => nm0sets.hasOwnProperty(pty))
@@ -2271,7 +2271,7 @@ let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
     !nm0sets.u2typs || delete nm0sets.u2typs; //temp cleanup
     !nm0sets.u2vws || delete nm0sets.u2vws; //temp cleanup
     !nm0sets.hasOwnProperty("ddoc") || delete nm0sets.ddoc; //temp cleanup
-    nm0cfgs = /^{['"].+}$/.test(localStorage._nm0cfgs)
+    nm0cfgs = /^{".+}$/.test(localStorage._nm0cfgs)
       && fncTry(JSON.parse, localStorage._nm0cfgs) || nm0cfgs;
     dbs.forEach(e => nm0cfgs[e] || (nm0cfgs[e] = {}))
     || Object.values(nm0cfgs).forEach(v => delete v.ddoc0) //temp cleanup
