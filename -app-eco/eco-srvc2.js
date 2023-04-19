@@ -102,7 +102,7 @@ window.ecoqjs = { // 25
   findHTM: (sep, str) => {
     // highlight text matches in HTML content; preserve webdoc structure
     str = ("" + str)
-      .replace(/<\\(?=\/\w+>)/g, "<")
+      .replace(/<\\(?=\/\w.*?>)/g, "<")
       .replace(/<!--[^]*?-->|<(?:link|meta)\b.*?>|<(script)\b.*?>[^]*?<\/\1>/gi, "");
     let nit = document.createElement('i'),
       rcs = ("" + sep).trim().match(/\/(.+)\/([gim]*)/) || ["" + sep],
