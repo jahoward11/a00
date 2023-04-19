@@ -1113,7 +1113,7 @@ d2ui += "\\n<form id=dform></form>";
 fwg = ak = ""
 fncTry = (fnc, a, e) => { try { return fnc(a) } catch (err) { return e > 1 ? a : e ? err : undefined }};
 htmTxt = str => str.replace(/&(?=#?\\w+;)/g, "&amp;").replace(/<(?=!|\\/?[a-z])/gi, "&lt;");
-valStr = (v, sp) => v == null ? "" : v instanceof Error && v.constructor && !v.reason ? v : typeof v === 'object' ? JSON.stringify(v, 0, sp) : typeof v !== 'string' ? "" + v : !/^{\\s*['"][^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(_.fncTry(JSON.parse, v), 0, sp) || v;
+valStr = (v, sp) => v == null ? "" : v instanceof Error && v.constructor && !v.reason ? v : typeof v === 'object' ? JSON.stringify(v, 0, sp) : typeof v !== 'string' ? "" + v : !/^{\\s*"[^]+}$|^\\[[^]+\\]$/.test(v.trim()) ? v : JSON.stringify(_.fncTry(JSON.parse, v), 0, sp) || v;
 rex0s = /^_rev|^file_|^loc_|^media_|^ts_/;
 t1src = { _id: "", _rev: "", file_type: "srcdoc", file_created: { username: "", timestamp: 0, dborigin: "", dbname: "", subdir: "", misc: "" }, file_updated: { username: "", timestamp: 0, dborigin: "", dbname: "", subdir: "", misc: "" }, media_type: "text/plain", content: "" };
 t2evt = { _id: "idGen(\\"~E\\", ts0, 0)", _rev: "", file_type: "event", file_created: { username: "", timestamp: 0, dborigin: "", dbname: "", subdir: "" }, file_updated: { username: "", timestamp: 0, dborigin: "", dbname: "", subdir: "" }, headline: "", time: "", place: "", map_refs: [""], people: [""], description: "" };
