@@ -2168,7 +2168,10 @@ let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
   },
   pdbSync = evt => {
     let cfg = nm0cfgs[txd1.DBNAME],
-      hlps = pdbcfg.querySelectorAll('.chelp');
+      hlps = pdbcfg.querySelectorAll('.chelp'),
+      opt2 = !txd1.OPTS ? { live: false }
+        : txd1.OPTS.hasOwnProperty("live") ? txd1.OPTS
+        : Object.assign(txd1.OPTS, { live: false });
     hlps.forEach(el => el.classList.add("dnone"));
     if (cfg && evt && evt.target.id === "pfilbtn") {
       dbpwinp.value = originp.value ? "" : (cfg.remot || "").pw || "";
@@ -2181,7 +2184,7 @@ let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
           + ori[2] + "/" + txd1.DBNAME,
         db2 = url && new PouchDB(url, { skip_setup: true });
       !db2 ? hlps[5].classList.remove("dnone")
-      : new PouchDB(txd1.DBNAME).sync(db2, { live: false })
+      : new PouchDB(txd1.DBNAME).sync(db2, opt2)
         .then(trsp => {
           viewsel.selectedIndex = vidx = 2;
           ftotal.innerText = "_";
