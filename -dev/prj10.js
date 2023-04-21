@@ -344,7 +344,7 @@ const t3srtools = `// Search-&-Replace Tools, Quick Ref
  s0ui += "\\n</select></span></div>\\n<div class=cfield><span class=ccntr><textarea id=s0txt1></textarea></span><span class=\\"ccntr vatop\\" onclick=s0txt1.select()>Srch</span></div>";
  s0ui += "\\n<div class=cfield><span class=ccntr><textarea id=s0txt2></textarea></span><span class=\\"ccntr vatop\\" onclick=s0txt2.select()>Rplc</span></div>\\n";
  s0Ref = () => _.seinp.value || _.reinp.value || ([_.seinp.value, _.reinp.value] = ["s0srch", "s0rplc"]);
- s0Eva = (s, r) => /^\\/.+\\/[gim]*$/.test(s.trim()) && ecoqjs.fncTry(eval, s) || /^(?:\\w+|\\(.*?\\)) *=> *\\S|^".*"$|^\\b[\\w.]+$/.test(s.trim()) && ecoqjs.fncTry(window.eval, s) || r && ecoqjs.fncTry(window.eval, '"' + s.replace(/(?=[\\\\"])/g, "\\\\") + '"', 2) || s;
+ s0Eva = (s, r) => /^\\/.+\\/[gim]*$/.test(s.trim()) && fncTry(eval, s) || /^(?:\\w+|\\(.*?\\)) *=> *\\S|^".*"$|^\\b[\\w.]+$/.test(s.trim()) && fncTry(window.eval, s) || r && fncTry(window.eval, '"' + s.replace(/(?=[\\\\"])/g, "\\\\") + '"', 2) || s;
  s0Ass = evt => { let i = s0sel0.selectedIndex; (evt || "").target && /s0txt/.test(evt.target.id) ? s0sel0.selectedIndex = i = 0 : [s0txt1.value, s0txt2.value] = ["" + _.w.s0dat[i][1], "" + _.w.s0dat[i][2]]; [_.w.s0srch, _.w.s0rplc] = evt && !i ? [_.s0Eva(s0txt1.value), _.s0Eva(s0txt2.value, 1)] : [_.w.s0dat[i][1], _.w.s0dat[i][2]]; };
 
  // s0wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
@@ -355,8 +355,9 @@ const t3srtools = `// Search-&-Replace Tools, Quick Ref
  c1Qry = () => !(_.w.pdbs || []).includes((_.w.txd2 || "").DBNAME) && [] || PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS).then(doc => doc.content);
  dbA = () => !_.w.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => _.w.pdbs = re);
  s1L = () => !!_.w.PouchDB ? _.dbA() : scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(_.dbA));
+ s2L = () => !!_.w.ecoqjs || scrInj("../-app-eco/eco-srvc2.js");
  _.w.txd2 = { DBNAME: "eco02", FILEID: "calc-ecosrtools.txt", ATTKEY: "", OPTS: {} };
- (_.w.s0sel0 || "").options[0] || Promise.resolve().then(s1L).then(c1Qry).then(s0Prc).then(s0Ass).then(s0Ref).catch(reShow);
+ (_.w.s0sel0 || "").options[0] || Promise.resolve().then(s1L).then(s2L).then(c1Qry).then(s0Prc).then(s0Ass).then(s0Ref).catch(reShow);
 
  t3x = xstor.JScode.tutorial3;
  bodGen = src => "\\n" + src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui = /g, "").split(/;\\nsrui \\+= /).map(eval).join("").trim() + "\\n"; //
