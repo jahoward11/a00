@@ -226,7 +226,25 @@ PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
  // window.txd2 = { DBNAME: "db", FILEID: "id", ATTKEY: "key", OPTS: {} };
  // pdbs.includes(txd2.DBNAME)
  // PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.text()).then(reShow).catch(reShow)
- // PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => fetch(aurls[txd2.ATTKEY] = URL.createObjectURL(abl)).then(re => re.text()).then(reShow).catch(reShow)
+
+ // window.aurls = window.aurls || {};
+
+ // window.txd2 = { DBNAME: "eco02", FILEID: ".ref", ATTKEY: "util-jscon.html", OPTS: {} };
+ // text/html // PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.type).then(reShow).catch(reShow)
+ // blob:...  // PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => aurls[txd2.ATTKEY] = URL.createObjectURL(abl)).then(reShow).catch(reShow)
+ // basic     // fetch(aurls[txd2.ATTKEY]).then(re => re.type).then(reShow).catch(reShow)
+ // PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => !(aurls[txd2.ATTKEY] = URL.createObjectURL(abl)) || abl.text()).then(reShow).catch(reShow)
+
+ // basic     // fetch("../-res-js/jstat-tdist.js").then(re => re.type).then(reShow).catch(reShow)
+ // TypeError // fetch("../-res-js/jstat-tdist.js").then(re => aurls["jstat-tdist.js"] = URL.createObjectURL(re)).then(reShow).catch(reShow)
+ // blob:...  // fetch("../-res-js/jstat-tdist.js").then(re => re.blob()).then(fbl => aurls["jstat-tdist.js"] = URL.createObjectURL(fbl)).then(reShow).catch(reShow)
+ // basic     // fetch(aurls["jstat-tdist.js"]).then(re => re.type).then(reShow).catch(reShow)
+ // fetch("../-res-js/jstat-tdist.js").then(re => re.blob()).then(fbl => !(aurls["jstat-tdist.js"] = URL.createObjectURL(fbl)) || fbl.text()).then(reShow).catch(reShow)
+
+ // fetch("../-res-js/srcdiff.js").then(re => re.blob()).then(fbl => fbl.text()).then(reShow).catch(reShow)
+ // fetch("../-res-js/srcdiff.js").then(re => re.blob()).then(fbl => !(aurls["srcdiff.js"] = URL.createObjectURL(fbl)) || fbl.text()).then(reShow).catch(reShow)
+
+ // reShow(aurls)
 
  // sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.body.appendChild(n); };
  // !!window.PouchDB || sc2Inj("../-res-js/pouchdb.min.js")
