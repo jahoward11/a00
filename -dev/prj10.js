@@ -333,8 +333,42 @@ const t3search = `//
  // window.jh1 = str => "<pre class=hljs>" + hljs.highlightAuto(!window.jb1 ? str : jb1(str)).value + "</pre><style>@import \\"../../a00/-res-hljs/atom-one-light.css\\"; #srwrap pre>pre.hljs { margin: 0; white-space: inherit; }</style>";
 //`;
 
-const t4cntcs = `//
-// __Contacts Directory__
+const t3srtools = `// Search-&-Replace Tools, Quick Ref
+
+ _.w = window;
+ seinp = _.w.swpseinp || {};
+ reinp = _.w.swpreinp || {};
+ s0ui  = "\\n<style>\\nhr { margin: 1.5rem 0; }\\n.vatop { vertical-align: top; }\\n#s0sel0 { width: 100%; max-width: 648px; }\\n#s0txt1, #s0txt2 { font: normal medium monospace; width: calc(100% - 48px); max-width: 600px; height: 64px; }\\n</style>";
+ s0ui += "\\n<hr />\\n<h4 class=cfield>Search-&-Replace Tools, Quick Ref</h4>";
+ s0ui += "\\n<div class=cfield><span class=ccntr><select id=s0sel0>";
+ s0ui += "\\n</select></span></div>\\n<div class=cfield><span class=ccntr><textarea id=s0txt1></textarea></span><span class=\\"ccntr vatop\\" onclick=s0txt1.select()>Srch</span></div>";
+ s0ui += "\\n<div class=cfield><span class=ccntr><textarea id=s0txt2></textarea></span><span class=\\"ccntr vatop\\" onclick=s0txt2.select()>Rplc</span></div>\\n";
+ s0Ref = () => _.seinp.value || _.reinp.value || ([_.seinp.value, _.reinp.value] = ["s0srch", "s0rplc"]);
+ s0Eva = (s, r) => /^\\/.+\\/[gim]*$/.test(s.trim()) && ecoqjs.fncTry(eval, s) || /^(?:\\w+|\\(.*?\\)) *=> *\\S|^".*"$|^\\b[\\w.]+$/.test(s.trim()) && ecoqjs.fncTry(window.eval, s) || r && ecoqjs.fncTry(window.eval, '"' + s.replace(/(?=[\\\\"])/g, "\\\\") + '"', 2) || s;
+ s0Ass = evt => { let i = s0sel0.selectedIndex; (evt || "").target && /s0txt/.test(evt.target.id) ? s0sel0.selectedIndex = i = 0 : [s0txt1.value, s0txt2.value] = ["" + _.w.s0dat[i][1], "" + _.w.s0dat[i][2]]; [_.w.s0srch, _.w.s0rplc] = evt && !i ? [_.s0Eva(s0txt1.value), _.s0Eva(s0txt2.value, 1)] : [_.w.s0dat[i][1], _.w.s0dat[i][2]]; };
+
+ // s0wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
+ try { s0wrap } catch { ndiv = document.createElement('div'); ndiv.id = "s0wrap"; ndiv.innerHTML = s0ui; cmain.appendChild(ndiv); [s0sel0, s0txt1, s0txt2].forEach(e => e.onchange = _.s0Ass); };
+ s0Prc = s => { _.w.s0dat = ("" + s).replace(/(^.+\\n.+\\n.+)((?:\\n.+)+)/gm, (m, c1, c2) => c1 + c2.replace(/\\n */g, "")).split("\\n\\n").map(e => e.split('\\n')).map(([e0, e1, e2], i) => [i + " " + e0.replace(/\\/\\/.*|^ +/g, ""), _.s0Eva(e1), _.s0Eva(e2, 1)]); s0sel0.innerHTML = "\\n" + _.w.s0dat.map(e => "<option>" + e[0] + "</option>").join("\\n") + "\\n"; }; //
+ // (_.w.s0sel0 || "").options[0] || !_.w.EC2 || _.w.EC2.objQA('dbpch').get('calc-ecosrtools.txt').then(d => _.s0Prc(d.content) || _.s0Ass() || _.s0Ref()).catch(reShow)
+
+ c1Qry = () => !(_.w.pdbs || []).includes((_.w.txd2 || "").DBNAME) && [] || PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS).then(doc => doc.content);
+ dbA = () => !_.w.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => _.w.pdbs = re);
+ s1L = () => !!_.w.PouchDB ? _.dbA() : scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(_.dbA));
+ _.w.txd2 = { DBNAME: "eco02", FILEID: "calc-ecosrtools.txt", ATTKEY: "", OPTS: {} };
+ (_.w.s0sel0 || "").options[0] || Promise.resolve().then(s1L).then(c1Qry).then(s0Prc).then(s0Ass).then(s0Ref).catch(reShow);
+
+ t3x = xstor.JScode.tutorial3;
+ bodGen = src => "\\n" + src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui = /g, "").split(/;\\nsrui \\+= /).map(eval).join("").trim() + "\\n"; //
+ scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
+ uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
+
+ // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
+ try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.strPars || scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(reShow); [sepainp.value, rtrminp.value] = ["s0srch", "s0rplc"]; }
+//`;
+
+const t4cntcs = `// __Contacts Directory__
+
 /*
  scrGen = src => src.match(/^(?:fwg|imgsVw|rexts) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n").replace(/reShow/g, "console.warn").replace(/;\\nwindow\\.(n1Gen = ).+/, (m, c1) => ",\\n  " + (c1 + n1Gen).replace(/\\b_\\.\\b/g, "") + ";\\nwindow.dbobj = window.PouchDB && new PouchDB(\\"" + dbobj.name + "\\");"); //
  dPreps = d => d.replace(/\\n<hr>/, "").replace(/(<details id="?imgdtl.*?>)[^]*?(?=<\\/details>)|(<form id="?dform.*?>)[^]*?(?=<\\/form>)|(<div id="?ndata.*?>)[^]*(?=<\\/div>\\s*<\\/div>)/g, "$1$2$3"); //
@@ -388,7 +422,7 @@ const webapp1 = `// __"Recipes" DB Webapp__
 
 /*
  uiDspl = ([wid, cnt, scr]) => { if (!wid || !cnt) return; let ndiv = document.createElement('div'); ndiv.id = wid; ndiv.innerHTML = "\\n<hr />\\n" + cnt.trim() + "\\n"; cmain.appendChild(ndiv); return scr || window[wid] && window[wid].querySelector('script:last-of-type'); };
- cQry = () => !(window.pdbs || []).includes((window.txd2 || "").DBNAME) && [] || PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.text()).then(cnt => [txd2.wid, cnt]);
+ c2Qry = () => !(window.pdbs || []).includes((window.txd2 || "").DBNAME) && [] || PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.text()).then(cnt => [txd2.wid, cnt]);
  smL = scr => !scr || scrInj(0, scr.type || 'module', "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
 
  dbA = () => !window.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => window.pdbs = re);
@@ -396,23 +430,22 @@ const webapp1 = `// __"Recipes" DB Webapp__
  s2L = () => !!window.markdownit || Promise.all(["", "-decorate", "-ins", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js")));
  // s3L = () => !!window.hljs || scrInj("../-res-js/highlight.min.js");
  nmImp = () => window.nmwrap && [] || import("../-app-cjs/nmgr.js").then(re => ["nmwrap", re.nmpage, re.nmscr]);
+ s4L = scr => !scr || !window[txd2.wid] || !!window.rkeys && (Array.from(document.scripts).find(si => /window\\.rkeys *=/.test(si.innerHTML)) || document.createElement('i')).remove() || !(window.annos || scrInj("../-res-js/ebook-annos-fns.js")) || scrInj(0, scr.type || 0, "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
 
  window.txd2 = { DBNAME: "howfam02", FILEID: ".ref", ATTKEY: "hjenn_food2022.html", OPTS: {}, wid: "rswrap" };
- s4L = scr => !scr || !window[txd2.wid] || !!window.rkeys && (Array.from(document.scripts).find(si => /window\.rkeys *=/.test(si.innerHTML)) || document.createElement('i')).remove() || !(window.annos || scrInj("../-res-js/ebook-annos-fns.js")) || scrInj(0, scr.type || 0, "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
-
  // window[txd2.wid].remove() // Alert: useful only if edit-testing the GUI code above
- window[txd2.wid] || Promise.resolve().then(s1L).then(s2L).then(nmImp).then(uiDspl).then(smL).then(cQry).then(uiDspl).then(s4L).catch(reShow);
+ window[txd2.wid] || Promise.resolve().then(s1L).then(s2L).then(nmImp).then(uiDspl).then(smL).then(c2Qry).then(uiDspl).then(s4L).catch(reShow);
 
  // nmwrap.classList.toggle("dnone");
 */
 
 //`;
 
-const webapp2 = `// __"Disc: Family Gospel" DB Webapp__
+const webapp2 = `// __"Family Gospel" DB Webapp__
 
 /*
  uiDspl = ([wid, cnt, scr]) => { if (!wid || !cnt) return; let ndiv = document.createElement('div'); ndiv.id = wid; ndiv.innerHTML = "\\n<hr />\\n" + cnt.trim() + "\\n"; cmain.appendChild(ndiv); return scr || window[wid] && window[wid].querySelector('script:last-of-type'); };
- cQry = () => !(window.pdbs || []).includes((window.txd2 || "").DBNAME) && [] || PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.text()).then(cnt => [txd2.wid, cnt]);
+ c2Qry = () => !(window.pdbs || []).includes((window.txd2 || "").DBNAME) && [] || PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS).then(abl => abl.text()).then(cnt => [txd2.wid, cnt]);
  smL = scr => !scr || scrInj(0, scr.type || 'module', "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
 
  dbA = () => !window.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => window.pdbs = re);
@@ -420,12 +453,11 @@ const webapp2 = `// __"Disc: Family Gospel" DB Webapp__
  s2L = () => !!window.markdownit || Promise.all(["", "-decorate", "-ins", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js")));
  // s3L = () => !!window.hljs || scrInj("../-res-js/highlight.min.js");
  nmImp = () => window.nmwrap && [] || import("../-app-cjs/nmgr.js").then(re => ["nmwrap", re.nmpage, re.nmscr]);
+ s4L = scr => !scr || !window[txd2.wid] || !!window.nkeys && (Array.from(document.scripts).find(si => /window\\.nkeys *=/.test(si.innerHTML)) || document.createElement('i')).remove() || !(window.annos || scrInj("../-res-js/ebook-annos-fns.js")) || scrInj(0, scr.type || 0, "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
 
  window.txd2 = { DBNAME: "howfam02", FILEID: ".records", ATTKEY: "hjas_disc-famgospeltbits.html", OPTS: {}, wid: "nswrap" };
- s4L = scr => !scr || !window[txd2.wid] || !!window.nkeys && (Array.from(document.scripts).find(si => /window\.nkeys *=/.test(si.innerHTML)) || document.createElement('i')).remove() || !(window.annos || scrInj("../-res-js/ebook-annos-fns.js")) || scrInj(0, scr.type || 0, "\\n" + (scr.innerHTML || "" + scr).trim() + "\\n");
-
  // window[txd2.wid].remove() // Alert: useful only if edit-testing the GUI code above
- window[txd2.wid] || Promise.resolve().then(s1L).then(s2L).then(nmImp).then(uiDspl).then(smL).then(cQry).then(uiDspl).then(s4L).catch(reShow);
+ window[txd2.wid] || Promise.resolve().then(s1L).then(s2L).then(nmImp).then(uiDspl).then(smL).then(c2Qry).then(uiDspl).then(s4L).catch(reShow);
 
  // nmwrap.classList.toggle("dnone");
 */
@@ -437,6 +469,6 @@ export {
   varkeys, nformat, uiwidth, publdims,
   jsrefq, bcaches, dscripts, scrload,
   jstatqs, itoken,
-  t2puzls, t3search, t4cntcs,
+  t2puzls, t3search, t3srtools, t4cntcs,
   nmtools, webapp1, webapp2
 };
