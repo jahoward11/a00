@@ -1993,20 +1993,17 @@ function blobHandl(ablob, destindr, txdata = {}, cbfnc) {
   } else {
     !rexwba.test(txdata.ATTKEY) || /^blob:/.test(aurls[txdata.ATTKEY])
     || (aurls[txdata.ATTKEY] = URL.createObjectURL(ablob));
-    blobread = new FileReader();
-    blobread.onerror = err => msgHandl("Alert: Attachment not read.\n" + blobread.error);
-    blobread.onload = () => {
+    ablob.text().then(str => {
       if (destindr === -1) {
-        !cbfnc || cbfnc(blobread.result);
+        !cbfnc || cbfnc(str);
       } else if ( destindr === 3 && ( rextxt.test(txdata.ATTKEY)
       || (/^-app-/i.test(txdata.FILEID) && /\.html?$/i.test(txdata.ATTKEY)) )) {
-        dataDispl(blobread.result, 7);
+        dataDispl(str, 7);
       } else {
         annosGet(txdata.ATTKEY).catch(msgHandl)
-        .then(cfgs => dataDispl(blobread.result, destindr, cbfnc, cfgs));
+        .then(cfgs => dataDispl(str, destindr, cbfnc, cfgs));
       }
-    };
-    blobread.readAsText(ablob);
+    }).catch(err => msgHandl("Alert: Attachment not read.\n" + err));
   }
 }
 
