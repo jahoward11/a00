@@ -367,6 +367,8 @@ let q2Bcopy, q2Bhtml,
   reShow = re => { recon.textContent
     += ( !re || typeof re !== 'object' || re instanceof Error && re.constructor && !re.reason
       ? re : JSON.stringify(re, 0, 2) ) + "\n\n" },
+  fncTry = (fnc, a, e) => { try { return fnc(a) }
+    catch (err) { return e > 1 ? a : e ? err : undefined } },
   scrInj = (url, typ, cnt) => new Promise((rslv, rjct) => {
     url || cnt || rjct("**Alert: Script content or URL was not provided.");
     let nscr = document.createElement('script');
