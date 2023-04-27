@@ -791,7 +791,8 @@ let q2Bcopy, q2Bhtml,
   };
 window.xstor = window.xstor || {};
 window.dentr = ecopans.length === 3 && /^<\\/xmp>\\n<div id="cheadg">/.test(ecopans[2].value)
-  ? ecopans[1] : { value: datxmp.textContent.replace(/\\n+$|^\\n+/g, "") };
+  && !(window.attinp || "").value ? ecopans[1]
+  : { value: datxmp.textContent.replace(/\\n+$|^\\n+/g, "") };
 (ecoscrs ? cinit : window.location.search).replace(/^\\?/, "").split("&").forEach( qi =>
   /^jsrcs=./.test(qi) ? (jsrcs = window.decodeURIComponent(qi.replace(/^jsrcs=/, "")).split(/[ ,]+/))
   : /^cmods=./.test(qi) ? (cmods = window.decodeURIComponent(qi.replace(/^cmods=/, "")).split(/[ ,]+/))
