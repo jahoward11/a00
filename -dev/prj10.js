@@ -365,7 +365,7 @@ const t3srtools = `// Search-&-Replace Tools, Quick Ref
  uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
  // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
- try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.strPars || scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(reShow); [sepainp.value, rtrminp.value] = ["s0srch", "s0rplc"]; }
+ try { srwrap } catch { uiDspl(bodGen(t3x)); window.sr0 ? sr0.pfsRfr() : scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(reShow); [sepainp.value, rtrminp.value] = ["s0srch", "s0rplc"]; }
 //`;
 
 const t4cntcs = `// __Contacts Directory__
