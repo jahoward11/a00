@@ -808,7 +808,8 @@ window.dentr = ecopans.length === 3 && /^<\\/xmp>\\n<div id="cheadg">/.test(ecop
   : /^!row1$/.test(qi) ? gridAdj(4)
   : /^!col1$/.test(qi) ? gridAdj(5) : 0 );
 Promise.all(jsrcs.map(e => scrInj(e))).catch(reShow).then( () =>
-  !/^http/.test(window.location.protocol) ? (!xsetinp ? initLoad() : xlstGen(dload))
+  !/^http/.test(window.location.protocol) || !cmods.length && Object.keys(xstor).length
+  ? (!xsetinp ? initLoad() : xlstGen(dload))
   : Promise.all( (cmods.some(e => /^\\d+$/.test(e)) ? cmods : [1,2,3,4,5,6,7,8].concat(cmods))
       .map(e => !/^\\d+$/.test(e) ? e : \`../-app-cjs/cmod\${e}.js\`)
       .map(u => u && import(/\\//.test(u) ? u : "./" + u).catch(reShow)) )
