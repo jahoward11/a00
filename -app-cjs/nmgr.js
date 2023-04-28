@@ -1485,7 +1485,7 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
           });
           !a1inp.files.length || !++chgs
           || !(fwg.hasOwnProperty("_attachments") || (fwg._attachments = {}))
-          || a1inp.files.forEach( (f, i) =>
+          || Array.from(a1inp.files).forEach( (f, i) =>
             fwg._attachments[ !imganm2.value ? f.name : !a1inp.files[1]
               ? imganm2.value : imganm2.value.replace(/(?=\\.\\w+$|$)/, i > 9 ? i : "0" + i) ]
             = { content_type: f.type, data: f } );
@@ -1901,7 +1901,7 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
           || !++chgs || (fwg[k] = typTest(window["p0" + k].value, 1)[2]) );
         !a1inp.files.length || !++chgs
         || !(fwg.hasOwnProperty("_attachments") || (fwg._attachments = {}))
-        || a1inp.files.forEach( (f, i) =>
+        || Array.from(a1inp.files).forEach( (f, i) =>
           fwg._attachments[ !imganm2.value ? f.name : !a1inp.files[1]
             ? imganm2.value : imganm2.value.replace(/(?=\\.\\w+$|$)/, i > 9 ? i : "0" + i) ]
           = { content_type: f.type, data: f } );
