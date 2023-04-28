@@ -4125,20 +4125,26 @@ dirUpd(trgnbr) {
     irename = document.querySelector('#ecoesp0 #irename'),
     typpmgr = filewkg && (filewkg.file_type === "eco-publmgr" || !!filewkg.filefrags),
     pfslist = document.querySelector('#econav0 #pfslist'),
-    optg = pfslist.value && pfslist.selectedOptions[0].parentElement.label;
+    optg = pfslist.value && pfslist.selectedOptions[0].parentElement.label,
+    tstamp1 = Date.now(),
+    tsUpd = cb => dbpch.get(dirlist.value)
+      .then(doc => !(doc.ts_updated = tstamp1) || dbpch.put(doc)).then(cb).catch(msgHandl);
+;
   if (!dbpch || !tm0urole || trgnbr === 2 && (!optg || optg === "LOCAL temporary files")) {
     document.querySelector('#ecoesp0 #dirbtn').disabled
     = document.querySelector('#ecoesp0 #imgabtn').disabled = true;
   } else {
-    trgnbr !== 1 || !typpmgr || couchAtt({ DBNAME: dbpch.name, FILEID: dirlist.value });
-    if (trgnbr === 2 && imgainp.files[0]) {
-      !imgainp.files[1] ? couchAtt({
+    if (trgnbr === 1 && typpmgr) {
+      tsUpd(() => couchAtt({ DBNAME: dbpch.name, FILEID: dirlist.value }));
+    } else if (trgnbr === 2 && imgainp.files[0]) {
+      !imgainp.files[1] ? tsUpd( () => couchAtt({
         DBNAME: dbpch.name,
         FILEID: filewkg._id,
         ATTKEY: irename.value || imgainp.files[0].name,
         CTYPE:  imgainp.files[0].type,
         CBLOB:  imgainp.files[0]
-      }) : couchPut({ DBNAME: dbpch.name, doc: Object.assign( filewkg, {
+      }) ) : couchPut({ DBNAME: dbpch.name, doc: Object.assign( filewkg, {
+        ts_updated:   tstamp1,
         _attachments: Object.fromEntries( Array.from(imgainp.files).map( (idat, i) =>
           [ !irename.value ? idat.name : irename.value.replace(/(?=\.\w+$|$)/, i),
             { content_type: idat.type, data: idat } ] ))
