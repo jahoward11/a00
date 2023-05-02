@@ -278,7 +278,6 @@ const itoken = `/*
  fetch("https:/" + "/iam.cloud.ibm.com/identity/token", opts).then(re => re.text()).then(reShow).catch(reShow);
 */`;
 
-
 const t2puzls = `//
 /*
  t2x = xstor.JScode.tutorial2;
@@ -341,17 +340,17 @@ const t3srtools = `// Search-&-Replace Tools, Quick Ref
  s0ui  = "\\n<style>\\nhr { margin: 1.5rem 0; }\\n.vatop { vertical-align: top; }\\n#s0sel0, #s0txt1, #s0txt2 { width: calc(100% - 48px); }\\n#s0txt1, #s0txt2 { font: normal medium monospace; height: 64px; }\\n</style>";
  s0ui += "\\n<hr />\\n<h4 class=cfield>Search-&-Replace Tools, Quick Ref</h4>";
  s0ui += "\\n<div class=cfield><span class=ccntr><select id=s0sel0>";
- s0ui += "\\n</select></span><span class=ccntr><button id=s0add1><span class=isucc>&#x267a;</span></button></span></div>";
+ s0ui += "\\n</select></span><span class=ccntr><button id=s0add1 class=isucc>&plus;</button></span></div>";
  s0ui += "\\n<div class=cfield><span class=ccntr><textarea id=s0txt1></textarea></span><span class=\\"ccntr vatop\\" onclick=s0txt1.select()>Srch</span></div>";
  s0ui += "\\n<div class=cfield><span class=ccntr><textarea id=s0txt2></textarea></span><span class=\\"ccntr vatop\\" onclick=s0txt2.select()>Rplc</span></div>\\n";
- s0Eva = (s, r) => typeof s !== 'string' ? "" + s : /^\\/.+\\/[gim]*$/.test(s.trim()) && fncTry(eval, s) || /^(?:\\w+|\\(.*?\\)) *=> *\\S|^".*"$|^\\b[\\w.]+$/.test(s.trim()) && fncTry(window.eval, s) || r && fncTry(window.eval, '"' + s.replace(/(?=[\\\\"])/g, "\\\\") + '"', 2) || s;
- s0Ass = evt => { let i0 = s0sel0.selectedIndex, og = s0sel0.selectedOptions[0].parentElement.label; (evt || "").target && /s0txt/.test(evt.target.id) ? !og || (s0sel0.selectedIndex = i0 = 0) : [s0txt1.value, s0txt2.value] = ["" + _.w.s0data[i0][1], "" + _.w.s0data[i0][2]]; [_.w.s0srch, _.w.s0rplc] = evt && !og ? [_.s0Eva(s0txt1.value), _.s0Eva(s0txt2.value, 1)] : [_.w.s0data[i0][1], _.w.s0data[i0][2]]; };
+ s0Eva = (s, r) => typeof s !== 'string' ? "" + s : /^\\/.+\\/[gim]*$/.test(s.trim()) && fncTry(eval, s) || /^(?:\\w+|\\(.*?\\)) *=>\\s*\\S|^".*"$|^\\b[\\w.]+$/.test(s.trim()) && fncTry(window.eval, s) || r && fncTry(window.eval, '"' + s.replace(/(?="|\\\\[^ntux]|\\\\u(?![\\da-fA-F]{4})|\\\\x(?![\\da-fA-F]{2}))/g, "\\\\") + '"', 2) || s;
+ s0Ass = evt => { let i0 = s0sel0.selectedIndex; (evt || "").target && /s0txt/.test(evt.target.id) ? s0sel0.selectedIndex = i0 = 0 : [s0txt1.value, s0txt2.value] = ["" + _.w.s0data[i0][1], "" + _.w.s0data[i0][2]]; [_.w.s0srch, _.w.s0rplc] = evt && !i0 ? [_.s0Eva(s0txt1.value), _.s0Eva(s0txt2.value, 1)] : [_.w.s0data[i0][1], _.w.s0data[i0][2]]; };
  s0Ref = () => _.seinp.value || _.reinp.value || ([_.seinp.value, _.reinp.value] = ["s0srch", "s0rplc"]);
 
- l1Get = () => _.w.txd2 && window.localforage && localforage.getItem(_.w.txd2.FILEID + "*2").then(s => s || localforage.setItem(_.w.txd2.FILEID + "*2", "/" + "/ search-&-replace tools data\\n\\n0\\n/[^]+/\\n\\"$&\\"")).then(s => xlstGen() || s);
+ l1Get = () => _.w.txd2 && window.localforage && localforage.getItem(_.w.txd2.FILEID + "*2").then(s => s || localforage.setItem(_.w.txd2.FILEID + "*2", "/\\x2f search-&-replace tools data\\n\\n0\\n/[^]+/\\n\\"$&\\"").then(s => xlstGen() || s));
  c1Qry = () => !(_.w.pdbs || []).includes((_.w.txd2 || "").DBNAME) || PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS).then(doc => ({ cnt: doc.content, opg: txd2.FILEID }));
- s0Prc = d => { (d || "").cnt || (d = { cnt: "" + d }); let ar, i1 = s0sel0.selectedIndex < 1 ? 0 : !d.opg ? 1 : (s0sel0.options.length || 1) - 1, ogG = () => "\\n" + ar.map(e => "<option>" + e[0] + "</option>").join("\\n") + "\\n"; ; _.w.s0data = (!d.opg ? [] : _.w.s0data).concat(ar = d.cnt.replace(/(^.+\\n.+\\n.+)((?:\\n.+)+)/gm, (m, c1, c2) => c1 + c2.replace(/\\n */g, "")).split("\\n\\n").map(e => e.split('\\n')).map(([e0, e1, e2], i) => e1 && [(!d.opg ? "" : (1 + i) + " ") + e0.replace(/^ *|^\\/\\/ */g, ""), _.s0Eva(e1), _.s0Eva(e2, 1)]).filter(e => (e || "")[1])); !d.opg ? s0sel0.innerHTML = ogG() : s0sel0.innerHTML += "\\n<optgroup label=" + d.opg + ">" + ogG() + "</optgroup>\\n"; s0sel0.selectedIndex = i1; }; //
- s0Add = () => _.w.txd2 && window.localforage && localforage.getItem(_.w.txd2.FILEID + "*2").then(s1 => s1 && s1.trim() + "\\n\\n" + (s0txt2.value.replace(/[^]*?(\\/\\/.+)[^]*|[^]*/, "$1") || "/" + "/ s0data" + ((s1 = s1.match(/\\n\\n/g).length)[1] ? "" : "0") + s1) + "\\n" + s0txt1.value.replace(/\\n+/g, " ") + "\\n" + s0txt2.value.replace(/^\\n+/gm, "")).then(s2 => localforage.setItem(_.w.txd2.FILEID + "*2", s2)).then(() => !s0sel0.selectedOptions[0].parentElement.label || Promise.resolve().then(_.l1Get).then(_.s0Prc).then(_.c1Qry).then(_.s0Prc)).catch(reShow); //
+ s0Prc = d => { (d || "").cnt || (d = { cnt: "" + d }); let ar, i1 = s0sel0.selectedIndex < 0 ? 0 : !d.opg ? 1 : !s0sel0.selectedIndex ? 0 : (s0sel0.options.length || 1) - 1, osG = () => "\\n" + ar.map(e => "<option>" + e[0] + "</option>").join("\\n") + "\\n"; ; _.w.s0data = (!d.opg ? [] : _.w.s0data).concat(ar = d.cnt.trim().split("\\n\\n").map(e => /(.+)\\n(.+)\\n([^]+)/.exec(e) || []).filter(e => (e || "")[1]).map(([e, e0, e1, e2], i) => [(!d.opg ? "" : (1 + i) + " ") + e0.replace(/^ *|^\\/\\/ */g, ""), _.s0Eva(e1), _.s0Eva(e2, 1)])); !d.opg ? s0sel0.innerHTML = osG() : s0sel0.innerHTML += "\\n<optgroup label=" + d.opg + ">" + osG() + "</optgroup>\\n"; s0sel0.selectedIndex = i1; }; //
+ s0Add = () => !s0sel0.selectedIndex && (s0txt1.value !== "" + _.w.s0data[0][1] || s0txt2.value !== "" + _.w.s0data[0][2]) && _.w.txd2 && window.localforage && localforage.getItem(_.w.txd2.FILEID + "*2").then(s1 => s1 && s1.trim() + "\\n\\n" + (s0txt2.value.replace(/[^]*?(\\/\\/.+)[^]*|[^]*/, "$1") || "/\\x2f s0data" + ((s1 = s1.match(/\\n\\n/g).length)[1] ? "" : "0") + s1) + "\\n" + s0txt1.value.replace(/\\n+/g, " ") + "\\n" + s0txt2.value.replace(/^\\n+/gm, "")).then(s2 => localforage.setItem(_.w.txd2.FILEID + "*2", s2)).then(_.l1Get).then(_.s0Prc).then(_.c1Qry).then(_.s0Prc).catch(reShow); //
 
  dbA = () => !_.w.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => _.w.pdbs = re);
  s1L = () => !!_.w.PouchDB ? _.dbA() : scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(_.dbA));
