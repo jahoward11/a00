@@ -3289,9 +3289,9 @@ swapExe(parse) {
   ff2val = fldfc2[ff2pty];
   if (parse) {
     try {
-      rpl2 = /^(?:\w+|\(.*?\)) *=> *\S|^".*"$|^\b[\w.]+$/.test(swpreinp.value.trim())
-      ? window.eval(swpreinp.value)
-      : window.eval('"' + swpreinp.value.replace(/(?=\\")/g, "\\") + '"');
+      rpl2 = window.eval( /^(?:\w+|\(.*?\)) *=> *\S|^".*"$|^\b[\w.]+$/.test(swpreinp.value.trim())
+        ? swpreinp.value : '"' + swpreinp.value
+          .replace(/(?="|\\[^ntux]|\\u(?![\da-fA-F]{4})|\\x(?![\da-fA-F]{2}))/g, "\\") + '"' );
     } catch (err) {
       replhelp.innerHTML = err;
       swaptxta.value = "";
