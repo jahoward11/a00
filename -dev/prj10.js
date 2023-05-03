@@ -337,20 +337,23 @@ const t3srtools = `// Search-&-Replace Tools, Quick Ref
  _.w = window;
  seinp = _.w.swpseinp || {};
  reinp = _.w.swpreinp || {};
- s0ui  = "\\n<style>\\nhr { margin: 1.5rem 0; }\\n.vatop { vertical-align: top; }\\n#s0sel0, #s0txt1, #s0txt2 { width: calc(100% - 48px); }\\n#s0txt1, #s0txt2 { font: normal medium monospace; height: 64px; }\\n</style>";
+ s0ui  = "\\n<style>\\nbutton, input, select, pre { margin: 0; }\\nhr { margin: 1.5rem 0; }";
+ s0ui += "\\n#s0wrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
+ s0ui += "\\n#s0wrap button, #s0wrap .btn1, #s0wrap input:not([type=checkbox]):not([type=radio]), #s0wrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
+ s0ui += "\\n#s0wrap .vatop { vertical-align: top; }\\n#s0wrap #s0sel0, #s0wrap #s0txt1, #s0wrap #s0txt2 { width: calc(100% - 48px); }\\n#s0wrap #s0txt1, #s0wrap #s0txt2 { display: inline; font: normal medium monospace; max-width: unset; min-width: unset; height: 64px; }\\n</style>";
  s0ui += "\\n<hr />\\n<h4 class=cfield>Search-&-Replace Tools, Quick Ref</h4>";
  s0ui += "\\n<div class=cfield><span class=ccntr><select id=s0sel0>";
  s0ui += "\\n</select></span><span class=ccntr><button id=s0add1 class=isucc>&plus;</button></span></div>";
- s0ui += "\\n<div class=cfield><span class=ccntr><textarea id=s0txt1></textarea></span><span class=\\"ccntr vatop\\" onclick=s0txt1.select()>Srch</span></div>";
- s0ui += "\\n<div class=cfield><span class=ccntr><textarea id=s0txt2></textarea></span><span class=\\"ccntr vatop\\" onclick=s0txt2.select()>Rplc</span></div>\\n";
+ s0ui += "\\n<div class=cfield><span class=ccntr><textarea id=s0txt1 class=textarea></textarea></span><span class=\\"ccntr vatop\\" onclick=s0txt1.select()>Srch</span></div>";
+ s0ui += "\\n<div class=cfield><span class=ccntr><textarea id=s0txt2 class=textarea></textarea></span><span class=\\"ccntr vatop\\" onclick=s0txt2.select()>Rplc</span></div>\\n";
  s0Eva = (s, r) => typeof s !== 'string' ? "" + s : /^\\/.+\\/[gim]*$/.test(s.trim()) && fncTry(eval, s) || /^(?:\\w+|\\(.*?\\)) *=>\\s*\\S|^".*"$|^\\b[\\w.]+$/.test(s.trim()) && fncTry(window.eval, s) || r && fncTry(window.eval, '"' + s.replace(/(?="|\\\\[^ntux]|\\\\u(?![\\da-fA-F]{4})|\\\\x(?![\\da-fA-F]{2}))/g, "\\\\") + '"', 2) || s;
- s0Ass = evt => { let i0 = s0sel0.selectedIndex; (evt || "").target && /s0txt/.test(evt.target.id) ? s0sel0.selectedIndex = i0 = 0 : [[], s0txt1.value, s0txt2.value] = _.w.s0data[i0].map((e, i) => !i ? [] : (e = "" + e) && i < 2 || /^(?:\\w+|\\(.*?\\)) *=>\\s*\\S/.test(e) ? e : e.replace(/\\t/g, "\\\\t").replace(/\\n/g, "\\\\n")); [_.w.s0srch, _.w.s0rplc] = evt && !i0 ? [_.s0Eva(s0txt1.value), _.s0Eva(s0txt2.value, 1)] : [_.w.s0data[i0][1], _.w.s0data[i0][2]]; };
+ s0Ass = evt => { let i0 = s0sel0.selectedIndex; (evt || "").target && /s0txt/.test(evt.target.id) ? s0sel0.selectedIndex = i0 = 0 : [[], s0txt1.value, s0txt2.value] = s0data[i0].map((e, i) => !i ? [] : (e = "" + e) && i < 2 || /^(?:\\w+|\\(.*?\\)) *=>\\s*\\S/.test(e) ? e : e.replace(/\\t/g, "\\\\t").replace(/\\n/g, "\\\\n")); [_.w.s0srch, _.w.s0rplc] = evt && !i0 ? [_.s0Eva(s0txt1.value), _.s0Eva(s0txt2.value, 1)] : [s0data[i0][1], s0data[i0][2]]; };
  s0Ref = () => _.seinp.value || _.reinp.value || ([_.seinp.value, _.reinp.value] = ["s0srch", "s0rplc"]);
 
- l1Get = () => _.w.txd2 && window.localforage && localforage.getItem(_.w.txd2.FILEID + "*2").then(s => s || localforage.setItem(_.w.txd2.FILEID + "*2", "/\\x2f search-&-replace tools data\\n\\n0\\n/[^]+/\\n\\"$&\\"").then(s => xlstGen() || (_.w.sr0 && sr0.pfsRfr() && 0) || s));
+ l1Get = () => _.w.txd2 && window.localforage && localforage.getItem(txd2.FILEID + "*2").then(s => s || localforage.setItem(txd2.FILEID + "*2", "/\\x2f search-&-replace tools data\\n\\n0\\n/[^]+/\\n\\"$&\\"").then(s => xlstGen() || (_.w.sr0 && sr0.pfsRfr() && 0) || s));
  c1Qry = () => !(_.w.pdbs || []).includes((_.w.txd2 || "").DBNAME) || PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS).then(doc => ({ cnt: doc.content, opg: txd2.FILEID }));
- s0Prc = d => { (d || "").cnt || (d = { cnt: "" + d }); let es, i1 = s0sel0.selectedIndex, osG = () => "\\n" + es.map(e => "<option>" + e[0] + "</option>").join("\\n") + "\\n"; i1 = i1 < 0 ? 0 : !d.opg ? 1 : !i1 ? 0 : (s0sel0.options.length || 1) - 1; _.w.s0data = (!d.opg ? [] : _.w.s0data).concat(es = d.cnt.trim().split("\\n\\n").map(e => /(.+)\\n(.+)\\n([^]+)/.exec(e)).filter(e => (e || "")[1]).map(([e, e0, e1, e2], i) => [(!d.opg ? "" : (1 + i) + " ") + e0.replace(/^ +|^\\/\\/ */g, ""), _.s0Eva(e1), _.s0Eva(e2, 1)])); !d.opg ? s0sel0.innerHTML = osG() : s0sel0.innerHTML += "\\n<optgroup label=" + d.opg + ">" + osG() + "</optgroup>\\n"; s0sel0.selectedIndex = i1; }; //
- s0Add = () => !s0sel0.selectedIndex && (s0txt1.value !== "" + _.w.s0data[0][1] || s0txt2.value !== "" + _.w.s0data[0][2]) && _.w.txd2 && window.localforage && localforage.getItem(_.w.txd2.FILEID + "*2").then(s1 => s1 && s1.trim() + "\\n\\n" + (s0txt2.value.replace(/[^]*?(\\/\\/.+)[^]*|[^]*/, "$1") || "/\\x2f s0data" + ((s1 = s1.match(/\\n\\n/g).length)[1] ? "" : "0") + s1) + "\\n" + s0txt1.value.replace(/\\n+/g, " ") + "\\n" + s0txt2.value.replace(/^\\n+/gm, "")).then(s2 => localforage.setItem(_.w.txd2.FILEID + "*2", s2)).then(_.l1Get).then(_.s0Prc).then(_.c1Qry).then(_.s0Prc).catch(reShow); //
+ s0Prc = d => { (d || "").cnt || (d = { cnt: "" + d }); let es, i1 = s0sel0.selectedIndex, osG = () => "\\n" + es.map(e => "<option>" + e[0] + "</option>").join("\\n") + "\\n"; i1 = i1 < 0 ? 0 : !d.opg ? 1 : !i1 ? 0 : (s0sel0.options.length || 1) - 1; _.w.s0data = (!d.opg ? [] : _.w.s0data).concat(es = d.cnt.trim().split("\\n\\n").map(e => /(.+)\\n(.+)\\n([^]+)/.exec(e)).filter(e => (e || "")[1]).map(([e, e0, e1, e2], i) => [(!d.opg ? "" : (1 + i) + " ") + e0.replace(/^ +|^\\/\\/ */g, ""), _.s0Eva(e1), _.s0Eva(e2, 1)])); !d.opg ? s0sel0.innerHTML = osG() : s0sel0.innerHTML += "<optgroup label=" + d.opg + ">" + osG() + "</optgroup>\\n"; s0sel0.selectedIndex = i1; }; //
+ s0Add = () => !s0sel0.selectedIndex && (s0txt1.value !== "" + s0data[0][1] || s0txt2.value !== "" + s0data[0][2]) && _.w.txd2 && window.localforage && localforage.getItem(txd2.FILEID + "*2").then(s1 => s1 && s1.trim() + "\\n\\n" + (s0txt2.value.replace(/[^]*?(\\/\\/.+)[^]*|[^]*/, "$1") || "/\\x2f s0data" + ((s1 = s1.match(/\\n\\n/g).length)[1] ? "" : "0") + s1) + "\\n" + s0txt1.value.replace(/\\n+/g, " ") + "\\n" + s0txt2.value.replace(/^\\n+/gm, "")).then(s2 => localforage.setItem(txd2.FILEID + "*2", s2)).then(_.l1Get).then(_.s0Prc).then(_.c1Qry).then(_.s0Prc).catch(reShow); //
 
  dbA = () => !_.w.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => _.w.pdbs = re);
  s1L = () => !!_.w.PouchDB ? _.dbA() : scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(_.dbA));
@@ -359,7 +362,7 @@ const t3srtools = `// Search-&-Replace Tools, Quick Ref
 
  // s0wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
  try { s0wrap } catch { ndiv = document.createElement('div'); ndiv.id = "s0wrap"; ndiv.innerHTML = s0ui; cmain.appendChild(ndiv); [s0sel0, s0txt1, s0txt2].forEach(e => e.onchange = _.s0Ass); s0add1.onclick = _.s0Add; };
- // (_.w.s0sel0 || "").innerText || !_.w.EC2 || _.w.EC2.objQA('dbpch').get('calc-ecosrtools.txt').then(d => _.s0Prc(d.content) || _.s0Ass() || _.s0Ref()).catch(reShow)
+ // (_.w.s0sel0 || "").innerText || !_.w.EC2 || EC2.objQA('dbpch').get('calc-ecosrtools.txt').then(d => _.s0Prc(d.content) || _.s0Ass() || _.s0Ref()).catch(reShow)
  (_.w.s0sel0 || "").innerText || Promise.resolve().then(s1L).then(s2L).then(l1Get).then(s0Prc).then(c1Qry).then(s0Prc).then(s0Ass).then(s0Ref).catch(reShow);
 
  t3x = xstor.JScode.tutorial3;
@@ -368,7 +371,7 @@ const t3srtools = `// Search-&-Replace Tools, Quick Ref
  uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
  // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
- try { srwrap } catch { uiDspl(bodGen(t3x)); window.sr0 ? sr0.pfsRfr() : scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(reShow); [sepainp.value, rtrminp.value] = ["s0srch", "s0rplc"]; }
+ try { srwrap } catch { uiDspl(bodGen(t3x)); _.w.sr0 ? sr0.pfsRfr() : scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(reShow); [sepainp.value, rtrminp.value] = ["s0srch", "s0rplc"]; }
 //`;
 
 const t4cntcs = `// __Contacts Directory__
