@@ -510,7 +510,8 @@ let q2Bcopy, q2Bhtml,
           return ( !/\x0c$|\\f$|&#x0*[Cc];$|^\x0c|^\\f|^&#x0*[Cc];/.test(xpri)
             ? "" : "<div class=pagebb></div>" )
           + ( rslt == null ? "" : typeof rslt === 'string'
-            ? rslt.replace(/\n/g, "\\n") : rslt.toString().replace(/\s+/g, " ") );
+            ? rslt.replace(/\n/g, "\\n") : rslt.toString().replace(/\s+/g, " ") )
+              .replace(/&(?=#?\w+;)/g, "&amp;").replace(/<(?=!|\/?[a-z])/gi, "&lt;");
         } catch (err) { reShow(err); return err; }
       }),
       $ks = Object.keys($);
