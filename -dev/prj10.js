@@ -340,8 +340,8 @@ const t3srtools = `// Search-&-Replace Tools, Quick Ref
  s0ui  = "\\n<style>\\nbutton, input, select, pre { margin: 0; }\\nhr { margin: 1.5rem 0; }";
  s0ui += "\\n#s0wrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
  s0ui += "\\n#s0wrap button, #s0wrap .btn1, #s0wrap input:not([type=checkbox]):not([type=radio]), #s0wrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
- s0ui += "\\n#s0wrap .vatop { vertical-align: top; }\\n#s0wrap #s0sel0, #s0wrap #s0txt1, #s0wrap #s0txt2 { width: calc(100% - 48px); }\\n#s0wrap #s0txt1, #s0wrap #s0txt2 { display: inline; font: normal medium monospace; min-width: unset; }\\n</style>";
- s0ui += "\\n<hr />\\n<h4 class=cfield>Search-&-Replace Tools, Quick Ref</h4>";
+ s0ui += "\\n#s0wrap .vatop { vertical-align: top; }\\n#s0wrap #s0sel0, #s0wrap #s0txt1, #s0wrap #s0txt2 { width: calc(100% - 48px); }\\n#s0wrap #s0txt1, #s0wrap #s0txt2 { display: inline-block; font: normal medium monospace; min-width: unset; }\\n</style>";
+ s0ui += "\\n<hr />\\n<h4 class=cfield>Search-&amp;-Replace Tools, Quick Ref</h4>";
  s0ui += "\\n<div class=cfield><span class=ccntr><select id=s0sel0>";
  s0ui += "\\n</select></span><span class=ccntr><button id=s0add1 class=isucc>&plus;</button></span></div>";
  s0ui += "\\n<div class=cfield><span class=ccntr><textarea id=s0txt1 class=textarea rows=5></textarea></span><span class=\\"ccntr vatop\\" onclick=s0txt1.select()>Srch</span></div>";
