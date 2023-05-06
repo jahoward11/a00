@@ -1140,13 +1140,12 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
       js2Show = r => js2txta.value += "\\n" + valStr(r, 2) + "\\n> ";
     !fncexp || Promise.resolve(fncTry(window.eval, fncexp, 1)).then(js2Show).catch(js2Show);
   },
-  pchQry = (txd = nm0.txd1) => {
-    if ( !window.PouchDB || !Object.keys(nm0.nm0cfgs).includes(txd.DBNAME) || !txd.FILEID || !txd.OPTS
-    || typeof txd.OPTS !== 'object' || txd.ATTKEY && !nm0.rextxt.test(txd.ATTKEY) ) { return; }
-    !txd.ATTKEY ? PouchDB(txd.DBNAME)
+  pchQry = (txd = nm0.txd1) =>
+    !window.PouchDB || !Object.keys(nm0.nm0cfgs).includes(txd.DBNAME) || !txd.FILEID
+    || !txd.OPTS || typeof txd.OPTS !== 'object' || txd.ATTKEY && !nm0.rextxt.test(txd.ATTKEY)
+    ? null : !txd.ATTKEY ? PouchDB(txd.DBNAME)
       .get(txd.FILEID, txd.OPTS).then(d => !txd.OPTS.json && d.content || d)
-    : PouchDB(txd.DBNAME).getAttachment(txd.FILEID, txd.ATTKEY, txd.OPTS).then(r => r.text());
-  },
+    : PouchDB(txd.DBNAME).getAttachment(txd.FILEID, txd.ATTKEY, txd.OPTS).then(r => r.text()),
   txtaSel = ta => !(ta.focus || (ta = window.eval(ta.target.dataset.seltrg)))
     || ta.focus() || ta.setSelectionRange(0, ta.textLength),
   typTest = (val, l2) => [ typeof ( val = typeof val !== 'string' ? val : fncTry(JSON.parse, val)
