@@ -348,7 +348,7 @@ figure {
 #nmwrap .mtup0c25 { margin-top: -0.25rem; }
 #nmwrap .cblock:not(:last-child) { margin-bottom: 1.5rem; }
 #nmwrap .pwrap { white-space: pre-wrap; }
-#nmwrap .diblk, #nmwrap .btn1 { display: inline-block; }
+#nmwrap .diblo, #nmwrap .btn1 { display: inline-block; }
 #nmwrap .dflow { display: flow-root; overflow-x: auto; }
 #nmwrap .dnone { display: none; }
 #nmwrap>#r2con {
@@ -458,7 +458,7 @@ figure {
       <span class=ccntr><input type=text id=moveinp placeholder="New subdir&hellip;" /><button id=movebtn class="isucc hsuccl" title="Note subdirectory reassigning">
       MOV</button><button id=editbtn class="isucc hsuccl dnone" title="Multiple notes editing">
       BULK EDIT</button></span><span class=ccntr><button id=delbtn class="iwarn hwarnl" title="Multiple notes deleting">
-      DEL</button></span></span></span><span class=ccntr><a id=blktrig title="Checkboxes toggle">&#x2611;</a></span>
+      DEL</button></span></span></span><span class=ccntr><a id=bulktrg title="Checkboxes toggle">&#x2611;</a></span>
     </div>
   </div>
 </nav>
@@ -905,7 +905,9 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
   nm0sets = {},
   txd1 = {
     DBNAME: "",
-    FILEID: "", //"_design/ecosorter",
+    FILEID: "",
+    ATTKEY: "",
+    DDOCID: "", //"_design/ecosorter",
     VIEW:   "", //"files-idxlist",
     OPTS:   {}, //{ since: 0 }
     u1s:    []
@@ -1151,6 +1153,14 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
     valStr(v) === valStr(fwg[k])
     || evt.target.classList.add(typTest(v)[1] === typTest(fwg[k])[1] ? "isucc" : "iwarn")
   },
+  pchQry = (txd = txd1) => {
+    if ( !window.PouchDB || !Object.keys(nm0cfgs).includes(txd.DBNAME) || !txd.FILEID
+    || txd.OPTS !== 'object' || txd.ATTKEY && !reximg.test(txd.ATTKEY) && !rextxt.test(txd.ATTKEY) ) {
+      return; }
+    !txd.ATTKEY ? PouchDB(txd.DBNAME)
+      .get(txd.FILEID, txd.OPTS).then(d => !txd.OPTS.json && d.content || d)
+    : PouchDB(txd.DBNAME).getAttachment(txd.FILEID, txd.ATTKEY, txd.OPTS).then(r => r.text());
+  },
   storDel = () => {
     if ( !wipeinp.value
     || wipeinp.value !== nm0sets.uname && wipeinp.value !== nm0sets.uemail ) { return; }
@@ -1160,8 +1170,8 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
     || !(nm0sets = {}) || !(nm0cfgs = {}) || hlps[0].classList.remove("dnone")
     || ["_nm0sets", "_nm0cfgs"].forEach(e => localStorage.removeItem(e))
     || r2Show("ALERT: Close/remove app directly, or local storage might be re-engaged.");
-    !spdbswi.checked || (txd1.DBNAME = "") || !window.PouchDB || Promise.all( dbs.map( dbi =>
-      !dbi || PouchDB(dbi).destroy() //|| !PouchDB.allDbs
+    !spdbswi.checked || (txd1.DBNAME = txd1.FILEID = txd1.ATTKEY = "") || !window.PouchDB
+    || Promise.all( dbs.map( dbi => !dbi || PouchDB(dbi).destroy() //|| !PouchDB.allDbs
       .then(trsp => r2Show("Local DB successfully destroyed: " + dbi))
       .catch(err => {
         r2Show("ALERT: DB destruction attempted & failed.\\n" + valStr(err, 2));
@@ -1327,7 +1337,7 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
           r2Show(err);
         });
       },
-      blkDspl = qrsp => {
+      bulkDspl = qrsp => {
         if (!window.qctxta) {
           nmdata.innerHTML = "" + \`
   <span class=fltrt>
@@ -1366,7 +1376,7 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
       chkaf2.forEach( inp => [0,1,2,3,4].reduce((a, b) => a = a.parentElement, inp)
         .classList.add(fedit ? "hsuccl" : "hwarnl") );
     }
-    !dbq || dbq.allDocs(txd2.OPTS).then(rdataTfm).then(blkDspl).catch(r2Show);
+    !dbq || dbq.allDocs(txd2.OPTS).then(rdataTfm).then(bulkDspl).catch(r2Show);
   },
   fileLoad = evt => {
     let tanc = evt && ((evt.target || "").nodeName !== 'MARK' ? evt.target : evt.target.parentElement),
@@ -1543,9 +1553,13 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
   },
   blk2Tog = () => {
     if (vbas === 5) { return; }
-    let chks = document.querySelectorAll(vbas > 1 ? qslrs[8] : qslrs[9]);
+    let chks = document.querySelectorAll(vbas > 1 ? qslrs[8] : qslrs[9]),
+      adj1 = chks.length && chks[0].parentElement.nextElementSibling.textContent,
+      adj2 = chks.length && chks[0].parentElement.nextElementSibling.nextElementSibling.textContent;
     (chks.length ? filtctrl : bulkctrl).classList.add("dnone");
     (chks.length ? bulkctrl : filtctrl).classList.remove("dnone");
+    txd1.ATTKEY = !chks.length || vbas === 1 || !rexsd.test(adj1) ? "" : adj2.replace(/ .+$/, "");
+    txd1.FILEID = !chks.length ? "" : vbas > 1 && !txd1.ATTKEY ? adj2 : adj1.replace(/\\/$/, "");
   },
   bulkTog = () => {
     let hid = document.querySelector(vbas > 1 ? qslrs[6] : qslrs[7]);
@@ -1594,7 +1608,7 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
   chksRstr = () => {
     bulkctrl.classList.add("dnone");
     filtctrl.classList.remove("dnone");
-    filtinp.value = moveinp.value = "";
+    txd1.FILEID = txd1.ATTKEY = filtinp.value = moveinp.value = "";
     document.querySelectorAll(qslrs[2]).forEach(anc => anc.innerHTML = "&#x25b6;");
     document.querySelectorAll(qslrs[3]).forEach(inp => (inp.checked = 0) || (inp.className = "dnone"));
     document.querySelectorAll('#nmtbl tbody>tr[id]>td:first-of-type>input')
@@ -1655,7 +1669,7 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
       vwFnlz(evt);
     }).catch(r2Show);
     vbas === 5 || PouchDB(txd1.DBNAME)
-    .query(txd1.FILEID.replace(/^_design\\//, "") + "/" + txd1.VIEW, txd1.OPTS)
+    .query(txd1.DDOCID.replace(/^_design\\//, "") + "/" + txd1.VIEW, txd1.OPTS)
     .catch( () => PouchDB(txd1.DBNAME).allDocs({
       startkey:     descswi.checked != (vbas === 4) ? "~a" : undefined,
       endkey:       descswi.checked != (vbas === 4) ? undefined : "~a",
@@ -1702,7 +1716,7 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
           !adoc._attachments || Promise.all( Object.keys(adoc._attachments)
             .map( akey => db1.getAttachment("-res-img", akey)
               .then(abl => aurls[akey] = URL.createObjectURL(abl)) ) ) ).catch(() => "") )
-    .then( () => db1.query(txd1.FILEID.replace(/^_design\\//, "") + "/" + txd1.VIEW, txd1.OPTS)
+    .then( () => db1.query(txd1.DDOCID.replace(/^_design\\//, "") + "/" + txd1.VIEW, txd1.OPTS)
     .catch( () => db1.allDocs({
       //startkey:     descswi.checked ? "~a" : undefined,
       //endkey:       descswi.checked ? undefined : "~a",
@@ -1739,7 +1753,7 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
             ? ((cntcs[rb] || "").name_full || rb).replace(/ .*$/, "")
             : !cvs.some(e => /name_full/.test(e)) ? r.id
             : nmsX(ra.name_full) || ra.name_user || ra.name || r.id }</strong>
-          <em class="diblk fsz0c75">\${ !cvs.some(e => /timestamp/.test(e))
+          <em class="diblo fsz0c75">\${ !cvs.some(e => /timestamp/.test(e))
               || !/anno|memo|post/i.test(ra.file_type)
               || !ra.ts_created && !ra.file_created && !ra.ts_updated && !ra.file_updated
             ? "" : new Date( ra.ts_updated || ra.ts_created
@@ -1926,7 +1940,7 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
     ( txd1.OPTS = { // used only if design doc is specified //!evt || evt.target.id !== "descswi" ||
       //startkey:   descswi.checked ? "~~~" : "",
       //endkey:     descswi.checked ? "" : "~~~",
-      descending: !txd1.FILEID ? undefined : descswi.checked
+      descending: !txd1.DDOCID ? undefined : descswi.checked
     });
     if (!window.PouchDB || !txd1.DBNAME) {
       ftotal.innerText = "_";
@@ -1974,8 +1988,8 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
     .forEach(n => colssel.options[n].selected = true);
     vidx < 4 || !colssel.innerHTML || colsTog();
     vidx < 9 || (descswi.checked = (nm0sets.p2vws[vusr] || "").desc);
-    txd1.FILEID = v03inp.value = (nm0sets.p2vws[vusr] || "").ddoc || "";
-    txd1.VIEW = vidx > 8 && txd1.FILEID ? viewsel.value.replace(/^V\\d-/, "")
+    txd1.DDOCID = v03inp.value = (nm0sets.p2vws[vusr] || "").ddoc || "";
+    txd1.VIEW = vidx > 8 && txd1.DDOCID ? viewsel.value.replace(/^V\\d-/, "")
       : vbas === 4 ? "files-static" : vbas === 1 ? "files-contact" : "files-idxlist";
     viewRte(evt);
   },
@@ -2203,7 +2217,7 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
       t0v = t01sel.value;
     pfacnt.innerHTML = fwg = null;
     !pdbssel.options[3] || (nmdata.innerHTML = "");
-    dbpwinp.value = dbuninp.value = originp.value = "";
+    txd1.FILEID = txd1.ATTKEY = dbpwinp.value = dbuninp.value = originp.value = "";
     pdbnam.innerText = txd1.DBNAME = pdbssel.selectedIndex < 2 ? "" : pdbssel.value;
     cfg = nm0cfgs[txd1.DBNAME] || "";
     pw1swi.checked = (cfg.remot || "").pw1;
@@ -2295,7 +2309,7 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
     window.nm0 = {
       aurls, cntcs, nm0cfgs, nm0sets, txd1,
       r2Show, fncTry, htmTxt, valStr, mP1, jB1, jP1, idGen,
-      filesChg, fileLoad, tabActv, p2Gen
+      pchQry, filesChg, fileLoad, tabActv, p2Gen
     };
     !nm0sets.bedit || [moveinp, movebtn].forEach(elm => elm.classList.add("dnone"))
     || editbtn.classList.remove("dnone");
@@ -2329,7 +2343,7 @@ viewsel.onchange = viewChg;
 colssel.onchange = colsTog;
 [sortsel, descswi].forEach(elm => elm.onchange = viewRte);
 filtbtn.onclick = filtExe;
-blktrig.onclick = bulkTog;
+bulktrg.onclick = bulkTog;
 [movebtn, editbtn, delbtn].forEach(btn => btn.onclick = filesChg);
 document.querySelectorAll(qslrs[2]).forEach(anc => anc.onclick = sdirXpd);
 document.querySelectorAll('#nmtbl td:first-of-type>input').forEach(inp => inp.onchange = chksTog);
