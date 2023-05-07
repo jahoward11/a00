@@ -268,7 +268,7 @@ g1ui += "\\n<div><input type=button class=ccntr value=\\"RETRACT MOVE\\" onclick
 */
 
  // dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
- // reShow(dwraps[0] + g1wrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + dwraps[2])
+ // reShow( dwraps[0] + g1wrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + dwraps[2] )
 
 /*
     + Select and copy the orange text that appears above, overtop
@@ -723,7 +723,7 @@ sr0.txtaSel = e => _.hlp2Clr() || e.focus() || e.setSelectionRange(0, e.textLeng
 sr0.cntSwap = () => _.hlp2Clr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
 sr0.strPars = () => { let r2, rv = rtrminp.value, s2, sv = sepainp.value; _.hlp2Clr(); ( !_.rxs[2].test(rv.trim()) || (r2 = _.fncTry(window.eval, rv, 1)) instanceof Error && (trghelp.innerHTML = r2) ) && (r2 = window.eval('"' + rv.replace(/(?="|\\\\[^ntux]|\\\\u(?![\\da-fA-F]{4})|\\\\x(?![\\da-fA-F]{2}))/g, "\\\\") + '"')); s2 = _.rxs[1].test(sv.trim()) && _.fncTry(eval, sv) || _.fncTry(window.eval, sv, 2); _.hlp2Pol(s2); _.rsltVw(srctxta.value.replace(s2, r2)); };
 sr0.hlp3Clr = () => (lfhelp.innerHTML = "") || lfhelp.classList.remove("iwarn", "isucc");
-sr0.pfsRfr = (es = []) => !window.localforage || localforage.keys().then(ks => pfiles.innerHTML = ["pfiles.textContent", "trgtxta.value", "srctxta.value", "dentr.value", "recon.textContent", "recon.innerHTML"].concat(!window.nm0 ? [] : "nm0.pchQry()").concat(ks).concat(es).map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(console.warn);
+sr0.pfsRfr = (es = []) => !window.localforage || localforage.keys().then(ks => pfiles.innerHTML = ["pfiles.textContent", "trgtxta.value", "srctxta.value", "dentr.value", "recon.textContent", "recon.innerHTML"].concat(!window.nm0 ? [] : ["nmdata.textContent", "nm0.pchQry()"]).concat(ks).concat(es).map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(console.warn);
 sr0.dataMgr = ox => { let key = lfinp.value.trim(); if (ox === 2) return trgtxta.textLength !== trgtxta.selectionEnd - trgtxta.selectionStart || _.hlp2Clr() || _.datLoad(key); !key || !window.localforage || localforage[!ox ? "removeItem" : "setItem"](key, ox && "/*\\n" + trgtxta.value.replace(/\\*\\/$/gm, "$& ") + "\\n*/").then(() => sr0.pfsRfr() && (lfhelp.innerHTML = "USERdata file is " + (!ox ? "deleted." : "locally saved.")) && lfhelp.classList.add(!ox ? "iwarn" : "isucc")).catch(console.warn); }; //
 !window.srwrap || sr0.pfsRfr();
 
@@ -736,7 +736,7 @@ sr0.dataMgr = ox => { let key = lfinp.value.trim(); if (ox === 2) return trgtxta
 /*
  scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
  dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
- reShow(dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(xstor.JScode.tutorial3) + dwraps[2])
+ reShow( dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(xstor.JScode.tutorial3) + dwraps[2] )
 */
 
 /*
@@ -1357,6 +1357,6 @@ window.aurls = window.aurls || {};
 //`;
 
 export {
-  _module, tutorial1, tutorial2,
-  tutorial3, tutorial4
+  _module,
+  tutorial1, tutorial2, tutorial3, tutorial4
 };

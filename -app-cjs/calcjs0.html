@@ -510,21 +510,21 @@ let q2Bcopy, q2Bhtml,
           return ( !/\x0c$|\\f$|&#x0*[Cc];$|^\x0c|^\\f|^&#x0*[Cc];/.test(xpri)
             ? "" : "<div class=pagebb></div>" )
           + ( rslt == null ? "" : typeof rslt === 'string'
-            ? rslt.replace(/\n/g, "\\n") : rslt.toString().replace(/\s+/g, " ") )
-              .replace(/&(?=#?\w+;)/g, "&amp;").replace(/<(?=!|\/?[a-z])/gi, "&lt;");
+            ? rslt.replace(/\n/g, "\\n") : rslt.toString().replace(/\s+/g, " ") );
         } catch (err) { reShow(err); return err; }
       }),
       $ks = Object.keys($);
     cgrid.style.setProperty("--row1ht", $ks.length < 4 ? "-56px" : -($ks.length * 16 + 4) + "px");
-    quad1A.innerHTML = Object.values($).join("\n").replace(/\n$/, "\n&nbsp;")
-      + '<span id="dfinal">$-variable<br />FINAL VALUES</span>';
+    quad1A.innerHTML = Object.values($).join("\n")
+      .replace(/\n$/, "\n&nbsp;") + '<span id="dfinal">$-variable<br />FINAL VALUES</span>';
     quad1B.innerHTML = Object.keys($).join("\n")
       .replace(/^([a-zÀ-Ͽ]+)_\u0302(.+)$/gim, "$1<sup>$2</sup>")
       .replace(/^([a-zÀ-Ͽ]+)(?:_\u0303(.+)|(\d+))$/gim, "$1<sub>$2$3</sub>")
       .replace( /.[\u0300-\u036f]|[\u02f7\u03d5\u03dd\u03f0\u03f1\u03f5]/g,
         "<span class=fsan1>$&</span>" );
-    quad2A.innerHTML = reslts.join("\n").replace(/\n$/, "\n&nbsp;")
-      + '<span id="dinitl">Line-expression<br />RESULTS</span>';
+    quad2A.innerHTML = reslts.join("\n")
+      .replace(/&(?=#?\w+;)/g, "&amp;").replace(/<(?=!|\/?[a-z])/gi, "&lt;")
+      .replace(/\n$/, "\n&nbsp;") + '<span id="dinitl">Line-expression<br />RESULTS</span>';
     quad2B.innerHTML = xprsns.map( xpri => xpri
       .replace(/&(?=[gl]t;|#x0*[ad];|NewLine;)/gi, "&amp;").replace(/<(?=!|\/?[a-z])/gi, "&lt;")
       .replace( /\/\/ *(.*?) *( \/\/|)$/, (m, c1, c2) =>

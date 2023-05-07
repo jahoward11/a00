@@ -30,7 +30,7 @@ from the demo code written in the \`JScode\` module's data files.
  uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
  // srwrap.remove() // *Alert:* useful only if edit-testing the UI code above
- try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.strPars || scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(reShow); }
+ try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.sr0 || scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(reShow); }
 
  // Un-comment the following two lines of code to generate the
 // full source code (e.g., for building a standalone web app).
@@ -98,7 +98,7 @@ datPrep = () => Promise.all( [s1inp.value, s2inp.value].map( k => Promise.resolv
 s1rslt.onscroll = () => { s2rslt.scrollLeft = s1rslt.scrollLeft; s2rslt.scrollTop = s1rslt.scrollTop; };
 s2rslt.onscroll = () => { s1rslt.scrollLeft = s2rslt.scrollLeft; s1rslt.scrollTop = s2rslt.scrollTop; };
 [s1inp, s2inp].forEach(e => e.onblur = _.datPrep);
-!window.xdwrap || !window.localforage || localforage.keys().then( ks => pfile2.innerHTML = ["trgtxta.value", "srctxta.value", "dentr.value", "recon.textContent", "recon.innerHTML"].concat(ks).map(k => "\\n<option>" + k + "</option>").join("") + "\\n" ).catch(console.warn);
+!window.xdwrap || !window.localforage || localforage.keys().then( ks => pfile2.innerHTML = ["trgtxta.value", "srctxta.value", "dentr.value", "recon.textContent", "recon.innerHTML"].concat(!window.nm0 ? [] : ["nmdata.textContent", "nm0.pchQry()"]).concat(ks).map(k => "\\n<option>" + k + "</option>").join("") + "\\n" ).catch(console.warn);
 
  // Un-comment the following block of code to generate the
 // full source code (e.g., for building a standalone web app).
@@ -106,7 +106,7 @@ s2rslt.onscroll = () => { s1rslt.scrollLeft = s2rslt.scrollLeft; s1rslt.scrollTo
 /*
  scrGen = src => "let " + src.match(/^fncTry = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
  dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Source-Text Diffs</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script src=\\"../../a00/-res-js/srcdiff.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
- reShow(dwraps[0] + xdwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(xstor.JStool.textdiff) + dwraps[2])
+ reShow( dwraps[0] + xdwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(xstor.JStool.textdiff) + dwraps[2] )
 */
 //`;
 

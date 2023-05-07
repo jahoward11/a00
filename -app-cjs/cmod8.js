@@ -17,13 +17,13 @@ from the demo code written in the \`JScode\` module's data files:
  uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "pz1wrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
  // pz1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
- try { pz1wrap } catch { uiDspl(bodGen(t2x)); !!window.g1Reset || scrInj(null, 'module', "\\n" + scrGen(t2x) + "\\n").catch(reShow); }
+ try { pz1wrap } catch { uiDspl(bodGen(t2x)); !!window.jg1 || scrInj(null, 'module', "\\n" + scrGen(t2x) + "\\n").catch(reShow); }
 
  // Un-comment the following two lines of code to generate the
 // full source code (e.g., for building a standalone web app).
 
  // dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
- // reShow(dwraps[0] + pz1wrap.outerHTML + dwraps[1] + scrGen(t2x) + dwraps[2])
+ // reShow( dwraps[0] + pz1wrap.outerHTML + dwraps[1] + scrGen(t2x) + dwraps[2] )
 //`;
 
 const tiltmaze = `/*
@@ -52,11 +52,11 @@ g4ui += "\\n<div>\\n<span class=ccntr><select id=mpatt>\\n<option disabled>Maze 
 g4ui += ["Level I (single)", "Level II (single)", "Level III (single)", "Level IV (single)", "Level V (single)", "Level VI (single)", "Level VII (multi)", "Level VIII (multi)", "Level IX (multi)", "Level X (multi)", "Level XI (multi)"].map(e => "<option>" + e + "</option>").join("\\n");
 g4ui += "\\n</select></span><span class=ccntr><select id=gscrg>";
 g4ui += "\\n<option disabled>Game Scoring</option>\\n<option>reset counter</option>\\n<option selected>add up total</option>";
-g4ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&orarr; NEW MAZE\\" onclick=g4Start() /></span>\\n</div>";
+g4ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&orarr; NEW MAZE\\" onclick=jg4.g4Start() /></span>\\n</div>";
 g4ui += "\\n<div id=g4board></div>";
 g4ui += "\\n<div id=g4scor class=cfield>Score: <span id=g4movs>0</span></div>";
-g4ui += "\\n<div class=cfield align=center><span class=ccntr><button onclick=pcMove(3)>&ltrif; LEFT</button></span><span class=ccntr><button onclick=pcMove(1)>&utrif; TOP</button></span><span class=ccntr><button onclick=pcMove(4)>RIGHT &rtrif;</button></span></div>";
-g4ui += "\\n<div class=cfield align=center><span class=ccntr><button onclick=pcMove(2)>&dtrif; BOTTOM</button></span></div>\\n";
+g4ui += "\\n<div class=cfield align=center><span class=ccntr><button onclick=jg4.pcMove(3)>&ltrif; LEFT</button></span><span class=ccntr><button onclick=jg4.pcMove(1)>&utrif; TOP</button></span><span class=ccntr><button onclick=jg4.pcMove(4)>RIGHT &rtrif;</button></span></div>";
+g4ui += "\\n<div class=cfield align=center><span class=ccntr><button onclick=jg4.pcMove(2)>&dtrif; BOTTOM</button></span></div>\\n";
 
  // g4wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
  try { g4wrap && (g4board.innerHTML = "") } catch { ndiv = document.createElement('div'); ndiv.id = "g4wrap"; ndiv.innerHTML = g4ui; cmain.appendChild(ndiv); }
@@ -83,9 +83,10 @@ g4sets.push([ [-8, 55, 71, 8], [181, 55, 134, 8], [181, 118, 71, 8], [55, 181, 7
 g4sets.push([ [-8, 98, 61, 8], [98, 98, 61, 8], [257, 98, 61, 8], [-8, 204, 61, 8], [151, 204, 61, 8], [257, 204, 61, 8], [98, 257, 61, 8], [45, -8, 8, 61], [45, 98, 8, 61], [45, 257, 8, 61], [151, -8, 8, 61], [151, 151, 8, 61], [204, 45, 8, 61], [204, 257, 8, 61], [257, 151, 8, 61] ]);
 g4sets.push([ [31, 31, 47, 8], [226, 31, 47, 8], [70, 109, 47, 8], [226, 109, 47, 8], [-8, 148, 47, 8], [265, 148, 47, 8], [109, 187, 47, 8], [148, 226, 47, 8], [265, 226, 47, 8], [70, 265, 47, 8], [148, 265, 47, 8], [31, 109, 8, 47], [31, 265, 8, 47], [70, 109, 8, 47], [109, -8, 8, 47], [148, 148, 8, 47], [187, 31, 8, 47], [226, 148, 8, 47], [226, 265, 8, 47], [265, -8, 8, 47], [265, 70, 8, 47] ]);
 
-window.g4Start = () => { _.tstrk = Object.assign([], _.g4trgs[_.midx = mpatt.selectedIndex]); _.gball = new _.compnX("SlateGrey", ... _.g4blls[_.midx]); _.g4view.context ? _.g4view.clear() : _.g4view.start(); _.tstrk.map( ([x, y]) => [15, 10, 5].map( (r, i) =>  new _.compnX(i % 2 == 0 ? "LightSalmon" : "LightYellow", x - r, y - r, 0, 0, r) )) .flat().forEach(c => c.pcDrw()); _.g4sets[_.midx].map(e => new _.compnX("Tan", ...e)).forEach(c => c.pcDrw()); _.t0trk = _.dbar = 0; g4movs.innerHTML = (_.t1trk = gscrg.selectedIndex == 1 ? 0 : _.t1trk); };
-window.pcMove = d => { d == 1 ? _.gball.ysp = -3 : d == 2 ? _.gball.ysp = 3 : d == 3 ? _.gball.xsp = -3 : d == 4 ? _.gball.xsp = 3 : 0; !_.tstrk.length || (g4movs.innerHTML = _.t1trk); };
-g4Start();
+window.jg4 = {};
+jg4.g4Start = () => { _.tstrk = Object.assign([], _.g4trgs[_.midx = mpatt.selectedIndex]); _.gball = new _.compnX("SlateGrey", ... _.g4blls[_.midx]); _.g4view.context ? _.g4view.clear() : _.g4view.start(); _.tstrk.map( ([x, y]) => [15, 10, 5].map( (r, i) =>  new _.compnX(i % 2 == 0 ? "LightSalmon" : "LightYellow", x - r, y - r, 0, 0, r) )) .flat().forEach(c => c.pcDrw()); _.g4sets[_.midx].map(e => new _.compnX("Tan", ...e)).forEach(c => c.pcDrw()); _.t0trk = _.dbar = 0; g4movs.innerHTML = (_.t1trk = gscrg.selectedIndex == 1 ? 0 : _.t1trk); };
+jg4.pcMove = d => { d == 1 ? _.gball.ysp = -3 : d == 2 ? _.gball.ysp = 3 : d == 3 ? _.gball.xsp = -3 : d == 4 ? _.gball.xsp = 3 : 0; !_.tstrk.length || (g4movs.innerHTML = _.t1trk); };
+jg4.g4Start();
 
  // Un-comment the following block of code to generate the
 // full source code (e.g., for building a standalone web app).
@@ -93,7 +94,7 @@ g4Start();
 /*
  scrGen = src => "let " + src.match(/^dbar = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
  dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Tilt Maze</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
- reShow(dwraps[0] + g4wrap.outerHTML.replace(/\\n<hr>|<canvas[^]*?<\\/canvas>/g, "") + dwraps[1] + scrGen(xstor.JSpuzzle.tiltmaze) + dwraps[2])
+ reShow( dwraps[0] + g4wrap.outerHTML.replace(/\\n<hr>|<canvas[^]*?<\\/canvas>/g, "") + dwraps[1] + scrGen(xstor.JSpuzzle.tiltmaze) + dwraps[2] )
 */
 //`;
 
