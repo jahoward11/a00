@@ -96,6 +96,7 @@ const publdims = `//
 //`;
 
 const jsrefq = `//
+ new Date().toLocaleString()
  new Date(Date.now() - document.timeline.currentTime).toLocaleString()
  document.timeline.currentTime / 1000 / 60
  new Date(document.timeline.currentTime + 2.88e7).toTimeString().replace(/ G.+/, "")
@@ -154,7 +155,7 @@ const bcaches = `//
 
  // indexedDB.databases().then(reShow)
 
- // reShow(Object.keys(localStorage))
+ // reShow( Object.keys(localStorage) )
  // localStorage.key = "value"
  // localStorage["key"] = "value"
  // localStorage.setItem("key", "value")
@@ -164,22 +165,22 @@ const bcaches = `//
 //`;
 
 const dscripts = `//
- // reShow(document.head.outerHTML)
- // reShow(cheadg.outerHTML)
- // reShow(menulist.outerHTML)
- // reShow(menulist.textContent.replace(/&/g, "&amp;").replace(/\\xa0/g, "&nbsp;").replace(/>/g, "&gt;").replace(/</g, "&lt;"))
- // reShow(symlist.textContent)
- // reShow(ecoqjs.htmTxt(symlist.textContent))
+ reShow( Array.from(document.scripts).map(e => e.src || e.type) )
+ // reShow( document.scripts[0].outerHTML )
+ // reShow( document.querySelector('script:last-of-type').outerHTML )
+ // reShow( document.querySelector('body>script:last-of-type').outerHTML )
+ // reShow( ecoscripts.querySelectorAll('script')[1].outerHTML )
 
- reShow(Array.from(document.scripts).map(e => e.src || e.type))
- // reShow(document.scripts[0].outerHTML)
- // reShow(document.querySelector('script:last-of-type').outerHTML)
- // reShow(document.querySelector('body>script:last-of-type').outerHTML)
- // reShow(ecoscripts.querySelectorAll('script')[1].outerHTML)
+ // reShow( Array.from(document.styleSheets).map(ss => ss.href) )
+ // reShow( Array.from(document.styleSheets[0].rules).map(ru => ru.cssText) )
+ // reShow( document.querySelectorAll('style')[0].outerHTML )
 
- // reShow(Array.from(document.styleSheets).map(ss => ss.href))
- // reShow(Array.from(document.styleSheets[0].rules).map(ru => ru.cssText))
- // reShow(document.querySelectorAll('style')[0].outerHTML)
+ // reShow( document.head.outerHTML )
+ // reShow( cheadg.outerHTML )
+ // reShow( menulist.outerHTML )
+ // reShow( menulist.textContent.replace(/&/g, "&amp;").replace(/\\xa0/g, "&nbsp;").replace(/>/g, "&gt;").replace(/</g, "&lt;") )
+ // reShow( symlist.textContent )
+ // reShow( ecoqjs.htmTxt(symlist.textContent) )
 //`;
 
 const scrload = `//
@@ -244,7 +245,7 @@ PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
  // fetch("../-res-js/srcdiff.js").then(re => re.blob()).then(fbl => fbl.text()).then(reShow).catch(reShow)
  // fetch("../-res-js/srcdiff.js").then(re => re.blob()).then(fbl => !(aurls["srcdiff.js"] = URL.createObjectURL(fbl)) || fbl.text()).then(reShow).catch(reShow)
 
- // reShow(aurls)
+ // reShow( aurls )
 
  // sc2Inj = u => { let n = document.createElement('script'); !(n.src = u) || document.body.appendChild(n); };
  // !!window.PouchDB || sc2Inj("../-res-js/pouchdb.min.js")
@@ -257,9 +258,9 @@ const jstatqs = `//
  csq = obs.reduce((a, b, i) => a + (b - _.exp[i])**2/_.exp[i], 0)
  1 - jStat.chisquare.cdf(csq, 3)
 
- reShow(Object.keys(jStat))
- // reShow(Object.getOwnPropertyNames(Math))
- // reShow(Object.getOwnPropertyNames(Number))
+ reShow( Object.keys(jStat) )
+ // reShow( Object.getOwnPropertyNames(Math) )
+ // reShow( Object.getOwnPropertyNames(Number) )
 //`;
 
 const itoken = `/*
@@ -278,25 +279,34 @@ const itoken = `/*
  fetch("https:/" + "/iam.cloud.ibm.com/identity/token", opts).then(re => re.text()).then(reShow).catch(reShow);
 */`;
 
-const t2puzls = `//
+const t2puzls = `// JS Puzzle Collection #1
+
 /*
  t2x = xstor.JScode.tutorial2;
  bodGen = src => "\\n<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/;$|^g\\dui = /g, "").split(/;\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n") + "\\n"; //
  scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
  dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=pz1wrap>", "</div>\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
- reShow(dwraps[0] + bodGen(t2x) + dwraps[1] + scrGen(t2x) + dwraps[2])
+ uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "pz1wrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
+
+ // reShow( dwraps[0] + bodGen(t2x) + dwraps[1] + scrGen(t2x) + dwraps[2] )
+
+ // pz1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
+ try { pz1wrap } catch { uiDspl(bodGen(t2x)); !!window.jg1 || scrInj(null, 'module', "\\n" + scrGen(t2x) + "\\n").catch(reShow); }
 */
 
 //`;
 
-const t3search = `//
+const t3search = `// Search-&-Replace Webapp, Demo
+
+/*
  t3x = xstor.JScode.tutorial3;
  bodGen = src => "\\n" + src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui = /g, "").split(/;\\nsrui \\+= /).map(eval).join("").trim() + "\\n"; //
  scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
  uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
  // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
- // try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.strPars || scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(reShow); }
+ try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.sr0 || scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(reShow); }
+*/
 
  // srctxta.textContent = trgtxta.value; srctxta.value = srctxta.innerHTML;
 
@@ -314,10 +324,11 @@ const t3search = `//
  - github.com/markdown-it/markdown-it/ v12.0.6
  - markdown-it.github.io/markdown-it/
 */
- // !!window.markdownit || Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).then(reShow).catch(reShow)
- // window.docMrkp = md => markdownit({ html: 1, typographer: 1 }).use(markdownItDecorate).use(markdownitDeflist).use(markdownItImplicitFigures).use(markdownitIns).use(markdownitMark).use(markdownitSub).use(markdownitSup).render(md.replace(/[^-](?=--[^-])/g, "$&-")); //
- // sepainp.value = "/[^]+/";
- // rtrminp.value = "docMrkp";
+/*
+ !!window.markdownit || Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).then(reShow).catch(reShow)
+ window.docMrkp = md => markdownit({ html: 1, typographer: 1 }).use(markdownItDecorate).use(markdownitDeflist).use(markdownItImplicitFigures).use(markdownitIns).use(markdownitMark).use(markdownitSub).use(markdownitSup).render(md.replace(/[^-](?=--[^-])/g, "$&-")); //
+ [sepainp.value, rtrminp.value] = ["/[^]+/", "docMrkp"];
+*/
 
 /*
  - github.com/beautify-web/js-beautify/ v1.14.0
@@ -376,22 +387,50 @@ const t3srtools = `// Search-&-Replace Tools, Quick Ref
 
 const t4cntcs = `// __Contacts Directory__
 
+ _.w = window;
+ t4x = xstor.JScode.tutorial4;
+
+ // !!_.w.PouchDB || scrInj("../-res-js/pouchdb.min.js").then(reShow).catch(reShow)
+ // dbase = "cntcs-demo";
+ // !_.w.PouchDB || !/^[a-z][0-9_a-z-]*$/.test(dbase) || (_.w.dbobj = new PouchDB(dbase))
+ // dbobj.put({ _id: "-res-img" }).then(reShow).catch(reShow)
+
+/*
+ bodGen = src => "\\n<h3 class=cfield>Notes Database</h3>\\n\\n" + src.match(/^d1ui \\+= [^]+?(?=\\nd2ui )|^d2ui \\+= [^]+?(?=\\n$)|^d3ui \\+= [^]+?(?=\\n$)|^d4ui \\+= [^]+?(?=\\nd5ui )/gm).map(e => e.replace(/;$|^d\\dui \\+= /g, "").split(/;\\nd\\dui \\+= /).map(eval).join("").trim()).map((e, i) => [[1,3,2,4][i], e]).sort().map(es => es[1]).join("\\n\\n") + "\\n"; //
+ scrGen = src => src.match(/^(?:fwg|imgsVw|rexts) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n").replace(/;\\nwindow\\.(n1Gen = ).+/, (m, c1) => ",\\n  " + c1 + /^d5ui \\+= [^]+?(?=\\n$)/.exec(src).replace(/;(?: \\/\\/|)$|\\b_\\.\\b|^d5ui \\+= /g, "").split(/;(?: \\/\\/|)\\nd5ui \\+= /).map(eval).join("") + ";"); //
+ uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
+
+ dbA = () => !_.w.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => _.w.pdbs = re);
+ s1L = () => !!_.w.PouchDB ? _.dbA() : scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(_.dbA));
+
+ // dbwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
+ try { dbwrap } catch { uiDspl(bodGen(t4x)); !!_.w.dtmpl || Promise.resolve().then(s1L).then(() => scrInj(null, 'module', "\\n" + scrGen(t4x) + "\\n")).catch(reShow); }
+*/
+
+/*
+ dtmpl.key = "t1src"; // "t2evt"; "t3mem"; "t4cnt";
+ dbase = "recipes-home"; // "log-workouts"; "journal2023"; "contacts-work";
+ !_.w.PouchDB || !/^[a-z][0-9_a-z-]*$/.test(dbase) || (_.w.dbobj = new PouchDB(dbase))
+*/
+
 /*
  scrGen = src => src.match(/^(?:fwg|imgsVw|rexts) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n").replace(/reShow/g, "console.warn").replace(/;\\nwindow\\.(n1Gen = ).+/, (m, c1) => ",\\n  " + (c1 + n1Gen).replace(/\\b_\\.\\b/g, "") + ";\\nwindow.dbobj = window.PouchDB && new PouchDB(\\"" + dbobj.name + "\\");"); //
  dPreps = d => d.replace(/\\n<hr>/, "").replace(/(<details id="?imgdtl.*?>)[^]*?(?=<\\/details>)|(<form id="?dform.*?>)[^]*?(?=<\\/form>)|(<div id="?ndata.*?>)[^]*(?=<\\/div>\\s*<\\/div>)/g, "$1$2$3"); //
  dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Notes Database</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/pouchdb.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
- reShow(dwraps[0] + dPreps(dbwrap.outerHTML) + dwraps[1] + scrGen(xstor.JScode.tutorial4) + dwraps[2])
+
+ reShow( dwraps[0] + dPreps(dbwrap.outerHTML) + dwraps[1] + scrGen(t4x) + dwraps[2] )
 */
-
-// __Note Manager__
- // Un-comment the following line of code to generate the
-// full source code (e.g., for building a standalone web app).
-// *Alert:* This app's code is lengthy (about 2300 lines).
-
- // import("../-app-cjs/nmgr.js").then(re => re.dwraps[0] + re.nmpage + re.dwraps[1] + re.nmscr + re.dwraps[2]).then(reShow).catch(reShow)
 //`;
 
-const nmtools = `// __Note-Mgr Tools__
+const t4nmtools = `// __Note-Mgr Webapp & Tools__
+
+/*
+ Un-comment the following line of code to generate the
+full source code (e.g., for building a standalone web app).
+*Alert:* This app's code is lengthy (about 2400 lines).
+*/
+
+ // import("../-app-cjs/nmgr.js").then(re => re.dwraps[0] + re.nmpage + re.dwraps[1] + re.nmscr + re.dwraps[2]).then(reShow).catch(reShow)
 
 /*
  Object.keys(nm0)
@@ -421,6 +460,8 @@ const nmtools = `// __Note-Mgr Tools__
  qctxta.value = JSON.stringify(txd, 0, 2);
  p0parseconfigs.value = JSON.stringify(pcs, 0, 2); ""
  p0filefrags.value = JSON.stringify(ffs, 0, 2); ""
+
+ nmwrap.classList.toggle("dnone");
 */
 
 //`;
@@ -476,6 +517,7 @@ export {
   varkeys, nformat, uiwidth, publdims,
   jsrefq, bcaches, dscripts, scrload,
   jstatqs, itoken,
-  t2puzls, t3search, t3srtools, t4cntcs,
-  nmtools, webapp1, webapp2
+  t2puzls, t3search, t3srtools,
+  t4cntcs, t4nmtools,
+  webapp1, webapp2
 };
