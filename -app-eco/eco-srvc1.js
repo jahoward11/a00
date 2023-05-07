@@ -652,21 +652,21 @@ let q2Bcopy, q2Bhtml,
           return ( !/\\x0c$|\\\\f$|&#x0*[Cc];$|^\\x0c|^\\\\f|^&#x0*[Cc];/.test(xpri)
             ? "" : "<div class=pagebb></div>" )
           + ( rslt == null ? "" : typeof rslt === 'string'
-            ? rslt.replace(/\\n/g, "\\\\n") : rslt.toString().replace(/\\s+/g, " ") )
-              .replace(/&(?=#?\\w+;)/g, "&amp;").replace(/<(?=!|\\/?[a-z])/gi, "&lt;");
+            ? rslt.replace(/\\n/g, "\\\\n") : rslt.toString().replace(/\\s+/g, " ") );
         } catch (err) { reShow(err); return err; }
       }),
       $ks = Object.keys($);
     cgrid.style.setProperty("--row1ht", $ks.length < 4 ? "-56px" : -($ks.length * 16 + 4) + "px");
-    quad1A.innerHTML = Object.values($).join("\\n").replace(/\\n$/, "\\n&nbsp;")
-      + '<span id="dfinal">$-variable<br />FINAL VALUES</span>';
+    quad1A.innerHTML = Object.values($).join("\\n")
+      .replace(/\\n$/, "\\n&nbsp;") + '<span id="dfinal">$-variable<br />FINAL VALUES</span>';
     quad1B.innerHTML = Object.keys($).join("\\n")
       .replace(/^([a-zÀ-Ͽ]+)_\\u0302(.+)$/gim, "$1<sup>$2</sup>")
       .replace(/^([a-zÀ-Ͽ]+)(?:_\\u0303(.+)|(\\d+))$/gim, "$1<sub>$2$3</sub>")
       .replace( /.[\\u0300-\\u036f]|[\\u02f7\\u03d5\\u03dd\\u03f0\\u03f1\\u03f5]/g,
         "<span class=fsan1>$&</span>" );
-    quad2A.innerHTML = reslts.join("\\n").replace(/\\n$/, "\\n&nbsp;")
-      + '<span id="dinitl">Line-expression<br />RESULTS</span>';
+    quad2A.innerHTML = reslts.join("\\n")
+      .replace(/&(?=#?\\w+;)/g, "&amp;").replace(/<(?=!|\\/?[a-z])/gi, "&lt;")
+      .replace(/\\n$/, "\\n&nbsp;") + '<span id="dinitl">Line-expression<br />RESULTS</span>';
     quad2B.innerHTML = xprsns.map( xpri => xpri
       .replace(/&(?=[gl]t;|#x0*[ad];|NewLine;)/gi, "&amp;").replace(/<(?=!|\\/?[a-z])/gi, "&lt;")
       .replace( /\\/\\/ *(.*?) *( \\/\\/|)$/, (m, c1, c2) =>
@@ -1247,9 +1247,11 @@ let rva2, rval, ss0, ss1,
   j = 0, vidx = 0,
   txd1 = {
     DBNAME: (document.querySelector('#ecoesp0 #pchlist') || "").value || null,
-    FILEID: "", //"_design/ecosorter",
+    FILEID: "",
+    ATTKEY: "",
+    DDOCID: "", //"_design/ecosorter",
     VIEW:   "", //"files-idxlist",
-    OPTS:   {} //{ since: 0 }
+    OPTS:   {}  //{ since: 0 }
   },
   copts = [ \`
           <option value="subdir">Subdir</option>
@@ -1405,7 +1407,7 @@ let rva2, rval, ss0, ss1,
         : Array.from(chks).filter( inp => inp.parentElement.parentElement.children[3]
           && /^(?:anno|assets|contact|event|memo|post|prjid|publmgr|scrap|srcdoc)$/
           .test(inp.parentElement.parentElement.children[3].textContent) ),
-      txd2 = {
+      txd4 = {
         DBNAME: txd1.DBNAME,
         FILEID: "_all_docs",
         OPTS:   {
@@ -1417,7 +1419,7 @@ let rva2, rval, ss0, ss1,
         window.dstor = d2s;
         qcontxta.value = "$dstor";
         EC2.qconRetrvD(() => {
-          qcontxta.value += "\\n/" + txd2.DBNAME;
+          qcontxta.value += "\\n/" + txd4.DBNAME;
           EC1.tabs0Act(3);
         });
       },
@@ -1433,15 +1435,15 @@ let rva2, rval, ss0, ss1,
           }
       },
       rdataTfm = re => (re.rows || re.results || []).map(row1Tfm), //.filter(d => !d._deleted)
-      dbq = txd2.DBNAME && window.PouchDB && PouchDB(txd2.DBNAME);
+      dbq = txd4.DBNAME && window.PouchDB && PouchDB(txd4.DBNAME);
     !fmove || Array.from(chks).forEach(inp => inp.parentElement.parentElement.className = "");
     chkaf2.forEach( inp => inp.parentElement.parentElement.className
       = fmove ? "has-background-warning-light" : "has-background-danger-light" );
-    !dbq || ( txd2.FILEID === "_all_docs"
-      ? dbq.allDocs(txd2.OPTS).then(rdataTfm).then(rd2Qcon)
-      : txd2.FILEID === "_changes"
-      ? dbq.changes(txd2.OPTS).then(rdataTfm).then(rd2Qcon)
-      : dbq.get(txd2.FILEID, txd2.OPTS).then(r2Show) )
+    !dbq || ( txd4.FILEID === "_all_docs"
+      ? dbq.allDocs(txd4.OPTS).then(rdataTfm).then(rd2Qcon)
+      : txd4.FILEID === "_changes"
+      ? dbq.changes(txd4.OPTS).then(rdataTfm).then(rd2Qcon)
+      : dbq.get(txd4.FILEID, txd4.OPTS).then(r2Show) )
     .catch(r2Show);
   },
   fileLoad = evt => {
@@ -1608,7 +1610,7 @@ let rva2, rval, ss0, ss1,
       colsTog(null, /^(?:id|seq)$/.test(ss0) ? ss0 : "id");
     }).catch(r2Show);
     vidx > 2 || PouchDB(txd1.DBNAME)
-    .query(txd1.FILEID.replace(/^_design\\//, "") + "/" + txd1.VIEW, txd1.OPTS)
+    .query(txd1.DDOCID.replace(/^_design\\//, "") + "/" + txd1.VIEW, txd1.OPTS)
     .catch( () => PouchDB(txd1.DBNAME).allDocs({
       startkey:     descswi.checked != (vidx === 2) ? "~a" : undefined,
       endkey:       descswi.checked != (vidx === 2) ? undefined : "~a",
@@ -1769,7 +1771,9 @@ let elsmed, fpl, fxa, pcntcs, rval, uimg, unm,
   rslt1 = {},
   txd1 = {
     DBNAME: (document.querySelector('#ecoesp0 #pchlist') || "").value || null,
-    FILEID: "_design/ecosorter",
+    FILEID: "",
+    ATTKEY: "",
+    DDOCID: "_design/ecosorter",
     VIEW:   "files-static",
     OPTS:   {
       //startkey: ["A"], endkey: ["B"]
@@ -1867,7 +1871,7 @@ document.querySelector('main>#cfilt>#pcntcs').innerHTML = "\\n      "
   .concat(\`<option value="\${ pcntcs.join() }">(all names)</option>\`)
   .join("\\n      ") + "\\n    ";
 !txd1.DBNAME || PouchDB(txd1.DBNAME) //"ecosorter/files-static"
-.query(txd1.FILEID.replace(/^_design\\//, "") + "/" + txd1.VIEW, txd1.OPTS)
+.query(txd1.DDOCID.replace(/^_design\\//, "") + "/" + txd1.VIEW, txd1.OPTS)
 .catch(() => PouchDB(txd1.DBNAME).allDocs({ startkey: "~a", include_docs: true }))
 .then( rslt0 => rslt1.rows = (rslt0.rows || [])
   .sort( (a, b) => !(rval = a.doc || a.value) || !rval.file_created ? 0

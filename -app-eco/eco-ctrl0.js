@@ -3738,7 +3738,7 @@ qconSyncD() {
     msgHandl(txdata);
   }
 },
-qconRetrvD(cbfnc, errfnc, txd5) { // also triggered by guideLoad, dviz-idxlist, dviz-posts, dviz-dboxupd
+qconRetrvD(cbfnc, errfnc, txd3) { // also triggered by guideLoad, dviz-idxlist, dviz-posts, dviz-dboxupd
 // ### http console input ###
 // *any results from the following txs get sent to preview/jdedft/jderaw*
 // 1 blank: reset edit space
@@ -3754,12 +3754,12 @@ qconRetrvD(cbfnc, errfnc, txd5) { // also triggered by guideLoad, dviz-idxlist, 
   let lfkey,
     [txdata, valcon] = txdPrep(),
     ecoat = (txdata.idtoks || idtoks || "").accessToken;
-  txd5 || !valcon || !filewkg || !/^eco-(?:publmgr|scrap|srcdoc)$/.test(filewkg.file_type)
+  txd3 || !valcon || !filewkg || !/^eco-(?:publmgr|scrap|srcdoc)$/.test(filewkg.file_type)
   || document.querySelector('#ecoesp0 .escreen:nth-of-type(2):not(.is-hidden)') || EC1.tabs0Act(4);
-  if ((txd5 || "").file_type) {
+  if ((txd3 || "").file_type) {
     document.querySelector('#econav0 #pfsinp').value = "";
     EC1.pfsInp();
-    dataDispl(txd5, 1, cbfnc);
+    dataDispl(txd3, 1, cbfnc);
   } else if (!valcon) {
     pfsResets();
     msgHandl("Edit Space is reset.");
