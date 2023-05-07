@@ -422,7 +422,7 @@ const t4cntcs = `// __Contacts Directory__
 */
 //`;
 
-const t4nmtools = `// __Note-Mgr Webapp & Tools__
+const t4nmtools = `// __Note-Mgr Code & Tools__
 
 /*
  Un-comment the following line of code to generate the
@@ -431,6 +431,8 @@ full source code (e.g., for building a standalone web app).
 */
 
  // import("../-app-cjs/nmgr.js").then(re => re.dwraps[0] + re.nmpage + re.dwraps[1] + re.nmscr + re.dwraps[2]).then(reShow).catch(reShow)
+
+ // nmwrap.classList.toggle("dnone");
 
 /*
  Object.keys(nm0)
@@ -460,10 +462,7 @@ full source code (e.g., for building a standalone web app).
  qctxta.value = JSON.stringify(txd, 0, 2);
  p0parseconfigs.value = JSON.stringify(pcs, 0, 2); ""
  p0filefrags.value = JSON.stringify(ffs, 0, 2); ""
-
- nmwrap.classList.toggle("dnone");
 */
-
 //`;
 
 const webapp1 = `// __"Recipes" DB Webapp__
@@ -483,10 +482,9 @@ const webapp1 = `// __"Recipes" DB Webapp__
  window.txd2 = { DBNAME: "howfam02", FILEID: ".ref", ATTKEY: "hjenn_food2022.html", OPTS: {}, wid: "rswrap" };
  // window[txd2.wid].remove() // Alert: useful only if edit-testing the GUI code above
  window[txd2.wid] || Promise.resolve().then(s1L).then(s2L).then(nmImp).then(uiDspl).then(smL).then(c2Qry).then(uiDspl).then(s4L).catch(reShow);
-
- // nmwrap.classList.toggle("dnone");
 */
 
+ // nmwrap.classList.toggle("dnone");
 //`;
 
 const webapp2 = `// __"Family Gospel" DB Webapp__
@@ -506,10 +504,9 @@ const webapp2 = `// __"Family Gospel" DB Webapp__
  window.txd2 = { DBNAME: "howfam02", FILEID: ".records", ATTKEY: "hjas_disc-famgospeltbits.html", OPTS: {}, wid: "nswrap" };
  // window[txd2.wid].remove() // Alert: useful only if edit-testing the GUI code above
  window[txd2.wid] || Promise.resolve().then(s1L).then(s2L).then(nmImp).then(uiDspl).then(smL).then(c2Qry).then(uiDspl).then(s4L).catch(reShow);
-
- // nmwrap.classList.toggle("dnone");
 */
 
+ // nmwrap.classList.toggle("dnone");
 //`;
 
 export {
