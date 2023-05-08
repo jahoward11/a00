@@ -422,7 +422,7 @@ const t4cntcs = `// __Contacts Directory__
 */
 //`;
 
-const t4nmcode = `// __Note-Mgr Code & Helps__
+const t4nmcode = `// __Note-Mgr Code, Helps__
 
 /*
  Un-comment the following line of code to generate the
@@ -435,6 +435,7 @@ full source code (e.g., for building a standalone web app).
  // nmwrap.classList.toggle("dnone");
 
 /*
+*Note-Edit CLI Commands*
  Object.keys(nm0)
  PouchDB.allDbs().then(re => window.pdbs = re)
  window.pdbs = Array.from(opensel.options).map(opt => opt.value).splice(1)
@@ -465,8 +466,8 @@ full source code (e.g., for building a standalone web app).
 */
 
 /*
-TextDiff
-txd2.OPTS.rev = txd2.revs[3].rev;
+*TextDiff CLI Commands*
+ txd2.OPTS.rev = txd2.revs[3].rev;
 > [window.s1inp.value, window.s2inp.value] = ["nm0.pchQry()", "nm0.pchQry(txd2)"];
   window.txd2 = JSON.parse(JSON.stringify(nm0.txd1));
   PouchDB(txd2.DBNAME).get(txd2.FILEID, { revs_info: 1 }).then(doc => txd2.revs = doc._revs_info) //.then(reShow).then(() => txd2.OPTS.rev = txd2.revs[1].rev).catch(reShow);
