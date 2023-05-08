@@ -1911,7 +1911,7 @@ let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
           hlps = pfacnt.querySelectorAll('.chelp');
         hlps.forEach(el => el.classList.add("dnone"));
         Array.from(pfacnt.querySelectorAll('.label')).map(el => el.textContent)
-        .forEach( k => /^_id$|^_rev$/.test(k)
+        .forEach( k => /^_rev$/.test(k)
           || !/isucc|iwarn/.test(window["p0" + k].className)
           || !++chgs || (fwg[k] = typTest(window["p0" + k].value, 1)[2]) );
         !a1inp.files.length || !++chgs
@@ -1923,14 +1923,14 @@ let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
         !chgs || !p0_id.value || !Object.keys(nm0cfgs).includes(txd3.DBNAME)
         || !window.PouchDB || PouchDB(txd3.DBNAME)
         .put(Object.assign({ _id: "", _rev: "" }, fwg), {}).then( trsp =>
-          Object.keys(fwg).forEach( k => /^_id$|^_rev$/.test(k)
+          Object.keys(fwg).forEach( k => /^_rev$/.test(k)
             || window["p0" + k].classList.remove("isucc", "iwarn") || (window["p0" + k].disabled = 1) )
           || (fwg = null) || hlps[0].classList.remove("dnone") || r2Show(trsp) )
         .then(txd3.cbf)
         .catch(err => hlps[1].classList.remove("dnone") || r2Show(err));
       }; //fwgUpd;
       pfacnt.querySelectorAll('.field-label button').forEach(btn => btn.onclick = txtaSel);
-      Object.keys(fwg).forEach(k => /^_id$|^_rev$/.test(k) || (window["p0" + k].onblur = dataVld));
+      Object.keys(fwg).forEach(k => /^_rev$/.test(k) || (window["p0" + k].onblur = dataVld));
     }
   },
   viewRte = evt => {
