@@ -523,6 +523,6 @@ export {
   jsrefq, bcaches, dscripts, scrload,
   jstatqs, itoken,
   t2puzls, t3search, t3srtools,
-  t4cntcs, t4nmtools,
+  t4cntcs, t4nmcode,
   webapp1, webapp2
 };
