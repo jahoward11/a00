@@ -1956,12 +1956,9 @@ function dropboxTx(txdata = {}, xrslv, xrjct = _=>_) {
       { path: txdata.path }, rslt => xrslv ? xrslv(rslt) : dataDispl(rslt, 0) )
     .catch(err => xrjct(errShow(err)));
   } else if (/download$/.test(dbox)) {
-    dropbox( 'files/download', { path: txdata.path }, (metadata, filecontents) => {
-      let blobread = new FileReader();
-      blobread.onerror = xrjct;
-      blobread.onload = () => xrslv ? xrslv(blobread.result) : dataDispl(blobread.result, 0);
-      blobread.readAsText(filecontents);
-    }).catch(errShow);
+    dropbox('files/download', { path: txdata.path }, (metadata, filecnts) => filecnts.text())
+    .then(str => xrslv ? xrslv(str) : dataDispl(str, 0))
+    .catch(err => xrjct(errShow(err)));
   } else if (/upload$/.test(dbox)) { // { type: 'application/octet-stream' }
     blobwrite = new Blob([rawtxta.value.trim() + "\n"]);
     dropbox( 'files/upload', txdata, blobwrite,
