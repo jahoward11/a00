@@ -717,14 +717,14 @@ fncTry = (fnc, a, e) => { try { return fnc(a) } catch (err) { return e > 1 ? a :
 hlp2Clr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc"));
 hlp2Pol = (s2, lm) => !(s2 instanceof RegExp) || !s2.global || !(trghelp.innerHTML = (lm = (srctxta.value.match(s2) || []).length) + " replacements have been made.") || [trgtxta, trghelp].forEach(e => e.classList.add(!lm ? "iwarn" : "isucc"));
 rsltVw = rslt => { let ri = rndrsel.selectedIndex; trgtxta.value = rslt; trgrndr.innerHTML = !ri ? "" : ri > 2 ? rslt : "\\n<pre" + (ri < 2 ? ">" : " class=pwrap>") + rslt + "</pre>\\n"; };
-datLoad = k => !k ? trgtxta.value = "" : Promise.resolve(_.fncTry(window.eval, k)).then(v => v != null ? v : localStorage.getItem(k) || window.localforage && localforage.getItem(k)).then(v => v == null ? "" : typeof v === 'object' ? JSON.stringify(v, 0, 2) : typeof v !== 'string' ? "" + v : !_.rxs[0].test(v.trim()) ? v : JSON.stringify(_.fncTry(JSON.parse, v), 0, 2) || v).then(v => trgtxta.value = v.replace(/(\\*\\/) $/gm, "$1").replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(console.warn);
+datLoad = k => !k ? trgtxta.value = "" : Promise.resolve(_.fncTry(window.eval, k)).then(v => v != null ? v : localStorage.getItem(k) || window.localforage && localforage.getItem(k)).then(v => v == null ? "" : typeof v === 'object' ? JSON.stringify(v, 0, 2) : typeof v !== 'string' ? "" + v : !_.rxs[0].test(v.trim()) ? v : JSON.stringify(_.fncTry(JSON.parse, v), 0, 2) || v).then(v => trgtxta.value = v.replace(/(\\*\\/) $/gm, "$1").replace(/\\n\\*\\/$|^\\/\\*\\n/g, "")).catch(reShow);
 window.sr0 = {};
 sr0.txtaSel = e => _.hlp2Clr() || e.focus() || e.setSelectionRange(0, e.textLength);
 sr0.cntSwap = () => _.hlp2Clr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
 sr0.strPars = () => { let r2, rv = rtrminp.value, s2, sv = sepainp.value; _.hlp2Clr(); ( !_.rxs[2].test(rv.trim()) || (r2 = _.fncTry(window.eval, rv, 1)) instanceof Error && (trghelp.innerHTML = r2) ) && (r2 = window.eval('"' + rv.replace(/(?="|\\\\[^ntux]|\\\\u(?![\\da-fA-F]{4})|\\\\x(?![\\da-fA-F]{2}))/g, "\\\\") + '"')); s2 = _.rxs[1].test(sv.trim()) && _.fncTry(eval, sv) || _.fncTry(window.eval, sv, 2); _.hlp2Pol(s2); _.rsltVw(srctxta.value.replace(s2, r2)); };
 sr0.hlp3Clr = () => (lfhelp.innerHTML = "") || lfhelp.classList.remove("iwarn", "isucc");
-sr0.pfsRfr = (es = []) => !window.localforage || localforage.keys().then(ks => pfiles.innerHTML = ["pfiles.textContent", "trgtxta.value", "srctxta.value", "dentr.value", "recon.textContent", "recon.innerHTML"].concat(!window.nm0 ? [] : ["nmdata.textContent", "nm0.pchQry()"]).concat(ks).concat(es).map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(console.warn);
-sr0.dataMgr = ox => { let key = lfinp.value.trim(); if (ox === 2) return trgtxta.textLength !== trgtxta.selectionEnd - trgtxta.selectionStart || _.hlp2Clr() || _.datLoad(key); !key || !window.localforage || localforage[!ox ? "removeItem" : "setItem"](key, ox && "/*\\n" + trgtxta.value.replace(/\\*\\/$/gm, "$& ") + "\\n*/").then(() => sr0.pfsRfr() && (lfhelp.innerHTML = "USERdata file is " + (!ox ? "deleted." : "locally saved.")) && lfhelp.classList.add(!ox ? "iwarn" : "isucc")).catch(console.warn); }; //
+sr0.pfsRfr = (es = []) => !window.localforage || localforage.keys().then(ks => pfiles.innerHTML = ["pfiles.textContent", "trgtxta.value", "srctxta.value", "dentr.value", "recon.textContent", "recon.innerHTML"].concat(!window.nm0 ? [] : ["nmdata.textContent", "nm0.pchQry()"]).concat(ks).concat(es).map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(reShow);
+sr0.dataMgr = ox => { let key = lfinp.value.trim(); if (ox === 2) return trgtxta.textLength !== trgtxta.selectionEnd - trgtxta.selectionStart || _.hlp2Clr() || _.datLoad(key); !key || !window.localforage || localforage[!ox ? "removeItem" : "setItem"](key, ox && "/*\\n" + trgtxta.value.replace(/\\*\\/$/gm, "$& ") + "\\n*/").then(() => sr0.pfsRfr() && (lfhelp.innerHTML = "USERdata file is " + (!ox ? "deleted." : "locally saved.")) && lfhelp.classList.add(!ox ? "iwarn" : "isucc")).catch(reShow); }; //
 !window.srwrap || sr0.pfsRfr();
 
 /*
@@ -736,7 +736,7 @@ sr0.dataMgr = ox => { let key = lfinp.value.trim(); if (ox === 2) return trgtxta
 /*
  scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
  dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
- reShow( dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(xstor.JScode.tutorial3) + dwraps[2] )
+ reShow( dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(xstor.JScode.tutorial3).replace(/reShow/g, "console.warn") + dwraps[2] )
 */
 
 /*
@@ -1318,10 +1318,10 @@ nmsX = (d, x = sortsel.selectedIndex) => ( x === 3 ? d.name_user : x < 2 ? d.nam
 ptyX = (d, x = sortsel.selectedIndex) => x > 4 ? d[sortsel.value] || " " : x > 3 ? (d.file_updated || d.file_created || "").timestamp || d.ts_updated || d.ts_created || " " : _.nmsX(d).replace(_.rexts, "");
 hdsX = evt => document.querySelectorAll(_.qss[0]).forEach(e => e.open = evt.target.checked);
 bdsX = evt => document.querySelectorAll(_.qss[1]).forEach(e => e.open = evt.target.checked);
-fRes = () => { let ts0 = new Date().getTime(); _.fwg = JSON.parse(JSON.stringify(dtmpl[dtmpl.key])); !/^idGen\\(.*\\)$/.test(_.fwg._id.trim()) || (_.fwg._id = eval("_." + _.fwg._id)); };
+fRes = () => { let ts0 = new Date().getTime(); _.fwg = JSON.parse(JSON.stringify(ntmpl[ntmpl.key])); !/^idGen\\(.*\\)$/.test(_.fwg._id.trim()) || (_.fwg._id = eval("_." + _.fwg._id)); };
 dLoad = evt => dbobj.get(evt.target.textContent || evt.target.dataset.fileid).then(d => !(_.fwg = d) || (dform.className = ndata.innerHTML = "") || _.formGen()).catch(reShow);
 window.n1Gen = eval(d5ui);
-window.dtmpl = { key: "t4cnt", t1src: t1src, t2evt: t2evt, t3mem: t3mem, t4cnt: t4cnt };
+window.ntmpl = { key: "t4cnt", t1src: t1src, t2evt: t2evt, t3mem: t3mem, t4cnt: t4cnt };
 window.aurls = window.aurls || {};
 !window.a1inp || ( a1inp.onchange = () => a3inp.innerHTML = (a1inp.files[0] || "").name || "<span>Locate image&hellip;</span>" );
 !window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) ? isRtrv() : dbobj.get("-res-img").then(d => dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(re => _.hlps[0].classList.remove("dnone") || reShow(re) || _.isRtrv()).catch(er => _.hlps[1].classList.remove("dnone") || reShow(er)) );
@@ -1337,7 +1337,7 @@ window.aurls = window.aurls || {};
     such as for compiling journal entries, for saving recipes, for
     recording workout results in a fitness log, etc.
     + First, in the following code, feel free to change the values of
-      \`dtmpl.key\` and \`dbase\` for your new DB. For quick-startup,
+      \`ntmpl.key\` and \`dbase\` for your new DB. For quick-startup,
       four different DB names with corresponding template options are
       provided -- out of which "t1src" and "recipes-home" are
       currently selected (assigned).
@@ -1350,7 +1350,7 @@ window.aurls = window.aurls || {};
 */
 
 /*
- dtmpl.key = "t1src"; // "t2evt"; "t3mem"; "t4cnt";
+ ntmpl.key = "t1src"; // "t2evt"; "t3mem"; "t4cnt";
  dbase = "recipes-home"; // "log-workouts"; "journal2023"; "contacts-work";
  !window.PouchDB || !/^[a-z][0-9_a-z-]*$/.test(dbase) || (window.dbobj = new PouchDB(dbase))
 */
