@@ -361,13 +361,13 @@ figure {
   overflow-x: hidden;
   white-space: pre;
 }
-#nmwrap #a1inp { width: 0; padding: 0; }
-#nmwrap #a2inp { width: 1.5rem; padding: 0; text-align: center; }
-#nmwrap #a3inp { font-size: calc(5rem / 6); width: calc(216px - 1.5rem); text-align: left; }
-#nmwrap #a3inp>span { color: revert; opacity: 0.5; }
+#nmwrap #a1in2 { width: 0; padding: 0; }
+#nmwrap #a2in2 { width: 1.5rem; padding: 0; text-align: center; }
+#nmwrap #a3in2 { font-size: calc(5rem / 6); width: calc(216px - 1.5rem); text-align: left; }
+#nmwrap #a3in2>span { color: revert; opacity: 0.5; }
 #vctrls #pdbssel { width: 136px; }
 #vctrls #viewsel { width: 2rem; }
-#vctrls #colssel, #vctrls #sortsel { width: 100px; }
+#vctrls #colssel, #vctrls #srt2sel { width: 100px; }
 #vctrls #descswi { margin-right: 2px; }
 #vctrls #filtinp { width: 168px; }
 #vctrls #moveinp { width: 114px; }
@@ -411,7 +411,7 @@ figure {
 }
 @media screen and (min-width: 720px) and (max-width: 767px), print {
   #vctrls #pdbssel { width: 120px; }
-  #vctrls #colssel, #vctrls #sortsel { width: 84px; }
+  #vctrls #colssel, #vctrls #srt2sel { width: 84px; }
   #vctrls #filtinp { width: 150px; }
   #vctrls #moveinp { width: 96px; }
 }
@@ -419,7 +419,7 @@ figure {
   #cmain #pdbcfg .table { max-width: calc(720px - 0.5rem); }
   #cmain #pdbcfg #typtbl td:nth-of-type(3)>input { max-width: calc(720px - 0.5rem - 120px - 84px - 15px); }
   #cmain #vctrls #pdbssel { width: 120px; }
-  #cmain #vctrls #colssel, #cmain #vctrls #sortsel { width: 84px; }
+  #cmain #vctrls #colssel, #cmain #vctrls #srt2sel { width: 84px; }
   #cmain #vctrls #filtinp { width: 150px; }
   #cmain #vctrls #moveinp { width: 96px; }
 }
@@ -446,7 +446,7 @@ figure {
   <div class="level-item">
     <div class="level cfield">
       <span class=ccntr><select id=colssel multiple size=1 title="Show/hide-columns select list">
-      </select></span><span class=ccntr><select id=sortsel title="Sort-column select list">
+      </select></span><span class=ccntr><select id=srt2sel title="Sort-column select list">
       </select></span><span class=ccntr><label title="Notelist sort order"><input type=checkbox id=descswi /><a>Z-A</a></label>&nbsp;</span>
     </div>
   </div>
@@ -603,7 +603,7 @@ figure {
     Then, tap the associated button,&nbsp;here.
   </p>
   <div class=cfield>
-    <span class="ccntr cleft">Username or email</span><span class=ccntr><input type=text id=una2inp /></span>
+    <span class="ccntr cleft">Username or email</span><span class=ccntr><input type=text id=unm2inp /></span>
   </div>
   <div class=cfield>
     <span class="ccntr cleft">New DB name</span><span class=ccntr><input type=text id=pdb0inp /></span>
@@ -976,9 +976,9 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
   <hr />
   <div class=cfield>
     <span class="ccntr cleft">Add attachments</span><span class=ccntr><label>\`
-      + \`<input id=a1inp type=file multiple />\`
-      + \`<span id=a2inp class="btn1 hgainl ilink">&#x2726;</span>\`
-      + \`<span id=a3inp class=btn1><span>Locate image&hellip;</span></span>
+      + \`<input id=a1in2 type=file multiple />\`
+      + \`<span id=a2in2 class="btn1 hgainl ilink">&#x2726;</span>\`
+      + \`<span id=a3in2 class=btn1><span>Locate image&hellip;</span></span>
     </label></span>
   </div>
   <div class=cfield>
@@ -1166,7 +1166,7 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
     || wipeinp.value !== nm0sets.uname && wipeinp.value !== nm0sets.uemail ) { return; }
     let hlps = nmsets.querySelectorAll('.chelp'),
       dbs = Array.from(opensel.options).map(o => o.value);
-    !slocswi.checked || (uemlinp.value = unaminp.value = una2inp.value = "")
+    !slocswi.checked || (uemlinp.value = unaminp.value = unm2inp.value = "")
     || !(nm0sets = {}) || !(nm0cfgs = {}) || hlps[0].classList.remove("dnone")
     || ["_nm0sets", "_nm0cfgs"].forEach(e => localStorage.removeItem(e))
     || r2Show("ALERT: Close/remove app directly, or local storage might be re-engaged.");
@@ -1324,10 +1324,10 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
       },
       pchPut = () => {
         let txd5 = fncTry(JSON.parse, qctxta.value);
-        if ( !txd5 || !txd5.DBNAME || !Array.isArray(txd5.docs)
+        if ( !window.PouchDB || !txd5 || !Array.isArray(txd5.docs) || !txd5.DBNAME
         || !Array.from(opensel.options).map(o => o.value).includes(txd5.DBNAME) ) { return; }
         txd5.OPTS && typeof txd5.OPTS === 'object' || (txd5.OPTS = {});
-        txd5.DBNAME && window.PouchDB && PouchDB(txd5.DBNAME)
+        PouchDB(txd5.DBNAME)
         .bulkDocs(txd5.docs, txd5.OPTS).then(trsp => {
           hlps[0].classList.remove("dnone");
           r2Show(trsp);
@@ -1469,9 +1469,9 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
     </div>
   </div>\` ).join("") + atthtm;
         bckbtn.onclick = pdbOpen;
-        a1inp.onchange = () => a3inp.innerHTML = a1inp.files[1]
-          ? "<em>[" + a1inp.files.length + " files selected]</em>"
-          : a1inp.files[0] ? a1inp.files[0].name : "<span>Locate image&hellip;</span>";
+        a1in2.onchange = () => a3in2.innerHTML = a1in2.files[1]
+          ? "<em>[" + a1in2.files.length + " files selected]</em>"
+          : a1in2.files[0] ? a1in2.files[0].name : "<span>Locate image&hellip;</span>";
         updbtn.onclick = () => {
           let ts0 = new Date().getTime(),
             chgs = 0,
@@ -1491,10 +1491,10 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
             p1.dbname = txd1.DBNAME;
             !p1.hasOwnProperty("version") || (p1.version = p1.version.replace(/-?\\d+$/, m => ++m));
           });
-          !a1inp.files.length || !++chgs
+          !a1in2.files.length || !++chgs
           || !(fwg.hasOwnProperty("_attachments") || (fwg._attachments = {}))
-          || Array.from(a1inp.files).forEach( (f, i) =>
-            fwg._attachments[ !imganm2.value ? f.name : !a1inp.files[1]
+          || Array.from(a1in2.files).forEach( (f, i) =>
+            fwg._attachments[ !imganm2.value ? f.name : !a1in2.files[1]
               ? imganm2.value : imganm2.value.replace(/(?=\\.\\w+$|$)/, i > 9 ? i : "0" + i) ]
             = { content_type: f.type, data: f } );
           !chgs || !Object.keys(nm0cfgs).includes(txd2.DBNAME)
@@ -1636,19 +1636,19 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
   },
   colsTog = (evt, resel = (nm0sets.p2vws[vusr] || []).sort) => {
     let opts = Array.from(colssel.selectedOptions).map(o => 1 + o.index);
-    !evt || (resel = sortsel.value);
+    !evt || (resel = srt2sel.value);
     document.querySelectorAll('#nmtbl :not(.dnone)>tr')
     .forEach( tr => Array.from(tr.children).forEach( (td, i) =>
       td.className = !i || opts.indexOf(i) > -1 ? "" : "dnone" ));
-    sortsel.innerHTML = vbas === 5 ? \`
+    srt2sel.innerHTML = vbas === 5 ? \`
         <option value=seq>Chg Seq</option>
         <option value=id>Note ID</option>\\n\`
       : Array.from(colssel.selectedOptions)
         .map(o => \`\\n          <option value="\${ o.value }">\${ o.textContent }</option>\`)
         .join("") + "\\n        ";
-    sortsel.value = resel || (vbas > 1 ? "id" : "name_full1");
-    //Array.from(sortsel.options).some(o => o.value === resel)
-    //sortsel.selectedIndex > -1 || (sortsel.selectedIndex = 0);
+    srt2sel.value = resel || (vbas > 1 ? "id" : "name_full1");
+    //Array.from(srt2sel.options).some(o => o.value === resel)
+    //srt2sel.selectedIndex > -1 || (srt2sel.selectedIndex = 0);
     cvs = Array.from(colssel.selectedOptions).map(o => o.value);
   },
   tblGen = evt => {
@@ -1731,8 +1731,8 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
             ? 0 : (ra < rb) == descswi.checked ? 1 : -1 );
       ftotal.innerText = rdc || rrs.length;
       nmclip.innerHTML = rdc ? "" : "\\n  <span class=\\"fltrt mtup0c25\\">&ensp;Show all:&ensp;"
-      + "<label><input type=checkbox id=hdrsswi /> <a>headers</a></label>&ensp;"
-      + "<label><input type=checkbox id=bodsswi /> <a>bodies</a></label></span>\\n  <hr />"
+      + "<label><input type=checkbox id=hdr2swi /> <a>headers</a></label>&ensp;"
+      + "<label><input type=checkbox id=bod2swi /> <a>bodies</a></label></span>\\n  <hr />"
       + (rrs.length ? "" : "\\n  <p class=igreyd>&emsp;<em>[No results found &hellip;]</em></p>")
       + rrs.map( r => \`
   <article class=media>
@@ -1827,16 +1827,16 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
     </div>
   </article>\` ).join("") + "\\n";
       if (rdc) { return; }
-      hdrsswi.onchange = ev2 =>
+      hdr2swi.onchange = ev2 =>
         document.querySelectorAll('#nmclip .media-content>details:first-of-type')
         .forEach(el => el.open = ev2.target.checked);
-      bodsswi.onchange = ev2 =>
+      bod2swi.onchange = ev2 =>
         document.querySelectorAll('#nmclip .media-content>details:last-of-type')
         .forEach(el => el.open = ev2.target.checked);
       document.querySelectorAll(qslrs[12]).forEach(anc => anc.onclick = fileLoad);
       document.querySelectorAll(qslrs[11]).forEach(inp => inp.onchange = blk2Tog);
-      vidx > 8 && !(nm0sets.p2vws[vusr] || "").hdrs || hdrsswi.click();
-      !(nm0sets.p2vws[vusr] || "").bods || bodsswi.click();
+      vidx > 8 && !(nm0sets.p2vws[vusr] || "").hdrs || hdr2swi.click();
+      !(nm0sets.p2vws[vusr] || "").bods || bod2swi.click();
       vwFnlz(evt);
     }) ).catch(r2Show);
   },
@@ -1881,8 +1881,8 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
       !fwg.hasOwnProperty("from") || (fwg.from = nm0sets.uname || "user000");
       pfacnt.innerHTML = "" + \`
   <span class=fltrt>
-  <button id=resbtn class=hgainl><strong class=isucc>&lang;</strong> RESET</button>&nbsp;
-  <button id=savbtn class=hgainl><span class=isucc>&#x267a;</span> SAVE</button></span>
+  <button id=res2btn class=hgainl><strong class=isucc>&lang;</strong> RESET</button>&nbsp;
+  <button id=sav2btn class=hgainl><span class=isucc>&#x267a;</span> SAVE</button></span>
   <div class=field>
     <h4>New Note</h4>
     <div class="alnrt chelp isucc dnone">New note is saved in local DB.</div>
@@ -1899,11 +1899,11 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
      }</textarea>
     </div>
   </div>\` ).join("") + atthtm;
-      a1inp.onchange = () => a3inp.innerHTML = a1inp.files[1]
-        ? "<em>[" + a1inp.files.length + " files selected]</em>"
-        : a1inp.files[0] ? a1inp.files[0].name : "<span>Locate image&hellip;</span>";
-      resbtn.onclick = pdbOpen;
-      savbtn.onclick = () => {
+      a1in2.onchange = () => a3in2.innerHTML = a1in2.files[1]
+        ? "<em>[" + a1in2.files.length + " files selected]</em>"
+        : a1in2.files[0] ? a1in2.files[0].name : "<span>Locate image&hellip;</span>";
+      res2btn.onclick = pdbOpen;
+      sav2btn.onclick = () => {
         let chgs = 0,
           hlps = pfacnt.querySelectorAll('.chelp');
         hlps.forEach(el => el.classList.add("dnone"));
@@ -1911,10 +1911,10 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
         .forEach( k => /^_rev$/.test(k)
           || !/isucc|iwarn/.test(window["p0" + k].className)
           || !++chgs || (fwg[k] = typTest(window["p0" + k].value, 1)[2]) );
-        !a1inp.files.length || !++chgs
+        !a1in2.files.length || !++chgs
         || !(fwg.hasOwnProperty("_attachments") || (fwg._attachments = {}))
-        || Array.from(a1inp.files).forEach( (f, i) =>
-          fwg._attachments[ !imganm2.value ? f.name : !a1inp.files[1]
+        || Array.from(a1in2.files).forEach( (f, i) =>
+          fwg._attachments[ !imganm2.value ? f.name : !a1in2.files[1]
             ? imganm2.value : imganm2.value.replace(/(?=\\.\\w+$|$)/, i > 9 ? i : "0" + i) ]
           = { content_type: f.type, data: f } );
         !chgs || !p0_id.value || !Object.keys(nm0cfgs).includes(txd3.DBNAME)
@@ -1934,7 +1934,7 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
     [nmflow, nmclip].forEach(el => el.classList.add("dnone"));
     nmtbod.innerHTML = nmclip.innerHTML = "";
     vidx < 4 || (nmdata.innerHTML = fwg = null);
-    [ss0, ss1] = sortsel.value.split("."); //!evt || evt.target.id !== "sortsel" ||
+    [ss0, ss1] = srt2sel.value.split("."); //!evt || evt.target.id !== "srt2sel" ||
     ( txd1.OPTS = { // used only if design doc is specified //!evt || evt.target.id !== "descswi" ||
       //startkey:   descswi.checked ? "~~~" : "",
       //endkey:     descswi.checked ? "" : "~~~",
@@ -1965,7 +1965,7 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
     vbas = viewsel.selectedIndex > 3 && +/\\d/.exec(viewsel.value);
     if (vidx !== 2) {
       (colssel.innerHTML = !vbas ? "" : copts[vbas < 5 ? 0 : 1]);
-      vidx > 3 || (sortsel.innerHTML = "") || (colssel.selectedIndex = -1);
+      vidx > 3 || (srt2sel.innerHTML = "") || (colssel.selectedIndex = -1);
       descswi.checked = 0;
       bulkctrl.classList.add("dnone");
       filtctrl.classList.remove("dnone");
@@ -2027,12 +2027,12 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
         hlps[2].classList.remove("dnone")
         || (pdbssel.selectedIndex = 0) || pdbOpen(0) || r2Show(trsp);
       }).catch(err => hlps[3].classList.remove("dnone") || r2Show(err));
-    } else if (!txd1.DBNAME && una2inp.value && /^[a-z][0-9_a-z-]*$/.test(db0) && window.PouchDB) {
+    } else if (!txd1.DBNAME && unm2inp.value && /^[a-z][0-9_a-z-]*$/.test(db0) && window.PouchDB) {
       new PouchDB(txd1.DBNAME = db0).info().then(trsp => {
         let dbs = Array.from(opensel.options).map(o => o.value).filter(e => e).concat(db0).sort();
         nm0cfgs[db0] || !( nm0cfgs[db0] = { type0: t01sel.value,
           view0: v01sel.value || nm0sets.vwdflt || "",
-          tsset: ts0, tsdel: 0, user0: una2inp.value.trim() || nm0sets.uname || nm0sets.uemail || "",
+          tsset: ts0, tsdel: 0, user0: unm2inp.value.trim() || nm0sets.uname || nm0sets.uemail || "",
           descr: pdb1inp.value || db0 + " project data",
           remot: { un: dbuninp.value.trim() || nm0sets.uname || "", pw: dbpwinp.value.trim(),
             pw1: pw1swi.checked, orig: originp.value.trim(), publ: 0 } })
@@ -2157,8 +2157,8 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
         = { v0: ["V" + vbas + "-" + v01inp.value, v02inp.value], base: vbas, ddoc: v03inp.value,
           cols: Array.from(colssel.options)
             .map((o, i) => o.selected && i).filter(e => typeof e === 'number'),
-          sort: sortsel.value, desc: descswi.checked, filt: filtinp.value, cbxs: !hid,
-          hdrs: vbas < 2 && hdrsswi.checked, bods: vbas < 2 && bodsswi.checked } ) )
+          sort: srt2sel.value, desc: descswi.checked, filt: filtinp.value, cbxs: !hid,
+          hdrs: vbas < 2 && hdr2swi.checked, bods: vbas < 2 && bod2swi.checked } ) )
     : !v0cs.length ? hlps[13].classList.remove("dnone") : hlps[12].classList.remove("dnone")
       || v0cs.forEach(el => delete nm0sets.p2vws[el.parentElement.textContent.replace(/^\\s?V\\d-/, "")]);
     idx !== 8 || !t01inp.value || t0sChg() || !(t01sel.value = t01inp.value)
@@ -2326,7 +2326,7 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
         include_docs: true
       }).then(re => re.rows.forEach(r => cntcs[r.doc.name_user || r.id] = cntcLite(r.doc)))
       .catch(r2Show);
-    una2inp.value = nm0sets.uname || nm0sets.uemail || "";
+    unm2inp.value = nm0sets.uname || nm0sets.uemail || "";
     unaminp.value = nm0sets.uname || "";
     uemlinp.value = nm0sets.uemail || "";
     !nm0sets.useset || use2swi.checked || use2swi.click();
@@ -2339,7 +2339,7 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
 pdbssel.onchange = pdbOpen;
 viewsel.onchange = viewChg;
 colssel.onchange = colsTog;
-[sortsel, descswi].forEach(elm => elm.onchange = viewRte);
+[srt2sel, descswi].forEach(elm => elm.onchange = viewRte);
 filtbtn.onclick = filtExe;
 bulktrg.onclick = bulkTog;
 [movebtn, editbtn, delbtn].forEach(btn => btn.onclick = filesChg);
