@@ -864,42 +864,42 @@ hr { margin: 1.5rem 0; }
 #tfwrap .diblk, #tfwrap .btn1 { display: inline-block; }
 #tfwrap>#tfnav { position: fixed; top: 0; right: 0.5rem; opacity: 0.5; z-index: 4; }
 #ecorender>#tfwrap>#tfnav { top: 45.5px; }
-#tfwrap>#tfnav>#tf0cnt { min-width: 72px; }
+#tfwrap>#tfnav>#tf0mct { min-width: 72px; }
 #tfwrap>#se2inp { width: 240px; }
-#tfwrap>#trgrndr { margin: 1rem 0; border: dashed gainsboro; border-width: 1px 0; }
+#tfwrap>#trgrnd2 { margin: 1rem 0; border: dashed gainsboro; border-width: 1px 0; }
 </style>
 <span id="tfnav">
-<button id="tf1bck">&#x25e4;</button><button id="tf0cnt">0 of 0</button><button id="tf1fwd">&#x25e2;</button>
+<button id="tf1bck">&#x25e4;</button><button id="tf0mct">0 of 0</button><button id="tf1fwd">&#x25e2;</button>
 </span>
 <h3 class="cfield">Find w/i Text</h3>
 <span class="ccntr diblk mtd0c5">
 <input type="text" id="se2inp"><label class="btn1" onclick="se2inp.select()">Search Pattern</label>
 </span> <span class="ccntr diblk mtd0c5">
-<span class="ccntr"><select id="rndrsel">
+<span class="ccntr"><select id="rnd2sel">
 <option>PRE render</option>
 <option selected>PRE-wrap render</option>
 <option>Normal render</option>
 </select></span><span class="ccntr"><input type="button" id="prs2btn" value="⥤ PARSE"></span>
 </span>
-<div id="trghelp" class="chelp"></div>
-<div id="trgrndr"></div>
+<div id="trghlp2" class="chelp"></div>
+<div id="trgrnd2"></div>
 </div>
 <script type="module">
 let srctxt = \``,
 `\`,
   tfNav = incr => {
-    let mks = document.querySelectorAll('#trgrndr mark'),
+    let mks = document.querySelectorAll('#trgrnd2 mark'),
       len = mks.length,
-      nbr = incr == null && 1 || (+tf0cnt.innerText.replace(/ .+/, "") + incr) || 0;
+      nbr = incr == null && 1 || (+tf0mct.innerText.replace(/ .+/, "") + incr) || 0;
     nbr = !len ? 0 : nbr > len ? 1 : nbr < 1 ? len : nbr;
-    tf0cnt.innerText = (incr == null ? "0" : nbr) + " of " + len;
+    tf0mct.innerText = (incr == null ? "0" : nbr) + " of " + len;
     incr == null || (mks[nbr - 1] || tfnav).scrollIntoView({ behavior: "smooth", block: "center" })
-    || ((document.querySelector('#trgrndr mark.hwarn') || {}).className = "")
+    || ((document.querySelector('#trgrnd2 mark.hwarn') || {}).className = "")
     || ((mks[nbr - 1] || {}).className = "hwarn");
   },
   rsltVw = rslt => {
-    let ri = rndrsel.selectedIndex;
-    trgrndr.innerHTML = ri > 1 ? rslt
+    let ri = rnd2sel.selectedIndex;
+    trgrnd2.innerHTML = ri > 1 ? rslt
       : "\\n<pre" + (!ri ? ">" : " class=pwrap>") + rslt.replace(/\\n$|^\\n/g, "") + "</pre>\\n";
   },
   htmTx2 = s => s
@@ -916,16 +916,16 @@ let srctxt = \``,
   },
   strPrs2 = () => {
     let lm;
-    trghelp.innerHTML = trgrndr.innerHTML = "";
-    trghelp.classList.remove("iwarn", "isucc");
+    trghlp2.innerHTML = trgrnd2.innerHTML = "";
+    trghlp2.classList.remove("iwarn", "isucc");
     rsltVw(findTx2(se2inp.value, srctxt));
-    !se2inp.value || !( trghelp.innerHTML
-      = (lm = (trgrndr.innerHTML.match(/<mark>/g) || "").length) + " matches have been found." )
-    || trghelp.classList.add(!lm ? "iwarn" : "isucc");
+    !se2inp.value || !( trghlp2.innerHTML
+      = (lm = (trgrnd2.innerHTML.match(/<mark>/g) || "").length) + " matches have been found." )
+    || trghlp2.classList.add(!lm ? "iwarn" : "isucc");
     tfNav();
   };
 tf1bck.onclick = () => tfNav(-1);
-tf0cnt.onclick = () => tfNav(0);
+tf0mct.onclick = () => tfNav(0);
 tf1fwd.onclick = () => tfNav(1);
 (prs2btn.onclick = strPrs2)();
 </script>
@@ -1146,7 +1146,7 @@ main>#r2con {
         </span>
       </span>
       <span class="control">
-        <a id="blktrig">&#x2611;</a>
+        <a id="bulktrg">&#x2611;</a>
       </span>
     </div>
   </div>
@@ -1307,7 +1307,7 @@ let rva2, rval, ss0, ss1,
   filtbtn = document.querySelector('main #filtbtn'),
   filtctrl = document.querySelector('main #filtctrl'),
   bulkctrl = document.querySelector('main #bulkctrl'),
-  blktrig = document.querySelector('main #blktrig'),
+  bulktrg = document.querySelector('main #bulktrg'),
   r2con = document.querySelector('main>#r2con'),
   cmthds = document.querySelectorAll('main thead'),
   cmtbod = document.querySelector('main tbody'),
@@ -1660,7 +1660,7 @@ colssel.onchange = colsTog;
 sortsel.onchange = tblGen;
 descswi.onchange = tblGen;
 filtbtn.onclick = filtExe;
-blktrig.onclick = bulkTog;
+bulktrg.onclick = bulkTog;
 document.querySelectorAll(qslrs[2])
 .forEach(a => a.onclick = sdirXpd);
 document.querySelectorAll('main td:first-of-type>input')
