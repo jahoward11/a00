@@ -390,13 +390,13 @@ const t4cntcs = `// __Contacts Directory__
  _.w = window;
  t4x = xstor.JScode.tutorial4;
 
-// *Notes Database: from JS Tutorial 4, Contacts Directory*
-/*
  ntkey = ""; //"t1src"; "t2evt"; "t3mem"; "t4cnt";
  dbase = "cntcs-demo"; //"recipes-home"; "log-workouts"; "journal2023"; "contacts-work";
  dbtit = ""; //"Notes Database";
  dbhdr = ""; //"Note Summaries";
 
+// *Notes Database: from JS Tutorial 4, Contacts Directory*
+/*
  bodGen = src => (!_.dbtit ? "\\n" : "\\n<h3 class=cfield>" + _.dbtit + "</h3>\\n\\n") + src.match(/^d1ui \\+= [^]+?(?=\\nd2ui )|^d2ui \\+= [^]+?(?=\\n$)|^d3ui \\+= [^]+?(?=\\n$)|^d4ui \\+= [^]+?(?=\\nd5ui )/gm).map(e => e.replace(/;$|^d\\dui \\+= /g, "").split(/;\\nd\\dui \\+= /).map(eval).join("").trim()).map((e, i) => [[1,3,2,4][i], e]).sort().map(es => es[1]).join("\\n\\n").replace(/Contacts Directory/, _.dbhdr || "$&") + "\\n"; //
  scrGen = src => src.match(/^(?:fwg|imgsVw|rexts) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n").replace(/(;\\nwindow\\.n1Gen = ).+/, (m, c1) => c1 + /^d5ui \\+= [^]+?(?=\\n$)/m.exec(src)[0].replace(/;(?: \\/\\/|)$|\\b_\\.\\b|^d5ui \\+= /g, "").split(/;(?: \\/\\/|)\\nd5ui \\+= /).map(eval).join("") + ";"); //
  uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
@@ -416,7 +416,7 @@ const t4cntcs = `// __Contacts Directory__
  dPreps = d => d.replace(/\\n<hr>/, "").replace(/(<details id="?imgdtl.*?>)[^]*?(?=<\\/details>)|(<form id="?dform.*?>)[^]*?(?=<\\/form>)|(<div id="?ndata.*?>)[^]*(?=<\\/div>\\s*<\\/div>)/g, "$1$2$3"); //
  dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>" + (_.dbtit || "Notes Database") + "</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/pouchdb.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
 
- reShow( dwraps[0] + dPreps(dbwrap.outerHTML) + dwraps[1] + sc2Gen(t4x) + dwraps[2] )
+ reShow( dwraps[0] + dPreps(dbwrap.outerHTML) + dwraps[1] + sc2Gen(t4x).replace(/reShow/g, "console.warn").replace(/(ntmpl = { key: ")(\\w+)/, "$1" + (_.ntkey || "$2")) + dwraps[2] )
 */
 //`;
 
