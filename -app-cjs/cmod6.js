@@ -1017,7 +1017,7 @@ __*Tutorial Four: Building a*__ contacts __*web app*__
       when the *ENTRY* field of the calculator app is clear.
 */
 
- // !(dbase = "") || PouchDB(dbase).destroy().then(reShow)
+ // !window.PouchDB || !(dbase = "") || PouchDB(dbase).destroy().then(reShow)
 
 /*
     + *Also good to know:* To confirm that a local DB has been
@@ -1233,7 +1233,7 @@ d3ui += "\\n<div class=\\"chelp iwarn dnone\\">Image-attach attempt failed.</div
 d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\"><em>Rmv:</em> step 1</span><span class=ccntr>";
 d3ui += "<input type=text id=n5inp placeholder=\\"Enter attachment name&hellip;\\" /></span>\\n</div>";
 d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">step 2</span><span class=ccntr>";
-d3ui += "<button id=a5btn class=hgainl><span class=iwarn>&otimes;</span> REMOVE</button></span>";
+d3ui += "<button id=a5btn class=hgainl><span class=iwarn>&ominus;</span> REMOVE</button></span>";
 d3ui += "\\n<div class=\\"chelp isucc dnone\\">Image is removed from \\"-res-img\\" file.</div>";
 d3ui += "\\n<div class=\\"chelp iwarn dnone\\">Image-removal attempt failed.</div>\\n</div>";
 d3ui += "\\n<details id=imgdtl open=true></details>";
@@ -1296,7 +1296,7 @@ window.aurls = window.aurls || {};
 /*
 d4ui += "\\n<hr />\\n<h4>Contacts Directory</h4>\\n<div id=cpanl class=\\"alnrt\\">\\n<span class=ccntr>Sort by:&ensp;";
 d4ui += "<select id=sortsel class=anone>" + ["", "first name", "last name", "username", "timestamp", "headline", "subject", "from", "to"].map((e, i) => "<option" + (i !== 1 ? ">" : " selected>") + e + "</option>").join("") + "</select>";
-d4ui += "<button id=nsbtn class=\\"hgainl isucc\\">&orarr;</button></span> <span class=ccntr>Show all:&ensp;";
+d4ui += "<button id=nsbtn class=\\"hgainl isucc\\">&#x2a20;</button></span> <span class=ccntr>Show all:&ensp;";
 d4ui += "<label><input type=checkbox id=hdrsswi /> <a>headers</a></label>&ensp;";
 d4ui += "<label><input type=checkbox id=bodsswi /> <a>bodies</a></label></span>\\n</div>\\n<div id=ndata></div>";
 d5ui += 'd => \`\\\\n<article class=media>\\\\n<div class="media-left">\\\\n<figure class="image rspv128"><img src="\${ aurls[d.image_src] || "#" }" data-fileid="\${ d._id }" />\\\\n<figcaption>\${ d.name_user || "" }</figcaption></figure>\\\\n</div>'; //
