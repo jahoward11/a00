@@ -581,7 +581,7 @@ let q2Bcopy, q2Bhtml,
     let nanc = document.createElement('a'),
       chtml = '<!DOCTYPE html>\\n<html lang="en">\\n<head>\\n'
       + (document.querySelector('body>#ecorender') || document.documentElement).innerHTML
-        .replace(/\\n+$|^\\n+|^<head>\\n?|\\n *<option><\\/option>\\s*<optgroup[^]*?(?=\\n *<\\/select>)|\\n *<span class="addns ccntr">[^]+?(?=\\n *<div id="xcshelp")|,\\n *xsetLoad = [^]+?(?=;\\nwindow\\.xstor =)|\\n*<script\\b.*><\\/script>(?=$|<\\/body>)|\\n?<\\/body>$/gim, "")
+        .replace(/\\n+$|^\\n+|^<head>\\n?|\\n *<option><\\/option>\\s*<optgroup[^]*?(?=\\n *<\\/select>)|\\n *<span class="addns ccntr">[^]+?(?=\\n *<div id="xcshelp")|,\\n *xsetLoad = [^]+?(?=;\\nwindow\\.reShow =)|\\n*<script\\b.*><\\/script>(?=$|<\\/body>)|\\n?<\\/body>$/gim, "")
         .replace(/^(<\\/style>)[^]*?(?=<div .+><\\/div>$)/im, "$1\\n</head>\\n<body>\\n")
         .replace(/^(<xmp id="datxmp".*?>)[^]*?(?=<\\/xmp>)/im, (m, c1) => c1 + "\\n" + dentr.value + "\\n")
         .replace(/^(<pre id="recon">)[^]*?(?=<\\/pre>)/im, "$1")
@@ -665,7 +665,8 @@ let q2Bcopy, q2Bhtml,
       .replace( /.[\\u0300-\\u036f]|[\\u02f7\\u03d5\\u03dd\\u03f0\\u03f1\\u03f5]/g,
         "<span class=fsan1>$&</span>" );
     quad2A.innerHTML = reslts.join("\\n")
-      .replace(/&(?=#?\\w+;)/g, "&amp;").replace(/<(?=!|\\/?[a-z])/gi, "&lt;")
+      .replace(/&(?=#?\\w+;)/g, "&amp;")
+      .replace(/(<div class=pagebb><\\/div>)|<(?=!|\\/?[a-z])/gi, (m, c1) => c1 || "&lt;")
       .replace(/\\n$/, "\\n&nbsp;") + '<span id="dinitl">Line-expression<br />RESULTS</span>';
     quad2B.innerHTML = xprsns.map( xpri => xpri
       .replace(/&(?=[gl]t;|#x0*[ad];|NewLine;)/gi, "&amp;").replace(/<(?=!|\\/?[a-z])/gi, "&lt;")
@@ -790,6 +791,7 @@ let q2Bcopy, q2Bhtml,
     };
     !window.localforage ? xlRndr() : localforage.keys().then(xlRndr).catch(reShow);
   };
+window.reShow = reShow;
 window.xstor = window.xstor || {};
 window.dentr = ecopans.length === 3 && /^<\\/xmp>\\n<div id="cheadg">/.test(ecopans[2].value)
   && !(window.attinp || "").value ? ecopans[1]
