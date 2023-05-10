@@ -1320,7 +1320,7 @@ hdsX = evt => document.querySelectorAll(_.qss[0]).forEach(e => e.open = evt.targ
 bdsX = evt => document.querySelectorAll(_.qss[1]).forEach(e => e.open = evt.target.checked);
 fRes = () => { let ts0 = new Date().getTime(); _.fwg = JSON.parse(JSON.stringify(ntmpl[ntmpl.key])); !/^idGen\\(.*\\)$/.test(_.fwg._id.trim()) || (_.fwg._id = eval("_." + _.fwg._id)); };
 dLoad = evt => dbobj.get(evt.target.textContent || evt.target.dataset.fileid).then(d => !(_.fwg = d) || (dform.className = ndata.innerHTML = "") || _.formGen()).catch(reShow);
-window.n1Gen = eval(d5ui);
+n1Gen = eval(d5ui);
 window.ntmpl = { key: "t4cnt", t1src: t1src, t2evt: t2evt, t3mem: t3mem, t4cnt: t4cnt };
 window.aurls = window.aurls || {};
 !window.a1inp || ( a1inp.onchange = () => a3inp.innerHTML = (a1inp.files[0] || "").name || "<span>Locate image&hellip;</span>" );
