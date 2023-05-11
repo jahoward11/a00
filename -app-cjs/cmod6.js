@@ -268,7 +268,7 @@ g1ui += "\\n<div><input type=button class=ccntr value=\\"RETRACT MOVE\\" onclick
 */
 
  // dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
- // reShow( dwraps[0] + g1wrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + dwraps[2] )
+ // reShow( dwraps[0] + g1wrap.outerHTML.replace(/\\n<hr.*?>/, "") + dwraps[1] + dwraps[2] )
 
 /*
     + Select and copy the orange text that appears above, overtop
@@ -316,7 +316,7 @@ jg1.g1Reset();
 */
 
  // recon.innerHTML = window.t2js = "" // clears any orange text (in case GUI text is still visible) and resets t2js variable
- // scrGen = src => src && (src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm) || []).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
+ // scrGen = src => src && "\\n" + (src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm) || []).map(e => "let " + e.replace(/\\b_\\.\\b| *\\/\\/ *$| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?\\n(?= *\\b[ ,\\w]+(?: *= .+|);?$)/gm, "$1,\\n  ")).join("\\n\\n") + "\\n"; //
  // !!window.t2js || navigator.clipboard.readText().then(s => window.t2js = s).then(_.scrGen).then(reShow).catch(reShow)
 
 /*
@@ -734,9 +734,9 @@ sr0.dataMgr = ox => { let key = lfinp.value.trim(); if (ox === 2) return trgtxta
 */
 
 /*
- scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
- dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
- reShow( dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(xstor.JScode.tutorial3).replace(/reShow/g, "console.warn") + dwraps[2] )
+ scrGen = src => "\\nlet " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *\\/\\/ *$| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?\\n(?= *\\b[ ,\\w]+(?: *= .+|);?$)/gm, "$1,\\n  ") + "\\n"; //
+ dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>", "</script>\\n</html>"];
+ reShow( dwraps[0] + srwrap.outerHTML.replace(/\\n<hr.*?>/, "") + dwraps[1] + scrGen(xstor.JScode.tutorial3).replace(/reShow/g, "console.warn") + dwraps[2] )
 */
 
 /*
@@ -1125,11 +1125,11 @@ t3mem = { _id: "idGen(\\"~m\\", ts0, 0)", _rev: "", file_type: "memo", file_crea
 t4cnt = { _id: "!groupID-cUsername", _rev: "", file_type: "contact", ts_created: 0, ts_updated: 0, loc_subdir: "", name_full: "", name_user: "", birthdate: "", roles: [""], emails: [""], phones: [""], locations: [""], social_profiles: [""], project_urls: [""], team_groups: [""], image_src: "", bio_short: "", miscellany: "" };
 hlps = window.dbwrap && dbwrap.querySelectorAll('.chelp');
 hsRes = () => _.hlps.forEach(e => e.classList.add("dnone"));
-d0Upd = () => { let ts = new Date().getTime(); !_.fwg.hasOwnProperty("ts_created") || ((_.fwg.ts_created ? {} : _.fwg).ts_created = _.fwg.ts_updated = ts); !_.fwg.file_created || [[_.fwg.file_created, _.fwg.file_updated]].forEach(([p0, p1]) => { !p0.timestamp || (p0 = {}); p1 = p1 || {}; p1.username = p0.username = fwg._id.replace(/.+?-/, ""); p1.timestamp = p0.timestamp = ts; p1.dborigin = p0.dborigin = /127\\.0\\.0|192\\.168\\.0|cloudant|localhost/.test(location.origin) ? location.origin : [navigator.userAgent || navigator.userAgentData, location.origin]; p1.dbname = p0.dbname = dbobj.name; }); !_.fwg.hasOwnProperty("from") || _.fwg.from || (_.fwg.from = _.fwg._id.replace(/.+?-/, "")); };
+d0Upd = () => { let ts = new Date().getTime(); !_.fwg.hasOwnProperty("ts_created") || ((_.fwg.ts_created ? {} : _.fwg).ts_created = _.fwg.ts_updated = ts); !_.fwg.file_created || [[_.fwg.file_created, _.fwg.file_updated]].forEach(([p0, p1]) => { !p0.timestamp || (p0 = {}); p1 = p1 || {}; p1.username = p0.username = fwg._id.replace(/.+?-/, ""); p1.timestamp = p0.timestamp = ts; p1.dborigin = p0.dborigin = /127\\.0\\.0|192\\.168\\.0|cloudant|localhost/.test(location.origin) ? location.origin : [navigator.userAgent || navigator.userAgentData, location.origin]; !window.dbobj || (p1.dbname = p0.dbname = dbobj.name); }); !_.fwg.hasOwnProperty("from") || _.fwg.from || (_.fwg.from = _.fwg._id.replace(/.+?-/, "")); };
 formGen = () => dform.innerHTML = Object.entries(Object.assign({ _id: "", _rev: null }, _.fwg)).map(([k, v]) => _.rex0s.test(k) ? "" : "\\n<div class=\\"field is-horizontal\\">\\n<div class=\\"field-label\\"><span class=label>" + k + "</span></div>\\n<div class=\\"field-body\\">\\n<textarea id=p0" + k + " class=textarea rows=" + (/_attach|configs|content|body|file[f_]/.test(k) ? 8 : 2) + ">" + _.htmTxt(_.valStr(v)) + "\\n</textarea>\\n</div>\\n</div>").join("") + "\\n";
 //
 !window.resbtn || ( resbtn.onclick = () => _.hsRes() || !(_.fwg = JSON.parse(JSON.stringify(_.t4cnt))) || _.formGen() )();
-!window.savbtn || ( savbtn.onclick = () => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))) || !_.fwg._id || _.d0Upd() || dbobj.put(Object.assign({ _id: "", _rev: null }, _.fwg)).then(re => _.hlps[0].classList.remove("dnone") || reShow(re)).catch(er => _.hlps[1].classList.remove("dnone") || reShow(er)) );
+!window.savbtn || ( savbtn.onclick = () => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))) || !_.fwg._id || _.d0Upd() || !window.dbobj || dbobj.put(Object.assign({ _id: "", _rev: null }, _.fwg)).then(re => _.hlps[0].classList.remove("dnone") || reShow(re)).catch(er => _.hlps[1].classList.remove("dnone") || reShow(er)) );
 
 /*
  4. __Populate your database__ either with your own contacts or with a
@@ -1173,10 +1173,10 @@ formGen = () => dform.innerHTML = Object.entries(Object.assign({ _id: "", _rev: 
 */
 
  // import("../-app-cjs/fakes.js").then(m => reShow(m.default)).catch(reShow)
- // import("../-app-cjs/fakes.js").then(m => m.default.forEach(c => dbobj.put(c).then(reShow).catch(reShow)))
- // dbobj.get("").then(reShow)
- // dbobj.get("").then(d => dbobj.put({ _id: d._id, _rev: d._rev, _deleted: true })).then(reShow).catch(reShow)
- // dbobj.allDocs().then(reShow)
+ // !window.dbobj || import("../-app-cjs/fakes.js").then(m => m.default.forEach(c => dbobj.put(c).then(reShow).catch(reShow)))
+ // !window.dbobj || dbobj.get("").then(reShow)
+ // !window.dbobj || dbobj.get("").then(d => dbobj.put({ _id: d._id, _rev: d._rev, _deleted: true })).then(reShow).catch(reShow)
+ // !window.dbobj || dbobj.allDocs().then(reShow)
 
 /*
  5. Use *PouchDB* to __add one more data file__ to your database that will
@@ -1195,7 +1195,7 @@ formGen = () => dform.innerHTML = Object.entries(Object.assign({ _id: "", _rev: 
       it has executed once already.
 */
 
- // dbobj.put({ _id: "-res-img" }).then(reShow).catch(reShow)
+ // !window.dbobj || dbobj.put({ _id: "-res-img" }).then(reShow).catch(reShow)
 
 /*
  6. __Build a UI__ with applicable *PouchDB* functions __for attaching images__
@@ -1242,18 +1242,18 @@ d3ui += "\\n<details id=imgdtl open=true></details>";
  try { dbwrap } catch { ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = d1ui + d3ui + "\\n"; cmain.appendChild(ndiv); hlps = dbwrap.querySelectorAll('.chelp'); }
 
 imgsVw = () => imgdtl.innerHTML = "<summary>Gallery</summary>" + Object.entries(aurls).map(([k, v]) => "\\n<p><img src=" + v + " /> " + k + "</p>").join("") + "\\n";
-isRtrv = () => !dbobj || dbobj.get("-res-img").then( d => Promise.all( Object.keys(d._attachments || "").map( k => aurls[k] || dbobj.getAttachment("-res-img", k).then(b => aurls[k] = URL.createObjectURL(b)) ) ).then(_.imgsVw) ).catch(reShow);
+isRtrv = () => !window.dbobj || dbobj.get("-res-img").then( d => Promise.all( Object.keys(d._attachments || "").map( k => aurls[k] || dbobj.getAttachment("-res-img", k).then(b => aurls[k] = URL.createObjectURL(b)) ) ).then(_.imgsVw) ).catch(reShow);
 //
 window.aurls = window.aurls || {};
 !window.a1inp || ( a1inp.onchange = () => a3inp.innerHTML = (a1inp.files[0] || "").name || "<span>Locate image&hellip;</span>" );
-!window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) || dbobj.get("-res-img").then(d => dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(re => _.hlps[0].classList.remove("dnone") || reShow(re) || _.isRtrv()).catch(er => _.hlps[1].classList.remove("dnone") || reShow(er)) );
-!window.a5btn || ( a5btn.onclick = () => _.hsRes() || !(_.ak = n5inp.value) || dbobj.get("-res-img").then(d => !d._attachments[_.ak] ? Promise.reject("Invalid key.") : dbobj.removeAttachment("-res-img", _.ak, d._rev)).then(re => _.hlps[2].classList.remove("dnone") || reShow(re) || !(delete aurls[_.ak]) || _.imgsVw()).catch(er => _.hlps[3].classList.remove("dnone") || reShow(er)) );
+!window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) || !window.dbobj || dbobj.get("-res-img").then(d => dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(re => _.hlps[0].classList.remove("dnone") || reShow(re) || _.isRtrv()).catch(er => _.hlps[1].classList.remove("dnone") || reShow(er)) );
+!window.a5btn || ( a5btn.onclick = () => _.hsRes() || !(_.ak = n5inp.value) || !window.dbobj || dbobj.get("-res-img").then(d => !d._attachments[_.ak] ? Promise.reject("Invalid key.") : dbobj.removeAttachment("-res-img", _.ak, d._rev)).then(re => _.hlps[2].classList.remove("dnone") || reShow(re) || !(delete aurls[_.ak]) || _.imgsVw()).catch(er => _.hlps[3].classList.remove("dnone") || reShow(er)) );
 !window.imgdtl || isRtrv();
 */
 
 /*
  simgs = Array.from(Array(10)).map((e, i) => "stockimg" + i + ".jpg");
- !dbobj || dbobj.get("-res-img").then(d => { d._attachments || (d._attachments = {}); return Promise.all(_.simgs.map(e => fetch("../-res-img2/" + e).then(re => re.blob()))).then( bs => _.simgs.forEach( (e, i) => !(aurls[e] = URL.createObjectURL(bs[i])) || (d._attachments[e] = { content_type: bs[i].type, data: bs[i] }) ) || dbobj.put(d) ); }).then(reShow).then(_.imgsVw).catch(reShow)
+ !window.dbobj || dbobj.get("-res-img").then(d => { d._attachments || (d._attachments = {}); return Promise.all(_.simgs.map(e => fetch("../-res-img2/" + e).then(re => re.blob()))).then( bs => _.simgs.forEach( (e, i) => !(aurls[e] = URL.createObjectURL(bs[i])) || (d._attachments[e] = { content_type: bs[i].type, data: bs[i] }) ) || dbobj.put(d) ); }).then(reShow).then(_.imgsVw).catch(reShow)
 */
 
 /*
@@ -1319,17 +1319,17 @@ ptyX = (d, x = sortsel.selectedIndex) => x > 4 ? d[sortsel.value] || " " : x > 3
 hdsX = evt => document.querySelectorAll(_.qss[0]).forEach(e => e.open = evt.target.checked);
 bdsX = evt => document.querySelectorAll(_.qss[1]).forEach(e => e.open = evt.target.checked);
 fRes = () => { let ts0 = new Date().getTime(); _.fwg = JSON.parse(JSON.stringify(ntmpl[ntmpl.key])); !/^idGen\\(.*\\)$/.test(_.fwg._id.trim()) || (_.fwg._id = eval("_." + _.fwg._id)); };
-dLoad = evt => dbobj.get(evt.target.textContent || evt.target.dataset.fileid).then(d => !(_.fwg = d) || (dform.className = ndata.innerHTML = "") || _.formGen()).catch(reShow);
+dLoad = evt => !window.dbobj || dbobj.get(evt.target.textContent || evt.target.dataset.fileid).then(d => !(_.fwg = d) || (dform.className = ndata.innerHTML = "") || _.formGen()).catch(reShow);
 n1Gen = eval(d5ui);
 window.ntmpl = { key: "t4cnt", t1src: t1src, t2evt: t2evt, t3mem: t3mem, t4cnt: t4cnt };
 window.aurls = window.aurls || {};
 !window.a1inp || ( a1inp.onchange = () => a3inp.innerHTML = (a1inp.files[0] || "").name || "<span>Locate image&hellip;</span>" );
-!window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) ? isRtrv() : dbobj.get("-res-img").then(d => dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(re => _.hlps[0].classList.remove("dnone") || reShow(re) || _.isRtrv()).catch(er => _.hlps[1].classList.remove("dnone") || reShow(er)) );
-!window.a5btn || ( a5btn.onclick = () => _.hsRes() || !(_.ak = n5inp.value) || dbobj.get("-res-img").then(d => !d._attachments[_.ak] ? Promise.reject("Invalid key.") : dbobj.removeAttachment("-res-img", _.ak, d._rev)).then(re => _.hlps[2].classList.remove("dnone") || reShow(re) || !(delete aurls[_.ak]) || _.imgsVw()).catch(er => _.hlps[3].classList.remove("dnone") || reShow(er)) );
+!window.a4btn || ( a4btn.onclick = () => _.hsRes() || !(_.ak = a1inp.files[0]) ? isRtrv() : !window.dbobj || dbobj.get("-res-img").then(d => dbobj.putAttachment("-res-img", n4inp.value || _.ak.name, d._rev, _.ak, _.ak.type)).then(re => _.hlps[0].classList.remove("dnone") || reShow(re) || _.isRtrv()).catch(er => _.hlps[1].classList.remove("dnone") || reShow(er)) );
+!window.a5btn || ( a5btn.onclick = () => _.hsRes() || !(_.ak = n5inp.value) || !window.dbobj || dbobj.get("-res-img").then(d => !d._attachments[_.ak] ? Promise.reject("Invalid key.") : dbobj.removeAttachment("-res-img", _.ak, d._rev)).then(re => _.hlps[2].classList.remove("dnone") || reShow(re) || !(delete aurls[_.ak]) || _.imgsVw()).catch(er => _.hlps[3].classList.remove("dnone") || reShow(er)) );
 !window.resbtn || ( resbtn.onclick = () => _.hsRes() || _.fRes() || (dform.className = ndata.innerHTML = "") || _.formGen() )();
-!window.savbtn || ( savbtn.onclick = () => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))) || !_.fwg._id || _.d0Upd() || dbobj.put(Object.assign({ _id: "", _rev: null }, _.fwg)).then(re => _.hlps[4].classList.remove("dnone") || reShow(re)).catch(er => _.hlps[5].classList.remove("dnone") || reShow(er)) );
-!window.nsbtn || ( nsbtn.onclick = () => !(dform.className = "dnone") || (p0_id.value = "") || !(sortsel.selectedIndex || (ndata.innerHTML = "")) || !dbobj || dbobj.allDocs({ include_docs: true }).then(re => { let rrs = re.rows.filter(r => r && r.doc.file_type).sort((a, b) => _.ptyX(a.doc) > _.ptyX(b.doc) ? 1 : -1); ndata.innerHTML = !rrs.length ? "\\n<p class=igreyd>&emsp;<em>[No data files found &hellip;]</em></p>\\n" : rrs.map(r => _.n1Gen(r.doc)).join("") + "\\n"; bodsswi.checked = hdrsswi.checked = 0; hdrsswi.onchange = _.hdsX; bodsswi.onchange = _.bdsX; document.querySelectorAll(_.qss[2]).forEach(e => e.onclick = _.dLoad); }).catch(reShow) );
-!window.imgdtl || (imgdtl.open = false) || isRtrv().then(nsbtn.onclick);
+!window.savbtn || ( savbtn.onclick = () => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))) || !_.fwg._id || _.d0Upd() || !window.dbobj || dbobj.put(Object.assign({ _id: "", _rev: null }, _.fwg)).then(re => _.hlps[4].classList.remove("dnone") || reShow(re)).catch(er => _.hlps[5].classList.remove("dnone") || reShow(er)) );
+!window.nsbtn || ( nsbtn.onclick = () => !(dform.className = "dnone") || (p0_id.value = "") || !(sortsel.selectedIndex || (ndata.innerHTML = "")) || !window.dbobj || dbobj.allDocs({ include_docs: true }).then(re => { let rrs = re.rows.filter(r => r && r.doc.file_type).sort((a, b) => _.ptyX(a.doc) > _.ptyX(b.doc) ? 1 : -1); ndata.innerHTML = !rrs.length ? "\\n<p class=igreyd>&emsp;<em>[No data files found &hellip;]</em></p>\\n" : rrs.map(r => _.n1Gen(r.doc)).join("") + "\\n"; bodsswi.checked = hdrsswi.checked = 0; hdrsswi.onchange = _.hdsX; bodsswi.onchange = _.bdsX; document.querySelectorAll(_.qss[2]).forEach(e => e.onclick = _.dLoad); }).catch(reShow) );
+!window.imgdtl || (imgdtl.open = false) || isRtrv().then(() => nsbtn.click());
 */
 
 /*

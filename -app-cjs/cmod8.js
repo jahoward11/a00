@@ -13,16 +13,16 @@ from the demo code written in the \`JScode\` module's data files:
 
  t2x = xstor.JScode.tutorial2;
  bodGen = src => "\\n<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/;$|^g\\dui = /g, "").split(/;\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n") + "\\n"; //
- scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
+ scrGen = src => "\\n" + src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *\\/\\/ *$| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?\\n(?= *\\b[ ,\\w]+(?: *= .+|);?$)/gm, "$1,\\n  ")).join("\\n\\n") + "\\n"; //
  uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "pz1wrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
  // pz1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
- try { pz1wrap } catch { uiDspl(bodGen(t2x)); !!window.jg1 || scrInj(null, 'module', "\\n" + scrGen(t2x) + "\\n").catch(reShow); }
+ try { pz1wrap } catch { uiDspl(bodGen(t2x)); !!window.jg1 || scrInj(null, 'module', scrGen(t2x)).catch(reShow); }
 
  // Un-comment the following two lines of code to generate the
 // full source code (e.g., for building a standalone web app).
 
- // dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
+ // dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>", "</script>\\n</html>"];
  // reShow( dwraps[0] + pz1wrap.outerHTML + dwraps[1] + scrGen(t2x) + dwraps[2] )
 //`;
 
@@ -92,9 +92,9 @@ jg4.g4Start();
 // full source code (e.g., for building a standalone web app).
 
 /*
- scrGen = src => "let " + src.match(/^dbar = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
- dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Tilt Maze</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
- reShow( dwraps[0] + g4wrap.outerHTML.replace(/\\n<hr>|<canvas[^]*?<\\/canvas>/g, "") + dwraps[1] + scrGen(xstor.JSpuzzle.tiltmaze) + dwraps[2] )
+ scrGen = src => "\\nlet " + src.match(/^dbar = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *\\/\\/ *$| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?\\n(?= *\\b[ ,\\w]+(?: *= .+|);?$)/gm, "$1,\\n  ") + "\\n"; //
+ dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Tilt Maze</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>", "</script>\\n</html>"];
+ reShow( dwraps[0] + g4wrap.outerHTML.replace(/\\n<hr.*?>|<canvas[^]*?<\\/canvas>/g, "") + dwraps[1] + scrGen(xstor.JSpuzzle.tiltmaze) + dwraps[2] )
 */
 //`;
 
