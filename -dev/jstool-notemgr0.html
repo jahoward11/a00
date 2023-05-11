@@ -856,7 +856,7 @@ figure {
   <p class=dnone>
     &emsp;<em>Pro Tip:</em> To view the available lists of <em>IndexedDB&nbsp;Storage</em> and
     <em>Local&nbsp;Storage</em> keys (or a key-specified value) before/after wiping data from the
-    device, enter each of the following commands into the <em>Browser Command UI</em>,&nbsp;below.
+    device, enter each of the following commands into the <em>JS&nbsp;Console</em>,&nbsp;below.
     <br />&emsp;&bull; <code class="fsz0c75 hwsmok">PouchDB.allDbs()</code>
     (<em>Note&nbsp;Mgr</em>&nbsp;DB&nbsp;names)
     <br />&emsp;&bull; <code class="fsz0c75 hwsmok">indexedDB.databases()</code>
@@ -883,7 +883,7 @@ figure {
     <div class="chelp iwarn dnone">Data-wipe attempt failed.</div>
   </div>
   <hr />
-  <h4>Browser Command UI</h4>
+  <h4>JavaScript Console (CLI)</h4>
   <p class=dnone>
     &emsp;<em>How it works:</em>
     The "<code class=hwsmok>&gt;</code>" symbol in the following text field is a
@@ -1422,7 +1422,7 @@ let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
       || PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS).then( doc => nmdata.innerHTML
         = jP1(Object.assign({ _id: "", _rev: "" }, doc))
         + "\n<p><strong>To retrieve older revision:</strong>"
-        + " Use JavaScript console (in Settings) to re-assign desired <code>rev</code> value"
+        + " Use JS Console (in Settings) to re-assign desired <code>rev</code> value"
         + " from list of available options (above) to <code>nm0.txd2.OPTS.rev</code>"
         + " key and execute given <code>PouchDB</code> command chain (below).</p>\n"
         + jP1( "// to view current query values\n nm0.txd2\n\n// to retrieve _revs_info"
