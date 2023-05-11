@@ -284,14 +284,14 @@ const t2puzls = `// JS Puzzle Collection #1
 /*
  t2x = xstor.JScode.tutorial2;
  bodGen = src => "\\n<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/;$|^g\\dui = /g, "").split(/;\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n") + "\\n"; //
- scrGen = src => src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n\\n"); //
- dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=pz1wrap>", "</div>\\n\\n<script type=module>\\n", "\\n</script>\\n</html>"];
+ scrGen = src => "\\n" + src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *\\/\\/ *$| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?\\n(?= *\\b[ ,\\w]+(?: *= .+|);?$)/gm, "$1,\\n  ")).join("\\n\\n") + "\\n"; //
+ dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=pz1wrap>", "</div>\\n\\n<script type=module>", "</script>\\n</html>"];
  uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "pz1wrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
  // reShow( dwraps[0] + bodGen(t2x) + dwraps[1] + scrGen(t2x) + dwraps[2] )
 
  // pz1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
- try { pz1wrap } catch { uiDspl(bodGen(t2x)); !!window.jg1 || scrInj(null, 'module', "\\n" + scrGen(t2x) + "\\n").catch(reShow); }
+ try { pz1wrap } catch { uiDspl(bodGen(t2x)); !!window.jg1 || scrInj(null, 'module', scrGen(t2x)).catch(reShow); }
 */
 
 //`;
@@ -301,17 +301,17 @@ const t3search = `// Search-&-Replace Webapp, Demo
 /*
  t3x = xstor.JScode.tutorial3;
  bodGen = src => "\\n" + src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui = /g, "").split(/;\\nsrui \\+= /).map(eval).join("").trim() + "\\n"; //
- scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
+ scrGen = src => "\\nlet " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *\\/\\/ *$| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?\\n(?= *\\b[ ,\\w]+(?: *= .+|);?$)/gm, "$1,\\n  ") + "\\n"; //
  uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
  // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
- try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.sr0 || scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(reShow); }
+ try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.sr0 || scrInj(null, 'module', scrGen(t3x)).catch(reShow); }
 */
 
  // srctxta.textContent = trgtxta.value; srctxta.value = srctxta.innerHTML;
 
- // dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
- // srctxta.textContent = (dwraps[0] + srwrap.outerHTML.replace(/\\n<hr>/, "") + dwraps[1] + scrGen(t3x) + dwraps[2]);
+ // dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Search and Replace</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script src=\\"../../a00/-res-js/localforage.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>", "</script>\\n</html>"];
+ // srctxta.textContent = (dwraps[0] + srwrap.outerHTML.replace(/\\n<hr.*?>/, "") + dwraps[1] + scrGen(t3x) + dwraps[2]);
  // srctxta.value = recon.innerHTML = srctxta.innerHTML;
 
  // /spark/.test(window.location.search) || (window.location.search = "cmods=spark.js,../-dev/prj10.js&dload=t3search");
@@ -378,11 +378,11 @@ const t3srtools = `// Search-&-Replace Tools, Quick Ref
 
  t3x = xstor.JScode.tutorial3;
  bodGen = src => "\\n" + src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui = /g, "").split(/;\\nsrui \\+= /).map(eval).join("").trim() + "\\n"; //
- scrGen = src => "let " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  "); //
+ scrGen = src => "\\nlet " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *\\/\\/ *$| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?\\n(?= *\\b[ ,\\w]+(?: *= .+|);?$)/gm, "$1,\\n  ") + "\\n"; //
  uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
  // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
- try { srwrap } catch { uiDspl(bodGen(t3x)); _.w.sr0 ? sr0.pfsRfr() : scrInj(null, 'module', "\\n" + scrGen(t3x) + "\\n").catch(reShow); [sepainp.value, rtrminp.value] = ["s0srch", "s0rplc"]; }
+ try { srwrap } catch { uiDspl(bodGen(t3x)); _.w.sr0 ? sr0.pfsRfr() : scrInj(null, 'module', scrGen(t3x)).catch(reShow); [sepainp.value, rtrminp.value] = ["s0srch", "s0rplc"]; }
 //`;
 
 const t4cntcs = `// __Contacts Directory__
@@ -392,34 +392,42 @@ const t4cntcs = `// __Contacts Directory__
 
  ntkey = ""; //"t1src"; "t2evt"; "t3mem"; "t4cnt";
  dbase = "cntcs-demo"; //"recipes-home"; "log-workouts"; "journal2023"; "contacts-work";
- dbtit = ""; //"Notes Database";
- dbhdr = ""; //"Note Summaries";
+ dbtit = "Contacts Demo"; //"Notes Database";
+ dbhdr = ""; //"Contacts Directory"; "Note Summaries";
 
- bodGen = src => (!_.dbtit ? "\\n" : "\\n<h3 class=cfield>" + _.dbtit + "</h3>\\n\\n") + src.match(/^d1ui \\+= [^]+?(?=\\nd2ui )|^d2ui \\+= [^]+?(?=\\n$)|^d3ui \\+= [^]+?(?=\\n$)|^d4ui \\+= [^]+?(?=\\nd5ui )/gm).map(e => e.replace(/;$|^d\\dui \\+= /g, "").split(/;\\nd\\dui \\+= /).map(eval).join("").trim()).map((e, i) => [[1,3,2,4][i], e]).sort().map(es => es[1]).join("\\n\\n").replace(/Contacts Directory/, _.dbhdr || "$&") + "\\n"; //
- scrGen = src => src.match(/^(?:fwg|imgsVw|rexts) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?( *\\/\\/ *|)\\n(?= *\\b[ ,\\w]+(?: *= .+|);?(?: *\\/\\/ *|)$)/gm, "$1,$2\\n  ")).join("\\n").replace(/^( *n1Gen = ).+/m, (m, c1) => c1 + /^d5ui \\+= [^]+?(?=\\n$)/m.exec(src)[0].replace(/;(?: \\/\\/|)$|\\b_\\.\\b|^d5ui \\+= /g, "").split(/;(?: \\/\\/|)\\nd5ui \\+= /).map(eval).join("") + ";"); //
- dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>" + (_.dbtit || "Notes Database") + "</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=\\"dbwrap\\">\\n", "\\n</div>\\n\\n<script src=\\"../../a00/-res-js/pouchdb.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>\\n", "\\n</script>\\n</html>"];
+ bodGen = src => "\\n" + src.match(/^d1ui \\+= [^]+?(?=\\nd2ui )|^d2ui \\+= [^]+?(?=\\n$)|^d3ui \\+= [^]+?(?=\\n$)|^d4ui \\+= [^]+?(?=\\nd5ui )/gm).map(e => e.replace(/;$|^d\\dui \\+= /g, "").split(/;\\nd\\dui \\+= /).map(eval).join("").trim()).map((e, i) => [[1,3,2,4][i], i !== 2 || !_.dbtit ? e : "<hr />\\n<h3 class=cfield>" + _.dbtit + "</h3>\\n\\n" + e]).sort().map(es => es[1]).join("\\n\\n").replace(/Contacts Directory/, _.dbhdr || "$&") + "\\n"; //
+ scrGen = src => "\\n" + src.match(/^(?:fwg|imgsVw|rexts) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *\\/\\/ *$| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?\\n(?= *\\b[ ,\\w]+(?: *= .+|);?$)/gm, "$1,\\n  ")).join("\\n").replace(/^( *n1Gen = ).+/m, (m, c1) => c1 + /^d5ui \\+= [^]+?(?=\\n$)/m.exec(src)[0].replace(/;(?: \\/\\/|)$|\\b_\\.\\b|^d5ui \\+= /g, "").split(/;(?: \\/\\/|)\\nd5ui \\+= /).map(eval).join("") + ";") + "\\n"; //
+ dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>" + _.dbtit + "</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=dbwrap>", "</div>\\n\\n<script src=\\"../../a00/-res-js/pouchdb.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>", "</script>\\n</html>"];
 
 // *Notes Database: from JS Tutorial 4, Contacts Directory*
 /*
  uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
  dbA = () => !_.w.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => _.w.pdbs = re);
  s1L = () => !!_.w.PouchDB ? _.dbA() : scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(_.dbA));
- c1New = () => !_.w.PouchDB || !/^[a-z][0-9_a-z-]*$/.test(_.dbase) || _.w.dbobj || !(_.w.dbobj = new PouchDB(_.dbase)) || pdbs.includes(_.dbase) || !_.dbA || dbobj.put({ _id: "-res-img" }).then(reShow).catch(reShow);
- s2L = () => scrInj(null, 'module', "\\n" + _.scrGen(_.t4x).replace(/(ntmpl = { key: ")(\\w+)/, "$1" + (_.ntkey || "$2")) + "\\n");
+ c1New = () => _.w.dbobj || !_.w.PouchDB || !/^[a-z][0-9_a-z-]*$/.test(_.dbase) || !(_.w.dbobj = new PouchDB(_.dbase)) || pdbs.includes(_.dbase) || !_.dbA() || dbobj.put({ _id: "-res-img" }).then(reShow).catch(reShow);
+ s2L = () => scrInj(null, 'module', _.scrGen(_.t4x).replace(/(ntmpl = { key: ")(\\w+)/, "$1" + (_.ntkey || "$2")));
 
  // dbwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
  try { dbwrap } catch { uiDspl(bodGen(t4x)); !!_.w.ntmpl || Promise.resolve().then(s1L).then(c1New).then(s2L).catch(reShow); }
 */
 
+// *Contacts Directory: demo setups*
+ // !_.w.dbobj || import("../-app-cjs/fakes.js").then(m => m.default.forEach(c => dbobj.put(c).then(reShow).catch(reShow)))
+ // !_.w.dbobj || dbobj.put({ _id: "-res-img" }).then(reShow).catch(reShow)
+/*
+ simgs = Array.from(Array(10)).map((e, i) => "stockimg" + i + ".jpg");
+ !_.w.dbobj || dbobj.get("-res-img").then(d => { d._attachments || (d._attachments = {}); return Promise.all(_.simgs.map(e => fetch("../-res-img2/" + e).then(re => re.blob()))).then( bs => _.simgs.forEach((e, i) => d._attachments[e] = { content_type: bs[i].type, data: bs[i] }) || dbobj.put(d) ); }).then(reShow).then(() => !_.w.a4btn || a4btn.click()).catch(reShow)
+*/
+
 // *Notes Database: source code from preloaded webapp*
 /*
- dPreps = d => d.trim().replace(/\\n<hr>/, "").replace(/(<details id="?imgdtl.*?>)[^]*?(?=<\\/details>)|(<form id="?dform.*?>)[^]*?(?=<\\/form>)|(<div id="?ndata.*?>)[^]*(?=<\\/div>\\s*<\\/div>)/g, "$1$2$3"); //
- sc2Str = () => Array.from(document.scripts).find(e => /^let fwg, ak,$/m.test(e.innerHTML)).innerHTML.trim().replace(/reShow/g, "console.warn").replace(/^(?=window\.tmpl =)/m, "\\nwindow.dbobj = window.PouchDB && new PouchDB(\\"" + ((dbobj || "").name || dbase) + "\\");"); //
+ dPreps = d => d.replace(/\\n<hr.*?>/, "").replace(/(<details id="?imgdtl.*?>)[^]*?(?=<\\/details>)|(<form id="?dform.*?>)[^]*?(?=<\\/form>)|(<div id="?ndata.*?>)[^]*(?=<\\/div>\\s*$)/g, "$1$2$3"); //
+ sc2Str = () => Array.from(document.scripts).find(e => /^let fwg, ak,$/m.test(e.innerHTML)).innerHTML.replace(/reShow/g, "console.warn").replace(/^(?=window\\.ntmpl =)/m, "window.dbobj = window.PouchDB && new PouchDB(\\"" + ((dbobj || "").name || _.dbase) + "\\");\\n"); //
  reShow( dwraps[0] + dPreps(dbwrap.innerHTML) + dwraps[1] + sc2Str() + dwraps[2] )
 */
 
 // *Notes Database: source code from \`JScode\` module*
- // reShow( dwraps[0] + bodGen(t4x) + dwraps[1] + scrGen(t4x).replace(/reShow/g, "console.warn").replace(/(ntmpl = { key: ")(\\w+)/, "$1" + (_.ntkey || "$2")).replace(/^(?=window\.tmpl =)/m, "\\nwindow.dbobj = window.PouchDB && new PouchDB(\\"" + dbase + "\\");") + dwraps[2] )
+ // !/^[a-z][0-9_a-z-]*$/.test(dbase) || reShow( dwraps[0] + bodGen(t4x).replace(/\\n<hr.*?>/, "") + dwraps[1] + scrGen(t4x).replace(/reShow/g, "console.warn").replace(/^(window\\.ntmpl = { key: ")(\\w+)/m, "window.dbobj = window.PouchDB && new PouchDB(\\"" + dbase + "\\");\\n$1" + (_.ntkey || "$2")) + dwraps[2] )
 //`;
 
 const t4nmcode = `// __Note-Mgr Code, Helps__
