@@ -385,7 +385,7 @@ const t3srtools = `// Search-&-Replace Tools, Quick Ref
  try { srwrap } catch { uiDspl(bodGen(t3x)); _.w.sr0 ? sr0.pfsRfr() : scrInj(null, 'module', scrGen(t3x)).catch(reShow); [sepainp.value, rtrminp.value] = ["s0srch", "s0rplc"]; }
 //`;
 
-const t4cntcs = `// __Contacts Directory__
+const t4cntcs = `// __Contacts Webapp__
 
  _.w = window;
  t4x = xstor.JScode.tutorial4;
@@ -423,11 +423,11 @@ const t4cntcs = `// __Contacts Directory__
 /*
  dPreps = d => d.replace(/\\n<hr.*?>/, "").replace(/(<details id="?imgdtl.*?>)[^]*?(?=<\\/details>)|(<form id="?dform.*?>)[^]*?(?=<\\/form>)|(<div id="?ndata.*?>)[^]*(?=<\\/div>\\s*$)/g, "$1$2$3"); //
  sc2Str = () => Array.from(document.scripts).find(e => /^let fwg, ak,$/m.test(e.innerHTML)).innerHTML.replace(/reShow/g, "console.warn").replace(/^(?=window\\.ntmpl =)/m, "window.dbobj = window.PouchDB && new PouchDB(\\"" + ((dbobj || "").name || _.dbase) + "\\");\\n"); //
- reShow( dwraps[0] + dPreps(dbwrap.innerHTML) + dwraps[1] + sc2Str() + dwraps[2] )
+ !_w.dbwrap || reShow( dwraps[0] + dPreps(dbwrap.innerHTML) + dwraps[1] + sc2Str() + dwraps[2] )
 */
 
 // *Notes Database: source code from \`JScode\` module*
- // !/^[a-z][0-9_a-z-]*$/.test(dbase) || reShow( dwraps[0] + bodGen(t4x).replace(/\\n<hr.*?>/, "") + dwraps[1] + scrGen(t4x).replace(/reShow/g, "console.warn").replace(/^(window\\.ntmpl = { key: ")(\\w+)/m, "window.dbobj = window.PouchDB && new PouchDB(\\"" + dbase + "\\");\\n$1" + (_.ntkey || "$2")) + dwraps[2] )
+ // !/^[a-z][0-9_a-z-]*$/.test(dbase) || reShow( dwraps[0] + bodGen(t4x).replace(/\\n<hr.*?>/, "") + dwraps[1] + scrGen(t4x).replace(/reShow/g, "console.warn").replace(/^(window\\.ntmpl = { key: ")(\\w+)/m, "window.dbobj = window.PouchDB && new PouchDB(\\"" + dbase + "\\");\\n$1" + (_.ntkey || "$2")) + dwraps[2] ); //
 //`;
 
 const t4nmcode = `// __Note-Mgr Code, Helps__
