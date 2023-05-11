@@ -666,8 +666,7 @@ srui += "\\n#srwrap button, #srwrap .btn1, #srwrap input:not([type=checkbox]):no
 srui += "\\n#srwrap pre:not(.pwrap) { white-space: pre; overflow-wrap: normal; overflow-x: auto; }";
 srui += "\\n#srwrap .iwarn { color: Orange; }\\n#srwrap .isucc { color: CornFlowerBlue; }";
 srui += "\\n#srwrap .textarea.iwarn { color: revert; border-color: Orange; }\\n#srwrap .textarea.isucc { color: revert; border-color: CornFlowerBlue; }";
-srui += "\\n#srwrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }";
-srui += "\\n#srwrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }";
+srui += "\\n#srwrap .cfield:not(:last-child) { margin-bottom: 0.5rem; }\\n#srwrap .ccntr:not(:last-of-type) { margin-right: 0.5rem; }";
 srui += "\\n#srwrap :not(.cfield)>.ccntr { display: inline-block; height: 1.5rem; margin-bottom: 0.5rem; }";
 srui += "\\n#srwrap .chelp { font-size: 0.75rem; line-height: normal; margin-top: 0.25rem; }";
 srui += "\\n#srwrap .pwrap { white-space: pre-wrap; }\\n#srwrap .dflow { display: flow-root; overflow-x: auto; }";
@@ -804,8 +803,7 @@ sr0.dataMgr = ox => { let key = lfinp.value.trim(); if (ox === 2) return trgtxta
  !!window.markdownit || Promise.all(["", "-decorate", "-deflist", "-implicit-figures", "-ins", "-mark", "-sub", "-sup"].map(e => scrInj("../-res-mdit/markdown-it" + e + ".min.js"))).catch(reShow)
  window.docMrkp = md => markdownit({ html: 1, typographer: 1 }).use(markdownitDeflist).render(md.replace(/[^-](?=--[^-])/g, "$&-")); //
  rndrsel.selectedIndex = 0;
- sepainp.value = "/[^]+/";
- rtrminp.value = "docMrkp";
+ [sepainp.value, rtrminp.value] = ["/[^]+/", "docMrkp"];
  hlp2Clr()
 */
 
@@ -1329,7 +1327,7 @@ window.aurls = window.aurls || {};
 !window.resbtn || ( resbtn.onclick = () => _.hsRes() || _.fRes() || (dform.className = ndata.innerHTML = "") || _.formGen() )();
 !window.savbtn || ( savbtn.onclick = () => Object.keys(_.fwg).forEach(k => _.rex0s.test(k) || (_.fwg[k] = _.fncTry(JSON.parse, window["p0" + k].value, 2))) || !_.fwg._id || _.d0Upd() || !window.dbobj || dbobj.put(Object.assign({ _id: "", _rev: null }, _.fwg)).then(re => _.hlps[4].classList.remove("dnone") || reShow(re)).catch(er => _.hlps[5].classList.remove("dnone") || reShow(er)) );
 !window.nsbtn || ( nsbtn.onclick = () => !(dform.className = "dnone") || (p0_id.value = "") || !(sortsel.selectedIndex || (ndata.innerHTML = "")) || !window.dbobj || dbobj.allDocs({ include_docs: true }).then(re => { let rrs = re.rows.filter(r => r && r.doc.file_type).sort((a, b) => _.ptyX(a.doc) > _.ptyX(b.doc) ? 1 : -1); ndata.innerHTML = !rrs.length ? "\\n<p class=igreyd>&emsp;<em>[No data files found &hellip;]</em></p>\\n" : rrs.map(r => _.n1Gen(r.doc)).join("") + "\\n"; bodsswi.checked = hdrsswi.checked = 0; hdrsswi.onchange = _.hdsX; bodsswi.onchange = _.bdsX; document.querySelectorAll(_.qss[2]).forEach(e => e.onclick = _.dLoad); }).catch(reShow) );
-!window.imgdtl || (imgdtl.open = false) || isRtrv().then(() => nsbtn.click());
+!window.imgdtl || (imgdtl.open = false) || isRtrv().then(() => window.setTimeout(nsbtn.onclick, 0));
 */
 
 /*

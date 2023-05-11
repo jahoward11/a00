@@ -1,12 +1,13 @@
 /* JavaScript module: Note Manager */
 
 const dwraps = [
-  "<!DOCTYPE html>\n<html lang=en>\n<title>Note Manager</title>\n<meta charset=\"utf-8\">\n<meta name=viewport content=\"width=device-width, initial-scale=1\">\n\n<div id=nmwrap>\n",
-  "\n</div>\n\n<script src=\"../../a00/-res-js/pouchdb.min.js\" type=\"text/javascript\"></script>\n<script src=\"../../a00/-res-js/pouchdb.all-dbs.min.js\" type=\"text/javascript\"></script>\n<script type=module>\n",
-  "\n</script>\n</html>"
+  "<!DOCTYPE html>\n<html lang=en>\n<title>Note Manager</title>\n<meta charset=\"utf-8\">\n<meta name=viewport content=\"width=device-width, initial-scale=1\">\n\n<div id=nmwrap>",
+  "</div>\n\n<script src=\"../../a00/-res-js/pouchdb.min.js\" type=\"text/javascript\"></script>\n<script src=\"../../a00/-res-js/pouchdb.all-dbs.min.js\" type=\"text/javascript\"></script>\n<script type=module>",
+  "</script>\n</html>"
 ];
 
-const nmpage = `<style type="text/css">
+const nmpage = `
+<style type="text/css">
 *, *::before, *::after { box-sizing: inherit; }
 html {
   box-sizing: border-box;
@@ -857,7 +858,7 @@ figure {
   <p class=dnone>
     &emsp;<em>Pro Tip:</em> To view the available lists of <em>IndexedDB&nbsp;Storage</em> and
     <em>Local&nbsp;Storage</em> keys (or a key-specified value) before/after wiping data from the
-    device, enter each of the following commands into the <em>Browser Command UI</em>,&nbsp;below.
+    device, enter each of the following commands into the <em>JS&nbsp;Console</em>,&nbsp;below.
     <br />&emsp;&bull; <code class="fsz0c75 hwsmok">PouchDB.allDbs()</code>
     (<em>Note&nbsp;Mgr</em>&nbsp;DB&nbsp;names)
     <br />&emsp;&bull; <code class="fsz0c75 hwsmok">indexedDB.databases()</code>
@@ -884,7 +885,7 @@ figure {
     <div class="chelp iwarn dnone">Data-wipe attempt failed.</div>
   </div>
   <hr />
-  <h4>Browser Command UI</h4>
+  <h4>JavaScript Console (CLI)</h4>
   <p class=dnone>
     &emsp;<em>How it works:</em>
     The "<code class=hwsmok>&gt;</code>" symbol in the following text field is a
@@ -895,9 +896,11 @@ figure {
   </p>
   <button id=jselbtn class="fltrt bsml ilink" data-seltrg=js2txta>sel</button>
   <textarea id=js2txta class=textarea rows=31>&gt; </textarea>
-</div>`;
+</div>
+`;
 
-const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
+const nmscr = `
+let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
   j = 0,  tidx = 0, vidx = 0,
   aurls = {},
   cntcs = {},
@@ -1419,7 +1422,7 @@ const nmscr = `let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
       || PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS).then( doc => nmdata.innerHTML
         = jP1(Object.assign({ _id: "", _rev: "" }, doc))
         + "\\n<p><strong>To retrieve older revision:</strong>"
-        + " Use JavaScript console (in Settings) to re-assign desired <code>rev</code> value"
+        + " Use JS Console (in Settings) to re-assign desired <code>rev</code> value"
         + " from list of available options (above) to <code>nm0.txd2.OPTS.rev</code>"
         + " key and execute given <code>PouchDB</code> command chain (below).</p>\\n"
         + jP1( "// to view current query values\\n nm0.txd2\\n\\n// to retrieve _revs_info"
@@ -2360,6 +2363,7 @@ wipebtn.onclick = storDel;
 jselbtn.onclick = txtaSel;
 js2txta.onblur = js2Eval;
 ( p2Gen = () => !window.PouchDB || !PouchDB.allDbs
-  ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(r2Show) )();`;
+  ? pdbsGen() : PouchDB.allDbs().then(pdbsGen).catch(r2Show) )();
+`;
 
 export { dwraps, nmpage, nmscr };
