@@ -9,7 +9,7 @@ Note-Manager UI -- one that extends the functionality of the
 demo code written in the \`JScode\` module's data files.
 */
 
- window.nmwrap || import("../-app-cjs/nmgr.js").then(re => { let ndiv = document.createElement('div'); ndiv.id = "nmwrap"; ndiv.innerHTML = "\\n<hr />\\n" + re.nmpage + "\\n"; cmain.appendChild(ndiv); return scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js")).then(() => scrInj(null, 'module', "\\n" + re.nmscr + "\\n")); }).catch(reShow)
+ window.nmwrap || import("../-app-cjs/nmgr.js").then(re => { let ndiv = document.createElement('div'); ndiv.id = "nmwrap"; ndiv.innerHTML = "\\n<hr />" + re.nmpage; cmain.appendChild(ndiv); return scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js")).then(() => scrInj(null, 'module', re.nmscr)); }).catch(reShow)
 
  // Un-comment the following line of code to generate the
 // full source code (e.g., for building a standalone web app).

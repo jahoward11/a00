@@ -491,9 +491,9 @@ let q2Bcopy, q2Bhtml,
       : !/^ *{ *".+} *$|^ *\[.+\] *$/.test(val) ? "" + val
       : (val = JSON.parse(val) || "").content || "/*\n" + JSON.stringify(val, 0, 2) + "\n*/" );
     v0set ? (recon.textContent = "") : ++v0set && !val0s.length || ((xsetlist || {}).value = "")
-      || val0s.forEach(v => v && (dentr.value = (dentr.value || "").replace(v[0], v[1])));
+      || val0s.forEach(v => v && (dentr.value = dentr.value.replace(v[0], v[1])));
     let $ = {}, _ = {}, _ks = [], rslt,
-      xprsns = (dentr.value || "")
+      xprsns = (dentr.value = dentr.value.replace(/\n+$|^\n+/g, ""))
         .replace(/^\/\*(?:\s*?\n|)([^]*?)\n?[\t ]*\*\/$/gm, (m, c1) => c1.replace(/^[\t ]*/gm, "$&//"))
         .replace(/^(?:[^\n\/]|\/(?!\/))+;(?= *\/\/$|$)/gm, "$& \"\"")
         .replace(/&Tab;/g, "\t").replace(/(?:[^$.\wÀ-Ͽ]|^)\$(?=[$_a-zÀ-Ͽ])/gi, "$&.")
@@ -584,7 +584,7 @@ let q2Bcopy, q2Bhtml,
         rnge = rnge < 0.15 ? 0 : rnge > 0.85 ? 1 : rnge;
         document.querySelector('#scrnmask').className = symlist.className = "";
         q2Bcopy = quad2B.innerHTML;
-        quad2B.innerHTML = (dentr.value || "").replace(/&(?=#?\w+;)/g, "&amp;")
+        quad2B.innerHTML = dentr.value.replace(/&(?=#?\w+;)/g, "&amp;")
           .replace(/<(?=!|\/?[a-z])/gi, "&lt;") + (!dentr.value ? "" : "\n<br>");
         !(q2Bhtml = quad2B.innerHTML)
         || window.getSelection().setPosition( quad2B.firstChild, !rnge ? 0
@@ -631,20 +631,20 @@ let q2Bcopy, q2Bhtml,
     xsetinp.value && (!xsetlist.value || xsetlist.value === xsetinp.value.replace(/.+\//, ""))
     || (xsetinp.value = (optg === "USERdata/" ? "" : optg) + xsetlist.value);
     !optg || ( optg !== "USERdata/"
-    ? !( dentr.value = ((xstor[optg.replace(/\/$/, "")] || "")[xsetlist.value] || "")
-      .replace(/\n+$|^\n+/g, "") ) || xprsEval()
+    ? xprsEval((xstor[optg.replace(/\/$/, "")] || "")[xsetlist.value])
     : !window.localforage || localforage.getItem(xsetinp.value)
       .then(xprsEval).catch(reShow) );
   },
   xlstGen = seln => {
     let xlRndr = lfks => {
+      seln = typeof seln === 'string' ? seln : xsetinp.value;
       xsetlist.innerHTML = "\n      <option></option>" + [["USERdata", lfks]]
       .concat(Object.entries(xstor)).map( (oe, i) => (i || !lfks) && !oe[1] ? ""
         : "\n      <optgroup label=\"" + oe[0] + "/\">"
           + (!i ? oe[1] : Object.keys(oe[1]).filter(e => e !== "_module"))
             .map(e => "\n        <option>" + e + "</option>").join("")
           + "\n      </optgroup>" ).join("") + "\n    ";
-      !((xsetlist.value = seln || "") && xsetlist.value)
+      !((xsetlist.value = seln) && xsetlist.value)
       ? !ecoscrs || initLoad() : v0set || !dload ? xprsEval() : xsetLoad();
     };
     !window.localforage ? xlRndr() : localforage.keys().then(xlRndr).catch(reShow);
@@ -662,7 +662,9 @@ let q2Bcopy, q2Bhtml,
   xsetDel = () => {
     let optg = xsetlist.value && xsetlist.selectedOptions[0].parentElement.label;
     helpClr();
-    !optg || optg !== "USERdata/" || !window.localforage
+    !optg ? quad1A.innerHTML = quad2A.innerHTML = quad1B.innerHTML = quad2B.innerHTML
+      = recon.textContent = xsetinp.value = dentr.value = ""
+    : optg !== "USERdata/" || !window.localforage
     || localforage.removeItem(xsetlist.value)
       .then( () => xlstGen()
         || !(xcshelp.innerHTML = "Expression set is deleted from local storage.")
@@ -672,8 +674,7 @@ let q2Bcopy, q2Bhtml,
 window.reShow = reShow;
 window.xstor = window.xstor || {};
 window.dentr = ecopans.length === 3 && /^<\/xmp>\n<div id="cheadg">/.test(ecopans[2].value)
-  && !(window.attinp || "").value ? ecopans[1]
-  : { value: datxmp.textContent.replace(/\n+$|^\n+/g, "") };
+  && !(window.attinp || "").value ? ecopans[1] : { value: datxmp.textContent };
 (ecoscrs ? cinit : window.location.search).replace(/^\?/, "").split("&").forEach( qi =>
   /^jsrcs=./.test(qi) ? (jsrcs = window.decodeURIComponent(qi.replace(/^jsrcs=/, "")).split(/[ ,]+/))
   : /^cmods=./.test(qi) ? (cmods = window.decodeURIComponent(qi.replace(/^cmods=/, "")).split(/[ ,]+/))
@@ -694,8 +695,8 @@ Promise.all(jsrcs.map(e => scrInj(e))).catch(reShow).then( () =>
   : Promise.all( (cmods.some(e => /^\d+$/.test(e)) ? cmods : [1,2,3,4,5,6,7,8].concat(cmods))
       .map(e => !/^\d+$/.test(e) ? e : `../-app-cjs/cmod${e}.js`)
       .map(u => u && import(/\//.test(u) ? u : "./" + u).catch(reShow)) )
-    .then( ms => ms.forEach( (m, i) => !m || typeof m !== 'object'
-      || (xstor[m._module || "xmod" + (1 + i)] = m) ))
+    .then( ms => ms.forEach( m => !m || typeof m !== 'object'
+      || (xstor[m._module || "xmod" + (1 + Object.keys(xstor).length)] = m) ))
     .then(() => !xsetinp ? initLoad() : xlstGen(dload)) )
   .catch(reShow);
 symlist.innerHTML = "\n    " + Object.getOwnPropertyNames(Math)
