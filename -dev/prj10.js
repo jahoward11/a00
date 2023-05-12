@@ -413,11 +413,13 @@ const t4cntcs = `// __Contacts Webapp__
 
 // *Contacts Directory: demo setups*
  // !_.w.dbobj || import("../-app-cjs/fakes.js").then(m => m.default.forEach(c => dbobj.put(c).then(reShow).catch(reShow)))
+ // !_.w.dbobj || xstor.xmod3.default.forEach(c => dbobj.put(c).then(reShow).catch(reShow))
  // !_.w.dbobj || dbobj.put({ _id: "-res-img" }).then(reShow).catch(reShow)
 /*
  simgs = Array.from(Array(10)).map((e, i) => "stockimg" + i + ".jpg");
  !_.w.dbobj || dbobj.get("-res-img").then(d => { d._attachments || (d._attachments = {}); return Promise.all(_.simgs.map(e => fetch("../-res-img2/" + e).then(re => re.blob()))).then( bs => _.simgs.forEach((e, i) => d._attachments[e] = { content_type: bs[i].type, data: bs[i] }) || dbobj.put(d) ); }).then(reShow).then(() => !_.w.a4btn || a4btn.click()).catch(reShow)
 */
+ // !_.w.dbobj || dbobj.get("-res-img").then(d => { d._attachments || (d._attachments = {}); Object.entries(aurls).filter(([e0, e1]) => /^image/.test(e1.type)).forEach(([e0, e1]) => d._attachments[e0] = { content_type: e1.type, data: e1 }); return dbobj.put(d); }).then(reShow).then(() => !_.w.a4btn || a4btn.click()).catch(reShow)
 
 // *Notes Database: source code from preloaded webapp*
 /*
@@ -431,12 +433,6 @@ const t4cntcs = `// __Contacts Webapp__
 //`;
 
 const t4nmcode = `// __Note-Mgr Code, Helps__
-
-/*
- Un-comment the following line of code to generate the
-full source code (e.g., for building a standalone web app).
-*Alert:* This app's code is lengthy (about 2400 lines).
-*/
 
  // import("../-app-cjs/nmgr.js").then(re => re.dwraps[0] + re.nmpage + re.dwraps[1] + re.nmscr + re.dwraps[2]).then(reShow).catch(reShow)
 
@@ -481,6 +477,23 @@ full source code (e.g., for building a standalone web app).
  PouchDB(txd2.DBNAME).get(txd2.FILEID, { revs_info: 1 }).then(doc => txd2.revs = doc._revs_info)
  //.then(reShow).then(() => txd2.OPTS.rev = txd2.revs[1].rev).catch(reShow);
 */
+//`;
+
+const t4nmgr2 = `// __Note Manager, from xstor module__
+
+ nmm = "xmod3"
+
+ uiDspl = ([wid, cnt, scr]) => { if (!wid || !cnt) return; let ndiv = document.createElement('div'); ndiv.id = wid; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); return scr || window[wid] && window[wid].querySelector('script:last-of-type'); };
+ smL = scr => !scr || scrInj(0, scr.type || 'module', scr.innerHTML || "" + scr);
+
+ dbA = () => !window.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => window.pdbs = re);
+ s1L = () => !!window.PouchDB ? _.dbA() : scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(_.dbA));
+ // nmImp = () => window.nmwrap && [] || import("../-app-cjs/nmgr.js").then(re => ["nmwrap", "\\n<hr />" + re.nmpage, re.nmscr]);
+ nmMod = () => window.nmwrap && [] || ["nmwrap", "\\n<hr />" + xstor[_.nmm].nmpage, xstor[_.nmm].nmscr];
+
+ // Promise.resolve().then(s1L).then(nmMod).then(uiDspl).then(smL).catch(reShow);
+
+ // reShow( xstor[nmm].dwraps[0] + xstor[nmm].nmpage + xstor[nmm].dwraps[1] + xstor[nmm].nmscr + xstor[nmm].dwraps[2] )
 //`;
 
 const webapp1 = `// __"Recipes" DB Webapp__
@@ -535,6 +548,6 @@ export {
   jsrefq, bcaches, dscripts, scrload,
   jstatqs, itoken,
   t2puzls, t3search, t3srtools,
-  t4cntcs, t4nmcode,
+  t4cntcs, t4nmcode, t4nmgr2,
   webapp1, webapp2
 };
