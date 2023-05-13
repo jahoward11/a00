@@ -291,12 +291,12 @@ const t2puzls = `// JS Puzzle Collection #1
  // reShow( dwraps[0] + bodGen(t2x) + dwraps[1] + scrGen(t2x) + dwraps[2] )
 
  // pz1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
- try { pz1wrap } catch { uiDspl(bodGen(t2x)); !!window.jg1 || scrInj(null, 'module', scrGen(t2x)).catch(reShow); }
+ try { pz1wrap } catch { uiDspl("<hr />\\n" + bodGen(t2x)); !!window.jg1 || scrInj(null, 'module', scrGen(t2x)).catch(reShow); }
 */
 
 //`;
 
-const t3search = `// Search-&-Replace Webapp, Demo
+const t3search = `// Search & Replace: Webapp, Demo
 
 /*
  t3x = xstor.JScode.tutorial3;
@@ -343,7 +343,7 @@ const t3search = `// Search-&-Replace Webapp, Demo
  // window.jh1 = str => "<pre class=hljs>" + hljs.highlightAuto(!window.jb1 ? str : jb1(str)).value + "</pre><style>@import \\"../../a00/-res-hljs/atom-one-light.css\\"; #srwrap pre>pre.hljs { margin: 0; white-space: inherit; }</style>";
 //`;
 
-const t3srtools = `// Search-&-Replace Tools, Quick Ref
+const t3srtools = `// Search & Replace: Tools, Quick Ref
 
  _.w = window;
  seinp = _.w.swpseinp || {};
@@ -399,7 +399,7 @@ const t4cntcs = `// __Contacts Webapp__
  scrGen = src => "\\n" + src.match(/^(?:fwg|imgsVw|rexts) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *\\/\\/ *$| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?\\n(?= *\\b[ ,\\w]+(?: *= .+|);?$)/gm, "$1,\\n  ")).join("\\n").replace(/^( *n1Gen = ).+/m, (m, c1) => c1 + /^d5ui \\+= [^]+?(?=\\n$)/m.exec(src)[0].replace(/;(?: \\/\\/|)$|\\b_\\.\\b|^d5ui \\+= /g, "").split(/;(?: \\/\\/|)\\nd5ui \\+= /).map(eval).join("") + ";") + "\\n"; //
  dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>" + _.dbtit + "</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=dbwrap>", "</div>\\n\\n<script src=\\"../../a00/-res-js/pouchdb.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>", "</script>\\n</html>"];
 
-// *Notes Database: from JS Tutorial 4, Contacts Directory*
+// *Notes Database: customizes Contacts Directory of \`JScode\` module*
 /*
  uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
  dbA = () => !_.w.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => _.w.pdbs = re);
@@ -421,18 +421,18 @@ const t4cntcs = `// __Contacts Webapp__
 */
  // !_.w.dbobj || dbobj.get("-res-img").then(d => { d._attachments || (d._attachments = {}); Object.entries(aurls).filter(([e0, e1]) => /^image/.test(e1.type)).forEach(([e0, e1]) => d._attachments[e0] = { content_type: e1.type, data: e1 }); return dbobj.put(d); }).then(reShow).then(() => !_.w.a4btn || a4btn.click()).catch(reShow)
 
-// *Notes Database: source code from preloaded webapp*
+// *Notes Database: generates source code from preloaded webapp*
 /*
  dPreps = d => d.replace(/\\n<hr.*?>/, "").replace(/(<details id="?imgdtl.*?>)[^]*?(?=<\\/details>)|(<form id="?dform.*?>)[^]*?(?=<\\/form>)|(<div id="?ndata.*?>)[^]*(?=<\\/div>\\s*$)/g, "$1$2$3"); //
  sc2Str = () => Array.from(document.scripts).find(si => /^let fwg, ak,$/m.test(si.innerHTML)).innerHTML.replace(/reShow/g, "console.warn").replace(/^(?=window\\.ntmpl =)/m, "window.dbobj = window.PouchDB && new PouchDB(\\"" + ((dbobj || "").name || _.dbase) + "\\");\\n"); //
  !_.w.dbwrap || reShow( dwraps[0] + dPreps(dbwrap.innerHTML) + dwraps[1] + sc2Str() + dwraps[2] )
 */
 
-// *Notes Database: source code from \`JScode\` module*
+// *Notes Database: generates source code from \`JScode\` module*
  // !/^[a-z][0-9_a-z-]*$/.test(dbase) || reShow( dwraps[0] + bodGen(t4x).replace(/\\n<hr.*?>/, "") + dwraps[1] + scrGen(t4x).replace(/reShow/g, "console.warn").replace(/^(window\\.ntmpl = { key: ")(\\w+)/m, "window.dbobj = window.PouchDB && new PouchDB(\\"" + dbase + "\\");\\n$1" + (_.ntkey || "$2")) + dwraps[2] ); //
 //`;
 
-const t4nmcode = `// __Note-Mgr Code, Helps__
+const t4nmcode = `// __Note Manager: Code, Helps__
 
  // import("../-app-cjs/nmgr.js").then(re => re.dwraps[0] + re.nmpage + re.dwraps[1] + re.nmscr + re.dwraps[2]).then(reShow).catch(reShow)
 
@@ -479,7 +479,8 @@ const t4nmcode = `// __Note-Mgr Code, Helps__
 */
 //`;
 
-const t4nmgr2 = `// __Note Manager, from xstor module__
+const t4nmgr2 = `// __Note Manager__
+// *Builds webapp from xstor.xmod3 assigned with nmgr.js module*
 
  nmm = "xmod3"
 
