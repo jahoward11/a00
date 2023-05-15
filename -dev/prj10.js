@@ -264,7 +264,7 @@ const jstatqs = `//
 //`;
 
 const itoken = `/*
-
+__IBM Token Fetch Hypothetical__
 *Note:* Token request fails because CORS is disabled at iam.cloud.ibm.com.
 
  hdrs = new Headers();
@@ -279,7 +279,7 @@ const itoken = `/*
  fetch("https:/" + "/iam.cloud.ibm.com/identity/token", opts).then(re => re.text()).then(reShow).catch(reShow);
 */`;
 
-const t2puzls = `// JS Puzzle Collection #1
+const t2puzls = `// __JS Puzzle Collection #1: Code__
 
 /*
  t2x = xstor.JScode.tutorial2;
@@ -296,7 +296,7 @@ const t2puzls = `// JS Puzzle Collection #1
 
 //`;
 
-const t3search = `// Search & Replace: Webapp, Demo
+const t3search = `// __Search & Replace: Webapp, Demo__
 
 /*
  t3x = xstor.JScode.tutorial3;
@@ -343,7 +343,7 @@ const t3search = `// Search & Replace: Webapp, Demo
  // window.jh1 = str => "<pre class=hljs>" + hljs.highlightAuto(!window.jb1 ? str : jb1(str)).value + "</pre><style>@import \\"../../a00/-res-hljs/atom-one-light.css\\"; #srwrap pre>pre.hljs { margin: 0; white-space: inherit; }</style>";
 //`;
 
-const t3srtools = `// Search & Replace: Tools, Quick Ref
+const t3srtools = `// __Search & Replace: Tools, Quick Ref__
 
  _.w = window;
  seinp = _.w.swpseinp || {};
@@ -351,8 +351,8 @@ const t3srtools = `// Search & Replace: Tools, Quick Ref
  s0ui  = "\\n<style>\\nbutton, input, select, pre { margin: 0; }\\nhr { margin: 1.5rem 0; }";
  s0ui += "\\n#s0wrap { font: normal 1rem Helvetica, Arial, sans-serif; max-width: 720px; margin: 24px auto; }";
  s0ui += "\\n#s0wrap button, #s0wrap .btn1, #s0wrap input:not([type=checkbox]):not([type=radio]), #s0wrap select { background: #f8f8f8; color: Grey; font-size: calc(5rem / 6); line-height: 1.5rem; height: 1.5rem; padding: 0 0.5rem; border: 0; border-radius: 0; }";
- s0ui += "\\n#s0wrap .vatop { vertical-align: top; }\\n#s0wrap #s0sel0, #s0wrap #s0txt1, #s0wrap #s0txt2 { width: calc(100% - 48px); }\\n#s0wrap #s0txt1, #s0wrap #s0txt2 { display: inline-block; font: normal medium monospace; min-width: unset; }\\n</style>";
- s0ui += "\\n<hr />\\n<h4 class=cfield>Search-&amp;-Replace Tools, Quick Ref</h4>";
+ s0ui += "\\n#s0wrap .vatop { vertical-align: top; }\\n#s0wrap #s0sel0, #s0wrap #s0txt1, #s0wrap #s0txt2 { width: calc(100% - 48px); }\\n#s0wrap #s0txt1, #s0wrap #s0txt2 { display: inline-block; font: normal medium monospace; min-width: unset; }";
+ s0ui += "\\n</style>\\n<hr />\\n<h4 class=cfield>Search-&amp;-Replace Tools, Quick Ref</h4>";
  s0ui += "\\n<div class=cfield><span class=ccntr><select id=s0sel0>";
  s0ui += "\\n</select></span><span class=ccntr><button id=s0add1 class=isucc>&plus;</button></span></div>";
  s0ui += "\\n<div class=cfield><span class=ccntr><textarea id=s0txt1 class=textarea rows=5></textarea></span><span class=\\"ccntr vatop\\" onclick=s0txt1.select()>Srch</span></div>";
@@ -385,7 +385,7 @@ const t3srtools = `// Search & Replace: Tools, Quick Ref
  try { srwrap } catch { uiDspl(bodGen(t3x)); _.w.sr0 ? sr0.pfsRfr() : scrInj(null, 'module', scrGen(t3x)).catch(reShow); [sepainp.value, rtrminp.value] = ["s0srch", "s0rplc"]; }
 //`;
 
-const t4cntcs = `// __Contacts Webapp__
+const t4cntcs = `// __"Contacts" Webapp__
 
  _.w = window;
  t4x = xstor.JScode.tutorial4;
@@ -399,7 +399,7 @@ const t4cntcs = `// __Contacts Webapp__
  scrGen = src => "\\n" + src.match(/^(?:fwg|imgsVw|rexts) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *\\/\\/ *$| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?\\n(?= *\\b[ ,\\w]+(?: *= .+|);?$)/gm, "$1,\\n  ")).join("\\n").replace(/^( *n1Gen = ).+/m, (m, c1) => c1 + /^d5ui \\+= [^]+?(?=\\n$)/m.exec(src)[0].replace(/;(?: \\/\\/|)$|\\b_\\.\\b|^d5ui \\+= /g, "").split(/;(?: \\/\\/|)\\nd5ui \\+= /).map(eval).join("") + ";") + "\\n"; //
  dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>" + _.dbtit + "</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=dbwrap>", "</div>\\n\\n<script src=\\"../../a00/-res-js/pouchdb.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>", "</script>\\n</html>"];
 
-// *Notes Database: customizes Contacts Directory of \`JScode\` module*
+// *Notes Database: retrofits "Contacts" tutorial code of \`JScode\` module*
 /*
  uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
  dbA = () => !_.w.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => _.w.pdbs = re);
@@ -411,7 +411,7 @@ const t4cntcs = `// __Contacts Webapp__
  try { dbwrap } catch { uiDspl(bodGen(t4x)); !!_.w.ntmpl || Promise.resolve().then(s1L).then(c1New).then(s2L).catch(reShow); }
 */
 
-// *Contacts Directory: demo setups*
+// *"Contacts" Webapp: demo setups*
  // !_.w.dbobj || import("../-app-cjs/fakes.js").then(m => m.default.forEach(c => dbobj.put(c).then(reShow).catch(reShow)))
  // !_.w.dbobj || xstor.xmod3.default.forEach(c => dbobj.put(c).then(reShow).catch(reShow))
  // !_.w.dbobj || dbobj.put({ _id: "-res-img" }).then(reShow).catch(reShow)
@@ -421,14 +421,14 @@ const t4cntcs = `// __Contacts Webapp__
 */
  // !_.w.dbobj || dbobj.get("-res-img").then(d => { d._attachments || (d._attachments = {}); Object.entries(aurls).filter(([e0, e1]) => /^image/.test(e1.type)).forEach(([e0, e1]) => d._attachments[e0] = { content_type: e1.type, data: e1 }); return dbobj.put(d); }).then(reShow).then(() => !_.w.a4btn || a4btn.click()).catch(reShow)
 
-// *Notes Database: generates source code from preloaded webapp*
+// *Notes Database: generates source code from preloaded "Contacts" webapp*
 /*
  dPreps = d => d.replace(/\\n<hr.*?>/, "").replace(/(<details id="?imgdtl.*?>)[^]*?(?=<\\/details>)|(<form id="?dform.*?>)[^]*?(?=<\\/form>)|(<div id="?ndata.*?>)[^]*(?=<\\/div>\\s*$)/g, "$1$2$3"); //
  sc2Str = () => Array.from(document.scripts).find(si => /^let fwg, ak,$/m.test(si.innerHTML)).innerHTML.replace(/reShow/g, "console.warn").replace(/^(?=window\\.ntmpl =)/m, "window.dbobj = window.PouchDB && new PouchDB(\\"" + ((dbobj || "").name || _.dbase) + "\\");\\n"); //
  !_.w.dbwrap || reShow( dwraps[0] + dPreps(dbwrap.innerHTML) + dwraps[1] + sc2Str() + dwraps[2] )
 */
 
-// *Notes Database: generates source code from \`JScode\` module*
+// *Notes Database: generates source code from "Contacts" tutorial of \`JScode\` module*
  // !/^[a-z][0-9_a-z-]*$/.test(dbase) || reShow( dwraps[0] + bodGen(t4x).replace(/\\n<hr.*?>/, "") + dwraps[1] + scrGen(t4x).replace(/reShow/g, "console.warn").replace(/^(window\\.ntmpl = { key: ")(\\w+)/m, "window.dbobj = window.PouchDB && new PouchDB(\\"" + dbase + "\\");\\n$1" + (_.ntkey || "$2")) + dwraps[2] ); //
 //`;
 
@@ -480,9 +480,9 @@ const t4nmcode = `// __Note Manager: Code, Helps__
 //`;
 
 const t4nmgr2 = `// __Note Manager__
-// *Builds webapp from xstor.xmod3 assigned with nmgr.js module*
+// *Builds NM webapp from global \`xstor.xmod_\` pre-assigned with \`nmgr.js\` module data*
 
- nmm = "xmod3"
+ mod = "xmod3"
 
  uiDspl = ([wid, cnt, scr]) => { if (!wid || !cnt) return; let ndiv = document.createElement('div'); ndiv.id = wid; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); return scr || window[wid] && window[wid].querySelector('script:last-of-type'); };
  smL = scr => !scr || scrInj(0, scr.type || 'module', scr.innerHTML || "" + scr);
@@ -490,11 +490,11 @@ const t4nmgr2 = `// __Note Manager__
  dbA = () => !window.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => window.pdbs = re);
  s1L = () => !!window.PouchDB ? _.dbA() : scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(_.dbA));
  // nmImp = () => window.nmwrap && [] || import("../-app-cjs/nmgr.js").then(re => ["nmwrap", "\\n<hr />" + re.nmpage, re.nmscr]);
- nmMod = () => window.nmwrap && [] || ["nmwrap", "\\n<hr />" + xstor[_.nmm].nmpage, xstor[_.nmm].nmscr];
+ nmMod = () => window.nmwrap && [] || ["nmwrap", "\\n<hr />" + xstor[_.mod].nmpage, xstor[_.mod].nmscr];
 
  // Promise.resolve().then(s1L).then(nmMod).then(uiDspl).then(smL).catch(reShow);
 
- // reShow( xstor[nmm].dwraps[0] + xstor[nmm].nmpage + xstor[nmm].dwraps[1] + xstor[nmm].nmscr + xstor[nmm].dwraps[2] )
+ // reShow( xstor[mod].dwraps[0] + xstor[mod].nmpage + xstor[mod].dwraps[1] + xstor[mod].nmscr + xstor[mod].dwraps[2] )
 //`;
 
 const webapp1 = `// __"Recipes" DB Webapp__
