@@ -6,7 +6,7 @@ const notemgr = `/*
 __Note Manager: based on concepts from JS Tutorial 4__
  This module option functions only to render a fairly complete
 Note-Manager UI -- one that extends the functionality of the
-demo code written in the \`JScode\` module's data files.
+tutorial code written in the \`JScode\` module.
 */
 
  window.nmwrap || import("../-app-cjs/nmgr.js").then(re => { let ndiv = document.createElement('div'); ndiv.id = "nmwrap"; ndiv.innerHTML = "\\n<hr />" + re.nmpage; cmain.appendChild(ndiv); return scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js")).then(() => scrInj(null, 'module', re.nmscr)); }).catch(reShow)
@@ -21,7 +21,7 @@ demo code written in the \`JScode\` module's data files.
 const search = `/*
 __Search and Replace: from JS Tutorial 3__
  This module option functions only to render a Search-&amp;-Replace UI
-from the demo code written in the \`JScode\` module's data files.
+from the tutorial code written in the \`JScode\` module.
 */
 
  t3x = xstor.JScode.tutorial3;
@@ -41,7 +41,7 @@ from the demo code written in the \`JScode\` module's data files.
 
 const textdiff = `/*
 __Source-Text Diffs__
- Reveals differences between two text sources.
+*Reveals differences between two text sources.*
 
 *How it works:*
  When the global-object or local-storage keys of two sources of text

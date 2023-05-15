@@ -5,14 +5,14 @@ const _module = "JSpuzzle";
 const collection1 = `/*
 __Puzzle Collection I: from JS Tutorial 2__
  This module option functions only to render three puzzle GUIs
-from the demo code written in the \`JScode\` module's data files:
+from the tutorial code written in the \`JScode\` module:
 - SLIDING TILES
 - LIGHTS OUT
 - PEGS
 */
 
  t2x = xstor.JScode.tutorial2;
- bodGen = src => "\\n<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/;$|^g\\dui = /g, "").split(/;\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n") + "\\n"; //
+ bodGen = src => "\\n<hr />\\n<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/;$|^g\\dui = /g, "").split(/;\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n") + "\\n"; //
  scrGen = src => "\\n" + src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *\\/\\/ *$| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?\\n(?= *\\b[ ,\\w]+(?: *= .+|);?$)/gm, "$1,\\n  ")).join("\\n\\n") + "\\n"; //
  uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "pz1wrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
@@ -23,13 +23,11 @@ from the demo code written in the \`JScode\` module's data files:
 // full source code (e.g., for building a standalone web app).
 
  // dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>", "</script>\\n</html>"];
- // reShow( dwraps[0] + pz1wrap.outerHTML + dwraps[1] + scrGen(t2x) + dwraps[2] )
+ // reShow( dwraps[0] + pz1wrap.outerHTML.replace(/\\n<hr.*?>/, "") + dwraps[1] + scrGen(t2x) + dwraps[2] )
 //`;
 
-const tiltmaze = `/*
-__TILT MAZE__
-*A JavaScript Puzzle GUI*
-*/
+const tiltmaze = `// __TILT MAZE__
+// *A JavaScript Puzzle GUI*
 
 g4ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
 g4ui += "\\nhtml { box-sizing: border-box; color: DimGrey; /* font-size: 14px; */ min-width: 375px; overflow-wrap: break-word; }";
