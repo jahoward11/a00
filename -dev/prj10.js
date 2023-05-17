@@ -265,7 +265,7 @@ const jstatqs = `//
 
 const itoken = `/*
 __IBM Token Fetch Hypothetical__
-*Note:* Token request fails because CORS is disabled at iam.cloud.ibm.com.
+*Note:* This token request fails because CORS is disabled at iam.cloud.ibm.com.
 
  hdrs = new Headers();
  hdrs.append("Content-Type", "application/x-www-form-urlencoded");
@@ -399,7 +399,7 @@ const t4cntcs = `// __"Contacts" Webapp__
  scrGen = src => "\\n" + src.match(/^(?:fwg|imgsVw|rexts) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *\\/\\/ *$| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?\\n(?= *\\b[ ,\\w]+(?: *= .+|);?$)/gm, "$1,\\n  ")).join("\\n").replace(/^( *n1Gen = ).+/m, (m, c1) => c1 + /^d5ui \\+= [^]+?(?=\\n$)/m.exec(src)[0].replace(/;(?: \\/\\/|)$|\\b_\\.\\b|^d5ui \\+= /g, "").split(/;(?: \\/\\/|)\\nd5ui \\+= /).map(eval).join("") + ";") + "\\n"; //
  dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>" + _.dbtit + "</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=dbwrap>", "</div>\\n\\n<script src=\\"../../a00/-res-js/pouchdb.min.js\\" type=\\"text/javascript\\"></script>\\n<script type=module>", "</script>\\n</html>"];
 
-// *Notes Database: retrofits "Contacts" tutorial code of \`JScode\` module*
+// *Notes Database: retrofitted "Contacts" tutorial code of \`JScode\` module*
 /*
  uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
  dbA = () => !_.w.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => _.w.pdbs = re);
@@ -421,14 +421,14 @@ const t4cntcs = `// __"Contacts" Webapp__
 */
  // !_.w.dbobj || dbobj.get("-res-img").then(d => { d._attachments || (d._attachments = {}); Object.entries(aurls).filter(([e0, e1]) => /^image/.test(e1.type)).forEach(([e0, e1]) => d._attachments[e0] = { content_type: e1.type, data: e1 }); return dbobj.put(d); }).then(reShow).then(() => !_.w.a4btn || a4btn.click()).catch(reShow)
 
-// *Notes Database: generates source code from preloaded "Contacts" webapp*
+// *Notes Database: generated source code from preloaded "Contacts" webapp*
 /*
  dPreps = d => d.replace(/\\n<hr.*?>/, "").replace(/(<details id="?imgdtl.*?>)[^]*?(?=<\\/details>)|(<form id="?dform.*?>)[^]*?(?=<\\/form>)|(<div id="?ndata.*?>)[^]*(?=<\\/div>\\s*$)/g, "$1$2$3"); //
  sc2Str = () => Array.from(document.scripts).find(si => /^let fwg, ak,$/m.test(si.innerHTML)).innerHTML.replace(/reShow/g, "console.warn").replace(/^(?=window\\.ntmpl =)/m, "window.dbobj = window.PouchDB && new PouchDB(\\"" + ((dbobj || "").name || _.dbase) + "\\");\\n"); //
  !_.w.dbwrap || reShow( dwraps[0] + dPreps(dbwrap.innerHTML) + dwraps[1] + sc2Str() + dwraps[2] )
 */
 
-// *Notes Database: generates source code from "Contacts" tutorial of \`JScode\` module*
+// *Notes Database: generated source code from "Contacts" tutorial of \`JScode\` module*
  // !/^[a-z][0-9_a-z-]*$/.test(dbase) || reShow( dwraps[0] + bodGen(t4x).replace(/\\n<hr.*?>/, "") + dwraps[1] + scrGen(t4x).replace(/reShow/g, "console.warn").replace(/^(window\\.ntmpl = { key: ")(\\w+)/m, "window.dbobj = window.PouchDB && new PouchDB(\\"" + dbase + "\\");\\n$1" + (_.ntkey || "$2")) + dwraps[2] ); //
 //`;
 
@@ -480,7 +480,8 @@ const t4nmcode = `// __Note Manager: Code, Helps__
 //`;
 
 const t4nmgr2 = `// __Note Manager__
-// *Builds NM webapp from global \`xstor.xmod_\` pre-assigned with \`nmgr.js\` module data*
+ // Use this code to build NM webapp from global \`xstor.xmod_\`
+// pre-assigned with \`nmgr.js\` module data.*
 
  mod = "xmod3"
 
