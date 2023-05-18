@@ -481,7 +481,7 @@ const t4nmcode = `// __Note Manager: Code, Helps__
 
 const t4nmgr2 = `// __Note Manager__
  // Use this code to build NM webapp from global \`xstor.xmod_\`
-// pre-assigned with \`nmgr.js\` module data.*
+// -- pre-assigned with \`nmgr.js\` module data.
 
  mod = "xmod3"
 
