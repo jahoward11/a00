@@ -1709,8 +1709,9 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
         ? udata : udata.replace(rexurl, (m, c1, c2, c3) => c1 + c2 + EC2.u2Blob(c3));
     lang || /^<(\w+).*?>[^]*?<\/\1>\n *<(\w+).*?>[^]*?<\/\2>\n *<(\w+).*?>[^]*?<\/\3>$/m.test(udata)
     || !/^(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S[^]*?\n(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S/m.test(udata)
-    || !(lang = "md") || ( udata = udata
-      .replace( /([^]*?)((?:\s|\W|^)(\*\*?|__?)(\*\*?|__?|)[^\s*_][^]*?[^\s*_]\4\3(?=\s|\W|$)|$)/g,
+    || !(lang = "md") || ( udata = udata.replace(/\\\*/g, "\\\\x2a;")
+      .replace(/\\_/g, "\\\\x5f;").replace(/____+/g, m => m.replace(/_/g, "\\x5f;"))
+      .replace( /([^]*?)((?:\s|\W|^)(\*\*?|__?)\S(?:[^\n]|\n(?= *\S))*\S\3(?=\s|\W|$)|$)/g,
         (c, m1, m2) => m1.replace(/\*/g, "\\x2a;").replace(/_/g, "\\x5f;") + m2 ) );
     prv2s[0].innerHTML = !epsets.prvmode ? null : ( !epsets.hlstyle ? ""
       : '\n<style type="text/css">.hljs-tag { //color: inherit; }</style>'
@@ -4126,7 +4127,6 @@ dirUpd(trgnbr) {
     tstamp1 = Date.now(),
     tsUpd = cb => dbpch.get(dirlist.value)
       .then(doc => !(doc.ts_updated = tstamp1) || dbpch.put(doc)).then(cb).catch(msgHandl);
-;
   if (!dbpch || !tm0urole || trgnbr === 2 && (!optg || optg === "LOCAL temporary files")) {
     document.querySelector('#ecoesp0 #dirbtn').disabled
     = document.querySelector('#ecoesp0 #imgabtn').disabled = true;

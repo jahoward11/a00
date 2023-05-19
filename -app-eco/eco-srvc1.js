@@ -1621,7 +1621,8 @@ let rva2, rval, ss0, ss1,
       let calcSum = arr => !arr.length ? 0 : arr.reduce((s, v) => s + v);
       j = 0;
       ftotal.innerText = vidx ? re.rows.length //re.total_rows
-        : re.rows.filter(r => /^eco-(?!assets$)./.test((r.doc || r.value).file_type)).length
+        : re.rows.filter( r => /^eco-(?!assets$)./.test((rval = r.doc || r.value).file_type)
+          || rval.hasOwnProperty("loc_subdir") && !/^[.-]./.test(r.id) || rval.file_created ).length
           + calcSum( re.rows.map( r => !(rval = r.doc || r.value)._attachments
             ? 0 : Object.keys(rval._attachments).length ));
       [cmthds[1], cmtfts[1]].forEach(el => el.classList.add("is-hidden"));
@@ -1629,8 +1630,9 @@ let rva2, rval, ss0, ss1,
       cmtbod.innerHTML = vidx
       ? qd3Fmt( !ss0 || vidx !== 2 && ss0 === "id" || vidx === 2 && ss1 === "timestamp" ? re.rows
         : ordFlip(re.rows.map(r => [ptyX(r.doc || r.value), r.id, r])).map(sr => sr[2]) )
-      : qd2Fmt( ordFlip( re.rows
-        .filter(r => /^[.-]./.test(r.id) || /^eco-./.test((r.doc || r.value).file_type))
+      : qd2Fmt( ordFlip( re.rows.filter( r => /^[.-]./.test(r.id)
+          || /^eco-./.test((rval = r.doc || r.value).file_type)
+          || rval.hasOwnProperty("loc_subdir") || rval.file_created )
         .map( r => /^[.-]./.test(r.id) ? [r.id.replace(/^\\.(.+)$/, "$1_"), null, r.id, r]
           : [ (rval = r.doc || r.value).loc_subdir
               || (rval.file_updated || rval.file_created || "").subdir || "!",
