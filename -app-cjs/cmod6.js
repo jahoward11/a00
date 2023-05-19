@@ -1219,7 +1219,7 @@ formGen = () => dform.innerHTML = Object.entries(Object.assign({ _id: "", _rev: 
 
 /*
 d3ui += "\\n<hr />\\n<h4>Images Manager</h4>\\n<div class=cfield>";
-d3ui += "\\n<span class=\\"ccntr cleft\\"><em>Att:</em> step 1</span><span class=ccntr><label>";
+d3ui += "\\n<span class=\\"ccntr cleft\\"><em>Attach:</em> step 1</span><span class=ccntr><label>";
 d3ui += "<input id=a1inp type=file /><span id=a2inp class=\\"btn1 hgainl ilink\\">&#x2726;</span>";
 d3ui += "<span id=a3inp class=btn1><span>Locate image&hellip;</span></span>\\n</label></span>\\n</div>";
 d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">step 2</span><span class=ccntr>";
@@ -1228,7 +1228,7 @@ d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">step 3</span><spa
 d3ui += "<button id=a4btn class=hgainl><span class=isucc>&oplus;</span> ATTACH</button></span>";
 d3ui += "\\n<div class=\\"chelp isucc dnone\\">Image is attached to \\"-res-img\\" file.</div>";
 d3ui += "\\n<div class=\\"chelp iwarn dnone\\">Image-attach attempt failed.</div>\\n</div>\\n<p></p>";
-d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\"><em>Rmv:</em> step 1</span><span class=ccntr>";
+d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\"><em>Remove:</em> step 1</span><span class=ccntr>";
 d3ui += "<input type=text id=n5inp placeholder=\\"Enter attachment name&hellip;\\" /></span>\\n</div>";
 d3ui += "\\n<div class=cfield>\\n<span class=\\"ccntr cleft\\">step 2</span><span class=ccntr>";
 d3ui += "<button id=a5btn class=hgainl><span class=iwarn>&ominus;</span> REMOVE</button></span>";
