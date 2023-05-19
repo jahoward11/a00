@@ -242,7 +242,7 @@ PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
  // basic     // fetch(aurls["jstat-tdist.js"]).then(re => re.type).then(reShow).catch(reShow)
  // fetch("../-res-js/jstat-tdist.js").then(re => re.blob()).then(fbl => !(aurls["jstat-tdist.js"] = URL.createObjectURL(fbl)) || fbl.text()).then(reShow).catch(reShow)
 
- // fetch("../-res-js/srcdiff.js").then(re => re.blob()).then(fbl => fbl.text()).then(reShow).catch(reShow)
+ // text/javascript // fetch("../-res-js/srcdiff.js").then(re => re.blob()).then(fbl => fbl.type).then(reShow).catch(reShow)
  // fetch("../-res-js/srcdiff.js").then(re => re.blob()).then(fbl => !(aurls["srcdiff.js"] = URL.createObjectURL(fbl)) || fbl.text()).then(reShow).catch(reShow)
 
  // reShow( aurls )
@@ -419,7 +419,7 @@ const t4cntcs = `// __"Contacts" Webapp__
  simgs = Array.from(Array(10)).map((e, i) => "stockimg" + i + ".jpg");
  !_.w.dbobj || dbobj.get("-res-img").then(d => { d._attachments || (d._attachments = {}); return Promise.all(_.simgs.map(e => fetch("../-res-img2/" + e).then(re => re.blob()))).then( bs => _.simgs.forEach((e, i) => d._attachments[e] = { content_type: bs[i].type, data: bs[i] }) || dbobj.put(d) ); }).then(reShow).then(() => !_.w.a4btn || a4btn.click()).catch(reShow)
 */
- // !_.w.dbobj || dbobj.get("-res-img").then(d => { d._attachments || (d._attachments = {}); Object.entries(aurls).filter(([e0, e1]) => /^image/.test(e1.type)).forEach(([e0, e1]) => d._attachments[e0] = { content_type: e1.type, data: e1 }); return dbobj.put(d); }).then(reShow).then(() => !_.w.a4btn || a4btn.click()).catch(reShow)
+ // !_.w.dbobj || dbobj.get("-res-img").then(d => { let [ks, vs] = [Object.keys(aurls), Object.values(aurls)]; d._attachments || (d._attachments = {}); return Promise.all(vs.map(u => fetch(u).then(re => re.blob()))).then(fbs => fbs.forEach((b, i) => !/^image/.test(b.type) || (d._attachments[ks[i]] = { content_type: b.type, data: b })) || dbobj.put(d)); }).then(reShow).then(() => !_.w.a4btn || a4btn.click()).catch(reShow)
 
 // *Notes Database: generated source code from preloaded "Contacts" webapp*
 /*

@@ -1123,8 +1123,9 @@ let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
     : JSON.stringify(fncTry(JSON.parse, v), 0, sp) || v,
   mP1 = (str, lang) => lang !== "md" && ( lang
     || !/^(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S[^]*?\n(?:#+| ? ?[>*~-]| ? ?\d+\.) +\S/m.test(str) )
-    ? [str, lang] : [ str
-      .replace( /([^]*?)((?:\s|\W|^)(\*\*?|__?)(\*\*?|__?|)[^\s*_][^]*?[^\s*_]\4\3(?=\s|\W|$)|$)/g,
+    ? [str, lang] : [ str.replace(/\\\*/g, "\\\\x2a;")
+      .replace(/\\_/g, "\\\\x5f;").replace(/____+/g, m => m.replace(/_/g, "\\x5f;"))
+      .replace( /([^]*?)((?:\s|\W|^)(\*\*?|__?)\S(?:[^\n]|\n(?= *\S))*\S\3(?=\s|\W|$)|$)/g,
         (c, m1, m2) => m1.replace(/\*/g, "\\x2a;").replace(/_/g, "\\x5f;") + m2 ), "md" ],
   jB1 = (str, lang) => typeof str === 'object' ? [valStr(str, 2), "json"]
     : !window.js_beautify || lang !== "js" ? mP1(valStr(str), lang)
@@ -1683,8 +1684,8 @@ let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
       ftotal.innerText = rdc ? rdc : vbas !== 2 ? re.rows.length //re.total_rows
         : re.rows.filter( r => /^eco-(?!assets$)./.test((rval = r.doc || r.value).file_type)
           || rval.hasOwnProperty("loc_subdir") && !/^[.-]./.test(r.id) || rval.file_created ).length
-          + calcSum( re.rows.map( r => !(rval = r.doc || r.value)._attachments ? 0
-              : Object.keys(rval._attachments).length ));
+          + calcSum( re.rows.map( r => !(rval = r.doc || r.value)._attachments
+            ? 0 : Object.keys(rval._attachments).length ));
       [nmthds[1], nmtfts[1]].forEach(el => el.classList.add("dnone"));
       [nmthds[0], nmtfts[0]].forEach(el => el.classList.remove("dnone"));
       nmtbod.innerHTML = rdc ? "" : vbas !== 2
