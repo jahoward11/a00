@@ -242,7 +242,8 @@ PouchDB(txd2.DBNAME).getAttachment(txd2.FILEID, txd2.ATTKEY, txd2.OPTS)
  // basic     // fetch(aurls["jstat-tdist.js"]).then(re => re.type).then(reShow).catch(reShow)
  // fetch("../-res-js/jstat-tdist.js").then(re => re.blob()).then(fbl => !(aurls["jstat-tdist.js"] = URL.createObjectURL(fbl)) || fbl.text()).then(reShow).catch(reShow)
 
- // text/javascript // fetch("../-res-js/srcdiff.js").then(re => re.blob()).then(fbl => fbl.type).then(reShow).catch(reShow)
+ // text/javascript        // fetch("../-app-eco/eco-srvc3.mjs").then(re => re.blob()).then(fbl => fbl.type).then(reShow).catch(reShow)
+ // application/javascript // fetch("../-res-js/srcdiff.js").then(re => re.blob()).then(fbl => fbl.type).then(reShow).catch(reShow)
  // fetch("../-res-js/srcdiff.js").then(re => re.blob()).then(fbl => !(aurls["srcdiff.js"] = URL.createObjectURL(fbl)) || fbl.text()).then(reShow).catch(reShow)
 
  // reShow( aurls )
