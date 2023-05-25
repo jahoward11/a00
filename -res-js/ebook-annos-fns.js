@@ -394,19 +394,20 @@ acs.texthl = ( acs.texthl && acs.texthl.length
         .replace(/(?=[$().?[\\{|])/g, "\\") // escape 9/12 md chars
         .replace( /(\*\*?|__?)(\*\*?|__?|)(.+?)\2\1/g,
           "(?:<(?:em|strong)>){1,2}$3(?:</(?:em|strong)>){1,2}" )
-        .replace(/(<\S+>(?:\)\{1,2\}|)| |^)==(.+?)==(?=[^\w=])/gm, "$1<mark>$2</mark>")
-        .replace(/(<\S+>(?:\)\{1,2\}|)| |^)~~(.+?)~~(?=[^\w~])/gm, "$1<s>$2</s>")
-        .replace(/(<\S+>(?:\)\{1,2\}|)| |^)\+\+(.+?)\+\+(?=[^\w+])/gm, "$1<ins>$2</ins>")
-        .replace(/(<\S+>(?:\)\{1,2\}|)| |^)(`+)(.+?)\2(?=[^\w`])/gm, "$1<code>$3</code>")
+        .replace(/([^\w=]|^)==(.+?)==(?=[^\w=])/gm, "$1<mark>$2</mark>")
+        .replace(/([^\w~]|^)~~(.+?)~~(?=[^\w~])/gm, "$1<s>$2</s>")
+        .replace(/([^\w+]|^)\+\+(.+?)\+\+(?=[^\w+])/gm, "$1<ins>$2</ins>")
+        .replace(/([^\w`]|^)(`+)(.+?)\2(?=[^\w`])/gm, "$1<code>$3</code>")
         .replace(/~(\w+)~/g, "<sub>$1</sub>")
         .replace(/\^(\w+)\^/g, "<sup>$1</sup>")
         .replace(/(?=[*+^])/g, "\\") // escape 3/12 md chars
         .replace(/&(?!#?\w+;)/g, "(?:&|&amp;)").replace(/\xa0|&nbsp;/g, "(?:\\xa0|&nbsp;)")
         .replace( /\\\(\\\?[!:=].*?[^\n\\]\\\)/g, m => m.replace(/\\(.)/g, "$1")
-          .replace(/\\\\\\n/g, "<br>").replace(/\\\\ /g, "(?:\\xa0|&nbsp;)") )
+          .replace(/\\\\\\n/g, "<br.*?>").replace(/\\\\ /g, "(?:\\xa0|&nbsp;)") )
+        .replace(/ *\\\. ?\\\. ?\\\.[ .]*/g, "(?:[\\x20.\\xa0]|&nbsp;)+")
         .replace( /[ \u2008-\u200b]*(?:---?|\u2014)[ \u2008-\u200b]*/g,
           "[\\x20\\u2008-\\u200b\\u2014-]+" )
-        .replace(/[\t ]+/g, "\\s+").replace(/["'‘’“”]/g, "(?:[\"'‘’“”]|&quot;)")
+        .replace(/["'‘’“”]/g, "(?:[\"'‘’“”]|&quot;)").replace(/[\t ]+/g, "\\s+")
         .replace(/\n/g, ")(.*?)(") + ")" )
       .replace(/\n\n+/g, "\n").trim() //(/(?:[^\\]|^)(?:\\\\)*\\(?!\\)/g, "$&\\")
       .split("\n").map(e => !/^\/.+\/[gim]*$/.test(e) ? e : eval(e) || e) );
