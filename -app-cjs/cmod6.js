@@ -384,7 +384,7 @@ g2ui += "\\n</style>\\n<hr />\\n<h4 class=cfield>Lights Out</h4>";
 g2ui += "\\n<div class=cfield><em>Objective:</em> Switch all matrix lights off.</div>";
 g2ui += "\\n<div class=cfield><em>Game Action:</em> Switching a diode in this lighting matrix also switches any directly connected up-, down-, left- or right- diodes.</div>";
 g2ui += "\\n<div>\\n<span class=ccntr><select id=lpatt>";
-g2ui += ["&mdash;Startup Pattern&mdash;", "Treasure marker (in 4)", "Lucy's diamond (in 5)", "Eight-pocket table (in 5)", "Picasso emoji (in 5)", "Peep holes (in 6)", "Split screen (in 6)", "Square target (in 9)", "Bi-polar opposites (in 11)", "Central light out (in 12)", "Road caution marks (in 15)"].map(e => \`\\n<option>\${e}</option>\`).join("");
+g2ui += ["&mdash;Startup Pattern&mdash;", "Treasure marker (in 4)", "Lucy's diamond (in 5)", "Eight-pocket table (in 5)", "Picasso emoji (in 5)", "Peep holes (in 6)", "Split screen (in 6)", "Square target (in 9)", "Cave entrance (in 10)", "Bi-polar opposites (in 11)", "Central light out (in 12)", "Road caution marks (in 15)"].map(e => \`\\n<option>\${e}</option>\`).join("");
 g2ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&orarr; RESTART\\" onclick=jg2.g2Reset() /></span>\\n</div>";
 g2ui += "\\n<div id=g2bcntr>\\n<table id=g2circt><tbody>";
 g2ui += [0, 1, 2, 3].map(r => "\\n<tr>" + [0, 1, 2, 3].map(c => "<td></td>").join("") + "</tr>").join("");
@@ -399,7 +399,7 @@ g2ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u2tog /
  // try { g2wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g2wrap"; ndiv.innerHTML = g2ui; cmain.appendChild(ndiv); }
 
 m2trk = 0;
-lit0s = [ "", ["0,0", "0,4", "1,1", "1,3", "2,2", "3,1", "3,3", "4,0", "4,4"], ["0,2", "1,1", "1,3", "2,0", "2,4", "3,1", "3,3", "4,2"], ["0,0", "0,2", "0,4", "2,0", "2,4", "4,0", "4,2", "4,4"], ["2,1", "2,3", "3,2", "4,1", "4,2", "4,3"], ["2,1", "2,3"], ["0,2", "1,2", "2,2", "3,2", "4,2"], ["1,1", "1,2", "1,3", "2,1", "2,3", "3,1", "3,2", "3,3"], ["0,4", "4,0"], ["2,2"], ["0,2", "1,1", "2,0", "2,4", "3,3", "4,2"] ];
+lit0s = [ "", ["0,0", "0,4", "1,1", "1,3", "2,2", "3,1", "3,3", "4,0", "4,4"], ["0,2", "1,1", "1,3", "2,0", "2,4", "3,1", "3,3", "4,2"], ["0,0", "0,2", "0,4", "2,0", "2,4", "4,0", "4,2", "4,4"], ["2,1", "2,3", "3,2", "4,1", "4,2", "4,3"], ["2,1", "2,3"], ["0,2", "1,2", "2,2", "3,2", "4,2"], ["1,1", "1,2", "1,3", "2,1", "2,3", "3,1", "3,2", "3,3"], ["3,1", "3,2", "3,3", "4,1", "4,2", "4,3"], ["0,4", "4,0"], ["2,2"], ["0,2", "1,1", "2,0", "2,4", "3,3", "4,2"] ];
 window.jg2 = {};
 jg2.c2Zero = () => g2movs.innerHTML = _.m2trk = 0;
 jg2.g2Reset = () => jg2.c2Zero() || [0, 1, 2, 3, 4].forEach( r => [0, 1, 2, 3, 4].forEach( c => window["n" + r + c].classList[_.lit0s[lpatt.selectedIndex].includes("" + [r, c]) ? "add" : "remove"]("ldark") ) );
@@ -429,7 +429,7 @@ g3ui += "\\n</style>\\n<hr />\\n<h4 class=cfield>Pegs</h4>";
 g3ui += "\\n<div class=cfield><em>Objective:</em> Remove all board pegs but&nbsp;one.</div>";
 g3ui += "\\n<div class=cfield><em>How to play:</em> A move is made by jumping one peg with an adjacent peg; The jumped peg is&nbsp;removed.<br>Tap on a peg to select it for jumping&mdash;Then, if you have a choice, tap on a highlighted hole to select it for that peg's&nbsp;destination.</div>";
 g3ui += "\\n<div>\\n<span class=ccntr><select id=ppatt>\\n";
-g3ui += ["&mdash;Startup Pattern&mdash;", "Cross Symbol", "Plus Sign", "North Tower", "Arrow in Flight", "Egyptian Pyramid", "Red Diamond", "Solitaire"].map(e => "<option>" + e + "</option>").join("\\n");
+g3ui += ["&mdash;Startup Pattern&mdash;", "Cross Symbol", "Plus Sign", "Magician's Hat", "North Tower", "Arrowhead", "Arrow in Flight", "Egyptian Pyramid", "Red Diamond", "Solitaire"].map(e => "<option>" + e + "</option>").join("\\n");
 g3ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&orarr; RESTART\\" onclick=jg3.g3Reset() /></span>";
 g3ui += "\\n</div>\\n<div id=g3bcntr>\\n<table id=g3panel><tbody>";
 g3ui += [0, 1, 2, 3, 4, 5, 6].map(r => "\\n<tr>" + [0, 1, 2, 3, 4, 5, 6].map(c => "<td></td>").join("") + "</tr>").join("");
@@ -455,7 +455,7 @@ pegsRplc = (jps, bkup) => _.osClr() || (_.jopts = 0) || (bkup || _.m3trk.push(jp
 [ [0,0], [0,1], [], [0,5], [0,6], [1,0], [1,1], [], [1,5], [1,6], [], [5,0], [5,1], [], [5,5], [5,6], [6,0], [6,1], [], [6,5], [6,6] ].forEach( ([r, c], i) => r == null || !_.p3tds[r] || (_.p3tds[r][c].className = i % 2 === 0 ? "chkr0" : "chkr1") );
 [47, 42, 40, 35, 12, 7, 5, 0].forEach(e => _.p3sol.splice(e, 2));
 p3sol.splice(16, 1);
-peg0s = [ "", ["1,3", "2,2", "2,3", "2,4", "3,3", "4,3"], ["1,3", "2,3", "3,1", "3,2", "3,3", "3,4", "3,5", "4,3", "5,3"], ["0,2", "0,3", "0,4", "1,2", "1,3", "1,4", "2,2", "2,3", "2,4", "3,2", "3,4"], ["1,4", "2,0", "2,1", "2,4", "2,5", "3,0", "3,1", "3,2", "3,3", "3,4", "3,5", "3,6", "4,0", "4,1", "4,4", "4,5", "5,4"], ["1,3", "2,2", "2,3", "2,4", "3,1", "3,2", "3,3", "3,4", "3,5", "4,0", "4,1", "4,2", "4,3", "4,4", "4,5", "4,6"], p3sol.filter((e, i) => ![0, 2, 6, 12, 19, 25, 29, 31].includes(i)), _.p3sol ];
+peg0s = [ "", ["1,3", "2,2", "2,3", "2,4", "3,3", "4,3"], ["1,3", "2,3", "3,1", "3,2", "3,3", "3,4", "3,5", "4,3", "5,3"], ["4,1", "4,2", "4,3", "4,4", "4,5", "5,2", "5,3", "5,4", "6,2", "6,3", "6,4"], ["0,2", "0,3", "0,4", "1,2", "1,3", "1,4", "2,2", "2,3", "2,4", "3,2", "3,4"], ["0,4", "1,3", "1,4", "2,3", "2,4", "3,1", "3,2", "3,3", "3,4", "4,0", "4,1", "4,2", "4,3", "4,4"], ["1,4", "2,0", "2,1", "2,4", "2,5", "3,0", "3,1", "3,2", "3,3", "3,4", "3,5", "3,6", "4,0", "4,1", "4,4", "4,5", "5,4"], ["1,3", "2,2", "2,3", "2,4", "3,1", "3,2", "3,3", "3,4", "3,5", "4,0", "4,1", "4,2", "4,3", "4,4", "4,5", "4,6"], p3sol.filter((e, i) => ![0, 2, 6, 12, 19, 25, 29, 31].includes(i)), _.p3sol ];
 window.jg3 = {};
 jg3.c3Zero = () => (_.m3trk = []) && (g3movs.innerHTML = 0);
 jg3.g3Reset = () => _.osClr() || jg3.c3Zero() || _.a0t6.forEach( r => _.a0t6.forEach( c => !window["h" + r + c] || window["h" + r + c].classList[_.peg0s[ppatt.selectedIndex].includes("" + [r, c]) ? "add" : "remove"]("phead") ) );
