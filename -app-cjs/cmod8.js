@@ -49,12 +49,12 @@ g4ui += "\\n<div class=cfield><em>Tip:</em> This is a logic puzzle&mdash;not a t
 g4ui += "\\n<div>\\n<span class=ccntr><select id=mpatt>\\n<option disabled>Maze Pattern</option>\\n";
 g4ui += ["Level I (single)", "Level II (single)", "Level III (single)", "Level IV (single)", "Level V (single)", "Level VI (single)", "Level VII (multi)", "Level VIII (multi)", "Level IX (multi)", "Level X (multi)", "Level XI (multi)"].map(e => "<option>" + e + "</option>").join("\\n");
 g4ui += "\\n</select></span><span class=ccntr><select id=gscrg>";
-g4ui += "\\n<option disabled>Game Scoring</option>\\n<option>reset counter</option>\\n<option selected>add up total</option>";
+g4ui += "\\n<option disabled>Game Scoring</option>\\n<option selected>reset counter</option>\\n<option>add up total</option>";
 g4ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&orarr; NEW MAZE\\" onclick=jg4.g4Start() /></span>\\n</div>";
 g4ui += "\\n<div id=g4board></div>";
 g4ui += "\\n<div id=g4scor class=cfield>Score: <span id=g4movs>0</span></div>";
 g4ui += "\\n<div class=cfield align=center><span class=ccntr><button onclick=jg4.pcMove(3)>&ltrif; LEFT</button></span><span class=ccntr><button onclick=jg4.pcMove(1)>&utrif; TOP</button></span><span class=ccntr><button onclick=jg4.pcMove(4)>RIGHT &rtrif;</button></span></div>";
-g4ui += "\\n<div class=cfield align=center><span class=ccntr><button onclick=jg4.pcMove(2)>&dtrif; BOTTOM</button></span></div>\\n";
+g4ui += "\\n<div class=cfield align=center><span class=ccntr><button onclick=jg4.pcMove(2)>BOTTOM &dtrif;</button></span></div>\\n";
 
  // g4wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
  try { g4wrap && (g4board.innerHTML = "") } catch { ndiv = document.createElement('div'); ndiv.id = "g4wrap"; ndiv.innerHTML = g4ui; cmain.appendChild(ndiv); }

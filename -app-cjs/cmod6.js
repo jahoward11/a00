@@ -380,7 +380,7 @@ g2ui += "\\n#g2board { position: absolute; top: 0; margin: 16px; border-spacing:
 g2ui += "\\n#g2board td { background: MediumOrchid; width: 51px; height: 51px; border-radius: 26px; box-shadow: 0 0 16px 4px Orchid; cursor: pointer; }";
 g2ui += "\\n#g2board td.ldark { background: Indigo; box-shadow: 0 0 16px 4px Grey; }";
 g2ui += "\\n#g2scor { position: relative; top: -12px; font-size: small; margin-left: 16px; }\\n#g2movs { font-weight: bold; }";
-g2ui += "\\n</style>\\n<hr />\\n<h4 class=cfield>Lights Out<!--\\n 1,4|1,2,3\\n 1,2|1,3,4\\n 3|1,5|2,4\\n 0|1,3,5|1,2,4,5\\n 1|3,5|2,4,5|2,3,4,5\\n 2|3,4|1,4,5|1,2,3,5\\n --></h4>";
+g2ui += "\\n</style>\\n<hr />\\n<h4 class=cfield>Lights Out<!--\\n 1,4|1,2,3\\n 1,2|1,3,4\\n 3|1,5|2,4|1,2,3,4,5\\n 2|3,4|1,4,5|1,2,3,5\\n 1|3,5|2,4,5|1,2,3,4\\n 0|1,3,5|2,3,4|1,2,4,5\\n--></h4>";
 g2ui += "\\n<div class=cfield><em>Objective:</em> Switch all matrix lights off.</div>";
 g2ui += "\\n<div class=cfield><em>Game Action:</em> Switching a diode in this lighting matrix also switches any directly connected up-, down-, left- or right- diodes.</div>";
 g2ui += "\\n<div>\\n<span class=ccntr><select id=lpatt>";
