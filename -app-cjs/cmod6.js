@@ -380,11 +380,11 @@ g2ui += "\\n#g2board { position: absolute; top: 0; margin: 16px; border-spacing:
 g2ui += "\\n#g2board td { background: MediumOrchid; width: 51px; height: 51px; border-radius: 26px; box-shadow: 0 0 16px 4px Orchid; cursor: pointer; }";
 g2ui += "\\n#g2board td.ldark { background: Indigo; box-shadow: 0 0 16px 4px Grey; }";
 g2ui += "\\n#g2scor { position: relative; top: -12px; font-size: small; margin-left: 16px; }\\n#g2movs { font-weight: bold; }";
-g2ui += "\\n</style>\\n<hr />\\n<h4 class=cfield>Lights Out<!-- 1,4|1,2,3 : 1,2|1,3,4 : 0|1,3,5|1,2,4,5 : 3|1,5|2,4 : 2|3,4|1,4,5|1,2,3,5 : 1|3,5|2,4,5|2,3,4,5 --></h4>";
+g2ui += "\\n</style>\\n<hr />\\n<h4 class=cfield>Lights Out<!--\\n 1,4|1,2,3\\n 1,2|1,3,4\\n 3|1,5|2,4\\n 0|1,3,5|1,2,4,5\\n 1|3,5|2,4,5|2,3,4,5\\n 2|3,4|1,4,5|1,2,3,5\\n --></h4>";
 g2ui += "\\n<div class=cfield><em>Objective:</em> Switch all matrix lights off.</div>";
 g2ui += "\\n<div class=cfield><em>Game Action:</em> Switching a diode in this lighting matrix also switches any directly connected up-, down-, left- or right- diodes.</div>";
 g2ui += "\\n<div>\\n<span class=ccntr><select id=lpatt>";
-g2ui += ["&mdash;Startup Pattern&mdash;", "Treasure marker (in 4)", "Lucy's diamond (in 5)", "Eight-pocket table (in 5)", "Picasso emoji (in 5)", "Peep holes (in 6)", "Split screen (in 6)", "Trick shot (in 8)", "Beauty mark (in 8)", "Square target (in 9)", "Cave entrance (in 10)", "Bi-polar opposites (in 11)", "Road caution marks (in 11)", "Central light out (in 12)", "Button holes (in 13), All-seeing eye (in 14)"].map(e => \`\\n<option>\${e}</option>\`).join("");
+g2ui += ["&mdash;Startup Pattern&mdash;", "Treasure marker (in 4)", "Lucy's diamond (in 5)", "Eight-pocket table (in 5)", "Picasso emoji (in 5)", "Peep holes (in 6)", "Split screen (in 6)", "Trick shot (in 8)", "Beauty mark (in 8)", "Square target (in 9)", "Shark tooth (in 10)", "Bi-polar opposites (in 11)", "Road caution marks (in 11)", "Central light out (in 12)", "Button holes (in 13)", "All-seeing eye (in 14)"].map(e => \`\\n<option>\${e}</option>\`).join("");
 g2ui += "\\n</select></span><span class=ccntr><input type=button value=\\"&orarr; RESTART\\" onclick=jg2.g2Reset() /></span>\\n</div>";
 g2ui += "\\n<div id=g2bcntr>\\n<table id=g2circt><tbody>";
 g2ui += [0, 1, 2, 3].map(r => "\\n<tr>" + [0, 1, 2, 3].map(c => "<td></td>").join("") + "</tr>").join("");
@@ -399,7 +399,7 @@ g2ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u2tog /
  // try { g2wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g2wrap"; ndiv.innerHTML = g2ui; cmain.appendChild(ndiv); }
 
 m2trk = 0;
-lit0s = [ "", ["0,0", "0,4", "1,1", "1,3", "2,2", "3,1", "3,3", "4,0", "4,4"], ["0,2", "1,1", "1,3", "2,0", "2,4", "3,1", "3,3", "4,2"], ["0,0", "0,2", "0,4", "2,0", "2,4", "4,0", "4,2", "4,4"], ["2,1", "2,3", "3,2", "4,1", "4,2", "4,3"], ["2,1", "2,3"], ["0,2", "1,2", "2,2", "3,2", "4,2"], ["3,2", "3,4"], ["3,3"], ["1,1", "1,2", "1,3", "2,1", "2,3", "3,1", "3,2", "3,3"], ["3,1", "3,2", "3,3", "4,1", "4,2", "4,3"], ["0,4", "4,0"], ["0,2", "1,1", "2,0", "2,4", "3,3", "4,2"], ["2,2"], ["1,2", "2,1", "2,3", "3,2"], ["1,1", "1,2", "1,3", "2,0", "2,2", "2,4", "3,1", "3,2", "3,3"] ];
+lit0s = [ "", ["0,0", "0,4", "1,1", "1,3", "2,2", "3,1", "3,3", "4,0", "4,4"], ["0,2", "1,1", "1,3", "2,0", "2,4", "3,1", "3,3", "4,2"], ["0,0", "0,2", "0,4", "2,0", "2,4", "4,0", "4,2", "4,4"], ["2,1", "2,3", "3,2", "4,1", "4,2", "4,3"], ["2,1", "2,3"], ["0,2", "1,2", "2,2", "3,2", "4,2"], ["3,2", "3,4"], ["3,3"], ["1,1", "1,2", "1,3", "2,1", "2,3", "3,1", "3,2", "3,3"], ["2,2", "3,1", "3,2", "3,3", "4,0", "4,1", "4,2", "4,3", "4,4"], ["0,4", "4,0"], ["0,2", "1,1", "2,0", "2,4", "3,3", "4,2"], ["2,2"], ["1,2", "2,1", "2,3", "3,2"], ["1,1", "1,2", "1,3", "2,0", "2,2", "2,4", "3,1", "3,2", "3,3"] ];
 window.jg2 = {};
 jg2.c2Zero = () => g2movs.innerHTML = _.m2trk = 0;
 jg2.g2Reset = () => jg2.c2Zero() || [0, 1, 2, 3, 4].forEach( r => [0, 1, 2, 3, 4].forEach( c => window["n" + r + c].classList[_.lit0s[lpatt.selectedIndex].includes("" + [r, c]) ? "add" : "remove"]("ldark") ) );
