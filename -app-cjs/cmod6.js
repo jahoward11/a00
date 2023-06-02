@@ -285,7 +285,7 @@ g1ui += "\\n<div><input type=button class=ccntr value=\\"RETRACT MOVE\\" onclick
       ending with \`jg1.g1Reset();\`.
 */
 
-tnx = tcx = osh = rval = cval = tmax = tovr = m1trk = unsh = cxs = shxs = shuf = tarr = cr1s = cr2s = "";
+tnx = tcx = rval = cval = tmax = tovr = unsh = cxs = shxs = shuf = tarr = cr1s = cr2s = "";
 clrefs = [ "", "", ["#752424", "#9c3030", "#c33c3c", "#cf6363", "#db8a8a", "#e7b1b1", "#f3d8d8"], ["#856514", "#b1871b", "#dea821", "#e4ba4e", "#ebcb7a", "#f2dca6", "#f8eed3"], ["#2b506e", "#396a93", "#4785b8", "#6c9dc6", "#91b6d4", "#b6cee2", "#dae7f1"], ["#ff9999", "#ffcc99", "#fff099", "#99cc99", "#9999ff", "#cc99cc", "#d8bfd8"] ];
 uara = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
 urom = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"];
@@ -295,16 +295,16 @@ utoGre = v => { let i, codpts = []; while (v) { i = 0; while ((v - ++i) % 24); c
 clRnk1s = () => _.unsh.map( v => _.clrefs[_.tcx][ _.cxs.find( x => _.tovr < 0 ? x === 6 || v <= _.cval || (v % _.cval > 0 && v % _.cval <= _.cval - _.rval + 1) || (v > _.cval * (1 + x) - _.rval + (1 + x) && v <= _.cval * (1 + x)) || (v - (1 + x) - (_.cval - _.rval)) % _.cval === 0 : x === 6 || v - _.tovr <= _.tmax * (1 + x) || (v - (1 + x)) % _.tmax === 0 )]);
 clRnk2s = () => _.unsh.map( v => ( _.tovr < 0 ? v <= _.cval - _.rval || (v - 1 - (_.cval - _.rval)) % (1 + _.cval) !== 0 || v > 7 * _.cval : v - 1 < _.tovr || (v - 1 - _.tovr) % (1 + _.tmax) !== 0 || v - 1 - _.tovr > 7 * _.tmax ) ? 'White' : _.tcx < 5 ? 'Gold' : 'LimeGreen' );
 nAlt = v => _.tnx == 2 ? _.utoRom(v) : _.tnx == 3 ? _.utoEng(v) : _.tnx == 4 ? _.utoGre(v) : v;
-oPre = a0 => !Array.isArray(a0) ? [] : !(a0 = a0.map((e, i) => [(e > 99 ? "" : e > 9 ? "0" : "00") + e, i]).sort().map(([e, o]) => o)) || a0.concat(a0[0]).slice(1);
+oPre = a0 => !Array.isArray(a0) ? [] : !(a0 = a0.flat().map((e, i) => [(e > 99 ? "" : e > 9 ? "0" : "00") + e, i]).sort().map(([e, o]) => o)) || a0.concat(a0[0]).slice(1);
 isSolva = () => { let ctinvs = _.shxs.filter(e => e.v).map(e => e.i + 1).reduce((a, b, i, f) => a + f.slice(i + 1).reduce((c, d) => c + (d > b ? 0 : 1), 0), 0); return (ctinvs + (_.cval % 2 === 1 ? 0 : _.rval - Math.ceil((_.shuf.indexOf(0) + 1) / _.cval))) % 2 === 0; };
 posSwap = (p0, p1) => [_.tarr[p0][p1], _.tarr[p0][p1 + 1]] = [_.tarr[p0][p1 + 1], _.tarr[p0][p1]];
 gbdGen = () => g1board.innerHTML = _.tarr.map( (e, i) => "\\n<tr>" + e.map( (f, j) => f === 0 ? "<td class=blank> </td>" : \`<td class=gtile \${!_.cr1s ? "" : \`style="background:\${_.cr1s[f]};color:\${_.cr2s[f]};" \`}onclick=jg1.tileSli(\${i},\${j})>\${f}</td>\` ).join("") + "</tr>" ).join("") + "\\n";
 
-window.jg1 = {};
-jg1.c1Zero = () => (_.m1trk = []) && (g1movs.innerHTML = 0);
-jg1.g1Reset = a0 => { _.tnx = tnmrl.selectedIndex; _.tcx = tclrs.selectedIndex; _.osh = oshuf.checked; _.rval = +trows.value; _.cval = +tcols.value; _.tmax = _.rval <= _.cval ? _.rval : _.cval; _.tovr = (_.rval - _.cval) * _.tmax; jg1.c1Zero(); a0 = oPre(a0); _.unsh = Array.from(Array(_.rval * _.cval).keys()); _.cxs = Array.from(Array(_.tmax > 7 ? 7 : _.tmax).keys()); [_.cr1s, _.cr2s] = _.tcx < 2 ? [0, 0] : [_.clRnk1s(), _.clRnk2s()]; _.unsh = _.unsh.slice(1).map(_.nAlt).concat(0); _.tcx < 2 || ([_.cr1s, _.cr2s] = [_.cr1s, _.cr2s].map(e => Object.fromEntries(_.unsh.map((v, i) => [v, e[i + 1]])))); _.shxs = _.unsh.map((v, i) => ({ i, v, o: a0[i] || Math.random() })).sort((a, b) => !a0.length && !_.osh || a.o - b.o); _.shuf = _.shxs.map(e => e.v); _.tarr = Array.from(Array(_.rval)).map(() => _.shuf.splice(0, _.cval)); _.shuf = _.tarr.flat(); _.isSolva() || (_.shuf[0] && _.shuf[1] ? _.posSwap(0, 0) : _.posSwap(_.rval - 1, _.cval - 2)); _.gbdGen(); };
-jg1.tileSli = (rx, cx, bkup) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (_.tarr[p0] || "")[p1] === 0); !bl || (bkup || _.m1trk.push([bl[0], bl[1]])) && ([_.tarr[bl[0]][bl[1]], _.tarr[rx][cx]] = [_.tarr[rx][cx], 0]) && ( g1movs.innerHTML = "" + _.tarr !== "" + _.unsh ? _.m1trk.length + " moves" : "<em>Puzzle solved in " + _.m1trk.length + " moves!</em>" ) && _.gbdGen(); };
-jg1.m1Rvrs = () => !(_.m1trk || "").length || jg1.tileSli(... _.m1trk.pop(), 1);
+window.jg1 = { m1trk: [] };
+jg1.c1Zero = () => (g1movs.innerHTML = 0) || (jg1.m1trk = []);
+jg1.g1Reset = a0 => { _.tnx = tnmrl.selectedIndex; _.tcx = tclrs.selectedIndex; _.rval = +trows.value; _.cval = +tcols.value; _.tmax = _.rval <= _.cval ? _.rval : _.cval; _.tovr = (_.rval - _.cval) * _.tmax; jg1.c1Zero(); a0 = oPre(a0); _.unsh = Array.from(Array(_.rval * _.cval).keys()); _.cxs = Array.from(Array(_.tmax > 7 ? 7 : _.tmax).keys()); [_.cr1s, _.cr2s] = _.tcx < 2 ? [0, 0] : [_.clRnk1s(), _.clRnk2s()]; _.unsh = _.unsh.slice(1).map(_.nAlt).concat(0); _.tcx < 2 || ([_.cr1s, _.cr2s] = [_.cr1s, _.cr2s].map(e => Object.fromEntries(_.unsh.map((v, i) => [v, e[i + 1]])))); _.shxs = _.unsh.map((v, i) => ({ i, v, o: a0[i] || Math.random() })).sort((a, b) => !a0.length && !oshuf.checked || a.o - b.o); _.shuf = _.shxs.map(e => e.v); _.tarr = Array.from(Array(_.rval)).map(() => _.shuf.splice(0, _.cval)); _.shuf = _.tarr.flat(); _.isSolva() || (_.shuf[0] && _.shuf[1] ? _.posSwap(0, 0) : _.posSwap(_.rval - 1, _.cval - 2)); jg1.tarr0 = JSON.parse(JSON.stringify(_.tarr)); _.gbdGen(); };
+jg1.tileSli = (rx, cx, bkup) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (_.tarr[p0] || "")[p1] === 0); !bl || (bkup || jg1.m1trk.push([bl[0], bl[1]])) && ([_.tarr[bl[0]][bl[1]], _.tarr[rx][cx]] = [_.tarr[rx][cx], 0]) && ( g1movs.innerHTML = "" + _.tarr !== "" + _.unsh ? jg1.m1trk.length + " moves" : "<em>Puzzle solved in " + jg1.m1trk.length + " moves!</em>" ) && _.gbdGen(); };
+jg1.m1Rvrs = () => !jg1.m1trk.length || jg1.tileSli(... jg1.m1trk.pop(), 1);
 jg1.g1Reset();
 
 /*
