@@ -300,10 +300,10 @@ isSolva = () => { let ctinvs = _.shxs.filter(e => e.v).map(e => e.i + 1).reduce(
 posSwap = (p0, p1) => [_.tarr[p0][p1], _.tarr[p0][p1 + 1]] = [_.tarr[p0][p1 + 1], _.tarr[p0][p1]];
 gbdGen = () => g1board.innerHTML = _.tarr.map( (e, i) => "\\n<tr>" + e.map( (f, j) => f === 0 ? "<td class=blank> </td>" : \`<td class=gtile \${!_.cr1s ? "" : \`style="background:\${_.cr1s[f]};color:\${_.cr2s[f]};" \`}onclick=jg1.tileSli(\${i},\${j})>\${f}</td>\` ).join("") + "</tr>" ).join("") + "\\n";
 
-window.jg1 = { tarr0: [], m1trk: [] };
+window.jg1 = { tarr0: [], m1trk: [], m1hol: [] };
 jg1.c1Zero = () => (g1movs.innerHTML = 0) || (jg1.m1trk = []);
 jg1.g1Reset = a0 => { _.tnx = tnmrl.selectedIndex; _.tcx = tclrs.selectedIndex; _.rval = +trows.value; _.cval = +tcols.value; _.tmax = _.rval <= _.cval ? _.rval : _.cval; _.tovr = (_.rval - _.cval) * _.tmax; jg1.c1Zero(); a0 = oPre(a0); _.unsh = Array.from(Array(_.rval * _.cval).keys()); _.cxs = Array.from(Array(_.tmax > 7 ? 7 : _.tmax).keys()); [_.cr1s, _.cr2s] = _.tcx < 2 ? [0, 0] : [_.clRnk1s(), _.clRnk2s()]; _.unsh = _.unsh.slice(1).map(_.nAlt).concat(0); _.tcx < 2 || ([_.cr1s, _.cr2s] = [_.cr1s, _.cr2s].map(e => Object.fromEntries(_.unsh.map((v, i) => [v, e[i + 1]])))); _.shxs = _.unsh.map((v, i) => ({ i, v, o: a0[i] || Math.random() })).sort((a, b) => !a0.length && !oshuf.checked || a.o - b.o); _.shuf = _.shxs.map(e => e.v); _.tarr = Array.from(Array(_.rval)).map(() => _.shuf.splice(0, _.cval)); _.shuf = _.tarr.flat(); _.isSolva() || (_.shuf[0] && _.shuf[1] ? _.posSwap(0, 0) : _.posSwap(_.rval - 1, _.cval - 2)); jg1.tarr0 = JSON.parse(JSON.stringify(_.tarr)); _.gbdGen(); };
-jg1.tileSli = (rx, cx, bkup) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (_.tarr[p0] || "")[p1] === 0); !bl || (bkup || jg1.m1trk.push([bl[0], bl[1], rx, cx])) && ([_.tarr[bl[0]][bl[1]], _.tarr[rx][cx]] = [_.tarr[rx][cx], 0]) && ( g1movs.innerHTML = "" + _.tarr !== "" + _.unsh ? jg1.m1trk.length + " moves" : "<em>Puzzle solved in " + jg1.m1trk.length + " moves!</em>" ) && _.gbdGen(); };
+jg1.tileSli = (rx, cx, bkup) => { let bl = [[rx - 1, cx], [rx + 1, cx], [rx, cx - 1], [rx, cx + 1]].find(([p0, p1]) => (_.tarr[p0] || "")[p1] === 0); !bl || (bkup || jg1.m1trk.push([bl[0], bl[1]])) && (jg1.m1hol = [rx, cx]) && ([_.tarr[bl[0]][bl[1]], _.tarr[rx][cx]] = [_.tarr[rx][cx], 0]) && (g1movs.innerHTML = "" + _.tarr !== "" + _.unsh ? jg1.m1trk.length + " moves" : "<em>Puzzle solved in " + jg1.m1trk.length + " moves!</em>") && _.gbdGen(); };
 jg1.m1Rvrs = () => !jg1.m1trk.length || jg1.tileSli(... jg1.m1trk.pop(), 1);
 jg1.g1Reset();
 
@@ -317,7 +317,7 @@ jg1.g1Reset();
 */
 
  // recon.innerHTML = window.t2js = "" // clears any orange text (in case GUI text is still visible) and resets t2js variable
- // scrGen = src => src && "\\n" + (src.match(/^(?:jopts|m2trk|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm) || []).map(e => "let " + e.replace(/\\b_\\.\\b| *\\/\\/ *$| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?\\n(?= *\\b[ ,\\w]+(?: *= .+|);?$)/gm, "$1,\\n  ")).join("\\n\\n") + "\\n"; //
+ // scrGen = src => src && "\\n" + (src.match(/^(?:jopts|lit0s|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm) || []).map(e => "let " + e.replace(/\\b_\\.\\b| *\\/\\/ *$| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?\\n(?= *\\b[ ,\\w]+(?: *= .+|);?$)/gm, "$1,\\n  ")).join("\\n\\n") + "\\n"; //
  // !!window.t2js || navigator.clipboard.readText().then(s => window.t2js = s).then(_.scrGen).then(reShow).catch(reShow)
 
 /*
@@ -399,12 +399,11 @@ g2ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u2tog /
  // g2wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
  // try { g2wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g2wrap"; ndiv.innerHTML = g2ui; cmain.appendChild(ndiv); }
 
-m2trk = 0;
 lit0s = [ "", ["0,0", "0,4", "1,1", "1,3", "2,2", "3,1", "3,3", "4,0", "4,4"], ["0,2", "1,1", "1,3", "2,0", "2,4", "3,1", "3,3", "4,2"], ["0,0", "0,2", "0,4", "2,0", "2,4", "4,0", "4,2", "4,4"], ["2,1", "2,3", "3,2", "4,1", "4,2", "4,3"], ["2,1", "2,3"], ["0,2", "1,2", "2,2", "3,2", "4,2"], ["3,2", "3,4"], ["3,3"], ["1,1", "1,2", "1,3", "2,1", "2,3", "3,1", "3,2", "3,3"], ["2,2", "3,1", "3,2", "3,3", "4,0", "4,1", "4,2", "4,3", "4,4"], ["0,4", "4,0"], ["0,2", "1,1", "2,0", "2,4", "3,3", "4,2"], ["2,2"], ["1,2", "2,1", "2,3", "3,2"], ["1,1", "1,2", "1,3", "2,0", "2,2", "2,4", "3,1", "3,2", "3,3"] ];
-window.jg2 = {};
-jg2.c2Zero = () => g2movs.innerHTML = _.m2trk = 0;
+window.jg2 = { m2trk: 0 };
+jg2.c2Zero = () => g2movs.innerHTML = jg2.m2trk = 0;
 jg2.g2Reset = () => jg2.c2Zero() || [0, 1, 2, 3, 4].forEach( r => [0, 1, 2, 3, 4].forEach( c => window["n" + r + c].classList[_.lit0s[lpatt.selectedIndex].includes("" + [r, c]) ? "add" : "remove"]("ldark") ) );
-jg2.litSwi = (rx, cx) => { u2tog.checked ? window["n" + rx + cx].classList.toggle("ldark") : [[rx - 1, cx], [rx, cx - 1], [rx, cx], [rx, cx + 1], [rx + 1, cx]].forEach( ([r, c]) => r < 0 || c < 0 || r > 4 || c > 4 || window["n" + r + c].classList.toggle("ldark") ); u2tog.checked || ( g2movs.innerHTML = [0, 1, 2, 3, 4].some( r => [0, 1, 2, 3, 4].some(c => !window["n" + r + c].classList.contains("ldark")) ) ? ++_.m2trk + " switches" : "<em>Puzzle solved with " + ++_.m2trk + " switches!</em>" ); };
+jg2.litSwi = (rx, cx) => { u2tog.checked ? window["n" + rx + cx].classList.toggle("ldark") : [[rx - 1, cx], [rx, cx - 1], [rx, cx], [rx, cx + 1], [rx + 1, cx]].forEach( ([r, c]) => r < 0 || c < 0 || r > 4 || c > 4 || window["n" + r + c].classList.toggle("ldark") ); u2tog.checked || ( g2movs.innerHTML = [0, 1, 2, 3, 4].some( r => [0, 1, 2, 3, 4].some(c => !window["n" + r + c].classList.contains("ldark")) ) ? ++jg2.m2trk + " switches" : "<em>Puzzle solved with " + ++jg2.m2trk + " switches!</em>" ); };
 
 // __* * * PEGS * * *__
 g3ui = "\\n<style>\\n*, *::before, *::after { box-sizing: inherit; }";
@@ -445,23 +444,22 @@ g3ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u3tog /
  // try { g3wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g3wrap"; ndiv.innerHTML = g3ui; cmain.appendChild(ndiv); }
 
 jopts = peg0s = "";
-m3trk = [];
 a0t6 = [0, 1, 2, 3, 4, 5, 6];
 p3sol = a0t6.map(r => _.a0t6.map(c => "" + [r, c])).flat();
 g3panel = window.g3panel || document.createElement('table');
 p3tds = Array.from(g3panel.querySelectorAll('tr')).map(e => e.querySelectorAll('td'));
 osGen = (r, c) => [ [[r, c], [r - 1, c], [r - 2, c]], [[r, c], [r, c - 1], [r, c - 2]], [[r, c], [r, c + 1], [r, c + 2]], [[r, c], [r + 1, c], [r + 2, c]] ];
 osClr = () => g3panel.querySelectorAll('.jdest').forEach(e => e.className = "");
-pegsRplc = (jps, bkup) => _.osClr() || (_.jopts = 0) || (bkup || _.m3trk.push(jps)) && jps.forEach(([r, c]) => window["h" + r + c].classList.toggle("phead")) || u3tog.checked || ( g3movs.innerHTML = g3board.querySelectorAll('.phead').length !== 1 ? _.m3trk.length + " jumps" : "<em>Puzzle solved with " + _.m3trk.length + " jumps!</em>" );
+pegsRplc = (jps, bkup) => _.osClr() || (_.jopts = 0) || (bkup || jg3.m3trk.push(jps)) && jps.forEach(([r, c]) => window["h" + r + c].classList.toggle("phead")) || u3tog.checked || ( g3movs.innerHTML = g3board.querySelectorAll('.phead').length !== 1 ? jg3.m3trk.length + " jumps" : "<em>Puzzle solved with " + jg3.m3trk.length + " jumps!</em>" );
 [ [0,0], [0,1], [], [0,5], [0,6], [1,0], [1,1], [], [1,5], [1,6], [], [5,0], [5,1], [], [5,5], [5,6], [6,0], [6,1], [], [6,5], [6,6] ].forEach( ([r, c], i) => r == null || !_.p3tds[r] || (_.p3tds[r][c].className = i % 2 === 0 ? "chkr0" : "chkr1") );
 [47, 42, 40, 35, 12, 7, 5, 0].forEach(e => _.p3sol.splice(e, 2));
 p3sol.splice(16, 1);
 peg0s = [ "", ["1,3", "2,2", "2,3", "2,4", "3,3", "4,3"], ["1,3", "2,3", "3,1", "3,2", "3,3", "3,4", "3,5", "4,3", "5,3"], ["4,1", "4,2", "4,3", "4,4", "4,5", "5,2", "5,3", "5,4", "6,2", "6,3", "6,4"], ["0,2", "0,3", "0,4", "1,2", "1,3", "1,4", "2,2", "2,3", "2,4", "3,2", "3,4"], ["1,4", "2,3", "2,4", "3,2", "3,3", "3,4", "4,1", "4,2", "4,3", "4,4"], ["0,4", "1,3", "1,4", "2,3", "2,4", "3,1", "3,2", "3,3", "3,4", "4,0", "4,1", "4,2", "4,3", "4,4"], ["1,4", "2,0", "2,1", "2,4", "2,5", "3,0", "3,1", "3,2", "3,3", "3,4", "3,5", "3,6", "4,0", "4,1", "4,4", "4,5", "5,4"], ["1,3", "2,2", "2,3", "2,4", "3,1", "3,2", "3,3", "3,4", "3,5", "4,0", "4,1", "4,2", "4,3", "4,4", "4,5", "4,6"], p3sol.filter((e, i) => ![0, 2, 6, 12, 19, 25, 29, 31].includes(i)), _.p3sol ];
-window.jg3 = {};
-jg3.c3Zero = () => (_.m3trk = []) && (g3movs.innerHTML = 0);
+window.jg3 = { m3trk: [] };
+jg3.c3Zero = () => (g3movs.innerHTML = 0) || (jg3.m3trk = []);
 jg3.g3Reset = () => _.osClr() || jg3.c3Zero() || _.a0t6.forEach( r => _.a0t6.forEach( c => !window["h" + r + c] || window["h" + r + c].classList[_.peg0s[ppatt.selectedIndex].includes("" + [r, c]) ? "add" : "remove"]("phead") ) );
 jg3.pegJmp = (rx, cx) => { let jx, ph1 = window["h" + rx + cx].classList.contains("phead"); _.jopts = !ph1 ? _.jopts : _.osGen(rx, cx); u3tog.checked ? _.osClr() || (_.jopts = 0) || window["h" + rx + cx].classList.toggle("phead") : !ph1 ? !_.p3tds[rx][cx].className || _.pegsRplc(_.jopts.find(e => "" + e[2] === "" + [rx, cx])) : _.osClr() || _.jopts.forEach( ([[], [r1, c1], [r2, c2]], i) => !window["h" + r1 + c1] || !window["h" + r1 + c1].classList.contains("phead") || !window["h" + r2 + c2] || window["h" + r2 + c2].className || (_.p3tds[r2][c2].className = "jdest") && (jx = i) ); return u3tog.checked || ( jx == null ? _.jopts = 0 : (_.p3tds[rx][cx].className = "jdest") && g3panel.querySelectorAll('.jdest').length > 2 || _.pegsRplc(_.jopts[jx]) ); };
-jg3.m3Rvrs = () => !(_.m3trk || "").length || _.pegsRplc(_.m3trk.pop(), 1);
+jg3.m3Rvrs = () => !(jg3.m3trk || "").length || _.pegsRplc(jg3.m3trk.pop(), 1);
 //`;
 
 const tutorial3 = `/*
