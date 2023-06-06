@@ -2227,7 +2227,7 @@ let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
     pdbupd.innerText = !txd1.DBNAME ? "" : new Date(cfg.tsupd || 0).toLocaleString();
     pdbset.innerText = !txd1.DBNAME ? "" : new Date(cfg.tsset || 0).toLocaleString();
     pdbusr.innerText = !txd1.DBNAME ? "" : cfg.user0;
-    pdbdsc.innerText = !txd1.DBNAME ? "" : cfg.descr;
+    pdbdsc.innerText = !txd1.DBNAME ? "" : cfg.descr + (!cfg.remot.publ ? "" : " († Public DB)");
     !window.PouchDB || !txd1.DBNAME ? (pdbseq.innerText = pdbtot.innerText = "")
     : PouchDB(txd1.DBNAME).info()
       .then(r => [pdbtot.innerText, pdbseq.innerText] = [r.doc_count, r.update_seq]).catch(r2Show);
