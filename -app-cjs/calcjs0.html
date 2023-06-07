@@ -637,7 +637,7 @@ let q2Bcopy, q2Bhtml,
   },
   xlstGen = seln => {
     let xlRndr = lfks => {
-      seln = typeof seln === 'string' ? seln : xsetinp.value;
+      seln = typeof seln === 'string' ? seln : xsetlist.value;
       xsetlist.innerHTML = "\n      <option></option>" + [["USERdata", lfks]]
       .concat(Object.entries(xstor)).map( (oe, i) => (i || !lfks) && !oe[1] ? ""
         : "\n      <optgroup label=\"" + oe[0] + "/\">"

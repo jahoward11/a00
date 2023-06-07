@@ -1147,7 +1147,7 @@ let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
   pchQry = (txd = nm0.txd1) =>
     !window.PouchDB || !Object.keys(nm0.nm0cfgs).includes(txd.DBNAME) || !txd.FILEID
     || !txd.OPTS || typeof txd.OPTS !== 'object' || txd.ATTKEY && !nm0.rextxt.test(txd.ATTKEY)
-    ? null : !txd.ATTKEY ? PouchDB(txd.DBNAME)
+    ? Promise.reject(txd) : !txd.ATTKEY ? PouchDB(txd.DBNAME)
       .get(txd.FILEID, txd.OPTS).then(d => !txd.OPTS.json && d.content || d)
     : PouchDB(txd.DBNAME).getAttachment(txd.FILEID, txd.ATTKEY, txd.OPTS).then(r => r.text()),
   txtaSel = ta => !(ta.focus || (ta = window.eval(ta.target.dataset.seltrg)))
@@ -1485,8 +1485,14 @@ let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
           .forEach( k => /^_id$|^_rev$/.test(k)
             || !/isucc|iwarn/.test(window["p0" + k].className)
             || !++chgs || (fwg[k] = typTest(window["p0" + k].value, 1)[2]) );
-          !fwg.hasOwnProperty("ts_updated") || (fwg.ts_updated = ts0);
-          !fwg.file_updated || [fwg.file_updated].forEach(p1 => {
+          !a1in2.files.length || !++chgs
+          || !(fwg.hasOwnProperty("_attachments") || (fwg._attachments = {}))
+          || Array.from(a1in2.files).forEach( (f, i) =>
+            fwg._attachments[ !imganm2.value ? f.name : !a1in2.files[1]
+              ? imganm2.value : imganm2.value.replace(/(?=\\.\\w+$|$)/, i > 9 ? i : "0" + i) ]
+            = { content_type: f.type, data: f } );
+          !chgs || !fwg.hasOwnProperty("ts_updated") || (fwg.ts_updated = ts0);
+          !chgs || !fwg.file_updated || [fwg.file_updated].forEach(p1 => {
             p1.username = nm0sets.uname || nm0sets.uemail || "user000";
             p1.timestamp = ts0;
             p1.dborigin || ( p1.dborigin
@@ -1495,12 +1501,6 @@ let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
             p1.dbname = txd1.DBNAME;
             !p1.hasOwnProperty("version") || (p1.version = p1.version.replace(/-?\\d+$/, m => ++m));
           });
-          !a1in2.files.length || !++chgs
-          || !(fwg.hasOwnProperty("_attachments") || (fwg._attachments = {}))
-          || Array.from(a1in2.files).forEach( (f, i) =>
-            fwg._attachments[ !imganm2.value ? f.name : !a1in2.files[1]
-              ? imganm2.value : imganm2.value.replace(/(?=\\.\\w+$|$)/, i > 9 ? i : "0" + i) ]
-            = { content_type: f.type, data: f } );
           !chgs || !Object.keys(nm0cfgs).includes(txd2.DBNAME)
           || !window.PouchDB || PouchDB(txd2.DBNAME)
           .put(Object.assign({ _id: "", _rev: "" }, fwg), txd2.OPTS).then( trsp =>
