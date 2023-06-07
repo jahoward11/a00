@@ -2289,7 +2289,7 @@ let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
     !nm0sets.hasOwnProperty("ddoc") || delete nm0sets.ddoc; //temp cleanup
     nm0cfgs = /^{".+}$/.test(localStorage._nm0cfgs)
       && fncTry(JSON.parse, localStorage._nm0cfgs) || nm0cfgs;
-    dbs.forEach(e => nm0cfgs[e] || (nm0cfgs[e] = {}))
+    dbs.forEach(e => !e || nm0cfgs[e] || (nm0cfgs[e] = {}))
     || Object.values(nm0cfgs).forEach(v => delete v.ddoc0) //temp cleanup
     || Object.values(nm0cfgs)
       .every( val => ["type0", "view0", "tsset", "tsupd", "tsdel", "user0", "descr", "remot"]
