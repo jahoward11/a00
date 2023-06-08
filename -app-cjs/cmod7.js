@@ -2,6 +2,39 @@
 
 const _module = "JStool";
 
+const modload = `/*
+__CalcJS Module Loader__
+*Assign modules to global \`xstor\` in assorted ways.*
+*/
+
+ w = window;
+ w.xstor = w.xstor || {};
+ w.aurls = w.aurls || {};
+ ksx = Object.keys(xstor);
+ cms = [1, 2, 3, 4, 5, 6, 7, 8, "../-dev/prj10.js"].map(e => e[1] ? e : "../-app-cjs/cmod" + e + ".js");
+ ksx.length || !/^http/.test(w.location.protocol) || Promise.all( cms.map( u => import(u).then(m => xstor[m._module || "xmod" + (1 + Object.keys(xstor).length)] = m).catch(reShow) )).then(xlstGen).catch(reShow)
+
+ cmPrc = d => !/^const +\\w+ +=/m.test("" + d) ? xstor[txd2.FILEID] = typeof d === 'object' && d || [d] : import(aurls[txd2.FILEID] = URL.createObjectURL(new Blob([d]))).then(m => xstor[m._module || m._id || "xmod" + (1 + Object.keys(xstor).length)] = m);
+ // !w.nm0 || !(w.txd2 = nm0.txd1).FILEID || xstor[txd2.FILEID] || aurls[txd2.FILEID] || nm0.pchQry().then(cmPrc).then(xlstGen).catch(reShow)
+
+/*
+ c0Qry = () => !pdbs.includes(txd2.DBNAME) || PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS).then(d => d.content || d);
+ dbA = () => !_.w.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => _.w.pdbs = re);
+ s1L = () => !!_.w.PouchDB ? _.dbA() : scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(_.dbA));
+ w.txd2 = { DBNAME: "cmods", FILEID: "prj11", ATTKEY: "", OPTS: {} };
+ Promise.resolve().then(s1L).then(c0Qry).then(cmPrc).then(xlstGen).catch(reShow)
+*/
+
+ m1ui  = "\\n<style>\\nhr { margin: 1.5rem 0; }\\n#m1inp { width: 100%; }\\n</style>";
+ m1ui += "\\n<hr />\\n<p><input id=m1inp type=file multiple /></p>\\n";
+ // m1Prc = b => !(b || "").text || b.text().then( s => { let m1 = s.replace(/[^]+?_module *= *"(\\w+)"[^]+|[^]*/, "$1") || "xmod" + (1 + Object.keys(xstor).length); xstor[m1] = {}; s.match(/^const +[a-z]\\w* *= *\`[^]*?\`(?=;?\\n+(?:const|export) )/gim).forEach(s1 => s1.replace(/^const +(\\w+) *= *(\`[^]+)/, (m, c1, c2) => { xstor[m1][c1] = eval(c2); })); }); //
+ m1Imp = b => !(b || "").name || aurls[b.name] || !(aurls[b.name] = URL.createObjectURL(b)) || !/^text/.test(b.type) || import(aurls[b.name]).then(m => xstor[m._module || "xmod" + (1 + Object.keys(xstor).length)] = m).catch(reShow);
+ try { ksx.length || /^http/.test(w.location.protocol) || m1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "m1wrap"; ndiv.innerHTML = m1ui; cmain.appendChild(ndiv); m1inp.onchange = () => !m1inp.files.length || Promise.all(Array.from(m1inp.files).map(_.m1Imp)).then(xlstGen).catch(reShow); ""; }
+
+ xList = () => Object.keys(xstor).map(km => Object.keys(xstor[km]).filter(kx => !/^_mod/.test(kx)).map(kx => "\\x24xstor." + km + "." + kx));
+ !ksx.length || (w.x1 = xList());
+//`;
+
 const notemgr = `/*
 __Note Manager: based on concepts from JS Tutorial 4__
  This module option functions only to render a fairly complete
@@ -111,5 +144,6 @@ s2rslt.onscroll = () => { s1rslt.scrollLeft = s2rslt.scrollLeft; s1rslt.scrollTo
 //`;
 
 export {
-  _module, notemgr, search, textdiff
+  _module,
+  modload, notemgr, search, textdiff
 };
