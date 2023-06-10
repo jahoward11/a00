@@ -21,7 +21,7 @@ __CalcJS Module Loader__
  c0Qry = () => !pdbs.includes(txd2.DBNAME) || PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS).then(d => d.content || d);
  dbA = () => !_.w.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => _.w.pdbs = re);
  s1L = () => !!_.w.PouchDB ? _.dbA() : scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(_.dbA));
- w.txd2 = { DBNAME: "cmods", FILEID: "prj11", ATTKEY: "", OPTS: {} };
+ w.txd2 = { DBNAME: "cmods", FILEID: "t2puzls", ATTKEY: "", OPTS: {} };
  Promise.resolve().then(s1L).then(c0Qry).then(cmPrc).then(xlstGen).catch(reShow)
 */
 
