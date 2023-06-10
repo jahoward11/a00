@@ -783,7 +783,7 @@ let q2Bcopy, q2Bhtml,
       xsetlist.innerHTML = "\\n      <option></option>" + [["USERdata", lfks]]
       .concat(Object.entries(xstor)).map( (oe, i) => (i || !lfks) && !oe[1] ? ""
         : "\\n      <optgroup label=\\"" + oe[0] + "/\\">"
-          + (!i ? oe[1] : Object.keys(oe[1]).filter(e => e !== "_module"))
+          + (!i ? oe[1] : Object.keys(oe[1]).filter(e => !/^(?:loc|ts)_/.test(e)))
             .map(e => "\\n        <option>" + e + "</option>").join("")
           + "\\n      </optgroup>" ).join("") + "\\n    ";
       !((xsetlist.value = seln) && xsetlist.value)
