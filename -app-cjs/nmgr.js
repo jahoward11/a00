@@ -2085,7 +2085,7 @@ let cvs, fwg, p2Gen, rva2, rval, ss0, ss1, vbas, vusr,
         : "\\n      <tr><td><input type=text value=\\"" + k + "\\"" + (i ? "" : " disabled")
           + " /></td><td><select class=anone" + (i ? ">" : " disabled>") + dtOpts(typTest(v)[1])
           + "</select></td><td><input type=text value=\\""
-          + valStr(v) + "\\" /></td></tr>" ).join("") + "\\n      ";
+          + valStr(v).replace(/"/g, "&quot;") + "\\" /></td></tr>" ).join("") + "\\n      ";
     t1tbod.querySelectorAll('input, select').forEach(el => el.onchange = t1sChg);
     !evt || evt.target.id !== "t01sel" || cfgsUpd(evt);
   },
