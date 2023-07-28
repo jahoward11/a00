@@ -53,7 +53,7 @@ const hostgh = /\.github\.io$/.test(window.location.host),
   pf3stor = {},
   rexatt = /(?:@import +(?:url\(|)['"]?|\S+: *url\(['"]?|^)(?:\.\/|\.\.\/(?:\.\.\/(.*)\/|)(.*)\/|)([^\n\/]+\.(?:giff?|jpe?g|m?js|png|s?css))['"]?\)?;?$/i,
   rexept = /\.(?:[chlst]|content|html?|li?nk|sty|style|te?xt\d)\d*$/,
-  rexfid = /^$|^_design\/\w+$|^[!.~-]?\w[\w!.*+~-]*$/,
+  rexfid = /^$|^_design\/\w+$|^[!.~-]?\w(?:[\w!.*+~-]|\\x2f;)*$/,
   rexfix = /^_(?!all_docs$|changes$|design(?:_docs|\/\w+)$)|[*~]\(?[0-9]*\)?$/,
   rexibm = /^https:\/\/[\w-]+\.cloudant[\w.]+$/,
   rexib2 = /^https:\/\/[\w-]+\.cloudant[\w.]+\//,
@@ -1147,7 +1147,7 @@ function txdPrep(filepath) {
       PSSWRD: fpathes[3],
       DBORIG: fpathes[1] + fpathes[4] || fpathes[5] || fpathes[7] || undefined,
       DBNAME: fpathes[6] || (filepath == 0 && !fpathes[1] || filepath) && dbpch && dbpch.name,
-      FILEID: fpathes[8],
+      FILEID: fpathes[8] && fpathes[8].replace(/\\x2f;/g, "/"),
       ATTKEY: !fpathes[9] && fpathes[10] || undefined,
       VIEW:   fpathes[9] && fpathes[10] || undefined
     };
@@ -2797,8 +2797,9 @@ pfsSel(resel, cbfnc) { // also triggered by pfsResets, pfsListGen, couchAtt, tmp
         influxSet(1);
       }, 1);
     } else {
-      pfsinp.value = !/\/./.test(fileref) ? fileref : "└ " + pfslist.value;
-      couchQry(txdPrep(pfslist.value)[0], resel ? false : null, cbfnc);
+      pfsinp.value = !/\/./.test(fileref) ? fileref
+        : (/^[.-]\b/.test(pfslist.value) ? "" : "└ ") + pfslist.value;
+      couchQry(txdPrep(pfslist.value.replace(/\//g, "\\x2f;"))[0], resel ? false : null, cbfnc);
       influxSet(2);
     }
   }
@@ -2874,7 +2875,7 @@ pf2Sel(espr) { // also triggered by pfsResets
       couchQry(txdPrep(pf2list.value)[0], 2);
     } else {
       pf2inp.value = !/\/./.test(fileref) ? fileref : "└ " + pf2list.value;
-      couchQry(txdPrep(pf2list.value)[0], 2);
+      couchQry(txdPrep(pf2list.value.replace(/\//g, "\\x2f;"))[0], 2);
     }
   } else {
     pf2inp.value = file2nd = null;
