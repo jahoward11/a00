@@ -18,7 +18,7 @@ const cacheName = "calcjs0.15",
   ],
   rcvd1 = {},
   tstamp = Date.now(),
-  rexkprs = /\/a00\/(?:-app-cjs\/[\w!.*+~-]+|-dev\/prj\d\d\.js|-res-js\/localforage\.min\.js)\??$/,
+  rexkprs = /\/a00\/(?:-app-cjs\/[\w!.*+~-]+|-dev\/prj\d\d\.js|-res-js\/jstat(?:-tdist|)\.js|-res-js\/localforage\.min\.js)\??$/,
   rexupds = /\/a00\/(?:-app-cjs\/[\w!.*+~-]+|-dev\/prj\d\d\.js)\??$/;
 
 self.addEventListener('install', e => {
