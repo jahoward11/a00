@@ -1,6 +1,6 @@
 // Service Worker
 
-const cacheName = "calcjs0.15",
+const cacheName = "calcjs0.16",
   cacheKeeplist = [cacheName],
   appShellFiles = [
     "../-app-cjs/calcjs0.html",
