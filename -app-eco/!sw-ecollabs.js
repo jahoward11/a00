@@ -20,6 +20,8 @@ const cacheName = "ecollabs0.15",
     //"../-res-img/icon-144.png",
     //"../-res-img/icon-192.png",
     "../-res-js/ebook-annos-fns.js",
+    "../-res-js/handlebars.min.js"
+    "../-res-js/localforage.min.js",
     "../-res-js/srcdiff.js"
   ],
   appContent = [
