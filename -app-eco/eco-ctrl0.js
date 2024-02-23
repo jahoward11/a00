@@ -837,16 +837,17 @@ function swapListGen() {
     swapitems: [ ["Preview content (HTML)", "body>#ecorender"],
       ["Preview script (JS)", "body>#ecoscripts"], ["File data (JSON)", "#ecoesp0 #rawtxta"] ]
       .concat( !filewkg ? []
-        : filewkg.file_type === "eco-srcdoc" ? [["Source doc: CONTENT", "content"]]
-        : filewkg.file_type === "eco-scrap" ? [["Scrap file: CONTENT", "content"]]
-        : filewkg.file_type === "eco-event" ? [["Event file: DESCRIPTION", "description"]]
-        : filewkg.file_type === "eco-prjid"
+        : /^(?:eco-|)srcdoc$/.test(filewkg.file_type) ? [["Source doc: CONTENT", "content"]]
+        : /^(?:eco-|)scrap$/.test(filewkg.file_type) ? [["Scrap file: CONTENT", "content"]]
+        : /^(?:eco-|)event$/.test(filewkg.file_type) ? [["Event file: DESCRIPTION", "description"]]
+        : /^(?:eco-|)prjid$/.test(filewkg.file_type)
           ? [["Project ID: SHORT DESCR", "descr_short"], ["Project ID: EXT'D DESCR", "descr_extd"]]
-        : filewkg.file_type === "eco-anno" ? [["Anno file: HIGHLIGHTS", "texthl"]]
-        : filewkg.file_type === "eco-memo" ? [["Memo file: BODY TEXT", "body"]]
-        : filewkg.file_type === "eco-assets" ? [["Assets file: DESCRIPTION", "description"]]
-        : filewkg.file_type === "eco-contact"
+        : /^(?:eco-|)anno$/.test(filewkg.file_type) ? [["Anno file: HIGHLIGHTS", "texthl"]]
+        : /^(?:eco-|)memo$/.test(filewkg.file_type) ? [["Memo file: BODY TEXT", "body"]]
+        : /^(?:eco-|)assets$/.test(filewkg.file_type) ? [["Assets file: DESCRIPTION", "description"]]
+        : /^(?:eco-|)contact$/.test(filewkg.file_type)
           ? [["Contact file: SHORT BIO", "bio_short"], ["Contact file: MISCELLANY", "miscellany"]]
+        : filewkg.hasOwnProperty("content") ? [["Doc: CONTENT", "content"]]
         : !filewkg.filefrags ? []
         : filewkg.filefrags.map(ob => ["Publish mgr: " + ob.labeltxt, null])
           .concat([["Publish mgr: htmllinktxt", null]]) )
@@ -3410,7 +3411,7 @@ objQA(key, fbx) { // also triggered by rsrcsXGet, dataDispl, attInp, qconRetrvD,
   : /^a00p/i.test(key) ? a00path
   : /^a00o/i.test(key) ? a00orig
   : /^(?:tm0|)urole?/i.test(key) ? tm0urole
-  : /^dbpch/i.test(key) ? dbpch && dbpch[ptyTest()]
+  : /^dbpch/i.test(key) ? dbpch && dbpch[ptyTest()] || fbx && dbpch
     || rsltFbk(Object.assign(Object.assign({}, dbpch), { taskqueue: undefined }))
   : /^(?:prjs|)(?:eco|e)net/i.test(key) ? prjsenet[ptyTest()] || rsltFbk(prjsenet)
   : /^updseq/i.test(key) ? updseq[ptyTest()] || rsltFbk(updseq)
