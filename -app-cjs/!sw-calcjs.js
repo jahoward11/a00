@@ -45,7 +45,7 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   let reqPrc = (rsp1 = {}) => {
-    if (rsp1.ok && ( !navigator.onLine
+    if ( rsp1.ok && ( !navigator.onLine
     || !rexupds.test(e.request.url) || rcvd1[e.request.url] )) {
       return rsp1;
     } else {
