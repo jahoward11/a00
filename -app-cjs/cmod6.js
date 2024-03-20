@@ -709,7 +709,7 @@ srui += "\\n<div id=trgrndr class=\\"cfield dflow\\"></div>\\n";
       of its field's content; and to store "Target" data locally.
 */
 
-rxs = [/^{\\s*"[^]+}$|^\\[[^]+\\]$/, /^\\/.+\\/[gim]*$/, /^(?:\\w+|\\(.*?\\)) *=> *\\S|^".*"$|^\\b[\\w.]+$/]; //
+rxs = [/^{\\s*"[^]+}$|^\\[[^]+\\]$/, /^\\/.+\\/[gim]*$/, /^(?:\\w+|\\(.*?\\)) *=> *\\S|^".*"$|^\\b[\\w.]+$/, /(?="|\\\\[^ntux]|\\\\u(?![\\da-fA-F]{4})|\\\\x(?![\\da-fA-F]{2}))/g]; //
 fncTry = (fnc, a, e) => { try { return fnc(a) } catch (err) { return e > 1 ? a : e ? err : undefined }};
 hlp2Clr = () => (trghelp.innerHTML = trgrndr.innerHTML = "") || [trgtxta, trghelp].forEach(e => e.classList.remove("iwarn", "isucc"));
 hlp2Pol = (v, s2, lm) => !(s2 instanceof RegExp) || !s2.global || !(trghelp.innerHTML = (lm = (v.match(s2) || []).length) + " replacements have been made.") || [trgtxta, trghelp].forEach(e => e.classList.add(!lm ? "iwarn" : "isucc"));
@@ -718,7 +718,7 @@ datRtrv = (k, r) => !r && !k ? trgtxta.value = "" : Promise.resolve(_.fncTry(win
 window.sr0 = {};
 sr0.txtaSel = e => _.hlp2Clr() || e.focus() || e.setSelectionRange(0, e.textLength);
 sr0.cntSwap = () => _.hlp2Clr() || ([trgtxta.value, srctxta.value] = [srctxta.value, trgtxta.value]);
-sr0.strPars = () => { let v0 = srctxta.value, r2, rv = rtrminp.value, s2, sv = sepainp.value, k = lfinp.value.trim(); _.hlp2Clr(); ( !_.rxs[2].test(rv.trim()) || (r2 = _.fncTry(window.eval, rv, 1)) instanceof Error && (trghelp.innerHTML = r2) ) && (r2 = window.eval('"' + rv.replace(/(?="|\\\\[^ntux]|\\\\u(?![\\da-fA-F]{4})|\\\\x(?![\\da-fA-F]{2}))/g, "\\\\") + '"')); s2 = _.rxs[1].test(sv.trim()) && _.fncTry(eval, sv) || _.fncTry(window.eval, sv, 2); !k || v0 ? _.rsltVw(v0, s2, v0.replace(s2, r2)) : _.datRtrv(k, 1).then(vx => _.rsltVw(vx, s2, vx.replace(s2, r2))); };
+sr0.strPars = () => { let k = lfinp.value.trim(), r2, rv = rtrminp.value, s2, sv = sepainp.value, v0 = srctxta.value; _.hlp2Clr(); ( !_.rxs[2].test(rv.trim()) || (r2 = _.fncTry(window.eval, rv, 1)) instanceof Error && (trghelp.innerHTML = r2) ) && (r2 = window.eval('"' + rv.replace(_.rxs[3], "\\\\") + '"')); s2 = _.rxs[1].test(sv.trim()) && _.fncTry(eval, sv) || _.fncTry(window.eval, sv, 2); !k || v0 ? _.rsltVw(v0, s2, v0.replace(s2, r2)) : _.datRtrv(k, 1).then(vx => _.rsltVw(vx, s2, vx.replace(s2, r2))); };
 sr0.hlp3Clr = () => (lfhelp.innerHTML = "") || lfhelp.classList.remove("iwarn", "isucc");
 sr0.pfsRfr = (es = []) => !window.localforage || localforage.keys().then(ks => pfiles.innerHTML = ["pfiles.textContent", "trgtxta.value", "srctxta.value", "dentr.value", "recon.textContent", "recon.innerHTML"].concat(!window.nm0 ? [] : ["nmdata.textContent", "nm0.pchQry()"]).concat(ks).concat(es).map(k => "\\n<option>" + k + "</option>").join("") + "\\n").catch(er => trghelp.innerHTML = er);
 sr0.dataMgr = ox => { let key = lfinp.value.trim(); if (ox === 2) return trgtxta.textLength !== trgtxta.selectionEnd - trgtxta.selectionStart || _.hlp2Clr() || _.datRtrv(key); !key || !window.localforage || localforage[!ox ? "removeItem" : "setItem"](key, ox && trgtxta.value).then(() => sr0.pfsRfr() && (lfhelp.innerHTML = "USERdata file is " + (!ox ? "deleted." : "locally saved.")) && lfhelp.classList.add(!ox ? "iwarn" : "isucc")).catch(er => trghelp.innerHTML = er); }; //
