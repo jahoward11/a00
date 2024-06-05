@@ -293,7 +293,7 @@ const t2puzls = `// __JS Puzzle Collection #1: Code__
  // reShow( dwraps[0] + bodGen(t2x) + dwraps[1] + scrGen(t2x) + dwraps[2] )
 
  // pz1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
- try { pz1wrap } catch { uiDspl("pz1wrap", "<hr />\\n" + bodGen(t2x)); g1Pset(); !!window.jg1 || scrInj(null, 'module', scrGen(t2x)).catch(reShow); }
+ window.pz1wrap || window.g1wrap || uiDspl("pz1wrap", "<hr />\\n" + bodGen(t2x)) || g1Pset() || !!window.jg1 && !!jg1.g1Reset || scrInj(null, 'module', scrGen(t2x)).catch(reShow); }
 */
 
  window.jg1 = window.jg1 || {};
