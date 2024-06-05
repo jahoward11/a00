@@ -17,7 +17,7 @@ from the tutorial code written in the \`JScode\` module:
  uiDspl = (wid, cnt) => { let ndiv = document.createElement('div'); ndiv.id = wid; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
  // pz1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
- try { pz1wrap } catch { uiDspl("pz1wrap", bodGen(t2x)); !!window.jg1 || scrInj(null, 'module', scrGen(t2x)).catch(reShow); }
+ try { pz1wrap } catch { uiDspl("pz1wrap", bodGen(t2x)); !!window.jg1 && !!jg1.g1Reset || scrInj(null, 'module', scrGen(t2x)).catch(reShow); }
 
  // Un-comment the following two lines of code to generate the
 // full source code (e.g., for building a standalone web app).
