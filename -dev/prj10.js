@@ -287,13 +287,26 @@ const t2puzls = `// __JS Puzzle Collection #1: Code__
  bodGen = src => "\\n<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/;$|^g\\dui = /g, "").split(/;\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n") + "\\n"; //
  scrGen = src => "\\n" + src.match(/^(?:jopts|lit0s|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *\\/\\/ *$| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?\\n(?= *\\b[ ,\\w]+(?: *= .+|);?$)/gm, "$1,\\n  ")).join("\\n\\n") + "\\n"; //
  dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=pz1wrap>", "</div>\\n\\n<script type=module>", "</script>\\n</html>"];
- uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "pz1wrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
+ uiDspl = (wid, cnt) => { let ndiv = document.createElement('div'); ndiv.id = wid; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
+ g1Pset = () => { tclrs.selectedIndex = 1; tcols.value = trows.value = 4; };
 
  // reShow( dwraps[0] + bodGen(t2x) + dwraps[1] + scrGen(t2x) + dwraps[2] )
 
  // pz1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
- try { pz1wrap } catch { uiDspl("<hr />\\n" + bodGen(t2x)); !!window.jg1 || scrInj(null, 'module', scrGen(t2x)).catch(reShow); }
+ try { pz1wrap } catch { uiDspl("pz1wrap", "<hr />\\n" + bodGen(t2x)); g1Pset(); !!window.jg1 || scrInj(null, 'module', scrGen(t2x)).catch(reShow); }
 */
+
+ window.jg1 = window.jg1 || {};
+ window.g1pla = JSON.parse(JSON.stringify(jg1.m1trk || [])).slice(1).concat([jg1.m1bl0]);
+ window.g1Rpl = (t = 250, p = g1pla) => p.map(([r, c]) => () => jg1.tileSli(r, c)).reduce((a, b) => a.then(() => new Promise(rslv => setTimeout(rslv, t))).then(b), Promise.resolve()).catch(reShow);
+
+ // reShow( JSON.stringify(jg1) )
+ reShow( "jg1.g1Reset(" + JSON.stringify(jg1.tarr0) + ")" )
+ reShow( "// " + g1pla.length + "; window.g1pla = " + JSON.stringify(g1pla) + ";" )
+ reShow( "\\"jg1play00\\": \\"//\\\\n jg1.g1Reset(" + JSON.stringify(jg1.tarr0) + ")\\\\n // partial/complete game\\\\n // " + g1pla.length + "; window.g1pla = " + JSON.stringify(g1pla) + ";\\\\n // g1Rpl()\\"" )
+
+ // jg1.g1Reset(jg1.tarr0)
+ // g1Rpl(500)
 
 //`;
 
@@ -303,10 +316,10 @@ const t3search = `// __Search & Replace: Webapp, Demo__
  t3x = xstor.JScode.tutorial3;
  bodGen = src => "\\n" + src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui = /g, "").split(/;\\nsrui \\+= /).map(eval).join("").trim() + "\\n"; //
  scrGen = src => "\\nlet " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *\\/\\/ *$| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?\\n(?= *\\b[ ,\\w]+(?: *= .+|);?$)/gm, "$1,\\n  ") + "\\n"; //
- uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
+ uiDspl = (wid, cnt) => { let ndiv = document.createElement('div'); ndiv.id = wid; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
  // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
- try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.sr0 || scrInj(null, 'module', scrGen(t3x)).catch(reShow); }
+ try { srwrap } catch { uiDspl("srwrap", bodGen(t3x)); !!window.sr0 || scrInj(null, 'module', scrGen(t3x)).catch(reShow); }
 */
 
  // srctxta.textContent = trgtxta.value; srctxta.value = srctxta.innerHTML;
@@ -380,10 +393,10 @@ const t3srtools = `// __Search & Replace: Tools, Quick Ref__
  t3x = xstor.JScode.tutorial3;
  bodGen = src => "\\n" + src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui = /g, "").split(/;\\nsrui \\+= /).map(eval).join("").trim() + "\\n"; //
  scrGen = src => "\\nlet " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *\\/\\/ *$| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?\\n(?= *\\b[ ,\\w]+(?: *= .+|);?$)/gm, "$1,\\n  ") + "\\n"; //
- uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
+ uiDspl = (wid, cnt) => { let ndiv = document.createElement('div'); ndiv.id = wid; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
  // srwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
- try { srwrap } catch { uiDspl(bodGen(t3x)); _.w.sr0 ? sr0.pfsRfr() : scrInj(null, 'module', scrGen(t3x)).catch(reShow); [sepainp.value, rtrminp.value] = ["s0srch", "s0rplc"]; }
+ try { srwrap } catch { uiDspl("srwrap", bodGen(t3x)); _.w.sr0 ? sr0.pfsRfr() : scrInj(null, 'module', scrGen(t3x)).catch(reShow); [sepainp.value, rtrminp.value] = ["s0srch", "s0rplc"]; }
 //`;
 
 const t4cntcs = `// __"Contacts" Webapp__
@@ -402,14 +415,14 @@ const t4cntcs = `// __"Contacts" Webapp__
 
 // *Notes Database: retrofitted "Contacts" tutorial code of \`JScode\` module*
 /*
- uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "dbwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
+ uiDspl = (wid, cnt) => { let ndiv = document.createElement('div'); ndiv.id = wid; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
  dbA = () => !_.w.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => _.w.pdbs = re);
  s1L = () => !!_.w.PouchDB ? _.dbA() : scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(_.dbA));
  c1New = () => _.w.dbobj || !_.w.PouchDB || !/^[a-z][0-9_a-z-]*$/.test(_.dbase) || !(_.w.dbobj = new PouchDB(_.dbase)) || pdbs.includes(_.dbase) || !_.dbA() || dbobj.put({ _id: "-res-img" }).then(reShow).catch(reShow);
  s2L = () => scrInj(null, 'module', _.scrGen(_.t4x).replace(/(ntmpl = { key: ")(\\w+)/, "$1" + (_.ntkey || "$2")));
 
  // dbwrap.remove() // *Alert:* useful only if edit-testing the GUI code above
- try { dbwrap } catch { uiDspl(bodGen(t4x)); !!_.w.ntmpl || Promise.resolve().then(s1L).then(c1New).then(s2L).catch(reShow); }
+ try { dbwrap } catch { uiDspl("dbwrap", bodGen(t4x)); !!_.w.ntmpl || Promise.resolve().then(s1L).then(c1New).then(s2L).catch(reShow); }
 */
 
 // *"Contacts" Webapp: demo setups*
