@@ -60,10 +60,10 @@ from the tutorial code written in the \`JScode\` module.
  t3x = xstor.JScode.tutorial3;
  bodGen = src => "\\n" + src.match(/^srui = [^]+?(?=\\n$)/m)[0].replace(/;$|^srui = /g, "").split(/;\\nsrui \\+= /).map(eval).join("").trim() + "\\n"; //
  scrGen = src => "\\nlet " + src.match(/^rxs = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/m)[0].replace(/\\b_\\.\\b| *\\/\\/ *$| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?\\n(?= *\\b[ ,\\w]+(?: *= .+|);?$)/gm, "$1,\\n  ") + "\\n"; //
- uiDspl = cnt => { let ndiv = document.createElement('div'); ndiv.id = "srwrap"; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
+ uiDspl = (wid, cnt) => { let ndiv = document.createElement('div'); ndiv.id = wid; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
 
  // srwrap.remove() // *Alert:* useful only if edit-testing the UI code above
- try { srwrap } catch { uiDspl(bodGen(t3x)); !!window.sr0 || scrInj(null, 'module', scrGen(t3x)).catch(reShow); }
+ try { srwrap } catch { uiDspl("srwrap", bodGen(t3x)); !!window.sr0 || scrInj(null, 'module', scrGen(t3x)).catch(reShow); }
 
  // Un-comment the following two lines of code to generate the
 // full source code (e.g., for building a standalone web app).
