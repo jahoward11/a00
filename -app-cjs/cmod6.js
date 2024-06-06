@@ -240,7 +240,7 @@ g1ui += "\\n<table id=g1board></table>\\n<div id=g1scor class=cfield>Count: <spa
 g1ui += "\\n<div><input type=button class=ccntr value=\\"RETRACT MOVE\\" onclick=jg1.m1Rvrs() /><input type=button value=\\"RESET COUNTER\\" onclick=jg1.c1Zero() /></div>\\n";
 
  // g1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
- try { g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap"; ndiv.innerHTML = g1ui; cmain.appendChild(ndiv); }
+ try { window.pz1wrap || g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap"; ndiv.innerHTML = g1ui; cmain.appendChild(ndiv); }
 
 /*
     + The rendered GUI, below, is built from the leading block of
@@ -397,7 +397,7 @@ g2ui += "\\n<div class=cfield><span class=ccntr><input type=button value=\\"RESE
 g2ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u2tog /> Allow single-diode toggle&mdash;Suspend&nbsp;counter</label></div>\\n";
 
  // g2wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
- // try { g2wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g2wrap"; ndiv.innerHTML = g2ui; cmain.appendChild(ndiv); }
+ // try { window.pz1wrap || g2wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g2wrap"; ndiv.innerHTML = g2ui; cmain.appendChild(ndiv); }
 
 lit0s = [ "", ["0,0", "0,4", "1,1", "1,3", "2,2", "3,1", "3,3", "4,0", "4,4"], ["0,2", "1,1", "1,3", "2,0", "2,4", "3,1", "3,3", "4,2"], ["0,0", "0,2", "0,4", "2,0", "2,4", "4,0", "4,2", "4,4"], ["2,1", "2,3", "3,2", "4,1", "4,2", "4,3"], ["2,1", "2,3"], ["0,2", "1,2", "2,2", "3,2", "4,2"], ["3,2", "3,4"], ["3,3"], ["1,1", "1,2", "1,3", "2,1", "2,3", "3,1", "3,2", "3,3"], ["2,2", "3,1", "3,2", "3,3", "4,0", "4,1", "4,2", "4,3", "4,4"], ["0,4", "4,0"], ["0,2", "1,1", "2,0", "2,4", "3,3", "4,2"], ["2,2"], ["1,2", "2,1", "2,3", "3,2"], ["1,1", "1,2", "1,3", "2,0", "2,2", "2,4", "3,1", "3,2", "3,3"] ];
 window.jg2 = { m2trk: 0 };
@@ -440,7 +440,7 @@ g3ui += "\\n<div class=cfield><input type=button class=ccntr value=\\"RETRACT MO
 g3ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u3tog /> Allow free peg placement&mdash;Suspend&nbsp;counter</label></div>\\n";
 
  // g3wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
- // try { g3wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g3wrap"; ndiv.innerHTML = g3ui; cmain.appendChild(ndiv); }
+ // try { window.pz1wrap || g3wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g3wrap"; ndiv.innerHTML = g3ui; cmain.appendChild(ndiv); }
 
 jopts = peg0s = "";
 a0t6 = [0, 1, 2, 3, 4, 5, 6];
