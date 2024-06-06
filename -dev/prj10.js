@@ -293,22 +293,20 @@ const t2puzls = `// __JS Puzzle Collection #1: Code__
  // reShow( dwraps[0] + bodGen(t2x) + dwraps[1] + scrGen(t2x) + dwraps[2] )
 
  // pz1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
- window.pz1wrap || window.g1wrap || uiDspl("pz1wrap", "<hr />\\n" + bodGen(t2x)) || g1Pset() || !!window.jg1 && !!jg1.g1Reset || scrInj(null, 'module', scrGen(t2x)).catch(reShow)
+ window.g1wrap || window.pz1wrap || uiDspl("pz1wrap", "<hr />\\n" + bodGen(t2x)) || g1Pset() || !!window.jg1 && !!jg1.g1Reset || scrInj(null, 'module', scrGen(t2x)).catch(reShow)
 */
 
  window.jg1 = window.jg1 || {};
  window.g1pla = JSON.parse(JSON.stringify(jg1.m1trk || [])).slice(1).concat([jg1.m1bl0]);
- window.g1Rpl = (t = 250, p = g1pla) => p.map(([r, c]) => () => jg1.tileSli(r, c)).reduce((a, b) => a.then(() => new Promise(rslv => setTimeout(rslv, t))).then(b), Promise.resolve()).catch(reShow);
+ window.g1Rpl = (t = 500, p = g1pla) => p.map(([r, c]) => () => jg1.tileSli(r, c)).reduce((a, b) => a.then(() => new Promise(rslv => setTimeout(rslv, t))).then(b), Promise.resolve()).catch(reShow);
 
  // reShow( JSON.stringify(jg1) )
  reShow( "jg1.g1Reset(" + JSON.stringify(jg1.tarr0) + ")" )
  reShow( "/\\x2f " + g1pla.length + "; window.g1pla = " + JSON.stringify(g1pla) + ";" )
  reShow( "\\"jg1play00\\": \\"/\\x2f\\\\n jg1.g1Reset(" + JSON.stringify(jg1.tarr0) + ")\\\\n /\\x2f partial/complete game\\\\n /\\x2f " + g1pla.length + "; window.g1pla = " + JSON.stringify(g1pla) + ";\\\\n /\\x2f g1Rpl()\\"" )
 
-
  // jg1.g1Reset(jg1.tarr0)
- // g1Rpl(500)
-
+ // g1Rpl()
 //`;
 
 const t3search = `// __Search & Replace: Webapp, Demo__
