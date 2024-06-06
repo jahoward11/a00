@@ -303,7 +303,8 @@ const t2puzls = `// __JS Puzzle Collection #1: Code__
  // reShow( JSON.stringify(jg1) )
  reShow( "jg1.g1Reset(" + JSON.stringify(jg1.tarr0) + ")" )
  reShow( "// " + g1pla.length + "; window.g1pla = " + JSON.stringify(g1pla) + ";" )
- reShow( "\\"jg1play00\\": \\"//\\\\n jg1.g1Reset(" + JSON.stringify(jg1.tarr0) + ")\\\\n // partial/complete game\\\\n // " + g1pla.length + "; window.g1pla = " + JSON.stringify(g1pla) + ";\\\\n // g1Rpl()\\"" )
+ reShow( "\\"jg1play00\\": \\"/\\x2f\\\\n jg1.g1Reset(" + JSON.stringify(jg1.tarr0) + ")\\\\n /\\x2f partial/complete game\\\\n /\\x2f " + g1pla.length + "; window.g1pla = " + JSON.stringify(g1pla) + ";\\\\n /\\x2f g1Rpl()\\"" )
+
 
  // jg1.g1Reset(jg1.tarr0)
  // g1Rpl(500)
