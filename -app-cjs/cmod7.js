@@ -18,11 +18,11 @@ __CalcJS Module Loader__
  // !w.nm0 || !(w.txd2 = nm0.txd1).FILEID || xstor[txd2.FILEID] || aurls[txd2.FILEID] || nm0.pchQry().then(cmPrc).then(xlstGen).catch(reShow)
 
 /*
- c0Qry = () => !pdbs.includes(txd2.DBNAME) || PouchDB(txd2.DBNAME).get(txd2.FILEID, txd2.OPTS).then(d => d.content || d);
+ c0Qry = () => !txd2.DBORIG && !pdbs.includes(txd2.DBNAME) || PouchDB((txd2.DBORIG || "").replace(/\\/$/, "") + (!txd2.DBORIG ? "" : "/") + txd2.DBNAME).get(txd2.FILEID, txd2.OPTS).then(d => d.content || d);
  dbA = () => !_.w.PouchDB || !PouchDB.allDbs || PouchDB.allDbs().then(re => _.w.pdbs = re);
  s1L = () => !!_.w.PouchDB ? _.dbA() : scrInj("../-res-js/pouchdb.min.js").then(() => scrInj("../-res-js/pouchdb.all-dbs.min.js").then(_.dbA));
- w.txd2 = { DBNAME: "cmods", FILEID: "t2puzls", ATTKEY: "", OPTS: {} };
- Promise.resolve().then(s1L).then(c0Qry).then(cmPrc).then(xlstGen).catch(reShow)
+ w.txd2 = { DBNAME: "cmods", FILEID: "t2puzls", ATTKEY: "", OPTS: { skip_setup: true }, DBORIG: localStorage._ecoa00orig };
+ xstor[txd2.FILEID] || aurls[txd2.FILEID] || Promise.resolve().then(s1L).then(c0Qry).then(cmPrc).then(xlstGen).catch(reShow)
 */
 
  m1ui  = "\\n<style>\\nhr { margin: 1.5rem 0; }\\n#m1inp { width: 100%; }\\n</style>";
