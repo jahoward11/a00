@@ -237,7 +237,7 @@ g1ui += "\\n<label class=ccntr>Rows <input type=text id=trows value=4 size=2 /><
 g1ui += "\\n<label class=ccntr>Columns <input type=text id=tcols value=4 size=2 /></label>";
 g1ui += "\\n<label class=ccntr><input type=button value=\\"&orarr; NEW GAME\\" onclick=jg1.g1Reset() /></label>\\n</div>";
 g1ui += "\\n<table id=g1board></table>\\n<div id=g1scor class=cfield>Count: <span id=g1movs>0</span></div>";
-g1ui += "\\n<div><input type=button class=ccntr value=\\"RETRACT MOVE\\" onclick=jg1.m1Rvrs() /><input type=button value=\\"RESET COUNTER\\" onclick=jg1.c1Zero() /></div>\\n";
+g1ui += "\\n<div id=g1cp2><input type=button class=ccntr value=\\"RETRACT MOVE\\" onclick=jg1.m1Rvrs() /><input type=button value=\\"RESET COUNTER\\" onclick=jg1.c1Zero() /></div>\\n";
 
  // g1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
  try { window.pz1wrap || g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap"; ndiv.innerHTML = g1ui; cmain.appendChild(ndiv); }

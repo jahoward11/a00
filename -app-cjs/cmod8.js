@@ -4,7 +4,7 @@ const _module = "JSpuzzle";
 
 const collection1 = `/*
 __Puzzle Collection I: from JS Tutorial 2__
- This module option functions only to render three puzzle GUIs
+ This module option functions to render three puzzle GUIs
 from the tutorial code written in the \`JScode\` module:
 - SLIDING TILES
 - LIGHTS OUT
@@ -12,18 +12,34 @@ from the tutorial code written in the \`JScode\` module:
 */
 
  t2x = xstor.JScode.tutorial2;
- bodGen = src => "\\n<hr />\\n<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/;$|^g\\dui = /g, "").split(/;\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n") + "\\n"; //
+ bodGen = src => "\\n<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/;$|^g\\dui = /g, "").split(/;\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n") + "\\n"; //
  scrGen = src => "\\n" + src.match(/^(?:jopts|lit0s|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *\\/\\/ *$| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?\\n(?= *\\b[ ,\\w]+(?: *= .+|);?$)/gm, "$1,\\n  ")).join("\\n\\n") + "\\n"; //
+ dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>", "</script>\\n</html>"];
  uiDspl = (wid, cnt) => { let ndiv = document.createElement('div'); ndiv.id = wid; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
+ g1Pset = () => { tnmls.selectedIndex = 1; tclrs.selectedIndex = 2; oshuf.checked = 1; tcols.value = trows.value = 3; };
 
  // pz1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
- try { window.g1wrap || pz1wrap } catch { uiDspl("pz1wrap", bodGen(t2x)); !!window.jg1 && !!jg1.g1Reset || scrInj(null, 'module', scrGen(t2x)).catch(reShow); }
+ window.g1wrap || window.pz1wrap || uiDspl("pz1wrap", "\\n<hr />" + bodGen(t2x)) || g1Pset() || !!window.jg1 && !!jg1.g1Reset || scrInj(null, 'module', scrGen(t2x)).catch(reShow)
 
- // Un-comment the following two lines of code to generate the
-// full source code (e.g., for building a standalone web app).
+ // Un-comment one of the following two lines of code to generate
+// the full source code (e.g., for building a standalone web app).
 
- // dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>", "</script>\\n</html>"];
+ // reShow( dwraps[0] + "<div id=pz1wrap>" + bodGen(t2x) + "</div>" + dwraps[1] + scrGen(t2x) + dwraps[2] )
  // reShow( dwraps[0] + pz1wrap.outerHTML.replace(/\\n<hr.*?>/, "") + dwraps[1] + scrGen(t2x) + dwraps[2] )
+
+ window.jg1 = window.jg1 || {};
+ window.g1pla = JSON.parse(JSON.stringify(jg1.m1trk || [])).slice(1).concat([jg1.m1bl0]);
+ window.g1Rpl = (t = 500, p = g1pla) => p.map(([r, c]) => () => jg1.tileSli(r, c)).reduce((a, b) => a.then(() => new Promise(rslv => setTimeout(rslv, t))).then(b), Promise.resolve()).catch(reShow);
+
+ // reShow( JSON.stringify(jg1) )
+/*
+ reShow( "jg1.g1Reset(" + JSON.stringify(jg1.tarr0) + "," + tcols.value + "," + tclrs.selectedIndex + "," + tnmls.selectedIndex + ")" ) // jg1.tarr0.length
+ reShow( "/\x2f " + g1pla.length + "; window.g1pla = " + JSON.stringify(g1pla) + ";" )
+ reShow( "\"jg1play3x00\": \"/\x2f\n jg1.g1Reset(" + JSON.stringify(jg1.tarr0) + "," + tcols.value + "," + tclrs.selectedIndex + "," + tnmls.selectedIndex + ")\n /\x2f partial/complete game\n /\x2f " + g1pla.length + "; window.g1pla = " + JSON.stringify(g1pla) + ";\n /\x2f g1Rpl()\"" )
+*/
+
+ // jg1.g1Reset(jg1.tarr0)
+ // g1Rpl()
 //`;
 
 const tiltmaze = `// __TILT MAZE__
