@@ -21,6 +21,9 @@ from the tutorial code written in the \`JScode\` module:
  // pz1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
  window.g1wrap || window.pz1wrap || uiDspl("pz1wrap", "\\n<hr />" + bodGen(t2x)) || g1Pset() || !!window.jg1 && !!jg1.g1Reset || scrInj(null, 'module', scrGen(t2x)).catch(reShow)
 
+ // Un-comment one of the following two lines of code to generate
+// the full source code (e.g., for building a standalone web app).
+
  // reShow( dwraps[0] + dwraps[1] + bodGen(t2x) + dwraps[2] + dwraps[3] + scrGen(t2x) + dwraps[4] )
  // reShow( dwraps[0] + pz1wrap.outerHTML.replace(/\\n<hr.*?>/, "") + dwraps[3] + scrGen(t2x) + dwraps[4] )
 
