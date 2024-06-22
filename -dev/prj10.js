@@ -282,17 +282,19 @@ __IBM Token Fetch Hypothetical__
 
 const t2puzls = `// __JS Puzzle Collection #1: Code, Helps__
 
+
  t2x = xstor.JScode.tutorial2;
  bodGen = src => "\\n<h3 class=cfield>Puzzles, JS Tutorial 2</h3>\\n\\n" + src.match(/^g\\dui = [^]+?(?=\\n$)/gm).map(e => e.replace(/\\bg\\dwrap\\b/g, "pz1wrap").replace(/;$|^g\\dui = /g, "").split(/;\\ng\\dui \\+= /).map(eval).join("").trim()).join("\\n\\n") + "\\n"; //
  scrGen = src => "\\n" + src.match(/^(?:jopts|lit0s|tnx) = [^]+?(?=\\n+ *(\\*\\/|\\/[\\/*])|(?![^]))/gm).map(e => "let " + e.replace(/\\b_\\.\\b| *\\/\\/ *$| *"";?$|^\\n/gm, "").replace(/^[ =\\w]+\\n/, m => m.replace(/ *=(?= *[a-z]|\\n)/gi, ",")).replace(/^( *\\b[ ,\\w]+?(?: *= .+?|))[,;]?\\n(?= *\\b[ ,\\w]+(?: *= .+|);?$)/gm, "$1,\\n  ")).join("\\n\\n") + "\\n"; //
- dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n<div id=pz1wrap>", "</div>\\n\\n<script type=module>", "</script>\\n</html>"];
+ dwraps = ["<!DOCTYPE html>\\n<html lang=en>\\n<title>Puzzles, JS Tutorial 2</title>\\n<meta charset=\\"utf-8\\">\\n<meta name=viewport content=\\"width=device-width, initial-scale=1\\">\\n\\n", "\\n\\n<script type=module>", "</script>\\n</html>"];
  uiDspl = (wid, cnt) => { let ndiv = document.createElement('div'); ndiv.id = wid; ndiv.innerHTML = cnt; cmain.appendChild(ndiv); };
  g1Pset = () => { tnmls.selectedIndex = 1; tclrs.selectedIndex = 2; oshuf.checked = 1; tcols.value = trows.value = 3; };
 
- // reShow( dwraps[0] + bodGen(t2x) + dwraps[1] + scrGen(t2x) + dwraps[2] )
-
  // pz1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
- window.g1wrap || window.pz1wrap || uiDspl("pz1wrap", "<hr />\\n" + bodGen(t2x)) || g1Pset() || !!window.jg1 && !!jg1.g1Reset || scrInj(null, 'module', scrGen(t2x)).catch(reShow)
+ window.g1wrap || window.pz1wrap || uiDspl("pz1wrap", "\\n<hr />" + bodGen(t2x)) || g1Pset() || !!window.jg1 && !!jg1.g1Reset || scrInj(null, 'module', scrGen(t2x)).catch(reShow)
+
+ // reShow( dwraps[0] + "<div id=pz1wrap>" + bodGen(t2x) + "</div>" + dwraps[1] + scrGen(t2x) + dwraps[2] )
+ // reShow( dwraps[0] + pz1wrap.outerHTML.replace(/\\n<hr.*?>/, "") + dwraps[1] + scrGen(t2x) + dwraps[2] )
 
  window.jg1 = window.jg1 || {};
  window.g1pla = JSON.parse(JSON.stringify(jg1.m1trk || [])).slice(1).concat([jg1.m1bl0]);
@@ -301,7 +303,7 @@ const t2puzls = `// __JS Puzzle Collection #1: Code, Helps__
  // reShow( JSON.stringify(jg1) )
  reShow( "jg1.g1Reset(" + JSON.stringify(jg1.tarr0) + "," + tcols.value + "," + tclrs.selectedIndex + "," + tnmls.selectedIndex + ")" ) // jg1.tarr0.length
  reShow( "/\\x2f " + g1pla.length + "; window.g1pla = " + JSON.stringify(g1pla) + ";" )
- reShow( "\\"jg1play00\\": \\"/\\x2f\\\\n jg1.g1Reset(" + JSON.stringify(jg1.tarr0) + "," + tcols.value + "," + tclrs.selectedIndex + "," + tnmls.selectedIndex + ")\\\\n /\\x2f partial/complete game\\\\n /\\x2f " + g1pla.length + "; window.g1pla = " + JSON.stringify(g1pla) + ";\\\\n /\\x2f g1Rpl()\\"" )
+ reShow( "\\"jg1play3x00\\": \\"/\\x2f\\\\n jg1.g1Reset(" + JSON.stringify(jg1.tarr0) + "," + tcols.value + "," + tclrs.selectedIndex + "," + tnmls.selectedIndex + ")\\\\n /\\x2f partial/complete game\\\\n /\\x2f " + g1pla.length + "; window.g1pla = " + JSON.stringify(g1pla) + ";\\\\n /\\x2f g1Rpl()\\"" )
 
  // jg1.g1Reset(jg1.tarr0)
  // g1Rpl()
