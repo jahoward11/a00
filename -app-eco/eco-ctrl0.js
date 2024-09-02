@@ -2389,8 +2389,8 @@ function fwUpdPrep(fileref, dirref, pchutrg, lfnew) {
     filewkg = { _id: filewkg._id, _rev: filewkg._rev, _deleted: true };
     return fileref;
   } else if ( !filewkg.file_type || !/^eco-/.test(filewkg.file_type)
-  && ( !(jfw.hasOwnProperty("ts_created") && jfw.hasOwnProperty("ts_updated"))
-  || !(filewkg.file_created && filewkg.file_updated) )) {
+  && !(filewkg.hasOwnProperty("ts_created") && filewkg.hasOwnProperty("ts_updated"))
+  && !(filewkg.file_created && filewkg.file_updated) ) {
     return fileref;
   } else if (pchutrg && !dirref && !filewkg._rev && filewkg.file_created) {
     dirref = filewkg.file_created.subdir;
