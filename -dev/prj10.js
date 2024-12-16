@@ -483,11 +483,14 @@ const t4nmcode = `// __Note Manager: Code, Helps__
 
 /*
 *TextDiff CLI Commands*
- // txd2.OPTS.rev = txd2.revs[3].rev;
-> [window.s1inp.value, window.s2inp.value] = ["nm0.pchQry()", "nm0.pchQry(txd2)"];
+ PouchDB(nm0.txd1.DBNAME).get(nm0.txd1.FILEID, { revs_info: 1 });
+
  window.txd2 = JSON.parse(JSON.stringify(nm0.txd1));
  PouchDB(txd2.DBNAME).get(txd2.FILEID, { revs_info: 1 }).then(doc => txd2.revs = doc._revs_info)
  //.then(reShow).then(() => txd2.OPTS.rev = txd2.revs[1].rev).catch(reShow);
+
+ txd2.OPTS.rev = txd2.revs[3].rev;
+ [window.s1inp.value, window.s2inp.value] = ["nm0.pchQry()", "nm0.pchQry(txd2)"];
 */
 //`;
 
