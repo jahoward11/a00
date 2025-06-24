@@ -12,6 +12,10 @@ strong, mark, table th,
   color: inherit;
 }
 .content:not(:last-child), .block:not(:last-child) { margin-bottom: 1.5rem; }
+.content ol ol, .content ol ul, .content ul ol, .content ul ul {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
 .menu { font-size: 1rem; }
 .menu.is-small { font-size: 0.75rem; }
 .menu.is-medium { font-size: 1.25rem; }
