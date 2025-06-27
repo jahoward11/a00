@@ -138,7 +138,7 @@ function rdataFetch(txdata = {}, idx = 0) {
       //referrerPolicy:'no-referrer',
         // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
       mode:       txdata.mode
-        || (/^https?:\/\/./.test(txdata.url) ? 'cors' : 'no-cors'), // no-cors, *cors, same-origin
+        || (rexrmt.test(txdata.url) ? 'cors' : 'no-cors'), // no-cors, *cors, same-origin
       headers:    txdata.hdrs,
       body:       txdata.body || null // body data type must match "Content-Type" header
     } ) // body method: arrayBuffer, blob, json, text, formData
@@ -1280,11 +1280,11 @@ function modjsLoad() {
   });
 }
 
-function linksExpand() {
-  let sshm, spn2,
+function linksExpand(fload) {
+  let spn2, sshl, sshs = [],
     pchlist = document.querySelector('#ecoesp0 #pchlist'),
-    atimportexpand = filewkg.loadconfigs.atimportexpand,
     linksconstr = filewkg.parseconfigs.linksconstr,
+    linksincl = filewkg.parseconfigs.linksincl,
     ssheets = Array.from(document.styleSheets).filter((ssi, i) => i && ssi.href),
     cssFetch = (lnkj, j) => rdataFetch((/[^ "']+\.css(?=["']?;$)/i.exec(lnkj) || [""])[0])
       .then(rslt => {
@@ -1294,50 +1294,51 @@ function linksExpand() {
         msgHandl(err);
         lnkstor[j] = "/* 404 " + lnkj + " */";
       });
-  if ( atimportexpand && ( !linksconstr.linksinclrender && linksconstr.insertposition
-  && linksconstr.wrapperincl && /^ *@import /.test(linksconstr.htmllinktxt)
-  || linksconstr.linksinclrender && filewkg.parseconfigs.linksincl[0].filepath && ssheets.length
-  && (!protfile || ssheets.some(ssi => /^blob:/.test(ssi.href))) )) {
-    lnkstor = linksconstr.htmllinktxt.trim()
-      .replace(/\/\*[^]*?\*\/|^ *\n?| +$/gm, "").split("\n");
-    if (ssheets.length) {
-      msgHandl(`CSS @import expansion data is now generated from user-preloaded CSSOM styleSheets (${ssheets.length} detected). To apply expansions, render webpage again with \`linksinclrender\` de-activated.`);
-      lnkstor = lnkstor.map( lnki =>
-        /^@import .+\.css\W*$/i.test(lnki) && (spn2 = rexatt.exec(lnki))
-        && ( sshm = ssheets.find( ssi =>
-          new RegExp( "/" + spn2.filter((e, i) => i && e).join("/")
-            .replace(/(?=[.*+])/g, "\\") + "$", "i" ).test(ssi.href)
-          || aurls[spn2[3]] === ssi.href ))
-        && (() => { try { return Array.from(sshm.cssRules).map(ob => ob.cssText).join("\n");
-          } catch { return "/* ??? " + lnki + " */"; } })() || lnki );
-    } else {
-      msgHandl("CSS @import expansion data is now generated with attempted DB queries or HTTP requests. Render webpage to apply expansions.");
-      lnkstor.forEach((lnki, i) => {
-        let spnm,
-          j = i,
-          lnkj = lnki;
-        !/^@import .+\.css\W*$/i.test(lnkj) || !(spnm = rexatt.exec(lnkj)) || (spnm[1] || dbpch)
-        && (!spnm[1] || Array.from(pchlist.options).some(op => op.value === spnm[1]))
-        && window.PouchDB && new PouchDB(spnm[1] || dbpch.name)
-          .getAttachment((/^[.-]\b/.test(spnm[2]) ? "" : ".") + spnm[2], spnm[3])
-          .then( ablob => ablob instanceof Blob
-            && blobHandl(ablob, -1, {}, rslt => lnkstor[j] = rslt.trim()) )
-          .catch(() => cssFetch(lnkj, j))
-        || cssFetch(lnkj, j);
-      });
-    }
-  } else {
+  lnkstor = linksconstr.htmllinktxt.trim()
+    .replace(/\/\*[^]*?\*\/|^ *\n*| +$/gm, "")
+    .replace(/^@import .+\.css\W*(?=\n.)/gim, "$&\n").split("\n\n");
+  lnkstor.forEach( (lnki, i) =>
+    /^@import .+\.css\W*$/i.test(lnki) && (spn2 = rexatt.exec(lnki))
+    && ( sshs[i] = ssheets.find( ssi =>
+      new RegExp( "/" + spn2.filter((e, i3) => i3 && e).join("/")
+        .replace(/(?=[.*+])/g, "\\") + "$", "i" ).test(ssi.href)
+      || aurls[spn2[3]] === ssi.href )) );
+  if ( fload && !linksconstr.linksinclrender && linksconstr.insertposition
+  && linksconstr.wrapperincl && /^ *@import /.test(linksconstr.htmllinktxt) ) {
+    msgHandl("CSS @import expansion data is potentially captured from attempted DB queries or HTTP requests. Render webpage to apply expansions.");
+    lnkstor.forEach((lnki, i) => {
+      let spnm,
+        j = i,
+        lnkj = lnki;
+      !/^@import .+\.css\W*$/i.test(lnkj) || (spnm = rexatt.exec(lnkj)) && (spnm[1] || dbpch)
+      && (!spnm[1] || Array.from(pchlist.options).some(op => op.value === spnm[1]))
+      && spnm[2] && window.PouchDB && new PouchDB(spnm[1] || dbpch.name)
+        .getAttachment((/^[.-]\b/.test(spnm[2]) ? "" : ".") + spnm[2], spnm[3])
+        .then( ablob => ablob instanceof Blob
+          && blobHandl(ablob, -1, {}, rslt => lnkstor[j] = rslt.trim()) )
+        .catch(() => cssFetch(lnkj, j))
+      || cssFetch(lnkj, j);
+    });
+  } else if ( !fload && linksconstr.linksinclrender && (sshl = sshs.filter(e => e).length)
+  && sshl >= lnkstor.length - 1 && linksincl[0].filepath
+  && ( !protfile || ssheets.some(ssi => /^blob:/.test(ssi.href))
+  || linksincl.some(lii => rexrmt.test(lii.filepath)) )) {
+    msgHandl(`CSS @import expansion data is potentially captured from user-preloaded CSSOM styleSheets (${ssheets.length} detected). To apply expansions, render webpage again with \`linksinclrender\` de-activated.`);
+    lnkstor = lnkstor.map( (lnki, i) => sshs[i]
+      && (() => { try { return Array.from(sshs[i].cssRules).map(ob => ob.cssText).join("\n");
+        } catch { return "/* ??? " + lnki + " */"; } })() || lnki );
+  } else if (!fload) {
+    msgHandl(EINSTR[7]);
     lnkstor = [];
-    !atimportexpand || msgHandl(EINSTR[7]);
   }
 }
 
 function dataDispl(udata = "", destindr, cbfnc, cfgs) {
   // destindr: false = do not trigger publResets;
-  // undefined/null/other non-zero falsey = file to filewkg;
+  // undefined/null/non-zero-falsey = file to filewkg;
   // 0 = imp'd text to JSON/Text Edit or SOURCEx;
   // 1 = template to filewkg; 2 = file to file2nd;
-  // 3+/other truthy = attachment/blob/publmgr-webdoc to preview
+  // 3+/truthy = attachment/blob/publmgr-webdoc to preview
   // 4 = udata is publmgr data to generate webdoc (deprecated)
   // 5 = udata is default/reset html
   // 6 = udata is html-wrapped img
@@ -1657,7 +1658,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
     }).then(() => {
       if (filewkg.file_type === "eco-publmgr") {
         epsets.appchks[23] || modjsLoad();
-        epsets.appchks[24] || linksExpand();
+        epsets.appchks[24] || !filewkg.loadconfigs.atimportexpand || linksExpand(1);
       }
       rawtxta.value = JSON.stringify(filewkg, null, 2);
       jdeRawAlert();
@@ -1793,7 +1794,7 @@ function dataDispl(udata = "", destindr, cbfnc, cfgs) {
 `     });
       scrInj({ src: aurls["ebook-annos-fns.js"] });
     }).then(() => {
-      valatl || !filewkg || filewkg.file_type !== "eco-publmgr"
+      valatl || !filewkg || filewkg.file_type !== "eco-publmgr" || !filewkg.loadconfigs.atimportexpand
       || !filewkg.parseconfigs.linksconstr.linksinclrender || window.setTimeout(linksExpand, 1000);
       window.navigator.userAgentData || window.setTimeout( () => {
         let es0 = document.querySelector('#ecorender style:nth-of-type(1)'),
@@ -1976,8 +1977,7 @@ function dropboxTx(txdata = {}, xrslv, xrjct = _=>_) {
 }
 
 function blobHandl(ablob, destindr, txdata = {}, cbfnc) {
-  let blobread,
-    attinp = document.querySelector('#econav0 #attinp'),
+  let attinp = document.querySelector('#econav0 #attinp'),
     rextxt = /\.(?:json|md|m?js|s?css|te?xt|\w{5,})$/i;
   if (!(ablob instanceof Blob)) {
     attinp.value || EC1.attSel();
