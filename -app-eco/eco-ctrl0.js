@@ -130,6 +130,7 @@ function rdataFetch(txdata = {}, idx = 0) {
       : `${encodeURIComponent(k)}=${encodeURIComponent(prms[k])}` ).filter(e => e).join("&") );
   typeof txdata !== 'string' || (txdata = { url: txdata });
   return typeof txdata !== 'object' || !txdata.url ? Promise.reject("Alert: no URL provided to fetch.")
+  : idx ? Promise.reject("Alert: requested server operation currently disabled.") // temp bypass
   : window.fetch( txdata.url + (!txdata.epts ? "" : txdata.epts[idx]) + (!prms ? "" : "?" + prms), {
       method:     txdata.xmts && txdata.xmts[idx] || txdata.xmet || 'GET', // *GET, POST, PUT, DELETE, etc.
       //cache:       'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
