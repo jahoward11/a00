@@ -189,8 +189,8 @@ const dscripts = `//
  // reShow( ecoqjs.htmTxt(symlist.textContent) )
 
 /*
- url = "../-res-img/header03.jpg"; // avatar000.png Raspi_Colour_R.jpg
- ndiv = document.createElement('div'); ndiv.id = "cimg"; ndiv.innerHTML = '\\n  <figure><img src="' + _.url + '" style="max-width: 100%; /></figure>\\n';
+ url = "../-res-img/header03.jpg"; "" // avatar000.png Raspi_Colour_R.jpg "https:/" + "/lh3.googleusercontent.com/pw/AP1GczO0Ag4Fd2h2AaM7WX3QwNDt8Sc4mpV1D3lEZjNGLLLtZv_rbcJH7I8RsDZ7oSa5oGeUYvJwKrpRYM0GXwi9OKmfqqZny823a541z-wmKewTAjxGh8gZPBaZq_SN8pTAkjoASeE5ppqCt74NwHDAT8BX6g=w827-h320-s-no-gm?authuser=0"
+ ndiv = document.createElement('div'); ndiv.id = "cimg"; ndiv.innerHTML = '\\n  <figure><img src="' + _.url + '" style="max-width: 100%;" /></figure>\\n';
  window.cimg || cmain.appendChild(ndiv);
 */
  // cimg.querySelector('img').src = "";
