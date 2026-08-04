@@ -134,6 +134,12 @@ const jsrefq = `//
  // reShow( ecoqjs.jcmtXtract(s3) )
  // reShow( [...new Set((window.s5 = document.scripts[5].innerHTML).match(/\\w*btn\\w*/gi))] )
 
+ // generate array of variable names extracted from JavaScript text
+ // window.jvarXtract = str => Array.from( new Set( str.replace(/ *\\/\\/.*|^(window\\.\\w+ *= *[\\[{])[^]+?(?=\\n[\\]}];$)/gm, "$1").replace( /^(?:(?:const|let|var) +|  ?(?!const |let |var ))\\w[ ,\\w]*(?:=.+|);?\\n|^(\\w[.\\w]*(?= *=)[ =])[^]+?(?:;?\\s*\\n[\\]}];?\\n|;\\n(?=\\n|[^\\s\\]}]))|^function +(\\w+.)[^]+?\\n[\\]}];?\\n(?=[\\n\\S])|(.*\\n|.+)/gim, (m, c1, c2, c3) => c3 ? "" : c1 || c2 || m.replace(/(?:[^=a-z]|= *(?=\\d+[,;]|""|''|\\[\\]|\\{\\})|[a-z](?!\\w* *[.,;=]))*(?:\\n|=.+|(\\w+.))/gi, "$1") ).trim().split(/[^.\\w]/) ));
+
+ // extract list of function names & comments in JavaScript text
+ // window.jcmtXtract = str => str.replace(/^ ? ?( *(?:\\w[\\w.]* *[:=] *(?:\\(.*?\\)|\\w+) *=>|(?:\\w[\\w.]* *[:=][ \\w]*|)\\bfunction\\b.+{|(?!catch|if|for|try|while)\\w[\\w.]* *\\(.*?\\) *{).*\\n)|^ *\\/\\/\\S.*?\\n|^ ? ?( *\\/\\/ .+\\n)|^ ?( *).+?( \\/\\/ .+\\n)|^.*?\\n(\\n)*/gm, "$1$2$3$4$5").trim();
+
 //__For CalcJS in Ecollabs__
 /*
  w = window;
@@ -181,6 +187,13 @@ const dscripts = `//
  // reShow( menulist.textContent.replace(/&/g, "&amp;").replace(/\\xa0/g, "&nbsp;").replace(/>/g, "&gt;").replace(/</g, "&lt;") )
  // reShow( symlist.textContent )
  // reShow( ecoqjs.htmTxt(symlist.textContent) )
+
+/*
+ url = "../-res-img/header03.jpg"; // avatar000.png Raspi_Colour_R.jpg
+ ndiv = document.createElement('div'); ndiv.id = "cimg"; ndiv.innerHTML = '\\n  <figure><img src="' + _.url + '" style="max-width: 100%; /></figure>\\n';
+ window.cimg || cmain.appendChild(ndiv);
+*/
+ // cimg.querySelector('img').src = "";
 //`;
 
 const scrload = `//
