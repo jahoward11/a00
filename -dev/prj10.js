@@ -134,6 +134,13 @@ const jsrefq = `//
  // reShow( ecoqjs.jcmtXtract(s3) )
  // reShow( [...new Set((window.s5 = document.scripts[5].innerHTML).match(/\\w*btn\\w*/gi))] )
 
+ // remove line breaks
+ // window.lineUnwr = str => str.replace(/(\\S) *\\n(?!\\n|#|>|[:*+~-]? |\\d+\\.\\s|$)/g, "$1 ");
+ // insert line breaks; width: 50 cpl; break-string: \\n; cut words: no;
+ // window.lineWrap = str => { let cpl = 50, brk = "\\n", cut = false, rex = ".{1," + cpl + "}(\\\\s|$)" + (cut ? "|.{" + cpl + "}|.+$" : "|\\\\S+?(\\\\s|$)"); return str.match(new RegExp(rex, "g")).join(brk); };
+ // reShow( lineWrap(lineUnwr(dentr.value)) )
+ // localforage.getItem("scrap02").then(lineUnwr).then(lineWrap).then(reShow).catch(reShow)
+
  // generate array of variable names extracted from JavaScript text
  // window.jvarXtract = str => Array.from( new Set( str.replace(/ *\\/\\/.*|^(window\\.\\w+ *= *[\\[{])[^]+?(?=\\n[\\]}];$)/gm, "$1").replace( /^(?:(?:const|let|var) +|  ?(?!const |let |var ))\\w[ ,\\w]*(?:=.+|);?\\n|^(\\w[.\\w]*(?= *=)[ =])[^]+?(?:;?\\s*\\n[\\]}];?\\n|;\\n(?=\\n|[^\\s\\]}]))|^function +(\\w+.)[^]+?\\n[\\]}];?\\n(?=[\\n\\S])|(.*\\n|.+)/gim, (m, c1, c2, c3) => c3 ? "" : c1 || c2 || m.replace(/(?:[^=a-z]|= *(?=\\d+[,;]|""|''|\\[\\]|\\{\\})|[a-z](?!\\w* *[.,;=]))*(?:\\n|=.+|(\\w+.))/gi, "$1") ).trim().split(/[^.\\w]/) ));
 
@@ -155,7 +162,7 @@ const jsrefq = `//
 const bcaches = `//
  caches.keys().then(reShow)
  // caches.keys().then(keys => caches.open(keys[0])).then(cache => cache.keys()).then(keys => keys.map(k => ({ url: k.url, mode: k.mode, dest: k.destination }))).then(reShow)
- // caches.open("calcjs0.15").then(cache => cache.delete("https:/" + "/jahoward11.github.io/a00/-res-js/jstat-tdist.js")).then(reShow)
+ // caches.open("calcjs0.16").then(cache => cache.delete("https:/" + "/jahoward11.github.io/a00/-res-js/jstat-tdist.js")).then(reShow)
  // caches.match("https:/" + "/jahoward11.github.io/a00/-res-css/reset-hjas-min0.css").then(re => re.text()).then(reShow)
  // caches.match("https:/" + "/jahoward11.github.io/a00/-app-cjs/calcjs0.html").then(re => re.text()).then(reShow)
 
