@@ -22,6 +22,14 @@ const uiwidth = `//
  getComputedStyle(cgrid).width
  getComputedStyle(document.documentElement).width
  getComputedStyle(document.documentElement).font
+
+ // cmain.style.getPropertyValue("max-width")
+ // cmain.style.setProperty("max-width", "98%") // 720px
+ // document.styleSheets[0].cssRules[6].style.setProperty("max-width", "98%")
+ // cgrid.style.setProperty("grid-template-columns", "192px 1fr")
+ // cgrid.style.setProperty("grid-template-columns", "")
+ // document.styleSheets[0].cssRules[32].style.setProperty("grid-template-columns", "192px 1fr")
+ // 168px ; document.styleSheets[0].cssRules[32].selectorText === "#cmain > #cgrid:not(.dnone)"
 //`;
 
 const publdims = `//
@@ -185,7 +193,7 @@ const dscripts = `//
  // reShow( ecoscripts.querySelectorAll('script')[1].outerHTML )
 
  // reShow( Array.from(document.styleSheets).map(ss => ss.href) )
- // reShow( Array.from(document.styleSheets[0].rules).map(ru => ru.cssText) )
+ // reShow( Array.from(document.styleSheets[0].rules).map(ru => ru.cssText) ) // .cssRules).map(ru => ru.selectorText)
  // reShow( document.querySelectorAll('style')[0].outerHTML )
 
  // reShow( document.head.outerHTML )
