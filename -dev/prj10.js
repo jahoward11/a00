@@ -24,12 +24,12 @@ const uiwidth = `//
  getComputedStyle(document.documentElement).font
 
  // cmain.style.getPropertyValue("max-width")
- // cmain.style.setProperty("max-width", "98%") // 720px
- // document.styleSheets[0].cssRules[6].style.setProperty("max-width", "98%")
+ // cmain.style.setProperty("max-width", "98%")
+ // document.styleSheets[0].cssRules[6].style.setProperty("max-width", "98%") // "720px"
  // cgrid.style.setProperty("grid-template-columns", "192px 1fr")
  // cgrid.style.setProperty("grid-template-columns", "")
  // document.styleSheets[0].cssRules[32].style.setProperty("grid-template-columns", "192px 1fr")
- // 168px ; document.styleSheets[0].cssRules[32].selectorText === "#cmain > #cgrid:not(.dnone)"
+ // "168px" ; document.styleSheets[0].cssRules[32].selectorText === "#cmain > #cgrid:not(.dnone)"
 //`;
 
 const publdims = `//
@@ -143,7 +143,7 @@ const jsrefq = `//
  // reShow( [...new Set((window.s5 = document.scripts[5].innerHTML).match(/\\w*btn\\w*/gi))] )
 
  // remove line breaks
- // window.lineUnwr = str => str.replace(/(\\S) *\\n(?!\\n|#|>|[:*+~-]? |\\d+\\.\\s|$)/g, "$1 ");
+ // window.lineUnwr = str => str.replace(/(\\S) *\\n(?!\\n|#|>|[:*+~-]? |\\d+\\.\\s|$)/g, "$1 "); //
  // insert line breaks; width: 50 cpl; break-string: \\n; cut words: no;
  // window.lineWrap = str => { let cpl = 50, brk = "\\n", cut = false, rex = ".{1," + cpl + "}(\\\\s|$)" + (cut ? "|.{" + cpl + "}|.+$" : "|\\\\S+?(\\\\s|$)"); return str.match(new RegExp(rex, "g")).join(brk); };
  // reShow( lineWrap(lineUnwr(dentr.value)) )
