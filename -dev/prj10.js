@@ -26,6 +26,8 @@ const uiwidth = `//
  // cmain.style.getPropertyValue("max-width")
  // cmain.style.setProperty("max-width", "98%")
  // document.styleSheets[0].cssRules[6].style.setProperty("max-width", "98%") // "720px"
+ // recon.style.setProperty("white-space", "pre-wrap")
+ // document.styleSheets[0].cssRules[26].style.setProperty("white-space", "pre-wrap") // "pre"
  // cgrid.style.setProperty("grid-template-columns", "192px 1fr")
  // cgrid.style.setProperty("grid-template-columns", "")
  // document.styleSheets[0].cssRules[32].style.setProperty("grid-template-columns", "192px 1fr")
