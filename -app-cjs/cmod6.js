@@ -295,7 +295,7 @@ utoGre = v => { let i, codpts = []; while (v) { i = 0; while ((v - ++i) % 24); c
 clRnk1s = () => jg1.unsh.map( v => _.clrefs[_.tcx][ _.cxs.find( x => _.tovr < 0 ? x === 6 || v <= _.cval || (v % _.cval > 0 && v % _.cval <= _.cval - _.rval + 1) || (v > _.cval * (1 + x) - _.rval + (1 + x) && v <= _.cval * (1 + x)) || (v - (1 + x) - (_.cval - _.rval)) % _.cval === 0 : x === 6 || v - _.tovr <= _.tmax * (1 + x) || (v - (1 + x)) % _.tmax === 0 )]);
 clRnk2s = () => jg1.unsh.map( v => ( _.tovr < 0 ? v <= _.cval - _.rval || (v - 1 - (_.cval - _.rval)) % (1 + _.cval) !== 0 || v > 7 * _.cval : v - 1 < _.tovr || (v - 1 - _.tovr) % (1 + _.tmax) !== 0 || v - 1 - _.tovr > 7 * _.tmax ) ? 'White' : _.tcx < 5 ? 'Gold' : 'LimeGreen' );
 nAlt = v => _.tnx == 2 ? _.utoRom(v) : _.tnx == 3 ? _.utoEng(v) : _.tnx == 4 ? _.utoGre(v) : v;
-oPre = a0 => !Array.isArray(a0) ? [] : !(a0 = a0.flatMap((e, i) => [(e > 99 ? "" : e > 9 ? "0" : "00") + e, i]).sort().map(([e, o]) => o)) || a0.concat(a0[0]).slice(1);
+oPre = a0 => !Array.isArray(a0) ? [] : !(a0 = a0.flat().map((e, i) => [(e > 99 ? "" : e > 9 ? "0" : "00") + e, i]).sort().map(([e, o]) => o)) || a0.concat(a0[0]).slice(1);
 isSolva = () => { let ctinvs = _.shxs.filter(e => e.v).map(e => e.i + 1).reduce((a, b, i, f) => a + f.slice(i + 1).reduce((c, d) => c + (d > b ? 0 : 1), 0), 0); return (ctinvs + (_.cval % 2 === 1 ? 0 : _.rval - Math.ceil((_.shuf.indexOf(0) + 1) / _.cval))) % 2 === 0; };
 posSwap = (r, c) => [jg1.tarr1[r][c], jg1.tarr1[r][c + 1]] = [jg1.tarr1[r][c + 1], jg1.tarr1[r][c]];
 
