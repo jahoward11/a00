@@ -679,7 +679,7 @@ window.dentr = ecopans.length === 3 && /^<\/xmp>\n<div id="cheadg">/.test(ecopan
   /^jsrcs=./.test(qi) ? (jsrcs = window.decodeURIComponent(qi.replace(/^jsrcs=/, "")).split(/[ ,]+/))
   : /^cmods=./.test(qi) ? (cmods = window.decodeURIComponent(qi.replace(/^cmods=/, "")).split(/[ ,]+/))
   : /^dload=./.test(qi) ? (dload = window.decodeURIComponent(qi.replace(/^dload=/, "")))
-  : /^val0s=./.test(qi) ? val0s.concat( (qi = window.decodeURIComponent(qi.replace(/^val0s=/, "")))
+  : /^val0s=./.test(qi) ? val0s.push( ...(qi = window.decodeURIComponent(qi.replace(/^val0s=/, "")))
     .split(!/^ *\/.+\//.test(qi) ? /,/ : /[]/)
     .map( e => (e = /^ *(.+):(.*)|^ *(\/.+\/[gim]*)[,:]?(.*)/.exec(e))
       && ( /^\//.test(e[1]) ? [eval(e[1]), !/^['"]|=>/.test(e[2]) ? e[2] : eval(e[2])]
