@@ -469,7 +469,7 @@ let q2Bcopy, q2Bhtml,
       [cgrid, xctrls].forEach(el => el && el.classList.toggle("dnone"));
     } else if (/[45]/.test(idx)) {
       gridAdj(idx);
-    } else if (idx === 6 && ((xsetlist || "").value || !dentr.value)) {
+    } else if (idx === 6 && ((xsetlist || "").value || !dentr.value.trim())) {
       viewSet();
     } else if (idx === 7) {
       calcCopy();
@@ -680,10 +680,10 @@ window.dentr = ecopans.length === 3 && /^<\/xmp>\n<div id="cheadg">/.test(ecopan
   : /^cmods=./.test(qi) ? (cmods = window.decodeURIComponent(qi.replace(/^cmods=/, "")).split(/[ ,]+/))
   : /^dload=./.test(qi) ? (dload = window.decodeURIComponent(qi.replace(/^dload=/, "")))
   : /^val0s=./.test(qi) ? val0s.push( ...(qi = window.decodeURIComponent(qi.replace(/^val0s=/, "")))
-    .split(!/^ *\/.+\//.test(qi) ? /,/ : /[]/)
-    .map( e => (e = /^ *(.+):(.*)|^ *(\/.+\/[gim]*)[,:]?(.*)/.exec(e))
-      && ( /^\//.test(e[1]) ? [eval(e[1]), !/^['"]|=>/.test(e[2]) ? e[2] : eval(e[2])]
-        : [new RegExp("^([\\t ]*" + e[1] + "[\\t ]*=[\\t ]*).*?(?=[\\t ]*//|$)", "m"), "$1" + e[2]] )))
+    .split(!/^ *\/[^]+\//.test(qi) ? /,/ : /[]/)
+    .map( e => (e = /^ *(\/[^]+\/[gim]*)[,:]?(.*)|^ *([^]+):([^]*)/.exec(e))
+      && ( e[1] ? [eval(e[1]), !/^['"]|=>/.test(e[2]) ? e[2] : eval(e[2])]
+        : [new RegExp("^([\\t ]*" + e[3] + "[\\t ]*=[\\t ]*).*?(?=[\\t ]*//|$)", "m"), "$1" + e[4]] )))
   : /^title=/.test(qi) ? titSave(0, window.decodeURIComponent(qi.replace(/^title=/, "")))
   : /^!displ$/.test(qi) ? [cgrid, xctrls].forEach(el => el && el.classList.add("dnone"))
   : /^!zlock$/.test(qi) ? zoomTog(1)
