@@ -237,7 +237,7 @@ g1ui += "\\n<label class=ccntr>Rows <input type=text id=trows value=4 size=2 /><
 g1ui += "\\n<label class=ccntr>Columns <input type=text id=tcols value=4 size=2 /></label>";
 g1ui += "\\n<label class=ccntr><input type=button value=\\"&orarr; NEW GAME\\" onclick=jg1.g1Reset() /></label>\\n</div>";
 g1ui += "\\n<table id=g1board></table>\\n<div id=g1scor class=cfield>Count: <span id=g1movs>0</span></div>";
-g1ui += "\\n<div id=g1cp2><input type=button class=ccntr value=\\"RETRACT MOVE\\" onclick=jg1.m1Rvrs() /><input type=button value=\\"ZERO COUNTER\\" onclick=jg1.c1Zero() /></div>\\n";
+g1ui += "\\n<div id=g1cp2><input type=button value=\\"ZERO COUNTER\\" onclick=jg1.c1Zero() /><input type=button class=ccntr value=\\"RETRACT MOVE\\" onclick=jg1.m1Rvrs() /></div>\\n";
 
  // g1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
  try { window.pz1wrap || g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap"; ndiv.innerHTML = g1ui; cmain.appendChild(ndiv); }
@@ -299,7 +299,7 @@ oPre = a0 => !Array.isArray(a0) ? [] : !(a0 = a0.flat().map((e, i) => [(e > 99 ?
 isSolva = () => { let ctinvs = _.shxs.filter(e => e.v).map(e => e.i + 1).reduce((a, b, i, f) => a + f.slice(i + 1).reduce((c, d) => c + (d > b ? 0 : 1), 0), 0); return (ctinvs + (_.cval % 2 === 1 ? 0 : _.rval - Math.ceil((_.shuf.indexOf(0) + 1) / _.cval))) % 2 === 0; };
 posSwap = (r, c) => [jg1.tarr1[r][c], jg1.tarr1[r][c + 1]] = [jg1.tarr1[r][c + 1], jg1.tarr1[r][c]];
 
-window.jg1 = window.jg1 || {}; // = { unsh: [], tarr0: [], tarr1: [], m1bl1: [], m1trk: [] };
+window.jg1 = window.jg1 || {}; Object.assign(jg1, { tarr0: [], tarr1: [], m1bl1: [], m1trk: [], unsh: [] });
 jg1.c1Zero = r => !(g1movs.innerHTML = 0) && (jg1.tarr0 = JSON.parse(JSON.stringify(jg1.tarr1))) && (jg1.m1trk = []) && (jg1.m1bl1 = [r = jg1.tarr1.findIndex(e => e.includes(0)), jg1.tarr1[r].findIndex(e => !e)]);
 jg1.gbdGen = () => g1board.innerHTML = jg1.tarr1.map( (e, i) => "<tr>" + e.map( (f, j) => f === 0 ? "<td class=blank> </td>" : \`<td class=gtile \${!_.cr1s ? "" : \`style="background:\${_.cr1s[f]};color:\${_.cr2s[f]};" \`}onclick=jg1.tileSli([\${i},\${j}])>\${f}</td>\` ).join("") + "</tr>" ).join("\\n");
 jg1.g1Reset = (a0, d0, c0 = tclrs.selectedIndex, n0 = tnmls.selectedIndex) => { Array.isArray(a0) || a0 == null || (oshuf.checked = a0); _.tnx = tnmls.selectedIndex = n0; _.tcx = tclrs.selectedIndex = c0; !Array.isArray(a0) ? !d0 || (tcols.value = trows.value = d0) : [trows.value, tcols.value] = [a0.length, a0[0].length]; _.rval = +trows.value; _.cval = +tcols.value; _.tmax = _.rval <= _.cval ? _.rval : _.cval; _.tovr = (_.rval - _.cval) * _.tmax; a0 = _.oPre(a0); jg1.unsh = Array.from(Array(_.rval * _.cval).keys()); _.cxs = Array.from(Array(_.tmax > 7 ? 7 : _.tmax).keys()); [_.cr1s, _.cr2s] = _.tcx < 2 ? [0, 0] : [_.clRnk1s(), _.clRnk2s()]; jg1.unsh = jg1.unsh.slice(1).map(_.nAlt).concat(0); _.tcx < 2 || ([_.cr1s, _.cr2s] = [_.cr1s, _.cr2s].map(e => Object.fromEntries(jg1.unsh.map((v, i) => [v, e[i + 1]])))); _.shxs = jg1.unsh.map((v, i) => ({ i, v, o: a0[i] || Math.random() })).sort((a, b) => !a0.length && !oshuf.checked || a.o - b.o); _.shuf = _.shxs.map(e => e.v); jg1.tarr1 = Array.from(Array(_.rval)).map(() => _.shuf.splice(0, _.cval)); _.shuf = jg1.tarr1.flat(); _.isSolva() || (_.shuf[0] && _.shuf[1] ? _.posSwap(0, 0) : _.posSwap(_.rval - 1, _.cval - 2)); jg1.m1bl1 = [d0 = jg1.tarr1.findIndex(e => e.includes(0)), jg1.tarr1[d0].findIndex(e => !e)]; jg1.c1Zero(); jg1.gbdGen(); };
@@ -393,7 +393,7 @@ g2ui += "\\n</tbody></table>\\n<table id=g2board><tbody>";
 g2ui += [0, 1, 2, 3, 4].map(r => "\\n<tr>" + [0, 1, 2, 3, 4].map(c => \`<td id=n\${r}\${c} onclick=jg2.litSwi(\${r},\${c})></td>\`).join("") + "</tr>").join("");
 g2ui += "\\n</tbody></table>\\n</div>";
 g2ui += "\\n<div id=g2scor class=cfield>Count: <span id=g2movs>0</span></div>";
-g2ui += "\\n<div class=cfield><span class=ccntr><input type=button value=\\"RESET COUNTER\\" onclick=jg2.c2Zero() /></span></div>";
+g2ui += "\\n<div class=cfield><span class=ccntr><input type=button value=\\"ZERO COUNTER\\" onclick=jg2.c2Zero() /></span></div>";
 g2ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u2tog /> Allow single-diode toggle&mdash;Suspend&nbsp;counter</label></div>\\n";
 
  // g2wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
@@ -436,7 +436,7 @@ g3ui += "\\n</tbody></table>\\n<table id=g3board><tbody>";
 g3ui += [0, 1, 2, 3, 4, 5, 6].map(r => "\\n<tr>" + [0, 1, 2, 3, 4, 5, 6].map(c => "<td " + (["0,0", "0,1", "0,5", "0,6", "1,0", "1,1", "1,5", "1,6", "5,0", "5,1", "5,5", "5,6", "6,0", "6,1", "6,5", "6,6"].includes("" + [r, c]) ? "class=nohol" : \`id=h\${r}\${c} onclick=jg3.pegJmp(\${r},\${c})\`) + "></td>").join("") + "</tr>").join("");
 g3ui += "\\n</tbody></table>\\n</div>";
 g3ui += "\\n<div id=g3scor class=cfield>Count: <span id=g3movs>0</span></div>";
-g3ui += "\\n<div class=cfield><input type=button class=ccntr value=\\"RETRACT MOVE\\" onclick=jg3.m3Rvrs() /><input type=button value=\\"RESET COUNTER\\" onclick=jg3.c3Zero() /></div>";
+g3ui += "\\n<div class=cfield><input type=button value=\\"ZERO COUNTER\\" onclick=jg3.c3Zero() /><input type=button class=ccntr value=\\"RETRACT MOVE\\" onclick=jg3.m3Rvrs() /></div>";
 g3ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u3tog /> Allow free peg placement&mdash;Suspend&nbsp;counter</label></div>\\n";
 
  // g3wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
