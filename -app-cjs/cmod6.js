@@ -237,7 +237,7 @@ g1ui += "\\n<label class=ccntr>Rows <input type=text id=trows value=4 size=2 /><
 g1ui += "\\n<label class=ccntr>Columns <input type=text id=tcols value=4 size=2 /></label>";
 g1ui += "\\n<label class=ccntr><input type=button value=\\"&orarr; NEW GAME\\" onclick=jg1.g1Reset() /></label>\\n</div>";
 g1ui += "\\n<table id=g1board></table>\\n<div id=g1scor class=cfield>Count: <span id=g1movs>0</span></div>";
-g1ui += "\\n<div id=g1cp2><input type=button value=\\"ZERO COUNTER\\" onclick=jg1.c1Zero() /><input type=button class=ccntr value=\\"RETRACT MOVE\\" onclick=jg1.m1Rvrs() /></div>\\n";
+g1ui += "\\n<div id=g1cp2><input class=ccntr type=button value=\\"ZERO COUNTER\\" onclick=jg1.c1Zero() /><input type=button value=\\"RETRACT MOVE\\" onclick=jg1.m1Rvrs() /></div>\\n";
 
  // g1wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
  try { window.pz1wrap || g1wrap } catch { ndiv = document.createElement('div'); ndiv.id = "g1wrap"; ndiv.innerHTML = g1ui; cmain.appendChild(ndiv); }
@@ -436,7 +436,7 @@ g3ui += "\\n</tbody></table>\\n<table id=g3board><tbody>";
 g3ui += [0, 1, 2, 3, 4, 5, 6].map(r => "\\n<tr>" + [0, 1, 2, 3, 4, 5, 6].map(c => "<td " + (["0,0", "0,1", "0,5", "0,6", "1,0", "1,1", "1,5", "1,6", "5,0", "5,1", "5,5", "5,6", "6,0", "6,1", "6,5", "6,6"].includes("" + [r, c]) ? "class=nohol" : \`id=h\${r}\${c} onclick=jg3.pegJmp(\${r},\${c})\`) + "></td>").join("") + "</tr>").join("");
 g3ui += "\\n</tbody></table>\\n</div>";
 g3ui += "\\n<div id=g3scor class=cfield>Count: <span id=g3movs>0</span></div>";
-g3ui += "\\n<div class=cfield><input type=button value=\\"ZERO COUNTER\\" onclick=jg3.c3Zero() /><input type=button class=ccntr value=\\"RETRACT MOVE\\" onclick=jg3.m3Rvrs() /></div>";
+g3ui += "\\n<div class=cfield><input class=ccntr type=button value=\\"ZERO COUNTER\\" onclick=jg3.c3Zero() /><input type=button value=\\"RETRACT MOVE\\" onclick=jg3.m3Rvrs() /></div>";
 g3ui += "\\n<div class=cfield><label class=ccntr><input type=checkbox id=u3tog /> Allow free peg placement&mdash;Suspend&nbsp;counter</label></div>\\n";
 
  // g3wrap.remove() // *Alert:* useful only if edit-testing the GUI code above
